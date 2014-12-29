@@ -1,0 +1,18 @@
+- content_for :title, t("upload.new")
+
+%h1.text-center= t("upload.new")
+
+%hr
+
+.row
+  .col-md-12
+    = form_for @upload, html: { class: "form-horizontal", role: "form", multipart: true } do |f|
+      %fieldset
+        .form-group{class: @upload.errors[:body].any? ? "has-error" : ""}
+          = f.label :file, t("upload.file"), class: "control-label col-md-4"
+          %div{class: "col-md-4"}= f.file_field :file, class: "form-control"
+          %div{class: "col-md-4 help-block"}= @upload.errors[:file].first
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("upload.load"), class: "btn btn-primary"
+          = link_to t("cancel"), uploads_path, class: "btn btn-default"

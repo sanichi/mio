@@ -1,0 +1,33 @@
+- content_for :title, t("upload.upload")
+
+%h1.text-center= t("upload.upload")
+
+.row
+  .col-md-12
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("name")
+          %td= @upload.name
+          %th= t("upload.parsed")
+          %td= t(@upload.parsed ? "tick" : "cross")
+        %tr
+          %th= t("upload.content_type")
+          %td= @upload.content_type
+          %th= t("size")
+          %td= @upload.size
+        %tr
+          %th= t("created_at")
+          %td= @upload.created_at.to_s(:db)
+          %th= t("updated_at")
+          %td= @upload.updated_at.to_s(:db)
+        %tr
+          %th= t("error")
+          %td{colspan: 3}= @upload.error
+        %tr
+          %th.text-center{colspan: 4}= t("upload.content")
+        %tr
+          %td{colspan: 4}
+            %pre= @upload.content
+    .text-center
+      = link_to t("delete"), upload_path(@upload), data: { confirm: "Sure?" }, method: :delete, class: "btn btn-danger"

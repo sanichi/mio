@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   %w[home].each do |page|
     get page => "pages##{page}"
   end
+
+  resources :uploads, except: [:edit, :update]
 end

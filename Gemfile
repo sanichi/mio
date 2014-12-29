@@ -21,5 +21,5 @@ group :development, :test do
   gem "faker"
   gem "database_cleaner"
   gem "byebug" # call "byebug" anywhere in code to stop execution and get a debugger console
-  gem "web-console", "~> 2.0" # cccess a console on exception pages or by using %= console in views
+  gem "web-console", "~> 2.0" # acccess a console on exception pages or by using %= console in views
 end

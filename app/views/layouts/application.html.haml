@@ -9,4 +9,6 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    = yield
+    .container.top_margin.bottom_margin
+      = render "layouts/nav"
+      = yield

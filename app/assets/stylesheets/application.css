@@ -13,3 +13,22 @@
  *= require_tree .
  *= require_self
  */
+
+/* Form errors. */
+.field_with_errors {
+  color: red;
+}
+.field_with_errors input {
+  border-color: red;
+}
+.help-block {
+  color: red !important;
+}
+
+/* Vertical space. */
+.top_margin {
+  margin-top: 16px;
+}
+.bottom_margin {
+  margin-bottom: 16px;
+}
