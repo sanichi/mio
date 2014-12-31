@@ -14,7 +14,7 @@ class UploadsController < ApplicationController
   def create
     @upload = Upload.new(strong_params)
     if @upload.save
-      redirect_to uploads_path
+      redirect_to @upload
     else
       render "new"
     end

@@ -18,3 +18,10 @@ RSpec.configure do |config|
   # See https://relishapp.com/rspec/rspec-rails/docs.
   config.infer_spec_type_from_file_location!
 end
+
+# Where are the test files?
+def test_file_path(name)
+  path = Rails.root + "spec" + "files" + name
+  raise "non-existant sample file (#{name})" unless File.exists?(path)
+  path
+end

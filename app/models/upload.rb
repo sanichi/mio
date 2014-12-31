@@ -1,7 +1,7 @@
 class Upload < ActiveRecord::Base
   attr_accessor :file
 
-  TYPES = %w[text/plain text/csv]
+  TYPES = %w[csv comma-separated-values plain].map { |t| "text/#{t}" }
   MAX_SIZE = 1.megabyte
 
   before_validation :process_file
