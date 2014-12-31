@@ -19,6 +19,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
+Capybara.configure do |config|
+  # Exact matches.
+  config.exact = true
+end
+
 # Where are the test files?
 def test_file_path(name)
   path = Rails.root + "spec" + "files" + name
