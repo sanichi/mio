@@ -6,12 +6,6 @@
       %span.icon-bar
   .collapse.navbar-collapse.navbar-ex1-collapse
     %ul.nav.navbar-nav
-      - unless controller_name == "pages" && action_name == "home"
-        %li= link_to t("home"), home_path
-      %li.dropdown
-        = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-          = t("upload.uploads")
-          %b.caret
-        %ul.dropdown-menu
-          %li= link_to t("upload.list"), uploads_path
-          %li= link_to t("upload.new"), new_upload_path
+      %li= link_to t("transaction.transactions"), transactions_path
+      %li= link_to t("upload.uploads"), uploads_path
+      %li= link_to t("upload.new"), new_upload_path

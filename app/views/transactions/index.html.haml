@@ -1,0 +1,19 @@
+- content_for :title, t("transaction.transactions")
+
+%h1.text-center= t("transaction.transactions")
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("transaction.trade_date")
+          %th.text-center= t("transaction.value")
+          %th= t("transaction.description")
+      %tbody
+        - @transactions.matches.each do |transaction|
+          %tr
+            %td.text-center= transaction.trade_date
+            %td.text-right{style: "padding-right: 3em; padding-left: 0;"}= "%.2f" % transaction.value
+            %td= link_to transaction.description, transaction
+        = render "utils/pagination_links", pager: @transactions, columns: 3

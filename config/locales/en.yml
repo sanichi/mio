@@ -5,13 +5,27 @@ en:
   delete: Delete
   error: Error
   date: Date
-  home: Home
-  mio: Mark's Investment Overview
   name: Name
   save: Save
   size: Size
   tick: ✔
   updated_at: Last Updated
+  pagination:
+    frst: first
+    next: next
+    prev: previous
+    last: last
+    of: of
+  transaction:
+    cost: Cost
+    description: Description
+    quantity: Quantity
+    reference: Reference
+    settle_date: Settle Date
+    trade_date: Trade Date
+    transaction: Transaction
+    transactions: Transactions
+    value: Value
   upload:
     browse: Browse
     content: Content
@@ -20,6 +34,5 @@ en:
     list: Upload List
     load: Load
     new: New Upload
-    parsed: Parsed
     upload: Upload
     uploads: Uploads

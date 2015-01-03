@@ -11,20 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141226174335) do
+ActiveRecord::Schema.define(version: 20150101173526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "transactions", force: :cascade do |t|
+    t.decimal  "cost",        precision: 10, scale: 2
+    t.datetime "created_at"
+    t.string   "description"
+    t.integer  "quantity"
+    t.string   "reference"
+    t.date     "settle_date"
+    t.string   "signature"
+    t.date     "trade_date"
+    t.integer  "upload_id"
+    t.decimal  "value",       precision: 10, scale: 2
+  end
+
+  add_index "transactions", ["signature"], name: "index_transactions_on_signature", unique: true, using: :btree
+  add_index "transactions", ["upload_id"], name: "index_transactions_on_upload_id", using: :btree
 
   create_table "uploads", force: :cascade do |t|
     t.text     "content"
     t.string   "content_type"
     t.string   "error"
     t.string   "name"
-    t.boolean  "parsed",       default: false
     t.integer  "size"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
   end
 
 end

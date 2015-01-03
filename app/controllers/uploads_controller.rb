@@ -1,10 +1,11 @@
 class UploadsController < ApplicationController
   def index
-    @uploads = Upload.all
+    @uploads = Upload.search(params, uploads_path)
   end
 
   def show
     @upload = Upload.find(params[:id])
+    @transactions = @upload.transactions
   end
 
   def new

@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
-  root to: "pages#home"
-  
-  %w[home].each do |page|
-    get page => "pages##{page}"
-  end
+  root to: "transactions#index"
 
   resources :uploads, except: [:edit, :update]
+  resources :transactions, only: [:index, :show]
 end

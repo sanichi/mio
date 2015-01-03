@@ -1,0 +1,28 @@
+- content_for :title, t("transaction.transaction")
+
+%h1.text-center= t("transaction.transaction")
+
+.row
+  .col-md-12
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("transaction.trade_date")
+          %td= @transaction.trade_date
+          %th= t("transaction.settle_date")
+          %td= @transaction.settle_date
+        %tr
+          %th= t("transaction.reference")
+          %td= @transaction.reference
+          %th= t("transaction.description")
+          %td= @transaction.description
+        %tr
+          %th= t("transaction.cost")
+          %td= @transaction.cost
+          %th= t("transaction.quantity")
+          %td= @transaction.quantity
+        %tr
+          %th= t("transaction.value")
+          %td= @transaction.value
+          %th= t("created_at")
+          %td= link_to @transaction.created_at.to_s(:db), @transaction.upload

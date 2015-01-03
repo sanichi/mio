@@ -9,21 +9,20 @@
         %tr
           %th= t("name")
           %td= @upload.name
-          %th= t("upload.parsed")
-          %td= t(@upload.parsed ? "tick" : "cross")
+          %th= t("created_at")
+          %td= @upload.created_at.to_s(:db)
         %tr
           %th= t("upload.content_type")
           %td= @upload.content_type
           %th= t("size")
-          %td= @upload.size
+          %td= @upload.size.to_s
+        - if @upload.error.present?
+          %tr
+            %th= t("error")
+            %td{colspan: 3}= @upload.error
         %tr
-          %th= t("created_at")
-          %td= @upload.created_at.to_s(:db)
-          %th= t("updated_at")
-          %td= @upload.updated_at.to_s(:db)
-        %tr
-          %th= t("error")
-          %td{colspan: 3}= @upload.error
+          %th= t("transaction.transactions")
+          %td{colspan: 3}= link_to_if @transactions.size > 0, @transactions.size, transactions_path(upload_id: @upload.id), class: "btn btn-info btn-xs"
         %tr
           %th.text-center{colspan: 4}= t("upload.content")
         %tr

@@ -10,6 +10,7 @@ gem "jquery-rails"
 group :development do
   gem "capistrano-rails"
   gem "capistrano-passenger"
+  gem "wirble"
 end
 
 group :development, :test do
@@ -20,6 +21,5 @@ group :development, :test do
   gem "launchy"
   gem "faker"
   gem "database_cleaner"
-  gem "byebug" # call "byebug" anywhere in code to stop execution and get a debugger console
-  gem "web-console", "~> 2.0" # acccess a console on exception pages or by using %= console in views
+  gem "byebug"
 end
