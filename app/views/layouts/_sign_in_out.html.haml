@@ -1,0 +1,4 @@
+- if authenticated?
+  %li= link_to t("session.sign_out"), sign_out_path
+- else
+  %li= link_to t("session.sign_in"), sign_in_path

@@ -1,16 +1,17 @@
 require 'rails_helper'
 
 describe Transaction do
-  let(:file_upload) { I18n.t("upload.file") }
-  let(:new_upload)  { I18n.t("upload.new") }
-  let(:load)        { I18n.t("upload.load") }
+  include_context "test_data"
+
+  before(:each) do
+    login
+  end
 
   context "duplicates" do
     let(:sample1) { "capital-1.csv" }
     let(:sample2) { "capital-2.csv" }
 
     it "one order" do
-      visit root_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample1)
       click_button load
@@ -42,7 +43,6 @@ describe Transaction do
     end
 
     it "other order" do
-      visit root_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample2)
       click_button load

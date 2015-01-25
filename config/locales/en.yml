@@ -16,6 +16,10 @@ en:
     prev: previous
     last: last
     of: of
+  session:
+    password: Password
+    sign_in: Sign in
+    sign_out: Sign out
   transaction:
     cost: Cost
     description: Description

@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe Upload do
-  let(:delete)      { I18n.t("delete") }
-  let(:file_upload) { I18n.t("upload.file") }
-  let(:load)        { I18n.t("upload.load") }
-  let(:name)        { I18n.t("name") }
-  let(:new_upload)  { I18n.t("upload.new") }
-  let(:upload)      { I18n.t("upload.upload") }
-  let(:uploads)     { I18n.t("upload.uploads") }
+  include_context "test_data"
+
+  before(:each) do
+    login
+  end
 
   let(:sample) { "capital-1.csv" }
   let(:title)  { "//h1[.='%s']" }
@@ -16,7 +14,6 @@ describe Upload do
     let(:table) { "//table/tbody/tr[th[.='%s'] and td[.='%s']]" }
 
     it "success" do
-      visit root_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample)
       click_button load
@@ -41,7 +38,6 @@ describe Upload do
       let(:image)  { "small-image.png" }
 
       it "missing file" do
-        visit root_path
         click_link new_upload
         click_button load
 
@@ -52,7 +48,6 @@ describe Upload do
       end
 
       it "empty file" do
-        visit root_path
         click_link new_upload
         attach_file file_upload, test_file_path(empty)
         click_button load
@@ -64,7 +59,6 @@ describe Upload do
       end
 
       it "wrong content-type" do
-        visit root_path
         click_link new_upload
         attach_file file_upload, test_file_path(image)
         click_button load
@@ -79,7 +73,6 @@ describe Upload do
 
   context "delete" do
     it "success" do
-      visit root_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample)
       click_button load

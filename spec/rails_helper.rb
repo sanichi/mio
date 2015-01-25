@@ -30,3 +30,10 @@ def test_file_path(name)
   raise "non-existant sample file (#{name})" unless File.exists?(path)
   path
 end
+
+def login
+  visit sign_in_path
+  click_link sign_in
+  fill_in password, with: test_password
+  click_button sign_in
+end

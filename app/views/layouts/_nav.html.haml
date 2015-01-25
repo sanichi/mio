@@ -5,7 +5,10 @@
       %span.icon-bar
       %span.icon-bar
   .collapse.navbar-collapse.navbar-ex1-collapse
-    %ul.nav.navbar-nav
-      %li= link_to t("transaction.transactions"), transactions_path
-      %li= link_to t("upload.uploads"), uploads_path
-      %li= link_to t("upload.new"), new_upload_path
+    - if authenticated?
+      %ul.nav.navbar-nav
+        %li= link_to t("transaction.transactions"), transactions_path
+        %li= link_to t("upload.uploads"), uploads_path
+        %li= link_to t("upload.new"), new_upload_path
+    %ul.nav.navbar-nav.navbar-right
+      = render "layouts/sign_in_out"
