@@ -4,6 +4,7 @@ class Transaction < ActiveRecord::Base
   include Pageable
 
   MAX_STRING = 255
+  MAX_SETTLE = 10
 
   belongs_to :upload
 
@@ -47,8 +48,8 @@ class Transaction < ActiveRecord::Base
   private
 
   def date_constraints
-    if settle_date.present? && settle_date > Date.today
-      errors.add(:settle_date, "can't be in the future")
+    if settle_date.present? && settle_date > Date.today.days_since(MAX_SETTLE)
+      errors.add(:settle_date, "can't be more than #{MAX_SETTLE} days in the future")
     end
     if trade_date.present? && trade_date > Date.today
       errors.add(:trade_date, "can't be in the future")
