@@ -20,23 +20,3 @@ en:
     password: Password
     sign_in: Sign in
     sign_out: Sign out
-  transaction:
-    cost: Cost
-    description: Description
-    quantity: Quantity
-    reference: Reference
-    settle_date: Settle Date
-    trade_date: Trade Date
-    transaction: Transaction
-    transactions: Transactions
-    value: Value
-  upload:
-    browse: Browse
-    content: Content
-    content_type: Type
-    file: File
-    list: Upload List
-    load: Load
-    new: New Upload
-    upload: Upload
-    uploads: Uploads

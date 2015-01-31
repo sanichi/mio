@@ -1,6 +1,6 @@
-- content_for :title, t("upload.uploads")
+- content_for :title, t("hl.upload.uploads")
 
-%h1.text-center= t("upload.uploads")
+%h1.text-center= t("hl.upload.uploads")
 
 .row
   .col-md-offset-1.col-md-10
@@ -10,9 +10,9 @@
           %th.text-center= t("name")
           %th.text-center= t("date")
           %th.text-center= t("size")
-          %th.text-center= t("upload.content_type")
+          %th.text-center= t("hl.upload.content_type")
           %th.text-center= t("error")
-          %th.text-center= t("transaction.transactions")
+          %th.text-center= t("hl.transaction.transactions")
       %tbody
         - @uploads.matches.each do |upload|
           %tr
