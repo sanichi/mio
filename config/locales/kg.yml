@@ -2,10 +2,12 @@ en:
   kg:
     edit: Edit Measurement
     finish: Finish
+    graph: Graph
     index: List
     kg: KG
     data: Measurements
     date: Date
+    mass: Mass
     new: New Measurement
     start: Start
     unit:

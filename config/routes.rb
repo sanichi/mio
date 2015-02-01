@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "masses#index"
+  root to: "masses#graph"
 
   get  "sign_in"  => "sessions#new"
   get  "sign_out" => "sessions#destroy"
@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   resources :transactions, only: [:index, :show]
   resources :uploads, except: [:edit, :update]
 
-  resources :masses, except: [:show]
+  resources :masses, except: [:show] { get :graph, on: :collection }
 end

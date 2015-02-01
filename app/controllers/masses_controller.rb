@@ -5,6 +5,10 @@ class MassesController < ApplicationController
     @masses = Mass.search(params, masses_path)
   end
 
+  def graph
+    @mgd = MassGraphData.new
+  end
+
   def new
     @mass = Mass.new
     @mass.date = Mass.any?? Mass.maximum(:date) + 1 : Date.today

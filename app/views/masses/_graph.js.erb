@@ -1,0 +1,45 @@
+// Load the Visualization API library and the piechart library.
+google.load("visualization", "1", { packages:["corechart"] });
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.setOnLoadCallback(drawChart);
+
+// Callback that instantiates the pie chart, passes in the data and draws it.
+function drawChart()
+{
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable([
+<% mgd.data_rows.each do |row| %>
+  <%= row %>
+<% end %>
+  ]);
+
+  // Format values in tooltips.
+  var date_formatter = new google.visualization.DateFormat({ pattern: "EEE, MMM d yyyy" });
+  var mass_formatter = new google.visualization.NumberFormat({ fractionDigits: 1 });
+  date_formatter.format(data, 0);
+  mass_formatter.format(data, 1);
+  mass_formatter.format(data, 2);
+
+  // Set chart options.
+  var options = {
+    chartArea: {
+      left: "10%",
+      width: "80%"
+    },
+    hAxis: {
+      title: <%= mgd.date_title %>,
+      viewWindow: <%= mgd.date_window %>,
+      gridlines: <%= mgd.gridlines %>,
+      minorGridlines: <%= mgd.minor_gridlines %>
+    },
+    vAxis: {
+      title: <%= mgd.mass_title %>,
+      viewWindow: <%= mgd.mass_window %>
+    }
+  };
+
+  // Instantiate and draw the chart, passing in some options.
+  var chart = new google.visualization.ScatterChart(document.getElementById("chart"));
+  chart.draw(data, options);
+}
