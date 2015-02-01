@@ -7,7 +7,7 @@ class MassesController < ApplicationController
 
   def new
     @mass = Mass.new
-    @mass.date = Date.today
+    @mass.date = Mass.any?? Mass.maximum(:date) + 1 : Date.today
   end
 
   def create
