@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "transactions#index"
+  root to: "masses#index"
 
   get  "sign_in"  => "sessions#new"
   get  "sign_out" => "sessions#destroy"

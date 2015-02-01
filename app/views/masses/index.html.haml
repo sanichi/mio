@@ -19,7 +19,6 @@
             %td.text-center= "%.1f" % mass.finish if mass.finish.present?
             %td.text-center
               = link_to t("edit"), edit_mass_path(mass), class: "btn btn-info btn-xs"
-              = link_to t("delete"), mass, class: "btn btn-danger btn-xs", method: :delete, data: { confirm: "Sure?" }
         = render "utils/pagination_links", pager: @masses, columns: 4
 
 .text-center

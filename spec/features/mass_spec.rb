@@ -101,6 +101,7 @@ describe Mass do
       expect(Mass.count).to eq 1
 
       click_link measurement_list
+      click_link edit
       click_link delete
 
       expect(page).to have_xpath title % measurements
