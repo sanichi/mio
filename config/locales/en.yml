@@ -3,8 +3,10 @@ en:
   created_at: Created At
   cross: ✘
   delete: Delete
+  edit: Edit
   error: Error
   date: Date
+  mio: Mio
   name: Name
   save: Save
   size: Size

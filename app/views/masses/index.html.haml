@@ -1,0 +1,27 @@
+- content_for :title, t("kg.data")
+%h1.text-center= t("kg.data")
+%hr
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("kg.date")
+          %th.text-center= t("kg.start")
+          %th.text-center= t("kg.finish")
+          %th
+      %tbody
+        - @masses.matches.each do |mass|
+          %tr
+            %td.text-center= mass.date
+            %td.text-center= "%.1f" % mass.start if mass.start.present?
+            %td.text-center= "%.1f" % mass.finish if mass.finish.present?
+            %td.text-center
+              = link_to t("edit"), edit_mass_path(mass), class: "btn btn-info btn-xs"
+              = link_to t("delete"), mass, class: "btn btn-danger btn-xs", method: :delete, data: { confirm: "Sure?" }
+        = render "utils/pagination_links", pager: @masses, columns: 4
+
+.text-center
+  = link_to t("kg.new"), new_mass_path, class: "btn btn-primary"
+

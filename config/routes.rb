@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create]
   resources :transactions, only: [:index, :show]
   resources :uploads, except: [:edit, :update]
+
+  resources :masses, except: [:show]
 end

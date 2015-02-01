@@ -1,0 +1,15 @@
+en:
+  kg:
+    edit: Edit Measurement
+    finish: Finish
+    index: List
+    kg: KG
+    data: Measurements
+    date: Date
+    new: New Measurement
+    start: Start
+    unit:
+      kg: kg
+      lb: lb
+      st: st
+      unit: Unit

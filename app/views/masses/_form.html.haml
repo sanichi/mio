@@ -1,0 +1,20 @@
+.row
+  .col-md-offset-2.col-md-8
+    = form_for mass, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        .form-group{class: mass.errors[:date].any? ? "has-error" : ""}
+          = f.label :date, t("kg.date"), class: "control-label col-md-4"
+          %div{class: "col-md-3"}= f.text_field :date, class: "form-control"
+          %div{class: "col-md-5 help-block"}= mass.errors[:date].first
+        .form-group{class: mass.errors[:start].any? ? "has-error" : ""}
+          = f.label :start, t("kg.start"), class: "control-label col-md-4"
+          %div{class: "col-md-2"}= f.text_field :start, class: "form-control"
+          %div{class: "col-md-6 help-block"}= mass.errors[:start].first
+        .form-group{class: mass.errors[:finish].any? ? "has-error" : ""}
+          = f.label :finish, t("kg.finish"), class: "control-label col-md-4"
+          %div{class: "col-md-2"}= f.text_field :finish, class: "form-control"
+          %div{class: "col-md-6 help-block"}= mass.errors[:finish].first
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), masses_path, class: "btn btn-default"
