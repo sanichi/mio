@@ -9,6 +9,7 @@ describe Mass do
 
   before(:each) do
     login
+    visit masses_path
   end
 
   context "create" do
@@ -65,6 +66,27 @@ describe Mass do
         expect(page).to have_xpath title % new_measurement
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "can't be blank")
+      end
+
+      it "duplicate date" do
+        click_link new_measurement
+        fill_in measurement_date, with: data.date
+        fill_in measurement_start, with: data.start
+        fill_in measurement_finish, with: data.finish
+        click_button save
+
+        expect(page).to have_xpath title % measurements
+        expect(Mass.count).to eq 1
+
+        click_link new_measurement
+        fill_in measurement_date, with: data.date
+        fill_in measurement_start, with: data.start
+        fill_in measurement_finish, with: data.finish
+        click_button save
+
+        expect(page).to have_xpath title % new_measurement
+        expect(Mass.count).to eq 1
+        expect(page).to have_css(error, text: "has already been taken")
       end
     end
   end

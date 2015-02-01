@@ -5,6 +5,7 @@ describe Transaction do
 
   before(:each) do
     login
+    visit uploads_path
   end
 
   context "duplicates" do
@@ -21,6 +22,7 @@ describe Transaction do
       expect(u.transactions.count).to eq 5
       expect(u.error).to be_nil
 
+      visit uploads_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample1)
       click_button load
@@ -30,6 +32,7 @@ describe Transaction do
       expect(u.transactions.count).to eq 0
       expect(u.error).to match(/all.*duplicates/i)
 
+      visit uploads_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample2)
       click_button load
@@ -52,6 +55,7 @@ describe Transaction do
       expect(u.transactions.count).to eq 8
       expect(u.error).to be_nil
 
+      visit uploads_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample2)
       click_button load
@@ -61,6 +65,7 @@ describe Transaction do
       expect(u.transactions.count).to eq 0
       expect(u.error).to match(/all.*duplicates/i)
 
+      visit uploads_path
       click_link new_upload
       attach_file file_upload, test_file_path(sample1)
       click_button load

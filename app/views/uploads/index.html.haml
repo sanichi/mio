@@ -1,6 +1,4 @@
-- content_for :title, t("hl.upload.uploads")
-
-%h1.text-center= t("hl.upload.uploads")
+= render "utils/title", key: "hl.upload.uploads"
 
 .row
   .col-md-offset-1.col-md-10
@@ -23,3 +21,7 @@
             %td.text-center= t(upload.error.blank?? "tick" : "cross")
             %td.text-center= link_to_if upload.transactions.size > 0, upload.transactions.size, transactions_path(upload_id: upload.id), class: "btn btn-info btn-xs"
         = render "utils/pagination_links", pager: @uploads, columns: 6
+
+.text-center
+  = link_to t("hl.upload.new"), new_upload_path, class: "btn btn-primary"
+

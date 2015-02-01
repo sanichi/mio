@@ -1,5 +1,2 @@
-- content_for :title, t("kg.new")
-%h1.text-center= t("kg.new")
-%hr
-
+= render "utils/title", key: "kg.new"
 = render "form", mass: @mass

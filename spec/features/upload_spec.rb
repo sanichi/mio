@@ -5,6 +5,7 @@ describe Upload do
 
   before(:each) do
     login
+    visit uploads_path
   end
 
   let(:sample) { "capital-1.csv" }
