@@ -23,5 +23,5 @@
         = render "utils/pagination_links", pager: @uploads, columns: 6
 
 .text-center
+  = link_to t("hl.transaction.transactions"), transactions_path, class: "btn btn-primary"
   = link_to t("hl.upload.new"), new_upload_path, class: "btn btn-primary"
-

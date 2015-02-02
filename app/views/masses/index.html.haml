@@ -20,5 +20,5 @@
         = render "utils/pagination_links", pager: @masses, columns: 4
 
 .text-center
+  = link_to t("kg.graph"), graph_masses_path, class: "btn btn-primary"
   = link_to t("kg.new"), new_mass_path, class: "btn btn-primary"
-

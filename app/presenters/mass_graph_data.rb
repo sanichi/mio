@@ -1,5 +1,5 @@
 class MassGraphData
-  attr_reader :full_height, :data_rows, :date_window, :mass_window
+  attr_reader :full_height, :data_rows, :date_window, :mass_window, :mass_ticks
 
   def initialize
     @data = Mass.order(:date).to_a
@@ -48,9 +48,10 @@ class MassGraphData
       max = Mass::MAX_KG
     end
     delta = 5.0
-    min = format "%.1f", (min / delta).floor * delta
-    max = format "%.1f", (max / delta).ceil * delta
-    @mass_window = "{ min: #{min}, max: #{max} }".html_safe
+    min = (min / delta).floor
+    max = (max / delta).ceil
+    @mass_ticks = "[#{min.upto(max).map { |t| t * delta.to_i }. join(', ')}]"
+    @mass_window = "{ min: #{format "%.1f", min * delta}, max: #{format "%.1f", max * delta} }".html_safe
   end
 
   def get_data_rows
