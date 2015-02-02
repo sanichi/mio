@@ -1,7 +1,7 @@
 en:
   kg:
     edit: Edit Measurement
-    finish: Finish
+    finish: Night
     graph: Graph
     index: List
     kg: KG
@@ -9,7 +9,7 @@ en:
     date: Date
     mass: Mass
     new: New Measurement
-    start: Start
+    start: Morning
     unit:
       kg: kg
       lb: lb
