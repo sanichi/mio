@@ -2,10 +2,12 @@ en:
   cancel: Cancel
   created_at: Created At
   cross: ✘
+  date: Date
   delete: Delete
   edit: Edit
   error: Error
-  date: Date
+  graph: Graph
+  list: List
   mio: Mio
   name: Name
   save: Save

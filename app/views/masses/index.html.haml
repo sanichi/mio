@@ -1,13 +1,13 @@
-= render "utils/title", key: "kg.data"
+= render "utils/title", key: "mass.data"
 
 .row
   .col-md-offset-3.col-md-6
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center= t("kg.date")
-          %th.text-center= t("kg.start")
-          %th.text-center= t("kg.finish")
+          %th.text-center= t("mass.date")
+          %th.text-center= t("mass.start")
+          %th.text-center= t("mass.finish")
           %th
       %tbody
         - @masses.matches.each do |mass|
@@ -20,5 +20,5 @@
         = render "utils/pagination_links", pager: @masses, columns: 4
 
 .text-center
-  = link_to t("kg.graph"), graph_masses_path, class: "btn btn-primary"
-  = link_to t("kg.new"), new_mass_path, class: "btn btn-primary"
+  = link_to t("graph"), graph_masses_path, class: "btn btn-primary"
+  = link_to t("mass.new"), new_mass_path, class: "btn btn-primary"

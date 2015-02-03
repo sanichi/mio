@@ -3,10 +3,10 @@
 - content_for :javascript do
   = render "graph.js", mgd: @mgd
 
-= render "utils/title", key: "kg.data"
+= render "utils/title", key: "mass.data"
 
 #chart{style: "height: #{@mgd.full_height}px"}
 
 .text-center
-  = link_to t("kg.index"), masses_path, class: "btn btn-primary"
-  = link_to t("kg.new"), new_mass_path, class: "btn btn-primary"
+  = link_to t("list"), masses_path, class: "btn btn-primary"
+  = link_to t("mass.new"), new_mass_path, class: "btn btn-primary"

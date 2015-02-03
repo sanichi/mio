@@ -15,9 +15,9 @@ describe "Authentication" do
       click_button sign_in
 
       expect(page).to_not have_link sign_in
-      expect(page).to have_link sign_out
+      expect(page).to have_link mass
       expect(page).to have_link transactions
-      expect(page).to have_link uploads
+      expect(page).to have_link sign_out
     end
 
     it "failure" do

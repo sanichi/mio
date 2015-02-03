@@ -1,0 +1,11 @@
+en:
+  transaction:
+    cost: Cost
+    description: Description
+    quantity: Quantity
+    reference: Reference
+    settle_date: Settle Date
+    trade_date: Trade Date
+    transaction: Transaction
+    transactions: Transactions
+    value: Value

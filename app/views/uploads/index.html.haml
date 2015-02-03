@@ -1,4 +1,4 @@
-= render "utils/title", key: "hl.upload.uploads"
+= render "utils/title", key: "upload.uploads"
 
 .row
   .col-md-offset-1.col-md-10
@@ -8,9 +8,9 @@
           %th.text-center= t("name")
           %th.text-center= t("date")
           %th.text-center= t("size")
-          %th.text-center= t("hl.upload.content_type")
+          %th.text-center= t("upload.content_type")
           %th.text-center= t("error")
-          %th.text-center= t("hl.transaction.transactions")
+          %th.text-center= t("transaction.transactions")
       %tbody
         - @uploads.matches.each do |upload|
           %tr
@@ -23,5 +23,5 @@
         = render "utils/pagination_links", pager: @uploads, columns: 6
 
 .text-center
-  = link_to t("hl.transaction.transactions"), transactions_path, class: "btn btn-primary"
-  = link_to t("hl.upload.new"), new_upload_path, class: "btn btn-primary"
+  = link_to t("transaction.transactions"), transactions_path, class: "btn btn-primary"
+  = link_to t("upload.new"), new_upload_path, class: "btn btn-primary"

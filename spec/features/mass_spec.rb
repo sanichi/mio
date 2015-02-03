@@ -96,7 +96,7 @@ describe Mass do
     let!(:mass) { create(:mass) }
 
     it "success" do
-      click_link measurement_list
+      visit masses_path
       click_link edit
 
       expect(page).to have_xpath title % edit_measurement
@@ -120,9 +120,7 @@ describe Mass do
     let!(:mass) { create(:mass) }
 
     it "success" do
-      expect(Mass.count).to eq 1
-
-      click_link measurement_list
+      visit masses_path
       click_link edit
       click_link delete
 

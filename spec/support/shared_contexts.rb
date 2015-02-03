@@ -10,19 +10,19 @@ shared_context "test_data" do
 
   let(:test_password) { "birdman" }
 
-  let(:file_upload) { I18n.t("hl.upload.file") }
-  let(:load)        { I18n.t("hl.upload.load") }
-  let(:new_upload)  { I18n.t("hl.upload.new") }
-  let(:upload)      { I18n.t("hl.upload.upload") }
-  let(:uploads)     { I18n.t("hl.upload.uploads") }
+  let(:file_upload) { I18n.t("upload.file") }
+  let(:load)        { I18n.t("upload.load") }
+  let(:new_upload)  { I18n.t("upload.new") }
+  let(:upload)      { I18n.t("upload.upload") }
+  let(:uploads)     { I18n.t("upload.uploads") }
 
-  let(:transactions) { I18n.t("hl.transaction.transactions") }
+  let(:transactions) { I18n.t("transaction.transactions") }
 
-  let(:edit_measurement)   { I18n.t("kg.edit") }
-  let(:new_measurement)    { I18n.t("kg.new") }
-  let(:measurement_date)   { I18n.t("kg.date") }
-  let(:measurement_finish) { I18n.t("kg.finish") }
-  let(:measurement_list)   { I18n.t("kg.index") }
-  let(:measurement_start)  { I18n.t("kg.start") }
-  let(:measurements)       { I18n.t("kg.data") }
+  let(:edit_measurement)   { I18n.t("mass.edit") }
+  let(:mass)               { I18n.t("mass.mass") }
+  let(:new_measurement)    { I18n.t("mass.new") }
+  let(:measurement_date)   { I18n.t("mass.date") }
+  let(:measurement_finish) { I18n.t("mass.finish") }
+  let(:measurement_start)  { I18n.t("mass.start") }
+  let(:measurements)       { I18n.t("mass.data") }
 end

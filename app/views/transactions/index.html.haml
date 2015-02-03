@@ -1,13 +1,13 @@
-= render "utils/title", key: "hl.transaction.transactions"
+= render "utils/title", key: "transaction.transactions"
 
 .row
   .col-md-offset-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center= t("hl.transaction.trade_date")
-          %th.text-center= t("hl.transaction.value")
-          %th= t("hl.transaction.description")
+          %th.text-center= t("transaction.trade_date")
+          %th.text-center= t("transaction.value")
+          %th= t("transaction.description")
       %tbody
         - @transactions.matches.each do |transaction|
           %tr
@@ -17,4 +17,4 @@
         = render "utils/pagination_links", pager: @transactions, columns: 3
 
 .text-center
-  = link_to t("hl.upload.uploads"), uploads_path, class: "btn btn-primary"
+  = link_to t("upload.uploads"), uploads_path, class: "btn btn-primary"

@@ -1,10 +1,7 @@
 en:
-  kg:
+  mass:
     edit: Edit Measurement
     finish: Night
-    graph: Graph
-    index: List
-    kg: KG
     data: Measurements
     date: Date
     mass: Mass

@@ -10,11 +10,11 @@ class MassGraphData
   end
 
   def date_title
-    "'#{I18n.t("kg.date")}'".html_safe
+    "'#{I18n.t("mass.date")}'".html_safe
   end
 
   def mass_title
-    "'#{I18n.t("kg.mass")} (#{I18n.t("kg.unit.kg")})'".html_safe
+    "'#{I18n.t("mass.mass")} (#{I18n.t("mass.unit.kg")})'".html_safe
   end
 
   def gridlines
@@ -61,7 +61,7 @@ class MassGraphData
     end
 
     # The header row.
-    @data_rows.unshift %Q/  [{type: 'date', label: '#{ I18n.t("kg.date") }'}, '#{ I18n.t("kg.start") }', '#{ I18n.t("kg.finish") }'],/.html_safe
+    @data_rows.unshift %Q/  [{type: 'date', label: '#{ I18n.t("mass.date") }'}, '#{ I18n.t("mass.start") }', '#{ I18n.t("mass.finish") }'],/.html_safe
 
     # Omitt the comma of the last row.
     @data_rows[-1][-1] = ""
