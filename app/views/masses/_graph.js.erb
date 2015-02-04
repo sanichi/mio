@@ -27,6 +27,10 @@ function drawChart()
       left: "10%",
       width: "80%"
     },
+    series: {
+      0: { pointShape: { type: "circle" } },
+      1: { pointShape: { type: "diamond" } }
+    },
     hAxis: {
       title: <%= mgd.date_title %>,
       viewWindow: <%= mgd.date_window %>,
