@@ -8,6 +8,6 @@
     - if authenticated?
       %ul.nav.navbar-nav
         %li= link_to t("mass.mass"), graph_masses_path
-        %li= link_to t("transaction.transactions"), transactions_path
+        %li= link_to t("transaction.transactions"), summary_transactions_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"

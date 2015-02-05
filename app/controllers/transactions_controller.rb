@@ -8,5 +8,6 @@ class TransactionsController < ApplicationController
   end
 
   def summary
+    @summary = TransactionSummary.new
   end
 end

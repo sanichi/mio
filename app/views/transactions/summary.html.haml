@@ -1,5 +1,20 @@
 = render "utils/title", key: "transaction.summary"
 
+.row
+  .col-md-offset-1.col-md-10
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("transaction.description")
+          %th.text-center= t("transaction.value")
+          %th.text-center= t("transaction.quantity")
+      %tbody
+        - @summary.items.each do |item|
+          %tr
+            %td= link_to item.description, transactions_path(description: item.description)
+            %td.text-right.right-padded= "%.2f" % item.value
+            %td.text-right.right-padded= item.quantity
+
 .text-center
   = link_to t("transaction.transactions"), transactions_path, class: "btn btn-default"
   = link_to t("upload.uploads"), uploads_path, class: "btn btn-default"

@@ -27,10 +27,10 @@
         - @transactions.matches.each do |transaction|
           %tr
             %td.text-center= transaction.trade_date
-            %td.text-right{style: "padding-right: 3em; padding-left: 0;"}= "%.2f" % transaction.value
+            %td.text-right.right-padded= "%.2f" % transaction.value
             %td= link_to transaction.description, transaction
             %td= transaction.reference
-        = render "utils/pagination_links", pager: @transactions, columns: 3
+        = render "utils/pagination_links", pager: @transactions, columns: 4
 
 .text-center
   = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-default"
