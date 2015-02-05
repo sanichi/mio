@@ -4,6 +4,7 @@ en:
     content: Content
     content_type: Type
     file: File
+    id: Upload ID
     list: Upload List
     load: Load
     new: New Upload

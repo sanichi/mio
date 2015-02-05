@@ -26,7 +26,8 @@
         %tr
           %td{colspan: 4}
             %pre= @upload.content
-    .text-center
-      = link_to t("delete"), upload_path(@upload), data: { confirm: "Sure?" }, method: :delete, class: "btn btn-danger"
-      = link_to t("upload.uploads"), uploads_path, class: "btn btn-primary"
-      = link_to t("transaction.transactions"), transactions_path, class: "btn btn-primary"
+
+.text-center
+  = link_to t("delete"), upload_path(@upload), data: { confirm: "Sure?" }, method: :delete, class: "btn btn-danger"
+  = link_to t("upload.uploads"), uploads_path, class: "btn btn-default"
+  = link_to t("transaction.transactions"), transactions_path, class: "btn btn-default"

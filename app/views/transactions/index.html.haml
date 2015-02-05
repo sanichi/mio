@@ -1,20 +1,37 @@
 = render "utils/title", key: "transaction.transactions"
 
+.text-center
+  = form_tag transactions_path, method: :get, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :description, t("transaction.description"), class: "sr-only"
+      = text_field_tag :description, params[:description], class: "form-control", placeholder: t("transaction.description"), size: 20
+    .form-group
+      = label_tag :reference, t("transaction.reference"), class: "sr-only"
+      = text_field_tag :reference, params[:reference], class: "form-control", placeholder: t("transaction.reference"), size: 20
+    .form-group
+      = label_tag :reference, t("upload.id"), class: "sr-only"
+      = text_field_tag :upload_id, params[:upload_id], class: "form-control", placeholder: t("upload.id"), size: 10
+    = button_tag t("search"), type: "submit", class: "btn btn-default"
+%p
+
 .row
-  .col-md-offset-2.col-md-8
+  .col-md-offset-1.col-md-10
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
           %th.text-center= t("transaction.trade_date")
           %th.text-center= t("transaction.value")
           %th= t("transaction.description")
+          %th= t("transaction.reference")
       %tbody
         - @transactions.matches.each do |transaction|
           %tr
             %td.text-center= transaction.trade_date
             %td.text-right{style: "padding-right: 3em; padding-left: 0;"}= "%.2f" % transaction.value
             %td= link_to transaction.description, transaction
+            %td= transaction.reference
         = render "utils/pagination_links", pager: @transactions, columns: 3
 
 .text-center
-  = link_to t("upload.uploads"), uploads_path, class: "btn btn-primary"
+  = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-default"
+  = link_to t("upload.uploads"), uploads_path, class: "btn btn-default"

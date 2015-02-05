@@ -5,6 +5,7 @@ en:
     quantity: Quantity
     reference: Reference
     settle_date: Settle Date
+    summary: Summary
     trade_date: Trade Date
     transaction: Transaction
     transactions: Transactions

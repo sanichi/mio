@@ -1,0 +1,5 @@
+= render "utils/title", key: "transaction.summary"
+
+.text-center
+  = link_to t("transaction.transactions"), transactions_path, class: "btn btn-default"
+  = link_to t("upload.uploads"), uploads_path, class: "btn btn-default"
