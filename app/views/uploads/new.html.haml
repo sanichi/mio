@@ -10,5 +10,5 @@
           %div{class: "col-md-4 help-block"}= @upload.errors[:file].first
       .row
         .col-md-offset-4.col-md-8
-          = f.submit t("upload.load"), class: "btn btn-default"
+          = f.submit t("upload.load"), class: "btn btn-info"
           = link_to t("cancel"), uploads_path, class: "btn btn-default"

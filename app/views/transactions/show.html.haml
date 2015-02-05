@@ -26,5 +26,5 @@
           %td= link_to @transaction.created_at.to_s(:db), @transaction.upload
 
 .text-center
-  = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-default"
-  = link_to t("transaction.transactions"), transactions_path, class: "btn btn-default"
+  = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-success"
+  = link_to t("transaction.transactions"), transactions_path, class: "btn btn-success"

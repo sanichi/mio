@@ -16,7 +16,7 @@
           %div{class: "col-md-6 help-block"}= mass.errors[:finish].first
       .row
         .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-default"
+          = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), masses_path, class: "btn btn-default"
           - unless mass.new_record?
             = link_to t("delete"), mass, class: "btn btn-danger", method: :delete, data: { confirm: "Sure?" }
