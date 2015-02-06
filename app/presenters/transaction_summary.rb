@@ -19,6 +19,7 @@ class TransactionSummary
       @description = description
       @value = 0.0
       @quantity = nil
+      @investment = 0.0
     end
 
     def add(transaction)
@@ -31,8 +32,8 @@ class TransactionSummary
           else
             @quantity-= transaction.quantity # sell
           end
+          @investment -= transaction.value if @quantity > 0
         end
-        @initial_value = -transaction.value if @initial_value.blank?
       end
       date = transaction.trade_date
       @start_date = date if @start_date.blank? || @start_date > date
@@ -40,14 +41,17 @@ class TransactionSummary
     end
 
     def performance
-      return nil unless quantity == 0 && @initial_value && @initial_value != 0.0
-      Rails.logger.info [description, quantity, value.to_f, @initial_value.to_f]
-      @performance ||= 100.0 * value / @initial_value
+      return nil unless quantity == 0 && @investment != 0.0
+      @performance ||= 100.0 * value / @investment
     end
 
     def annual_performance
-      return nil unless performance && @start_date && @end_date
+      return nil unless performance && @start_date && @end_date && @end_date > @start_date
       @annual_performance ||= 365.0 * performance / (@end_date - @start_date).to_i
+    end
+
+    def initial_investment
+      @investment == 0.0 ? nil : @investment
     end
   end
 end

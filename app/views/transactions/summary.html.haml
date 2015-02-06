@@ -5,7 +5,8 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center.col-md-8= t("transaction.description")
+          %th.text-center.col-md-7= t("transaction.description")
+          %th.text-center.col-md-1= t("transaction.item.investment")
           %th.text-center.col-md-1= t("transaction.value")
           %th.text-center.col-md-1= t("transaction.quantity")
           %th.text-center.col-md-1= t("transaction.item.performance")
@@ -16,6 +17,7 @@
         - @summary.items.each do |item|
           %tr
             %td= link_to item.description, transactions_path(description: item.description)
+            %td.text-right= "%.2f" % item.initial_investment if item.initial_investment
             %td.text-right= "%.2f" % item.value
             %td.text-center= item.quantity
             %td.text-center= "%.1f" % item.performance if item.performance.present?
