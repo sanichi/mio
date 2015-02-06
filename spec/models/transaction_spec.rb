@@ -63,13 +63,6 @@ describe Transaction do
       expect(upload.transactions.count).to eq 0
     end
 
-    it "date order" do
-      upload.content.sub!(/"17\/11\/2014","19\/11\/2014"/, '"19/11/2014","17/11/2014"')
-      expect{upload.save!}.to_not raise_error
-      expect(upload.error).to match(/line 9.*settle.*before.*trade/i)
-      expect(upload.transactions.count).to eq 2
-    end
-
     it "future date" do
       upload.content.gsub!(/02\/10\/2014/, Date.today.days_since(1).strftime('%d/%m/%Y'))
       expect{upload.save!}.to_not raise_error

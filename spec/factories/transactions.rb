@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :transaction do
+    account     "cap"
     cost        nil
     description "Transfer from Income Account"
     quantity    nil

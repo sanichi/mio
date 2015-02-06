@@ -23,22 +23,25 @@ class TransactionSummary
 
     def add(transaction)
       @value+= transaction.value
-      if transaction.quantity.present?
-        @quantity ||= 0
-        if transaction.value < 0.0
-          @quantity+= transaction.quantity # buy
-        else
-          @quantity-= transaction.quantity # sell
+      if transaction.account == "cap"
+        if transaction.quantity.present?
+          @quantity ||= 0
+          if transaction.value < 0.0
+            @quantity+= transaction.quantity # buy
+          else
+            @quantity-= transaction.quantity # sell
+          end
         end
+        @initial_value = -transaction.value if @initial_value.blank?
       end
       date = transaction.trade_date
       @start_date = date if @start_date.blank? || @start_date > date
       @end_date = date if @end_date.blank? || @end_date < date
-      @initial_value = transaction.value unless @initial_value
     end
 
     def performance
       return nil unless quantity == 0 && @initial_value && @initial_value != 0.0
+      Rails.logger.info [description, quantity, value.to_f, @initial_value.to_f]
       @performance ||= 100.0 * value / @initial_value
     end
 

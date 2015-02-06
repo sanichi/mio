@@ -5,25 +5,31 @@
     %table{class: "table table-bordered table-striped"}
       %tbody
         %tr
+          %th= t("transaction.description")
+          %td= @transaction.description
+          %th= t("transaction.reference")
+          %td= @transaction.reference
+        %tr
+          %th= t("transaction.value")
+          %td= @transaction.value
+          %th= t("upload.account.acc")
+          %td= t("upload.account.#{@transaction.account}")
+        %tr
           %th= t("transaction.trade_date")
           %td= @transaction.trade_date
           %th= t("transaction.settle_date")
           %td= @transaction.settle_date
+        - if @transaction.cost || @transaction.quantity
+          %tr
+            %th= t("transaction.cost")
+            %td= @transaction.cost
+            %th= t("transaction.quantity")
+            %td= @transaction.quantity
         %tr
-          %th= t("transaction.reference")
-          %td= @transaction.reference
-          %th= t("transaction.description")
-          %td= @transaction.description
-        %tr
-          %th= t("transaction.cost")
-          %td= @transaction.cost
-          %th= t("transaction.quantity")
-          %td= @transaction.quantity
-        %tr
-          %th= t("transaction.value")
-          %td= @transaction.value
+          %th= t("upload.upload")
+          %td= link_to @transaction.upload_id, @transaction.upload
           %th= t("created_at")
-          %td= link_to @transaction.created_at.to_s(:db), @transaction.upload
+          %td= @transaction.created_at.to_s(:db)
 
 .text-center
   = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-success"

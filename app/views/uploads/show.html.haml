@@ -14,13 +14,15 @@
           %td= @upload.content_type
           %th= t("size")
           %td= @upload.size.to_s
+        %tr
+          %th= t("transaction.transactions")
+          %td= link_to_if @transactions.size > 0, @transactions.size, transactions_path(upload_id: @upload.id), class: "btn btn-info btn-xs"
+          %th= t("upload.account.acc")
+          %td= t("upload.account.#{@upload.account}")
         - if @upload.error.present?
           %tr
             %th= t("error")
             %td{colspan: 3}= @upload.error
-        %tr
-          %th= t("transaction.transactions")
-          %td{colspan: 3}= link_to_if @transactions.size > 0, @transactions.size, transactions_path(upload_id: @upload.id), class: "btn btn-info btn-xs"
         %tr
           %th.text-center{colspan: 4}= t("upload.content")
         %tr

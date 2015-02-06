@@ -19,15 +19,15 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center= t("transaction.trade_date")
-          %th.text-center= t("transaction.value")
-          %th= t("transaction.description")
-          %th= t("transaction.reference")
+          %th.col-md-2.text-center= t("transaction.trade_date")
+          %th.col-md-1.text-center= t("transaction.value")
+          %th.col-md-6= t("transaction.description")
+          %th.col-md-3= t("transaction.reference")
       %tbody
         - @transactions.matches.each do |transaction|
           %tr
             %td.text-center= transaction.trade_date
-            %td.text-right.right-padded= "%.2f" % transaction.value
+            %td.text-right= "%.2f" % transaction.value
             %td= link_to transaction.description, transaction
             %td= transaction.reference
         = render "utils/pagination_links", pager: @transactions, columns: 4

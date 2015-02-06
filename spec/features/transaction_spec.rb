@@ -5,7 +5,7 @@ describe Transaction do
 
   before(:each) do
     login
-    visit uploads_path
+    visit new_upload_path
   end
 
   context "duplicates" do
@@ -13,7 +13,7 @@ describe Transaction do
     let(:sample2) { "capital-2.csv" }
 
     it "one order" do
-      click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample1)
       click_button load
 
@@ -24,6 +24,7 @@ describe Transaction do
 
       visit uploads_path
       click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample1)
       click_button load
 
@@ -34,6 +35,7 @@ describe Transaction do
 
       visit uploads_path
       click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample2)
       click_button load
 
@@ -46,7 +48,7 @@ describe Transaction do
     end
 
     it "other order" do
-      click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample2)
       click_button load
 
@@ -57,6 +59,7 @@ describe Transaction do
 
       visit uploads_path
       click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample2)
       click_button load
 
@@ -67,6 +70,7 @@ describe Transaction do
 
       visit uploads_path
       click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample1)
       click_button load
 

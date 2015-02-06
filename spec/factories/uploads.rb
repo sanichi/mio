@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :upload do
+    account      "cap"
     content      <<-EOC
 Portfolio Summary, , , ,
 Client Name:,Dr Mark Orr, , ,

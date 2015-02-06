@@ -29,7 +29,6 @@ class UploadsController < ApplicationController
   private
 
   def strong_params
-    params[:upload] ||= { file: nil }
-    params.require(:upload).permit(:file)
+    params.require(:upload).permit(:account, :file)
   end
 end

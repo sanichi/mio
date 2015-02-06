@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131194343) do
+ActiveRecord::Schema.define(version: 20150206194637) do
 
   create_table "masses", force: :cascade do |t|
     t.date     "date"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150131194343) do
     t.date     "trade_date"
     t.integer  "upload_id",   limit: 4
     t.decimal  "value",                   precision: 10, scale: 2
+    t.string   "account",     limit: 3
   end
 
   add_index "transactions", ["signature"], name: "index_transactions_on_signature", unique: true, using: :btree
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150131194343) do
     t.string   "name",         limit: 255
     t.integer  "size",         limit: 4
     t.datetime "created_at"
+    t.string   "account",      limit: 3
   end
 
 end

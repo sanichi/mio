@@ -5,7 +5,7 @@ describe Upload do
 
   before(:each) do
     login
-    visit uploads_path
+    visit new_upload_path
   end
 
   let(:sample) { "capital-1.csv" }
@@ -15,7 +15,7 @@ describe Upload do
     let(:table) { "//table/tbody/tr[th[.='%s'] and td[.='%s']]" }
 
     it "success" do
-      click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample)
       click_button load
 
@@ -39,7 +39,7 @@ describe Upload do
       let(:image)  { "small-image.png" }
 
       it "missing file" do
-        click_link new_upload
+        select capital, from: account
         click_button load
 
         expect(page).to have_xpath title % new_upload
@@ -49,7 +49,7 @@ describe Upload do
       end
 
       it "empty file" do
-        click_link new_upload
+        select capital, from: account
         attach_file file_upload, test_file_path(empty)
         click_button load
 
@@ -60,7 +60,7 @@ describe Upload do
       end
 
       it "wrong content-type" do
-        click_link new_upload
+        select capital, from: account
         attach_file file_upload, test_file_path(image)
         click_button load
 
@@ -74,7 +74,7 @@ describe Upload do
 
   context "delete" do
     it "success" do
-      click_link new_upload
+      select capital, from: account
       attach_file file_upload, test_file_path(sample)
       click_button load
 

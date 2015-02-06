@@ -10,6 +10,7 @@ class Transaction < ActiveRecord::Base
 
   before_validation :correct_whitespace, :adjust_data
 
+  validates :account,     inclusion: { in: Upload::ACCOUNTS, message: "unexpected value (%{value})" }
   validates :cost,        numericality: { greater_than_or_equal_to: 0.0 }, allow_nil: true
   validates :description, presence: true, length: { maximum: MAX_STRING }
   validates :quantity,    numericality: { greater_than_or_equal_to: 0, integer_only: true }, allow_nil: true
@@ -58,9 +59,6 @@ class Transaction < ActiveRecord::Base
     if trade_date.present? && trade_date > Date.today
       errors.add(:trade_date, "can't be in the future")
     end
-    if settle_date.present? && trade_date.present? && settle_date < trade_date
-      errors.add(:settle_date, "can't be before trade date")
-    end
   end
 
   def correct_whitespace
@@ -69,19 +67,18 @@ class Transaction < ActiveRecord::Base
   end
 
   def adjust_data
-    # Computercentre adjusted it's shares.
-    if description == "Computacenter plc Ordinary 6p"
+    # Computercentre shares changed name and did a swap.
+    if description.match(/Computacenter/)
       self.description = "Computacenter plc Ord 6 2/3p"
       self.quantity = 167 if quantity == 186
     end
 
     # Apple did a 7-for-1 swap.
-    if description == "Apple Inc Com Stk NPV (CDI)"
-      self.quantity = 21 if quantity == 3
+    if description == "Apple Inc Com Stk NPV (CDI)" && quantity == 3
+      self.quantity = 21
     end
 
-    # HL have changed how they refer to this twice:
-    # "HL Vantage Stocks & Shares ISA", "HL Vantage Stocks & Shares NISA" and "Management Fee".
+    # Management fees tend to have different descriptions but the same reference.
     if reference == "MANAGE FEE"
       self.description = "Management Fee"
     end
@@ -121,6 +118,7 @@ class Transaction < ActiveRecord::Base
         t.quantity    = row[5].present?? row[5].gsub(/,/, "").to_i : nil
         t.value       = row[6].present?? row[6].gsub(/,/, "").to_f : nil
         t.upload_id   = upload.id
+        t.account     = upload.account
         t.signature   = signature
       end
     end

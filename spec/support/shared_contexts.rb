@@ -10,7 +10,10 @@ shared_context "test_data" do
 
   let(:test_password) { "birdman" }
 
+  let(:account)     { I18n.t("upload.account.acc") }
+  let(:capital)     { I18n.t("upload.account.cap") }
   let(:file_upload) { I18n.t("upload.file") }
+  let(:income)      { I18n.t("upload.account.inc") }
   let(:load)        { I18n.t("upload.load") }
   let(:new_upload)  { I18n.t("upload.new") }
   let(:upload)      { I18n.t("upload.upload") }

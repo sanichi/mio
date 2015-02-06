@@ -3,6 +3,7 @@ class Upload < ActiveRecord::Base
 
   attr_accessor :file
 
+  ACCOUNTS = %w[cap inc]
   TYPES = %w[csv comma-separated-values plain].map { |t| "text/#{t}" }
   MAX_SIZE = 1.megabyte
   MAX_STRING = 255
@@ -13,10 +14,11 @@ class Upload < ActiveRecord::Base
   after_validation :transfer_error_to_file_field
   after_create :extract_transactions
 
+  validates :account, inclusion: { in: ACCOUNTS, message: "unexpected value (%{value})" }
   validates :content, presence: true, length: { maximum: MAX_SIZE }
+  validates :content_type, inclusion: { in: TYPES, message: "unexpected value (%{value})" }
   validates :error, length: { maximum: MAX_STRING }, allow_nil: true
   validates :name, presence: true, length: { maximum: MAX_STRING }
-  validates :content_type, inclusion: { in: TYPES, message: "unexpected value (%{value})" }
   validates :size, numericality: { integer_only: true, less_than_or_equal_to: MAX_SIZE }
 
   scope :ordered, -> { order(created_at: :desc) }
