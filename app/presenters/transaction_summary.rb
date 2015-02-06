@@ -2,7 +2,7 @@ class TransactionSummary
   def initialize
     @items = Hash.new { |hash, description| hash[description] = Item.new(description) }
 
-    Transaction.order(:description).each do |transaction|
+    Transaction.order(:description, :trade_date).each do |transaction|
       item = @items[transaction.description]
       item.add(transaction)
     end
@@ -35,9 +35,6 @@ class TransactionSummary
       @start_date = date if @start_date.blank? || @start_date > date
       @end_date = date if @end_date.blank? || @end_date < date
       @initial_value = transaction.value unless @initial_value
-      if description.match(/Computa/)
-        Rails.logger.info([@value,@initial_value,@start_date,@end_date,@quantity].join("|"))
-      end
     end
 
     def performance
