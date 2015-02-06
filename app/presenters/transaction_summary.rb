@@ -31,6 +31,26 @@ class TransactionSummary
           @quantity-= transaction.quantity # sell
         end
       end
+      @start_date = transaction.trade_date  if @start_date.blank? || @start_date > transaction.trade_date
+      @end_date   = transaction.settle_date if @end_date.blank?   || @end_date   < transaction.settle_date
+      @initial_value = transaction.value unless @initial_value
+      reset_cache
+    end
+
+    def performance
+      return nil unless quantity == 0 && @initial_value && @initial_value != 0.0
+      @performance ||= 100.0 * value / @initial_value
+    end
+
+    def annual_performance
+      return nil unless performance && @start_date && @end_date
+      @annual_performance ||= 365.0 * performance / (@end_date - @start_date).to_i
+    end
+
+    private
+
+    def reset_cache
+      @performance, @annual_performance = nil, nil
     end
   end
 end

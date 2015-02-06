@@ -1,8 +1,10 @@
 en:
   transaction:
+    annual_performance: Annual
     cost: Cost
     description: Description
     quantity: Quantity
+    performance: Performance
     reference: Reference
     settle_date: Settle Date
     summary: Summary
@@ -10,3 +12,6 @@ en:
     transaction: Transaction
     transactions: Transactions
     value: Value
+    abbrev:
+      annual_performance: Perf/Yr
+      performance: Perf

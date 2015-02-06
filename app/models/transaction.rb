@@ -70,9 +70,12 @@ class Transaction < ActiveRecord::Base
 
   def adjust_description
     if description == "Computacenter plc Ordinary 6p"
-      # Computercentre adjusted it's shares before I sold my holding.
+      # Computercentre adjusted it's shares.
       self.description = "Computacenter plc Ord 6 2/3p"
       self.quantity = 167 if quantity == 186
+    elsif description == "Apple Inc Com Stk NPV (CDI)"
+      # Apple did a 7-for-1 swap.
+      self.quantity = 21 if quantity == 3
     end
   end
 
