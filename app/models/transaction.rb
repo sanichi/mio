@@ -8,7 +8,7 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :upload
 
-  before_validation :correct_whitespace, :adjust_description
+  before_validation :correct_whitespace, :adjust_data
 
   validates :cost,        numericality: { greater_than_or_equal_to: 0.0 }, allow_nil: true
   validates :description, presence: true, length: { maximum: MAX_STRING }
@@ -68,14 +68,22 @@ class Transaction < ActiveRecord::Base
     reference.squish! if reference.present?
   end
 
-  def adjust_description
+  def adjust_data
+    # Computercentre adjusted it's shares.
     if description == "Computacenter plc Ordinary 6p"
-      # Computercentre adjusted it's shares.
       self.description = "Computacenter plc Ord 6 2/3p"
       self.quantity = 167 if quantity == 186
-    elsif description == "Apple Inc Com Stk NPV (CDI)"
-      # Apple did a 7-for-1 swap.
+    end
+
+    # Apple did a 7-for-1 swap.
+    if description == "Apple Inc Com Stk NPV (CDI)"
       self.quantity = 21 if quantity == 3
+    end
+
+    # HL have changed how they refer to this twice:
+    # "HL Vantage Stocks & Shares ISA", "HL Vantage Stocks & Shares NISA" and "Management Fee".
+    if reference == "MANAGE FEE"
+      self.description = "Management Fee"
     end
   end
 

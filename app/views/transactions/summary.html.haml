@@ -8,8 +8,10 @@
           %th.text-center.col-md-8= t("transaction.description")
           %th.text-center.col-md-1= t("transaction.value")
           %th.text-center.col-md-1= t("transaction.quantity")
-          %th.text-center.col-md-1= t("transaction.abbrev.performance")
-          %th.text-center.col-md-1= t("transaction.abbrev.annual_performance")
+          %th.text-center.col-md-1= t("transaction.item.performance")
+          %th.text-center.col-md-1= t("transaction.item.annual_performance")
+          %th.text-center.col-md-1= t("transaction.item.start")
+          %th.text-center.col-md-1= t("transaction.item.end")
       %tbody
         - @summary.items.each do |item|
           %tr
@@ -18,6 +20,8 @@
             %td.text-center= item.quantity
             %td.text-center= "%.1f" % item.performance if item.performance.present?
             %td.text-center= "%.1f" % item.annual_performance if item.annual_performance.present?
+            %td.text-center= item.start_date.strftime("%b&nbsp;%y").html_safe
+            %td.text-center= item.end_date.strftime("%b&nbsp;%y").html_safe if item.quantity.nil? || item.quantity == 0
 
 .text-center
   = link_to t("transaction.transactions"), transactions_path, class: "btn btn-success"

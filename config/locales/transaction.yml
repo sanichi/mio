@@ -12,6 +12,8 @@ en:
     transaction: Transaction
     transactions: Transactions
     value: Value
-    abbrev:
+    item:
       annual_performance: "%/Yr"
+      end: "End"
       performance: "%"
+      start: Start

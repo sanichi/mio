@@ -13,7 +13,7 @@ class TransactionSummary
   end
 
   class Item
-    attr_reader :description, :value, :quantity
+    attr_reader :description, :value, :quantity, :start_date, :end_date
 
     def initialize(description)
       @description = description
@@ -31,8 +31,9 @@ class TransactionSummary
           @quantity-= transaction.quantity # sell
         end
       end
-      @start_date = transaction.trade_date  if @start_date.blank? || @start_date > transaction.trade_date
-      @end_date   = transaction.settle_date if @end_date.blank?   || @end_date   < transaction.settle_date
+      date = transaction.trade_date
+      @start_date = date if @start_date.blank? || @start_date > date
+      @end_date = date if @end_date.blank? || @end_date < date
       @initial_value = transaction.value unless @initial_value
       reset_cache
     end

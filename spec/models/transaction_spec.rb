@@ -31,7 +31,7 @@ describe Transaction do
       expect(t[1].description).to eq "Payment to Client"
       expect(t[2].description).to eq "Computacenter plc Ord 6 2/3p"
       expect(t[3].description).to eq "Transfer from Income Account"
-      expect(t[4].description).to eq "HL Vantage Stocks & Shares NISA"
+      expect(t[4].description).to eq "Management Fee"
 
       expect(t[0].cost).to be_nil
       expect(t[1].cost).to be_nil
