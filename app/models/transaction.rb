@@ -8,6 +8,8 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :upload
 
+  before_validation :correct_whitespace, :adjust_description
+
   validates :cost,        numericality: { greater_than_or_equal_to: 0.0 }, allow_nil: true
   validates :description, presence: true, length: { maximum: MAX_STRING }
   validates :quantity,    numericality: { greater_than_or_equal_to: 0, integer_only: true }, allow_nil: true
@@ -58,6 +60,19 @@ class Transaction < ActiveRecord::Base
     end
     if settle_date.present? && trade_date.present? && settle_date < trade_date
       errors.add(:settle_date, "can't be before trade date")
+    end
+  end
+
+  def correct_whitespace
+    description.squish! if description.present?
+    reference.squish! if reference.present?
+  end
+
+  def adjust_description
+    if description == "Computacenter plc Ordinary 6p"
+      # Computercentre adjusted it's shares before I sold my holding.
+      self.description = "Computacenter plc Ord 6 2/3p"
+      self.quantity = 167 if quantity == 186
     end
   end
 

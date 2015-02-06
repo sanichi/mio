@@ -77,4 +77,24 @@ describe Transaction do
       expect(upload.transactions.count).to eq 4
     end
   end
+
+  context "corrections" do
+    let(:extra_spaces) { create(:transaction, description: "Transfer  from Income Account ", reference: " MANAGEMENT  FEE\t")}
+    let(:changed_name) { create(:transaction, description: "Computacenter plc Ordinary 6p", quantity: 186) }
+    let(:spaces_name)  { create(:transaction, description: " Computacenter plc Ordinary 6p ") }
+
+    it "squishing" do
+      expect(extra_spaces.description).to eq "Transfer from Income Account"
+      expect(extra_spaces.reference).to eq "MANAGEMENT FEE"
+    end
+
+    it "description" do
+      expect(changed_name.description).to eq "Computacenter plc Ord 6 2/3p"
+      expect(changed_name.quantity).to eq 167
+    end
+
+    it "both" do
+      expect(spaces_name.description).to eq "Computacenter plc Ord 6 2/3p"
+    end
+  end
 end
