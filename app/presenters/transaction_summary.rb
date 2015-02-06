@@ -35,7 +35,9 @@ class TransactionSummary
       @start_date = date if @start_date.blank? || @start_date > date
       @end_date = date if @end_date.blank? || @end_date < date
       @initial_value = transaction.value unless @initial_value
-      reset_cache
+      if description.match(/Computa/)
+        Rails.logger.info([@value,@initial_value,@start_date,@end_date,@quantity].join("|"))
+      end
     end
 
     def performance
@@ -46,12 +48,6 @@ class TransactionSummary
     def annual_performance
       return nil unless performance && @start_date && @end_date
       @annual_performance ||= 365.0 * performance / (@end_date - @start_date).to_i
-    end
-
-    private
-
-    def reset_cache
-      @performance, @annual_performance = nil, nil
     end
   end
 end
