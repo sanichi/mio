@@ -13,5 +13,5 @@ en:
     transactions: Transactions
     value: Value
     abbrev:
-      annual_performance: Perf/Yr
-      performance: Perf
+      annual_performance: %/Yr
+      performance: %
