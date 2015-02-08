@@ -2,6 +2,12 @@ class Mass < ActiveRecord::Base
   include Pageable
 
   MIN_KG, MAX_KG = 60, 120
+  UNITS = {
+    kg: MassUnit.new(:kg, 1.0000, 1,  5),
+    lb: MassUnit.new(:lb, 2.2046, 1, 10),
+    st: MassUnit.new(:st, 0.1575, 2,  1),
+  }
+  DEFAULT_UNIT = UNITS[:kg]
 
   validates :start, :finish, numericality: { greater_than_or_equal_to: MIN_KG, less_than_or_equal_to: MAX_KG }, allow_nil: true
   validates :date, presence:true, uniqueness: true

@@ -1,7 +1,8 @@
 class MassGraphData
   attr_reader :full_height, :data_rows, :date_window, :mass_window, :mass_ticks
 
-  def initialize
+  def initialize(unit)
+    @unit = unit
     @data = Mass.order(:date).to_a
     @full_height = 500
     get_date_window
@@ -14,7 +15,7 @@ class MassGraphData
   end
 
   def mass_title
-    "'#{I18n.t("mass.mass")} (#{I18n.t("mass.unit.kg")})'".html_safe
+    "'#{I18n.t("mass.mass")} (#{@unit.name})'".html_safe
   end
 
   def gridlines
@@ -39,25 +40,16 @@ class MassGraphData
   end
 
   def get_mass_window
-    if @data.any?
-      masses = @data.map{ |mass| [mass.start, mass.finish] }.flatten.compact
-      min = masses.min
-      max = masses.max
-    else
-      min = Mass::MIN_KG
-      max = Mass::MAX_KG
-    end
-    delta = 5.0
-    min = (min / delta).floor
-    max = (max / delta).ceil
-    @mass_ticks = "[#{min.upto(max).map { |t| t * delta.to_i }. join(', ')}]"
-    @mass_window = "{ min: #{format "%.1f", min * delta}, max: #{format "%.1f", max * delta} }".html_safe
+    masses = @data.map{ |mass| [@unit.to_f(mass.start), @unit.to_f(mass.finish)] }.flatten.compact
+    ticks = @unit.ticks(masses.min, masses.max)
+    @mass_ticks = "[#{ticks.join(', ')}]"
+    @mass_window = "{ min: #{ticks[0]}, max: #{ticks[-1]} }".html_safe
   end
 
   def get_data_rows
     # The numerical data.
     @data_rows = @data.map do |mass|
-      %Q/  [#{ chart_date(mass.date) }, #{ mass.start || "null" }, #{ mass.finish || "null" }],/.html_safe
+      %Q/  [#{ chart_date(mass.date) }, #{ @unit.to_f(mass.start) || "null" }, #{ @unit.to_f(mass.finish) || "null" }],/.html_safe
     end
 
     # The header row.

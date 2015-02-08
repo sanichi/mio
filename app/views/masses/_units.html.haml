@@ -1,0 +1,3 @@
+- Mass::UNITS.keys.each do |u|
+  - unless u == unit.key
+    = link_to t("mass.unit.#{u}"), send(path, unit: u), class: "btn btn-success"

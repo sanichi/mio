@@ -8,7 +8,7 @@ en:
     new: New Measurement
     start: Morning
     unit:
-      kg: kg
-      lb: lb
-      st: st
+      kg: Kilos
+      lb: Pounds
+      st: Stones
       unit: Unit

@@ -13,12 +13,13 @@
         - @masses.matches.each do |mass|
           %tr
             %td.text-center= mass.date
-            %td.text-center= "%.1f" % mass.start if mass.start.present?
-            %td.text-center= "%.1f" % mass.finish if mass.finish.present?
+            %td.text-center= @unit.to_s(mass.start)
+            %td.text-center= @unit.to_s(mass.finish)
             %td.text-center
               = link_to t("edit"), edit_mass_path(mass), class: "btn btn-info btn-xs"
         = render "utils/pagination_links", pager: @masses, columns: 4
 
 .text-center
-  = link_to t("graph"), graph_masses_path, class: "btn btn-success"
+  = link_to t("graph"), graph_masses_path(unit: @unit.key), class: "btn btn-success"
   = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
+  = render "units", unit: @unit, path: :masses_path
