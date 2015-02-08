@@ -15,7 +15,7 @@ class MassGraphData
   end
 
   def mass_title
-    "'#{I18n.t("mass.mass")} (#{@unit.name})'".html_safe
+    "'#{@unit.name}'".html_safe
   end
 
   def gridlines
