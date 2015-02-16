@@ -19,7 +19,9 @@ shared_context "test_data" do
   let(:upload)      { I18n.t("upload.upload") }
   let(:uploads)     { I18n.t("upload.uploads") }
 
+  let(:summary)      { I18n.t("transaction.summary") }
   let(:transactions) { I18n.t("transaction.transactions") }
+  let(:transaction)  { I18n.t("transaction.transaction") }
 
   let(:edit_measurement)   { I18n.t("mass.edit") }
   let(:mass)               { I18n.t("mass.mass") }
