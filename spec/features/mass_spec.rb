@@ -3,7 +3,6 @@ require 'rails_helper'
 describe Mass do
   include_context "test_data"
 
-  let(:title) { "//h1[.='%s']" }
   let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s']]" }
   let(:error) { "div.help-block" }
 
@@ -22,7 +21,7 @@ describe Mass do
       fill_in measurement_finish, with: data.finish
       click_button save
 
-      expect(page).to have_xpath title % measurements
+      expect(page).to have_title measurements
       expect(page).to have_xpath table % [data.date.to_s(:db), "%.1f" % data.start, "%.1f" % data.finish]
 
       expect(Mass.count).to eq 1
@@ -39,7 +38,7 @@ describe Mass do
         fill_in measurement_date, with: data.date
         click_button save
 
-        expect(page).to have_xpath title % new_measurement
+        expect(page).to have_title new_measurement
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "at least 1")
       end
@@ -51,7 +50,7 @@ describe Mass do
         fill_in measurement_finish, with: Mass::MAX_KG + 10
         click_button save
 
-        expect(page).to have_xpath title % new_measurement
+        expect(page).to have_title new_measurement
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "must be less than")
       end
@@ -63,7 +62,7 @@ describe Mass do
         fill_in measurement_finish, with: data.finish
         click_button save
 
-        expect(page).to have_xpath title % new_measurement
+        expect(page).to have_title new_measurement
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "can't be blank")
       end
@@ -75,7 +74,7 @@ describe Mass do
         fill_in measurement_finish, with: data.finish
         click_button save
 
-        expect(page).to have_xpath title % measurements
+        expect(page).to have_title measurements
         expect(Mass.count).to eq 1
 
         click_link new_measurement
@@ -84,7 +83,7 @@ describe Mass do
         fill_in measurement_finish, with: data.finish
         click_button save
 
-        expect(page).to have_xpath title % new_measurement
+        expect(page).to have_title new_measurement
         expect(Mass.count).to eq 1
         expect(page).to have_css(error, text: "has already been taken")
       end
@@ -99,12 +98,12 @@ describe Mass do
       visit masses_path
       click_link edit
 
-      expect(page).to have_xpath title % edit_measurement
+      expect(page).to have_title edit_measurement
       fill_in measurement_start, with: data.start + 10
       fill_in measurement_finish, with: ""
       click_button save
 
-      expect(page).to have_xpath title % measurements
+      expect(page).to have_title measurements
       expect(page).to have_xpath table % [data.date.to_s(:db), "%.1f" % (data.start + 10), ""]
 
       expect(Mass.count).to eq 1
@@ -124,7 +123,7 @@ describe Mass do
       click_link edit
       click_link delete
 
-      expect(page).to have_xpath title % measurements
+      expect(page).to have_title measurements
       expect(Mass.count).to eq 0
     end
   end

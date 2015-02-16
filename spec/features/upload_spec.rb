@@ -9,7 +9,6 @@ describe Upload do
   end
 
   let(:sample) { "capital-1.csv" }
-  let(:title)  { "//h1[.='%s']" }
 
   context "create" do
     let(:table) { "//table/tbody/tr[th[.='%s'] and td[.='%s']]" }
@@ -19,7 +18,7 @@ describe Upload do
       attach_file file_upload, test_file_path(sample)
       click_button load
 
-      expect(page).to have_xpath title % upload
+      expect(page).to have_title upload
       expect(page).to have_xpath table % [name, sample]
 
       expect(Upload.count).to eq 1
@@ -42,7 +41,7 @@ describe Upload do
         select capital, from: account
         click_button load
 
-        expect(page).to have_xpath title % new_upload
+        expect(page).to have_title new_upload
         expect(page).to have_xpath error % "missing"
 
         expect(Upload.count).to eq 0
@@ -53,7 +52,7 @@ describe Upload do
         attach_file file_upload, test_file_path(empty)
         click_button load
 
-        expect(page).to have_xpath title % new_upload
+        expect(page).to have_title new_upload
         expect(page).to have_xpath error % "blank"
 
         expect(Upload.count).to eq 0
@@ -64,7 +63,7 @@ describe Upload do
         attach_file file_upload, test_file_path(image)
         click_button load
 
-        expect(page).to have_xpath title % new_upload
+        expect(page).to have_title new_upload
         expect(page).to have_xpath error % "image/png"
 
         expect(Upload.count).to eq 0
@@ -82,7 +81,7 @@ describe Upload do
       expect(Transaction.count).to eq 5
 
       click_link delete
-      expect(page).to have_xpath title % uploads
+      expect(page).to have_title uploads
 
       expect(Upload.count).to eq 0
       expect(Transaction.count).to eq 0
