@@ -8,18 +8,21 @@
           %th.text-center= t("mass.date")
           %th.text-center= t("mass.start")
           %th.text-center= t("mass.finish")
-          %th
+          - if can?(:create, Mass)
+            %th
       %tbody
         - @masses.matches.each do |mass|
           %tr
             %td.text-center= mass.date
             %td.text-center= @unit.to_s(mass.start)
             %td.text-center= @unit.to_s(mass.finish)
-            %td.text-center
-              = link_to t("edit"), edit_mass_path(mass), class: "btn btn-info btn-xs"
+            - if can?(:create, Mass)
+              %td.text-center
+                = link_to t("edit"), edit_mass_path(mass), class: "btn btn-info btn-xs"
         = render "utils/pagination_links", pager: @masses, columns: 4
 
 .text-center
   = link_to t("graph"), graph_masses_path(unit: @unit.key), class: "btn btn-success"
-  = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
+  - if can?(:create, Mass)
+    = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
   = render "units", unit: @unit, path: :masses_path

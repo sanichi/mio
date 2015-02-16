@@ -1,4 +1,6 @@
 class UploadsController < ApplicationController
+  authorize_resource
+
   def index
     @uploads = Upload.search(params, uploads_path)
   end

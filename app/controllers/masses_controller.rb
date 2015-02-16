@@ -1,4 +1,5 @@
 class MassesController < ApplicationController
+  authorize_resource
   before_action :find_mass, only: [:edit, :update, :destroy]
   before_action :get_unit, only: [:index, :graph]
 

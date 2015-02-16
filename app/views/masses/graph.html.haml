@@ -11,5 +11,6 @@
 
 .text-center
   = link_to t("list"), masses_path(unit: @unit.key), class: "btn btn-success"
-  = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
+  - if can?(:create, Mass)
+    = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
   = render "units", unit: @unit, path: :graph_masses_path

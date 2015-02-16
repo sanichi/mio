@@ -5,9 +5,10 @@
       %span.icon-bar
       %span.icon-bar
   .collapse.navbar-collapse.navbar-ex1-collapse
-    - if authenticated?
-      %ul.nav.navbar-nav
+    %ul.nav.navbar-nav
+      - if can?(:read, Mass)
         %li= link_to t("mass.mass"), graph_masses_path
+      - if can?(:read, Transaction)
         %li= link_to t("transaction.transactions"), summary_transactions_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"
