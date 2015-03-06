@@ -7,7 +7,7 @@ describe Transaction do
     it "success" do
       expect(upload.error).to be_nil
       expect(upload.transactions.count).to eq 5
-      t = upload.transactions
+      t = upload.transactions.ordered
 
       expect(t[0].trade_date).to eq Date.new(2014, 12, 10)
       expect(t[1].trade_date).to eq Date.new(2014, 11, 24)
