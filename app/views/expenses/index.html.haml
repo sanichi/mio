@@ -5,11 +5,11 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center= t("description")
-          %th.text-center= t("expense.category.category")
-          %th.text-center= t("expense.period.period")
-          %th.text-center= t("amount")
-          %th.text-center= t("expense.annualized")
+          %th.text-center.col-md-6= t("description")
+          %th.text-center.col-md-2= t("expense.category.category")
+          %th.text-center.col-md-2= t("expense.period.period")
+          %th.text-center.col-md-1= t("amount")
+          %th.text-center.col-md-1= t("expense.annualized")
           - if can?(:edit, Expense)
             %th
       %tbody
@@ -18,8 +18,8 @@
           - total += expense.annualized
           %tr
             %td= expense.description
-            %td= t("expense.category.#{expense.category}")
-            %td= t("expense.period.#{expense.period}")
+            %td.text-center= t("expense.category.#{expense.category}")
+            %td.text-center= t("expense.period.#{expense.period}")
             %td.text-right= "%.2f" % expense.amount
             %td.text-right= expense.annualized
             - if can?(:edit, Expense)
