@@ -8,7 +8,7 @@ class Expense < ActiveRecord::Base
   validates :description, presence: true, length: { maximum: MAX_DESC }
   validates :period,      inclusion: { in: PERIODS }
 
-  def annualized
+  def annual
     ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount).round
   end
 end

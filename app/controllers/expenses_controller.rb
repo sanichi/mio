@@ -3,7 +3,7 @@ class ExpensesController < ApplicationController
   before_action :find_expense, only: [:edit, :update, :destroy]
 
   def index
-    @expenses = Expense.all.sort_by(&:annualized).reverse
+    @expenses = Expense.all.sort_by(&:annual).reverse
   end
 
   def new

@@ -9,19 +9,19 @@
           %th.text-center.col-md-2= t("expense.category.category")
           %th.text-center.col-md-2= t("expense.period.period")
           %th.text-center.col-md-1= t("amount")
-          %th.text-center.col-md-1= t("expense.annualized")
+          %th.text-center.col-md-1= t("expense.annual")
           - if can?(:edit, Expense)
             %th
       %tbody
         - total = 0
         - @expenses.each do |expense|
-          - total += expense.annualized
+          - total += expense.annual
           %tr
             %td= expense.description
             %td.text-center= t("expense.category.#{expense.category}")
             %td.text-center= t("expense.period.#{expense.period}")
             %td.text-right= "%.2f" % expense.amount
-            %td.text-right= expense.annualized
+            %td.text-right= expense.annual
             - if can?(:edit, Expense)
               %td.text-center
                 = link_to t("edit"), edit_expense_path(expense), class: "btn btn-info btn-xs"

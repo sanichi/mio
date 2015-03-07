@@ -25,7 +25,7 @@ describe Expense do
       click_button save
 
       expect(page).to have_title expenses
-      expect(page).to have_xpath table % [data.description, category, period, "%.2f" % data.amount, data.annualized]
+      expect(page).to have_xpath table % [data.description, category, period, "%.2f" % data.amount, data.annual]
 
       expect(Expense.count).to eq 1
       e = Expense.first
@@ -34,7 +34,7 @@ describe Expense do
       expect(e.category).to eq data.category
       expect(e.period).to eq data.period
       expect(e.amount).to eq data.amount
-      expect(e.annualized).to eq data.annualized
+      expect(e.annual).to eq data.annual
     end
   end
 
