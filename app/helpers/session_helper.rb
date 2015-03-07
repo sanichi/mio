@@ -1,4 +1,4 @@
-module SessionsHelper
+module SessionHelper
   private
 
   def current_user

@@ -1,0 +1,36 @@
+= render "utils/title", key: "expense.expenses"
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("description")
+          %th.text-center= t("expense.category.category")
+          %th.text-center= t("expense.period.period")
+          %th.text-center= t("amount")
+          %th.text-center= t("expense.annualized")
+          - if can?(:edit, Expense)
+            %th
+      %tbody
+        - total = 0
+        - @expenses.each do |expense|
+          - total += expense.annualized
+          %tr
+            %td= expense.description
+            %td= t("expense.category.#{expense.category}")
+            %td= t("expense.period.#{expense.period}")
+            %td.text-right= "%.2f" % expense.amount
+            %td.text-right= expense.annualized
+            - if can?(:edit, Expense)
+              %td.text-center
+                = link_to t("edit"), edit_expense_path(expense), class: "btn btn-info btn-xs"
+        %tr
+          %th.text-right{colspan: 4}= t("total")
+          %th.text-right= total
+          - if can?(:edit, Expense)
+            %td
+
+.text-center
+  - if can?(:create, Expense)
+    = link_to t("expense.new"), new_expense_path, class: "btn btn-info"

@@ -1,0 +1,16 @@
+en:
+  expense:
+    annualized: Annualized
+    edit: Edit Expense
+    expenses: Expenses
+    new: New Expense
+    category:
+      category: Category
+      house: House
+      mark: Mark
+      sandra: Sandra
+    period:
+      month: Monthly
+      period: Period
+      week: Weekly
+      year: Yearly

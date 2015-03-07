@@ -1,8 +1,10 @@
 shared_context "test_data" do
-  let(:delete) { I18n.t("delete") }
-  let(:edit)   { I18n.t("edit") }
-  let(:name)   { I18n.t("name") }
-  let(:save)   { I18n.t("save") }
+  let(:amount)      { I18n.t("amount") }
+  let(:delete)      { I18n.t("delete") }
+  let(:description) { I18n.t("description") }
+  let(:edit)        { I18n.t("edit") }
+  let(:name)        { I18n.t("name") }
+  let(:save)        { I18n.t("save") }
 
   let(:sign_in)  { I18n.t("session.sign_in") }
   let(:sign_out) { I18n.t("session.sign_out") }
@@ -30,4 +32,10 @@ shared_context "test_data" do
   let(:measurement_finish) { I18n.t("mass.finish") }
   let(:measurement_start)  { I18n.t("mass.start") }
   let(:measurements)       { I18n.t("mass.data") }
+
+  let(:expense_category) { I18n.t("expense.category.category") }
+  let(:expenses)         { I18n.t("expense.expenses") }
+  let(:new_expense)      { I18n.t("expense.new") }
+  let(:edit_expense)     { I18n.t("expense.edit") }
+  let(:expense_period)   { I18n.t("expense.period.period") }
 end

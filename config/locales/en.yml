@@ -1,9 +1,11 @@
 en:
+  amount: Amount
   cancel: Cancel
   created_at: Created At
   cross: ✘
   date: Date
   delete: Delete
+  description: Description
   edit: Edit
   error: Error
   graph: Graph
@@ -15,6 +17,7 @@ en:
   select: Please select
   size: Size
   tick: ✔
+  total: Total
   updated_at: Last Updated
   pagination:
     frst: first
