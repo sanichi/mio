@@ -13,7 +13,9 @@ group :development do
   gem "mysql2"
   gem "capistrano-rails"
   gem "capistrano-passenger"
+  gem "quiet_assets"
   gem "wirble"
+  gem "awesome_print", require:"ap"
 end
 
 group :development, :test do
