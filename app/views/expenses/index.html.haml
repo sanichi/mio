@@ -1,6 +1,6 @@
 = render "utils/title", key: "expense.expenses"
 
-.text-center
+.text-center.bottom_margin
   = render "categories", category: @category
   - if can?(:create, Expense)
     = link_to t("expense.new"), new_expense_path, class: "btn btn-info"
