@@ -11,4 +11,15 @@ class Expense < ActiveRecord::Base
   def annual
     ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount).round
   end
+
+  def self.search(params)
+    category = params[:category]
+    if CATEGORIES.include?(category)
+      matches = where(category: category).all
+    else
+      matches = all
+      category = "all"
+    end
+    [matches.sort_by(&:annual).reverse, category]
+  end
 end

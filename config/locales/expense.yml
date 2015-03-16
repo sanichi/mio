@@ -5,6 +5,7 @@ en:
     expenses: Expenses
     new: New Expense
     category:
+      all: All
       category: Category
       house: House
       mark: Mark

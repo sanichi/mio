@@ -32,5 +32,6 @@
             %td
 
 .text-center
+  = render "categories", category: @category
   - if can?(:create, Expense)
     = link_to t("expense.new"), new_expense_path, class: "btn btn-info"
