@@ -1,5 +1,10 @@
 = render "utils/title", key: "expense.expenses"
 
+.text-center
+  = render "categories", category: @category
+  - if can?(:create, Expense)
+    = link_to t("expense.new"), new_expense_path, class: "btn btn-info"
+
 .row
   .col-md-offset-1.col-md-10
     %table{class: "table table-bordered table-striped"}
@@ -30,8 +35,3 @@
           %th.text-right= total
           - if can?(:edit, Expense)
             %td
-
-.text-center
-  = render "categories", category: @category
-  - if can?(:create, Expense)
-    = link_to t("expense.new"), new_expense_path, class: "btn btn-info"
