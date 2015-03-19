@@ -1,5 +1,6 @@
 en:
   amount: Amount
+  annual: Annual
   cancel: Cancel
   created_at: Created At
   cross: ✘
@@ -25,6 +26,11 @@ en:
     prev: previous
     last: last
     of: of
+  period:
+    month: Monthly
+    period: Period
+    week: Weekly
+    year: Yearly
   session:
     password: Password
     sign_in: Sign in

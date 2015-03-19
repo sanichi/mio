@@ -1,12 +1,13 @@
 en:
-  expense:
-    edit: Edit Expense
-    expenses: Expenses
-    new: New Expense
+  income:
+    edit: Edit Income
+    finish: End
+    incomes: Incomes
+    new: New Income
+    start: Start
     category:
       all: All
       category: Category
-      house: House
       mark: Mark
       sandra: Sandra
     period:

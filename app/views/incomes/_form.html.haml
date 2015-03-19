@@ -1,0 +1,34 @@
+.row
+  .col-md-offset-2.col-md-8
+    = form_for income, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        .form-group{class: income.errors[:description].any? ? "has-error" : ""}
+          = f.label :description, t("description"), class: "control-label col-md-4"
+          %div{class: "col-md-5"}= f.text_field :description, class: "form-control"
+          %div{class: "col-md-3 help-block"}= income.errors[:description].first
+        .form-group{class: income.errors[:category].any? ? "has-error" : ""}
+          = f.label :category, t("income.category"), class: "control-label col-md-4"
+          %div{class: "col-md-4"}= f.select :category, income_category_menu(income.category), {}, class: "form-control input-sm"
+          %div{class: "col-md-4 help-block"}= income.errors[:category].first
+        .form-group{class: income.errors[:period].any? ? "has-error" : ""}
+          = f.label :period, t("income.period"), class: "control-label col-md-4"
+          %div{class: "col-md-4"}= f.select :period, income_period_menu(income.period), {}, class: "form-control input-sm"
+          %div{class: "col-md-4 help-block"}= income.errors[:period].first
+        .form-group{class: income.errors[:amount].any? ? "has-error" : ""}
+          = f.label :amount, t("amount"), class: "control-label col-md-4"
+          %div{class: "col-md-3"}= f.text_field :amount, class: "form-control"
+          %div{class: "col-md-5 help-block"}= income.errors[:amount].first
+        .form-group{class: income.errors[:start].any? ? "has-error" : ""}
+          = f.label :start, t("income.start"), class: "control-label col-md-4"
+          %div{class: "col-md-5"}= f.text_field :start, class: "form-control"
+          %div{class: "col-md-3 help-block"}= income.errors[:start].first
+        .form-group{class: income.errors[:finish].any? ? "has-error" : ""}
+          = f.label :finish, t("income.finish"), class: "control-label col-md-4"
+          %div{class: "col-md-5"}= f.text_field :finish, class: "form-control"
+          %div{class: "col-md-3 help-block"}= income.errors[:finish].first
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), incomes_path, class: "btn btn-default"
+          - unless income.new_record?
+            = link_to t("delete"), income, class: "btn btn-danger", method: :delete, data: { confirm: "Sure?" }

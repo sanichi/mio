@@ -38,4 +38,12 @@ shared_context "test_data" do
   let(:new_expense)      { I18n.t("expense.new") }
   let(:edit_expense)     { I18n.t("expense.edit") }
   let(:expense_period)   { I18n.t("expense.period.period") }
+
+  let(:income_category) { I18n.t("income.category.category") }
+  let(:incomes)         { I18n.t("income.incomes") }
+  let(:new_income)      { I18n.t("income.new") }
+  let(:edit_income)     { I18n.t("income.edit") }
+  let(:income_period)   { I18n.t("income.period.period") }
+  let(:income_start)    { I18n.t("income.start") }
+  let(:income_finish)   { I18n.t("income.finish") }
 end

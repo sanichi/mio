@@ -11,16 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316165546) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20150318215847) do
 
   create_table "expenses", force: :cascade do |t|
     t.decimal  "amount",                 precision: 10, scale: 2
     t.string   "category",    limit: 10
     t.string   "description", limit: 60
     t.string   "period",      limit: 10
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.decimal  "amount",                 precision: 10, scale: 2
+    t.string   "category",    limit: 10
+    t.string   "description", limit: 60
+    t.string   "period",      limit: 10
+    t.date     "start"
+    t.date     "finish"
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end
@@ -34,16 +42,16 @@ ActiveRecord::Schema.define(version: 20150316165546) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.decimal  "cost",                  precision: 10, scale: 2
+    t.decimal  "cost",                    precision: 10, scale: 2
     t.datetime "created_at"
-    t.string   "description"
-    t.integer  "quantity"
-    t.string   "reference"
+    t.string   "description", limit: 255
+    t.integer  "quantity",    limit: 4
+    t.string   "reference",   limit: 255
     t.date     "settle_date"
-    t.string   "signature"
+    t.string   "signature",   limit: 255
     t.date     "trade_date"
-    t.integer  "upload_id"
-    t.decimal  "value",                 precision: 10, scale: 2
+    t.integer  "upload_id",   limit: 4
+    t.decimal  "value",                   precision: 10, scale: 2
     t.string   "account",     limit: 3
   end
 
@@ -51,11 +59,11 @@ ActiveRecord::Schema.define(version: 20150316165546) do
   add_index "transactions", ["upload_id"], name: "index_transactions_on_upload_id", using: :btree
 
   create_table "uploads", force: :cascade do |t|
-    t.text     "content"
-    t.string   "content_type"
-    t.string   "error"
-    t.string   "name"
-    t.integer  "size"
+    t.text     "content",      limit: 65535
+    t.string   "content_type", limit: 255
+    t.string   "error",        limit: 255
+    t.string   "name",         limit: 255
+    t.integer  "size",         limit: 4
     t.datetime "created_at"
     t.string   "account",      limit: 3
   end

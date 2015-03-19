@@ -10,11 +10,11 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center.col-md-6= t("description")
-          %th.text-center.col-md-2= t("expense.category.category")
-          %th.text-center.col-md-2= t("expense.period.period")
+          %th.text-center.col-md-8= t("description")
+          %th.text-center.col-md-1= t("expense.category.category")
+          %th.text-center.col-md-1= t("expense.period.period")
           %th.text-center.col-md-1= t("amount")
-          %th.text-center.col-md-1= t("expense.annual")
+          %th.text-center.col-md-1= t("annual")
           - if can?(:edit, Expense)
             %th
       %tbody

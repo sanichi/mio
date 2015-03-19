@@ -1,0 +1,41 @@
+= render "utils/title", key: "income.incomes"
+
+.row
+  .col-md-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center.col-md-4= t("description")
+          %th.text-center.col-md-1= t("income.category.category")
+          %th.text-center.col-md-2= t("income.start")
+          %th.text-center.col-md-2= t("income.finish")
+          %th.text-center.col-md-1= t("income.period.period")
+          %th.text-center.col-md-1= t("amount")
+          %th.text-center.col-md-1= t("annual")
+          - if can?(:edit, Income)
+            %th
+      %tbody
+        - total = 0
+        - @incomes.each do |income|
+          - total += income.annual
+          %tr
+            %td= income.description
+            %td.text-center= t("income.category.#{income.category}")
+            %td.text-center= income.start
+            %td.text-center= income.finish
+            %td.text-center= t("income.period.#{income.period}")
+            %td.text-right= "%.2f" % income.amount
+            %td.text-right= income.annual
+            - if can?(:edit, Income)
+              %td.text-center
+                = link_to t("edit"), edit_income_path(income), class: "btn btn-info btn-xs"
+        %tr
+          %th.text-right{colspan: 6}= t("total")
+          %th.text-right= total
+          - if can?(:edit, Income)
+            %td
+
+.text-center.bottom_margin
+  = render "categories", category: @category
+  - if can?(:create, Income)
+    = link_to t("income.new"), new_income_path, class: "btn btn-info"
