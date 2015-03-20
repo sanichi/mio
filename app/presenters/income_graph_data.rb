@@ -29,7 +29,7 @@ class IncomeGraphData
 
   def get_years
     min = 2014
-    max = 2022
+    max = 2023
     @years = (min..max).to_a
   end
 
