@@ -6,6 +6,10 @@ class IncomesController < ApplicationController
     @incomes, @category = Income.search(params)
   end
 
+  def graph
+    @igd = IncomeGraphData.new
+  end
+
   def new
     @income = Income.new
   end

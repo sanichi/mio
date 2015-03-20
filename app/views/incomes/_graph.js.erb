@@ -1,0 +1,25 @@
+// Load the Visualization API library and the piechart library.
+google.load("visualization", "1", { packages:["corechart"] });
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.setOnLoadCallback(drawChart);
+
+// Callback that instantiates the area chart, passes in the data and draws it.
+function drawChart()
+{
+  // Create the data table.
+  var data = google.visualization.arrayToDataTable([
+<% igd.data_rows.each do |row| %>
+  <%= row %>
+<% end %>
+  ]);
+
+  var options = {
+    vAxis: {title: 'Income'},
+    isStacked: true
+  };
+
+  var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart'));
+
+  chart.draw(data, options);
+};

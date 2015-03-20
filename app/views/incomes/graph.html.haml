@@ -1,0 +1,13 @@
+- content_for :head do
+  = javascript_include_tag "https://www.google.com/jsapi"
+- content_for :javascript do
+  = render "graph.js", igd: @igd
+
+= render "utils/title", key: "income.incomes"
+
+#chart{style: "height: #{@igd.full_height}px"}
+
+%p
+
+.text-center
+  = link_to t("list"), incomes_path, class: "btn btn-success"

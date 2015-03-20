@@ -39,3 +39,4 @@
   = render "categories", category: @category
   - if can?(:create, Income)
     = link_to t("income.new"), new_income_path, class: "btn btn-info"
+  = link_to t("graph"), graph_incomes_path, class: "btn btn-success"
