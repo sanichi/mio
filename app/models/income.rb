@@ -11,8 +11,12 @@ class Income < ActiveRecord::Base
 
   validate :date_constraints
 
-  def annual(joint: false)
-    ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount * ((joint ? self.joint : 100) / 100.0)).round
+  def annual(joint: true)
+    if joint
+      @joint_amount ||= ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount * (self.joint / 100.0)).round
+    else
+      @total_amount ||= ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount).round
+    end
   end
   
   def full_description

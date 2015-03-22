@@ -17,9 +17,12 @@
           - if can?(:edit, Income)
             %th
       %tbody
-        - total = 0
+        - total, joint = 0, 0
         - @incomes.each do |income|
-          - total += income.annual
+          - _total = income.annual(joint: false)
+          - _joint = income.annual(joint: true)
+          - total += _total
+          - joint += _joint
           %tr
             %td= income.description
             %td.text-center= t("income.category.#{income.category}")
@@ -27,15 +30,17 @@
             %td.text-center= nobr(income.finish)
             %td.text-center= t("income.period.#{income.period}")
             %td.text-right= "%.2f" % income.amount
-            %td.text-right= income.annual
+            %td.text-right= _total
             %td.text-center= "%d%%" % income.joint
-            %td.text-right= income.annual(joint: true)
+            %td.text-right= _joint
             - if can?(:edit, Income)
               %td.text-center
                 = link_to t("edit"), edit_income_path(income), class: "btn btn-info btn-xs"
         %tr
-          %th.text-right{colspan: 8}= t("total")
+          %th{colspan: 6}
           %th.text-right= total
+          %th
+          %th.text-right= joint
           - if can?(:edit, Income)
             %td
 
