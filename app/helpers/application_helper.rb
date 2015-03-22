@@ -7,4 +7,8 @@ module ApplicationHelper
     links.push(link_to t("pagination.last"), pager.last_page, remote: pager.remote) if pager.before_end?
     raw "#{pager.min_and_max} #{t('pagination.of')} #{pager.count} #{links.size > 0 ? '∙' : ''} #{links.join(' ∙ ')}"
   end
+  
+  def nobr(str)
+    str.to_s.gsub(/-/, "&#8209;").html_safe
+  end
 end

@@ -2,7 +2,9 @@ en:
   income:
     edit: Edit Income
     finish: End
+    income: Income
     incomes: Incomes
+    joint: Joint
     new: New Income
     start: Start
     category:

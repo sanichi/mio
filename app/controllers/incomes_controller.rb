@@ -1,13 +1,14 @@
 class IncomesController < ApplicationController
   authorize_resource
   before_action :find_income, only: [:edit, :update, :destroy]
+  before_action :get_scope, only: [:graph]
 
   def index
     @incomes, @category = Income.search(params)
   end
 
   def graph
-    @igd = IncomeGraphData.new
+    @igd = IncomeGraphData.new(@scope)
   end
 
   def new
@@ -41,8 +42,12 @@ class IncomesController < ApplicationController
   def find_income
     @income = Income.find(params[:id])
   end
+  
+  def get_scope
+    @scope = params[:scope] || "joint"
+  end
 
   def strong_params
-    params.require(:income).permit(:amount, :category, :description, :period, :start, :finish)
+    params.require(:income).permit(:amount, :category, :description, :joint, :period, :start, :finish)
   end
 end

@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :income do
-    description "Government Pension"
-    category    "mark"
-    period      "week"
     amount      127.0
-    start       Date.new(2020, 11, 9)
+    category    "mark"
+    description "Government Pension"
     finish      nil
+    joint       50
+    period      "week"
+    start       Date.new(2020, 11, 9)
   end
 end

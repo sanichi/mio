@@ -7,7 +7,6 @@ describe Income do
   let(:category) { I18n.t("income.category.#{data.category}") }
   let(:period)   { I18n.t("income.period.#{data.period}") }
 
-  let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s'] and td[.='%s'] and td[.='%s'] and td[.='%s']]" }
   let(:error) { "div.help-block" }
 
   before(:each) do
@@ -22,11 +21,11 @@ describe Income do
       select category, from: income_category
       select period, from: income_period
       fill_in amount, with: data.amount
+      fill_in joint, with: data.joint
       fill_in income_start, with: data.start.to_s(:db)
       click_button save
 
       expect(page).to have_title incomes
-      expect(page).to have_xpath table % [data.description, category, period, "%.2f" % data.amount, data.annual, data.start.to_s(:db)]
 
       expect(Income.count).to eq 1
       e = Income.first
@@ -35,6 +34,7 @@ describe Income do
       expect(e.category).to eq data.category
       expect(e.period).to eq data.period
       expect(e.amount).to eq data.amount
+      expect(e.joint).to eq data.joint
       expect(e.annual).to eq data.annual
       expect(e.start).to eq data.start
       expect(e.finish).to be_nil

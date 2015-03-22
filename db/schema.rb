@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318215847) do
+ActiveRecord::Schema.define(version: 20150322155324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,8 +32,9 @@ ActiveRecord::Schema.define(version: 20150318215847) do
     t.string   "period",      limit: 10
     t.date     "start"
     t.date     "finish"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
+    t.integer  "joint",       limit: 2,                           default: 100
   end
 
   create_table "masses", force: :cascade do |t|

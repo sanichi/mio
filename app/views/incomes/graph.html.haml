@@ -11,3 +11,7 @@
 
 .text-center
   = link_to t("list"), incomes_path, class: "btn btn-success"
+  - if @scope != "total"
+    = link_to t("total"), graph_incomes_path(scope: "total"), class: "btn btn-success"
+  - else
+    = link_to t("income.joint"), graph_incomes_path(scope: "joint"), class: "btn btn-success"

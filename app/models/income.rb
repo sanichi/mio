@@ -4,14 +4,15 @@ class Income < ActiveRecord::Base
   PERIODS = %w/week month year/
 
   validates :amount,      numericality: { greater_than: 0.0 }
+  validates :joint,       numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
   validates :category,    inclusion: { in: CATEGORIES }
-  validates :description, presence: true, length: { maximum: MAX_DESC }, uniqueness: { scape: :category }
+  validates :description, presence: true, length: { maximum: MAX_DESC }, uniqueness: { scope: :category }
   validates :period,      inclusion: { in: PERIODS }
 
   validate :date_constraints
 
-  def annual
-    ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount).round
+  def annual(joint: false)
+    ((period == "week" ? 52 : (period == "month" ? 12 : 1)) * amount * ((joint ? self.joint : 100) / 100.0)).round
   end
   
   def full_description

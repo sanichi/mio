@@ -18,6 +18,10 @@
           = f.label :amount, t("amount"), class: "control-label col-md-4"
           %div{class: "col-md-3"}= f.text_field :amount, class: "form-control"
           %div{class: "col-md-5 help-block"}= income.errors[:amount].first
+        .form-group{class: income.errors[:joint].any? ? "has-error" : ""}
+          = f.label :joint, t("income.joint"), class: "control-label col-md-4"
+          %div{class: "col-md-3"}= f.text_field :joint, class: "form-control"
+          %div{class: "col-md-5 help-block"}= income.errors[:joint].first
         .form-group{class: income.errors[:start].any? ? "has-error" : ""}
           = f.label :start, t("income.start"), class: "control-label col-md-4"
           %div{class: "col-md-5"}= f.text_field :start, class: "form-control"

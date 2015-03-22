@@ -5,12 +5,14 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center.col-md-4= t("description")
+          %th.text-center.col-md-3= t("description")
           %th.text-center.col-md-1= t("income.category.category")
-          %th.text-center.col-md-2= t("income.start")
-          %th.text-center.col-md-2= t("income.finish")
+          %th.text-center.col-md-1= t("income.start")
+          %th.text-center.col-md-1= t("income.finish")
           %th.text-center.col-md-1= t("income.period.period")
           %th.text-center.col-md-1= t("amount")
+          %th.text-center.col-md-1= t("annual")
+          %th.text-center.col-md-1= t("income.joint")
           %th.text-center.col-md-1= t("annual")
           - if can?(:edit, Income)
             %th
@@ -21,16 +23,18 @@
           %tr
             %td= income.description
             %td.text-center= t("income.category.#{income.category}")
-            %td.text-center= income.start
-            %td.text-center= income.finish
+            %td.text-center= nobr(income.start)
+            %td.text-center= nobr(income.finish)
             %td.text-center= t("income.period.#{income.period}")
             %td.text-right= "%.2f" % income.amount
             %td.text-right= income.annual
+            %td.text-center= "%d%%" % income.joint
+            %td.text-right= income.annual(joint: true)
             - if can?(:edit, Income)
               %td.text-center
                 = link_to t("edit"), edit_income_path(income), class: "btn btn-info btn-xs"
         %tr
-          %th.text-right{colspan: 6}= t("total")
+          %th.text-right{colspan: 8}= t("total")
           %th.text-right= total
           - if can?(:edit, Income)
             %td
