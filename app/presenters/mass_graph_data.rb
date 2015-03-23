@@ -30,7 +30,7 @@ class MassGraphData
 
   def get_date_window
     if @data.any?
-      min = @data.first.date.beginning_of_month
+      min = @data.first.date.days_ago(1)
       max = @data.last.date.end_of_month.days_since(1)
     else
       min = Date.today.beginning_of_month
