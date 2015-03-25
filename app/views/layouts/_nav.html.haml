@@ -13,6 +13,6 @@
       - if can?(:read, Expense)
         %li= link_to t("expense.expenses"), expenses_path
       - if can?(:read, Income)
-        %li= link_to t("income.incomes"), incomes_path
+        %li= link_to t("income.incomes"), graph_incomes_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"
