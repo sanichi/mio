@@ -3,7 +3,7 @@ class IncomeGraphData
 
   def initialize(scope)
     @joint = scope != "total"
-    @data = Income.order(:description, :category).to_a
+    @data = Income.all.sort_by(&:duration).reverse
     @full_height = 500
     get_years
     get_incomes
@@ -17,9 +17,7 @@ class IncomeGraphData
   private
 
   def get_years
-    min = 2014
-    max = 2023
-    @years = (min..max).to_a
+    @years = (Income::MIN_YEAR..Income::MAX_YEAR).to_a
   end
 
   def get_incomes
