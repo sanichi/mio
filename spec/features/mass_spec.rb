@@ -3,7 +3,6 @@ require 'rails_helper'
 describe Mass do
   include_context "test_data"
 
-  let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s']]" }
   let(:error) { "div.help-block" }
 
   before(:each) do
@@ -22,7 +21,6 @@ describe Mass do
       click_button save
 
       expect(page).to have_title measurements
-      expect(page).to have_xpath table % [data.date.to_s(:db), "%.1f" % data.start, "%.1f" % data.finish]
 
       expect(Mass.count).to eq 1
       m = Mass.first
@@ -104,7 +102,6 @@ describe Mass do
       click_button save
 
       expect(page).to have_title measurements
-      expect(page).to have_xpath table % [data.date.to_s(:db), "%.1f" % (data.start + 10), ""]
 
       expect(Mass.count).to eq 1
       m = Mass.first
