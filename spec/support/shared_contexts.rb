@@ -47,4 +47,13 @@ shared_context "test_data" do
   let(:incomes)         { I18n.t("income.incomes") }
   let(:joint)           { I18n.t("income.joint") }
   let(:new_income)      { I18n.t("income.new") }
+
+  let(:fund_annual_fee)          { I18n.t("fund.annual_fee") }
+  let(:edit_fund)                { I18n.t("fund.edit") }
+  let(:fund_category)            { I18n.t("fund.category.category") }
+  let(:fund_company)             { I18n.t("fund.company") }
+  let(:fund_performance_fee)     { I18n.t("fund.performance_fee") }
+  let(:fund_risk_reward_profile) { I18n.t("fund.risk_reward_profile") }
+  let(:funds)                    { I18n.t("fund.funds") }
+  let(:new_fund)                 { I18n.t("fund.new") }
 end

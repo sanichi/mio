@@ -1,0 +1,25 @@
+= render "utils/title", text: @fund.name, header: true
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("fund.risk_reward_profile")
+          %td= @fund.risk_reward_profile
+        %tr
+          %th= t("fund.annual_fee")
+          %td= @fund.annual_fee
+        %tr
+          %th= t("fund.performance_fee")
+          %td= @fund.performance_fee ? t("yes") : t("no")
+        %tr
+          %th= t("fund.company")
+          %td= @fund.company
+        %tr
+          %th= t("fund.category.category")
+          %td= t("fund.category.#{@fund.category}")
+
+.text-center
+  = link_to t("fund.funds"), funds_path, class: "btn btn-success"
+  = link_to t("edit"), edit_fund_path(@fund), class: "btn btn-info"

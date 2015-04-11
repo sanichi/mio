@@ -1,3 +1,8 @@
-- content_for :title, t(key)
-/ %h1.text-center= t(key)
-/ %hr
+- defined?(text) || text = t(key)
+- defined?(header) || header = false
+
+
+- content_for :title, text
+- if header
+  %h1.text-center= text
+

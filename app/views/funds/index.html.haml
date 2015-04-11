@@ -1,0 +1,30 @@
+= render "utils/title", key: "fund.funds"
+
+.row
+  .col-md-offset-1.col-md-10
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("name")
+          %th.col-md-1.text-center= t("fund.short.risk_reward_profile")
+          %th.col-md-1.text-center= t("fund.short.annual_fee")
+          %th= t("fund.company")
+          %th= t("fund.category.category")
+          - if can?(:create, Fund)
+            %th.col-md-1
+      %tbody
+        - @funds.matches.each do |fund|
+          %tr
+            %td= link_to fund.name, fund
+            %td.text-center= fund.risk_reward_profile
+            %td.text-center= fund.annual_fee
+            %td= fund.company
+            %td= t("fund.category.#{fund.category}")
+            - if can?(:create, Fund)
+              %td.text-center
+                = link_to t("edit"), edit_fund_path(fund), class: "btn btn-info btn-xs"
+        = render "utils/pagination_links", pager: @funds, columns: 5 + (can?(:create, Fund) ? 1 : 0)
+
+.text-center
+  - if can?(:create, Fund)
+    = link_to t("fund.new"), new_fund_path, class: "btn btn-info"

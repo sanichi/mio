@@ -20,6 +20,8 @@ en:
   tick: ✔
   total: Total
   updated_at: Last Updated
+  "no": "No"
+  "yes": "Yes"
   pagination:
     frst: first
     next: next

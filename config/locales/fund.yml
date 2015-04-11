@@ -1,0 +1,21 @@
+en:
+  fund:
+    annual_fee: Annual Fee
+    category: Type
+    company: Company
+    edit: Edit Fund
+    fund: Fund
+    funds: Funds
+    name: Name
+    new: New Fund
+    performance_fee: Performance Fee
+    risk_reward_profile: Risk-Reward Profile
+    category:
+      category: Category
+      it: Investment Trust
+      oeic: OEIC
+      ut: Unit Trust
+    short:
+      annual_fee: Fee
+      performance_fee: Perf
+      risk_reward_profile: RRP

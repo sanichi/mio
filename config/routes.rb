@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get  "sign_out" => "sessions#destroy"
 
   resources :expenses, except: [:show]
+  resources :funds
   resources :incomes, except: [:show] { get :graph, on: :collection }
   resources :masses, except: [:show] { get :graph, on: :collection }
   resources :sessions, only: [:create]
