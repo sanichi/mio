@@ -54,6 +54,7 @@ shared_context "test_data" do
   let(:fund_company)             { I18n.t("fund.company") }
   let(:fund_performance_fee)     { I18n.t("fund.performance_fee") }
   let(:fund_risk_reward_profile) { I18n.t("fund.risk_reward_profile") }
+  let(:fund_sector)              { I18n.t("fund.sector") }
   let(:funds)                    { I18n.t("fund.funds") }
   let(:new_fund)                 { I18n.t("fund.new") }
 end

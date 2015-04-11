@@ -9,16 +9,19 @@
           %td= @fund.risk_reward_profile
         %tr
           %th= t("fund.annual_fee")
-          %td= @fund.annual_fee
+          %td= @fund.formatted_annual_fee
         %tr
           %th= t("fund.performance_fee")
           %td= @fund.performance_fee ? t("yes") : t("no")
         %tr
-          %th= t("fund.company")
-          %td= @fund.company
+          %th= t("fund.sector")
+          %td= @fund.sector
         %tr
           %th= t("fund.category.category")
           %td= t("fund.category.#{@fund.category}")
+        %tr
+          %th= t("fund.company")
+          %td= @fund.company
 
 .text-center
   = link_to t("fund.funds"), funds_path, class: "btn btn-success"

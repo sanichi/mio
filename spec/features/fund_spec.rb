@@ -19,6 +19,7 @@ describe Fund do
       fill_in name, with: data.name
       fill_in fund_company, with: data.company
       select category, from: fund_category
+      select data.sector, from: fund_sector
       fill_in fund_risk_reward_profile, with: data.risk_reward_profile
       fill_in fund_annual_fee, with: data.annual_fee
       check fund_performance_fee if data.performance_fee
@@ -29,12 +30,13 @@ describe Fund do
       expect(Fund.count).to eq 1
       f = Fund.first
 
-      expect(f.name).to eq data.name
-      expect(f.company).to eq data.company
-      expect(f.category).to eq data.category
-      expect(f.risk_reward_profile).to eq data.risk_reward_profile
       expect(f.annual_fee).to eq data.annual_fee
+      expect(f.category).to eq data.category
+      expect(f.company).to eq data.company
+      expect(f.name).to eq data.name
+      expect(f.risk_reward_profile).to eq data.risk_reward_profile
       expect(f.performance_fee).to eq data.performance_fee
+      expect(f.sector).to eq data.sector
     end
   end
 
@@ -43,6 +45,7 @@ describe Fund do
       click_link new_fund
       fill_in fund_company, with: data.company
       select category, from: fund_category
+      select data.sector, from: fund_sector
       fill_in fund_risk_reward_profile, with: data.risk_reward_profile
       fill_in fund_annual_fee, with: data.annual_fee
       check fund_performance_fee if data.performance_fee
@@ -58,6 +61,7 @@ describe Fund do
       fill_in name, with: data.name
       fill_in fund_company, with: data.company
       select category, from: fund_category
+      select data.sector, from: fund_sector
       fill_in fund_risk_reward_profile, with: Fund::MAX_RRP + 1
       fill_in fund_annual_fee, with: data.annual_fee
       check fund_performance_fee if data.performance_fee

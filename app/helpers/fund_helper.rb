@@ -4,4 +4,10 @@ module FundHelper
     cats.unshift [t("select"), ""]
     options_for_select(cats, selected)
   end
+
+  def fund_sector_menu(selected)
+    secs = Fund::SECTORS.map { |sec| [sec, sec] }
+    secs.unshift [t("select"), ""]
+    options_for_select(secs, selected)
+  end
 end

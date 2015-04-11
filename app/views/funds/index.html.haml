@@ -8,7 +8,7 @@
           %th= t("name")
           %th.col-md-1.text-center= t("fund.short.risk_reward_profile")
           %th.col-md-1.text-center= t("fund.short.annual_fee")
-          %th= t("fund.company")
+          %th= t("fund.sector")
           %th= t("fund.category.category")
           - if can?(:create, Fund)
             %th.col-md-1
@@ -17,8 +17,8 @@
           %tr
             %td= link_to fund.name, fund
             %td.text-center= fund.risk_reward_profile
-            %td.text-center= fund.annual_fee
-            %td= fund.company
+            %td.text-center= fund.formatted_annual_fee
+            %td= fund.sector
             %td= t("fund.category.#{fund.category}")
             - if can?(:create, Fund)
               %td.text-center
