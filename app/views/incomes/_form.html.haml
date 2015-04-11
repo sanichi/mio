@@ -2,34 +2,14 @@
   .col-md-offset-2.col-md-8
     = form_for income, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
-        .form-group{class: income.errors[:description].any? ? "has-error" : ""}
-          = f.label :description, t("description"), class: "control-label col-md-4"
-          %div{class: "col-md-5"}= f.text_field :description, class: "form-control"
-          %div{class: "col-md-3 help-block"}= income.errors[:description].first
-        .form-group{class: income.errors[:category].any? ? "has-error" : ""}
-          = f.label :category, t("income.category"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.select :category, income_category_menu(income.category), {}, class: "form-control input-sm"
-          %div{class: "col-md-4 help-block"}= income.errors[:category].first
-        .form-group{class: income.errors[:period].any? ? "has-error" : ""}
-          = f.label :period, t("income.period"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.select :period, income_period_menu(income.period), {}, class: "form-control input-sm"
-          %div{class: "col-md-4 help-block"}= income.errors[:period].first
-        .form-group{class: income.errors[:amount].any? ? "has-error" : ""}
-          = f.label :amount, t("amount"), class: "control-label col-md-4"
-          %div{class: "col-md-3"}= f.text_field :amount, class: "form-control"
-          %div{class: "col-md-5 help-block"}= income.errors[:amount].first
-        .form-group{class: income.errors[:joint].any? ? "has-error" : ""}
-          = f.label :joint, t("income.joint"), class: "control-label col-md-4"
-          %div{class: "col-md-3"}= f.text_field :joint, class: "form-control"
-          %div{class: "col-md-5 help-block"}= income.errors[:joint].first
-        .form-group{class: income.errors[:start].any? ? "has-error" : ""}
-          = f.label :start, t("income.start"), class: "control-label col-md-4"
-          %div{class: "col-md-5"}= f.text_field :start, class: "form-control"
-          %div{class: "col-md-3 help-block"}= income.errors[:start].first
-        .form-group{class: income.errors[:finish].any? ? "has-error" : ""}
-          = f.label :finish, t("income.finish"), class: "control-label col-md-4"
-          %div{class: "col-md-5"}= f.text_field :finish, class: "form-control"
-          %div{class: "col-md-3 help-block"}= income.errors[:finish].first
+        - shared = { form: f, object: income, col: "md", pad: 4 }
+        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
+        = render "utils/select_for", shared.merge(param: :category, text: t("income.category"), width: 4, menu: income_category_menu(income.category))
+        = render "utils/select_for", shared.merge(param: :period, text: t("income.period"), width: 4, menu: income_period_menu(income.period))
+        = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
+        = render "utils/text_field_for", shared.merge(param: :joint, text: t("income.joint"), width: 3)
+        = render "utils/text_field_for", shared.merge(param: :start, text: t("income.start"), width: 5)
+        = render "utils/text_field_for", shared.merge(param: :finish, text: t("income.finish"), width: 5)
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"

@@ -2,22 +2,11 @@
   .col-md-offset-2.col-md-8
     = form_for expense, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
-        .form-group{class: expense.errors[:description].any? ? "has-error" : ""}
-          = f.label :description, t("description"), class: "control-label col-md-4"
-          %div{class: "col-md-5"}= f.text_field :description, class: "form-control"
-          %div{class: "col-md-3 help-block"}= expense.errors[:description].first
-        .form-group{class: expense.errors[:category].any? ? "has-error" : ""}
-          = f.label :category, t("expense.category"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.select :category, expense_category_menu(expense.category), {}, class: "form-control input-sm"
-          %div{class: "col-md-4 help-block"}= expense.errors[:category].first
-        .form-group{class: expense.errors[:period].any? ? "has-error" : ""}
-          = f.label :period, t("expense.period"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.select :period, expense_period_menu(expense.period), {}, class: "form-control input-sm"
-          %div{class: "col-md-4 help-block"}= expense.errors[:period].first
-        .form-group{class: expense.errors[:amount].any? ? "has-error" : ""}
-          = f.label :amount, t("amount"), class: "control-label col-md-4"
-          %div{class: "col-md-3"}= f.text_field :amount, class: "form-control"
-          %div{class: "col-md-5 help-block"}= expense.errors[:amount].first
+        - shared = { form: f, object: expense, col: "md", pad: 4 }
+        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
+        = render "utils/select_for", shared.merge(param: :category, text: t("expense.category"), width: 4, menu: expense_category_menu(expense.category))
+        = render "utils/select_for", shared.merge(param: :period, text: t("expense.period"), width: 4, menu: expense_period_menu(expense.period))
+        = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"

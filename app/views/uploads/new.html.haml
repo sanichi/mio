@@ -4,14 +4,9 @@
   .col-md-12
     = form_for @upload, html: { class: "form-horizontal", role: "form", multipart: true } do |f|
       %fieldset
-        .form-group{class: @upload.errors[:account].any? ? "has-error" : ""}
-          = f.label :account, t("upload.account.acc"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.select :account, upload_account_menu(@upload.account), {}, class: "form-control input-sm"
-          %div{class: "col-md-4 help-block"}= @upload.errors[:account].first
-        .form-group{class: @upload.errors[:body].any? ? "has-error" : ""}
-          = f.label :file, t("upload.file"), class: "control-label col-md-4"
-          %div{class: "col-md-4"}= f.file_field :file, class: "form-control"
-          %div{class: "col-md-4 help-block"}= @upload.errors[:file].first
+        - shared = { form: f, object: @upload, col: "md", pad: 4 }
+        = render "utils/select_for", shared.merge(param: :account, text: t("upload.account.acc"), width: 4, menu: upload_account_menu(@upload.account))
+        = render "utils/file_field_for", shared.merge(param: :file, text: t("upload.file"), width: 4)
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("upload.load"), class: "btn btn-info"

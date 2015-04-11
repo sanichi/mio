@@ -2,36 +2,16 @@
   .col-md-offset-2.col-md-8
     = form_for fund, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
-        .form-group{class: fund.errors[:name].any? ? "has-error" : ""}
-          = f.label :name, t("name"), class: "control-label col-md-3"
-          %div{class: "col-md-6"}= f.text_field :name, class: "form-control"
-          %div{class: "col-md-3 help-block"}= fund.errors[:name].first
-        .form-group{class: fund.errors[:company].any? ? "has-error" : ""}
-          = f.label :company, t("fund.company"), class: "control-label col-md-3"
-          %div{class: "col-md-6"}= f.text_field :company, class: "form-control"
-          %div{class: "col-md-3 help-block"}= fund.errors[:company].first
-        .form-group{class: fund.errors[:category].any? ? "has-error" : ""}
-          = f.label :category, t("fund.category"), class: "control-label col-md-3"
-          %div{class: "col-md-4"}= f.select :category, fund_category_menu(fund.category), {}, class: "form-control input-sm"
-          %div{class: "col-md-5 help-block"}= fund.errors[:category].first
-        .form-group{class: fund.errors[:sector].any? ? "has-error" : ""}
-          = f.label :sector, t("fund.sector"), class: "control-label col-md-3"
-          %div{class: "col-md-4"}= f.select :sector, fund_sector_menu(fund.sector), {}, class: "form-control input-sm"
-          %div{class: "col-md-5 help-block"}= fund.errors[:sector].first
-        .form-group{class: fund.errors[:risk_reward_profile].any? ? "has-error" : ""}
-          = f.label :risk_reward_profile, t("fund.risk_reward_profile"), class: "control-label col-md-3"
-          %div{class: "col-md-2"}= f.text_field :risk_reward_profile, class: "form-control"
-          %div{class: "col-md-7 help-block"}= fund.errors[:risk_reward_profile].first
-        .form-group{class: fund.errors[:annual_fee].any? ? "has-error" : ""}
-          = f.label :annual_fee, t("fund.annual_fee"), class: "control-label col-md-3"
-          %div{class: "col-md-2"}= f.text_field :annual_fee, class: "form-control"
-          %div{class: "col-md-7 help-block"}= fund.errors[:annual_fee].first
-        .form-group{class: fund.errors[:performance_fee].any? ? "has-error" : ""}
-          = f.label :performance_fee, t("fund.performance_fee"), class: "control-label col-md-3"
-          %div{class: "col-md-1"}= f.check_box :performance_fee, { class: "form-control" }
-          %div{class: "col-md-8 help-block"}= fund.errors[:performance_fee].first
+        - shared = { form: f, object: fund, col: "md", pad: 3 }
+        = render "utils/text_field_for", shared.merge(param: :name, text: t("fund.name"), width: 6)
+        = render "utils/text_field_for", shared.merge(param: :company, text: t("fund.company"), width: 6)
+        = render "utils/select_for", shared.merge(param: :category, text: t("fund.category"), width: 4, menu: fund_category_menu(fund.category))
+        = render "utils/select_for", shared.merge(param: :sector, text: t("fund.sector"), width: 4, menu: fund_sector_menu(fund.sector))
+        = render "utils/text_field_for", shared.merge(param: :risk_reward_profile, text: t("fund.risk_reward_profile"), width: 2)
+        = render "utils/text_field_for", shared.merge(param: :annual_fee, text: t("fund.annual_fee"), width: 2)
+        = render "utils/check_box_for", shared.merge(param: :performance_fee, text: t("fund.performance_fee"), width: 1)
       .row
-        .col-md-offset-4.col-md-8
+        .col-md-offset-3.col-md-9
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), fund.new_record?? funds_path : fund, class: "btn btn-default"
           - unless fund.new_record?
