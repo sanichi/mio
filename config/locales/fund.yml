@@ -9,7 +9,7 @@ en:
     name: Name
     new: New Fund
     performance_fee: Performance Fee
-    risk_reward_profile: Risk-Reward Profile
+    risk_reward_profile: Risk-Reward Level
     sector: Sector
     category:
       category: Category
@@ -19,4 +19,4 @@ en:
     short:
       annual_fee: Fee
       performance_fee: Perf
-      risk_reward_profile: RRP
+      risk_reward_profile: RRL

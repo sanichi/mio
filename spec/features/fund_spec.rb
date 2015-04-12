@@ -105,4 +105,69 @@ describe Fund do
       expect(Fund.count).to eq 0
     end
   end
+
+  context "comments" do
+    let(:fund)  { create(:fund) }
+    let(:data)  { build(:comment) }
+    let(:data2) { build(:comment) }
+    let(:data3) { build(:comment) }
+
+    it "add, add another, edit, delete, delete all" do
+      visit fund_path(fund)
+      click_link new_comment
+      expect(page).to have_title new_comment
+
+      fill_in date, with: data.date
+      fill_in comment_source, with: data.source
+      fill_in comment_text, with: data.text
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.comments.length).to eq 1
+      comment = fund.comments.first
+      expect(comment.date).to eq data.date
+      expect(comment.source).to eq data.source
+      expect(comment.text).to eq data.text
+
+      click_link new_comment
+      expect(page).to have_title new_comment
+
+      fill_in date, with: data2.date
+      fill_in comment_source, with: data2.source
+      fill_in comment_text, with: data2.text
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.comments.length).to eq 2
+
+      first(".panel").click_link(edit)
+      expect(page).to have_title edit_comment
+      fill_in comment_text, with: data3.text
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.comments.where(text: data3.text).count).to eq 1
+      expect(fund.comments.length).to eq 2
+
+      first(".panel").click_link(edit)
+      click_link delete
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.comments.where(text: data3.text).count).to eq 0
+      expect(fund.comments.length).to eq 1
+
+      click_link edit, match: :first
+      expect(page).to have_title edit_fund
+
+      click_link delete
+      expect(page).to have_title funds
+
+      expect(Fund.count).to eq 0
+      expect(Comment.count).to eq 0
+    end
+  end
 end

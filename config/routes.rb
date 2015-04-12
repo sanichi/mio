@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   root to: "masses#graph"
 
-  get  "sign_in"  => "sessions#new"
-  get  "sign_out" => "sessions#destroy"
+  get "sign_in"  => "sessions#new"
+  get "sign_out" => "sessions#destroy"
 
   resources :expenses, except: [:show]
-  resources :funds
+  resources :funds do
+    resources :comments, except: [:index, :show]
+  end
   resources :incomes, except: [:show] { get :graph, on: :collection }
   resources :masses, except: [:show] { get :graph, on: :collection }
   resources :sessions, only: [:create]

@@ -1,5 +1,6 @@
 shared_context "test_data" do
   let(:amount)      { I18n.t("amount") }
+  let(:date)        { I18n.t("date") }
   let(:delete)      { I18n.t("delete") }
   let(:description) { I18n.t("description") }
   let(:edit)        { I18n.t("edit") }
@@ -57,4 +58,9 @@ shared_context "test_data" do
   let(:fund_sector)              { I18n.t("fund.sector") }
   let(:funds)                    { I18n.t("fund.funds") }
   let(:new_fund)                 { I18n.t("fund.new") }
+
+  let(:comment_source) { I18n.t("comment.source") }
+  let(:comment_text)   { I18n.t("comment.text") }
+  let(:edit_comment)   { I18n.t("comment.edit") }
+  let(:new_comment)    { I18n.t("comment.new") }
 end

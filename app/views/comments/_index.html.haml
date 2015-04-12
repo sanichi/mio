@@ -1,0 +1,8 @@
+- defined?(date_format) || date_format = "%Y-%m-%d"
+
+- if comments.any?
+  .row
+    .col-md-offset-2.col-md-8
+      %h3.text-center= t("comment.comments")
+      - comments.each do |comment|
+        = render "comments/panel", comment: comment, commentable: commentable, date_format: date_format

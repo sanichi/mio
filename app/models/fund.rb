@@ -1,6 +1,8 @@
 class Fund < ActiveRecord::Base
   include Pageable
 
+  has_many :comments, as: :commentable, dependent: :destroy
+
   CATEGORIES = %w/it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
