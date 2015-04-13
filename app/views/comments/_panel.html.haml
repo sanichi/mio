@@ -5,4 +5,4 @@
     = comment.source
     .pull-right
       = link_to t("edit"), edit_polymorphic_path([commentable, comment]), class: "btn btn-info btn-xs"
-  .panel-body= comment.text
+  .panel-body= comment.html

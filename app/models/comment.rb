@@ -1,5 +1,7 @@
 class Comment < ActiveRecord::Base
-  MAX_TEXT, MAX_SOURCE = 140, 30
+  include Remarkable
+
+  MAX_SOURCE = 50
 
   belongs_to :commentable, polymorphic: true
 
@@ -7,5 +9,9 @@ class Comment < ActiveRecord::Base
 
   validates :date, presence: true
   validates :source, presence: true, length: { maximum: MAX_SOURCE }
-  validates :text, presence: true, length: { maximum: MAX_TEXT }
+  validates :text, presence: true
+  
+  def html
+    to_html(text)
+  end
 end

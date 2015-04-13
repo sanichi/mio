@@ -8,6 +8,7 @@ gem "uglifier", ">= 1.3.0"
 gem "jquery-rails"
 gem "therubyracer", platforms: :ruby
 gem "cancancan", "~> 1.10"
+gem "redcarpet", "~> 3.2"
 
 group :development do
   gem "mysql2"

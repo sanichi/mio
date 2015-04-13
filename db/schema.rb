@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412121605) do
+ActiveRecord::Schema.define(version: 20150413101023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
     t.date     "date"
-    t.string   "source",           limit: 30
-    t.string   "text",             limit: 140
+    t.string   "source",           limit: 50
+    t.text     "text"
     t.integer  "commentable_id"
     t.string   "commentable_type"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
