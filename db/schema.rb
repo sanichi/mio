@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413154359) do
+ActiveRecord::Schema.define(version: 20150413155607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(version: 20150413154359) do
   create_table "funds", force: :cascade do |t|
     t.decimal  "annual_fee",                     precision: 3, scale: 2
     t.string   "category",            limit: 10
-    t.string   "company",             limit: 70
-    t.string   "name",                limit: 50
+    t.string   "company",             limit: 50
+    t.string   "name",                limit: 70
     t.boolean  "performance_fee"
     t.integer  "risk_reward_profile", limit: 2
     t.datetime "created_at",                                             null: false
