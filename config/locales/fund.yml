@@ -11,6 +11,7 @@ en:
     performance_fee: Performance Fee
     risk_reward_profile: Risk-Reward Level
     sector: Sector
+    size: Size (£m)
     category:
       category: Category
       etf: ETF
@@ -21,3 +22,4 @@ en:
       annual_fee: Fee
       performance_fee: Perf
       risk_reward_profile: RRL
+      size: Size

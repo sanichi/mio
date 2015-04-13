@@ -3,12 +3,13 @@ class Fund < ActiveRecord::Base
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :returns, as: :returnable, dependent: :destroy
-  
+
   default_scope { order(risk_reward_profile: :desc, annual_fee: :asc) }
 
   CATEGORIES = %w/etf it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
+  MIN_SIZE, MAX_SIZE = 0, 100000
   MAX_COMPANY, MAX_NAME = 50, 70
   SECTORS = [
     "Asia Pacific Ex Japan", "Asia Pacific Inc Japan", "China",
@@ -30,6 +31,7 @@ class Fund < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: MAX_NAME }
   validates :risk_reward_profile, numericality: { integer_only: true, greater_than_or_equal_to: MIN_RRP, less_than_or_equal_to: MAX_RRP }
   validates :sector, inclusion: { in: SECTORS }
+  validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
 
   def self.search(params, path)
     matches = Fund.all
@@ -42,7 +44,7 @@ class Fund < ActiveRecord::Base
   def formatted_annual_fee
     "%.2f%%" % annual_fee
   end
-  
+
   def average_return(formatted=true)
     return unless returns.size > 0
     average = returns.map(&:percent).reduce(&:+) / returns.size

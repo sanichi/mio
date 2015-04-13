@@ -7,5 +7,6 @@ FactoryGirl.define do
     performance_fee     false
     risk_reward_profile 3
     sector              "Targeted Absolute Return"
+    size                246
   end
 end
