@@ -7,6 +7,7 @@ class Fund < ActiveRecord::Base
   CATEGORIES = %w/etf it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
+  MAX_COMPANY, MAX_NAME = 50, 70
   SECTORS = [
     "Asia Pacific Ex Japan", "Asia Pacific Inc Japan", "China",
     "Europe Excluding UK", "Europe Including UK", "European Smaller Companies",
@@ -23,7 +24,8 @@ class Fund < ActiveRecord::Base
 
   validates :annual_fee, numericality: { greater_than_or_equal_to: MIN_FEE, less_than_or_equal_to: MAX_FEE }
   validates :category, inclusion: { in: CATEGORIES }
-  validates :company, :name, presence: true, length: { maximum: 50 }
+  validates :company, presence: true, length: { maximum: MAX_COMPANY }
+  validates :name, presence: true, length: { maximum: MAX_NAME }
   validates :risk_reward_profile, numericality: { integer_only: true, greater_than_or_equal_to: MIN_RRP, less_than_or_equal_to: MAX_RRP }
   validates :sector, inclusion: { in: SECTORS }
 
