@@ -9,6 +9,7 @@ gem "jquery-rails"
 gem "therubyracer", platforms: :ruby
 gem "cancancan", "~> 1.10"
 gem "redcarpet", "~> 3.2"
+gem "sprockets", "~> 2.12"
 
 group :development do
   gem "mysql2"
