@@ -11,6 +11,8 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 set :log_level, :info
 
+set :passenger_environment_variables, { PASSENGER_INSTANCE_REGISTRY_DIR: "/var/local" }
+
 # set :format, :pretty
 # set :pty, true
 # set :keep_releases, 5
