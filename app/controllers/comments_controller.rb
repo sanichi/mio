@@ -12,6 +12,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to @comment.commentable
     else
+      @commentable = @comment.commentable
       render "new"
     end
   end

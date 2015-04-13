@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :expenses, except: [:show]
   resources :funds do
     resources :comments, except: [:index, :show]
+    resources :returns, except: [:index, :show]
   end
   resources :incomes, except: [:show] { get :graph, on: :collection }
   resources :masses, except: [:show] { get :graph, on: :collection }

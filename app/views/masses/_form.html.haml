@@ -11,4 +11,4 @@
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), masses_path, class: "btn btn-default"
           - unless mass.new_record?
-            = link_to t("delete"), mass, class: "btn btn-danger", method: :delete, data: { confirm: "Sure?" }
+            = link_to t("delete"), mass, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

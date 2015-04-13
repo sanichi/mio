@@ -1,0 +1,16 @@
+.row
+  .col-md-offset-2.col-md-8
+    = form_for [returnable, ret], html: { class: "form-horizontal", role: "form" } do |f|
+      - if ret.new_record?
+        = f.hidden_field :returnable_type
+        = f.hidden_field :returnable_id
+      %fieldset
+        - shared = { form: f, object: ret, col: "md", pad: 4 }
+        = render "utils/text_field_for", shared.merge(param: :year, text: t("return.year"), width: 2)
+        = render "utils/text_field_for", shared.merge(param: :percent, text: t("return.percent"), width: 2)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), returnable, class: "btn btn-default"
+          - unless ret.new_record?
+            = link_to t("delete"), [returnable, ret], class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

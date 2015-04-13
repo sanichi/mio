@@ -15,4 +15,4 @@
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), incomes_path, class: "btn btn-default"
           - unless income.new_record?
-            = link_to t("delete"), income, class: "btn btn-danger", method: :delete, data: { confirm: "Sure?" }
+            = link_to t("delete"), income, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

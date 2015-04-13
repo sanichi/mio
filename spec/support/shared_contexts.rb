@@ -63,4 +63,9 @@ shared_context "test_data" do
   let(:comment_text)   { I18n.t("comment.text") }
   let(:edit_comment)   { I18n.t("comment.edit") }
   let(:new_comment)    { I18n.t("comment.new") }
+
+  let(:return_percent) { I18n.t("return.percent") }
+  let(:return_year)    { I18n.t("return.year") }
+  let(:edit_return)    { I18n.t("return.edit") }
+  let(:new_return)     { I18n.t("return.new") }
 end

@@ -170,4 +170,66 @@ describe Fund do
       expect(Comment.count).to eq 0
     end
   end
+
+  context "returns" do
+    let(:fund)  { create(:fund) }
+    let(:data)  { build(:return) }
+    let(:data2) { build(:return, year: data.year - 1) }
+    let(:data3) { build(:return, year: data.year - 2, percent: 2 * data.percent) }
+
+    it "add, add another, edit, delete, delete all" do
+      visit fund_path(fund)
+      click_link new_return
+      expect(page).to have_title new_return
+
+      fill_in return_year, with: data.year
+      fill_in return_percent, with: data.percent
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.returns.length).to eq 1
+      ret = fund.returns.first
+      expect(ret.year).to eq data.year
+      expect(ret.percent).to eq data.percent
+
+      click_link new_return
+      expect(page).to have_title new_return
+
+      fill_in return_year, with: data2.year
+      fill_in return_percent, with: data2.percent
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.returns.length).to eq 2
+
+      first(:xpath, "//tr/td[a[contains(@href,'edit')]]").click_link(edit)
+      expect(page).to have_title edit_return
+      fill_in return_percent, with: data3.percent
+      click_button save
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.returns.where(percent: data3.percent).count).to eq 1
+      expect(fund.returns.length).to eq 2
+
+      first(:xpath, "//tr/td[a[contains(@href,'edit')]]").click_link(edit)
+      click_link delete
+      expect(page).to have_title fund.name
+
+      fund.reload
+      expect(fund.returns.where(percent: data3.percent).count).to eq 0
+      expect(fund.returns.length).to eq 1
+
+      click_link edit, match: :first
+      expect(page).to have_title edit_fund
+
+      click_link delete
+      expect(page).to have_title funds
+
+      expect(Fund.count).to eq 0
+      expect(Return.count).to eq 0
+    end
+  end
 end

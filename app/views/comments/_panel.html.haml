@@ -3,6 +3,7 @@
     = comment.date.strftime(date_format)
     = t("separator")
     = comment.source
-    .pull-right
-      = link_to t("edit"), edit_polymorphic_path([commentable, comment]), class: "btn btn-info btn-xs"
+    - if can?(:edit, comment)
+      .pull-right
+        = link_to t("edit"), edit_polymorphic_path([commentable, comment]), class: "btn btn-info btn-xs"
   .panel-body= comment.html

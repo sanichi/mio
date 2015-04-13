@@ -2,6 +2,7 @@ class Fund < ActiveRecord::Base
   include Pageable
 
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :returns, as: :returnable, dependent: :destroy
 
   CATEGORIES = %w/it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7

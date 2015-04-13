@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413101023) do
+ActiveRecord::Schema.define(version: 20150413125029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(version: 20150413101023) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end
+
+  create_table "returns", force: :cascade do |t|
+    t.integer  "year",            limit: 2
+    t.decimal  "percent",                   precision: 4, scale: 1
+    t.integer  "returnable_id"
+    t.string   "returnable_type"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+  end
+
+  add_index "returns", ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
     t.decimal  "cost",                  precision: 10, scale: 2

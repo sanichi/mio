@@ -18,6 +18,7 @@ en:
   select: Please select
   separator: ●
   size: Size
+  sure: Sure?
   tick: ✔
   total: Total
   updated_at: Last Updated

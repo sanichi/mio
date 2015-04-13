@@ -14,4 +14,4 @@
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), commentable, class: "btn btn-default"
           - unless comment.new_record?
-            = link_to t("delete"), [commentable, comment], class: "btn btn-danger", method: :delete, data: { confirm: "Sure?" }
+            = link_to t("delete"), [commentable, comment], class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
