@@ -11,8 +11,9 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 set :log_level, :info
 
-set :passenger_environment_variables, { PASSENGER_INSTANCE_REGISTRY_DIR: "/var/local" }
-set :passenger_restart_with_sudo, true
+# The following is required to workaround sudo and registry problems with passenger-config.
+set :passenger_restart_command, "touch /var/www/mio/current/tmp/restart.txt"
+set :passenger_restart_options, nil
 
 # set :format, :pretty
 # set :pty, true
