@@ -3,6 +3,8 @@ class Fund < ActiveRecord::Base
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :returns, as: :returnable, dependent: :destroy
+  
+  default_scope { order(risk_reward_profile: :desc, annual_fee: :asc) }
 
   CATEGORIES = %w/etf it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7
