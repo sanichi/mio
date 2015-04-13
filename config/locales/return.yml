@@ -1,8 +1,11 @@
 en:
   return:
+    average: Average Return
     edit: Edit Return
     financial_year: Financial Year
     new: New Return
     percent: Percent
     returns: Returns
     year: Year
+    short:
+      average_return: Ave

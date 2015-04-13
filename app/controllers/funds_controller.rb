@@ -1,9 +1,13 @@
 class FundsController < ApplicationController
   authorize_resource
-  before_action :find_fund, only: [:show, :edit, :update, :destroy]
+  before_action :find_fund, only: [:edit, :update, :destroy]
 
   def index
     @funds = Fund.search(params, funds_path)
+  end
+
+  def show
+    @fund = Fund.includes(:returns).includes(:comments).find(params[:id])
   end
 
   def new

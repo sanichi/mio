@@ -7,6 +7,7 @@
         %tr
           %th= t("name")
           %th.col-md-1.text-center= t("fund.short.risk_reward_profile")
+          %th.col-md-1.text-center= t("return.short.average_return")
           %th.col-md-1.text-center= t("fund.short.annual_fee")
           %th= t("fund.sector")
           %th= t("fund.category.category")
@@ -17,13 +18,14 @@
           %tr
             %td= link_to fund.name, fund
             %td.text-center= fund.risk_reward_profile
+            %td.text-center= fund.average_return
             %td.text-center= fund.formatted_annual_fee
             %td= fund.sector
             %td= t("fund.category.#{fund.category}")
             - if can?(:create, Fund)
               %td.text-center
                 = link_to t("edit"), edit_fund_path(fund), class: "btn btn-info btn-xs"
-        = render "utils/pagination_links", pager: @funds, columns: 5 + (can?(:create, Fund) ? 1 : 0)
+        = render "utils/pagination_links", pager: @funds, columns: 6 + (can?(:create, Fund) ? 1 : 0)
 
 .text-center
   - if can?(:create, Fund)

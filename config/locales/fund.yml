@@ -13,6 +13,7 @@ en:
     sector: Sector
     category:
       category: Category
+      etf: ETF
       it: Investment Trust
       oeic: OEIC
       ut: Unit Trust

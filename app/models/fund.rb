@@ -4,7 +4,7 @@ class Fund < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :returns, as: :returnable, dependent: :destroy
 
-  CATEGORIES = %w/it oeic ut/
+  CATEGORIES = %w/etf it oeic ut/
   MIN_RRP, MAX_RRP = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
   SECTORS = [
@@ -36,6 +36,12 @@ class Fund < ActiveRecord::Base
   end
 
   def formatted_annual_fee
-    "%.2f" % annual_fee
+    "%.2f%%" % annual_fee
+  end
+  
+  def average_return(formatted=true)
+    return unless returns.size > 0
+    average = returns.map(&:percent).reduce(&:+) / returns.size
+    formatted ? "%.1f%%" % average : average
   end
 end
