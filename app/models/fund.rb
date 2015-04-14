@@ -11,7 +11,7 @@ class Fund < ActiveRecord::Base
   MIN_FEE, MAX_FEE = 0.0, 5.0
   MIN_SIZE, MAX_SIZE = 0, 100000
   MAX_COMPANY, MAX_NAME = 50, 70
-  STARS = %w[w150 w150p]
+  STARS = %w[tracker w150 w150p]
   SECTORS = [
     "Asia Pacific Ex Japan", "Asia Pacific Inc Japan", "China",
     "Europe Excluding UK", "Europe Including UK", "European Smaller Companies",

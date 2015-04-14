@@ -25,8 +25,10 @@ en:
       size: Size
     star:
       star: Star
-      w150: HL Wealth 150
-      w150p: HL Wealth 150 Plus
+      tracker: 💹 HL Core Tracker
+      w150: 🌝 HL Wealth 150
+      w150p: 🌞 HL Wealth 150 Plus
       short:
-        w150: ✪
-        w150p: ✪+
+        tracker: 💹
+        w150: 🌝
+        w150p: 🌞
