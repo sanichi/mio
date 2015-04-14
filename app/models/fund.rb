@@ -11,6 +11,7 @@ class Fund < ActiveRecord::Base
   MIN_FEE, MAX_FEE = 0.0, 5.0
   MIN_SIZE, MAX_SIZE = 0, 100000
   MAX_COMPANY, MAX_NAME = 50, 70
+  STARS = %w[w150 w150p]
   SECTORS = [
     "Asia Pacific Ex Japan", "Asia Pacific Inc Japan", "China",
     "Europe Excluding UK", "Europe Including UK", "European Smaller Companies",
@@ -25,12 +26,15 @@ class Fund < ActiveRecord::Base
     "UK Gilt", "UK Index Linked Gilt", "UK Smaller Companies", "Unclassified"
   ]
 
+  before_validation :check_star
+
   validates :annual_fee, numericality: { greater_than_or_equal_to: MIN_FEE, less_than_or_equal_to: MAX_FEE }
   validates :category, inclusion: { in: CATEGORIES }
   validates :company, presence: true, length: { maximum: MAX_COMPANY }
   validates :name, presence: true, length: { maximum: MAX_NAME }
   validates :risk_reward_profile, numericality: { integer_only: true, greater_than_or_equal_to: MIN_RRP, less_than_or_equal_to: MAX_RRP }
   validates :sector, inclusion: { in: SECTORS }
+  validates :star, inclusion: { in: STARS }, allow_nil: true
   validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
 
   def self.search(params, path)
@@ -49,5 +53,11 @@ class Fund < ActiveRecord::Base
     return unless returns.size > 0
     average = returns.map(&:percent).reduce(&:+) / returns.size
     formatted ? "%.1f%%" % average : average
+  end
+
+  private
+
+  def check_star
+    self.star = nil unless STARS.include?(star)
   end
 end

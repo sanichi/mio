@@ -23,3 +23,10 @@ en:
       performance_fee: Perf
       risk_reward_profile: RRL
       size: Size
+    star:
+      star: Star
+      w150: HL Wealth 150
+      w150p: HL Wealth 150 Plus
+      short:
+        w150: ✪
+        w150p: ✪+

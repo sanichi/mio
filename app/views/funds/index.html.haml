@@ -9,6 +9,7 @@
           %th.col-md-1.text-center= t("fund.short.risk_reward_profile")
           %th.col-md-1.text-center= t("return.short.average_return")
           %th.col-md-1.text-center= t("fund.short.annual_fee")
+          %th.col-md-1.text-center= t("fund.star.star")
           %th.col-md-1.text-center= t("fund.short.size")
           %th= t("fund.sector")
           %th= t("fund.category.category")
@@ -21,6 +22,7 @@
             %td.text-center= fund.risk_reward_profile
             %td.text-center= fund.average_return
             %td.text-center= fund.formatted_annual_fee
+            %td.text-center= t("fund.star.short.#{fund.star}") if fund.star.present?
             %td.text-center= fund.size
             %td= fund.sector
             %td= t("fund.category.#{fund.category}")

@@ -5,6 +5,7 @@ shared_context "test_data" do
   let(:description) { I18n.t("description") }
   let(:edit)        { I18n.t("edit") }
   let(:name)        { I18n.t("name") }
+  let(:none)        { I18n.t("none") }
   let(:save)        { I18n.t("save") }
 
   let(:password) { I18n.t("session.password") }
@@ -57,6 +58,7 @@ shared_context "test_data" do
   let(:fund_risk_reward_profile) { I18n.t("fund.risk_reward_profile") }
   let(:fund_sector)              { I18n.t("fund.sector") }
   let(:fund_size)                { I18n.t("fund.size") }
+  let(:fund_star)                { I18n.t("fund.star.star") }
   let(:funds)                    { I18n.t("fund.funds") }
   let(:new_fund)                 { I18n.t("fund.new") }
 

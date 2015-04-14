@@ -8,5 +8,6 @@ FactoryGirl.define do
     risk_reward_profile 3
     sector              "Targeted Absolute Return"
     size                246
+    star                "w150"
   end
 end

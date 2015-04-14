@@ -17,6 +17,9 @@
           %th= t("fund.performance_fee")
           %td= @fund.performance_fee ? t("yes") : t("no")
         %tr
+          %th= t("fund.star.star")
+          %td= t("fund.star.#{@fund.star}") if @fund.star.present?
+        %tr
           %th= t("fund.sector")
           %td= @fund.sector
         %tr
