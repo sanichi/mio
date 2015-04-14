@@ -6,15 +6,15 @@
       %thead
         %tr
           %th= t("name")
-          %th.col-md-1.text-center= t("fund.short.risk_reward_profile")
-          %th.col-md-1.text-center= t("return.short.average_return")
-          %th.col-md-1.text-center= t("fund.short.annual_fee")
-          %th.col-md-1.text-center= t("fund.star.star")
-          %th.col-md-1.text-center= t("fund.short.size")
+          %th.text-center= t("fund.short.risk_reward_profile")
+          %th.text-center= t("return.short.average_return")
+          %th.text-center= t("fund.short.annual_fee")
+          %th.text-center= t("fund.star.star")
+          %th.text-center= t("fund.short.size")
           %th= t("fund.sector")
           %th= t("fund.category.category")
           - if can?(:create, Fund)
-            %th.col-md-1
+            %th
       %tbody
         - @funds.matches.each do |fund|
           %tr
