@@ -83,7 +83,7 @@ describe Fund do
   end
 
   context "edit" do
-    let(:fund) { create(:fund, category: "sicav", stars: ["hl_tracker", "rp_recommended"]) }
+    let(:fund) { create(:fund, category: "sicav", stars: ["hl_tracker", "rp_rated"]) }
 
     it "success" do
       visit fund_path(fund)
