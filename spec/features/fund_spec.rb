@@ -83,7 +83,7 @@ describe Fund do
   end
 
   context "edit" do
-    let!(:fund) { create(:fund, category: "it") }
+    let!(:fund) { create(:fund, category: "sicav") }
 
     it "success" do
       visit fund_path(fund)

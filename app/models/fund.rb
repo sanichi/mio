@@ -6,7 +6,7 @@ class Fund < ActiveRecord::Base
 
   default_scope { order(risk_reward_profile: :desc, annual_fee: :asc) }
 
-  CATEGORIES = %w/etf it oeic ut/
+  CATEGORIES = %w/icvc oeic sicav ut/
   MIN_RRP, MAX_RRP = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
   MIN_SIZE, MAX_SIZE = 0, 100000

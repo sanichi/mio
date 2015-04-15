@@ -14,10 +14,15 @@ en:
     size: Size (£m)
     category:
       category: Category
-      etf: ETF
-      it: Investment Trust
-      oeic: OEIC
+      icvc: Investment Company with Variable Capital
+      oeic: Open Ended Investment Company
+      sicav: Société d'investissement à Capital Variable
       ut: Unit Trust
+      short:
+        icvc: ICVC
+        oeic: OEIC
+        sicav: SICAV
+        ut: UT
     short:
       annual_fee: Fee
       performance_fee: Perf
