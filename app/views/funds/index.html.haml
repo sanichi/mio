@@ -29,7 +29,7 @@
             - if can?(:create, Fund)
               %td.text-center
                 = link_to t("edit"), edit_fund_path(fund), class: "btn btn-info btn-xs"
-        = render "utils/pagination_links", pager: @funds, columns: 6 + (can?(:create, Fund) ? 1 : 0)
+        = render "utils/pagination_links", pager: @funds, columns: 8 + (can?(:create, Fund) ? 1 : 0)
 
 .text-center
   - if can?(:create, Fund)
