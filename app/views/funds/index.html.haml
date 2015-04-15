@@ -22,8 +22,8 @@
             %td.text-center= fund.risk_reward_profile
             %td.text-center= fund.average_return
             %td.text-center= fund.formatted_annual_fee
-            %td.text-center= fund.formatted_stars
-            %td.text-center= fund.size
+            %td= fund.formatted_stars
+            %td.text-right= fund.size
             %td= fund.sector
             %td= t("fund.category.short.#{fund.category}")
             - if can?(:create, Fund)

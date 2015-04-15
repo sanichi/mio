@@ -30,12 +30,12 @@ en:
       size: Size
     stars:
       stars: Stars
-      hl_tracker: 💹 HL Core Tracker
-      hl_w150: 🌚 HL Wealth 150
-      hl_w150p: 🌝 HL Wealth 150 Plus
-      rp_recommended: 👍 rPlan Recommended
+      hl_tracker: 🌵 HL Core Tracker
+      hl_w150: 🌹 HL Wealth 150
+      hl_w150p: 🌷 HL Wealth 150 Plus
+      rp_recommended: 🍄 rPlan Recommended
       short:
-        hl_tracker: 💹
-        hl_w150: 🌚
-        hl_w150p: 🌝
-        rp_recommended: 👍
+        hl_tracker: 🌵
+        hl_w150: 🌹
+        hl_w150p: 🌷
+        rp_recommended: 🍄
