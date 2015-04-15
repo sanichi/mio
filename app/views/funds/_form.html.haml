@@ -7,7 +7,7 @@
         = render "utils/text_field_for", shared.merge(param: :company, text: t("fund.company"), width: 6)
         = render "utils/select_for", shared.merge(param: :category, text: t("fund.category"), width: 4, menu: fund_category_menu(fund.category))
         = render "utils/select_for", shared.merge(param: :sector, text: t("fund.sector"), width: 4, menu: fund_sector_menu(fund.sector))
-        = render "utils/select_for", shared.merge(param: :star, text: t("fund.star"), width: 4, menu: fund_star_menu(fund.star))
+        = render "utils/select_for", shared.merge(param: :stars, text: t("fund.stars"), width: 4, menu: fund_stars_menu(fund.stars), multiple: true)
         = render "utils/text_field_for", shared.merge(param: :size, text: t("fund.size"), width: 3)
         = render "utils/text_field_for", shared.merge(param: :risk_reward_profile, text: t("fund.risk_reward_profile"), width: 2)
         = render "utils/text_field_for", shared.merge(param: :annual_fee, text: t("fund.annual_fee"), width: 2)

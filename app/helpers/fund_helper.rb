@@ -11,9 +11,8 @@ module FundHelper
     options_for_select(secs, selected)
   end
 
-  def fund_star_menu(selected)
-    stars = Fund::STARS.map { |star| [t("fund.star.#{star}"), star] }
-    stars.unshift [t("none"), ""]
+  def fund_stars_menu(selected)
+    stars = Fund::STARS.map { |star| [t("fund.stars.#{star}"), star] }
     options_for_select(stars, selected)
   end
 end

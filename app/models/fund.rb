@@ -1,5 +1,6 @@
 class Fund < ActiveRecord::Base
   include Pageable
+  serialize :stars, Array
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :returns, as: :returnable, dependent: :destroy
@@ -11,7 +12,7 @@ class Fund < ActiveRecord::Base
   MIN_FEE, MAX_FEE = 0.0, 5.0
   MIN_SIZE, MAX_SIZE = 0, 100000
   MAX_COMPANY, MAX_NAME = 50, 70
-  STARS = %w[tracker w150 w150p]
+  STARS = %w[hl_w150p hl_w150 hl_tracker rp_recommended]
   SECTORS = [
     "Asia Pacific Ex Japan", "Asia Pacific Inc Japan", "China",
     "Europe Excluding UK", "Europe Including UK", "European Smaller Companies",
@@ -26,7 +27,7 @@ class Fund < ActiveRecord::Base
     "UK Gilt", "UK Index Linked Gilt", "UK Smaller Companies", "Unclassified"
   ]
 
-  before_validation :check_star
+  before_validation :check_stars
 
   validates :annual_fee, numericality: { greater_than_or_equal_to: MIN_FEE, less_than_or_equal_to: MAX_FEE }
   validates :category, inclusion: { in: CATEGORIES }
@@ -34,7 +35,6 @@ class Fund < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: MAX_NAME }
   validates :risk_reward_profile, numericality: { integer_only: true, greater_than_or_equal_to: MIN_RRP, less_than_or_equal_to: MAX_RRP }
   validates :sector, inclusion: { in: SECTORS }
-  validates :star, inclusion: { in: STARS }, allow_nil: true
   validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
 
   def self.search(params, path)
@@ -49,6 +49,10 @@ class Fund < ActiveRecord::Base
     "%.2f%%" % annual_fee
   end
 
+  def formatted_stars
+    stars.map{ |star| I18n.t("fund.stars.short.#{star}") }.join(" ")
+  end
+
   def average_return(formatted=true)
     return unless returns.size > 0
     average = returns.map(&:percent).reduce(&:+) / returns.size
@@ -57,7 +61,26 @@ class Fund < ActiveRecord::Base
 
   private
 
-  def check_star
-    self.star = nil unless STARS.include?(star)
+  # Force stars to be valid:
+  #   * only valid entries,
+  #   * in consistent order,
+  #   * at most one with the same prefix.
+  def check_stars
+    prefix = {}
+    self.stars = STARS.select do |star|
+      if stars.include?(star)
+        if star.match(/\A(\w+_)/)
+          if prefix[$1]
+            false
+          else
+            prefix[$1] = true
+          end
+        else
+          true
+        end
+      else
+        false
+      end
+    end
   end
 end

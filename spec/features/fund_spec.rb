@@ -5,7 +5,7 @@ describe Fund do
 
   let(:data)     { build(:fund) }
   let(:category) { I18n.t("fund.category.#{data.category}") }
-  let(:star)     { I18n.t("fund.star.#{data.star}") }
+  let(:stars)    { data.stars.map { |star| I18n.t("fund.stars.#{star}") } }
 
   let(:error) { "div.help-block" }
 
@@ -21,7 +21,7 @@ describe Fund do
       fill_in fund_company, with: data.company
       select category, from: fund_category
       select data.sector, from: fund_sector
-      select star, from: fund_star
+      stars.each { |star| select star, from: fund_stars }
       fill_in fund_size, with: data.size
       fill_in fund_risk_reward_profile, with: data.risk_reward_profile
       fill_in fund_annual_fee, with: data.annual_fee
@@ -38,7 +38,7 @@ describe Fund do
       expect(f.company).to eq data.company
       expect(f.name).to eq data.name
       expect(f.size).to eq data.size
-      expect(f.star).to eq data.star
+      expect(f.stars).to eq data.stars
       expect(f.risk_reward_profile).to eq data.risk_reward_profile
       expect(f.performance_fee).to eq data.performance_fee
       expect(f.sector).to eq data.sector
@@ -51,7 +51,7 @@ describe Fund do
       fill_in fund_company, with: data.company
       select category, from: fund_category
       select data.sector, from: fund_sector
-      select star, from: fund_star
+      stars.each { |star| select star, from: fund_stars }
       fill_in fund_size, with: data.size
       fill_in fund_risk_reward_profile, with: data.risk_reward_profile
       fill_in fund_annual_fee, with: data.annual_fee
@@ -69,7 +69,7 @@ describe Fund do
       fill_in fund_company, with: data.company
       select category, from: fund_category
       select data.sector, from: fund_sector
-      select star, from: fund_star
+      stars.each { |star| select star, from: fund_stars }
       fill_in fund_size, with: data.size
       fill_in fund_risk_reward_profile, with: Fund::MAX_RRP + 1
       fill_in fund_annual_fee, with: data.annual_fee
@@ -83,7 +83,7 @@ describe Fund do
   end
 
   context "edit" do
-    let!(:fund) { create(:fund, category: "sicav") }
+    let(:fund) { create(:fund, category: "sicav", stars: ["hl_tracker", "rp_recommended"]) }
 
     it "success" do
       visit fund_path(fund)
@@ -91,7 +91,7 @@ describe Fund do
 
       expect(page).to have_title edit_fund
       select category, from: fund_category
-      select none, from: fund_star
+      fund.stars.each { |star| unselect I18n.t("fund.stars.#{star}"), from: fund_stars }
       click_button save
 
       expect(page).to have_title fund.name
@@ -100,7 +100,7 @@ describe Fund do
       f = Fund.first
 
       expect(f.category).to eq data.category
-      expect(f.star).to be_nil
+      expect(f.stars).to be_empty
     end
   end
 
