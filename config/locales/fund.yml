@@ -9,7 +9,7 @@ en:
     name: Name
     new: New Fund
     performance_fee: Performance Fee
-    risk_reward_profile: Risk-Reward Level
+    risk_reward_profile: Synthetic Risk and Reward Indicator
     sector: Sector
     size: Size (£m)
     category:
@@ -26,7 +26,7 @@ en:
     short:
       annual_fee: Fee
       performance_fee: Perf
-      risk_reward_profile: RRL
+      risk_reward_profile: SRRI
       size: Size
     star:
       star: Star
