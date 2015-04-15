@@ -25,7 +25,7 @@
             %td.text-center= t("fund.star.short.#{fund.star}") if fund.star.present?
             %td.text-center= fund.size
             %td= fund.sector
-            %td= t("fund.category.#{fund.category}")
+            %td= t("fund.category.short.#{fund.category}")
             - if can?(:create, Fund)
               %td.text-center
                 = link_to t("edit"), edit_fund_path(fund), class: "btn btn-info btn-xs"
