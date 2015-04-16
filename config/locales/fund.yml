@@ -14,11 +14,13 @@ en:
     size: Size (£m)
     category:
       category: Category
+      etf: Exchange Traded Fund
       icvc: Investment Company with Variable Capital
       oeic: Open Ended Investment Company
       sicav: Société d'investissement à Capital Variable
       ut: Unit Trust
       short:
+        etf: ETF
         icvc: ICVC
         oeic: OEIC
         sicav: SICAV
