@@ -9,10 +9,15 @@ class ReturnsController < ApplicationController
 
   def create
     @return = Return.new(strong_params(true))
+    @returnable = @return.returnable
     if @return.save
-      redirect_to @return.returnable
+      if params[:commit] == I18n.t("return.save_and_next")
+        @return = @returnable.returns.new(year: @return.year + 1)
+        render "new"
+      else
+        redirect_to @returnable
+      end
     else
-      @returnable = @return.returnable
       render "new"
     end
   end
