@@ -10,6 +10,7 @@ gem "therubyracer", platforms: :ruby
 gem "cancancan", "~> 1.10"
 gem "redcarpet", "~> 3.2"
 gem "sprockets", "~> 2.12" # version 3 has problem with manifest backup (file doesn't exist)
+gem "whenever", require: false
 
 group :development do
   gem "mysql2"
@@ -18,7 +19,7 @@ group :development do
   gem "capistrano-passenger"
   gem "quiet_assets"
   gem "wirble"
-  gem "awesome_print", require:"ap"
+  gem "awesome_print", require: "ap"
 end
 
 group :development, :test do
