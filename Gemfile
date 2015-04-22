@@ -9,7 +9,7 @@ gem "jquery-rails"
 gem "therubyracer", platforms: :ruby
 gem "cancancan", "~> 1.10"
 gem "redcarpet", "~> 3.2"
-gem "sprockets", "~> 2.12" # version 3 has problem with manifest backup (file doesn't exist)
+gem "sprockets", "~> 3.0" # version 3 has problem with manifest backup (file doesn't exist)
 
 group :development do
   gem "mysql2"
