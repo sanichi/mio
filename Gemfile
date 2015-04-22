@@ -14,6 +14,7 @@ gem "sprockets", "~> 2.12" # version 3 has problem with manifest backup (file do
 group :development do
   gem "mysql2"
   gem "capistrano-rails"
+  gem "capistrano-rails-console"
   gem "capistrano-passenger"
   gem "quiet_assets"
   gem "wirble"
