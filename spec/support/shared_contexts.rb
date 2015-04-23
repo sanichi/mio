@@ -55,7 +55,8 @@ shared_context "test_data" do
   let(:fund_category)            { I18n.t("fund.category.category") }
   let(:fund_company)             { I18n.t("fund.company") }
   let(:fund_performance_fee)     { I18n.t("fund.performance_fee") }
-  let(:fund_risk_reward_profile) { I18n.t("fund.risk_reward_profile") }
+  let(:fund_srri)                { I18n.t("fund.srri") }
+  let(:fund_srri_estimated)      { I18n.t("fund.srri_estimated") }
   let(:fund_sector)              { I18n.t("fund.sector") }
   let(:fund_size)                { I18n.t("fund.size") }
   let(:fund_stars)               { I18n.t("fund.stars.stars") }

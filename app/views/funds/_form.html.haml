@@ -9,7 +9,8 @@
         = render "utils/select_for", shared.merge(param: :sector, text: t("fund.sector"), width: 4, menu: fund_sector_menu(fund.sector))
         = render "utils/select_for", shared.merge(param: :stars, text: t("fund.stars"), width: 4, menu: fund_stars_menu(fund.stars), multiple: true)
         = render "utils/text_field_for", shared.merge(param: :size, text: t("fund.size"), width: 3)
-        = render "utils/text_field_for", shared.merge(param: :risk_reward_profile, text: t("fund.risk_reward_profile"), width: 2)
+        = render "utils/text_field_for", shared.merge(param: :srri, text: t("fund.srri"), width: 2)
+        = render "utils/check_box_for", shared.merge(param: :srri_estimated, text: t("fund.srri_estimated"), width: 1)
         = render "utils/text_field_for", shared.merge(param: :annual_fee, text: t("fund.annual_fee"), width: 2)
         = render "utils/check_box_for", shared.merge(param: :performance_fee, text: t("fund.performance_fee"), width: 1)
       .row

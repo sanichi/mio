@@ -5,7 +5,8 @@ FactoryGirl.define do
     company             "Premier Asset Management"
     name                "Premier Defensive Growth - Class C"
     performance_fee     false
-    risk_reward_profile 3
+    srri                3
+    srri_estimated      true
     sector              "Targeted Absolute Return"
     size                246
     stars               ["hl_w150"]

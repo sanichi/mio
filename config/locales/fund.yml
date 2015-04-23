@@ -9,26 +9,29 @@ en:
     name: Name
     new: New Fund
     performance_fee: Performance Fee
-    risk_reward_profile: Synthetic Risk-Reward Indicator
+    srri: Synthetic Risk-Reward Indicator
+    srri_estimated: SRRI Estimated
     sector: Sector
     size: Size (£m)
     category:
       category: Category
       etf: Exchange Traded Fund
       icvc: Investment Company with Variable Capital
+      it: Investment Trust
       oeic: Open Ended Investment Company
       sicav: Société d'investissement à Capital Variable
       ut: Unit Trust
       short:
         etf: ETF
         icvc: ICVC
+        it: IT
         oeic: OEIC
         sicav: SICAV
         ut: UT
     short:
       annual_fee: Fee
       performance_fee: Perf
-      risk_reward_profile: SRRI
+      srri: SRRI
       size: Size
     stars:
       stars: Stars

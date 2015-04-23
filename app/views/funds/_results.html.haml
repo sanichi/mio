@@ -1,7 +1,7 @@
 - funds.matches.each do |fund|
   %tr
     %td= link_to fund.name, fund
-    %td.text-center= fund.risk_reward_profile
+    %td.text-center= fund.formatted_srri
     %td.text-right= fund.average_return
     %td.text-right= fund.formatted_annual_fee
     %td= fund.formatted_stars

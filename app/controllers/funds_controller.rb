@@ -43,6 +43,6 @@ class FundsController < ApplicationController
   end
 
   def strong_params
-    params.require(:fund).permit(:annual_fee, :category, :company, :name, :risk_reward_profile, :performance_fee, :sector, :size, stars: [])
+    params.require(:fund).permit(:annual_fee, :category, :company, :name, :srri, :srri_estimated, :performance_fee, :sector, :size, stars: [])
   end
 end
