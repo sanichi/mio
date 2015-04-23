@@ -1,0 +1,9 @@
+- uploads.matches.each do |upload|
+  %tr
+    %td= link_to upload.name, upload
+    %td.text-center= upload.created_at.to_s(:nosec)
+    %td.text-center= upload.size
+    %td= upload.content_type
+    %td.text-center= t(upload.error.blank?? "tick" : "cross")
+    %td.text-center= link_to_if upload.transactions.size > 0, upload.transactions.size, transactions_path(upload_id: upload.id), class: "btn btn-info btn-xs"
+= render "utils/pagination_links", pager: uploads, columns: 6

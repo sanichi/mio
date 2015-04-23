@@ -37,12 +37,12 @@ class Fund < ActiveRecord::Base
   validates :sector, inclusion: { in: SECTORS }
   validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
 
-  def self.search(params, path)
-    matches = Fund.all
+  def self.search(params, path, opt={})
+    matches = Fund.includes(:comments).includes(:returns)
     matches = where(category: params[:category]) if CATEGORIES.include?(params[:category])
     matches = where("company LIKE '%#{params[:company]}") if params[:company].present?
     matches = where("name LIKE '%#{params[:name]}") if params[:name].present?
-    paginate(matches, params, path)
+    paginate(matches, params, path, opt)
   end
 
   def formatted_annual_fee

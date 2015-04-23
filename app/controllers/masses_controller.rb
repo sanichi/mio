@@ -4,7 +4,7 @@ class MassesController < ApplicationController
   before_action :get_unit, only: [:index, :graph]
 
   def index
-    @masses = Mass.search(params, masses_path)
+    @masses = Mass.search(params, masses_path, remote: true)
   end
 
   def graph

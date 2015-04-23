@@ -15,21 +15,8 @@
           %th= t("fund.category.category")
           - if can?(:create, Fund)
             %th
-      %tbody
-        - @funds.matches.each do |fund|
-          %tr
-            %td= link_to fund.name, fund
-            %td.text-center= fund.risk_reward_profile
-            %td.text-right= fund.average_return
-            %td.text-right= fund.formatted_annual_fee
-            %td= fund.formatted_stars
-            %td.text-right= fund.size
-            %td= fund.sector
-            %td= t("fund.category.short.#{fund.category}")
-            - if can?(:create, Fund)
-              %td.text-center
-                = link_to t("edit"), edit_fund_path(fund), class: "btn btn-info btn-xs"
-        = render "utils/pagination_links", pager: @funds, columns: 8 + (can?(:create, Fund) ? 1 : 0)
+      %tbody{id: "results"}
+        = render "results", funds: @funds
 
 .text-center
   - if can?(:create, Fund)

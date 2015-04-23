@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
   authorize_resource
 
   def index
-    @transactions = Transaction.search(params, transactions_path)
+    @transactions = Transaction.search(params, transactions_path, remote: true)
   end
 
   def show

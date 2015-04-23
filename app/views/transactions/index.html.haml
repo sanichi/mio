@@ -1,7 +1,7 @@
 = render "utils/title", key: "transaction.transactions"
 
 .text-center
-  = form_tag transactions_path, method: :get, class: "form-inline", role: "form" do
+  = form_tag transactions_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
       = label_tag :description, t("transaction.description"), class: "sr-only"
       = text_field_tag :description, params[:description], class: "form-control", placeholder: t("transaction.description"), size: 20
@@ -23,14 +23,8 @@
           %th.col-md-1.text-center= t("transaction.value")
           %th.col-md-6= t("transaction.description")
           %th.col-md-3= t("transaction.reference")
-      %tbody
-        - @transactions.matches.each do |transaction|
-          %tr
-            %td.text-center= transaction.trade_date
-            %td.text-right= "%.2f" % transaction.value
-            %td= link_to transaction.description, transaction
-            %td= transaction.reference
-        = render "utils/pagination_links", pager: @transactions, columns: 4
+      %tbody{id: "results"}
+        = render "results", transactions: @transactions
 
 .text-center
   = link_to t("transaction.summary"), summary_transactions_path, class: "btn btn-success"

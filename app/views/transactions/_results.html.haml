@@ -1,0 +1,7 @@
+- transactions.matches.each do |transaction|
+  %tr
+    %td.text-center= transaction.trade_date
+    %td.text-right= "%.2f" % transaction.value
+    %td= link_to transaction.description, transaction
+    %td= transaction.reference
+= render "utils/pagination_links", pager: transactions, columns: 4

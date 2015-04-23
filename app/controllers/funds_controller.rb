@@ -3,7 +3,7 @@ class FundsController < ApplicationController
   before_action :find_fund, only: [:edit, :update, :destroy]
 
   def index
-    @funds = Fund.search(params, funds_path)
+    @funds = Fund.search(params, funds_path, remote: true)
   end
 
   def show

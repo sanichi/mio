@@ -2,7 +2,7 @@ class UploadsController < ApplicationController
   authorize_resource
 
   def index
-    @uploads = Upload.search(params, uploads_path)
+    @uploads = Upload.search(params, uploads_path, per_page: 1, remote: true)
   end
 
   def show
