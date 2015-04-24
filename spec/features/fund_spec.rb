@@ -23,7 +23,7 @@ describe Fund do
       select data.sector, from: fund_sector
       stars.each { |star| select star, from: fund_stars }
       fill_in fund_size, with: data.size
-      fill_in fund_srri, with: data.srri
+      select data.srri, from: fund_srri
       check fund_srri_estimated if data.srri_estimated
       fill_in fund_annual_fee, with: data.annual_fee
       check fund_performance_fee if data.performance_fee
@@ -55,7 +55,7 @@ describe Fund do
       select data.sector, from: fund_sector
       stars.each { |star| select star, from: fund_stars }
       fill_in fund_size, with: data.size
-      fill_in fund_srri, with: data.srri
+      select data.srri, from: fund_srri
       check fund_srri_estimated if data.srri_estimated
       fill_in fund_annual_fee, with: data.annual_fee
       check fund_performance_fee if data.performance_fee
@@ -64,25 +64,6 @@ describe Fund do
       expect(page).to have_title new_fund
       expect(Fund.count).to eq 0
       expect(page).to have_css(error, text: "blank")
-    end
-
-    it "invalid risk reward profile" do
-      click_link new_fund
-      fill_in name, with: data.name
-      fill_in fund_company, with: data.company
-      select category, from: fund_category
-      select data.sector, from: fund_sector
-      stars.each { |star| select star, from: fund_stars }
-      fill_in fund_size, with: data.size
-      fill_in fund_srri, with: Fund::MAX_RRP + 1
-      check fund_srri_estimated if data.srri_estimated
-      fill_in fund_annual_fee, with: data.annual_fee
-      check fund_performance_fee if data.performance_fee
-      click_button save
-
-      expect(page).to have_title new_fund
-      expect(Fund.count).to eq 0
-      expect(page).to have_css(error, text: "less than")
     end
   end
 

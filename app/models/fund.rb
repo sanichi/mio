@@ -8,7 +8,7 @@ class Fund < ActiveRecord::Base
   default_scope { order(srri: :desc, annual_fee: :asc) }
 
   CATEGORIES = %w/etf icvc it oeic sicav ut/
-  MIN_RRP, MAX_RRP = 1, 7
+  MIN_SRRI, MAX_SRRI = 1, 7
   MIN_FEE, MAX_FEE = 0.0, 5.0
   MIN_SIZE, MAX_SIZE = 0, 100000
   MAX_COMPANY, MAX_NAME = 50, 70
@@ -33,7 +33,7 @@ class Fund < ActiveRecord::Base
   validates :category, inclusion: { in: CATEGORIES }
   validates :company, presence: true, length: { maximum: MAX_COMPANY }
   validates :name, presence: true, length: { maximum: MAX_NAME }
-  validates :srri, numericality: { integer_only: true, greater_than_or_equal_to: MIN_RRP, less_than_or_equal_to: MAX_RRP }
+  validates :srri, numericality: { integer_only: true, greater_than_or_equal_to: MIN_SRRI, less_than_or_equal_to: MAX_SRRI }
   validates :sector, inclusion: { in: SECTORS }
   validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
 
