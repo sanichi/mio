@@ -1,5 +1,27 @@
 = render "utils/title", key: "fund.funds"
 
+.text-center
+  = form_tag funds_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    - width = 7
+    .form-group
+      = label_tag :name, t("name"), class: "sr-only"
+      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: width
+    .form-group
+      = label_tag :company, t("fund.company"), class: "sr-only"
+      = text_field_tag :company, params[:company], class: "form-control", placeholder: t("fund.company"), size: width
+    .form-group
+      = label_tag :srri, t("fund.srri"), class: "sr-only"
+      = text_field_tag :srri, params[:srri], class: "form-control", placeholder: t("fund.short.srri"), size: width
+    .form-group
+      = label_tag :annual_fee, t("fund.annual_fee"), class: "sr-only"
+      = text_field_tag :annual_fee, params[:annual_fee], class: "form-control", placeholder: t("fund.short.annual_fee"), size: width
+    .form-group
+      = label_tag :size, t("fund.size"), class: "sr-only"
+      = text_field_tag :size, params[:size], class: "form-control", placeholder: t("fund.short.size"), size: width
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+%p
+
 .row
   .col-md-12
     %table{class: "table table-bordered table-striped"}

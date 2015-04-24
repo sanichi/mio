@@ -1,4 +1,5 @@
 class Fund < ActiveRecord::Base
+  include Constrainable
   include Pageable
   serialize :stars, Array
 
@@ -39,9 +40,14 @@ class Fund < ActiveRecord::Base
 
   def self.search(params, path, opt={})
     matches = Fund.includes(:comments).includes(:returns)
-    matches = where(category: params[:category]) if CATEGORIES.include?(params[:category])
-    matches = where("company LIKE '%#{params[:company]}") if params[:company].present?
-    matches = where("name LIKE '%#{params[:name]}") if params[:name].present?
+    matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
+    matches = matches.where("company LIKE '%#{params[:company]}%'") if params[:company].present?
+    matches = matches.where("name LIKE '%#{params[:name]}%'") if params[:name].present?
+    [[:srri, 0], [:annual_fee, 2], [:size, 0]].each do |constraints|
+      column, digits = constraints
+      constraint = Fund.constraint(params[column], column, digits: digits)
+      matches = matches.where(constraint) if constraint
+    end
     paginate(matches, params, path, opt)
   end
 
@@ -50,7 +56,7 @@ class Fund < ActiveRecord::Base
   end
 
   def formatted_stars
-    stars.map{ |star| I18n.t("fund.stars.short.#{star}") }.join(" ")
+    stars.map{ |star| I18n.t("fund.stars.short.#{star}") }.join("&nbsp;").html_safe
   end
 
   def formatted_srri
