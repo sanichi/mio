@@ -48,6 +48,10 @@ class Fund < ActiveRecord::Base
       constraint = Fund.constraint(params[column], column, digits: digits)
       matches = matches.where(constraint) if constraint
     end
+    if params[:stars].present? && ActiveRecord::Base.connection.class.name.match(/PostgreSQl/i)
+      constraint = Fund.constraint(params[:stars], "coalesce(array_length(regexp_split_to_array(stars,E'\\n+'),1),2) - 2")
+      matches = matches.where(constraint) if constraint
+    end
     paginate(matches, params, path, opt)
   end
 

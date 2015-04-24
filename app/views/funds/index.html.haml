@@ -16,6 +16,9 @@
       = label_tag :annual_fee, t("fund.annual_fee"), class: "sr-only"
       = text_field_tag :annual_fee, params[:annual_fee], class: "form-control", placeholder: t("fund.short.annual_fee"), size: width
     .form-group
+      = label_tag :stars, t("fund.stars.stars"), class: "sr-only"
+      = text_field_tag :stars, params[:stars], class: "form-control", placeholder: t("fund.stars.stars"), size: width
+    .form-group
       = label_tag :size, t("fund.size"), class: "sr-only"
       = text_field_tag :size, params[:size], class: "form-control", placeholder: t("fund.short.size"), size: width
     = button_tag t("search"), type: "submit", class: "btn btn-success"
