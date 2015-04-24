@@ -5,7 +5,7 @@
     = form_for @upload, html: { class: "form-horizontal", role: "form", multipart: true } do |f|
       %fieldset
         - shared = { form: f, object: @upload, col: "md", pad: 4 }
-        = render "utils/select_for", shared.merge(param: :account, text: t("upload.account.acc"), width: 4, menu: upload_account_menu(@upload.account))
+        = render "utils/select_for", shared.merge(param: :account, text: t("upload.account.acc"), width: 4, menu: upload_account_menu(@upload))
         = render "utils/file_field_for", shared.merge(param: :file, text: t("upload.file"), width: 4)
       .row
         .col-md-offset-4.col-md-8

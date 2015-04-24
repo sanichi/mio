@@ -4,8 +4,8 @@
       %fieldset
         - shared = { form: f, object: expense, col: "md", pad: 4 }
         = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
-        = render "utils/select_for", shared.merge(param: :category, text: t("expense.category"), width: 4, menu: expense_category_menu(expense.category))
-        = render "utils/select_for", shared.merge(param: :period, text: t("expense.period"), width: 4, menu: expense_period_menu(expense.period))
+        = render "utils/select_for", shared.merge(param: :category, text: t("expense.category"), width: 4, menu: expense_category_menu(expense))
+        = render "utils/select_for", shared.merge(param: :period, text: t("expense.period"), width: 4, menu: expense_period_menu(expense))
         = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
       .row
         .col-md-offset-4.col-md-8
