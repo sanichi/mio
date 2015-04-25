@@ -14,7 +14,6 @@
         = render "results", masses: @masses, unit: @unit
 
 .text-center
-  = link_to t("graph"), graph_masses_path(unit: @unit.key), class: "btn btn-success"
-  = render "units", unit: @unit, path: :masses_path
+  %span{id: "units"}= render "units", masses: @masses, unit: @unit
   - if can?(:create, Mass)
     = link_to t("mass.new"), new_mass_path, class: "btn btn-info"

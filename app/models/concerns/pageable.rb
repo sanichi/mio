@@ -20,7 +20,7 @@ module Pageable
 
     def initialize(matches, params, path, per_page, page, count, remote)
       @matches  = matches
-      @params   = params
+      @params   = params.reject{ |key,val| %w[action controller button utf8].include?(key) }
       @path     = path
       @per_page = per_page
       @page     = page
@@ -41,19 +41,19 @@ module Pageable
     end
 
     def frst_page
-      page_path(1)
+      page_path(page: 1)
     end
 
     def next_page
-      page_path(@page + 1)
+      page_path(page: @page + 1)
     end
 
     def prev_page
-      page_path(@page - 1)
+      page_path(page: @page - 1)
     end
 
     def last_page
-      page_path(1 + (@count > 0 ? (@count - 1) / @per_page : 0))
+      page_path(page: 1 + (@count > 0 ? (@count - 1) / @per_page : 0))
     end
 
     def min_and_max
@@ -71,16 +71,16 @@ module Pageable
       "_" + ids.join("_") + "_"
     end
 
-    private
-
-    def page_path(page)
-      @path + "?" + query_params(page)
+    def page_path(extra={})
+      @path + "?" + merge_params(extra)
     end
 
-    def query_params(page)
-      params = @params.dup
-      [:action, :controller, :button, :utf8].each { |key| params.delete(key) }
-      params.merge(page: page).to_query
+    private
+
+    def merge_params(extra)
+      params = @params.merge(extra)
+      params[:page] ||= @page
+      params.to_query
     end
   end
 end

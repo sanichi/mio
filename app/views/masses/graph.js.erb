@@ -1,0 +1,11 @@
+// Overwrite the old raw data.
+raw_data = <%= render "raw_data", mgd: @mgd %>
+
+// Overwrite the old dynamic options.
+dynamic_options = <%= render "dynamic_options", mgd: @mgd %>
+
+// Redraw the graph.
+drawChart();
+
+// Update the unit-dependent buttons.
+$("#units").html("<%= j render('units', unit: @unit, path: :graph_masses_path) %>");

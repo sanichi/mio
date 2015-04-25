@@ -1,1 +1,5 @@
+// Update the results in the table.
 $("#results").html("<%= j render('results', masses: @masses, unit: @unit) %>");
+
+// Update the unit dependent buttons.
+$("#units").html("<%= j render('units', masses: @masses, unit: @unit) %>");

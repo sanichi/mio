@@ -4,15 +4,17 @@ google.load("visualization", "1", { packages:["corechart"] });
 // Set a callback to run when the Google Visualization API is loaded.
 google.setOnLoadCallback(drawChart);
 
+// Create the raw data (in the mass-graph-data object).
+var raw_data = <%= render "raw_data.js", mgd: mgd %>
+
+// Create options that depend on the current state (in mgd).
+var dynamic_options = <%= render "dynamic_options.js", mgd: mgd %>
+
 // Callback that instantiates the scatter chart, passes in the data and draws it.
 function drawChart()
 {
   // Create the data table.
-  var data = google.visualization.arrayToDataTable([
-<% mgd.data_rows.each do |row| %>
-  <%= row %>
-<% end %>
-  ]);
+  var data = google.visualization.arrayToDataTable(raw_data);
 
   // Format values in tooltips.
   var date_formatter = new google.visualization.DateFormat({ pattern: "EEE, MMM d yyyy" });
@@ -21,7 +23,7 @@ function drawChart()
   mass_formatter.format(data, 1);
   mass_formatter.format(data, 2);
 
-  // Set chart options.
+  // Get fixed chart options.
   var options = {
     chartArea: {
       left: "10%",
@@ -30,19 +32,11 @@ function drawChart()
     series: {
       0: { pointShape: { type: "circle" } },
       1: { pointShape: { type: "diamond" } }
-    },
-    hAxis: {
-      title: <%= mgd.date_title %>,
-      viewWindow: <%= mgd.date_window %>,
-      gridlines: <%= mgd.gridlines %>,
-      minorGridlines: <%= mgd.minor_gridlines %>
-    },
-    vAxis: {
-      title: <%= mgd.mass_title %>,
-      viewWindow: <%= mgd.mass_window %>,
-      ticks: <%= mgd.mass_ticks %>
     }
   };
+  
+  // Mix the fixed and dynamic options.
+  $.extend(options, dynamic_options);
 
   // Instantiate and draw the chart, passing in some options.
   var chart = new google.visualization.ScatterChart(document.getElementById("chart"));
