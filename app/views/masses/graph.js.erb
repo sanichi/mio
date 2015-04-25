@@ -8,4 +8,4 @@ dynamic_options = <%= render "dynamic_options", mgd: @mgd %>
 drawChart();
 
 // Update the unit-dependent buttons.
-$("#units").html("<%= j render('units', unit: @unit, path: :graph_masses_path) %>");
+$("#unit_buttons").html("<%= j render('unit_buttons', unit: @unit, path: :graph_masses_path) %>");

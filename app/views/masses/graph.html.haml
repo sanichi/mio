@@ -1,7 +1,7 @@
 - content_for :head do
   = javascript_include_tag "https://www.google.com/jsapi"
 - content_for :javascript do
-  = render "graph.js", mgd: @mgd
+  = render "draw_graph.js", mgd: @mgd
 
 = render "utils/title", key: "mass.data"
 
@@ -10,6 +10,6 @@
 %p
 
 .text-center
-  %span{id: "units"}= render "units", unit: @unit, path: :graph_masses_path
+  %span{id: "unit_buttons"}= render "unit_buttons", unit: @unit, path: :graph_masses_path
   - if can?(:create, Mass)
     = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
