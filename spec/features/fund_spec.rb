@@ -4,6 +4,7 @@ describe Fund do
   include_context "test_data"
 
   let(:data)     { build(:fund) }
+  let(:attrs)    { attributes_for(:fund) }
   let(:category) { I18n.t("fund.category.#{data.category}") }
   let(:stars)    { data.stars.map { |star| I18n.t("fund.stars.#{star}") } }
 
@@ -64,6 +65,28 @@ describe Fund do
       expect(page).to have_title new_fund
       expect(Fund.count).to eq 0
       expect(page).to have_css(error, text: "blank")
+    end
+
+    it "dulpicate name" do
+      Fund.create(attrs)
+      expect(Fund.count).to eq 1
+
+      click_link new_fund
+      fill_in name, with: data.name
+      fill_in fund_company, with: data.company
+      select category, from: fund_category
+      select data.sector, from: fund_sector
+      stars.each { |star| select star, from: fund_stars }
+      fill_in fund_size, with: data.size
+      select data.srri, from: fund_srri
+      check fund_srri_estimated if data.srri_estimated
+      fill_in fund_annual_fee, with: data.annual_fee
+      check fund_performance_fee if data.performance_fee
+      click_button save
+
+      expect(page).to have_title new_fund
+      expect(Fund.count).to eq 1
+      expect(page).to have_css(error, text: "taken")
     end
   end
 

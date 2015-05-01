@@ -33,7 +33,7 @@ class Fund < ActiveRecord::Base
   validates :annual_fee, numericality: { greater_than_or_equal_to: MIN_FEE, less_than_or_equal_to: MAX_FEE }
   validates :category, inclusion: { in: CATEGORIES }
   validates :company, presence: true, length: { maximum: MAX_COMPANY }
-  validates :name, presence: true, length: { maximum: MAX_NAME }
+  validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
   validates :srri, numericality: { integer_only: true, greater_than_or_equal_to: MIN_SRRI, less_than_or_equal_to: MAX_SRRI }
   validates :sector, inclusion: { in: SECTORS }
   validates :size, numericality: { integer_only: true, greater_than_or_eqoal_to: MIN_SIZE, less_than: MAX_SIZE }
