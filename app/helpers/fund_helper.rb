@@ -5,6 +5,12 @@ module FundHelper
     options_for_select(cats, fund.category)
   end
 
+  def fund_category_search_menu(category)
+    cats = Fund::CATEGORIES.map { |cat| [t("fund.category.short.#{cat}"), cat] }
+    cats.unshift [t("any"), ""]
+    options_for_select(cats, category)
+  end
+
   def fund_sector_menu(fund)
     secs = Fund::SECTORS.map { |sec| [sec, sec] }
     secs.unshift [t("select"), ""] if fund.new_record?

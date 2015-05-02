@@ -21,6 +21,9 @@
     .form-group
       = label_tag :size, t("fund.size"), class: "sr-only"
       = text_field_tag :size, params[:size], class: "form-control", placeholder: t("fund.short.size"), size: width
+    .form-group
+      = label_tag :category, t("fund.category"), class: "sr-only"
+      = select_tag :category, fund_category_search_menu(params[:category]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 %p
