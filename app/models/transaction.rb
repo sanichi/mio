@@ -45,8 +45,8 @@ class Transaction < ActiveRecord::Base
   def self.search(params, path, opt={})
     matches = ordered
     matches = matches.where(upload_id: params[:upload_id].to_i) if params[:upload_id].to_i > 0
-    matches = matches.where("description LIKE ?", "%#{params[:description]}%") if params[:description].present?
-    matches = matches.where("reference LIKE ?", "%#{params[:reference]}%") if params[:reference].present?
+    matches = matches.where("description ILIKE ?", "%#{params[:description]}%") if params[:description].present?
+    matches = matches.where("reference ILIKE ?", "%#{params[:reference]}%") if params[:reference].present?
     paginate(matches, params, path, opt)
   end
 
