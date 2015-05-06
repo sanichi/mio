@@ -17,7 +17,7 @@ class FundsController < ApplicationController
   def create
     @fund = Fund.new(strong_params)
     if @fund.save
-      redirect_to funds_path
+      redirect_to @fund
     else
       render "new"
     end

@@ -30,7 +30,7 @@ describe Fund do
       check fund_performance_fee if data.performance_fee
       click_button save
 
-      expect(page).to have_title funds
+      expect(page).to have_title data.name
 
       expect(Fund.count).to eq 1
       f = Fund.first
