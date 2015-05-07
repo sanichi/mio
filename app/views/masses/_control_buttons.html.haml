@@ -1,12 +1,19 @@
-- graph = defined?(mgd)
-- paths = %w/masses_path graph_masses_path/
-- paths.reverse! if graph
-
-= link_to t(graph ? "list" : "graph"), send(paths.last, unit: unit.key), class: "btn btn-success"
-- Mass::UNITS.keys.each do |u|
-  - unless u == unit.key
-    = link_to t("mass.unit.#{u}"), graph ? send(paths.first, unit: u, start: mgd.start) : masses.page_path(unit: u), remote: true, class: "btn btn-success"
-- if graph
+- if defined?(mgd)
+  - Mass::UNITS.keys.each do |u|
+    - if u == unit.key
+      .btn.btn-default= t("mass.unit.short.#{u}")
+    - else
+      = link_to t("mass.unit.short.#{u}"), graph_masses_path(unit: u, start: mgd.start), remote: true, class: "btn btn-success"
   - mgd.start_options.each do |text, option|
-    - unless option == mgd.start
+    - if option == mgd.start
+      .btn.btn-default= text
+    - else
       = link_to text, graph_masses_path(unit: unit.key, start: option), class: "btn btn-success"
+  = link_to t("list"), masses_path(unit: unit.key), class: "btn btn-info"
+- else
+  - Mass::UNITS.keys.each do |u|
+    - if u == unit.key
+      .btn.btn-default= t("mass.unit.short.#{u}")
+    - else
+      = link_to t("mass.unit.short.#{u}"), masses.page_path(unit: u), remote: true, class: "btn btn-success"
+  = link_to t("graph"), graph_masses_path(unit: unit.key), class: "btn btn-info"
