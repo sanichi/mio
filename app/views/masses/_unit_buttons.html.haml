@@ -1,6 +1,0 @@
-- graph = defined?(path)
-
-= link_to t(graph ? "list" : "graph"), send("#{graph ? '' : 'graph_'}masses_path", unit: unit.key), class: "btn btn-success"
-- Mass::UNITS.keys.each do |u|
-  - unless u == unit.key
-    = link_to t("mass.unit.#{u}"), graph ? send(path, unit: u) : masses.page_path(unit: u), remote: true, class: "btn btn-success"

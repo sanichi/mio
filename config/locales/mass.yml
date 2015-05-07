@@ -7,6 +7,10 @@ en:
     mass: Mass
     new: New Measurement
     start: Morning
+    options:
+      all: All
+      month: 1M
+      months: "%{months}M"
     unit:
       kg: Kilos
       lb: Pounds

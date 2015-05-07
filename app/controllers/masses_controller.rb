@@ -2,13 +2,14 @@ class MassesController < ApplicationController
   authorize_resource
   before_action :find_mass, only: [:edit, :update, :destroy]
   before_action :get_unit, only: [:index, :graph]
+  before_action :get_start, only: :graph
 
   def index
     @masses = Mass.search(params, masses_path, remote: true)
   end
 
   def graph
-    @mgd = MassGraphData.new(@unit)
+    @mgd = MassGraphData.new(@unit, @start)
   end
 
   def new
@@ -46,6 +47,10 @@ class MassesController < ApplicationController
 
   def get_unit
     @unit = Mass::UNITS[params[:unit].try(:to_sym)] || Mass::DEFAULT_UNIT
+  end
+
+  def get_start
+    @start = params[:start] || Mass::DEFAULT_START
   end
 
   def strong_params

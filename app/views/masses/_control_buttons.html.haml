@@ -1,0 +1,12 @@
+- graph = defined?(mgd)
+- paths = %w/masses_path graph_masses_path/
+- paths.reverse! if graph
+
+= link_to t(graph ? "list" : "graph"), send(paths.last, unit: unit.key), class: "btn btn-success"
+- Mass::UNITS.keys.each do |u|
+  - unless u == unit.key
+    = link_to t("mass.unit.#{u}"), graph ? send(paths.first, unit: u, start: mgd.start) : masses.page_path(unit: u), remote: true, class: "btn btn-success"
+- if graph
+  - mgd.start_options.each do |text, option|
+    - unless option == mgd.start
+      = link_to text, graph_masses_path(unit: unit.key, start: option), class: "btn btn-success"

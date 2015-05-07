@@ -14,6 +14,6 @@
         = render "results", masses: @masses, unit: @unit
 
 .text-center
-  %span{id: "unit_buttons"}= render "unit_buttons", masses: @masses, unit: @unit
+  %span{id: "control_buttons"}= render "control_buttons", masses: @masses, unit: @unit
   - if can?(:create, Mass)
     = link_to t("mass.new"), new_mass_path, class: "btn btn-info"

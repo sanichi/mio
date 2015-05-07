@@ -10,6 +10,6 @@
 %p
 
 .text-center
-  %span{id: "unit_buttons"}= render "unit_buttons", unit: @unit, path: :graph_masses_path
+  %span{id: "control_buttons"}= render "control_buttons", unit: @unit, mgd: @mgd
   - if can?(:create, Mass)
     = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
