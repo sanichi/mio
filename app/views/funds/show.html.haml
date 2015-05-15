@@ -34,9 +34,10 @@
 
 .text-center
   = link_to t("fund.funds"), funds_path, class: "btn btn-success"
-  = link_to t("edit"), edit_fund_path(@fund), class: "btn btn-info"
-  = link_to t("return.new"), new_fund_return_path(@fund), class: "btn btn-info"
-  = link_to t("comment.new"), new_fund_comment_path(@fund), class: "btn btn-info"
+  - if can?(:manage, Fund)
+    = link_to t("edit"), edit_fund_path(@fund), class: "btn btn-info"
+    = link_to t("return.new"), new_fund_return_path(@fund), class: "btn btn-info"
+    = link_to t("comment.new"), new_fund_comment_path(@fund), class: "btn btn-info"
 
 = render "returns/index", returnable: @fund, returns: @fund.returns
 = render "comments/index", commentable: @fund, comments: @fund.comments, date_format: "%b %Y"

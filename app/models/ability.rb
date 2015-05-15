@@ -8,5 +8,6 @@ class Ability
     end
 
     can [:read, :graph], Mass
+    can :read, Fund
   end
 end
