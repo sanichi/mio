@@ -1,4 +1,4 @@
-set :output, "log/cron.log"
+set :output, "#{path}/log/cron.log"
 set :job_template, nil
 
 every :day, at: "4:30 am" do
