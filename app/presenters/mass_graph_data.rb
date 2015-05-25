@@ -56,8 +56,8 @@ class MassGraphData
         max = @data.last.date.days_since(1)
       else
         min = Date.today.months_ago(start)
+        max = Date.today.days_since(1)
         @data.reject! { |mass| mass.date < min }
-        max = Date.today
       end
     else
       min = Date.today.beginning_of_month
