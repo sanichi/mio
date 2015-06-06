@@ -4,6 +4,7 @@ shared_context "test_data" do
   let(:delete)      { I18n.t("delete") }
   let(:description) { I18n.t("description") }
   let(:edit)        { I18n.t("edit") }
+  let(:email)       { I18n.t("email") }
   let(:name)        { I18n.t("name") }
   let(:none)        { I18n.t("none") }
   let(:save)        { I18n.t("save") }
@@ -50,18 +51,18 @@ shared_context "test_data" do
   let(:joint)           { I18n.t("income.joint") }
   let(:new_income)      { I18n.t("income.new") }
 
-  let(:fund_annual_fee)          { I18n.t("fund.annual_fee") }
-  let(:edit_fund)                { I18n.t("fund.edit") }
-  let(:fund_category)            { I18n.t("fund.category.category") }
-  let(:fund_company)             { I18n.t("fund.company") }
-  let(:fund_performance_fee)     { I18n.t("fund.performance_fee") }
-  let(:fund_srri)                { I18n.t("fund.srri") }
-  let(:fund_srri_estimated)      { I18n.t("fund.srri_estimated") }
-  let(:fund_sector)              { I18n.t("fund.sector") }
-  let(:fund_size)                { I18n.t("fund.size") }
-  let(:fund_stars)               { I18n.t("fund.stars.stars") }
-  let(:funds)                    { I18n.t("fund.funds") }
-  let(:new_fund)                 { I18n.t("fund.new") }
+  let(:fund_annual_fee)      { I18n.t("fund.annual_fee") }
+  let(:edit_fund)            { I18n.t("fund.edit") }
+  let(:fund_category)        { I18n.t("fund.category.category") }
+  let(:fund_company)         { I18n.t("fund.company") }
+  let(:fund_performance_fee) { I18n.t("fund.performance_fee") }
+  let(:fund_srri)            { I18n.t("fund.srri") }
+  let(:fund_srri_estimated)  { I18n.t("fund.srri_estimated") }
+  let(:fund_sector)          { I18n.t("fund.sector") }
+  let(:fund_size)            { I18n.t("fund.size") }
+  let(:fund_stars)           { I18n.t("fund.stars.stars") }
+  let(:funds)                { I18n.t("fund.funds") }
+  let(:new_fund)             { I18n.t("fund.new") }
 
   let(:comment_source) { I18n.t("comment.source") }
   let(:comment_text)   { I18n.t("comment.text") }
@@ -72,4 +73,9 @@ shared_context "test_data" do
   let(:return_year)    { I18n.t("return.year") }
   let(:edit_return)    { I18n.t("return.edit") }
   let(:new_return)     { I18n.t("return.new") }
+  
+  let(:edit_user) { I18n.t("user.edit") }
+  let(:new_user)  { I18n.t("user.new") }
+  let(:user_role) { I18n.t("user.role") }
+  let(:users)     { I18n.t("user.users") }
 end

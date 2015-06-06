@@ -16,5 +16,7 @@
         %li= link_to t("income.incomes"), graph_incomes_path
       - if can?(:read, Fund)
         %li= link_to t("fund.funds"), funds_path
+      - if can?(:read, User)
+        %li= link_to t("user.users"), users_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"

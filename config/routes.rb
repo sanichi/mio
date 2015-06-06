@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create]
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
   resources :uploads, except: [:edit, :update]
+  resources :users
 end

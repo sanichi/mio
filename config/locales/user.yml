@@ -1,0 +1,10 @@
+en:
+  user:
+    edit: Edit User
+    new: New User
+    role: Role
+    users: Users
+    roles:
+      admin: Administrator
+      arborist: Family Tree Maintainer
+      none: None

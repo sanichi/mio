@@ -1,0 +1,21 @@
+= render "utils/title", text: @user.email
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("email")
+          %td= @user.email
+        %tr
+          %th= t("user.role")
+          %td= t("user.roles.#{@user.role}")
+        - if current_user.admin?
+          %tr
+            %th= t("session.password")
+            %td= @user.encrypted_password
+
+.text-center
+  = link_to t("user.users"), users_path, class: "btn btn-success"
+  - if can?(:manage, User)
+    = link_to t("edit"), edit_user_path(@user), class: "btn btn-info"

@@ -10,6 +10,7 @@ en:
   delete: Delete
   description: Description
   edit: Edit
+  email: Email
   error: Error
   graph: Graph
   list: List

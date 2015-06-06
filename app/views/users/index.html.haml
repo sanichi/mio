@@ -1,0 +1,20 @@
+= render "utils/title", key: "user.users"
+
+.text-center
+  = form_tag users_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    - width = 10
+    .form-group
+      = label_tag :email, t("email"), class: "sr-only"
+      = text_field_tag :email, params[:email], class: "form-control", placeholder: t("email"), size: width
+
+%p
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody{id: "results"}
+        = render "results", users: @users
+
+.text-center
+  - if can?(:create, User)
+    = link_to t("user.new"), new_user_path, class: "btn btn-info"
