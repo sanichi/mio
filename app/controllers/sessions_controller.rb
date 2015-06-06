@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
   def create
-    if Digest::MD5.hexdigest(params[:password]) == Rails.application.secrets.password
-      session[:authenticated] = true
+    user = User.find_by(email: params[:email], encrypted_password: Digest::MD5.hexdigest(params[:password]))
+    if user
+      session[:user_id] = user.id
       redirect_to root_path
     else
       render "new"
@@ -9,7 +10,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session.delete(:authenticated)
+    session.delete(:user_id)
     render "new"
   end
 end

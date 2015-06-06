@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :password
 
-  ROLES = %w[admin arborist]
+  ROLES = ["admin", "arborist", "none"]
 
   before_validation :update_password_if_present
   after_validation :copy_password_error

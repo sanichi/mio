@@ -13,8 +13,6 @@ shared_context "test_data" do
   let(:sign_in)  { I18n.t("session.sign_in") }
   let(:sign_out) { I18n.t("session.sign_out") }
 
-  let(:test_password) { "birdman" }
-
   let(:account)     { I18n.t("upload.account.acc") }
   let(:capital)     { I18n.t("upload.account.cap") }
   let(:file_upload) { I18n.t("upload.file") }

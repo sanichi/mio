@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe "Authentication" do
   include_context "test_data"
+  
+  let(:user) { create(:user) }
 
   context "sign in" do
     it "success" do
@@ -11,25 +13,23 @@ describe "Authentication" do
       expect(page).to_not have_link uploads
 
       click_link sign_in
-      fill_in password, with: test_password
+      fill_in email, with: user.email
+      fill_in password, with: user.password
       click_button sign_in
 
       expect(page).to_not have_link sign_in
-      expect(page).to have_link mass
-      expect(page).to have_link transactions
       expect(page).to have_link sign_out
     end
 
     it "failure" do
       visit root_path
       click_link sign_in
+      fill_in email, with: user.email
       fill_in password, with: "rubbish"
       click_button sign_in
 
       expect(page).to have_link sign_in
       expect(page).to_not have_link sign_out
-      expect(page).to_not have_link transactions
-      expect(page).to_not have_link uploads
     end
   end
 

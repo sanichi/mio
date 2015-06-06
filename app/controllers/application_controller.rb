@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticated?
-    session[:authenticated]
+    session[:user_id]
   end
 end

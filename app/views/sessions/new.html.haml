@@ -5,6 +5,9 @@
     = form_tag sessions_path, class: "form-horizontal", role: "form" do
       %fieldset
         .form-group
+          = label_tag :email, t("email"), class: "control-label col-md-4"
+          .col-md-4= text_field_tag :email, params[:email], class: "form-control"
+        .form-group
           = label_tag :password, t("session.password"), class: "control-label col-md-4"
           .col-md-4= text_field_tag :password, params[:password], class: "form-control", type: "password"
         .col-md-8.col-md-offset-2.text-center

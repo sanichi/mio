@@ -24,8 +24,8 @@ describe User do
 
       expect(page).to have_title data.email
 
-      expect(User.count).to eq 1
-      u = User.first
+      expect(User.count).to eq 2
+      u = User.last
 
       expect(u.email).to eq data.email
       expect(u.encrypted_password).to eq Digest::MD5.hexdigest(data.password)
@@ -34,7 +34,7 @@ describe User do
   end
 
   context "failure" do
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
 
     it "no password" do
       click_link new_user
@@ -43,7 +43,7 @@ describe User do
       click_button save
 
       expect(page).to have_title new_user
-      expect(User.count).to eq 0
+      expect(User.count).to eq 2
       expect(page).to have_css(error, text: "blank")
     end
 
@@ -55,7 +55,7 @@ describe User do
       click_button save
 
       expect(page).to have_title new_user
-      expect(User.count).to eq 1
+      expect(User.count).to eq 2
       expect(page).to have_css(error, text: "taken")
     end
   end
@@ -66,17 +66,19 @@ describe User do
     it "password" do
       visit user_path(user)
       click_link edit
+      
+      new_password = user.password.reverse
 
       expect(page).to have_title edit_user
-      fill_in password, with: test_password.reverse
+      fill_in password, with: new_password
       click_button save
 
       expect(page).to have_title user.email
 
-      expect(User.count).to eq 1
-      u = User.first
+      expect(User.count).to eq 2
+      u = User.last
 
-      expect(u.encrypted_password).to eq Digest::MD5.hexdigest(test_password.reverse)
+      expect(u.encrypted_password).to eq Digest::MD5.hexdigest(new_password)
     end
 
     it "role" do
@@ -90,8 +92,8 @@ describe User do
 
       expect(page).to have_title user.email
 
-      expect(User.count).to eq 1
-      u = User.first
+      expect(User.count).to eq 2
+      u = User.last
 
       expect(u.encrypted_password).to eq Digest::MD5.hexdigest(user.password)
       expect(u.role).to eq new_role
@@ -102,12 +104,12 @@ describe User do
     let!(:user) { create(:user) }
 
     it "success" do
-      visit users_path
+      visit user_path(user)
       click_link edit
       click_link delete
 
       expect(page).to have_title users
-      expect(User.count).to eq 0
+      expect(User.count).to eq 1
     end
   end
 end
