@@ -4,12 +4,15 @@ class User < ActiveRecord::Base
   attr_accessor :password
 
   ROLES = ["admin", "arborist", "none"]
+  MAX_EMAIL = 75
+  MAX_PASSWORD = 32
+  MAX_ROLE = 20
 
   before_validation :update_password_if_present
   after_validation :copy_password_error
 
-  validates :email, presence: true, length: { maximum: 75 }, uniqueness: true
-  validates :encrypted_password, presence: true, length: { is: 32 }
+  validates :email, presence: true, length: { maximum: MAX_EMAIL }, uniqueness: true
+  validates :encrypted_password, presence: true, length: { is: MAX_PASSWORD }
   validates :role, inclusion: { in: ROLES }
 
   def self.search(params, path, opt={})

@@ -4,9 +4,12 @@ class SessionsController < ApplicationController
     if user
       session[:user_id] = user.id
       redirect_to root_path
+      success = true
     else
       render "new"
+      success = false
     end
+    Login.create(email: params[:email], success: success, ip: request.remote_ip)
   end
 
   def destroy

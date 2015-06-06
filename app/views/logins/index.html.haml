@@ -1,0 +1,20 @@
+= render "utils/title", key: "login.logins"
+
+.text-center
+  = form_tag logins_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    - width = 10
+    .form-group
+      = label_tag :email, t("email"), class: "sr-only"
+      = text_field_tag :email, params[:email], class: "form-control", placeholder: t("email"), size: width
+    .form-group
+      = label_tag :ip, t("login.ip"), class: "sr-only"
+      = text_field_tag :ip, params[:ip], class: "form-control", placeholder: t("login.ip"), size: width
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+%p
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody{id: "results"}
+        = render "results", logins: @logins

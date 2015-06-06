@@ -1,0 +1,6 @@
+- logins.matches.each do |login|
+  %tr
+    %td= login.email
+    %td= login.ip
+    %td.text-center.col-md-1= login.success ? t("tick") : t("cross")
+= render "utils/pagination_links", pager: logins, columns: 3

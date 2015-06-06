@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
   resources :incomes, except: [:show] { get :graph, on: :collection }
   resources :masses, except: [:show] { get :graph, on: :collection }
+  resources :logins, only: [:index]
   resources :sessions, only: [:create]
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
   resources :uploads, except: [:edit, :update]
