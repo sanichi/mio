@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   before_validation :update_password_if_present
   after_validation :copy_password_error
 
-  validates :email, presence: true, length: { maximum: MAX_EMAIL }, uniqueness: true
+  validates :email, format: { with: /\A[^\s@]+@[^\s@]+\z/ }, length: { maximum: MAX_EMAIL }, uniqueness: true
   validates :encrypted_password, presence: true, length: { is: MAX_PASSWORD }
   validates :role, inclusion: { in: ROLES }
 
