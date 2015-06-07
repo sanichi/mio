@@ -1,0 +1,17 @@
+en:
+  person:
+    born: Born
+    died: Died
+    edit: Edit Person
+    female: Female
+    first_names: First names
+    gender: Gender
+    last_name: Last name
+    male: Male
+    new: New Person
+    notes: Notes
+    people: Family
+    order:
+      born: by born
+      first: by first name
+      last: by last name

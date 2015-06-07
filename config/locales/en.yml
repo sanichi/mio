@@ -10,6 +10,7 @@ en:
   delete: Delete
   description: Description
   edit: Edit
+  either: either
   email: Email
   error: Error
   graph: Graph
@@ -17,6 +18,8 @@ en:
   mio: Mio
   name: Name
   none: None
+  notes: Notes
+  order: Order
   save: Save
   search: Search
   select: Please select

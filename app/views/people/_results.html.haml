@@ -1,0 +1,5 @@
+- people.matches.each do |person|
+  %tr
+    %td= link_to person.name(params[:order] == "first"), person
+    %td.text-center.col-md-1= person.born
+= render "utils/pagination_links", pager: people, columns: 2

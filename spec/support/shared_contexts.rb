@@ -71,9 +71,21 @@ shared_context "test_data" do
   let(:return_year)    { I18n.t("return.year") }
   let(:edit_return)    { I18n.t("return.edit") }
   let(:new_return)     { I18n.t("return.new") }
-  
+
   let(:edit_user) { I18n.t("user.edit") }
   let(:new_user)  { I18n.t("user.new") }
   let(:user_role) { I18n.t("user.role") }
   let(:users)     { I18n.t("user.users") }
+
+  let(:edit_person)        { I18n.t("person.edit") }
+  let(:new_person)         { I18n.t("person.new") }
+  let(:people)             { I18n.t("person.people") }
+  let(:person_born)        { I18n.t("person.born") }
+  let(:person_died)        { I18n.t("person.died") }
+  let(:person_female)      { I18n.t("person.male") }
+  let(:person_first_names) { I18n.t("person.first_names") }
+  let(:person_gender)      { I18n.t("person.died") }
+  let(:person_last_name)   { I18n.t("person.last_name") }
+  let(:person_male)        { I18n.t("person.male") }
+  let(:person_notes)       { I18n.t("person.notes") }
 end

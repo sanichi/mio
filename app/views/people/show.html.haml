@@ -1,0 +1,13 @@
+= render "utils/title", text: @person.name
+          
+.panel.panel-default
+  .panel-heading
+    = @person.name
+    .pull-right
+      = @person.years
+  .panel-body= @person.notes_html    
+
+.text-center
+  = link_to t("person.people"), people_path, class: "btn btn-success"
+  - if can?(:manage, Person)
+    = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"

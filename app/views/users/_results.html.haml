@@ -1,9 +1,4 @@
-- arborist = can?(:update, User)
-
 - users.matches.each do |user|
   %tr
     %td= link_to user.email, user
-    - if arborist
-      %td.text-center.col-md-1
-        = link_to t("edit"), edit_user_path(user), class: "btn btn-info btn-xs"
-= render "utils/pagination_links", pager: users, columns: 1 + (arborist ? 1 : 0)
+= render "utils/pagination_links", pager: users, columns: 1
