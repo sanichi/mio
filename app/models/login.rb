@@ -6,7 +6,8 @@ class Login < ActiveRecord::Base
   before_update :truncate_params
 
   def self.search(params, path, opt={})
-    matches = Login.order(:created_at)
+    matches = Login.order(created_at: :desc)
+    matches = matches.where("to_char(created_at, 'YYYY-MM-DD HH24:MI') ILIKE ?", "%#{params[:date]}%") if params[:date].present?
     matches = matches.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
     matches = matches.where("ip ILIKE ?", "%#{params[:ip]}%") if params[:ip].present?
     paginate(matches, params, path, opt)

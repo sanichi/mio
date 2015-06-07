@@ -1,6 +1,7 @@
 - logins.matches.each do |login|
   %tr
+    %td.text-center= login.created_at.strftime("%Y-%m-%d %H:%M")
     %td= login.email
     %td= login.ip
     %td.text-center.col-md-1= login.success ? t("tick") : t("cross")
-= render "utils/pagination_links", pager: logins, columns: 3
+= render "utils/pagination_links", pager: logins, columns: 4
