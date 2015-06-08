@@ -3,6 +3,7 @@ class Person < ActiveRecord::Base
   include Remarkable
 
   MAX_FN = 100
+  MAX_KA = 20
   MAX_LN = 50
   MIN_YR = 1600
 
@@ -11,12 +12,15 @@ class Person < ActiveRecord::Base
   validates :born, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }
   validates :died, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }, allow_nil: true
   validates :first_names, presence: true, length: { maximum: MAX_FN }
+  validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
 
   validate :years_must_not_be_stupid
 
-  def name(first_first=false)
-    first_first ? "#{first_names} #{last_name}" : "#{last_name}, #{first_names}"
+  def name(full: true, reversed: true, with_known_as: false)
+    first = full ? first_names : known_as
+    first+= " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
+    reversed ? "#{last_name}, #{first}" : "#{first} #{last_name}"
   end
 
   def years
@@ -35,7 +39,10 @@ class Person < ActiveRecord::Base
           end
     matches = order(*ord)
     matches = matches.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
-    matches = matches.where("first_names ILIKE ?", "%#{params[:first_names]}%") if params[:first_names].present?
+    if params[:first_names].present?
+      pattern = "%#{params[:first_names]}%"
+      matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
+    end
     matches = matches.where("('' || born) LIKE ?", "%#{params[:born]}%") if params[:born].present?
     matches = matches.where(gender: true) if params[:gender] == "male"
     matches = matches.where(gender: false) if params[:gender] == "female"
@@ -45,8 +52,14 @@ class Person < ActiveRecord::Base
   private
 
   def tidy_text
+    %w[first_names known_as last_name].each { |m| send("#{m}=", "") if send(m).nil? }
     last_name.squish!
     first_names.squish!
+    known_as.squish!
+    if known_as.blank? && first_names.present?
+      self.known_as = first_names.split(" ").first
+    end
+    self.notes = nil if notes.blank?
   end
 
   def years_must_not_be_stupid

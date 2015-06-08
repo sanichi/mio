@@ -6,6 +6,7 @@ en:
     female: Female
     first_names: First names
     gender: Gender
+    known_as: Known as
     last_name: Last name
     male: Male
     new: New Person

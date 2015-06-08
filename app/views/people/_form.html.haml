@@ -5,6 +5,7 @@
         - shared = { form: f, object: person, col: "md", pad: 4}
         = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 5)
         = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 6)
+        = render "utils/text_field_for", shared.merge(param: :known_as, text: t("person.known_as"), width: 4)
         = render "utils/text_field_for", shared.merge(param: :born, text: t("person.born"), width: 3)
         = render "utils/text_field_for", shared.merge(param: :died, text: t("person.died"), width: 3)
         = render "utils/check_box_for", shared.merge(param: :gender, text: t("person.male"), width: 1)

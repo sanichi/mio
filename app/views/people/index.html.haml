@@ -27,7 +27,7 @@
       %thead
         %tr
           %th= t("name")
-          %th= t("person.born")          
+          %th.text-center.col-md-1= t("person.born")          
       %tbody{id: "results"}
         = render "results", people: @people
 

@@ -19,6 +19,7 @@ describe Person do
       fill_in person_born, with: data.born
       fill_in person_died, with: data.died
       fill_in person_first_names, with: data.first_names
+      fill_in person_known_as, with: data.known_as
       fill_in person_last_name, with: data.last_name
       fill_in person_notes, with: data.notes
       check person_male if data.gender
@@ -32,8 +33,31 @@ describe Person do
       expect(p.born).to eq data.born
       expect(p.died).to eq data.died
       expect(p.first_names).to eq data.first_names
+      expect(p.gender).to eq data.gender
+      expect(p.known_as).to eq data.known_as
       expect(p.last_name).to eq data.last_name
       expect(p.notes).to eq data.notes
+    end
+
+    it "minimum data" do
+      click_link new_person
+      fill_in person_born, with: data.born
+      fill_in person_first_names, with: data.first_names
+      fill_in person_last_name, with: data.last_name
+      click_button save
+
+      expect(page).to have_title data.name
+
+      expect(Person.count).to eq 1
+      p = Person.last
+
+      expect(p.born).to eq data.born
+      expect(p.died).to be_nil
+      expect(p.first_names).to eq data.first_names
+      expect(p.gender).to eq false
+      expect(p.known_as).to eq p.first_names.split(" ").first
+      expect(p.last_name).to eq data.last_name
+      expect(p.notes).to be_nil
     end
   end
   
