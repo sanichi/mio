@@ -2,8 +2,6 @@ class Person < ActiveRecord::Base
   include Pageable
   include Remarkable
 
-  has_one :user
-
   MAX_FN = 100
   MAX_KA = 20
   MAX_LN = 50
