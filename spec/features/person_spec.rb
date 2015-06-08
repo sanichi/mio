@@ -46,7 +46,7 @@ describe Person do
       fill_in person_last_name, with: data.last_name
       click_button save
 
-      expect(page).to have_title data.name
+      expect(page).to have_title data.last_name
 
       expect(Person.count).to eq 1
       p = Person.last

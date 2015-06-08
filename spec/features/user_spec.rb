@@ -29,6 +29,7 @@ describe User do
 
       expect(u.email).to eq data.email
       expect(u.encrypted_password).to eq Digest::MD5.hexdigest(data.password)
+      expect(u.person_id).to be_nil
       expect(u.role).to eq data.role
     end
   end

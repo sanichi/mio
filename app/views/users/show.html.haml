@@ -7,13 +7,16 @@
         %tr
           %th= t("email")
           %td= @user.email
-        %tr
-          %th= t("user.role")
-          %td= t("user.roles.#{@user.role}")
         - if current_user.admin?
           %tr
             %th= t("session.password")
             %td= @user.encrypted_password
+        %tr
+          %th= t("user.role")
+          %td= t("user.roles.#{@user.role}")
+        %tr
+          %th= t("person.person")
+          %td= link_to @user.person.name(full: false), @user.person if @user.person
 
 .text-center
   = link_to t("user.users"), users_path, class: "btn btn-success"

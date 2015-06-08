@@ -13,6 +13,10 @@
 .row
   .col-md-offset-2.col-md-8
     %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("email")
+          %th= t("name")
       %tbody{id: "results"}
         = render "results", users: @users
 

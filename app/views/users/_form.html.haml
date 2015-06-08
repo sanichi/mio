@@ -6,6 +6,7 @@
         = render "utils/select_for", shared.merge(param: :role, text: t("user.role"), menu: user_role_menu(user), width: 3)
         = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 5)
         = render "utils/text_field_for", shared.merge(param: :password, text: t("session.password"), width: 5)
+        = render "utils/select_for", shared.merge(param: :person_id, text: t("person.person"), menu: user_person_menu(user), width: 4)
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"
