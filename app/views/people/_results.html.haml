@@ -1,5 +1,5 @@
 - people.matches.each do |person|
   %tr
-    %td= link_to person.name(reversed: params[:order] != "first", with_known_as: true), person
+    %td= link_to person.name(reversed: params[:order] != "first"), person
     %td= person.born
 = render "utils/pagination_links", pager: people, columns: 2

@@ -6,8 +6,8 @@ describe Person do
     let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr") }
 
     it "default" do
-      expect(mum.name).to eq "Algeo, Ruth Patricia Legard"
-      expect(dad.name).to eq "Orr, John"
+      expect(mum.name).to eq "Ruth Patricia Legard (Pat) Algeo"
+      expect(dad.name).to eq "John Orr"
     end
 
     it "normal, full, without known as" do

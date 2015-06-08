@@ -17,7 +17,7 @@ class Person < ActiveRecord::Base
 
   validate :years_must_not_be_stupid
 
-  def name(full: true, reversed: true, with_known_as: false)
+  def name(full: true, reversed: false, with_known_as: true)
     first = full ? first_names : known_as
     first+= " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
     reversed ? "#{last_name}, #{first}" : "#{first} #{last_name}"
