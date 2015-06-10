@@ -43,6 +43,7 @@ class Fund < ActiveRecord::Base
     matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
     matches = matches.where("company ILIKE '%#{params[:company]}%'") if params[:company].present?
     matches = matches.where("name ILIKE '%#{params[:name]}%'") if params[:name].present?
+    matches = matches.where("sector ILIKE '%#{params[:sector]}%'") if params[:sector].present?
     [[:srri, 0], [:annual_fee, 2], [:size, 0]].each do |constraints|
       column, digits = constraints
       constraint = Fund.constraint(params[column], column, digits: digits)
