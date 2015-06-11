@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :masses, except: [:show] { get :graph, on: :collection }
   resources :logins, only: [:index]
   resources :people
+  resources :pictures
   resources :sessions, only: [:create]
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
   resources :uploads, except: [:edit, :update]

@@ -1,0 +1,15 @@
+.row
+  .col-md-12
+    = form_for picture, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: picture, col: "md", pad: 2}
+        = render "utils/file_field_for", shared.merge(param: :image, text: t("picture.file"), width: 4)
+        = render "utils/select_for", shared.merge(param: :person_id, text: t("person.person"), width: 4, menu: picture_person_menu(picture))
+        = render "utils/text_area_for", shared.merge(param: :description, text: t("description"), width: 10)
+
+      .row
+        .col-md-offset-2.col-md-10
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), picture.new_record?? pictures_path : picture, class: "btn btn-default"
+          - unless picture.new_record?
+            = link_to t("delete"), picture, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

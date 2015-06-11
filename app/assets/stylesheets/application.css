@@ -32,3 +32,10 @@
 .bottom_margin {
   margin-bottom: 16px;
 }
+
+/* Centered tables. */
+.table-center {
+  border-style: none !important;
+  margin-left: auto;
+  margin-right: auto;
+}

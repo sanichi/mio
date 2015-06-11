@@ -1,13 +1,35 @@
 = render "utils/title", text: @person.name
-          
-.panel.panel-default
-  .panel-heading
-    = @person.name
-    .pull-right
-      = @person.years
-  .panel-body= @person.notes_html    
+
+.row
+  .col-xs-offset-1.col-xs-10.col-sm-offset-2.col-sm-8.col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("person.last_name")
+          %td= @person.last_name
+        %tr
+          %th= t("person.first_names")
+          %td= @person.first_names
+        %tr
+          %th= t("person.born")
+          %td= @person.born
+        - if @person.died.present?
+          %tr
+            %th= t("person.died")
+            %td= @person.died
+
+= render "pictures/results", pictures: @person.pictures
+
+%p
+
+- if @person.notes.present?
+  .panel.panel-default
+    .panel-heading
+      = t("notes")
+    .panel-body= @person.notes_html
+
+%p
 
 .text-center
-  = link_to t("person.people"), people_path, class: "btn btn-success"
   - if can?(:manage, Person)
     = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"

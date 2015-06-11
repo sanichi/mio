@@ -10,6 +10,10 @@ class PeopleController < ApplicationController
     @person = Person.new
   end
 
+  def show
+    prev_next(:picture_ids, @person.pictures)
+  end
+
   def create
     @person = Person.new(strong_params)
     if @person.save

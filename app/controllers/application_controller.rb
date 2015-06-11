@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
   def authenticated?
     session[:user_id]
   end
+  
+  def prev_next(key, objects)
+    return unless objects.any?
+    session[key] = "_#{objects.map(&:id).join('_')}_"
+  end
 end

@@ -1,6 +1,9 @@
 class Person < ActiveRecord::Base
+  include Constrainable
   include Pageable
   include Remarkable
+
+  has_many :pictures
 
   MAX_FN = 100
   MAX_KA = 20
@@ -43,9 +46,11 @@ class Person < ActiveRecord::Base
       pattern = "%#{params[:first_names]}%"
       matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
     end
-    matches = matches.where("('' || born) LIKE ?", "%#{params[:born]}%") if params[:born].present?
+    constraint = constraint(params[:born], :born)
+    matches = matches.where(constraint) if constraint
     matches = matches.where(gender: true) if params[:gender] == "male"
     matches = matches.where(gender: false) if params[:gender] == "female"
+    matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
   end
 

@@ -3,6 +3,7 @@ en:
   amount: Amount
   annual: Annual
   any: Any
+  both: both
   cancel: Cancel
   created_at: Created At
   cross: ✘
@@ -10,16 +11,17 @@ en:
   delete: Delete
   description: Description
   edit: Edit
-  either: either
   email: Email
   error: Error
   graph: Graph
   list: List
   mio: Mio
   name: Name
+  next: Next
   none: None
   notes: Notes
   order: Order
+  prev: Prev
   save: Save
   search: Search
   select: Please select

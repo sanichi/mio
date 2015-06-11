@@ -1,7 +1,7 @@
 module PersonHelper
   def person_gender_search_menu(selected)
     gens = []
-    gens.push [t("either"), ""]
+    gens.push [t("both"), ""]
     %w/male female/.each { |g| gens.push [t("person.#{g}"), g] }
     options_for_select(gens, selected)
   end

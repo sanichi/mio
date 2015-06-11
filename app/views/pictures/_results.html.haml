@@ -1,0 +1,15 @@
+- wd = Picture::SIZE[:tn]
+
+- Picture::SIZE.each_pair do |nm,sz|
+  - unless nm == :tn
+    - cols = sz / wd
+    %div{class: "visible-#{nm}-block"}
+      %table{class: "table-center"}
+        %tbody
+          - pictures.each_slice(cols) do |row|
+            %tr
+              - row.each do |picture|
+                %td{width: wd}
+                  = link_to picture do
+                    - name = picture.person.name(full: false)
+                    = image_tag picture.image.url(:tn), width: wd, height: wd, title: name, alt: name

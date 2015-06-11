@@ -4,6 +4,7 @@ module UserHelper
     roles.unshift [t("select"), ""] if user.new_record?
     options_for_select(roles, user.role.to_s)
   end
+
   def user_person_menu(user)
     people = Person.order(:last_name, :known_as).all.map{ |p| [p.name(full: false, reversed: true), p.id] }
     people.unshift [t("none"), 0]
