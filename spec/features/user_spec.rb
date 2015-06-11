@@ -7,8 +7,6 @@ describe User do
   let(:data) { build(:user) }
   let(:role) { I18n.t("user.roles.#{data.role}") }
 
-  let(:error) { "div.help-block" }
-
   before(:each) do
     login
     click_link users

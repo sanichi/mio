@@ -5,7 +5,6 @@ describe Ability do
 
   let(:title) { "//h1[.='%s']" }
   let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s']]" }
-  let(:error) { "div.help-block" }
 
   context Mass do
     let(:record) { create(:mass) }

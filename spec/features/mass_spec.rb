@@ -3,8 +3,6 @@ require 'rails_helper'
 describe Mass do
   include_context "test_data"
 
-  let(:error) { "div.help-block" }
-
   before(:each) do
     login
     visit masses_path

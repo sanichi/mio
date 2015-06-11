@@ -7,8 +7,6 @@ describe Income do
   let(:category) { I18n.t("income.category.#{data.category}") }
   let(:period)   { I18n.t("income.period.#{data.period}") }
 
-  let(:error) { "div.help-block" }
-
   before(:each) do
     login
     visit incomes_path

@@ -1,4 +1,6 @@
 shared_context "test_data" do
+  let(:error) { "div.help-block" }
+
   let(:amount)      { I18n.t("amount") }
   let(:date)        { I18n.t("date") }
   let(:delete)      { I18n.t("delete") }
@@ -89,4 +91,10 @@ shared_context "test_data" do
   let(:person_last_name)   { I18n.t("person.last_name") }
   let(:person_male)        { I18n.t("person.male") }
   let(:person_notes)       { I18n.t("person.notes") }
+  let(:person_person)      { I18n.t("person.person") }
+
+  let(:edit_picture) { I18n.t("picture.edit") }
+  let(:new_picture)  { I18n.t("picture.new") }
+  let(:pictures)     { I18n.t("picture.pictures") }
+  let(:picture_file) { I18n.t("picture.file") }
 end

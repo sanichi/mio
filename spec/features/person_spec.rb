@@ -6,8 +6,6 @@ describe Person do
   let(:atrs) { attributes_for(:person) }
   let(:data) { build(:person) }
 
-  let(:error) { "div.help-block" }
-
   before(:each) do
     login
     click_link people

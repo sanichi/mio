@@ -8,8 +8,6 @@ describe Fund do
   let(:category) { I18n.t("fund.category.#{data.category}") }
   let(:stars)    { data.stars.map { |star| I18n.t("fund.stars.#{star}") } }
 
-  let(:error) { "div.help-block" }
-
   before(:each) do
     login
     visit funds_path

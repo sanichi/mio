@@ -8,7 +8,6 @@ describe Expense do
   let(:period)   { I18n.t("expense.period.#{data.period}") }
 
   let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s'] and td[.='%s'] and td[.='%s']]" }
-  let(:error) { "div.help-block" }
 
   before(:each) do
     login
