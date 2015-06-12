@@ -11,14 +11,29 @@
           %th= t("person.first_names")
           %td= @person.first_names
         %tr
+          %th= t("person.known_as")
+          %td= @person.known_as
+        %tr
+          %th= t("person.gender")
+          %td= t("person.#{@person.gender ? '' : 'fe'}male")
+        %tr
           %th= t("person.born")
           %td= @person.born
         - if @person.died.present?
           %tr
             %th= t("person.died")
             %td= @person.died
+        - if @person.father.present?
+          %tr
+            %th= t("person.father")
+            %td= link_to @person.father.name(full: false), @person.father
+        - if @person.mother.present?
+          %tr
+            %th= t("person.mother")
+            %td= link_to @person.mother.name(full: false), @person.mother
 
-= render "pictures/results", pictures: @person.pictures
+.margin_bottom
+  = render "pictures/results", pictures: @person.pictures
 
 %p
 
@@ -30,6 +45,6 @@
 
 %p
 
-.text-center
-  - if can?(:manage, Person)
+- if can?(:manage, Person)
+  .text-center.margin_top
     = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"

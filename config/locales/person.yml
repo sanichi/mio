@@ -3,6 +3,7 @@ en:
     born: Born
     died: Died
     edit: Edit Person
+    father: Father
     female: Female
     first_name: First name
     first_names: First names
@@ -10,6 +11,7 @@ en:
     known_as: Known as
     last_name: Last name
     male: Male
+    mother: Mother
     new: New Person
     notes: Notes
     person: Person

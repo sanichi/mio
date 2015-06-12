@@ -4,6 +4,8 @@ class Person < ActiveRecord::Base
   include Remarkable
 
   has_many :pictures
+  belongs_to :father, class: Person
+  belongs_to :mother, class: Person
 
   MAX_FN = 100
   MAX_KA = 20
@@ -14,11 +16,12 @@ class Person < ActiveRecord::Base
 
   validates :born, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }
   validates :died, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }, allow_nil: true
+  validates :father_id, :mother_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
   validates :first_names, presence: true, length: { maximum: MAX_FN }
   validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
 
-  validate :years_must_not_be_stupid
+  validate :years_must_make_sense
 
   def name(full: true, reversed: false, with_known_as: true)
     first = full ? first_names : known_as
@@ -67,9 +70,13 @@ class Person < ActiveRecord::Base
     self.notes = nil if notes.blank?
   end
 
-  def years_must_not_be_stupid
+  def years_must_make_sense
     errors.add(:born, "can't be in the future") if born.present? && born > Date.today.year
     errors.add(:died, "can't be in the future") if died.present? && died > Date.today.year
-    errors.add(:died, "can't have died before being born") if born.present? && died.present? && born > died
+    if born.present?
+      errors.add(:died, "can't have died before being born") if died.present? && born > died
+      errors.add(:born, "can't be born before father") if father.present? && father.born >= born
+      errors.add(:born, "can't be born before mother") if mother.present? && mother.born >= born
+    end
   end
 end
