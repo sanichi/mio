@@ -4,7 +4,7 @@ en:
     finish: Night
     data: Measurements
     date: Date
-    mass: Mass
+    mass: Weight
     new: New Measurement
     start: Morning
     options:

@@ -2,6 +2,7 @@ en:
   all: All
   amount: Amount
   annual: Annual
+  authentication: Authentication
   any: Any
   both: both
   cancel: Cancel
@@ -13,9 +14,11 @@ en:
   edit: Edit
   email: Email
   error: Error
+  family: Family
   graph: Graph
   list: List
   mio: Mio
+  money: Money
   name: Name
   next: Next
   none: None

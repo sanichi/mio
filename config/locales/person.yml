@@ -8,15 +8,17 @@ en:
     female: Female
     first_name: First name
     first_names: First names
+    full_name: Full name
     gender: Gender
     known_as: Known as
     last_name: Last name
+    m_f: M/F
     male: Male
     mother: Mother
     new: New Person
     notes: Notes
-    person: Person
     people: People
+    person: Person
     order:
       born: by born
       first: by first name

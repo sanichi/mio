@@ -1,6 +1,6 @@
 - marriages.matches.each do |marriage|
   %tr
-    %td.text-center.col-md-1= link_to marriage.wedding, marriage
+    %td= link_to marriage.wedding, marriage
     %td= marriage.husband.name(reversed: true)
     %td= marriage.wife.name(reversed: true)
 = render "utils/pagination_links", pager: marriages, columns: 3

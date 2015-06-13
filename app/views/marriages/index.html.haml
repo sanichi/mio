@@ -4,7 +4,7 @@
   = form_tag marriages_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
       = label_tag :wedding, t("marriage.wedding"), class: "sr-only"
-      = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("marriage.wedding"), size: 10
+      = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("marriage.wedding"), size: 12
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 %p
@@ -12,6 +12,11 @@
 .row
   .col-md-offset-2.col-md-8
     %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("marriage.wedding")
+          %th= t("marriage.husband")
+          %th= t("marriage.wife")
       %tbody{id: "results"}
         = render "results", marriages: @marriages
 

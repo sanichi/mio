@@ -8,23 +8,41 @@
     %ul.nav.navbar-nav
       - if can?(:read, Mass)
         %li= link_to t("mass.mass"), graph_masses_path
-      - if can?(:read, Transaction)
-        %li= link_to t("transaction.transactions"), summary_transactions_path
-      - if can?(:read, Expense)
-        %li= link_to t("expense.expenses"), expenses_path
-      - if can?(:read, Income)
-        %li= link_to t("income.incomes"), graph_incomes_path
-      - if can?(:read, Fund)
-        %li= link_to t("fund.funds"), funds_path
-      - if can?(:read, User)
-        %li= link_to t("user.users"), users_path
-      - if can?(:read, Login)
-        %li= link_to t("login.logins"), logins_path
-      - if can?(:read, Person)
-        %li= link_to t("person.people"), people_path
-      - if can?(:read, Picture)
-        %li= link_to t("picture.pictures"), pictures_path
-      - if can?(:read, Marriage)
-        %li= link_to t("marriage.marriages"), marriages_path
+      - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("money")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, Transaction)
+              %li= link_to t("transaction.transactions"), summary_transactions_path
+            - if can?(:read, Expense)
+              %li= link_to t("expense.expenses"), expenses_path
+            - if can?(:read, Income)
+              %li= link_to t("income.incomes"), graph_incomes_path
+            - if can?(:read, Fund)
+              %li= link_to t("fund.funds"), funds_path
+      - if [Person, Picture, Marriage].map{|c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("family")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, Person)
+              %li= link_to t("person.people"), people_path
+            - if can?(:read, Picture)
+              %li= link_to t("picture.pictures"), pictures_path
+            - if can?(:read, Marriage)
+              %li= link_to t("marriage.marriages"), marriages_path
+      - if [User, Login].map{|c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("authentication")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, User)
+              %li= link_to t("user.users"), users_path
+            - if can?(:read, Login)
+              %li= link_to t("login.logins"), logins_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"
