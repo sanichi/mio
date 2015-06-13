@@ -99,4 +99,13 @@ shared_context "test_data" do
   let(:new_picture)  { I18n.t("picture.new") }
   let(:pictures)     { I18n.t("picture.pictures") }
   let(:picture_file) { I18n.t("picture.file") }
+
+  let(:edit_marriage)     { I18n.t("marriage.edit") }
+  let(:marriage_divorce)  { I18n.t("marriage.divorce") }
+  let(:marriage_husband)  { I18n.t("marriage.husband") }
+  let(:marriage_wedding)  { I18n.t("marriage.wedding") }
+  let(:marriage_wife)     { I18n.t("marriage.wife") }
+  let(:marriage_singular) { I18n.t("marriage.marriage") }
+  let(:marriages)         { I18n.t("marriage.marriages") }
+  let(:new_marriage)      { I18n.t("marriage.new") }
 end

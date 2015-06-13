@@ -1,0 +1,16 @@
+.row
+  .col-md-offset-2.col-md-8
+    = form_for marriage, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: marriage, col: "md", pad: 4}
+        = render "utils/select_for", shared.merge(param: :husband_id, text: t("marriage.husband"), menu: marriage_husband_menu(marriage), width: 4)
+        = render "utils/select_for", shared.merge(param: :wife_id, text: t("marriage.wife"), menu: marriage_wife_menu(marriage), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :wedding, text: t("marriage.wedding"), width: 3)
+        = render "utils/text_field_for", shared.merge(param: :divorce, text: t("marriage.divorce"), width: 3)
+
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), marriage.new_record?? marriages_path : marriage, class: "btn btn-default"
+          - unless marriage.new_record?
+            = link_to t("delete"), marriage, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

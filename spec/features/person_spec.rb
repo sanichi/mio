@@ -3,7 +3,6 @@ require 'rails_helper'
 describe Person do
   include_context "test_data"
 
-  let(:atrs)    { attributes_for(:person) }
   let(:data)    { build(:person) }
   let!(:father) { create(:person, gender: true, born: data.born - 26) }
   let!(:mother) { create(:person, gender: false, born: data.born - 24) }

@@ -10,8 +10,9 @@ Rails.application.routes.draw do
     resources :returns, except: [:index, :show]
   end
   resources :incomes, except: [:show] { get :graph, on: :collection }
-  resources :masses, except: [:show] { get :graph, on: :collection }
   resources :logins, only: [:index]
+  resources :marriages
+  resources :masses, except: [:show] { get :graph, on: :collection }
   resources :people
   resources :pictures
   resources :sessions, only: [:create]

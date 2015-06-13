@@ -24,5 +24,7 @@
         %li= link_to t("person.people"), people_path
       - if can?(:read, Picture)
         %li= link_to t("picture.pictures"), pictures_path
+      - if can?(:read, Marriage)
+        %li= link_to t("marriage.marriages"), marriages_path
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"

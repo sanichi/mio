@@ -1,0 +1,23 @@
+= render "utils/title", text: t("marriage.marriage")
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("marriage.husband")
+          %td= link_to @marriage.husband.name, @marriage.husband
+        %tr
+          %th= t("marriage.wife")
+          %td= link_to @marriage.wife.name, @marriage.wife
+        %tr
+          %th= t("marriage.wedding")
+          %td= @marriage.wedding
+        - if @marriage.divorce.present?
+          %tr
+            %th= t("marriage.divorce")
+            %td= @marriage.divorce
+
+- if can?(:manage, Marriage)
+  .text-center.margin_top
+    = link_to t("edit"), edit_marriage_path(@marriage), class: "btn btn-info"
