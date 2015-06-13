@@ -6,8 +6,8 @@ describe Marriage do
   let(:atrs) { attributes_for(:marriage) }
   let(:data) { build(:marriage) }
   
-  let!(:husband) { create(:person, gender: true, born: data.wedding - 30) }
-  let!(:wife)    { create(:person, gender: false, born: data.wedding - 25) }
+  let!(:husband) { create(:person, male: true, born: data.wedding - 30) }
+  let!(:wife)    { create(:person, male: false, born: data.wedding - 25) }
 
   before(:each) do
     login

@@ -51,8 +51,8 @@ class Person < ActiveRecord::Base
     end
     constraint = constraint(params[:born], :born)
     matches = matches.where(constraint) if constraint
-    matches = matches.where(gender: true) if params[:gender] == "male"
-    matches = matches.where(gender: false) if params[:gender] == "female"
+    matches = matches.where(male: true) if params[:gender] == "male"
+    matches = matches.where(male: false) if params[:gender] == "female"
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
   end

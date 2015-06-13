@@ -15,7 +15,7 @@
           %td= @person.known_as
         %tr
           %th= t("person.gender")
-          %td= t("person.#{@person.gender ? '' : 'fe'}male")
+          %td= t("person.#{@person.male ? '' : 'fe'}male")
         %tr
           %th= t("person.born")
           %td= @person.born

@@ -15,7 +15,7 @@
       = label_tag :born, t("person.born"), class: "sr-only"
       = text_field_tag :born, params[:born], class: "form-control", placeholder: t("person.born"), size: 10
     .form-group
-      = label_tag :gender, t("order"), class: "sr-only"
+      = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, person_search_order_menu(params[:order]), class: "form-control auto-submit"
     .form-group
       = label_tag :notes, t("person.notes"), class: "sr-only"

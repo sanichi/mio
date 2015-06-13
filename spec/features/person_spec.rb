@@ -4,8 +4,8 @@ describe Person do
   include_context "test_data"
 
   let(:data)    { build(:person) }
-  let!(:father) { create(:person, gender: true, born: data.born - 26) }
-  let!(:mother) { create(:person, gender: false, born: data.born - 24) }
+  let!(:father) { create(:person, male: true, born: data.born - 26) }
+  let!(:mother) { create(:person, male: false, born: data.born - 24) }
 
   let(:count)   { 2 }
 
@@ -25,7 +25,7 @@ describe Person do
       select father.name(reversed: true), from: person_father
       select mother.name(reversed: true), from: person_mother
       fill_in person_notes, with: data.notes
-      check person_male if data.gender
+      check person_male if data.male
       click_button save
 
       expect(page).to have_title data.name
@@ -38,7 +38,7 @@ describe Person do
       expect(p.known_as).to eq data.known_as
       expect(p.born).to eq data.born
       expect(p.died).to eq data.died
-      expect(p.gender).to eq data.gender
+      expect(p.male).to eq data.male
       expect(p.father_id).to eq father.id
       expect(p.mother_id).to eq mother.id
       expect(p.notes).to eq data.notes
@@ -61,7 +61,7 @@ describe Person do
       expect(p.known_as).to eq p.first_names.split(" ").first
       expect(p.born).to eq data.born
       expect(p.died).to be_nil
-      expect(p.gender).to eq false
+      expect(p.male).to eq false
       expect(p.father_id).to be_nil
       expect(p.mother_id).to be_nil
       expect(p.notes).to be_nil

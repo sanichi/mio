@@ -87,7 +87,7 @@ shared_context "test_data" do
   let(:person_father)      { I18n.t("person.father") }
   let(:person_female)      { I18n.t("person.male") }
   let(:person_first_names) { I18n.t("person.first_names") }
-  let(:person_gender)      { I18n.t("person.died") }
+  let(:person_gender)      { I18n.t("person.gender") }
   let(:person_known_as)    { I18n.t("person.known_as") }
   let(:person_last_name)   { I18n.t("person.last_name") }
   let(:person_male)        { I18n.t("person.male") }
