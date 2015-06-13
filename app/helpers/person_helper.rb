@@ -8,7 +8,7 @@ module PersonHelper
 
   def person_search_order_menu(selected)
     ords = []
-    %w/last first born/.each { |g| ords.push [t("person.order.#{g}"), g] }
+    %w/last first known born/.each { |g| ords.push [t("person.order.#{g}"), g] }
     options_for_select(ords, selected)
   end
 

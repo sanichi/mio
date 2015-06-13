@@ -22,6 +22,11 @@ class Person < ActiveRecord::Base
   validates :last_name, presence: true, length: { maximum: MAX_LN }
 
   validate :years_must_make_sense
+  
+  scope :order_by_last_name,  -> { order(:last_name, :first_names, :born) }
+  scope :order_by_first_name, -> { order(:first_names, :last_name, :born) }
+  scope :order_by_first_born, -> { order(:born, :last_name, :first_names) }
+  scope :order_by_known_as,   -> { order(:known_as, :last_name, :born) }
 
   def name(full: true, reversed: false, with_known_as: true)
     first = full ? first_names : known_as
@@ -38,12 +43,12 @@ class Person < ActiveRecord::Base
   end
 
   def self.search(params, path, opt={})
-    ord = case params[:order]
-          when "first" then [:first_names, :last_name, :born]
-          when "born"  then [:born, :last_name, :first_names]
-          else              [:last_name, :first_names, :born]
+    matches = case params[:order]
+          when "first" then order_by_first_name
+          when "born"  then order_by_first_born
+          when "known" then order_by_known_as
+          else              order_by_last_name
           end
-    matches = order(*ord)
     matches = matches.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
     if params[:first_names].present?
       pattern = "%#{params[:first_names]}%"
@@ -55,6 +60,9 @@ class Person < ActiveRecord::Base
     matches = matches.where(male: false) if params[:gender] == "female"
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
+  end
+  
+  def children
   end
 
   private

@@ -1,6 +1,6 @@
 - people.matches.each do |person|
   %tr
-    %td= link_to person.name(reversed: params[:order] != "first"), person
+    %td= link_to person.name(reversed: !%w/first known/.include?(params[:order]), full: !%w/known/.include?(params[:order])), person
     %td.text-center= t("person.symbol.#{ person.male ? '' : 'fe' }male")
     %td.text-center= person.born
 = render "utils/pagination_links", pager: people, columns: 2
