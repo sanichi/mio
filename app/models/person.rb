@@ -21,7 +21,7 @@ class Person < ActiveRecord::Base
   validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
 
-  validate :years_must_make_sense
+  validate :years_must_make_sense, :parents_must_make_sense
   
   scope :order_by_last_name,  -> { order(:last_name, :first_names, :born) }
   scope :order_by_first_name, -> { order(:first_names, :last_name, :born) }
@@ -86,5 +86,10 @@ class Person < ActiveRecord::Base
       errors.add(:born, "can't be born before father") if father.present? && father.born >= born
       errors.add(:born, "can't be born before mother") if mother.present? && mother.born >= born
     end
+  end
+
+  def parents_must_make_sense
+    errors.add(:father_id, "can't be female") if father.present? && !father.male
+    errors.add(:mother_id, "can't be male") if mother.present? && mother.male
   end
 end
