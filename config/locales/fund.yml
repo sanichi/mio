@@ -35,11 +35,12 @@ en:
       size: Size
     stars:
       stars: Stars
-      hl_tracker: 🌵 HL Core Tracker
-      hl_w150: 🌹 HL Wealth 150
-      hl_w150p: 🌷 HL Wealth 150 Plus
-      rp_rated: 🍄 rplan Rated Fund
-      short:
+      hl_tracker: HL Core Tracker
+      hl_w150: HL Wealth 150
+      hl_w150p: HL Wealth 150 Plus
+      my_best: Mark's Favourite
+      rp_rated: rplan Rated Fund
+      symbol:
         hl_tracker: 🌵
         hl_w150: 🌹
         hl_w150p: 🌷

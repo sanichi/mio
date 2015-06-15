@@ -6,7 +6,7 @@ describe Fund do
   let(:data)     { build(:fund) }
   let(:attrs)    { attributes_for(:fund) }
   let(:category) { I18n.t("fund.category.#{data.category}") }
-  let(:stars)    { data.stars.map { |star| I18n.t("fund.stars.#{star}") } }
+  let(:stars)    { data.stars.map { |star| Fund.full_star(star) } }
 
   before(:each) do
     login
@@ -97,7 +97,7 @@ describe Fund do
 
       expect(page).to have_title edit_fund
       select category, from: fund_category
-      fund.stars.each { |star| unselect I18n.t("fund.stars.#{star}"), from: fund_stars }
+      fund.stars.each { |star| unselect Fund.full_star(star), from: fund_stars }
       click_button save
 
       expect(page).to have_title fund.name

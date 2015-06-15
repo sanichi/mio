@@ -24,7 +24,7 @@ module FundHelper
   end
 
   def fund_stars_menu(fund)
-    stars = Fund::STARS.map { |star| [t("fund.stars.#{star}"), star] }
+    stars = Fund::STARS.map { |star| [Fund.full_star(star), star] }
     options_for_select(stars, fund.stars)
   end
 end
