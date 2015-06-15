@@ -50,8 +50,15 @@ class Fund < ActiveRecord::Base
       matches = matches.where(constraint) if constraint
     end
     if params[:stars].present?
-      constraint = Fund.constraint(params[:stars], "coalesce(array_length(regexp_split_to_array(stars,E'\\n+'),1),2) - 2")
-      matches = matches.where(constraint) if constraint
+      stars = params[:stars]
+      if stars.match(/[a-z]/i)
+        # Filter on a sub-string of the star's key(s).
+        matches = matches.where("stars ILIKE '%#{stars}%'")
+      else
+        # Filter on the number of stars (e.g. "> 2").
+        constraint = Fund.constraint(stars, "coalesce(array_length(regexp_split_to_array(stars,E'\\n+'),1),2) - 2")
+        matches = matches.where(constraint) if constraint
+      end
     end
     paginate(matches, params, path, opt)
   end
