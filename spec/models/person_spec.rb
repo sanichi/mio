@@ -50,4 +50,25 @@ describe Person do
       expect(dad.name(reversed: true, full: false, with_known_as: true)).to eq "Orr, John"
     end
   end
+
+  context "#relationship" do
+    let!(:thomas)  { create(:person, born: 1900, male: true) }
+    let!(:mona)    { create(:person, born: 1901, male: false) }
+    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona) }
+    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona) }
+    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona) }
+    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona) }
+    let!(:william) { create(:person, born: 1885, male: true) }
+    let!(:marlene) { create(:person, born: 1907, male: false) }
+    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene) }
+    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene) }
+    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene) }
+    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene) }
+    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat) }
+
+    it "self" do
+      expect(thomas.relationship(thomas)).to eq :self
+      expect(june.relationship(june)).to eq :self
+    end
+  end
 end

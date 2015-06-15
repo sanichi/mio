@@ -22,7 +22,7 @@ class Person < ActiveRecord::Base
   validates :last_name, presence: true, length: { maximum: MAX_LN }
 
   validate :years_must_make_sense, :parents_must_make_sense
-  
+
   scope :order_by_last_name,  -> { order(:last_name, :first_names, :born) }
   scope :order_by_first_name, -> { order(:first_names, :last_name, :born) }
   scope :order_by_first_born, -> { order(:born, :last_name, :first_names) }
@@ -61,8 +61,16 @@ class Person < ActiveRecord::Base
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
   end
-  
-  def children
+
+  def relationship(other)
+    tree1 = Ancestors.new(self)
+    tree2 = Ancestors.new(other)
+    if self == other
+      :self
+    else
+      :none
+    end
+    tree1.lowest_common_ancestor(tree2)
   end
 
   private
