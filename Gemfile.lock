@@ -247,7 +247,6 @@ DEPENDENCIES
   rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   selenium-webdriver
-  sprockets
   therubyracer
   uglifier (>= 1.3.0)
   whenever
