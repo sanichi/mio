@@ -9,8 +9,12 @@ module Pageable
       per_page = 10 if per_page == 0
       remote = opt[:remote] ? true : false
       page = 1 + count / per_page if page > 1 && (page - 1) * per_page >= count
-      matches = matches.offset(per_page * (page - 1)) if page > 1
-      matches = matches.limit(per_page)
+      if matches.respond_to?(:limit)
+        matches = matches.offset(per_page * (page - 1)) if page > 1
+        matches = matches.limit(per_page)
+      else
+        matches = matches[per_page * (page - 1), per_page]
+      end
       Pager.new(matches, params, path, per_page, page, count, remote)
     end
   end
