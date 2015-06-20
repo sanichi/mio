@@ -100,20 +100,35 @@ describe Person do
       expect(mona.relationship(kirk).to_s).to eq "grandson"
       expect(paula.relationship(mona).to_s).to eq "grandmother"
       expect(mona.relationship(paula).to_s).to eq "granddaughter"
-    end
-
-    it "great-grandfather/great-grandson/great-grandmother/great-granddaughter" do
       expect(penny.relationship(thomas).to_s).to eq "great-grandfather"
       expect(mona.relationship(jamie).to_s).to eq "great-grandson"
       expect(jamie.relationship(mona).to_s).to eq "great-grandmother"
       expect(thomas.relationship(penny).to_s).to eq "great-granddaughter"
     end
 
+    it "uncle/aunt/nephew/niece" do
+      expect(kirk.relationship(tom).to_s).to eq "uncle"
+      expect(tom.relationship(kirk).to_s).to eq "nephew"
+      expect(malc.relationship(beth).to_s).to eq "aunt"
+      expect(beth.relationship(malc).to_s).to eq "nephew"
+      expect(mark.relationship(faye).to_s).to eq "niece"
+      expect(jamie.relationship(doug).to_s).to eq "great-uncle"
+      expect(doug.relationship(jamie).to_s).to eq "great-nephew"
+      expect(penny.relationship(june).to_s).to eq "great-aunt"
+      expect(june.relationship(penny).to_s).to eq "great-niece"
+    end
+
     it "cousin" do
-      expect(mark.relationship(kirk).to_s).to eq "cousin"
-      expect(kirk.relationship(mark).to_s).to eq "cousin"
-      expect(penny.relationship(faye).to_s).to eq "cousin"
-      expect(faye.relationship(penny).to_s).to eq "cousin"
+      expect(mark.relationship(kirk).to_s).to eq "1st cousin"
+      expect(kirk.relationship(mark).to_s).to eq "1st cousin"
+      expect(penny.relationship(faye).to_s).to eq "1st cousin"
+      expect(faye.relationship(penny).to_s).to eq "1st cousin"
+      expect(malc.relationship(jamie).to_s).to eq "1st cousin once removed"
+      expect(jamie.relationship(malc).to_s).to eq "1st cousin once removed"
+      expect(penny.relationship(kirk).to_s).to eq "1st cousin once removed"
+      expect(kirk.relationship(penny).to_s).to eq "1st cousin once removed"
+      expect(penny.relationship(jamie).to_s).to eq "2nd cousin"
+      expect(jamie.relationship(penny).to_s).to eq "2nd cousin"
     end
   end
 end
