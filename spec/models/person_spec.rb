@@ -65,10 +65,55 @@ describe Person do
     let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene) }
     let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene) }
     let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat) }
+    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat) }
+    let!(:kirk)    { create(:person, born: 1967, male: true, mother: june) }
+    let!(:paula)   { create(:person, born: 1967, male: false, father: doug) }
+    let!(:penny)   { create(:person, born: 1986, male: false, father: mark) }
+    let!(:faye)    { create(:person, born: 1986, male: false, father: malc) }
+    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk) }
 
     it "self" do
-      expect(thomas.relationship(thomas)).to eq :self
-      expect(june.relationship(june)).to eq :self
+      expect(thomas.relationship(thomas).to_s).to eq "identity"
+      expect(june.relationship(june).to_s).to eq "identity"
+    end
+
+    it "father/son/mother/daughter" do
+      expect(doug.relationship(thomas).to_s).to eq "father"
+      expect(thomas.relationship(tom).to_s).to eq "son"
+      expect(pat.relationship(mona).to_s).to eq "mother"
+      expect(mona.relationship(pat).to_s).to eq "daughter"
+    end
+
+    it "brother/sister" do
+      expect(joe.relationship(john).to_s).to eq "brother"
+      expect(john.relationship(joe).to_s).to eq "brother"
+      expect(beth.relationship(jean).to_s).to eq "sister"
+      expect(jean.relationship(beth).to_s).to eq "sister"
+      expect(tom.relationship(pat).to_s).to eq "sister"
+      expect(pat.relationship(tom).to_s).to eq "brother"
+    end
+
+    it "grandfather/grandson/grandmother/granddaughter" do
+      expect(mark.relationship(thomas).to_s).to eq "grandfather"
+      expect(thomas.relationship(mark).to_s).to eq "grandson"
+      expect(kirk.relationship(mona).to_s).to eq "grandmother"
+      expect(mona.relationship(kirk).to_s).to eq "grandson"
+      expect(paula.relationship(mona).to_s).to eq "grandmother"
+      expect(mona.relationship(paula).to_s).to eq "granddaughter"
+    end
+
+    it "great-grandfather/great-grandson/great-grandmother/great-granddaughter" do
+      expect(penny.relationship(thomas).to_s).to eq "great-grandfather"
+      expect(mona.relationship(jamie).to_s).to eq "great-grandson"
+      expect(jamie.relationship(mona).to_s).to eq "great-grandmother"
+      expect(thomas.relationship(penny).to_s).to eq "great-granddaughter"
+    end
+
+    it "cousin" do
+      expect(mark.relationship(kirk).to_s).to eq "cousin"
+      expect(kirk.relationship(mark).to_s).to eq "cousin"
+      expect(penny.relationship(faye).to_s).to eq "cousin"
+      expect(faye.relationship(penny).to_s).to eq "cousin"
     end
   end
 end

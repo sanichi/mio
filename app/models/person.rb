@@ -43,12 +43,13 @@ class Person < ActiveRecord::Base
   end
 
   def self.search(params, path, opt={})
-    matches = case params[:order]
-          when "first" then order_by_first_name
-          when "born"  then order_by_first_born
-          when "known" then order_by_known_as
-          else              order_by_last_name
-          end
+    matches =
+    case params[:order]
+    when "first" then order_by_first_name
+    when "born"  then order_by_first_born
+    when "known" then order_by_known_as
+    else              order_by_last_name
+    end
     matches = matches.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
     if params[:first_names].present?
       pattern = "%#{params[:first_names]}%"
@@ -62,15 +63,15 @@ class Person < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  Ancestor = Struct.new(:person, :level)
+  def ancestors
+    @ancestors ||= complete({id => Ancestor.new(self, 0)})
+  end
+
   def relationship(other)
-    tree1 = Ancestors.new(self)
-    tree2 = Ancestors.new(other)
-    if self == other
-      :self
-    else
-      :none
-    end
-    tree1.lowest_common_ancestor(tree2)
+    return Relation.new(:self) if self == other
+    my_level, their_level = relations(ancestors, other.ancestors)
+    Relation.infer(my_level, their_level, other.male)
   end
 
   private
@@ -99,5 +100,29 @@ class Person < ActiveRecord::Base
   def parents_must_make_sense
     errors.add(:father_id, "can't be female") if father.present? && !father.male
     errors.add(:mother_id, "can't be male") if mother.present? && mother.male
+  end
+
+  def complete(ancestors, level=0)
+    people = ancestors.values.select{ |ancestor| ancestor.level == level }.map(&:person)
+    more = false
+    people.each do |person|
+      if (father = person.father) && !ancestors[father.id]
+        ancestors[father.id] = Ancestor.new(father, level + 1)
+        more = true
+      end
+      if (mother = person.mother) && !ancestors[mother.id]
+        ancestors[mother.id] = Ancestor.new(mother, level + 1)
+        more = true
+      end
+    end
+    complete(ancestors, level + 1) if more
+    ancestors
+  end
+
+  def relations(mine, theirs)
+    common_ids = Set.new(mine.keys) & Set.new(theirs.keys)
+    [mine, theirs].map do |ancestors|
+      common_ids.map{ |id| ancestors[id] }.map(&:level).min
+    end
   end
 end
