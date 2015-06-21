@@ -7,6 +7,8 @@
       = link_to t("prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'}"
       = link_to t("next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'}"
     = link_to t("picture.original"), picture.image.url, class: "btn btn-success"
-    = link_to picture.person.name(full: false), picture.person, class: "btn btn-success"
     - if can?(:manage, picture)
       = link_to t("edit"), edit_picture_path(picture), class: "btn btn-info"
+    = link_to picture.person.name(full: false), picture.person, class: "btn btn-success"
+    = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
+    = link_to t("person.people"), people_path, class: "btn btn-success"
