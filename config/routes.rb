@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   end
   resources :incomes, except: [:show] { get :graph, on: :collection }
   resources :logins, only: [:index]
-  resources :marriages
   resources :masses, except: [:show] { get :graph, on: :collection }
+  resources :partnerships
   resources :people
   resources :pictures
   resources :sessions, only: [:create]

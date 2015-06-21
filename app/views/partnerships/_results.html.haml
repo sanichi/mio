@@ -1,0 +1,6 @@
+- partnerships.matches.each do |partnership|
+  %tr
+    %td= link_to partnership.wedding, partnership
+    %td= partnership.husband.name(reversed: true)
+    %td= partnership.wife.name(reversed: true)
+= render "utils/pagination_links", pager: partnerships, columns: 3

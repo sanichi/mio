@@ -22,7 +22,7 @@
               %li= link_to t("income.incomes"), graph_incomes_path
             - if can?(:read, Fund)
               %li= link_to t("fund.funds"), funds_path
-      - if [Person, Picture, Marriage].map{|c| can?(:read, c) }.any?
+      - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("family")
@@ -32,8 +32,8 @@
               %li= link_to t("person.people"), people_path
             - if can?(:read, Picture)
               %li= link_to t("picture.pictures"), pictures_path
-            - if can?(:read, Marriage)
-              %li= link_to t("marriage.marriages"), marriages_path
+            - if can?(:read, Partnership)
+              %li= link_to t("partnership.partnerships"), partnerships_path
       - if [User, Login].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do

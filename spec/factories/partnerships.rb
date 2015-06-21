@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :marriage do
+  factory :partnership do
     wedding { (1955..1975).to_a.sample }
     divorce nil
 

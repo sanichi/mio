@@ -1,0 +1,25 @@
+= render "utils/title", key: "partnership.partnerships"
+
+.text-center
+  = form_tag partnerships_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
+      = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("partnership.wedding"), size: 12
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+%p
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("partnership.wedding")
+          %th= t("partnership.husband")
+          %th= t("partnership.wife")
+      %tbody{id: "results"}
+        = render "results", partnerships: @partnerships
+
+.text-center
+  - if can?(:create, Partnership)
+    = link_to t("partnership.new"), new_partnership_path, class: "btn btn-info"
