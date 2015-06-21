@@ -17,6 +17,9 @@
           %tr
             %th= t("partnership.divorce")
             %td= @partnership.divorce
+        %tr
+          %th= t("partnership.marriage")
+          %td= t(@partnership.marriage ? "yes" : "no")
 
 - if can?(:manage, Partnership)
   .text-center.margin_top

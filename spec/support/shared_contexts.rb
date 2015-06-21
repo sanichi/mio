@@ -103,6 +103,7 @@ shared_context "test_data" do
   let(:edit_partnership)     { I18n.t("partnership.edit") }
   let(:partnership_divorce)  { I18n.t("partnership.divorce") }
   let(:partnership_husband)  { I18n.t("partnership.husband") }
+  let(:partnership_marriage) { I18n.t("partnership.marriage") }
   let(:partnership_wedding)  { I18n.t("partnership.wedding") }
   let(:partnership_wife)     { I18n.t("partnership.wife") }
   let(:partnership_singular) { I18n.t("partnership.partnership") }

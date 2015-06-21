@@ -20,17 +20,19 @@ describe Partnership do
       select husband.name(reversed: true), from: partnership_husband
       select wife.name(reversed: true), from: partnership_wife
       fill_in partnership_wedding, with: data.wedding
+      uncheck partnership_marriage unless data.marriage
       click_button save
 
       expect(page).to have_title partnership_singular
 
       expect(Partnership.count).to eq 1
-      m = Partnership.last
+      p = Partnership.last
 
-      expect(m.husband_id).to eq husband.id
-      expect(m.wife.id).to eq wife.id
-      expect(m.wedding).to eq data.wedding
-      expect(m.divorce).to be_nil
+      expect(p.husband_id).to eq husband.id
+      expect(p.wife.id).to eq wife.id
+      expect(p.wedding).to eq data.wedding
+      expect(p.divorce).to be_nil
+      expect(p.marriage).to be data.marriage
     end
   end
 
@@ -80,15 +82,15 @@ describe Partnership do
       visit partnership_path(partnership)
       click_link edit
       expect(page).to have_title edit_partnership
-      fill_in partnership_wedding, with: year
+      fill_in partnership_divorce, with: year
       click_button save
 
       expect(page).to have_title partnership_singular
 
       expect(Partnership.count).to eq 1
-      m = Partnership.last
+      p = Partnership.last
 
-      expect(m.wedding).to eq year
+      expect(p.divorce).to eq year
     end
   end
 
