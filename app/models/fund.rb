@@ -4,6 +4,7 @@ class Fund < ActiveRecord::Base
   serialize :stars, Array
 
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :links, as: :linkable, dependent: :destroy
   has_many :returns, as: :returnable, dependent: :destroy
 
   default_scope { order(srri: :desc, annual_fee: :asc) }

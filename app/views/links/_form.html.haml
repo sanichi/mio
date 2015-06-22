@@ -1,0 +1,17 @@
+.row
+  .col-md-offset-1.col-md-10
+    = form_for [linkable, link], html: { class: "form-horizontal", role: "form" } do |f|
+      - if link.new_record?
+        = f.hidden_field :linkable_type
+        = f.hidden_field :linkable_id
+      %fieldset
+        - shared = { form: f, object: link, col: "md", pad: 1 }
+        = render "utils/text_field_for", shared.merge(param: :url, text: t("link.url"), width: 10)
+        = render "utils/text_field_for", shared.merge(param: :text, text: t("link.text"), width: 3)
+        = render "utils/text_field_for", shared.merge(param: :target, text: t("link.target"), width: 2)
+      .row
+        .col-md-offset-1.col-md-11
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), linkable, class: "btn btn-default"
+          - unless link.new_record?
+            = link_to t("delete"), [linkable, link], class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

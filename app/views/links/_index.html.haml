@@ -1,0 +1,11 @@
+- if links.any?          
+  .row
+    .col-md-offset-2.col-md-8
+      %h3.text-center= t("link.links")
+      %table{class: "table table-bordered table-striped"}
+        %tbody
+          - links.each do |link|
+            %tr
+              %td= link_to link.text, link.url, target: link.target
+              - if can?(:edit, link)
+                %td.col-md-1= link_to t("edit"), edit_polymorphic_path([linkable, link]), class: "btn btn-info btn-xs"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150621115801) do
+ActiveRecord::Schema.define(version: 20150622220654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,18 @@ ActiveRecord::Schema.define(version: 20150621115801) do
     t.datetime "updated_at",                                                    null: false
     t.integer  "joint",       limit: 2,                           default: 100
   end
+
+  create_table "links", force: :cascade do |t|
+    t.string   "url",           limit: 256
+    t.string   "target",        limit: 20,  default: "external"
+    t.string   "text",          limit: 50
+    t.integer  "linkable_id"
+    t.string   "linkable_type"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "links", ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id", using: :btree
 
   create_table "logins", force: :cascade do |t|
     t.string   "email",      limit: 75
