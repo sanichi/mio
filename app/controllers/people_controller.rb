@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
   def relative
     p = Person.find_by(id: params[:id])
     o = Person.find_by(id: params[:other])
-    relationship = p && o ? p.relationship(o).to_s : I18n.t("error")
+    relationship = p && o ? p.relationship(o).to_s(caps: true) : I18n.t("error")
     respond_to do |format|
       format.json { render text: relationship }
     end

@@ -36,21 +36,22 @@ class Relation
     new(type, opts)
   end
 
-  def to_s
-    case type
-    when :self
-      "self"
-    when :none
-      "no relation"
-    when :father, :mother, :son, :daughter
-      great_part + grand_part + type.to_s
-    when :uncle, :aunt, :nephew, :niece
-      great_part + type.to_s
-    when :cousin
-      degree_part + type.to_s + removal_part
-    else
-      type.to_s
-    end
+  def to_s(caps: false)
+    str = case type
+          when :self
+            "self"
+          when :none
+            "no relation"
+          when :father, :mother, :son, :daughter
+            great_part + grand_part + type.to_s
+          when :uncle, :aunt, :nephew, :niece
+            great_part + type.to_s
+          when :cousin
+            degree_part + type.to_s + removal_part
+          else
+            type.to_s
+          end
+    caps ? str.gsub(/[a-z]+/, &:capitalize) : str
   end
 
   private
