@@ -38,3 +38,4 @@
 .text-center
   - if can?(:create, Person)
     = link_to t("person.new"), new_person_path, class: "btn btn-info"
+  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"

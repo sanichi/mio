@@ -113,7 +113,7 @@ describe Picture do
       click_link edit
       click_link delete
 
-      expect(page).to have_title picture.person.name
+      expect(page).to have_title picture.person.name(full: false)
       expect(Picture.count).to eq 0
     end
   end

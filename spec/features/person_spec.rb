@@ -28,7 +28,7 @@ describe Person do
       check person_male if data.male
       click_button save
 
-      expect(page).to have_title data.name
+      expect(page).to have_title data.name(full: false)
 
       expect(Person.count).to eq count + 1
       p = Person.last
@@ -130,7 +130,7 @@ describe Person do
       fill_in person_died, with: year
       click_button save
 
-      expect(page).to have_title person.name
+      expect(page).to have_title person.name(full: false)
 
       expect(Person.count).to eq count + 1
       p = Person.last
