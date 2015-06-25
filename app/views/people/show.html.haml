@@ -1,7 +1,7 @@
 = render "utils/title", text: @person.name
 
 .row
-  .col-xs-offset-1.col-xs-10.col-sm-offset-2.col-sm-8.col-md-offset-3.col-md-6
+  .col-xs-offset-1.col-xs-10.col-sm-offset-2.col-sm-8
     %table{class: "table table-bordered table-striped"}
       %tbody
         %tr
@@ -31,6 +31,9 @@
           %tr
             %th= t("person.mother")
             %td= link_to @person.mother.name(full: false), @person.mother
+        = render "people", people: @person.siblings, label: t("person.siblings")
+        = render "people", people: @person.partners, label: t("person.partners")
+        = render "people", people: @person.children, label: t("person.children")
 
 .margin_bottom
   = render "pictures/results", pictures: @person.pictures

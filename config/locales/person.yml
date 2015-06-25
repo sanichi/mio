@@ -1,6 +1,7 @@
 en:
   person:
     born: Born
+    children: Children
     died: Died
     edit: Edit Person
     family: Family
@@ -16,8 +17,10 @@ en:
     mother: Mother
     new: New Person
     notes: Notes
+    partners: Partners
     people: People
     person: Person
+    siblings: Siblings
     order:
       born: by born
       first: by first name

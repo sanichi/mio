@@ -23,10 +23,10 @@ class Person < ActiveRecord::Base
 
   validate :years_must_make_sense, :parents_must_make_sense
 
-  scope :order_by_last_name,  -> { order(:last_name, :first_names, :born) }
-  scope :order_by_first_name, -> { order(:first_names, :last_name, :born) }
-  scope :order_by_first_born, -> { order(:born, :last_name, :first_names) }
-  scope :order_by_known_as,   -> { order(:known_as, :last_name, :born) }
+  scope :by_last_name,  -> { order(:last_name, :first_names, :born) }
+  scope :by_first_name, -> { order(:first_names, :last_name, :born) }
+  scope :by_born, -> { order(:born, :last_name, :first_names) }
+  scope :by_known_as,   -> { order(:known_as, :last_name, :born) }
 
   def name(full: true, reversed: false, with_known_as: true)
     first = full ? first_names : known_as
@@ -45,10 +45,10 @@ class Person < ActiveRecord::Base
   def self.search(params, path, opt={})
     matches =
     case params[:order]
-    when "first" then order_by_first_name
-    when "born"  then order_by_first_born
-    when "known" then order_by_known_as
-    else              order_by_last_name
+    when "first" then by_first_name
+    when "born"  then by_born
+    when "known" then by_known_as
+    else              by_last_name
     end
     matches = matches.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
     if params[:first_names].present?
@@ -61,6 +61,25 @@ class Person < ActiveRecord::Base
     matches = matches.where(male: false) if params[:gender] == "female"
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
+  end
+
+  def children
+    @children ||= Person.by_born.where("#{male ? 'father' : 'mother'}_id = #{id}")
+  end
+
+  def siblings
+    return [] unless father_id || mother_id
+    return @siblings if @siblings
+    clauses = []
+    clauses.push("father_id = #{father_id}") if father_id
+    clauses.push("mother_id = #{mother_id}") if mother_id
+    @siblings = Person.by_born.where(clauses.join(" OR ")).where.not(id: id)
+  end
+
+  def partners
+    return @partners if @partners
+    join = "INNER JOIN partnerships ON #{male ? 'husband' : 'wife'}_id = #{id} AND #{male ? 'wife' : 'husband'}_id = people.id"
+    @partners = Person.by_born.joins(join)
   end
 
   Ancestor = Struct.new(:person, :level)
