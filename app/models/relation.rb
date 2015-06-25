@@ -4,7 +4,7 @@ class Relation
   def initialize(type, grand: 0, degree: 0, removal: 0)
     @type, @grand, @degree, @removal = type, grand, degree, removal
   end
-  
+
   def self.infer(my_level, their_level, male)
     return new(:none) unless my_level
     opts = {}
@@ -12,20 +12,20 @@ class Relation
     case
     when my_level == 0 && their_level == 0
       :self
-    when my_level == 0 && their_level > 0
-      opts[:grand] = their_level - 1
-      male ? :son : :daughter
     when my_level > 0 && their_level == 0
       opts[:grand] = my_level - 1
+      male ? :son : :daughter
+    when my_level == 0 && their_level > 0
+      opts[:grand] = their_level - 1
       male ? :father : :mother
     when my_level == 1 && their_level == 1
       male ? :brother : :sister
     when my_level > 1 && their_level == 1
       opts[:grand] = my_level - 1
-      male ? :uncle : :aunt
+      male ? :nephew : :niece
     when my_level == 1 && their_level > 1
       opts[:grand] = their_level - 1
-      male ? :nephew : :niece
+      male ? :uncle : :aunt
     when my_level >= 2 && their_level >= 2
       opts[:degree] = [my_level, their_level].min - 1
       opts[:removal] = (my_level - their_level).abs
@@ -39,7 +39,7 @@ class Relation
   def to_s
     case type
     when :self
-      "identity"
+      "self"
     when :none
       "no relation"
     when :father, :mother, :son, :daughter
@@ -52,13 +52,13 @@ class Relation
       type.to_s
     end
   end
-  
+
   private
-  
+
   def great_part
     grand > 1 ? "great-" * (grand - 1) : ""
   end
-  
+
   def grand_part
     grand > 0 ? "grand" : ""
   end

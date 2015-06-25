@@ -63,6 +63,15 @@ class Person < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  def self.match(term)
+    return [] unless term.present?
+    clause = %w(last_name first_names known_as).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
+    values = Array.new(3, "%#{term}%")
+    by_last_name.where(clause, *values).map do |person|
+      { id: person.id, value: person.name(reversed: true) }
+    end
+  end
+
   def children
     @children ||= Person.by_born.where("#{male ? 'father' : 'mother'}_id = #{id}")
   end
@@ -90,7 +99,7 @@ class Person < ActiveRecord::Base
   def relationship(other)
     return Relation.new(:self) if self == other
     my_level, their_level = relations(ancestors, other.ancestors)
-    Relation.infer(my_level, their_level, other.male)
+    Relation.infer(my_level, their_level, male)
   end
 
   private

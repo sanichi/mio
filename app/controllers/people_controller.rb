@@ -6,6 +6,22 @@ class PeopleController < ApplicationController
     @people = Person.search(params, people_path, remote: true)
   end
 
+  def match
+    @people = Person.match(params[:term])
+    respond_to do |format|
+      format.json { render json: @people }
+    end
+  end
+
+  def relative
+    p = Person.find_by(id: params[:id])
+    o = Person.find_by(id: params[:other])
+    relationship = p && o ? p.relationship(o).to_s : I18n.t("error")
+    respond_to do |format|
+      format.json { render text: relationship }
+    end
+  end
+
   def new
     @person = Person.new
   end

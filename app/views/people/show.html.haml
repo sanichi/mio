@@ -1,4 +1,6 @@
 = render "utils/title", text: @person.name(full: false), header: true
+- content_for :javascript do
+  = render "autocompleter.js", id: @person.id
 
 .row
   .col-xs-offset-1.col-xs-10.col-sm-offset-2.col-sm-8
@@ -34,9 +36,15 @@
         = render "people", people: @person.siblings, label: t("person.siblings")
         = render "people", people: @person.partners, label: t("person.partners")
         = render "people", people: @person.children, label: t("person.children")
+        %tr
+          %th= t("person.relationship_to")
+          %td.form-inline
+            .input-group.input-group-sm
+              = text_field_tag :term, "", class: "form-control", placeholder: t("person.complete_name"), size: 30
+            = "&nbsp;&nbsp;".html_safe
+            %span#relative
 
-.margin_bottom
-  = render "pictures/results", pictures: @person.pictures
+= render "pictures/results", pictures: @person.pictures
 
 %p
 

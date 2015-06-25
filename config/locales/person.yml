@@ -2,6 +2,7 @@ en:
   person:
     born: Born
     children: Children
+    complete_name: Type then select
     died: Died
     edit: Edit Person
     family: Family
@@ -20,6 +21,7 @@ en:
     partners: Partners
     people: People
     person: Person
+    relationship_to: Relationship To
     siblings: Siblings
     order:
       born: by born
