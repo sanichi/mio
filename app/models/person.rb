@@ -88,7 +88,7 @@ class Person < ActiveRecord::Base
   def partners
     return @partners if @partners
     join = "INNER JOIN partnerships ON #{male ? 'husband' : 'wife'}_id = #{id} AND #{male ? 'wife' : 'husband'}_id = people.id"
-    @partners = Person.by_born.joins(join)
+    @partners = Person.joins(join).order("wedding")
   end
 
   Ancestor = Struct.new(:person, :level)

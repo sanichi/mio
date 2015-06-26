@@ -128,4 +128,18 @@ describe Person do
       expect(jamie.relationship(penny).to_s).to eq "2nd cousin"
     end
   end
+
+  context "#partners" do
+    let!(:mark)      { create(:person, born: 1955, male: true) }
+    let!(:lynda)     { create(:person, born: 1967, male: false) }
+    let!(:aphrodite) { create(:person, born: 1969, male: false) }
+    let!(:pat)       { create(:person, born: 1942, male: false) }
+    let!(:m_a)       { create(:partnership, husband: mark, wedding: 1988, marriage: false, wife: aphrodite) }
+    let!(:m_p)       { create(:partnership, husband: mark, wedding: 1989, marriage: false, wife: pat) }
+    let!(:m_l)       { create(:partnership, husband: mark, wedding: 1990, marriage: false, wife: lynda) }
+
+    it "order by partnership start, not partner age" do
+      expect(mark.partners.map(&:id)).to eq [aphrodite.id, pat.id, lynda.id]
+    end
+  end
 end
