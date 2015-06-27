@@ -4,8 +4,8 @@ class Person < ActiveRecord::Base
   include Remarkable
 
   has_many :pictures
-  belongs_to :father, class: Person
-  belongs_to :mother, class: Person
+  belongs_to :father, class_name: "Person"
+  belongs_to :mother, class_name: "Person"
 
   MAX_FN = 100
   MAX_KA = 20

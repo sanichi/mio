@@ -2,8 +2,8 @@ class Partnership < ActiveRecord::Base
   include Constrainable
   include Pageable
 
-  belongs_to :husband, class: Person
-  belongs_to :wife, class: Person
+  belongs_to :husband, class_name: "Person"
+  belongs_to :wife, class_name: "Person"
 
   MIN_YR = Person::MIN_YR
 
