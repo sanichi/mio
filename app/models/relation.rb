@@ -7,6 +7,8 @@ class Relation
 
   def self.infer(my_connections, their_connections, male)
     return new(:none) unless my_connections && their_connections
+    # puts "my: %d %s" % [my_connections.size, my_connections.map{ |c| c.join("-") }.join("|")]
+    # puts "th: %d %s" % [their_connections.size, their_connections.map{ |c| c.join("-") }.join("|")]
     my_depth, their_depth = my_connections.first.size, their_connections.first.size
     opts = {}
     type =

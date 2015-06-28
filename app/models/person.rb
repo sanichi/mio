@@ -92,13 +92,14 @@ class Person < ActiveRecord::Base
   end
 
   Ancestor = Struct.new(:person, :connection, :waiting)
+
   def ancestors
     @ancestors ||= complete({id => Ancestor.new(self, [], true)})
   end
 
   def relationship(other)
     return Relation.new(:self) if self == other
-    my_connections, their_connections = common(ancestors, other.ancestors)
+    my_connections, their_connections = common(other)
     Relation.infer(my_connections, their_connections, male)
   end
 
@@ -139,12 +140,19 @@ class Person < ActiveRecord::Base
       if mother = person.mother
         ancestors[mother.id] ||= Ancestor.new(mother, connection + [:mother], true)
       end
+      # if person.partners.any?
+      #   person.partners.each do |partner|
+      #     ancestors[partner.id] ||= Ancestor.new(partner, connection + [partner.male ? :husband : :wife], true)
+      #   end
+      # end
       ancestor.waiting = false
     end
     waiting.any?? complete(ancestors) : ancestors
   end
 
-  def common(mine, theirs)
+  def common(other)
+    mine = ancestors
+    theirs = other.ancestors
     common_ids = Set.new(mine.keys) & Set.new(theirs.keys)
     [mine, theirs].map do |ancestors|
       connections = common_ids.map{ |id| ancestors[id] }.map(&:connection)
