@@ -91,15 +91,15 @@ class Person < ActiveRecord::Base
     @partners = Person.joins(join).order("wedding")
   end
 
-  Ancestor = Struct.new(:person, :level)
+  Ancestor = Struct.new(:person, :connection, :waiting)
   def ancestors
-    @ancestors ||= complete({id => Ancestor.new(self, 0)})
+    @ancestors ||= complete({id => Ancestor.new(self, [], true)})
   end
 
   def relationship(other)
     return Relation.new(:self) if self == other
-    my_level, their_level = relations(ancestors, other.ancestors)
-    Relation.infer(my_level, their_level, male)
+    my_connections, their_connections = common(ancestors, other.ancestors)
+    Relation.infer(my_connections, their_connections, male)
   end
 
   private
@@ -130,27 +130,26 @@ class Person < ActiveRecord::Base
     errors.add(:mother_id, "can't be male") if mother.present? && mother.male
   end
 
-  def complete(ancestors, level=0)
-    people = ancestors.values.select{ |ancestor| ancestor.level == level }.map(&:person)
-    more = false
-    people.each do |person|
-      if (father = person.father) && !ancestors[father.id]
-        ancestors[father.id] = Ancestor.new(father, level + 1)
-        more = true
+  def complete(ancestors)
+    (waiting = ancestors.values.select(&:waiting)).each do |ancestor|
+      person, connection = ancestor.person, ancestor.connection
+      if father = person.father
+        ancestors[father.id] ||= Ancestor.new(father, connection + [:father], true)
       end
-      if (mother = person.mother) && !ancestors[mother.id]
-        ancestors[mother.id] = Ancestor.new(mother, level + 1)
-        more = true
+      if mother = person.mother
+        ancestors[mother.id] ||= Ancestor.new(mother, connection + [:mother], true)
       end
+      ancestor.waiting = false
     end
-    complete(ancestors, level + 1) if more
-    ancestors
+    waiting.any?? complete(ancestors) : ancestors
   end
 
-  def relations(mine, theirs)
+  def common(mine, theirs)
     common_ids = Set.new(mine.keys) & Set.new(theirs.keys)
     [mine, theirs].map do |ancestors|
-      common_ids.map{ |id| ancestors[id] }.map(&:level).min
+      connections = common_ids.map{ |id| ancestors[id] }.map(&:connection)
+      min = connections.map(&:size).min
+      connections.select{ |connection| connection.size == min }
     end
   end
 end

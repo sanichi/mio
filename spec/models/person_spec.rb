@@ -52,26 +52,26 @@ describe Person do
   end
 
   context "#relationship" do
-    let!(:thomas)  { create(:person, born: 1900, male: true) }
-    let!(:mona)    { create(:person, born: 1901, male: false) }
-    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona) }
-    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona) }
-    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona) }
-    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona) }
-    let!(:gerry)   { create(:person, born: 1936, male: true) }
-    let!(:william) { create(:person, born: 1885, male: true) }
-    let!(:marlene) { create(:person, born: 1907, male: false) }
-    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene) }
-    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene) }
-    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene) }
-    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene) }
-    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat) }
-    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat) }
-    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june) }
-    let!(:paula)   { create(:person, born: 1967, male: false, father: doug) }
-    let!(:penny)   { create(:person, born: 1986, male: false, father: mark) }
-    let!(:faye)    { create(:person, born: 1986, male: false, father: malc) }
-    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk) }
+    let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas") }
+    let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona") }
+    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat") }
+    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom") }
+    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June") }
+    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug") }
+    let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry") }
+    let!(:william) { create(:person, born: 1885, male: true, first_names: "William") }
+    let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene") }
+    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John") }
+    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe") }
+    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth") }
+    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean") }
+    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark") }
+    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc") }
+    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk") }
+    let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula") }
+    let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny") }
+    let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye") }
+    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie") }
     let!(:th_mo)   { create(:partnership, wedding: 1925, marriage: true, husband: thomas, wife: mona) }
     let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: true, husband: william, wife: marlene) }
     let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat) }
