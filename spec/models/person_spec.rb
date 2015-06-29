@@ -63,19 +63,25 @@ describe Person do
     let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene") }
     let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John") }
     let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe") }
+    let!(:lily)    { create(:person, born: 1935, male: false, first_names: "Lily") }
     let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth") }
     let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean") }
     let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark") }
+    let!(:sandra)  { create(:person, born: 1957, male: false, first_names: "Sandra") }
     let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc") }
+    let!(:al)      { create(:person, born: 1960, male: false, first_names: "Al") }
     let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk") }
     let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula") }
     let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny") }
     let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye") }
     let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie") }
+    let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june) }
+    let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily) }
+    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat) }
+    let!(:ma_al)   { create(:partnership, wedding: 1990, marriage: true, husband: malc, wife: al) }
+    let!(:ma_sa)   { create(:partnership, wedding: 1994, marriage: true, husband: mark, wife: sandra) }
     let!(:th_mo)   { create(:partnership, wedding: 1925, marriage: true, husband: thomas, wife: mona) }
     let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: true, husband: william, wife: marlene) }
-    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat) }
-    let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june) }
 
     it "self" do
       expect(thomas.relationship(thomas).to_s).to eq "self"
@@ -133,9 +139,37 @@ describe Person do
       expect(jamie.relationship(penny).to_s).to eq "2nd cousin"
     end
 
-    xit "husband/wife" do
+    it "husband/wife" do
       expect(thomas.relationship(mona).to_s).to eq "husband"
       expect(mona.relationship(thomas).to_s).to eq "wife"
+      expect(mark.relationship(sandra).to_s).to eq "husband"
+      expect(sandra.relationship(mark).to_s).to eq "wife"
+    end
+
+    it "father/son/mother/daughter by marriage" do
+      expect(john.relationship(sandra).to_s).to eq "father-in-law"
+      expect(marlene.relationship(pat).to_s).to eq "mother-in-law"
+      expect(john.relationship(mona).to_s).to eq "son-in-law"
+      expect(al.relationship(pat).to_s).to eq "daughter-in-law"
+    end
+
+    it "brother/sister by marriage" do
+      expect(malc.relationship(sandra).to_s).to eq "brother-in-law"
+      expect(john.relationship(gerry).to_s).to eq "brother-in-law"
+      expect(pat.relationship(lily).to_s).to eq "sister-in-law"
+      expect(lily.relationship(beth).to_s).to eq "sister-in-law"
+    end
+
+    it "uncle/aunt/nephew/niece by marriage" do
+      expect(gerry.relationship(mark).to_s).to eq "uncle"
+      expect(malc.relationship(gerry).to_s).to eq "nephew"
+      expect(lily.relationship(mark).to_s).to eq "aunt"
+      expect(faye.relationship(sandra).to_s).to eq "niece"
+    end
+
+    it "no relation" do
+      expect(thomas.relationship(william).to_s).to eq "no relation"
+      expect(mona.relationship(marlene).to_s).to eq "no relation"
     end
   end
 

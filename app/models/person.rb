@@ -91,16 +91,16 @@ class Person < ActiveRecord::Base
     @partners = Person.joins(join).order("wedding")
   end
 
-  Ancestor = Struct.new(:person, :connection, :waiting)
+  Ancestor = Struct.new(:person, :connections, :blood, :waiting)
 
   def ancestors
-    @ancestors ||= complete({id => Ancestor.new(self, [], true)})
+    @ancestors ||= complete({id => Ancestor.new(self, 0, true, true)})
   end
 
   def relationship(other)
     return Relation.new(:self) if self == other
-    my_connections, their_connections = common(other)
-    Relation.infer(my_connections, their_connections, male)
+    my_ancestor, their_ancestor = best_common_ancestor(other)
+    Relation.infer(my_ancestor, their_ancestor, male)
   end
 
   private
@@ -133,31 +133,38 @@ class Person < ActiveRecord::Base
 
   def complete(ancestors)
     (waiting = ancestors.values.select(&:waiting)).each do |ancestor|
-      person, connection = ancestor.person, ancestor.connection
+      person, connections, blood = ancestor.person, ancestor.connections, ancestor.blood
       if father = person.father
-        ancestors[father.id] ||= Ancestor.new(father, connection + [:father], true)
+        ancestors[father.id] ||= Ancestor.new(father, connections + 1, blood, true)
       end
       if mother = person.mother
-        ancestors[mother.id] ||= Ancestor.new(mother, connection + [:mother], true)
+        ancestors[mother.id] ||= Ancestor.new(mother, connections + 1, blood, true)
       end
-      # if person.partners.any?
-      #   person.partners.each do |partner|
-      #     ancestors[partner.id] ||= Ancestor.new(partner, connection + [partner.male ? :husband : :wife], true)
-      #   end
-      # end
+      if person.partners.any?
+        person.partners.each do |partner|
+          ancestors[partner.id] ||= Ancestor.new(partner, connections, false, true)
+        end
+      end
       ancestor.waiting = false
     end
     waiting.any?? complete(ancestors) : ancestors
   end
 
-  def common(other)
+  def best_common_ancestor(other)
     mine = ancestors
     theirs = other.ancestors
     common_ids = Set.new(mine.keys) & Set.new(theirs.keys)
-    [mine, theirs].map do |ancestors|
-      connections = common_ids.map{ |id| ancestors[id] }.map(&:connection)
-      min = connections.map(&:size).min
-      connections.select{ |connection| connection.size == min }
-    end
+    return [nil, nil] if common_ids.empty?
+    my_best = common_ids.map do |id|
+      ancestors[id]
+    end.sort do |a,b|
+      if a.connections == b.connections
+        (a.blood == b.blood) ? 0 : (a.blood ? -1 : 1)
+      else
+        a.connections <=> b.connections
+      end
+    end.first
+    their_best = theirs[my_best.person.id]
+    [my_best, their_best]
   end
 end

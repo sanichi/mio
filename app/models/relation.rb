@@ -1,42 +1,44 @@
 class Relation
-  attr_reader :type, :grand, :degree, :removal
+  attr_reader :type, :grand, :degree, :removal, :law
 
-  def initialize(type, grand: 0, degree: 0, removal: 0)
-    @type, @grand, @degree, @removal = type, grand, degree, removal
+  def initialize(type, grand: 0, degree: 0, removal: 0, law: false)
+    @type, @grand, @degree, @removal, @law = type, grand, degree, removal, law
   end
 
-  def self.infer(my_connections, their_connections, male)
-    return new(:none) unless my_connections && their_connections
-    # puts "my: %d %s" % [my_connections.size, my_connections.map{ |c| c.join("-") }.join("|")]
-    # puts "th: %d %s" % [their_connections.size, their_connections.map{ |c| c.join("-") }.join("|")]
-    my_depth, their_depth = my_connections.first.size, their_connections.first.size
-    opts = {}
+  def self.infer(my_ancestor, their_ancestor, male)
+    return new(:none) unless my_ancestor && their_ancestor
+    my_depth, their_depth = my_ancestor.connections, their_ancestor.connections
+    blood = [my_ancestor, their_ancestor].select{ |a| a.blood }.size
+    opt = {}
     type =
     case
-    when my_depth == 0 && their_depth == 0
-      :self
+    when my_depth == 0 && their_depth == 0 && blood > 0
+      blood == 2 ? :self : (male ? :husband : :wife)
     when my_depth > 0 && their_depth == 0
-      opts[:grand] = my_depth - 1
+      opt[:grand] = my_depth - 1
+      opt[:law] = blood < 2
       male ? :son : :daughter
     when my_depth == 0 && their_depth > 0
-      opts[:grand] = their_depth - 1
+      opt[:grand] = their_depth - 1
+      opt[:law] = blood < 2
       male ? :father : :mother
     when my_depth == 1 && their_depth == 1
+      opt[:law] = blood < 2
       male ? :brother : :sister
     when my_depth > 1 && their_depth == 1
-      opts[:grand] = my_depth - 1
+      opt[:grand] = my_depth - 1
       male ? :nephew : :niece
     when my_depth == 1 && their_depth > 1
-      opts[:grand] = their_depth - 1
+      opt[:grand] = their_depth - 1
       male ? :uncle : :aunt
     when my_depth >= 2 && their_depth >= 2
-      opts[:degree] = [my_depth, their_depth].min - 1
-      opts[:removal] = (my_depth - their_depth).abs
+      opt[:degree] = [my_depth, their_depth].min - 1
+      opt[:removal] = (my_depth - their_depth).abs
       :cousin
     else
       :none
     end
-    new(type, opts)
+    new(type, opt)
   end
 
   def to_s(caps: false)
@@ -46,9 +48,11 @@ class Relation
           when :none
             "no relation"
           when :father, :mother, :son, :daughter
-            great_part + grand_part + type.to_s
+            great_part + grand_part + type.to_s + law_part
           when :uncle, :aunt, :nephew, :niece
             great_part + type.to_s
+          when :brother, :sister
+            type.to_s + law_part
           when :cousin
             degree_part + type.to_s + removal_part
           else
@@ -83,5 +87,9 @@ class Relation
     when 2 then " twice removed"
     else "#{removal}-times removed"
     end
+  end
+
+  def law_part
+    law ? "-in-law" : ""
   end
 end
