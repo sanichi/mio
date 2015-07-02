@@ -1,29 +1,32 @@
 class Relation
-  attr_reader :type, :grand, :degree, :removal, :law
+  attr_reader :type, :grand, :degree, :removal, :law, :step
 
-  def initialize(type, grand: 0, degree: 0, removal: 0, law: false)
-    @type, @grand, @degree, @removal, @law = type, grand, degree, removal, law
+  def initialize(type, grand: 0, degree: 0, removal: 0, law: false, step: false)
+    @type, @grand, @degree, @removal, @law, @step = type, grand, degree, removal, law, step
   end
 
   def self.infer(my_ancestor, their_ancestor, male)
     return new(:none) unless my_ancestor && their_ancestor
     my_depth, their_depth = my_ancestor.depth, their_ancestor.depth
-    my_width, their_width = my_ancestor.width, their_ancestor.width
+    my_order, their_order = my_ancestor.order, their_ancestor.order
     opt = {}
     type =
     case
     when my_depth == 0 && their_depth == 0
-      my_width == 0 && their_width == 0 ? :self : (male ? :husband : :wife)
+      my_order == "" && their_order == "" ? :self : (male ? :husband : :wife)
     when my_depth > 0 && their_depth == 0
       opt[:grand] = my_depth - 1
-      opt[:law] = my_width > 0 || their_width > 0
+      opt[:law] = my_order.match(/^M/)
+      opt[:step] = their_order.match(/^M/)
       male ? :son : :daughter
     when my_depth == 0 && their_depth > 0
       opt[:grand] = their_depth - 1
-      opt[:law] = my_width > 0 || their_width > 0
+      opt[:law] = their_order.match(/^M/)
+      opt[:step] = their_order.match(/M$/)
       male ? :father : :mother
     when my_depth == 1 && their_depth == 1
-      opt[:law] = my_width > 0 || their_width > 0
+      opt[:law] = my_order.match(/^M/) || their_order.match(/^M/)
+      opt[:step] = my_order.match(/M$/) || their_order.match(/M$/)
       male ? :brother : :sister
     when my_depth > 1 && their_depth == 1
       opt[:grand] = my_depth - 1
@@ -48,11 +51,11 @@ class Relation
           when :none
             "no relation"
           when :father, :mother, :son, :daughter
-            great_part + grand_part + type.to_s + law_part
+            step_part + great_part + grand_part + type.to_s + law_part
           when :uncle, :aunt, :nephew, :niece
             great_part + type.to_s
           when :brother, :sister
-            type.to_s + law_part
+            step_part + type.to_s + law_part
           when :cousin
             degree_part + type.to_s + removal_part
           else
@@ -91,5 +94,9 @@ class Relation
 
   def law_part
     law ? "-in-law" : ""
+  end
+
+  def step_part
+    step ? "step-" : ""
   end
 end

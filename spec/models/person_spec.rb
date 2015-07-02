@@ -75,6 +75,7 @@ describe Person do
     let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula") }
     let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny") }
     let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye") }
+    let!(:tracey)  { create(:person, born: 1980, male: false, father: malc, first_names: "Tracey") }
     let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie") }
     let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june) }
     let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily) }
@@ -154,11 +155,16 @@ describe Person do
       expect(al.relationship(pat).to_s).to eq "daughter-in-law"
     end
 
-    xit "step father/son/mother/daughter" do
+    it "step father/son/mother/daughter" do
       expect(malc.relationship(ross).to_s).to eq "step-father"
       expect(ross.relationship(malc).to_s).to eq "step-son"
       expect(sandra.relationship(penny).to_s).to eq "step-mother"
       expect(penny.relationship(sandra).to_s).to  eq "step-daughter"
+    end
+
+    it "step brother/sister" do
+      expect(ross.relationship(tracey).to_s).to eq "step-brother"
+      expect(faye.relationship(ross).to_s).to eq "step-sister"
     end
 
     it "brother/sister by marriage" do

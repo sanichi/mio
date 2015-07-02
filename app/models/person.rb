@@ -91,10 +91,10 @@ class Person < ActiveRecord::Base
     @partners = Person.joins(join).order("wedding")
   end
 
-  Ancestor = Struct.new(:person, :depth, :width, :waiting)
+  Ancestor = Struct.new(:person, :depth, :width, :order, :waiting)
 
   def ancestors
-    @ancestors ||= complete({id => Ancestor.new(self, 0, 0, true)})
+    @ancestors ||= complete({id => Ancestor.new(self, 0, 0, "", true)})
   end
 
   def relationship(other)
@@ -133,16 +133,16 @@ class Person < ActiveRecord::Base
 
   def complete(ancestors)
     (waiting = ancestors.values.select(&:waiting)).each do |ancestor|
-      person, width, depth = ancestor.person, ancestor.width, ancestor.depth
+      person, width, depth, order = ancestor.person, ancestor.width, ancestor.depth, ancestor.order
       if father = person.father
-        ancestors[father.id] ||= Ancestor.new(father, depth + 1, width, true)
+        ancestors[father.id] ||= Ancestor.new(father, depth + 1, width, order + "P", true)
       end
       if mother = person.mother
-        ancestors[mother.id] ||= Ancestor.new(mother, depth + 1, width, true)
+        ancestors[mother.id] ||= Ancestor.new(mother, depth + 1, width, order + "P", true)
       end
       if person.partners.any?
         person.partners.each do |partner|
-          ancestors[partner.id] ||= Ancestor.new(partner, depth, width + 1, true)
+          ancestors[partner.id] ||= Ancestor.new(partner, depth, width + 1, order + "M", true)
         end
       end
       ancestor.waiting = false
