@@ -91,10 +91,10 @@ class Person < ActiveRecord::Base
     @partners = Person.joins(join).order("wedding")
   end
 
-  Ancestor = Struct.new(:person, :connections, :blood, :waiting)
+  Ancestor = Struct.new(:person, :depth, :width, :waiting)
 
   def ancestors
-    @ancestors ||= complete({id => Ancestor.new(self, 0, true, true)})
+    @ancestors ||= complete({id => Ancestor.new(self, 0, 0, true)})
   end
 
   def relationship(other)
@@ -133,16 +133,16 @@ class Person < ActiveRecord::Base
 
   def complete(ancestors)
     (waiting = ancestors.values.select(&:waiting)).each do |ancestor|
-      person, connections, blood = ancestor.person, ancestor.connections, ancestor.blood
+      person, width, depth = ancestor.person, ancestor.width, ancestor.depth
       if father = person.father
-        ancestors[father.id] ||= Ancestor.new(father, connections + 1, blood, true)
+        ancestors[father.id] ||= Ancestor.new(father, depth + 1, width, true)
       end
       if mother = person.mother
-        ancestors[mother.id] ||= Ancestor.new(mother, connections + 1, blood, true)
+        ancestors[mother.id] ||= Ancestor.new(mother, depth + 1, width, true)
       end
       if person.partners.any?
         person.partners.each do |partner|
-          ancestors[partner.id] ||= Ancestor.new(partner, connections, false, true)
+          ancestors[partner.id] ||= Ancestor.new(partner, depth, width + 1, true)
         end
       end
       ancestor.waiting = false
@@ -158,11 +158,7 @@ class Person < ActiveRecord::Base
     my_best = common_ids.map do |id|
       ancestors[id]
     end.sort do |a,b|
-      if a.connections == b.connections
-        (a.blood == b.blood) ? 0 : (a.blood ? -1 : 1)
-      else
-        a.connections <=> b.connections
-      end
+      a.depth == b.depth ? a.width <=> b.width : a.depth <=> b.depth
     end.first
     their_best = theirs[my_best.person.id]
     [my_best, their_best]

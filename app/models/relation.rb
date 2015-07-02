@@ -7,23 +7,23 @@ class Relation
 
   def self.infer(my_ancestor, their_ancestor, male)
     return new(:none) unless my_ancestor && their_ancestor
-    my_depth, their_depth = my_ancestor.connections, their_ancestor.connections
-    blood = [my_ancestor, their_ancestor].select{ |a| a.blood }.size
+    my_depth, their_depth = my_ancestor.depth, their_ancestor.depth
+    my_width, their_width = my_ancestor.width, their_ancestor.width
     opt = {}
     type =
     case
-    when my_depth == 0 && their_depth == 0 && blood > 0
-      blood == 2 ? :self : (male ? :husband : :wife)
+    when my_depth == 0 && their_depth == 0
+      my_width == 0 && their_width == 0 ? :self : (male ? :husband : :wife)
     when my_depth > 0 && their_depth == 0
       opt[:grand] = my_depth - 1
-      opt[:law] = blood < 2
+      opt[:law] = my_width > 0 || their_width > 0
       male ? :son : :daughter
     when my_depth == 0 && their_depth > 0
       opt[:grand] = their_depth - 1
-      opt[:law] = blood < 2
+      opt[:law] = my_width > 0 || their_width > 0
       male ? :father : :mother
     when my_depth == 1 && their_depth == 1
-      opt[:law] = blood < 2
+      opt[:law] = my_width > 0 || their_width > 0
       male ? :brother : :sister
     when my_depth > 1 && their_depth == 1
       opt[:grand] = my_depth - 1
