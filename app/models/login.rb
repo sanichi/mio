@@ -1,6 +1,6 @@
 class Login < ActiveRecord::Base
   include Pageable
-  
+
   MAX_IP = 39
 
   before_update :truncate_params
