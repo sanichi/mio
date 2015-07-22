@@ -28,10 +28,11 @@ class Person < ActiveRecord::Base
   scope :by_born, -> { order(:born, :last_name, :first_names) }
   scope :by_known_as,   -> { order(:known_as, :last_name, :born) }
 
-  def name(full: true, reversed: false, with_known_as: true)
+  def name(full: true, reversed: false, with_known_as: true, with_years: false)
     first = full ? first_names : known_as
     first+= " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
-    reversed ? "#{last_name}, #{first}" : "#{first} #{last_name}"
+    years = with_years && born ? (died ? " #{born}-#{died}" : " #{born}") : ""
+    (reversed ? "#{last_name}, #{first}" : "#{first} #{last_name}") + years
   end
 
   def years
@@ -68,7 +69,7 @@ class Person < ActiveRecord::Base
     clause = %w(last_name first_names known_as).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
     values = Array.new(3, "%#{term}%")
     by_last_name.where(clause, *values).map do |person|
-      { id: person.id, value: person.name(reversed: true) }
+      { id: person.id, value: person.name(reversed: true, with_years: true) }
     end
   end
 

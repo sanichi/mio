@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Person do
   context "#name" do
-    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo") }
-    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr") }
+    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo", born: 1927, died: nil) }
+    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr", born: 1931, died: 2015) }
 
     it "default" do
       expect(mum.name).to eq "Ruth Patricia Legard (Pat) Algeo"
@@ -48,6 +48,11 @@ describe Person do
     it "reversed, short, with known as" do
       expect(mum.name(reversed: true, full: false, with_known_as: true)).to eq "Algeo, Pat"
       expect(dad.name(reversed: true, full: false, with_known_as: true)).to eq "Orr, John"
+    end
+
+    it "normal, full, with known as, with years" do
+      expect(mum.name(reversed: false, full: true, with_known_as: true, with_years: true)).to eq "Ruth Patricia Legard (Pat) Algeo 1927"
+      expect(dad.name(reversed: false, full: true, with_known_as: true, with_years: true)).to eq "John Orr 1931-2015"
     end
   end
 

@@ -22,8 +22,8 @@ describe Person do
       fill_in person_known_as, with: data.known_as
       fill_in person_born, with: data.born
       fill_in person_died, with: data.died
-      select father.name(reversed: true), from: person_father
-      select mother.name(reversed: true), from: person_mother
+      select father.name(reversed: true, with_years: true), from: person_father
+      select mother.name(reversed: true, with_years: true), from: person_mother
       fill_in person_notes, with: data.notes
       check person_male if data.male
       click_button save
@@ -109,7 +109,7 @@ describe Person do
       fill_in person_last_name, with: data.last_name
       fill_in person_first_names, with: data.first_names
       fill_in person_born, with: father.born
-      select father.name(reversed: true), from: person_father
+      select father.name(reversed: true, with_years: true), from: person_father
       click_button save
 
       expect(page).to have_title new_person
