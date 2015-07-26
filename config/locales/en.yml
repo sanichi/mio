@@ -52,3 +52,6 @@ en:
     password: Password
     sign_in: Sign in
     sign_out: Sign out
+  symbol:
+    next: →
+    prev: ←

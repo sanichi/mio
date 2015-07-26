@@ -4,8 +4,8 @@
 .text-center
   .btn-group
     - if prv || nxt
-      = link_to t("prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'}"
-      = link_to t("next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'}"
+      = link_to t("symbol.prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'}"
+      = link_to t("symbol.next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'}"
     = link_to t("picture.original"), picture.image.url, class: "btn btn-success"
     - if can?(:manage, picture)
       = link_to t("edit"), edit_picture_path(picture), class: "btn btn-info"
