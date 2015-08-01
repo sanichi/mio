@@ -15,6 +15,10 @@
         %tr
           %th= t("person.known_as")
           %td= @person.known_as
+        - if @person.married_name
+          %tr
+            %th= t("person.married_name")
+            %td= @person.married_name
         %tr
           %th= t("person.gender")
           %td= t("person.#{@person.male ? '' : 'fe'}male")

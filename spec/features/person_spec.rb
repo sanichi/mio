@@ -22,8 +22,8 @@ describe Person do
       fill_in person_known_as, with: data.known_as
       fill_in person_born, with: data.born
       fill_in person_died, with: data.died
-      select father.name(reversed: true, with_years: true), from: person_father
-      select mother.name(reversed: true, with_years: true), from: person_mother
+      select father.name(reversed: true, with_years: true, with_married_name: true), from: person_father
+      select mother.name(reversed: true, with_years: true, with_married_name: true), from: person_mother
       fill_in person_notes, with: data.notes
       check person_male if data.male
       fill_in person_married_name, with: data.married_name
