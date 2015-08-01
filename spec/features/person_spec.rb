@@ -26,6 +26,7 @@ describe Person do
       select mother.name(reversed: true, with_years: true), from: person_mother
       fill_in person_notes, with: data.notes
       check person_male if data.male
+      fill_in person_married_name, with: data.married_name
       click_button save
 
       expect(page).to have_title data.name(full: false)
@@ -39,6 +40,7 @@ describe Person do
       expect(p.born).to eq data.born
       expect(p.died).to eq data.died
       expect(p.male).to eq data.male
+      expect(p.married_name).to eq data.married_name
       expect(p.father_id).to eq father.id
       expect(p.mother_id).to eq mother.id
       expect(p.notes).to eq data.notes
@@ -62,6 +64,7 @@ describe Person do
       expect(p.born).to eq data.born
       expect(p.died).to be_nil
       expect(p.male).to eq false
+      expect(p.married_name).to be_nil
       expect(p.father_id).to be_nil
       expect(p.mother_id).to be_nil
       expect(p.notes).to be_nil

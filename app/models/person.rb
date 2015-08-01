@@ -20,6 +20,7 @@ class Person < ActiveRecord::Base
   validates :first_names, presence: true, length: { maximum: MAX_FN }
   validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
+  validates :married_name, length: { maximum: MAX_LN }, allow_nil: true
 
   validate :years_must_make_sense, :parents_must_make_sense
 
@@ -28,11 +29,12 @@ class Person < ActiveRecord::Base
   scope :by_born, -> { order(:born, :last_name, :first_names) }
   scope :by_known_as,   -> { order(:known_as, :last_name, :born) }
 
-  def name(full: true, reversed: false, with_known_as: true, with_years: false)
-    first = full ? first_names : known_as
-    first+= " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
+  def name(full: true, reversed: false, with_known_as: true, with_years: false, with_married_name: false)
+    fn = full ? first_names : known_as
+    fn += " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
+    ln = last_name + (with_married_name && married_name.present? && married_name != last_name ? " (#{married_name})" : "")
     years = with_years && born ? (died ? " #{born}-#{died}" : " #{born}") : ""
-    (reversed ? "#{last_name}, #{first}" : "#{first} #{last_name}") + years
+    (reversed ? "#{ln}, #{fn}" : "#{fn} #{ln}") + years
   end
 
   def years
@@ -51,7 +53,10 @@ class Person < ActiveRecord::Base
     when "known" then by_known_as
     else              by_last_name
     end
-    matches = matches.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
+    if params[:last_name].present?
+      pattern = "%#{params[:last_name]}%"
+      matches = matches.where("last_name ILIKE ? OR married_name ILIKE ?", pattern, pattern)
+    end
     if params[:first_names].present?
       pattern = "%#{params[:first_names]}%"
       matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
@@ -66,10 +71,10 @@ class Person < ActiveRecord::Base
 
   def self.match(term)
     return [] unless term.present?
-    clause = %w(last_name first_names known_as).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
-    values = Array.new(3, "%#{term}%")
+    clause = %w(last_name first_names known_as married_name).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
+    values = Array.new(4, "%#{term}%")
     by_last_name.where(clause, *values).map do |person|
-      { id: person.id, value: person.name(reversed: true, with_years: true) }
+      { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
     end
   end
 
@@ -115,6 +120,11 @@ class Person < ActiveRecord::Base
       self.known_as = first_names.split(" ").first
     end
     self.notes = nil if notes.blank?
+    if male || married_name.blank?
+      self.married_name = nil
+    else
+      married_name.squish!
+    end
   end
 
   def years_must_make_sense

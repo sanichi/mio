@@ -79,21 +79,22 @@ shared_context "test_data" do
   let(:user_role) { I18n.t("user.role") }
   let(:users)     { I18n.t("user.users") }
 
-  let(:edit_person)        { I18n.t("person.edit") }
-  let(:new_person)         { I18n.t("person.new") }
-  let(:people)             { I18n.t("person.people") }
-  let(:person_born)        { I18n.t("person.born") }
-  let(:person_died)        { I18n.t("person.died") }
-  let(:person_father)      { I18n.t("person.father") }
-  let(:person_female)      { I18n.t("person.male") }
-  let(:person_first_names) { I18n.t("person.first_names") }
-  let(:person_gender)      { I18n.t("person.gender") }
-  let(:person_known_as)    { I18n.t("person.known_as") }
-  let(:person_last_name)   { I18n.t("person.last_name") }
-  let(:person_male)        { I18n.t("person.male") }
-  let(:person_mother)      { I18n.t("person.mother") }
-  let(:person_notes)       { I18n.t("person.notes") }
-  let(:person_person)      { I18n.t("person.person") }
+  let(:edit_person)         { I18n.t("person.edit") }
+  let(:new_person)          { I18n.t("person.new") }
+  let(:people)              { I18n.t("person.people") }
+  let(:person_born)         { I18n.t("person.born") }
+  let(:person_died)         { I18n.t("person.died") }
+  let(:person_father)       { I18n.t("person.father") }
+  let(:person_female)       { I18n.t("person.male") }
+  let(:person_first_names)  { I18n.t("person.first_names") }
+  let(:person_gender)       { I18n.t("person.gender") }
+  let(:person_known_as)     { I18n.t("person.known_as") }
+  let(:person_last_name)    { I18n.t("person.last_name") }
+  let(:person_married_name) { I18n.t("person.married_name") }
+  let(:person_male)         { I18n.t("person.male") }
+  let(:person_mother)       { I18n.t("person.mother") }
+  let(:person_notes)        { I18n.t("person.notes") }
+  let(:person_person)       { I18n.t("person.person") }
 
   let(:edit_picture) { I18n.t("picture.edit") }
   let(:new_picture)  { I18n.t("picture.new") }
