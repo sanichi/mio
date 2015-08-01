@@ -5,4 +5,4 @@
       - people.each_with_index do |person, i|
         - sep = i + 1 == people.size ? "" : ", "
         = succeed(sep) do
-          = link_to person.name(full: false), person
+          = link_to person.name, person
