@@ -32,11 +32,11 @@
         - if @person.father.present?
           %tr
             %th= t("person.father")
-            %td= link_to @person.father.name(known_as: false), @person.father
+            %td= link_to @person.father.name(with_known_as: false), @person.father
         - if @person.mother.present?
           %tr
             %th= t("person.mother")
-            %td= link_to @person.mother.name(known_as: false), @person.mother
+            %td= link_to @person.mother.name(with_known_as: false), @person.mother
         = render "people", people: @person.siblings, label: t("person.siblings")
         = render "people", people: @person.partners, label: t("person.partners")
         = render "people", people: @person.children, label: t("person.children")
