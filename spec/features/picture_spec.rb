@@ -20,7 +20,7 @@ describe Picture do
       click_link new_picture
       fill_in description, with: data.description
       attach_file picture_file, image_dir + file
-      select person.name(reversed: true), from: person_person
+      select person.name(reversed: true, with_years: true), from: person_person
       click_button save
 
       expect(page).to have_title person.name(full: false)
@@ -43,7 +43,7 @@ describe Picture do
         click_link new_picture
         fill_in description, with: data.description
         attach_file picture_file, image_dir + file_bad_name
-        select person.name(reversed: true), from: person_person
+        select person.name(reversed: true, with_years: true), from: person_person
         click_button save
 
         expect(page).to have_title new_picture
@@ -55,7 +55,7 @@ describe Picture do
         click_link new_picture
         fill_in description, with: data.description
         attach_file picture_file, image_dir + file_bad_type
-        select person.name(reversed: true), from: person_person
+        select person.name(reversed: true, with_years: true), from: person_person
         click_button save
 
         expect(page).to have_title new_picture
@@ -75,7 +75,7 @@ describe Picture do
       click_link edit
 
       expect(page).to have_title edit_picture
-      select person.name(reversed: true), from: person_person
+      select person.name(reversed: true, with_years: true), from: person_person
       click_button save
 
       expect(page).to have_title person.name(full: false)
