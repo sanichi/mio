@@ -10,7 +10,7 @@ module PartnershipHelper
   def partnership_spouse_menu(partnership, male)
     people = Person.order(:last_name, :first_names).where(male: male)
     people = people.where("born < ?", partnership.wedding) if partnership.wedding.present?
-    people = people.all.map{ |p| [p.name(reversed: true), p.id] }
+    people = people.all.map{ |p| [p.name(reversed: true, with_years: true), p.id] }
     people.unshift [t("select"), ""] if partnership.new_record?
     options_for_select(people, male ? partnership.husband_id : partnership.wife_id)
   end

@@ -5,7 +5,7 @@ describe Partnership do
 
   let(:atrs) { attributes_for(:partnership) }
   let(:data) { build(:partnership) }
-  
+
   let!(:husband) { create(:person, male: true, born: data.wedding - 30) }
   let!(:wife)    { create(:person, male: false, born: data.wedding - 25) }
 
@@ -17,8 +17,8 @@ describe Partnership do
   context "create" do
     it "success" do
       click_link new_partnership
-      select husband.name(reversed: true), from: partnership_husband
-      select wife.name(reversed: true), from: partnership_wife
+      select husband.name(reversed: true, with_years: true), from: partnership_husband
+      select wife.name(reversed: true, with_years: true), from: partnership_wife
       fill_in partnership_wedding, with: data.wedding
       uncheck partnership_marriage unless data.marriage
       click_button save
@@ -39,7 +39,7 @@ describe Partnership do
   context "failure" do
     it "no wife" do
       click_link new_partnership
-      select husband.name(reversed: true), from: partnership_husband
+      select husband.name(reversed: true, with_years: true), from: partnership_husband
       fill_in partnership_wedding, with: data.wedding
       click_button save
 
@@ -50,8 +50,8 @@ describe Partnership do
 
     it "no wedding" do
       click_link new_partnership
-      select husband.name(reversed: true), from: partnership_husband
-      select wife.name(reversed: true), from: partnership_wife
+      select husband.name(reversed: true, with_years: true), from: partnership_husband
+      select wife.name(reversed: true, with_years: true), from: partnership_wife
       click_button save
 
       expect(page).to have_title new_partnership
@@ -61,8 +61,8 @@ describe Partnership do
 
     it "wedding before born" do
       click_link new_partnership
-      select husband.name(reversed: true), from: partnership_husband
-      select wife.name(reversed: true), from: partnership_wife
+      select husband.name(reversed: true, with_years: true), from: partnership_husband
+      select wife.name(reversed: true, with_years: true), from: partnership_wife
       fill_in partnership_wedding, with: [data.husband.born, data.wife.born].min - 1
       click_button save
 
