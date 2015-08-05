@@ -63,7 +63,7 @@ class Relation
           end
     return str unless caps
     str.gsub(/[a-z]+/) do |m|
-      m.match(/\A(st|nd|rd|th|once|twice|removed|in)\z/) ? m : m.capitalize
+      m.match(/\A(st|nd|rd|th|once|twice|removed|in|self|no|relation)\z/) ? m : m.capitalize
     end
   end
 

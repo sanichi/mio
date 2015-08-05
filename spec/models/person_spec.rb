@@ -197,9 +197,10 @@ describe Person do
     end
 
     it "capitalization" do
+      expect(thomas.relationship(thomas).to_s(caps: true)).to eq "self"
       expect(thomas.relationship(mark).to_s(caps: true)).to eq "Grandfather"
       expect(mona.relationship(jamie).to_s(caps: true)).to eq "Great-Grandmother"
-      expect(thomas.relationship(william).to_s(caps: true)).to eq "No Relation"
+      expect(thomas.relationship(william).to_s(caps: true)).to eq "no relation"
       expect(john.relationship(gerry).to_s(caps: true)).to eq "Brother-in-Law"
       expect(malc.relationship(ross).to_s(caps: true)).to eq "Step-Father"
       expect(malc.relationship(jamie).to_s(caps: true)).to eq "1st Cousin once removed"
