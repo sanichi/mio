@@ -70,10 +70,12 @@ class Person < ActiveRecord::Base
   end
 
   def self.match(term)
-    return [] unless term.present?
+    terms = term.to_s.scan(/[-[:alpha:]]+/)
+    return [] if terms.empty?
     clause = %w(last_name first_names known_as married_name).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
-    values = Array.new(4, "%#{term}%")
-    by_last_name.where(clause, *values).map do |person|
+    clauses = terms.size == 1 ? clause : Array.new(terms.size, "(#{clause})").join(" AND ")
+    values = terms.each_with_object([]) { |t, v| 4.times { v.push "%#{t}%" } }
+    by_last_name.where(clauses, *values).map do |person|
       { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
     end
   end
