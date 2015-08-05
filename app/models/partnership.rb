@@ -15,6 +15,8 @@ class Partnership < ActiveRecord::Base
 
   def self.search(params, path, opt={})
     matches = includes(:husband).includes(:wife).order(:wedding)
+    constraint = constraint(params[:wedding], :wedding)
+    matches = matches.where(constraint) if constraint
     paginate(matches, params, path, opt)
   end
 
