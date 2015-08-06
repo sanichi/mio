@@ -6,7 +6,7 @@ module UserHelper
   end
 
   def user_person_menu(user)
-    people = Person.order(:last_name, :known_as).all.map{ |p| [p.name(full: false, reversed: true), p.id] }
+    people = Person.order(:last_name, :known_as).where(died: nil).where("born > 1915").all.map{ |p| [p.name(reversed: true), p.id] }
     people.unshift [t("none"), 0]
     options_for_select(people, user.person_id)
   end

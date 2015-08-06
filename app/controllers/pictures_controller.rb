@@ -8,7 +8,9 @@ class PicturesController < ApplicationController
   end
 
   def new
-    @picture = Picture.new
+    person_id = params[:person_id].to_i
+    person_id = nil unless Person.find_by(id: person_id)
+    @picture = Picture.new(person_id: person_id)
   end
 
   def create

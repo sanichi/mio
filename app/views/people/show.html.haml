@@ -63,5 +63,7 @@
 .text-center
   - if can?(:manage, Person)
     = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"
+  - if can?(:create, Picture)
+    = link_to t("picture.new"), new_picture_path(person_id: @person.id), class: "btn btn-info"
   = link_to t("person.people"), people_path, class: "btn btn-success"
   = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
