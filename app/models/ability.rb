@@ -7,6 +7,10 @@ class Ability
       return
     end
 
+    if user.tree_view?
+      can :read, [Person, Picture, Partnership]
+    end
+
     can [:read, :graph], Mass
   end
 end

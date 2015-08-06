@@ -6,5 +6,5 @@ en:
     users: Users
     roles:
       admin: Administrator
-      arborist: Family Tree Maintainer
+      tree_view: Family Tree Viewer
       none: None

@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   belongs_to :person
 
-  ROLES = ["admin", "arborist", "none"]
+  ROLES = ["admin", "tree_view", "none"]
   MAX_EMAIL = 75
   MAX_PASSWORD = 32
   MAX_ROLE = 20
