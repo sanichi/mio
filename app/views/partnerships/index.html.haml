@@ -20,9 +20,9 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th= t("partnership.wedding")
           %th= t("partnership.husband")
           %th= t("partnership.wife")
+          %th= t("partnership.wedding")
       %tbody{id: "results"}
         = render "results", partnerships: @partnerships
 
