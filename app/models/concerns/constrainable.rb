@@ -2,7 +2,7 @@ module Constrainable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def constraint(input, column, digits: 0)
+    def numerical_constraint(input, column, digits: 0)
       return unless input.present?
       format = "%.#{digits}f"
       case input
@@ -21,6 +21,14 @@ module Constrainable
       else
         nil
       end
+    end
+
+    def name_constraint(input, cols: %w(last_name first_names known_as married_name), table: nil)
+      return nil if (terms = input.to_s.scan(/[-[:alpha:]]+/)).empty?
+      cols = cols.map { |c| "#{table}." + c } if table
+      clause = cols.map{ |c| "#{c} ILIKE '%%%s%%'"}.join(" OR ")
+      clauses = terms.map{ |t| clause % [t, t, t, t] }
+      terms.size == 1 ? clauses.first : "(" + clauses.join(") AND (") + ")"
     end
   end
 end

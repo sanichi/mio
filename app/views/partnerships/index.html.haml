@@ -3,6 +3,12 @@
 .text-center
   = form_tag partnerships_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
+      = label_tag :male, t("person.male"), class: "sr-only"
+      = text_field_tag :male, params[:male], class: "form-control", placeholder: t("person.male"), size: 12
+    .form-group
+      = label_tag :female, t("person.female"), class: "sr-only"
+      = text_field_tag :female, params[:female], class: "form-control", placeholder: t("person.female"), size: 12
+    .form-group
       = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
       = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("partnership.wedding"), size: 12
     = button_tag t("search"), type: "submit", class: "btn btn-success"

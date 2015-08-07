@@ -61,21 +61,19 @@ class Person < ActiveRecord::Base
       pattern = "%#{params[:first_names]}%"
       matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
     end
-    constraint = constraint(params[:born], :born)
-    matches = matches.where(constraint) if constraint
+    if (constraint = numerical_constraint(params[:born], :born))
+      matches = matches.where(constraint)
+    end
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?
     paginate(matches, params, path, opt)
   end
 
-  def self.match(term)
-    terms = term.to_s.scan(/[-[:alpha:]]+/)
-    return [] if terms.empty?
-    clause = %w(last_name first_names known_as married_name).map{ |c| "#{c} ILIKE ?"}.join(" OR ")
-    clauses = terms.size == 1 ? clause : Array.new(terms.size, "(#{clause})").join(" AND ")
-    values = terms.each_with_object([]) { |t, v| 4.times { v.push "%#{t}%" } }
-    by_last_name.where(clauses, *values).map do |person|
+  def self.match(input)
+    constraint = name_constraint(input)
+    return [] unless constraint
+    by_last_name.where(constraint).map do |person|
       { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
     end
   end
