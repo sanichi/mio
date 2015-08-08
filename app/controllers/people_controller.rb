@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
   end
 
   def match
-    @people = Person.match(params[:term])
+    @people = Person.match(params)
     respond_to do |format|
       format.json { render json: @people }
     end

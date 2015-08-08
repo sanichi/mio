@@ -1,16 +1,16 @@
 $(function() {
-  $("#term").autocomplete({
-    source: "/people/match.json",
+  $('#term').autocomplete({
+    source: '/people/match.json',
     minLength: 2,
     select: function(event, ui) {
       if (ui.item) {
         $.ajax({
-          url: "/people/<%= id %>/relative.json?other=" + ui.item.id,
-          dataType: "text",
-          success: function(text) { $("#relative").text(text) }
+          url: '/people/<%= id %>/relative.json?other=' + ui.item.id,
+          dataType: 'text',
+          success: function(text) { $('#relative').text(text) }
         });
       } else {
-        $("#relative").text("");
+        $('#relative').text('');
       }
     }
   });

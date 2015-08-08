@@ -65,10 +65,14 @@ class Person < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
-  def self.match(input)
-    sql = cross_constraint(input)
+  def self.match(params)
+    sql = cross_constraint(params[:term])
     return [] unless sql
-    by_last_name.where(sql).map do |person|
+    matches = where(sql)
+    matches = matches.where(male: true)  if params[:gender] == "male"
+    matches = matches.where(male: false) if params[:gender] == "female"
+    matches = matches.where("born < #{params[:max_born].to_i}") if params[:max_born].to_i > 0
+    matches.by_last_name.map do |person|
       { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
     end
   end

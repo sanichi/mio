@@ -1,0 +1,16 @@
+$(function() {
+  $('#<%= completer % "father" %>').autocomplete({
+    source: '/people/match.json?gender=male&max_born=<%= max_born %>',
+    minLength: 2,
+    select: function(event, ui) {
+      $('#<%= target % "father" %>').val(ui.item ? ui.item.id : '');
+    }
+  });
+  $('#<%= completer % "mother" %>').autocomplete({
+    source: '/people/match.json?gender=female&max_born=<%= max_born %>',
+    minLength: 2,
+    select: function(event, ui) {
+      $('#<%= target % "mother" %>').val(ui.item ? ui.item.id : '');
+    }
+  });
+});
