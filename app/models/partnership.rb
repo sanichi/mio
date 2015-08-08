@@ -27,6 +27,10 @@ class Partnership < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  def years
+    divorce ? "#{wedding}-#{divorce}" : wedding.to_s
+  end
+
   private
 
   def years_must_make_sense
