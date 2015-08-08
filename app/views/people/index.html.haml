@@ -3,11 +3,8 @@
 .text-center
   = form_tag people_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :last_name, t("person.last_name"), class: "sr-only"
-      = text_field_tag :last_name, params[:last_name], class: "form-control", placeholder: t("person.last_name"), size: 10
-    .form-group
-      = label_tag :last_name, t("person.first_name"), class: "sr-only"
-      = text_field_tag :first_names, params[:first_names], class: "form-control", placeholder: t("person.first_name"), size: 10
+      = label_tag :name, t("name"), class: "sr-only"
+      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 14
     .form-group
       = label_tag :gender, t("person.gender"), class: "sr-only"
       = select_tag :gender, person_gender_search_menu(params[:gender]), class: "form-control auto-submit"
@@ -15,11 +12,11 @@
       = label_tag :born, t("person.born"), class: "sr-only"
       = text_field_tag :born, params[:born], class: "form-control", placeholder: t("person.born"), size: 10
     .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, person_search_order_menu(params[:order]), class: "form-control auto-submit"
-    .form-group
       = label_tag :notes, t("person.notes"), class: "sr-only"
       = text_field_tag :notes, params[:notes], class: "form-control", placeholder: t("person.notes"), size: 10
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, person_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 %p

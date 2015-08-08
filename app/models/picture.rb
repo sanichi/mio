@@ -1,4 +1,5 @@
 class Picture < ActiveRecord::Base
+  include Constrainable
   include Remarkable
 
   TYPES = "jpe?g|gif|png"
@@ -12,15 +13,13 @@ class Picture < ActiveRecord::Base
 
   validates_attachment :image, presence: true, content_type: { content_type: /\Aimage\/(#{TYPES})\z/, file_name: /\.(#{TYPES})\z/i }, size: { less_than: MAX_SIZE }
   validates :person_id, numericality: { integer_only: true, greater_than: 0 }
-  
+
   default_scope { order(id: :desc) }
 
   def self.search(params)
     matches = joins(:person).includes(:person)
-    matches = matches.where("people.last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
-    if params[:first_names].present?
-      pattern = "%#{params[:first_names]}%"
-      matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
+    if (sql = cross_constraint(params[:name], table: :people))
+      matches = matches.where(sql)
     end
     matches = matches.where("description ILIKE ?", "%#{params[:description]}%") if params[:description].present?
     matches

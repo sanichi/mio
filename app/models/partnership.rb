@@ -18,10 +18,10 @@ class Partnership < ActiveRecord::Base
     if (constraint = numerical_constraint(params[:wedding], :wedding))
       matches = matches.where(constraint)
     end
-    if (constraint = name_constraint(params[:male], table: "husbands"))
+    if (constraint = cross_constraint(params[:male], table: "husbands"))
       matches = matches.joins("INNER JOIN people AS husbands ON husbands.id = husband_id").where(constraint)
     end
-    if (constraint = name_constraint(params[:female], table: "wives"))
+    if (constraint = cross_constraint(params[:female], table: "wives"))
       matches = matches.joins("INNER JOIN people AS wives ON wives.id = wife_id").where(constraint)
     end
     paginate(matches, params, path, opt)

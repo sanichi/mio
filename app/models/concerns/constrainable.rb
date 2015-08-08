@@ -23,7 +23,7 @@ module Constrainable
       end
     end
 
-    def name_constraint(input, cols: %w(last_name first_names known_as married_name), table: nil)
+    def cross_constraint(input, cols: %w(last_name first_names known_as married_name), table: nil)
       return nil if (terms = input.to_s.scan(/[-[:alpha:]]+/)).empty?
       cols = cols.map { |c| "#{table}." + c } if table
       clause = cols.map{ |c| "#{c} ILIKE '%%%s%%'"}.join(" OR ")

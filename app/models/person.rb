@@ -53,16 +53,11 @@ class Person < ActiveRecord::Base
     when "known" then by_known_as
     else              by_last_name
     end
-    if params[:last_name].present?
-      pattern = "%#{params[:last_name]}%"
-      matches = matches.where("last_name ILIKE ? OR married_name ILIKE ?", pattern, pattern)
+    if (sql = cross_constraint(params[:name]))
+      matches = matches.where(sql)
     end
-    if params[:first_names].present?
-      pattern = "%#{params[:first_names]}%"
-      matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
-    end
-    if (constraint = numerical_constraint(params[:born], :born))
-      matches = matches.where(constraint)
+    if (sql = numerical_constraint(params[:born], :born))
+      matches = matches.where(sql)
     end
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
@@ -71,9 +66,9 @@ class Person < ActiveRecord::Base
   end
 
   def self.match(input)
-    constraint = name_constraint(input)
-    return [] unless constraint
-    by_last_name.where(constraint).map do |person|
+    sql = cross_constraint(input)
+    return [] unless sql
+    by_last_name.where(sql).map do |person|
       { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
     end
   end
