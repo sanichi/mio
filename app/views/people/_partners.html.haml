@@ -1,0 +1,12 @@
+- if partnerships.any?
+  %tr
+    %th= label
+    %td
+      - partnerships.each_with_index do |partnership, i|
+        - sep = i + 1 == partnerships.size ? "" : ", "
+        = succeed(sep) do
+          - person = partnership.send(male ? :wife : :husband)
+          = link_to person.name(full: false), person
+          = precede("(") do
+            = succeed(")") do
+              = link_to partnership.wedding, partnership

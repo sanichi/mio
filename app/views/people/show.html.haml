@@ -38,7 +38,7 @@
             %th= t("person.mother")
             %td= link_to @person.mother.name(full: false), @person.mother
         = render "people", people: @person.siblings, label: t("person.siblings")
-        = render "people", people: @person.partners, label: t("person.partners")
+        = render "partners", partnerships: @person.partnerships, male: @person.male, label: t("person.partners")
         = render "people", people: @person.children, label: t("person.children")
         %tr
           %th= t("person.relationship_to")

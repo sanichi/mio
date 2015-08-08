@@ -92,9 +92,11 @@ class Person < ActiveRecord::Base
   end
 
   def partners
-    return @partners if @partners
-    join = "INNER JOIN partnerships ON #{male ? 'husband' : 'wife'}_id = #{id} AND #{male ? 'wife' : 'husband'}_id = people.id"
-    @partners = Person.joins(join).order("wedding")
+    @partners ||= partnerships.map { |p| p.send(male ? :wife : :husband) }
+  end
+
+  def partnerships
+    @partnerships ||= Partnership.where("#{male ? 'husband' : 'wife'}_id = #{id}").order(:wedding)
   end
 
   Ancestor = Struct.new(:person, :depth, :width, :order, :waiting)
