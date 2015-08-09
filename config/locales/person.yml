@@ -2,7 +2,6 @@ en:
   person:
     born: Born
     children: Children
-    complete_name: Type then select
     died: Died
     edit: Edit Person
     family: Family
