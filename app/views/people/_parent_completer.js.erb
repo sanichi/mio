@@ -1,16 +1,22 @@
 $(function() {
-  $('#<%= completer % "father" %>').autocomplete({
+  $('#father_id_completer').autocomplete({
     source: '/people/match.json?gender=male&max_born=<%= max_born %>',
     minLength: 2,
     select: function(event, ui) {
-      $('#<%= target % "father" %>').val(ui.item ? ui.item.id : '');
+      $('#person_father_id').val(ui.item ? ui.item.id : '');
+      setTimeout(function() {
+        $('#father_id_completer').val('');
+      }, 200);
     }
   });
-  $('#<%= completer % "mother" %>').autocomplete({
+  $('#mother_id_completer').autocomplete({
     source: '/people/match.json?gender=female&max_born=<%= max_born %>',
     minLength: 2,
     select: function(event, ui) {
-      $('#<%= target % "mother" %>').val(ui.item ? ui.item.id : '');
+      $('#person_mother_id').val(ui.item ? ui.item.id : '');
+      setTimeout(function() {
+        $('#mother_id_completer').val('');
+      }, 200);
     }
   });
 });

@@ -1,4 +1,5 @@
-- defined?(cwidth) || cwidth = 1
+- defined?(cwidth)      || cwidth = 2
+- defined?(placeholder) || placeholder = t("search")
 
 .form-group{class: object.errors[param].any? ? "has-error" : ""}
   = form.label param, text, class: "control-label col-#{col}-#{pad}"
@@ -6,5 +7,5 @@
   %div{class: "col-#{col}-#{cwidth}"}
     .form-inline
       .input-group.input-group-sm
-        = text_field_tag :term, "", id: "#{param}_completer", class: "form-control", size: "100%"
+        = text_field_tag :term, "", id: "#{param}_completer", class: "form-control", size: "100%", placeholder: placeholder
   %div{class: "col-#{col}-#{12-pad-width-cwidth} help-block"}= object.errors[param].first

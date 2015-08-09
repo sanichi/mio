@@ -24,10 +24,12 @@ en:
   none: None
   notes: Notes
   order: Order
+  or_search: "...or search"
   prev: Prev
   save: Save
   search: Search
   select: Please select
+  select_: Please select...
   separator: ●
   size: Size
   sure: Sure?
