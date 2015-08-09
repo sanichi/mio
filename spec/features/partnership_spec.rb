@@ -70,6 +70,22 @@ describe Partnership do
       expect(Partnership.count).to eq 0
       expect(page).to have_css(error, text: /before.*born/i)
     end
+
+    it "duplicate" do
+      Partnership.create!(husband_id: husband.id, wife_id: wife.id, wedding: data.wedding, marriage: data.marriage)
+      expect(Partnership.count).to eq 1
+
+      click_link new_partnership
+      select husband.name(reversed: true, with_years: true), from: partnership_husband
+      select wife.name(reversed: true, with_years: true), from: partnership_wife
+      fill_in partnership_wedding, with: data.wedding
+      uncheck partnership_marriage unless data.marriage
+      click_button save
+
+      expect(page).to have_title new_partnership
+      expect(Partnership.count).to eq 1
+      expect(page).to have_css(error, text: /already.*taken/i)
+    end
   end
 
   context "edit" do

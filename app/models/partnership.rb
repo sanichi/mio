@@ -9,6 +9,7 @@ class Partnership < ActiveRecord::Base
 
   validates :divorce, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }, allow_nil: true
   validates :husband_id, :wife_id, presence: true, numericality: { integer_only: true, greater_than: 0 }
+  validates :husband_id, uniqueness: { scope: :wife_id }
   validates :wedding, presence: true, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }
 
   validate :years_must_make_sense
