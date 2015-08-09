@@ -1,10 +1,13 @@
+- content_for :javascript do
+  = render "couples_completer.js"
+
 .row
-  .col-md-offset-2.col-md-8
+  .col-md-offset-1.col-md-10
     = form_for partnership, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
-        - shared = { form: f, object: partnership, col: "md", pad: 4}
-        = render "utils/select_for", shared.merge(param: :husband_id, text: t("partnership.husband"), menu: partnership_husband_menu(partnership), width: 4)
-        = render "utils/select_for", shared.merge(param: :wife_id, text: t("partnership.wife"), menu: partnership_wife_menu(partnership), width: 4)
+        - shared = { form: f, object: partnership, col: "md", pad: 3}
+        = render "utils/select_completer_for", shared.merge(param: :husband_id, text: t("partnership.husband"), menu: partnership_husband_menu(partnership), width: 4)
+        = render "utils/select_completer_for", shared.merge(param: :wife_id, text: t("partnership.wife"), menu: partnership_wife_menu(partnership), width: 4)
         = render "utils/text_field_for", shared.merge(param: :wedding, text: t("partnership.wedding"), width: 3)
         = render "utils/text_field_for", shared.merge(param: :divorce, text: t("partnership.divorce"), width: 3)
         = render "utils/check_box_for", shared.merge(param: :marriage, text: t("partnership.marriage"), width: 1)
