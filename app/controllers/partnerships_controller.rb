@@ -7,7 +7,15 @@ class PartnershipsController < ApplicationController
   end
 
   def new
-    @partnership = Partnership.new
+    person_id = params[:person_id].to_i
+    if person_id > 0 && (person = Person.find_by(id: person_id))
+      if person.male
+        husband_id = person_id
+      else
+        wife_id = person_id
+      end
+    end
+    @partnership = Partnership.new(husband_id: husband_id, wife_id: wife_id)
   end
 
   def create
