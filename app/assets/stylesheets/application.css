@@ -40,3 +40,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* For Todos. */
+span.done {
+  text-decoration: line-through;
+}

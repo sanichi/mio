@@ -39,3 +39,7 @@ def login(role="admin")
   fill_in password, with: user.password
   click_button sign_in
 end
+
+def wait_a_while(delay=0.3)
+  sleep(delay)
+end

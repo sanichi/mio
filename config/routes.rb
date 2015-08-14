@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   resources :pictures
   resources :sessions, only: [:create]
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
+  resources :todos, except: [:show] do
+    get :toggle, on: :member
+  end
   resources :uploads, except: [:edit, :update]
   resources :users
 end

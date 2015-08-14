@@ -1,0 +1,16 @@
+en:
+  todo:
+    done: Done
+    edit: Edit Todo
+    elm: Todos-E
+    new: New Todo
+    priority: Priority
+    rails: Todos-R
+    todo: Todo
+    todos: Todos
+    priorities:
+      - Urgent
+      - Important
+      - Medium
+      - Low
+      - Lowest

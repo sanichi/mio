@@ -1,0 +1,9 @@
+- todos.each do |todo|
+  %tr
+    %td
+      %span{id: "todo_#{todo.id}", class: todo.done ? "done" : nil}= todo.description
+    %td= t("todo.priorities")[todo.priority]
+    - if can?(:manage, Todo)
+      %td.text-center
+        = link_to t("edit"), edit_todo_path(todo), class: "btn btn-info btn-xs"
+        = link_to t("todo.done"), toggle_todo_path(todo), class: "btn btn-success btn-xs", remote: true

@@ -110,4 +110,13 @@ shared_context "test_data" do
   let(:partnership_singular) { I18n.t("partnership.partnership") }
   let(:partnerships)         { I18n.t("partnership.partnerships") }
   let(:new_partnership)      { I18n.t("partnership.new") }
+
+  let(:new_todo)        { I18n.t("todo.new") }
+  let(:todo_done)       { I18n.t("todo.done") }
+  let(:todo_elm)        { I18n.t("todo.elm") }
+  let(:todo_priority)   { I18n.t("todo.priority") }
+  let(:todo_priorities) { I18n.t("todo.priorities") }
+  let(:todo_rails)      { I18n.t("todo.rails") }
+  let(:todo_todo)       { I18n.t("todo.todo") }
+  let(:todo_todos)      { I18n.t("todo.todos") }
 end
