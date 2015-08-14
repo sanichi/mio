@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
   resources :todos, except: [:show] do
     get :toggle, on: :member
+    get :elm, on: :collection
   end
   resources :uploads, except: [:edit, :update]
   resources :users
