@@ -71,7 +71,7 @@ describe Todo do
       click_link todo_done
       wait_a_while
 
-      expect(page).to have_xpath("//td/span[@id='todo_#{todo.id}' and contains(@class,'done')]")
+      expect(page).to have_xpath("//td/span[@id='todo_#{todo.id}' and @class='inactive']")
 
       todo.reload
       expect(todo.done).to be true
@@ -79,7 +79,7 @@ describe Todo do
       click_link todo_done
       wait_a_while
 
-      expect(page).to have_xpath("//td/span[@id='todo_#{todo.id}' and not(contains(@class,'done'))]")
+      expect(page).to have_xpath("//td/span[@id='todo_#{todo.id}' and @class='active']")
 
       todo.reload
       expect(todo.done).to be false
