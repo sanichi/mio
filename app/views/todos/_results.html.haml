@@ -1,7 +1,7 @@
 - todos.each do |todo|
   %tr
     %td
-      %span{id: "todo_#{todo.id}", class: todo.done ? "active" : "inactive"}= todo.description
+      %span{id: "todo_#{todo.id}", class: todo.done ? "inactive" : "active"}= todo.description
     %td.col-md-2= t("todo.priorities")[todo.priority]
     - if can?(:manage, Todo)
       %td.col-md-2.text-center
