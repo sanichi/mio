@@ -1,1 +1,1 @@
-$("#todo_<%= @todo.id %>").<%= @todo.done ? "add" : "remove" %>Class("done");
+$("#todo_<%= @todo.id %>").toggleClass("active inactive");

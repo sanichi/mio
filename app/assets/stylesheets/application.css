@@ -42,6 +42,9 @@
 }
 
 /* For Todos. */
-span.done {
+span.active {
+  font-weight: bold;
+}
+span.inactive {
   text-decoration: line-through;
 }
