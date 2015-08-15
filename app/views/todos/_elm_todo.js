@@ -804,21 +804,6 @@ Elm.Counter.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var countStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                         ,_0: "font-size"
-                                                         ,_1: "20px"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "font-family"
-                                                         ,_1: "monospace"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "display"
-                                                         ,_1: "inline-block"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "width"
-                                                         ,_1: "50px"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "text-align"
-                                                         ,_1: "center"}]));
    var update = F2(function (action,
    model) {
       return function () {
@@ -835,28 +820,39 @@ Elm.Counter.make = function (_elm) {
    var Increment = {ctor: "Increment"};
    var view = F2(function (address,
    model) {
-      return A2($Html.div,
+      return A2($Html.table,
+      _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
+      _L.fromArray([A2($Html.tbody,
       _L.fromArray([]),
-      _L.fromArray([A2($Html.button,
-                   _L.fromArray([A2($Html$Events.onClick,
-                   address,
-                   Decrement)]),
-                   _L.fromArray([$Html.text("-")]))
-                   ,A2($Html.div,
-                   _L.fromArray([countStyle]),
-                   _L.fromArray([$Html.text($Basics.toString(model))]))
-                   ,A2($Html.button,
-                   _L.fromArray([A2($Html$Events.onClick,
-                   address,
-                   Increment)]),
-                   _L.fromArray([$Html.text("+")]))]));
+      _L.fromArray([A2($Html.tr,
+      _L.fromArray([]),
+      _L.fromArray([A2($Html.td,
+                   _L.fromArray([$Html$Attributes.$class("text-center col-md-1")
+                                ,A2($Html$Events.onClick,
+                                address,
+                                Decrement)]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("btn btn-danger btn-xs")]),
+                   _L.fromArray([$Html.text("-")]))]))
+                   ,A2($Html.td,
+                   _L.fromArray([$Html$Attributes.$class("text-center col-md-10")]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                   _L.fromArray([$Html.text($Basics.toString(model))]))]))
+                   ,A2($Html.td,
+                   _L.fromArray([$Html$Attributes.$class("text-center col-md-1")
+                                ,A2($Html$Events.onClick,
+                                address,
+                                Increment)]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")]),
+                   _L.fromArray([$Html.text("+")]))]))]))]))]));
    });
    _elm.Counter.values = {_op: _op
                          ,Increment: Increment
                          ,Decrement: Decrement
                          ,update: update
-                         ,view: view
-                         ,countStyle: countStyle};
+                         ,view: view};
    return _elm.Counter.values;
 };
 Elm.Debug = Elm.Debug || {};

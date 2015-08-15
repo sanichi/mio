@@ -1,7 +1,7 @@
 module Counter where
 
 import Html exposing (..)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
 
@@ -25,19 +25,18 @@ update action model =
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-  div []
-    [ button [ onClick address Decrement ] [ text "-" ]
-    , div [ countStyle ] [ text (toString model) ]
-    , button [ onClick address Increment ] [ text "+" ]
-    ]
-
-
-countStyle : Attribute
-countStyle =
-  style
-    [ ("font-size", "20px")
-    , ("font-family", "monospace")
-    , ("display", "inline-block")
-    , ("width", "50px")
-    , ("text-align", "center")
+  table [ class "table table-bordered table-striped" ]
+    [ tbody [ ]
+        [ tr [ ]
+          [ td
+              [ class "text-center col-md-1", onClick address Decrement ]
+              [ span [ class "btn btn-danger btn-xs" ] [ text "-" ] ]
+          , td
+              [ class "text-center col-md-10"]
+              [ span [ class "btn btn-info btn-xs" ] [ text (toString model) ] ]
+          , td
+              [ class "text-center col-md-1", onClick address Increment ]
+              [ span [ class "btn btn-success btn-xs" ] [ text "+"] ]
+          ]
+        ]
     ]
