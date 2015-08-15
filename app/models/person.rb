@@ -59,6 +59,9 @@ class Person < ActiveRecord::Base
     if (sql = numerical_constraint(params[:born], :born))
       matches = matches.where(sql)
     end
+    if (sql = numerical_constraint(params[:died], :died))
+      matches = matches.where(sql)
+    end
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
     matches = matches.where("notes ILIKE ?", "%#{params[:notes]}%") if params[:notes].present?

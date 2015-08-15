@@ -3,4 +3,5 @@
     %td= link_to person.name(reversed: !%w/first known/.include?(params[:order]), full: true, with_married_name: true), person
     %td.text-center= t("person.symbol.#{ person.male ? '' : 'fe' }male")
     %td.text-center= person.born
-= render "utils/pagination_links", pager: people, columns: 3
+    %td.text-center= person.died
+= render "utils/pagination_links", pager: people, columns: 4
