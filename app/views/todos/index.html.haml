@@ -1,29 +1,13 @@
 = render "utils/title", key: "todo.todos"
 
 .text-center
-  = form_tag todos_path, method: :get, remote: true, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :description, t("description"), class: "sr-only"
-      = text_field_tag :description, params[:description], class: "form-control", placeholder: t("description"), size: 14
-    .form-group
-      = label_tag :priority, t("todo.priority"), class: "sr-only"
-      = select_tag :priority, todo_priority_menu(params[:priority], "any"), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+  - if can?(:create, Todo)
+    = link_to t("todo.new"), new_todo_path, class: "btn btn-info"
 
 %p
 
 .row
   .col-md-offset-2.col-md-8
     %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th= t("description")
-          %th.col-md-2= t("todo.priority")
-          - if can?(:manage, Todo)
-            %th.col-md-2
       %tbody{id: "results"}
         = render "results", todos: @todos
-
-.text-center
-  - if can?(:create, Todo)
-    = link_to t("todo.new"), new_todo_path, class: "btn btn-info"

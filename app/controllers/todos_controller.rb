@@ -3,7 +3,7 @@ class TodosController < ApplicationController
   before_action :find_todo, only: [:toggle, :edit, :update, :destroy]
 
   def index
-    @todos = Todo.search(params, todos_path)
+    @todos = Todo.ordered
   end
 
   def new
