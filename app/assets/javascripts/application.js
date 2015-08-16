@@ -15,8 +15,8 @@
 //= require jquery_ujs
 //= require bootstrap.min
 
-// Auto-submit on change.
 $(function() {
+  // Auto-submit on change.
   $('form .auto-submit').change(function() {
     $(this).parents('form').submit();
   });

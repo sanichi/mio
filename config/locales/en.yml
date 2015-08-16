@@ -6,6 +6,7 @@ en:
   any: Any
   both: both
   cancel: Cancel
+  close: Close
   created_at: Created At
   cross: ✘
   date: Date
@@ -16,6 +17,7 @@ en:
   error: Error
   family: Family
   graph: Graph
+  help: Help
   list: List
   mio: Mio
   money: Money
@@ -35,6 +37,7 @@ en:
   total: Total
   unknown: Unknown
   updated_at: Last Updated
+  view: View
   "no": "No"
   "yes": "Yes"
   pagination:

@@ -12,6 +12,7 @@
       = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
       = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("partnership.wedding"), size: 12
     = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = render "utils/help_button"
 
 %p
 
@@ -29,3 +30,34 @@
 .text-center
   - if can?(:create, Partnership)
     = link_to t("partnership.new"), new_partnership_path, class: "btn btn-info"
+
+- content_for :help_title do
+  = "How to Search for Partnerships"
+- content_for :help do
+  %ul
+    %li
+      = succeed(":") do
+        %strong= t("person.male")
+      Enter one or more terms to match the first, last or "known as" names of the male partner.
+      Terms are case insensitive, don't have to be full names and order is not important.
+      For example, a fairly specific search might be:
+      %em "john smith"
+      which would only find males that had names matching both those terms.
+      In contrast, a less specific search example is:
+      %em "jo sm"
+      which would match John Smith but also Joe Smyth, Jon Dinsmore, and so on.
+    %li
+      = succeed(":") do
+        %strong= t("person.female")
+      Similar to
+      %em= t("person.male")
+      above but will constrain the female half of the partnership
+      and also search the pre-marriage surname.
+      For example, "coyle orr" will match women who were at
+      one time called "Coyle" and at another time "Orr".
+    %li
+      = succeed(":") do
+        %strong= t("partnership.wedding")
+      Enter a year (e.g. "1927"), a range (e.g. "1925-1935") or a limit (e.g. ">1900" or "<=1960") to
+      constrain the start year of the partnership. For marriarges (the majority of the partnerships
+      in this database) this is the wedding year.

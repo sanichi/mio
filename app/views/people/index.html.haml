@@ -21,6 +21,7 @@
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, person_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = render "utils/help_button"
 
 %p
 
@@ -40,3 +41,54 @@
   - if can?(:create, Person)
     = link_to t("person.new"), new_person_path, class: "btn btn-info"
   = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
+
+- content_for :help_title do
+  = "How to Search for People"
+- content_for :help do
+  %ul
+    %li
+      = succeed(":") do
+        %strong= t("name")
+      Enter one or more terms to match the first, last or "known as" names of people.
+      Terms are case insensitive, don't have to be full names and order is not important.
+      For example, a fairly specific search might be:
+      %em "john smith"
+      which would only find people that had names matching both those terms.
+      In contrast, a less specific search example is:
+      %em "jo sm"
+      which would match John Smith but also Joe Smyth, Jo Dinsmore, and so on.
+    %li
+      = succeed(":") do
+        %strong= [t("both"), t("person.male"), t("person.female")].join("/")
+      Select one depending on whether you want to search for males only, females only or both genders.
+    %li
+      = succeed(":") do
+        %strong= t("person.born")
+      Enter a year (e.g. "1927"), a range (e.g. "1925-1935") or a limit (e.g. ">1900" or "<=1960") to
+      constrain the year of birth. Every person in the database has a year of birth (though some may
+      be estimates - see
+      %em= t("notes")
+      below).
+    %li
+      = succeed(":") do
+        %strong= t("person.died")
+      Similar to
+      %em Born
+      (see above) except the constraint is on the year of death instead of year of birth.
+      Not all people in the database have a year of death (because either it's unknown or
+      the person is still alive) and those people will not match if you constrain it.
+    %li
+      = succeed(":") do
+        %strong= t("notes")
+      Enter a single term (case insensitive) to match person notes such as a place name (e.g. "Enniskillen"
+      or "Ballywalter") or profession (e.g. "farmer" or "mayor"). If a person's year of birth or death
+      has been estimated then this will be noted: you can find them by searching notes for the word "guess".
+    %li
+      = succeed(":") do
+        %strong= %w/last first known born/.map{ |g| t("person.order.#{g}") }.join("/")
+      Choose one to order the results.
+    %li
+      = succeed(":") do
+        %strong= %w/frst next prev last/.map{ |p| t("pagination.#{p}") }.join("/")
+      Click one to page forward and backwards through the results when there are more
+      than the maximum per-page (10).

@@ -6,3 +6,5 @@
     .container.top_margin.bottom_margin
       = render "layouts/nav"
       = yield
+    - if content_for? :help
+      = render "utils/help"

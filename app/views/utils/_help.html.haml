@@ -1,0 +1,11 @@
+#help.modal.fade{tabindex: "-1", role: "dialog", "aria-labelledby" => "help-title", "data-backdrop" => "false"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      .modal-header
+        %button{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => t("close")}
+          %span{"aria-hidden" => "true"}= t("cross")
+        %h4#help-title.modal-title= content_for?(:help_title) ? yield(:help_title) : t("help")
+      .modal-body
+        = yield :help
+      .modal-footer
+        %button{type: "button", class: "btn btn-default", "data-dismiss" => "modal"}= t("close")
