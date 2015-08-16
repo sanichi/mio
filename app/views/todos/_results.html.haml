@@ -1,8 +1,9 @@
 - todos.each do |todo|
-  %tr
+  %tr{id: "todo_tr_#{todo.id}"}
     %td
-      %span{id: "todo_#{todo.id}", class: todo.done ? "inactive" : "active"}= todo.description
-    %td.col-md-2= t("todo.priorities")[todo.priority]
+      %span{class: todo.done ? "inactive" : "active"}= todo.description
+    %td.col-md-2
+      %span{class: todo.done ? "inactive" : "active"}= t("todo.priorities")[todo.priority]
     - if can?(:manage, Todo)
       %td.col-md-2.text-center
         = link_to t("edit"), edit_todo_path(todo), class: "btn btn-info btn-xs"
