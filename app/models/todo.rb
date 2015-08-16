@@ -5,5 +5,5 @@ class Todo < ActiveRecord::Base
   validates :priority, inclusion: { in: PRIORITIES }
   validates :description, presence: true, length: { maximum: MAX_DESC }, uniqueness: true
 
-  scope :ordered, -> { order(:priority, :description) }
+  scope :ordered, -> { order(:done, :priority, :description) }
 end
