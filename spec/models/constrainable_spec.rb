@@ -43,7 +43,7 @@ describe Constrainable do
     it "no terms" do
       expect(Person.cross_constraint(nil)).to be_nil
       expect(Person.cross_constraint("")).to be_nil
-      expect(Person.cross_constraint("12 &^%")).to be_nil
+      expect(Person.cross_constraint("*£' &^%")).to be_nil
     end
 
     it "one terms" do

@@ -80,9 +80,10 @@
     %li
       = succeed(":") do
         %strong= t("notes")
-      Enter a single term (case insensitive) to match person notes such as a place name (e.g. "Enniskillen"
-      or "Ballywalter") or profession (e.g. "farmer" or "mayor"). If a person's year of birth or death
-      has been estimated then this will be noted: you can find them by searching notes for the word "guess".
+      Enter a one or more terms (case insensitive, not necessarily full words) to match person
+      notes such as a place name (e.g. "Enniskillen", "Ballywalter") or professions (e.g. "farmer",
+      "mayor"). If a person's year of birth or death has been estimated then this will be noted
+      and you can find them by searching notes for the word "guess".
     %li
       = succeed(":") do
         %strong= %w/last first known born/.map{ |g| t("person.order.#{g}") }.join("/")

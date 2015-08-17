@@ -17,11 +17,10 @@ class Picture < ActiveRecord::Base
   default_scope { order(id: :desc) }
 
   def self.search(params)
+    sql = nil
     matches = joins(:person).includes(:person)
-    if (sql = cross_constraint(params[:name], table: :people))
-      matches = matches.where(sql)
-    end
-    matches = matches.where("description ILIKE ?", "%#{params[:description]}%") if params[:description].present?
+    matches = matches.where(sql) if (sql = cross_constraint(params[:name], table: :people))
+    matches = matches.where(sql) if (sql = cross_constraint(params[:description], cols: ["description"]))
     matches
   end
 
