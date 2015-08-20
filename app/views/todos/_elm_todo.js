@@ -785,76 +785,6 @@ Elm.Color.make = function (_elm) {
                        ,darkGray: darkGray};
    return _elm.Color.values;
 };
-Elm.Counter = Elm.Counter || {};
-Elm.Counter.make = function (_elm) {
-   "use strict";
-   _elm.Counter = _elm.Counter || {};
-   if (_elm.Counter.values)
-   return _elm.Counter.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Counter",
-   $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var update = F2(function (action,
-   model) {
-      return function () {
-         switch (action.ctor)
-         {case "Decrement":
-            return model - 1;
-            case "Increment":
-            return model + 1;}
-         _U.badCase($moduleName,
-         "between lines 19 and 21");
-      }();
-   });
-   var Decrement = {ctor: "Decrement"};
-   var Increment = {ctor: "Increment"};
-   var view = F2(function (address,
-   model) {
-      return A2($Html.table,
-      _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
-      _L.fromArray([A2($Html.tbody,
-      _L.fromArray([]),
-      _L.fromArray([A2($Html.tr,
-      _L.fromArray([]),
-      _L.fromArray([A2($Html.td,
-                   _L.fromArray([$Html$Attributes.$class("text-center col-md-1")
-                                ,A2($Html$Events.onClick,
-                                address,
-                                Decrement)]),
-                   _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class("btn btn-danger btn-xs")]),
-                   _L.fromArray([$Html.text("-")]))]))
-                   ,A2($Html.td,
-                   _L.fromArray([$Html$Attributes.$class("text-center col-md-10")]),
-                   _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
-                   _L.fromArray([$Html.text($Basics.toString(model))]))]))
-                   ,A2($Html.td,
-                   _L.fromArray([$Html$Attributes.$class("text-center col-md-1")
-                                ,A2($Html$Events.onClick,
-                                address,
-                                Increment)]),
-                   _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")]),
-                   _L.fromArray([$Html.text("+")]))]))]))]))]));
-   });
-   _elm.Counter.values = {_op: _op
-                         ,Increment: Increment
-                         ,Decrement: Decrement
-                         ,update: update
-                         ,view: view};
-   return _elm.Counter.values;
-};
 Elm.Debug = Elm.Debug || {};
 Elm.Debug.make = function (_elm) {
    "use strict";
@@ -4236,16 +4166,35 @@ Elm.Main.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Main",
    $Basics = Elm.Basics.make(_elm),
-   $Counter = Elm.Counter.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
+   $Todo = Elm.Todo.make(_elm);
    var main = $StartApp$Simple.start({_: {}
-                                     ,model: 0
-                                     ,update: $Counter.update
-                                     ,view: $Counter.view});
+                                     ,model: _L.fromArray([{_: {}
+                                                           ,description: "Fix water pipe"
+                                                           ,done: true
+                                                           ,priority: 0
+                                                           ,priority_desc: "Urgent"}
+                                                          ,{_: {}
+                                                           ,description: "Do washing-up"
+                                                           ,done: false
+                                                           ,priority: 2
+                                                           ,priority_desc: "Medium"}
+                                                          ,{_: {}
+                                                           ,description: "Paint ceiling"
+                                                           ,done: false
+                                                           ,priority: 2
+                                                           ,priority_desc: "Medium"}
+                                                          ,{_: {}
+                                                           ,description: "Clean car"
+                                                           ,done: false
+                                                           ,priority: 3
+                                                           ,priority_desc: "Low"}])
+                                     ,update: $Todo.update
+                                     ,view: $Todo.view});
    _elm.Main.values = {_op: _op
                       ,main: main};
    return _elm.Main.values;
@@ -12807,6 +12756,91 @@ Elm.Text.make = function (_elm) {
                       ,Over: Over
                       ,Through: Through};
    return _elm.Text.values;
+};
+Elm.Todo = Elm.Todo || {};
+Elm.Todo.make = function (_elm) {
+   "use strict";
+   _elm.Todo = _elm.Todo || {};
+   if (_elm.Todo.values)
+   return _elm.Todo.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Todo",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var todoCompare = F2(function (t1,
+   t2) {
+      return A2($Basics.xor,
+      t1.done,
+      t2.done) ? t1.done ? $Basics.GT : $Basics.LT : _U.eq(t1.priority,
+      t2.priority) ? A2($Basics.compare,
+      t1.description,
+      t2.description) : A2($Basics.compare,
+      t1.priority,
+      t2.priority);
+   });
+   var cellClass = function (todo) {
+      return todo.done ? "inactive" : "active";
+   };
+   var tableRow = function (todo) {
+      return A2($Html.tr,
+      _L.fromArray([]),
+      _L.fromArray([A2($Html.td,
+                   _L.fromArray([]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class(cellClass(todo))]),
+                   _L.fromArray([$Html.text(todo.description)]))]))
+                   ,A2($Html.td,
+                   _L.fromArray([$Html$Attributes.$class("col-md-2")]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class(cellClass(todo))]),
+                   _L.fromArray([$Html.text(todo.priority_desc)]))]))]));
+   };
+   var view = F2(function (address,
+   model) {
+      return A2($Html.table,
+      _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
+      _L.fromArray([A2($Html.tbody,
+      _L.fromArray([]),
+      A2($List.map,
+      tableRow,
+      A2($List.sortWith,
+      todoCompare,
+      model)))]));
+   });
+   var update = F2(function (action,
+   model) {
+      return model;
+   });
+   var Decrement = {ctor: "Decrement"};
+   var Increment = {ctor: "Increment"};
+   var Todo = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,description: a
+             ,done: d
+             ,priority: b
+             ,priority_desc: c};
+   });
+   _elm.Todo.values = {_op: _op
+                      ,Todo: Todo
+                      ,Increment: Increment
+                      ,Decrement: Decrement
+                      ,update: update
+                      ,cellClass: cellClass
+                      ,todoCompare: todoCompare
+                      ,tableRow: tableRow
+                      ,view: view};
+   return _elm.Todo.values;
 };
 Elm.Transform2D = Elm.Transform2D || {};
 Elm.Transform2D.make = function (_elm) {
