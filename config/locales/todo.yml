@@ -2,10 +2,10 @@ en:
   todo:
     done: Done
     edit: Edit Todo
-    elm: Todos-E
+    elm: Elm
     new: New Todo
     priority: Priority
-    rails: Todos-R
+    rails: Rails
     todo: Todo
     todos: Todos
     priorities:

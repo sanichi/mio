@@ -4172,30 +4172,32 @@ Elm.Main.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
    $Todo = Elm.Todo.make(_elm);
+   var model = _L.fromArray([{_: {}
+                             ,description: "Fix water pipe"
+                             ,done: true
+                             ,priority: 0
+                             ,priority_desc: "Urgent"}
+                            ,{_: {}
+                             ,description: "Do washing-up"
+                             ,done: false
+                             ,priority: 2
+                             ,priority_desc: "Medium"}
+                            ,{_: {}
+                             ,description: "Paint ceiling"
+                             ,done: false
+                             ,priority: 2
+                             ,priority_desc: "Medium"}
+                            ,{_: {}
+                             ,description: "Clean car"
+                             ,done: false
+                             ,priority: 3
+                             ,priority_desc: "Low"}]);
    var main = $StartApp$Simple.start({_: {}
-                                     ,model: _L.fromArray([{_: {}
-                                                           ,description: "Fix water pipe"
-                                                           ,done: true
-                                                           ,priority: 0
-                                                           ,priority_desc: "Urgent"}
-                                                          ,{_: {}
-                                                           ,description: "Do washing-up"
-                                                           ,done: false
-                                                           ,priority: 2
-                                                           ,priority_desc: "Medium"}
-                                                          ,{_: {}
-                                                           ,description: "Paint ceiling"
-                                                           ,done: false
-                                                           ,priority: 2
-                                                           ,priority_desc: "Medium"}
-                                                          ,{_: {}
-                                                           ,description: "Clean car"
-                                                           ,done: false
-                                                           ,priority: 3
-                                                           ,priority_desc: "Low"}])
+                                     ,model: model
                                      ,update: $Todo.update
                                      ,view: $Todo.view});
    _elm.Main.values = {_op: _op
+                      ,model: model
                       ,main: main};
    return _elm.Main.values;
 };
