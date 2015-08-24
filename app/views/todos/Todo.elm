@@ -13,11 +13,13 @@ type alias Todo =
   , done: Bool
   }
 
+
 type alias Model = List Todo
 
 -- UPDATE
 
 type Action = Increment | Decrement
+
 
 update : Action -> Model -> Model
 update action model =
@@ -29,6 +31,7 @@ cellClass : Todo -> String
 cellClass todo =
   if todo.done then "inactive" else "active"
 
+
 todoCompare : Todo -> Todo -> Order
 todoCompare t1 t2 =
   if xor t1.done t2.done
@@ -39,6 +42,7 @@ todoCompare t1 t2 =
         else compare t1.priority t2.priority
       )
 
+
 tableRow : Todo -> Html
 tableRow todo =
   tr [ ]
@@ -47,6 +51,7 @@ tableRow todo =
     , td [ class "col-md-2" ]
         [ span [ class (cellClass todo) ] [ text todo.priority_desc ] ]
     ]
+
 
 view : Signal.Address Action -> Model -> Html
 view address model =

@@ -1,5 +1,31 @@
-import StartApp.Simple exposing (start)
+import Html exposing (Html)
+import Signal exposing (Address)
 import Todo exposing (update, view)
+
+
+type alias Config model action =
+  { model : model
+  , view : Address action -> model -> Html
+  , update : action -> model -> model
+  }
+
+
+start : Config model action -> Signal Html
+start config =
+  let
+    actions =
+      Signal.mailbox Nothing
+
+    address =
+      Signal.forwardTo actions.address Just
+
+    model =
+      Signal.foldp
+        (\(Just action) model -> config.update action model)
+        config.model
+        actions.signal
+  in
+    Signal.map (config.view address) model
 
 
 model =
