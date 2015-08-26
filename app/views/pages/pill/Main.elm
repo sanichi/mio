@@ -1,5 +1,6 @@
 import Color exposing (lightGray)
 import Game exposing (Game, defaultGame, updateGame)
+import Globals exposing (width, height)
 import Graphics.Collage exposing (collage)
 import Graphics.Element exposing (Element, color, container, middle)
 import Player exposing (mouseSignal)
@@ -13,9 +14,9 @@ render : (Int, Int) -> Game -> Element
 render (w, h) game =
   let
     player = viewPill game.player
-    pill = viewPill game.pill
+    pills = List.map viewPill game.pills
   in
-    collage 400 400 [ player, pill ]
+    collage width height (player :: pills)
       |> color lightGray
       |> container w h middle
 
