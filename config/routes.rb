@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
 
+  %w[pills].each do |page|
+    get page => "pages##{page}"
+  end
+
   resources :expenses, except: [:show]
   resources :funds do
     resources :comments, except: [:index, :show]

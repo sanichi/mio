@@ -1,0 +1,9 @@
+= render "utils/title", key: "pills.pills"
+
+- content_for :javascript do
+  = render "pills_elm.js"
+  = render "pills.js"
+
+.row
+  .col-md-12
+    #elm{style: "height: 400px"}
