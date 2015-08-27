@@ -20,4 +20,4 @@ spawnInterval = 57 / defPillVel
 frameRate = 30
 
 textCol = darkGray
-lineHeight = 60
+lineHeight = 55

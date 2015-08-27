@@ -692,44 +692,48 @@ Elm.Game.make = function (_elm) {
          {case "Init":
             return _L.fromArray([A3(textForm,
                                 2,
-                                3.0,
+                                3,
                                 "Blue PiLL")
                                 ,A3(textForm,
                                 1,
-                                2.0,
+                                2,
                                 "Collect blue pills")
                                 ,A3(textForm,
                                 0,
-                                2.0,
+                                2,
                                 "Avoid red pills")
                                 ,A3(textForm,
                                 -1,
-                                2.0,
+                                2,
                                 "Stay inside the square")
                                 ,A3(textForm,
                                 -2,
-                                1.5,
-                                "Click to start")]);
+                                2,
+                                "Click to start")
+                                ,A3(textForm,
+                                -3,
+                                1,
+                                "Acknowledgements to Goran Milovanovic")]);
             case "Over":
             return _L.fromArray([A3(textForm,
                                 2,
-                                3.0,
+                                3,
                                 "Game Over")
                                 ,A3(textForm,
                                 1,
-                                2.0,
+                                2,
                                 A2($Basics._op["++"],
                                 "Score: ",
                                 $Basics.toString(g.score)))
                                 ,A3(textForm,
                                 0,
-                                2.0,
+                                2,
                                 A2($Basics._op["++"],
                                 "Best score: ",
                                 $Basics.toString(g.maxScore)))
                                 ,A3(textForm,
                                 -1,
-                                1.5,
+                                2,
                                 "Click to restart")]);
             case "Play":
             return _L.fromArray([A3(textForm,
@@ -737,7 +741,7 @@ Elm.Game.make = function (_elm) {
               3.0,
               $Basics.toString(g.score))]);}
          _U.badCase($moduleName,
-         "between lines 102 and 116");
+         "between lines 102 and 117");
       }();
    };
    var click = function (event) {
@@ -7560,7 +7564,7 @@ Elm.Share.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var lineHeight = 60;
+   var lineHeight = 55;
    var textCol = $Color.darkGray;
    var frameRate = 30;
    var capturePillProb = 0.2;

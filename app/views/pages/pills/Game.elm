@@ -101,17 +101,18 @@ viewGameTexts : Game -> List Form
 viewGameTexts g =
   case g.state of
     Init ->
-      [ textForm  2 3.0 "Blue PiLL"
-      , textForm  1 2.0 "Collect blue pills"
-      , textForm  0 2.0 "Avoid red pills"
-      , textForm -1 2.0 "Stay inside the square"
-      , textForm -2 1.5 "Click to start"
+      [ textForm  2 3 "Blue PiLL"
+      , textForm  1 2 "Collect blue pills"
+      , textForm  0 2 "Avoid red pills"
+      , textForm -1 2 "Stay inside the square"
+      , textForm -2 2 "Click to start"
+      , textForm -3 1 "Acknowledgements to Goran Milovanovic"
       ]
     Over ->
-      [ textForm  2 3.0 "Game Over"
-      , textForm  1 2.0 ("Score: " ++ (toString g.score))
-      , textForm  0 2.0 ("Best score: " ++ (toString g.maxScore))
-      , textForm -1 1.5 "Click to restart"
+      [ textForm  2 3 "Game Over"
+      , textForm  1 2 ("Score: " ++ (toString g.score))
+      , textForm  0 2 ("Best score: " ++ (toString g.maxScore))
+      , textForm -1 2 "Click to restart"
       ]
     Play -> [textForm 0 3.0 (toString g.score)]
 
