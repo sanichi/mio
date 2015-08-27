@@ -50,9 +50,10 @@ collision p1 p2 =
 
 
 outOfBounds : Pill -> Bool
-outOfBounds {pos} =
-  let
-    x = fst pos
-    y = snd pos
-  in
-    x < -hWidth || x > hWidth || y < -hHeight || y > hHeight
+outOfBounds p =
+  outsideArea p.pos
+
+
+outsideArea : (Float, Float) -> Bool
+outsideArea (x, y) =
+  x < -hWidth || x > hWidth || y < -hHeight || y > hHeight

@@ -2,7 +2,7 @@ module Game where
 
 import Graphics.Collage exposing (Form, move, scale, toForm)
 import Graphics.Element exposing (centered)
-import Pill exposing (Pill, defaultPill, newPill, updatePill, collision, outOfBounds)
+import Pill exposing (Pill, defaultPill, newPill, updatePill, collision, outOfBounds, outsideArea)
 import Player exposing (Player, defaultPlayer, updatePlayer)
 import Random exposing (Seed, initialSeed, generate, float)
 import Share exposing (capturePillProb, capturePillCol, defPillCol, defPillRad, hWidth, hHeight, lineHeight, textCol)
@@ -37,15 +37,16 @@ defaultGame =
 updatePlay : Event -> Game -> Game
 updatePlay event g =
   case event of
-    Tick (t, mp) ->
+    Tick (t, ((i,j) as mp)) ->
       let
         unculled = List.filter (not << outOfBounds) g.pills
         untouched = List.filter (not << collision g.player) unculled
         hit c = List.filter (\p -> p.col == c && (collision g.player p)) unculled
         captured = hit capturePillCol
         collided = hit defPillCol
+        outside = outsideArea (toFloat i, toFloat j)
       in
-        if List.isEmpty collided
+        if List.isEmpty collided && not outside
           then
             { g
             | pills  <- List.map (updatePill t) untouched
@@ -103,7 +104,8 @@ viewGameTexts g =
       [ textForm  2 3.0 "Blue PiLL"
       , textForm  1 2.0 "Collect blue pills"
       , textForm  0 2.0 "Avoid red pills"
-      , textForm -1 1.5 "Click to start"
+      , textForm -1 2.0 "Stay inside the square"
+      , textForm -2 1.5 "Click to start"
       ]
     Over ->
       [ textForm  2 3.0 "Game Over"

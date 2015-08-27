@@ -704,6 +704,10 @@ Elm.Game.make = function (_elm) {
                                 "Avoid red pills")
                                 ,A3(textForm,
                                 -1,
+                                2.0,
+                                "Stay inside the square")
+                                ,A3(textForm,
+                                -2,
                                 1.5,
                                 "Click to start")]);
             case "Over":
@@ -733,7 +737,7 @@ Elm.Game.make = function (_elm) {
               3.0,
               $Basics.toString(g.score))]);}
          _U.badCase($moduleName,
-         "between lines 101 and 114");
+         "between lines 102 and 116");
       }();
    };
    var click = function (event) {
@@ -803,60 +807,66 @@ Elm.Game.make = function (_elm) {
             case "Tick":
             switch (event._0.ctor)
               {case "_Tuple2":
-                 return function () {
-                      var unculled = A2($List.filter,
-                      function ($) {
-                         return $Basics.not($Pill.outOfBounds($));
-                      },
-                      g.pills);
-                      var untouched = A2($List.filter,
-                      function ($) {
-                         return $Basics.not($Pill.collision(g.player)($));
-                      },
-                      unculled);
-                      var hit = function (c) {
-                         return A2($List.filter,
-                         function (p) {
-                            return _U.eq(p.col,
-                            c) && A2($Pill.collision,
-                            g.player,
-                            p);
-                         },
-                         unculled);
-                      };
-                      var captured = hit($Share.capturePillCol);
-                      var collided = hit($Share.defPillCol);
-                      return $List.isEmpty(collided) ? _U.replace([["pills"
-                                                                   ,A2($List.map,
-                                                                   $Pill.updatePill(event._0._0),
-                                                                   untouched)]
-                                                                  ,["player"
-                                                                   ,A2($Player.updatePlayer,
-                                                                   event._0._1,
-                                                                   g.player)]
-                                                                  ,["score"
-                                                                   ,g.score + $List.length(captured)]],
-                      g) : _U.replace([["maxScore"
-                                       ,A2($Basics.max,
-                                       g.maxScore,
-                                       g.score)]
-                                      ,["player"
-                                       ,$Player.defaultPlayer]
-                                      ,["score",g.score]
-                                      ,["seed",g.seed]
-                                      ,["state",Over]],
-                      defaultGame);
-                   }();}
+                 switch (event._0._1.ctor)
+                   {case "_Tuple2":
+                      return function () {
+                           var outside = $Pill.outsideArea({ctor: "_Tuple2"
+                                                           ,_0: $Basics.toFloat(event._0._1._0)
+                                                           ,_1: $Basics.toFloat(event._0._1._1)});
+                           var unculled = A2($List.filter,
+                           function ($) {
+                              return $Basics.not($Pill.outOfBounds($));
+                           },
+                           g.pills);
+                           var untouched = A2($List.filter,
+                           function ($) {
+                              return $Basics.not($Pill.collision(g.player)($));
+                           },
+                           unculled);
+                           var hit = function (c) {
+                              return A2($List.filter,
+                              function (p) {
+                                 return _U.eq(p.col,
+                                 c) && A2($Pill.collision,
+                                 g.player,
+                                 p);
+                              },
+                              unculled);
+                           };
+                           var captured = hit($Share.capturePillCol);
+                           var collided = hit($Share.defPillCol);
+                           return $List.isEmpty(collided) && $Basics.not(outside) ? _U.replace([["pills"
+                                                                                                ,A2($List.map,
+                                                                                                $Pill.updatePill(event._0._0),
+                                                                                                untouched)]
+                                                                                               ,["player"
+                                                                                                ,A2($Player.updatePlayer,
+                                                                                                event._0._1,
+                                                                                                g.player)]
+                                                                                               ,["score"
+                                                                                                ,g.score + $List.length(captured)]],
+                           g) : _U.replace([["maxScore"
+                                            ,A2($Basics.max,
+                                            g.maxScore,
+                                            g.score)]
+                                           ,["player"
+                                            ,$Player.defaultPlayer]
+                                           ,["score",g.score]
+                                           ,["seed",g.seed]
+                                           ,["state",Over]],
+                           defaultGame);
+                        }();}
+                   break;}
               break;}
          _U.badCase($moduleName,
-         "between lines 39 and 74");
+         "between lines 39 and 75");
       }();
    });
    var updateGame = F2(function (event,
    g) {
       return function () {
-         var _v6 = g.state;
-         switch (_v6.ctor)
+         var _v8 = g.state;
+         switch (_v8.ctor)
          {case "Play":
             return A2(updatePlay,event,g);}
          return click(event) ? _U.replace([["seed"
@@ -6839,18 +6849,21 @@ Elm.Pill.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm),
    $Vector = Elm.Vector.make(_elm);
-   var outOfBounds = function (_v0) {
+   var outsideArea = function (_v0) {
       return function () {
-         return function () {
-            var y = $Basics.snd(_v0.pos);
-            var x = $Basics.fst(_v0.pos);
-            return _U.cmp(x,
-            0 - $Share.hWidth) < 0 || (_U.cmp(x,
-            $Share.hWidth) > 0 || (_U.cmp(y,
-            0 - $Share.hHeight) < 0 || _U.cmp(y,
-            $Share.hHeight) > 0));
-         }();
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return _U.cmp(_v0._0,
+              0 - $Share.hWidth) < 0 || (_U.cmp(_v0._0,
+              $Share.hWidth) > 0 || (_U.cmp(_v0._1,
+              0 - $Share.hHeight) < 0 || _U.cmp(_v0._1,
+              $Share.hHeight) > 0));}
+         _U.badCase($moduleName,
+         "on line 59, column 3 to 59");
       }();
+   };
+   var outOfBounds = function (p) {
+      return outsideArea(p.pos);
    };
    var collision = F2(function (p1,
    p2) {
@@ -6859,9 +6872,9 @@ Elm.Pill.make = function (_elm) {
       p2.pos)),
       p1.rad + p2.rad) < 0;
    });
-   var viewPill = function (_v2) {
+   var viewPill = function (_v4) {
       return function () {
-         return $Graphics$Collage.move(_v2.pos)($Graphics$Collage.filled(_v2.col)($Graphics$Collage.circle(_v2.rad)));
+         return $Graphics$Collage.move(_v4.pos)($Graphics$Collage.filled(_v4.col)($Graphics$Collage.circle(_v4.rad)));
       }();
    };
    var updatePill = F2(function (t,
@@ -6907,7 +6920,8 @@ Elm.Pill.make = function (_elm) {
                       ,updatePill: updatePill
                       ,viewPill: viewPill
                       ,collision: collision
-                      ,outOfBounds: outOfBounds};
+                      ,outOfBounds: outOfBounds
+                      ,outsideArea: outsideArea};
    return _elm.Pill.values;
 };
 Elm.Player = Elm.Player || {};

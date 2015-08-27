@@ -8,7 +8,12 @@
     %ul.nav.navbar-nav
       - if can?(:read, Mass)
         %li= link_to t("mass.mass"), graph_masses_path
-      %li= link_to t("pills.pills"), pills_path
+      %li.dropdown
+        = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+          = t("pages.games")
+          %b.caret
+        %ul.dropdown-menu
+          %li= link_to t("pages.pills"), pills_path
       - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do

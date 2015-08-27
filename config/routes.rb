@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "masses#graph"
+  root to: "pages#pills"
 
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
