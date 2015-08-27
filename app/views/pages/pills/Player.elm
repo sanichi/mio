@@ -1,7 +1,7 @@
 module Player where
 
 import Color exposing (black)
-import Globals exposing (defaultPlayerCol)
+import Globals exposing (defPlayerCol)
 import Mouse
 import Pill exposing (Pill, defaultPill)
 import Signal exposing (..)
@@ -15,7 +15,7 @@ type alias Player = Pill
 defaultPlayer : Player
 defaultPlayer =
   { defaultPill
-  | col <- defaultPlayerCol
+  | col <- defPlayerCol
   , pos <- (0, 0)
   }
 

@@ -1,12 +1,12 @@
 import Color exposing (lightGray)
 import Game exposing (Game, defaultGame, updateGame)
-import Globals exposing (width, height)
+import Globals exposing (addSeconds, frameRate, height, width)
 import Graphics.Collage exposing (collage)
 import Graphics.Element exposing (Element, color, container, middle)
 import Player exposing (mouseSignal)
-import Pill exposing (Pill, viewPill)
+import Pill exposing (Pill, defaultPill, viewPill)
 import Signal exposing (..)
-import Time exposing (Time, fps, inSeconds)
+import Time exposing (Time, fps, inSeconds, every, second)
 import Window
 
 
@@ -30,6 +30,13 @@ input =
   (,) <~ map inSeconds delta ~ mouseSignal delta
 
 
+events =
+  mergeMany
+    [ map Game.Tick input
+    , map (\_ -> Game.Add) (every (second * addSeconds))
+    ]
+
+
 main : Signal Element
 main =
-  render <~ Window.dimensions ~ foldp updateGame defaultGame input
+  render <~ Window.dimensions ~ foldp updateGame defaultGame events
