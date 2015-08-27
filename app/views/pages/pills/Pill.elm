@@ -1,7 +1,7 @@
 module Pill where
 
 import Color exposing (Color)
-import Globals exposing (defPillCol, defPillRad, defPillVel, hWidth, hHeight)
+import Share exposing (defPillCol, defPillRad, defPillVel, hWidth, hHeight)
 import Graphics.Collage exposing (Form, circle, filled, move)
 import Time exposing (Time)
 import Vector exposing (Vector, vAdd, vLen, vMul, vSub)

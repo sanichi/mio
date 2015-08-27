@@ -1,6 +1,6 @@
 import Color exposing (lightGray)
 import Game exposing (Game, defaultGame, updateGame)
-import Globals exposing (addSeconds, frameRate, height, width)
+import Share exposing (addSeconds, frameRate, height, width)
 import Graphics.Collage exposing (collage)
 import Graphics.Element exposing (Element, color, container, middle)
 import Player exposing (mouseSignal)
@@ -22,7 +22,7 @@ render (w, h) game =
 
 
 delta : Signal Time
-delta = fps 30
+delta = fps frameRate
 
 
 input : Signal (Time, (Int, Int))
@@ -33,7 +33,7 @@ input =
 events =
   mergeMany
     [ map Game.Tick input
-    , map (\_ -> Game.Add) (every (second * addSeconds))
+    , map (always Game.Add) (every (second * addSeconds))
     ]
 
 

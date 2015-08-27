@@ -1,6 +1,6 @@
 module Game where
 
-import Globals exposing (capturePillProb, capturePillCol, defPillCol, defPillRad, hWidth, hHeight)
+import Share exposing (capturePillProb, capturePillCol, defPillCol, defPillRad, hWidth, hHeight)
 import Pill exposing (Pill, defaultPill, newPill, updatePill, collision, outOfBounds)
 import Player exposing (Player, defaultPlayer, updatePlayer)
 import Random exposing (Seed, initialSeed, generate, float)

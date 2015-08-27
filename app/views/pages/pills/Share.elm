@@ -1,4 +1,4 @@
-module Globals where
+module Share where
 
 import Color exposing (lightBlue, lightRed, black)
 
@@ -10,11 +10,11 @@ hHeight = height / 2
 
 defPillCol = lightRed
 defPillRad = 15
-defPillVel = 100
+defPillVel = 200
 defPlayerCol = black
 capturePillCol = lightBlue
 
-capturePillProb = 0.1
+capturePillProb = 0.2
 
-addSeconds = 1
+addSeconds = 0.5
 frameRate = 30

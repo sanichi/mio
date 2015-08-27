@@ -666,13 +666,13 @@ Elm.Game.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Game",
    $Basics = Elm.Basics.make(_elm),
-   $Globals = Elm.Globals.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Pill = Elm.Pill.make(_elm),
    $Player = Elm.Player.make(_elm),
    $Random = Elm.Random.make(_elm),
    $Result = Elm.Result.make(_elm),
+   $Share = Elm.Share.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
    var updateGame = F2(function (event,
@@ -684,8 +684,8 @@ Elm.Game.make = function (_elm) {
                return function () {
                     var $ = A2($Random.generate,
                     A2($Random.$float,
-                    $Globals.defPillRad - $Globals.hWidth,
-                    $Globals.hWidth - $Globals.defPillRad),
+                    $Share.defPillRad - $Share.hWidth,
+                    $Share.hWidth - $Share.defPillRad),
                     _v0.seed),
                     x = $._0,
                     seed$ = $._1;
@@ -695,7 +695,7 @@ Elm.Game.make = function (_elm) {
                     p = $._0,
                     seed$$ = $._1;
                     var c = _U.cmp(p,
-                    $Globals.capturePillProb) < 0 ? $Globals.capturePillCol : $Globals.defPillCol;
+                    $Share.capturePillProb) < 0 ? $Share.capturePillCol : $Share.defPillCol;
                     return _U.replace([["pills"
                                        ,A2($List._op["::"],
                                        A2($Pill.newPill,x,c),
@@ -754,50 +754,6 @@ Elm.Game.make = function (_elm) {
                       ,Add: Add
                       ,updateGame: updateGame};
    return _elm.Game.values;
-};
-Elm.Globals = Elm.Globals || {};
-Elm.Globals.make = function (_elm) {
-   "use strict";
-   _elm.Globals = _elm.Globals || {};
-   if (_elm.Globals.values)
-   return _elm.Globals.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Globals",
-   $Basics = Elm.Basics.make(_elm),
-   $Color = Elm.Color.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var frameRate = 30;
-   var addSeconds = 1;
-   var capturePillProb = 0.1;
-   var capturePillCol = $Color.lightBlue;
-   var defPlayerCol = $Color.black;
-   var defPillVel = 100;
-   var defPillRad = 15;
-   var defPillCol = $Color.lightRed;
-   var height = 400;
-   var hHeight = height / 2;
-   var width = 400;
-   var hWidth = width / 2;
-   _elm.Globals.values = {_op: _op
-                         ,width: width
-                         ,height: height
-                         ,hWidth: hWidth
-                         ,hHeight: hHeight
-                         ,defPillCol: defPillCol
-                         ,defPillRad: defPillRad
-                         ,defPillVel: defPillVel
-                         ,defPlayerCol: defPlayerCol
-                         ,capturePillCol: capturePillCol
-                         ,capturePillProb: capturePillProb
-                         ,addSeconds: addSeconds
-                         ,frameRate: frameRate};
-   return _elm.Globals.values;
 };
 Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Collage = Elm.Graphics.Collage || {};
@@ -2056,7 +2012,6 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
    $Game = Elm.Game.make(_elm),
-   $Globals = Elm.Globals.make(_elm),
    $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
@@ -2064,10 +2019,11 @@ Elm.Main.make = function (_elm) {
    $Pill = Elm.Pill.make(_elm),
    $Player = Elm.Player.make(_elm),
    $Result = Elm.Result.make(_elm),
+   $Share = Elm.Share.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var delta = $Time.fps(30);
+   var delta = $Time.fps($Share.frameRate);
    var input = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    F2(function (v0,v1) {
@@ -2083,16 +2039,12 @@ Elm.Main.make = function (_elm) {
                                                $Game.Tick,
                                                input)
                                                ,A2($Signal.map,
-                                               function (_v0) {
-                                                  return function () {
-                                                     return $Game.Add;
-                                                  }();
-                                               },
-                                               $Time.every($Time.second * $Globals.addSeconds))]));
-   var render = F2(function (_v2,
+                                               $Basics.always($Game.Add),
+                                               $Time.every($Time.second * $Share.addSeconds))]));
+   var render = F2(function (_v0,
    game) {
       return function () {
-         switch (_v2.ctor)
+         switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
                  var pills = A2($List.map,
@@ -2100,11 +2052,11 @@ Elm.Main.make = function (_elm) {
                  game.pills);
                  var player = $Pill.viewPill(game.player);
                  return A3($Graphics$Element.container,
-                 _v2._0,
-                 _v2._1,
+                 _v0._0,
+                 _v0._1,
                  $Graphics$Element.middle)($Graphics$Element.color($Color.lightGray)(A3($Graphics$Collage.collage,
-                 $Globals.width,
-                 $Globals.height,
+                 $Share.width,
+                 $Share.height,
                  A2($List._op["::"],
                  player,
                  pills))));
@@ -6745,11 +6697,11 @@ Elm.Pill.make = function (_elm) {
    $moduleName = "Pill",
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
-   $Globals = Elm.Globals.make(_elm),
    $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
+   $Share = Elm.Share.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm),
    $Vector = Elm.Vector.make(_elm);
@@ -6759,10 +6711,10 @@ Elm.Pill.make = function (_elm) {
             var y = $Basics.snd(_v0.pos);
             var x = $Basics.fst(_v0.pos);
             return _U.cmp(x,
-            0 - $Globals.hWidth) < 0 || (_U.cmp(x,
-            $Globals.hWidth) > 0 || (_U.cmp(y,
-            0 - $Globals.hHeight) < 0 || _U.cmp(y,
-            $Globals.hHeight) > 0));
+            0 - $Share.hWidth) < 0 || (_U.cmp(x,
+            $Share.hWidth) > 0 || (_U.cmp(y,
+            0 - $Share.hHeight) < 0 || _U.cmp(y,
+            $Share.hHeight) > 0));
          }();
       }();
    };
@@ -6787,20 +6739,20 @@ Elm.Pill.make = function (_elm) {
       p);
    });
    var defaultPill = {_: {}
-                     ,col: $Globals.defPillCol
+                     ,col: $Share.defPillCol
                      ,pos: {ctor: "_Tuple2"
                            ,_0: 0
-                           ,_1: $Globals.hHeight}
-                     ,rad: $Globals.defPillRad
+                           ,_1: $Share.hHeight}
+                     ,rad: $Share.defPillRad
                      ,vel: {ctor: "_Tuple2"
                            ,_0: 0
-                           ,_1: 0 - $Globals.defPillVel}};
+                           ,_1: 0 - $Share.defPillVel}};
    var newPill = F2(function (x,
    c) {
       return _U.replace([["pos"
                          ,{ctor: "_Tuple2"
                           ,_0: x
-                          ,_1: $Globals.hHeight}]
+                          ,_1: $Share.hHeight}]
                         ,["col",c]],
       defaultPill);
    });
@@ -6836,12 +6788,12 @@ Elm.Player.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Player",
    $Basics = Elm.Basics.make(_elm),
-   $Globals = Elm.Globals.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Mouse = Elm.Mouse.make(_elm),
    $Pill = Elm.Pill.make(_elm),
    $Result = Elm.Result.make(_elm),
+   $Share = Elm.Share.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm),
    $Window = Elm.Window.make(_elm);
@@ -6900,7 +6852,7 @@ Elm.Player.make = function (_elm) {
       }();
    });
    var defaultPlayer = _U.replace([["col"
-                                   ,$Globals.defPlayerCol]
+                                   ,$Share.defPlayerCol]
                                   ,["pos"
                                    ,{ctor: "_Tuple2"
                                     ,_0: 0
@@ -7442,6 +7394,50 @@ Elm.Result.make = function (_elm) {
                         ,Ok: Ok
                         ,Err: Err};
    return _elm.Result.values;
+};
+Elm.Share = Elm.Share || {};
+Elm.Share.make = function (_elm) {
+   "use strict";
+   _elm.Share = _elm.Share || {};
+   if (_elm.Share.values)
+   return _elm.Share.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Share",
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var frameRate = 30;
+   var addSeconds = 0.5;
+   var capturePillProb = 0.2;
+   var capturePillCol = $Color.lightBlue;
+   var defPlayerCol = $Color.black;
+   var defPillVel = 200;
+   var defPillRad = 15;
+   var defPillCol = $Color.lightRed;
+   var height = 400;
+   var hHeight = height / 2;
+   var width = 400;
+   var hWidth = width / 2;
+   _elm.Share.values = {_op: _op
+                       ,width: width
+                       ,height: height
+                       ,hWidth: hWidth
+                       ,hHeight: hHeight
+                       ,defPillCol: defPillCol
+                       ,defPillRad: defPillRad
+                       ,defPillVel: defPillVel
+                       ,defPlayerCol: defPlayerCol
+                       ,capturePillCol: capturePillCol
+                       ,capturePillProb: capturePillProb
+                       ,addSeconds: addSeconds
+                       ,frameRate: frameRate};
+   return _elm.Share.values;
 };
 Elm.Signal = Elm.Signal || {};
 Elm.Signal.make = function (_elm) {

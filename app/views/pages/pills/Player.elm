@@ -1,7 +1,7 @@
 module Player where
 
 import Color exposing (black)
-import Globals exposing (defPlayerCol)
+import Share exposing (defPlayerCol)
 import Mouse
 import Pill exposing (Pill, defaultPill)
 import Signal exposing (..)
