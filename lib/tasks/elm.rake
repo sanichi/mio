@@ -8,7 +8,7 @@ namespace :elm do
 
   desc "make the Elm JS file for Pills"
   task :pills do
-    Dir.chdir("app/views/pages/pill") do
+    Dir.chdir("app/views/pages/pills") do
       system("elm-make Main.elm --output ../_pills_elm.js")
     end
   end
