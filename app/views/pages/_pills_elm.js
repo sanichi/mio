@@ -691,7 +691,7 @@ Elm.Game.make = function (_elm) {
          switch (_v0.ctor)
          {case "Init":
             return _L.fromArray([A3(textForm,
-                                2,
+                                3,
                                 3,
                                 "Blue PiLL")
                                 ,A3(textForm,
@@ -7564,7 +7564,7 @@ Elm.Share.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var lineHeight = 55;
+   var lineHeight = 50;
    var textCol = $Color.darkGray;
    var frameRate = 30;
    var capturePillProb = 0.2;

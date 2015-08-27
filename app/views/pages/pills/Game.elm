@@ -101,7 +101,7 @@ viewGameTexts : Game -> List Form
 viewGameTexts g =
   case g.state of
     Init ->
-      [ textForm  2 3 "Blue PiLL"
+      [ textForm  3 3 "Blue PiLL"
       , textForm  1 2 "Collect blue pills"
       , textForm  0 2 "Avoid red pills"
       , textForm -1 2 "Stay inside the square"
