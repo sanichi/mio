@@ -1,22 +1,20 @@
 module Player where
 
 import Color exposing (black)
-import Share exposing (defPlayerCol)
 import Mouse
 import Pill exposing (Pill, defaultPill)
+import Share exposing (defPlayerCol, height, defPillRad)
 import Signal exposing (..)
 import Time exposing (Time)
 import Window
 
-
 type alias Player = Pill
-
 
 defaultPlayer : Player
 defaultPlayer =
   { defaultPill
   | col <- defPlayerCol
-  , pos <- (0, 0)
+  , pos <- (0, height + defPillRad)
   }
 
 

@@ -1,6 +1,6 @@
 module Share where
 
-import Color exposing (lightBlue, lightRed, black)
+import Color exposing (lightBlue, lightRed, black, darkGray)
 
 width = 400
 height = 400
@@ -10,11 +10,14 @@ hHeight = height / 2
 
 defPillCol = lightRed
 defPillRad = 15
-defPillVel = 200
+defPillVel = 400
 defPlayerCol = black
 capturePillCol = lightBlue
 
 capturePillProb = 0.2
 
-addSeconds = 0.5
+spawnInterval = 57 / defPillVel
 frameRate = 30
+
+textCol = darkGray
+lineHeight = 60

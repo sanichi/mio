@@ -666,6 +666,8 @@ Elm.Game.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Game",
    $Basics = Elm.Basics.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Pill = Elm.Pill.make(_elm),
@@ -674,85 +676,210 @@ Elm.Game.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Share = Elm.Share.make(_elm),
    $Signal = Elm.Signal.make(_elm),
+   $Text = Elm.Text.make(_elm),
    $Time = Elm.Time.make(_elm);
-   var updateGame = F2(function (event,
-   _v0) {
-      return function () {
-         return function () {
-            switch (event.ctor)
-            {case "Add":
-               return function () {
-                    var $ = A2($Random.generate,
-                    A2($Random.$float,
-                    $Share.defPillRad - $Share.hWidth,
-                    $Share.hWidth - $Share.defPillRad),
-                    _v0.seed),
-                    x = $._0,
-                    seed$ = $._1;
-                    var $ = A2($Random.generate,
-                    A2($Random.$float,0,1),
-                    seed$),
-                    p = $._0,
-                    seed$$ = $._1;
-                    var c = _U.cmp(p,
-                    $Share.capturePillProb) < 0 ? $Share.capturePillCol : $Share.defPillCol;
-                    return _U.replace([["pills"
-                                       ,A2($List._op["::"],
-                                       A2($Pill.newPill,x,c),
-                                       _v0.pills)]
-                                      ,["seed",seed$$]],
-                    _v0);
-                 }();
-               case "Tick":
-               switch (event._0.ctor)
-                 {case "_Tuple2":
-                    return function () {
-                         var unculled = A2($List.filter,
-                         function ($) {
-                            return $Basics.not($Pill.outOfBounds($));
-                         },
-                         _v0.pills);
-                         var untouched = A2($List.filter,
-                         function ($) {
-                            return $Basics.not($Pill.collision(_v0.player)($));
-                         },
-                         unculled);
-                         return _U.replace([["pills"
-                                            ,A2($List.map,
-                                            $Pill.updatePill(event._0._0),
-                                            untouched)]
-                                           ,["player"
-                                            ,A2($Player.updatePlayer,
-                                            event._0._1,
-                                            _v0.player)]],
-                         _v0);
-                      }();}
-                 break;}
-            _U.badCase($moduleName,
-            "between lines 29 and 48");
-         }();
-      }();
+   var textForm = F3(function (lineNo,
+   textScale,
+   str) {
+      return $Graphics$Collage.move({ctor: "_Tuple2"
+                                    ,_0: 0
+                                    ,_1: $Basics.toFloat(lineNo) * $Share.lineHeight})($Graphics$Collage.scale(textScale)($Graphics$Collage.toForm($Graphics$Element.centered($Text.color($Share.textCol)($Text.fromString(str))))));
    });
+   var viewGameTexts = function (g) {
+      return function () {
+         var _v0 = g.state;
+         switch (_v0.ctor)
+         {case "Init":
+            return _L.fromArray([A3(textForm,
+                                2,
+                                3.0,
+                                "Blue PiLL")
+                                ,A3(textForm,
+                                1,
+                                2.0,
+                                "Collect blue pills")
+                                ,A3(textForm,
+                                0,
+                                2.0,
+                                "Avoid red pills")
+                                ,A3(textForm,
+                                -1,
+                                1.5,
+                                "Click to start")]);
+            case "Over":
+            return _L.fromArray([A3(textForm,
+                                2,
+                                3.0,
+                                "Game Over")
+                                ,A3(textForm,
+                                1,
+                                2.0,
+                                A2($Basics._op["++"],
+                                "Score: ",
+                                $Basics.toString(g.score)))
+                                ,A3(textForm,
+                                0,
+                                2.0,
+                                A2($Basics._op["++"],
+                                "Best score: ",
+                                $Basics.toString(g.maxScore)))
+                                ,A3(textForm,
+                                -1,
+                                1.5,
+                                "Click to restart")]);
+            case "Play":
+            return _L.fromArray([A3(textForm,
+              0,
+              3.0,
+              $Basics.toString(g.score))]);}
+         _U.badCase($moduleName,
+         "between lines 101 and 114");
+      }();
+   };
+   var click = function (event) {
+      return function () {
+         switch (event.ctor)
+         {case "Click": return true;}
+         return false;
+      }();
+   };
+   var Game = F6(function (a,
+   b,
+   c,
+   d,
+   e,
+   f) {
+      return {_: {}
+             ,maxScore: a
+             ,pills: c
+             ,player: b
+             ,score: e
+             ,seed: d
+             ,state: f};
+   });
+   var Click = {ctor: "Click"};
    var Add = {ctor: "Add"};
    var Tick = function (a) {
       return {ctor: "Tick",_0: a};
    };
+   var Over = {ctor: "Over"};
+   var Play = {ctor: "Play"};
+   var Init = {ctor: "Init"};
    var defaultGame = {_: {}
+                     ,maxScore: 0
                      ,pills: _L.fromArray([])
                      ,player: $Player.defaultPlayer
-                     ,seed: $Random.initialSeed(12345)};
-   var Game = F3(function (a,b,c) {
-      return {_: {}
-             ,pills: b
-             ,player: a
-             ,seed: c};
+                     ,score: 0
+                     ,seed: $Random.initialSeed(12345)
+                     ,state: Init};
+   var updatePlay = F2(function (event,
+   g) {
+      return function () {
+         switch (event.ctor)
+         {case "Add":
+            return function () {
+                 var $ = A2($Random.generate,
+                 A2($Random.$float,
+                 $Share.defPillRad - $Share.hWidth,
+                 $Share.hWidth - $Share.defPillRad),
+                 g.seed),
+                 x = $._0,
+                 seed$ = $._1;
+                 var $ = A2($Random.generate,
+                 A2($Random.$float,0,1),
+                 seed$),
+                 p = $._0,
+                 seed$$ = $._1;
+                 var c = _U.cmp(p,
+                 $Share.capturePillProb) < 0 ? $Share.capturePillCol : $Share.defPillCol;
+                 return _U.replace([["pills"
+                                    ,A2($List._op["::"],
+                                    A2($Pill.newPill,x,c),
+                                    g.pills)]
+                                   ,["seed",seed$$]],
+                 g);
+              }();
+            case "Click": return g;
+            case "Tick":
+            switch (event._0.ctor)
+              {case "_Tuple2":
+                 return function () {
+                      var unculled = A2($List.filter,
+                      function ($) {
+                         return $Basics.not($Pill.outOfBounds($));
+                      },
+                      g.pills);
+                      var untouched = A2($List.filter,
+                      function ($) {
+                         return $Basics.not($Pill.collision(g.player)($));
+                      },
+                      unculled);
+                      var hit = function (c) {
+                         return A2($List.filter,
+                         function (p) {
+                            return _U.eq(p.col,
+                            c) && A2($Pill.collision,
+                            g.player,
+                            p);
+                         },
+                         unculled);
+                      };
+                      var captured = hit($Share.capturePillCol);
+                      var collided = hit($Share.defPillCol);
+                      return $List.isEmpty(collided) ? _U.replace([["pills"
+                                                                   ,A2($List.map,
+                                                                   $Pill.updatePill(event._0._0),
+                                                                   untouched)]
+                                                                  ,["player"
+                                                                   ,A2($Player.updatePlayer,
+                                                                   event._0._1,
+                                                                   g.player)]
+                                                                  ,["score"
+                                                                   ,g.score + $List.length(captured)]],
+                      g) : _U.replace([["maxScore"
+                                       ,A2($Basics.max,
+                                       g.maxScore,
+                                       g.score)]
+                                      ,["player"
+                                       ,$Player.defaultPlayer]
+                                      ,["score",g.score]
+                                      ,["seed",g.seed]
+                                      ,["state",Over]],
+                      defaultGame);
+                   }();}
+              break;}
+         _U.badCase($moduleName,
+         "between lines 39 and 74");
+      }();
+   });
+   var updateGame = F2(function (event,
+   g) {
+      return function () {
+         var _v6 = g.state;
+         switch (_v6.ctor)
+         {case "Play":
+            return A2(updatePlay,event,g);}
+         return click(event) ? _U.replace([["seed"
+                                           ,g.seed]
+                                          ,["maxScore",g.maxScore]
+                                          ,["state",Play]],
+         defaultGame) : g;
+      }();
    });
    _elm.Game.values = {_op: _op
-                      ,Game: Game
-                      ,defaultGame: defaultGame
+                      ,Init: Init
+                      ,Play: Play
+                      ,Over: Over
                       ,Tick: Tick
                       ,Add: Add
-                      ,updateGame: updateGame};
+                      ,Click: Click
+                      ,Game: Game
+                      ,defaultGame: defaultGame
+                      ,updatePlay: updatePlay
+                      ,click: click
+                      ,updateGame: updateGame
+                      ,viewGameTexts: viewGameTexts
+                      ,textForm: textForm};
    return _elm.Game.values;
 };
 Elm.Graphics = Elm.Graphics || {};
@@ -2016,6 +2143,7 @@ Elm.Main.make = function (_elm) {
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Mouse = Elm.Mouse.make(_elm),
    $Pill = Elm.Pill.make(_elm),
    $Player = Elm.Player.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -2040,29 +2168,35 @@ Elm.Main.make = function (_elm) {
                                                input)
                                                ,A2($Signal.map,
                                                $Basics.always($Game.Add),
-                                               $Time.every($Time.second * $Share.addSeconds))]));
+                                               $Time.every($Time.second * $Share.spawnInterval))
+                                               ,A2($Signal.map,
+                                               $Basics.always($Game.Click),
+                                               $Mouse.clicks)]));
    var render = F2(function (_v0,
-   game) {
+   g) {
       return function () {
          switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
+                 var texts = $Game.viewGameTexts(g);
                  var pills = A2($List.map,
                  $Pill.viewPill,
-                 game.pills);
-                 var player = $Pill.viewPill(game.player);
+                 g.pills);
+                 var player = $Pill.viewPill(g.player);
                  return A3($Graphics$Element.container,
                  _v0._0,
                  _v0._1,
                  $Graphics$Element.middle)($Graphics$Element.color($Color.lightGray)(A3($Graphics$Collage.collage,
                  $Share.width,
                  $Share.height,
+                 A2($Basics._op["++"],
                  A2($List._op["::"],
                  player,
-                 pills))));
+                 pills),
+                 texts))));
               }();}
          _U.badCase($moduleName,
-         "between lines 15 and 21");
+         "between lines 16 and 23");
       }();
    });
    var main = A2($Signal._op["~"],
@@ -6805,7 +6939,7 @@ Elm.Player.make = function (_elm) {
                    ,_0: _v0._0 / 2 | 0
                    ,_1: _v0._1 / 2 | 0};}
          _U.badCase($moduleName,
-         "on line 35, column 4 to 18");
+         "on line 33, column 4 to 18");
       }();
    };
    var relative = F2(function (_v4,
@@ -6820,10 +6954,10 @@ Elm.Player.make = function (_elm) {
                            ,_0: _v5._0 - _v4._0
                            ,_1: _v4._1 - _v5._1};}
                  _U.badCase($moduleName,
-                 "on line 30, column 4 to 18");
+                 "on line 28, column 4 to 18");
               }();}
          _U.badCase($moduleName,
-         "on line 30, column 4 to 18");
+         "on line 28, column 4 to 18");
       }();
    });
    var mouseSignal = function (delta) {
@@ -6848,7 +6982,7 @@ Elm.Player.make = function (_elm) {
                                 ,_1: $Basics.toFloat(_v12._1)}]],
               p);}
          _U.badCase($moduleName,
-         "on line 25, column 3 to 40");
+         "on line 23, column 3 to 40");
       }();
    });
    var defaultPlayer = _U.replace([["col"
@@ -6856,7 +6990,7 @@ Elm.Player.make = function (_elm) {
                                   ,["pos"
                                    ,{ctor: "_Tuple2"
                                     ,_0: 0
-                                    ,_1: 0}]],
+                                    ,_1: $Share.height + $Share.defPillRad}]],
    $Pill.defaultPill);
    _elm.Player.values = {_op: _op
                         ,defaultPlayer: defaultPlayer
@@ -7412,12 +7546,14 @@ Elm.Share.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
+   var lineHeight = 60;
+   var textCol = $Color.darkGray;
    var frameRate = 30;
-   var addSeconds = 0.5;
    var capturePillProb = 0.2;
    var capturePillCol = $Color.lightBlue;
    var defPlayerCol = $Color.black;
-   var defPillVel = 200;
+   var defPillVel = 400;
+   var spawnInterval = 57 / defPillVel;
    var defPillRad = 15;
    var defPillCol = $Color.lightRed;
    var height = 400;
@@ -7435,8 +7571,10 @@ Elm.Share.make = function (_elm) {
                        ,defPlayerCol: defPlayerCol
                        ,capturePillCol: capturePillCol
                        ,capturePillProb: capturePillProb
-                       ,addSeconds: addSeconds
-                       ,frameRate: frameRate};
+                       ,spawnInterval: spawnInterval
+                       ,frameRate: frameRate
+                       ,textCol: textCol
+                       ,lineHeight: lineHeight};
    return _elm.Share.values;
 };
 Elm.Signal = Elm.Signal || {};
