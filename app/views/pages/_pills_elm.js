@@ -7574,9 +7574,9 @@ Elm.Share.make = function (_elm) {
    var spawnInterval = 57 / defPillVel;
    var defPillRad = 15;
    var defPillCol = $Color.lightRed;
-   var height = 400;
+   var height = 500;
    var hHeight = height / 2;
-   var width = 400;
+   var width = 500;
    var hWidth = width / 2;
    _elm.Share.values = {_op: _op
                        ,width: width

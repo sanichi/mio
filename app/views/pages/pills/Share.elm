@@ -2,8 +2,8 @@ module Share where
 
 import Color exposing (lightBlue, lightRed, black, darkGray)
 
-width = 400
-height = 400
+width = 500
+height = 500
 
 hWidth = width / 2
 hHeight = height / 2
