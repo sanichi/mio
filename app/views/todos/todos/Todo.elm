@@ -9,21 +9,9 @@ import Html.Events exposing (onClick)
 type alias Todo =
   { description: String
   , priority: Int
-  , priority_desc: String
+  , priority_: String
   , done: Bool
   }
-
-
-type alias Model = List Todo
-
--- UPDATE
-
-type Action = Increment | Decrement
-
-
-update : Action -> Model -> Model
-update action model =
-  model
 
 -- VIEW
 
@@ -43,19 +31,11 @@ todoCompare t1 t2 =
       )
 
 
-tableRow : Todo -> Html
-tableRow todo =
+view : Todo -> Html
+view todo =
   tr [ ]
     [ td [ ]
         [ span [ class (cellClass todo) ] [ text todo.description ] ]
     , td [ class "col-md-2" ]
-        [ span [ class (cellClass todo) ] [ text todo.priority_desc ] ]
-    ]
-
-
-view : Signal.Address Action -> Model -> Html
-view address model =
-  table [ class "table table-bordered table-striped" ]
-    [ tbody [ ]
-        (List.map tableRow (List.sortWith todoCompare model))
+        [ span [ class (cellClass todo) ] [ text todo.priority_ ] ]
     ]

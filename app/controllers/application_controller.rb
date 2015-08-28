@@ -6,13 +6,18 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     logger.warn "Access denied for #{exception.action} #{exception.subject} from #{request.ip}"
-    redirect_to sign_in_path
+    case request.format.symbol
+    when :json
+      render json: {}
+    else
+      redirect_to sign_in_path
+    end
   end
 
   def authenticated?
     session[:user_id]
   end
-  
+
   def prev_next(key, objects)
     return unless objects.any?
     session[key] = "_#{objects.map(&:id).join('_')}_"

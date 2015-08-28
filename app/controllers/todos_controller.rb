@@ -4,6 +4,10 @@ class TodosController < ApplicationController
 
   def index
     @todos = Todo.ordered
+    respond_to do |format|
+      format.html
+      format.json { render json: @todos.map(&:to_json) }
+    end
   end
 
   def new
