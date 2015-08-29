@@ -3,15 +3,27 @@ module Todo where
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Json.Decode exposing ((:=))
 
 -- MODEL
 
 type alias Todo =
   { description: String
+  , done: Bool
+  , id: Int
   , priority: Int
   , priority_: String
-  , done: Bool
   }
+
+
+decodeTodo : Json.Decode.Decoder Todo
+decodeTodo =
+  Json.Decode.object5 Todo
+    ("description" := Json.Decode.string)
+    ("done" := Json.Decode.bool)
+    ("id" := Json.Decode.int)
+    ("priority" := Json.Decode.int)
+    ("priority_" := Json.Decode.string)
 
 -- VIEW
 
