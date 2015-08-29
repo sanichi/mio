@@ -4464,7 +4464,7 @@ Elm.Main.make = function (_elm) {
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm),
    $Todos = Elm.Todos.make(_elm);
-   var getCurrentTasks = A2($Http.get,
+   var getCurrTodos = A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
    "/todos.json");
    var view = function (model) {
@@ -4488,7 +4488,7 @@ Elm.Main.make = function (_elm) {
    var NoOp = {ctor: "NoOp"};
    var actions = $Signal.mailbox(NoOp);
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
-   getCurrentTasks,
+   getCurrTodos,
    function ($) {
       return $Signal.send(actions.address)(SetTodos($));
    }));
@@ -4509,7 +4509,7 @@ Elm.Main.make = function (_elm) {
                       ,actions: actions
                       ,model: model
                       ,main: main
-                      ,getCurrentTasks: getCurrentTasks};
+                      ,getCurrTodos: getCurrTodos};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
@@ -13395,17 +13395,6 @@ Elm.Todo.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var todoCompare = F2(function (t1,
-   t2) {
-      return A2($Basics.xor,
-      t1.done,
-      t2.done) ? t1.done ? $Basics.GT : $Basics.LT : _U.eq(t1.priority,
-      t2.priority) ? A2($Basics.compare,
-      t1.description,
-      t2.description) : A2($Basics.compare,
-      t1.priority,
-      t2.priority);
-   });
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
    };
@@ -13421,8 +13410,36 @@ Elm.Todo.make = function (_elm) {
                    _L.fromArray([$Html$Attributes.$class("col-md-2")]),
                    _L.fromArray([A2($Html.span,
                    _L.fromArray([$Html$Attributes.$class(cellClass(todo))]),
-                   _L.fromArray([$Html.text(todo.priority_)]))]))]));
+                   _L.fromArray([$Html.text(todo.priority_)]))]))
+                   ,A2($Html.td,
+                   _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
+                   _L.fromArray([A2($Html.span,
+                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                                _L.fromArray([$Html.text("✍")]))
+                                ,$Html.text("\n")
+                                ,A2($Html.span,
+                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                                _L.fromArray([$Html.text("⬆︎")]))
+                                ,$Html.text("\n")
+                                ,A2($Html.span,
+                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                                _L.fromArray([$Html.text("⬇︎")]))
+                                ,$Html.text("\n")
+                                ,A2($Html.span,
+                                _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")]),
+                                _L.fromArray([$Html.text("✔︎")]))]))]));
    };
+   var todoCompare = F2(function (t1,
+   t2) {
+      return A2($Basics.xor,
+      t1.done,
+      t2.done) ? t1.done ? $Basics.GT : $Basics.LT : _U.eq(t1.priority,
+      t2.priority) ? A2($Basics.compare,
+      t1.description,
+      t2.description) : A2($Basics.compare,
+      t1.priority,
+      t2.priority);
+   });
    var Todo = F5(function (a,
    b,
    c,
@@ -13455,9 +13472,9 @@ Elm.Todo.make = function (_elm) {
    _elm.Todo.values = {_op: _op
                       ,Todo: Todo
                       ,decodeTodo: decodeTodo
-                      ,cellClass: cellClass
                       ,todoCompare: todoCompare
-                      ,view: view};
+                      ,view: view
+                      ,cellClass: cellClass};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};

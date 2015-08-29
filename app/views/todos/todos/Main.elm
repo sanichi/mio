@@ -51,11 +51,11 @@ main =
 
 -- TASKS
 
-getCurrentTasks : Task Http.Error Todos
-getCurrentTasks =
+getCurrTodos : Task Http.Error Todos
+getCurrTodos =
   Http.get (Json.Decode.list decodeTodo) "/todos.json"
 
 
 port runner : Task Http.Error ()
 port runner =
-  getCurrentTasks `andThen` (SetTodos >> Signal.send actions.address)
+  getCurrTodos `andThen` (Signal.send actions.address << SetTodos)

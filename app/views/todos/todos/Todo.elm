@@ -27,11 +27,6 @@ decodeTodo =
 
 -- VIEW
 
-cellClass : Todo -> String
-cellClass todo =
-  if todo.done then "inactive" else "active"
-
-
 todoCompare : Todo -> Todo -> Order
 todoCompare t1 t2 =
   if xor t1.done t2.done
@@ -50,4 +45,18 @@ view todo =
         [ span [ class (cellClass todo) ] [ text todo.description ] ]
     , td [ class "col-md-2" ]
         [ span [ class (cellClass todo) ] [ text todo.priority_ ] ]
+    , td [ class "col-md-3 text-center" ]
+        [ span [class "btn btn-info btn-xs"] [ text "✍" ]
+        , text "\n"
+        , span [class "btn btn-info btn-xs"] [ text "⬆︎" ]
+        , text "\n"
+        , span [class "btn btn-info btn-xs"] [ text "⬇︎" ]
+        , text "\n"
+        , span [class "btn btn-success btn-xs"] [ text "✔︎" ]
+        ]
     ]
+
+
+cellClass : Todo -> String
+cellClass todo =
+  if todo.done then "inactive" else "active"
