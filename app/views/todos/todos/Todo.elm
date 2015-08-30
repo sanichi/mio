@@ -3,7 +3,9 @@ module Todo where
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Json.Decode exposing ((:=))
+import Http exposing (defaultSettings, empty, fromJson)
+import Json.Decode as Decode exposing ((:=))
+import Task exposing (Task, andThen)
 
 -- MODEL
 
@@ -13,17 +15,34 @@ type alias Todo =
   , id: Int
   , priority: Int
   , priority_: String
+  , priority_hi: Int
+  , priority_low: Int
   }
 
 
-decodeTodo : Json.Decode.Decoder Todo
+decodeTodo : Decode.Decoder Todo
 decodeTodo =
-  Json.Decode.object5 Todo
-    ("description" := Json.Decode.string)
-    ("done" := Json.Decode.bool)
-    ("id" := Json.Decode.int)
-    ("priority" := Json.Decode.int)
-    ("priority_" := Json.Decode.string)
+  Decode.object7 Todo
+    ("description" := Decode.string)
+    ("done" := Decode.bool)
+    ("id" := Decode.int)
+    ("priority" := Decode.int)
+    ("priority_" := Decode.string)
+    ("priority_hi" := Decode.int)
+    ("priority_low" := Decode.int)
+
+-- UPDATE
+
+update : (Int, String) -> (Maybe (Task Http.Error Todo))
+update action =
+  case action of
+    (id, "up") -> Just (updateTodo id)
+
+    (id, "down") -> Just (updateTodo id)
+
+    (id, "done") -> Just (updateTodo id)
+
+    _ -> Nothing
 
 -- VIEW
 
@@ -39,24 +58,50 @@ todoCompare t1 t2 =
 
 
 view : Todo -> Html
-view todo =
+view t =
   tr [ ]
     [ td [ ]
-        [ span [ class (cellClass todo) ] [ text todo.description ] ]
+        [ span [ class (cellClass t) ] [ text t.description ] ]
     , td [ class "col-md-2" ]
-        [ span [ class (cellClass todo) ] [ text todo.priority_ ] ]
+        [ span [ class (cellClass t) ] [ text t.priority_ ] ]
     , td [ class "col-md-3 text-center" ]
         [ span [class "btn btn-info btn-xs"] [ text "✍" ]
         , text "\n"
-        , span [class "btn btn-info btn-xs"] [ text "⬆︎" ]
+        , span
+          [ class "btn btn-info btn-xs"
+          , onClick updates.address (t.id, "todos[priority]=" ++ (toString (t.priority + 1)))
+          ]
+          [ text "⬆︎" ]
         , text "\n"
-        , span [class "btn btn-info btn-xs"] [ text "⬇︎" ]
+        , span
+          [class "btn btn-info btn-xs", onClick updates.address (t.id, "todos[priority]=" ++ (toString (t.priority - 1)))]
+          [ text "⬇︎" ]
         , text "\n"
-        , span [class "btn btn-success btn-xs"] [ text "✔︎" ]
+        , span
+          [class "btn btn-success btn-xs", onClick updates.address (t.id, "todos[done]=" ++ (if t.done then "0" else "1"))]
+          [ text "✔︎" ]
         ]
     ]
-
 
 cellClass : Todo -> String
 cellClass todo =
   if todo.done then "inactive" else "active"
+
+-- SIGNALS
+
+updates : Signal.Mailbox (Int, String)
+updates = Signal.mailbox (0, "")
+
+-- TASKS
+
+updateTodo : Int -> Task Http.Error Todo
+updateTodo id =
+  let
+    request =
+      { verb = "PATCH"
+      , headers = []
+      , url = "/todos/" ++ (toString id) ++ "/update.json"
+      , body = empty
+      }
+  in
+    fromJson decodeTodo (Http.send defaultSettings request)

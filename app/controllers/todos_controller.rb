@@ -47,6 +47,6 @@ class TodosController < ApplicationController
   end
 
   def strong_params
-    params.require(:todo).permit(:description, :priority)
+    params.require(:todo).permit(:description, :priority, :done)
   end
 end

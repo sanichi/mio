@@ -13390,27 +13390,33 @@ Elm.Todo.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Http = Elm.Http.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var updates = $Signal.mailbox({ctor: "_Tuple2"
+                                 ,_0: 0
+                                 ,_1: ""});
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
    };
-   var view = function (todo) {
+   var view = function (t) {
       return A2($Html.tr,
       _L.fromArray([]),
       _L.fromArray([A2($Html.td,
                    _L.fromArray([]),
                    _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class(cellClass(todo))]),
-                   _L.fromArray([$Html.text(todo.description)]))]))
+                   _L.fromArray([$Html$Attributes.$class(cellClass(t))]),
+                   _L.fromArray([$Html.text(t.description)]))]))
                    ,A2($Html.td,
                    _L.fromArray([$Html$Attributes.$class("col-md-2")]),
                    _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class(cellClass(todo))]),
-                   _L.fromArray([$Html.text(todo.priority_)]))]))
+                   _L.fromArray([$Html$Attributes.$class(cellClass(t))]),
+                   _L.fromArray([$Html.text(t.priority_)]))]))
                    ,A2($Html.td,
                    _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
                    _L.fromArray([A2($Html.span,
@@ -13418,15 +13424,36 @@ Elm.Todo.make = function (_elm) {
                                 _L.fromArray([$Html.text("✍")]))
                                 ,$Html.text("\n")
                                 ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")
+                                             ,A2($Html$Events.onClick,
+                                             updates.address,
+                                             {ctor: "_Tuple2"
+                                             ,_0: t.id
+                                             ,_1: A2($Basics._op["++"],
+                                             "todos[priority]=",
+                                             $Basics.toString(t.priority + 1))})]),
                                 _L.fromArray([$Html.text("⬆︎")]))
                                 ,$Html.text("\n")
                                 ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")
+                                             ,A2($Html$Events.onClick,
+                                             updates.address,
+                                             {ctor: "_Tuple2"
+                                             ,_0: t.id
+                                             ,_1: A2($Basics._op["++"],
+                                             "todos[priority]=",
+                                             $Basics.toString(t.priority - 1))})]),
                                 _L.fromArray([$Html.text("⬇︎")]))
                                 ,$Html.text("\n")
                                 ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")]),
+                                _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")
+                                             ,A2($Html$Events.onClick,
+                                             updates.address,
+                                             {ctor: "_Tuple2"
+                                             ,_0: t.id
+                                             ,_1: A2($Basics._op["++"],
+                                             "todos[done]=",
+                                             t.done ? "0" : "1")})]),
                                 _L.fromArray([$Html.text("✔︎")]))]))]));
    };
    var todoCompare = F2(function (t1,
@@ -13440,19 +13467,23 @@ Elm.Todo.make = function (_elm) {
       t1.priority,
       t2.priority);
    });
-   var Todo = F5(function (a,
+   var Todo = F7(function (a,
    b,
    c,
    d,
-   e) {
+   e,
+   f,
+   g) {
       return {_: {}
              ,description: a
              ,done: b
              ,id: c
              ,priority: d
-             ,priority_: e};
+             ,priority_: e
+             ,priority_hi: f
+             ,priority_low: g};
    });
-   var decodeTodo = A6($Json$Decode.object5,
+   var decodeTodo = A8($Json$Decode.object7,
    Todo,
    A2($Json$Decode._op[":="],
    "description",
@@ -13468,13 +13499,55 @@ Elm.Todo.make = function (_elm) {
    $Json$Decode.$int),
    A2($Json$Decode._op[":="],
    "priority_",
-   $Json$Decode.string));
+   $Json$Decode.string),
+   A2($Json$Decode._op[":="],
+   "priority_hi",
+   $Json$Decode.$int),
+   A2($Json$Decode._op[":="],
+   "priority_low",
+   $Json$Decode.$int));
+   var updateTodo = function (id) {
+      return function () {
+         var request = {_: {}
+                       ,body: $Http.empty
+                       ,headers: _L.fromArray([])
+                       ,url: A2($Basics._op["++"],
+                       "/todos/",
+                       A2($Basics._op["++"],
+                       $Basics.toString(id),
+                       "/update.json"))
+                       ,verb: "PATCH"};
+         return A2($Http.fromJson,
+         decodeTodo,
+         A2($Http.send,
+         $Http.defaultSettings,
+         request));
+      }();
+   };
+   var update = function (action) {
+      return function () {
+         switch (action.ctor)
+         {case "_Tuple2":
+            switch (action._1)
+              {case "done":
+                 return $Maybe.Just(updateTodo(action._0));
+                 case "down":
+                 return $Maybe.Just(updateTodo(action._0));
+                 case "up":
+                 return $Maybe.Just(updateTodo(action._0));}
+              break;}
+         return $Maybe.Nothing;
+      }();
+   };
    _elm.Todo.values = {_op: _op
                       ,Todo: Todo
                       ,decodeTodo: decodeTodo
+                      ,update: update
                       ,todoCompare: todoCompare
                       ,view: view
-                      ,cellClass: cellClass};
+                      ,cellClass: cellClass
+                      ,updates: updates
+                      ,updateTodo: updateTodo};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};

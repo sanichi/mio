@@ -1,6 +1,6 @@
 import Html exposing (Html)
-import Http exposing (Error)
-import Json.Decode
+import Http
+import Json.Decode as Decode
 import Maybe exposing (Maybe)
 import Signal exposing (Address)
 import Task exposing (Task, andThen)
@@ -53,7 +53,7 @@ main =
 
 getCurrTodos : Task Http.Error Todos
 getCurrTodos =
-  Http.get (Json.Decode.list decodeTodo) "/todos.json"
+  Http.get (Decode.list decodeTodo) "/todos.json"
 
 
 port runner : Task Http.Error ()
