@@ -1,24 +1,25 @@
-import Html exposing (Html)
+import Html exposing (Html, div, p, text)
 import Http
 import Json.Decode as Decode
 import Maybe exposing (Maybe)
-import Signal exposing (Address)
+import Signal exposing (Address, merge, map)
 import Task exposing (Task, andThen)
 import Todo exposing (Todo, decodeTodo)
 import Todos exposing (Todos)
 
 -- MODEL
 
-type alias Model = Todos
+type alias Model = { todos: Todos, authToken: String }
 
 init : Model
-init = [ ]
+init = { todos = [ ], authToken = "noTokenYet" }
 
 -- UPDATE
 
 type Action
   = NoOp
   | SetTodos Todos
+  | SetAuthToken String
 
 
 update : Action -> Model -> Model
@@ -26,14 +27,20 @@ update action model =
   case action of
     NoOp -> model
 
-    SetTodos todos ->
-      todos
+    SetTodos list ->
+      { model | todos <- list }
+
+    SetAuthToken value ->
+      { model | authToken <- value }
 
 -- VIEW
 
 view : Model -> Html
 view model =
-  Todos.view model
+  div []
+    [ Todos.view model.todos
+    , p [] [ text model.authToken]
+    ]
 
 -- SIGNALS
 
@@ -42,7 +49,7 @@ actions = Signal.mailbox NoOp
 
 
 model : Signal Model
-model = Signal.foldp update init actions.signal
+model = Signal.foldp update init (merge actions.signal (map SetAuthToken getAuthToken))
 
 
 main : Signal Html
@@ -59,3 +66,6 @@ getCurrTodos =
 port runner : Task Http.Error ()
 port runner =
   getCurrTodos `andThen` (Signal.send actions.address << SetTodos)
+
+
+port getAuthToken: Signal String

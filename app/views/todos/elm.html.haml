@@ -1,9 +1,11 @@
 = render "utils/title", key: "todo.todos"
 
 - content_for :javascript do
-  = render "todos_elm.min.js"
-  = render "todos.js"
+  = render "todos/todos_elm.min.js"
 
 .row
   .col-md-offset-2.col-md-8
     #elm
+
+= javascript_tag do
+  = render "todos.js"
