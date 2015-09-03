@@ -6,7 +6,7 @@ import Html.Attributes exposing (class)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
-import Rails exposing (priorityHigh, priorityLow, priorityString)
+import Misc exposing (priorityHigh, priorityLow, priorityString)
 import Task exposing (Task)
 
 -- MODEL

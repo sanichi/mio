@@ -1,4 +1,4 @@
-module Rails where
+module Misc where
 
 import Dict exposing (Dict)
 

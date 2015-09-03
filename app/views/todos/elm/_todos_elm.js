@@ -4634,6 +4634,46 @@ Elm.Maybe.make = function (_elm) {
                        ,Nothing: Nothing};
    return _elm.Maybe.values;
 };
+Elm.Misc = Elm.Misc || {};
+Elm.Misc.make = function (_elm) {
+   "use strict";
+   _elm.Misc = _elm.Misc || {};
+   if (_elm.Misc.values)
+   return _elm.Misc.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Misc",
+   $Basics = Elm.Basics.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var priorityString = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                     ,_0: 0
+                                                     ,_1: "Urgent"}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: 1
+                                                     ,_1: "Important"}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: 2
+                                                     ,_1: "Medium"}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: 3
+                                                     ,_1: "Low"}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: 4
+                                                     ,_1: "Lowest"}]));
+   var priorityLow = 4;
+   var priorityHigh = 0;
+   _elm.Misc.values = {_op: _op
+                      ,priorityHigh: priorityHigh
+                      ,priorityLow: priorityLow
+                      ,priorityString: priorityString};
+   return _elm.Misc.values;
+};
 Elm.Native.Array = {};
 Elm.Native.Array.make = function(localRuntime) {
 
@@ -12546,46 +12586,6 @@ Elm.Native.VirtualDom.make = function(elm)
 
 },{}]},{},[23]);
 
-Elm.Rails = Elm.Rails || {};
-Elm.Rails.make = function (_elm) {
-   "use strict";
-   _elm.Rails = _elm.Rails || {};
-   if (_elm.Rails.values)
-   return _elm.Rails.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Rails",
-   $Basics = Elm.Basics.make(_elm),
-   $Dict = Elm.Dict.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var priorityString = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                     ,_0: 0
-                                                     ,_1: "Urgent"}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: 1
-                                                     ,_1: "Important"}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: 2
-                                                     ,_1: "Medium"}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: 3
-                                                     ,_1: "Low"}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: 4
-                                                     ,_1: "Lowest"}]));
-   var priorityLow = 4;
-   var priorityHigh = 0;
-   _elm.Rails.values = {_op: _op
-                       ,priorityHigh: priorityHigh
-                       ,priorityLow: priorityLow
-                       ,priorityString: priorityString};
-   return _elm.Rails.values;
-};
 Elm.Result = Elm.Result || {};
 Elm.Result.make = function (_elm) {
    "use strict";
@@ -13485,7 +13485,7 @@ Elm.Todo.make = function (_elm) {
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $Rails = Elm.Rails.make(_elm),
+   $Misc = Elm.Misc.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Task = Elm.Task.make(_elm);
@@ -13495,8 +13495,8 @@ Elm.Todo.make = function (_elm) {
    var canIncreaseDecrease = F2(function (t,
    up) {
       return up ? _U.cmp(t.priority,
-      $Rails.priorityHigh) > 0 : _U.cmp(t.priority,
-      $Rails.priorityLow) < 0;
+      $Misc.priorityHigh) > 0 : _U.cmp(t.priority,
+      $Misc.priorityLow) < 0;
    });
    var increaseDecreaseSpanClass = F2(function (t,
    up) {
@@ -13522,7 +13522,7 @@ Elm.Todo.make = function (_elm) {
       "Unknown",
       A2($Dict.get,
       t.priority,
-      $Rails.priorityString));
+      $Misc.priorityString));
    };
    var todoCompare = F2(function (t1,
    t2) {
