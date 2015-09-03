@@ -14,7 +14,7 @@ namespace :elm do
 
   desc "make and minify the Elm JS file for Todos"
   task :todos do
-    compile_and_minify "app/views/todos/todos", "todos_elm"
+    compile_and_minify "app/views/todos/elm", "todos_elm"
   end
 
   desc "make and minify the Elm JS file for Blue PiLL"
