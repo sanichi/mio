@@ -6,6 +6,8 @@ import Todo exposing (Todo, todoCompare)
 
 type alias Todos = List Todo
 
+-- VIEW
+
 view : Todos -> Html
 view todos =
   table

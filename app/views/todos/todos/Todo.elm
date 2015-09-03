@@ -1,12 +1,13 @@
 module Todo where
 
+import Dict exposing (Dict)
 import Html exposing (..)
 import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
-import Http exposing (defaultSettings, empty, fromJson)
-import List exposing (filter, intersperse, map)
+import Html.Events as Events
+import Http
 import Json.Decode as Decode exposing ((:=))
-import Task exposing (Task, andThen)
+import Rails exposing (priorityHigh, priorityLow, priorityString)
+import Task exposing (Task)
 
 -- MODEL
 
@@ -15,22 +16,25 @@ type alias Todo =
   , done: Bool
   , id: Int
   , priority: Int
-  , priority_: String
-  , priority_hi: Int
-  , priority_low: Int
+  }
+
+
+noTodo : Todo
+noTodo =
+  { description = ""
+  , done = True
+  , id = 0
+  , priority = 1
   }
 
 
 decodeTodo : Decode.Decoder Todo
 decodeTodo =
-  Decode.object7 Todo
+  Decode.object4 Todo
     ("description" := Decode.string)
     ("done" := Decode.bool)
     ("id" := Decode.int)
     ("priority" := Decode.int)
-    ("priority_" := Decode.string)
-    ("priority_hi" := Decode.int)
-    ("priority_low" := Decode.int)
 
 -- UPDATE
 
@@ -61,9 +65,9 @@ todoCompare t1 t2 =
 view : Todo -> Html
 view t =
   let
-    spanAtr     = class (cellClass t) :: [ ]
-    description = span spanAtr [ text t.description ] :: [ ]
-    priority    = span spanAtr [ text t.priority_ ] :: [ ]
+    spanAtr     = [ class (cellClass t) ]
+    description = [ span spanAtr [ text t.description ] ]
+    priority    = [ span spanAtr [ text (priorityDescription t) ] ]
     buttons     = controlButtons t
   in
     tr [ ]
@@ -73,13 +77,18 @@ view t =
       ]
 
 
+priorityDescription : Todo -> String
+priorityDescription t =
+  Maybe.withDefault "Unknown" (Dict.get t.priority priorityString)
+
+
 controlButtons : Todo -> List Html
 controlButtons t =
   let
     space = text "\n"
-    buttons = map (\f -> f t) [editButton, increaseButton, decreaseButton, doneButton]
+    buttons = List.map (\f -> f t) [editButton, increaseButton, decreaseButton, doneButton]
   in
-    intersperse space buttons
+    List.intersperse space buttons
 
 
 editButton : Todo -> Html
@@ -114,8 +123,8 @@ increaseDecreaseButton t up =
 canIncreaseDecrease : Todo -> Bool -> Bool
 canIncreaseDecrease t up =
   if up
-    then t.priority > t.priority_hi
-    else t.priority < t.priority_low
+    then t.priority > priorityHigh
+    else t.priority < priorityLow
 
 
 increaseDecreaseSpanClass : Todo -> Bool -> Attribute
@@ -131,18 +140,21 @@ increaseDecreaseClickHandler : Todo -> Bool -> List Attribute
 increaseDecreaseClickHandler t up =
   let
     canChange = canIncreaseDecrease t up
-    newPriority = toString (t.priority + (if up then 1 else -1))
+    newTodo = { t | priority <- t.priority + (if up then -1 else 1) }
   in
     if canChange
-    then [ onClick updates.address (t.id, "todos[priority]=" ++ newPriority) ]
+    then [ Events.onClick updates.address newTodo ]
     else [ ]
 
 
 doneButton : Todo -> Html
 doneButton t =
-  span
-    [class "btn btn-success btn-xs", onClick updates.address (t.id, "todos[done]=" ++ (if t.done then "0" else "1"))]
-    [ text "✔︎" ]
+  let
+    newTodo = { t | done <- if t.done then False else True }
+  in
+    span
+      [class "btn btn-success btn-xs", Events.onClick updates.address newTodo]
+      [ text "✔︎" ]
 
 
 cellClass : Todo -> String
@@ -151,8 +163,8 @@ cellClass todo =
 
 -- SIGNALS
 
-updates : Signal.Mailbox (Int, String)
-updates = Signal.mailbox (0, "")
+updates : Signal.Mailbox Todo
+updates = Signal.mailbox noTodo
 
 -- TASKS
 
@@ -163,7 +175,7 @@ updateTodo id =
       { verb = "PATCH"
       , headers = []
       , url = "/todos/" ++ (toString id) ++ "/update.json"
-      , body = empty
+      , body = Http.empty
       }
   in
-    fromJson decodeTodo (Http.send defaultSettings request)
+    Http.fromJson decodeTodo (Http.send Http.defaultSettings request)

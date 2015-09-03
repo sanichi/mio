@@ -8,18 +8,6 @@ class Todo < ActiveRecord::Base
   scope :ordered, -> { order(:done, :priority, :description) }
 
   def to_json
-    as_json(except: [:created_at, :updated_at], methods: [:priority_, :priority_hi, :priority_low])
-  end
-
-  def priority_
-    I18n.t("todo.priorities")[priority]
-  end
-
-  def priority_hi
-    PRIORITIES[0]
-  end
-
-  def priority_low
-    PRIORITIES[-1]
+    as_json(except: [:created_at, :updated_at])
   end
 end
