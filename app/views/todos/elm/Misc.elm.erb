@@ -1,0 +1,13 @@
+module Misc where
+
+import Dict exposing (Dict)
+
+priorityHigh : Int
+priorityHigh = <%= @priority_high %>
+
+priorityLow : Int
+priorityLow = <%= @priority_low %>
+
+priorityString : Dict Int String
+priorityString =
+  Dict.fromList [ <%= @priority_desc.each_pair.map{ |k, v| '(%d, "%s")' % [k, v] }.join(", ") %> ]
