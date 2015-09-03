@@ -13438,57 +13438,137 @@ Elm.Todo.make = function (_elm) {
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
    };
+   var doneButton = function (t) {
+      return A2($Html.span,
+      _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")
+                   ,A2($Html$Events.onClick,
+                   updates.address,
+                   {ctor: "_Tuple2"
+                   ,_0: t.id
+                   ,_1: A2($Basics._op["++"],
+                   "todos[done]=",
+                   t.done ? "0" : "1")})]),
+      _L.fromArray([$Html.text("✔︎")]));
+   };
+   var canIncreaseDecrease = F2(function (t,
+   up) {
+      return up ? _U.cmp(t.priority,
+      t.priority_hi) > 0 : _U.cmp(t.priority,
+      t.priority_low) < 0;
+   });
+   var increaseDecreaseSpanClass = F2(function (t,
+   up) {
+      return function () {
+         var canChange = A2(canIncreaseDecrease,
+         t,
+         up);
+         var butColor = canChange ? "info" : "default";
+         return $Html$Attributes.$class(A2($Basics._op["++"],
+         "btn btn-",
+         A2($Basics._op["++"],
+         butColor,
+         " btn-xs")));
+      }();
+   });
+   var increaseDecreaseClickHandler = F2(function (t,
+   up) {
+      return function () {
+         var newPriority = $Basics.toString(t.priority + (up ? 1 : -1));
+         var canChange = A2(canIncreaseDecrease,
+         t,
+         up);
+         return canChange ? _L.fromArray([A2($Html$Events.onClick,
+         updates.address,
+         {ctor: "_Tuple2"
+         ,_0: t.id
+         ,_1: A2($Basics._op["++"],
+         "todos[priority]=",
+         newPriority)})]) : _L.fromArray([]);
+      }();
+   });
+   var increaseDecreaseButton = F2(function (t,
+   up) {
+      return function () {
+         var arrow = function () {
+            switch (up)
+            {case false: return "⬇︎";
+               case true: return "⬆︎";}
+            _U.badCase($moduleName,
+            "between lines 107 and 110");
+         }();
+         var clickHandler = A2(increaseDecreaseClickHandler,
+         t,
+         up);
+         var spanClass = A2(increaseDecreaseSpanClass,
+         t,
+         up);
+         var spanAttrs = A2($List._op["::"],
+         spanClass,
+         clickHandler);
+         return A2($Html.span,
+         spanAttrs,
+         _L.fromArray([$Html.text(arrow)]));
+      }();
+   });
+   var decreaseButton = function (t) {
+      return A2(increaseDecreaseButton,
+      t,
+      false);
+   };
+   var increaseButton = function (t) {
+      return A2(increaseDecreaseButton,
+      t,
+      true);
+   };
+   var editButton = function (t) {
+      return A2($Html.span,
+      _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+      _L.fromArray([$Html.text("✍")]));
+   };
+   var controlButtons = function (t) {
+      return function () {
+         var buttons = A2($List.map,
+         function (f) {
+            return f(t);
+         },
+         _L.fromArray([editButton
+                      ,increaseButton
+                      ,decreaseButton
+                      ,doneButton]));
+         var space = $Html.text("\n");
+         return A2($List.intersperse,
+         space,
+         buttons);
+      }();
+   };
    var view = function (t) {
-      return A2($Html.tr,
-      _L.fromArray([]),
-      _L.fromArray([A2($Html.td,
-                   _L.fromArray([]),
-                   _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class(cellClass(t))]),
-                   _L.fromArray([$Html.text(t.description)]))]))
-                   ,A2($Html.td,
-                   _L.fromArray([$Html$Attributes.$class("col-md-2")]),
-                   _L.fromArray([A2($Html.span,
-                   _L.fromArray([$Html$Attributes.$class(cellClass(t))]),
-                   _L.fromArray([$Html.text(t.priority_)]))]))
-                   ,A2($Html.td,
-                   _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
-                   _L.fromArray([A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
-                                _L.fromArray([$Html.text("✍")]))
-                                ,$Html.text("\n")
-                                ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")
-                                             ,A2($Html$Events.onClick,
-                                             updates.address,
-                                             {ctor: "_Tuple2"
-                                             ,_0: t.id
-                                             ,_1: A2($Basics._op["++"],
-                                             "todos[priority]=",
-                                             $Basics.toString(t.priority + 1))})]),
-                                _L.fromArray([$Html.text("⬆︎")]))
-                                ,$Html.text("\n")
-                                ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")
-                                             ,A2($Html$Events.onClick,
-                                             updates.address,
-                                             {ctor: "_Tuple2"
-                                             ,_0: t.id
-                                             ,_1: A2($Basics._op["++"],
-                                             "todos[priority]=",
-                                             $Basics.toString(t.priority - 1))})]),
-                                _L.fromArray([$Html.text("⬇︎")]))
-                                ,$Html.text("\n")
-                                ,A2($Html.span,
-                                _L.fromArray([$Html$Attributes.$class("btn btn-success btn-xs")
-                                             ,A2($Html$Events.onClick,
-                                             updates.address,
-                                             {ctor: "_Tuple2"
-                                             ,_0: t.id
-                                             ,_1: A2($Basics._op["++"],
-                                             "todos[done]=",
-                                             t.done ? "0" : "1")})]),
-                                _L.fromArray([$Html.text("✔︎")]))]))]));
+      return function () {
+         var buttons = controlButtons(t);
+         var spanAtr = A2($List._op["::"],
+         $Html$Attributes.$class(cellClass(t)),
+         _L.fromArray([]));
+         var description = A2($List._op["::"],
+         A2($Html.span,
+         spanAtr,
+         _L.fromArray([$Html.text(t.description)])),
+         _L.fromArray([]));
+         var priority = A2($List._op["::"],
+         A2($Html.span,
+         spanAtr,
+         _L.fromArray([$Html.text(t.priority_)])),
+         _L.fromArray([]));
+         return A2($Html.tr,
+         _L.fromArray([]),
+         _L.fromArray([A2($Html.td,
+                      _L.fromArray([]),
+                      description)
+                      ,A2($Html.td,
+                      _L.fromArray([$Html$Attributes.$class("col-md-2")]),
+                      priority)
+                      ,A2($Html.td,
+                      _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
+                      buttons)]));
+      }();
    };
    var todoCompare = F2(function (t1,
    t2) {
@@ -13579,6 +13659,15 @@ Elm.Todo.make = function (_elm) {
                       ,update: update
                       ,todoCompare: todoCompare
                       ,view: view
+                      ,controlButtons: controlButtons
+                      ,editButton: editButton
+                      ,increaseButton: increaseButton
+                      ,decreaseButton: decreaseButton
+                      ,increaseDecreaseButton: increaseDecreaseButton
+                      ,canIncreaseDecrease: canIncreaseDecrease
+                      ,increaseDecreaseSpanClass: increaseDecreaseSpanClass
+                      ,increaseDecreaseClickHandler: increaseDecreaseClickHandler
+                      ,doneButton: doneButton
                       ,cellClass: cellClass
                       ,updates: updates
                       ,updateTodo: updateTodo};
