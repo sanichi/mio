@@ -4531,11 +4531,14 @@ Elm.Main.make = function (_elm) {
                                                 ,A2($Signal.map,
                                                 SetAuthToken,
                                                 getAuthToken)]));
+   var sendCurrTodos = function (todos) {
+      return function ($) {
+         return $Signal.send(box.address)(SetTodos($));
+      }(todos);
+   };
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
    getCurrTodos,
-   function ($) {
-      return $Signal.send(box.address)(SetTodos($));
-   }));
+   sendCurrTodos));
    var init = {_: {}
               ,authToken: "noTokenYet"
               ,lastUpdated: 0
@@ -4568,7 +4571,8 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,box: box
-                      ,getCurrTodos: getCurrTodos};
+                      ,getCurrTodos: getCurrTodos
+                      ,sendCurrTodos: sendCurrTodos};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};

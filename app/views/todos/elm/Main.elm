@@ -81,9 +81,13 @@ getCurrTodos =
   Http.get (Decode.list decodeTodo) "/todos.json"
 
 
+sendCurrTodos : Todos -> Task Http.Error ()
+sendCurrTodos todos =
+  (Signal.send box.address << SetTodos) todos
+
+
 port runner : Task Http.Error ()
 port runner =
-  getCurrTodos `Task.andThen` (Signal.send box.address << SetTodos)
-
+  getCurrTodos `Task.andThen` sendCurrTodos
 
 port getAuthToken: Signal String
