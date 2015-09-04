@@ -2,7 +2,7 @@ module Todo where
 
 import Dict exposing (Dict)
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
@@ -62,15 +62,16 @@ todoCompare t1 t2 =
       )
 
 
-view : Todo -> Html
-view t =
+view : Int -> Todo -> Html
+view id t =
   let
     spanAtr     = [ class (cellClass t) ]
     description = [ span spanAtr [ text t.description ] ]
     priority    = [ span spanAtr [ text (priorityDescription t) ] ]
     buttons     = controlButtons t
+    rowStyles   = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
   in
-    tr [ ]
+    tr [ style rowStyles ]
       [ td [ ] description
       , td [ class "col-md-2" ] priority
       , td [ class "col-md-3 text-center" ] buttons

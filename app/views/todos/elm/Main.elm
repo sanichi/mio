@@ -9,10 +9,10 @@ import Todos exposing (Todos)
 
 -- MODEL
 
-type alias Model = { todos: Todos, authToken: String }
+type alias Model = { todos: Todos, authToken: String, lastUpdated: Int }
 
 init : Model
-init = { todos = [ ], authToken = "noTokenYet" }
+init = { todos = [ ], authToken = "noTokenYet", lastUpdated = 0 }
 
 -- UPDATE
 
@@ -35,36 +35,44 @@ update action model =
       { model | authToken <- value }
 
     UpdateTodo todo ->
-      { model | todos <- List.map (\m -> if m.id == todo.id then todo else m) model.todos }
+      { model
+      | todos <- List.map (\m -> if m.id == todo.id then todo else m) model.todos
+      , lastUpdated <- todo.id
+      }
 
 -- VIEW
 
 view : Model -> Html
 view model =
   Html.div []
-    [ Todos.view model.todos
+    [ Todos.view model.lastUpdated model.todos
     , Html.p [] [ Html.text model.authToken]
     ]
 
 -- SIGNALS
 
-actions : Signal.Mailbox Action
-actions =
-  Signal.mailbox NoOp
+main : Signal Html
+main =
+  Signal.map view model
 
 
 model : Signal Model
 model =
-  Signal.foldp update init <| Signal.mergeMany
-    [ actions.signal
+  Signal.foldp update init actions
+
+
+actions : Signal Action
+actions =
+  Signal.mergeMany
+    [ box.signal
     , (Signal.map UpdateTodo updates.signal)
     , (Signal.map SetAuthToken getAuthToken)
     ]
 
 
-main : Signal Html
-main =
-  Signal.map view model
+box : Signal.Mailbox Action
+box =
+  Signal.mailbox NoOp
 
 -- TASKS
 
@@ -75,7 +83,7 @@ getCurrTodos =
 
 port runner : Task Http.Error ()
 port runner =
-  getCurrTodos `Task.andThen` (Signal.send actions.address << SetTodos)
+  getCurrTodos `Task.andThen` (Signal.send box.address << SetTodos)
 
 
 port getAuthToken: Signal String

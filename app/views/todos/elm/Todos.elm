@@ -8,8 +8,8 @@ type alias Todos = List Todo
 
 -- VIEW
 
-view : Todos -> Html
-view todos =
+view : Int -> Todos -> Html
+view lastUpdated todos =
   table
     [ class "table table-bordered table-striped" ]
-    [ tbody [ ] (List.map Todo.view (List.sortWith todoCompare todos)) ]
+    [ tbody [ ] (List.map (Todo.view lastUpdated) (List.sortWith todoCompare todos)) ]

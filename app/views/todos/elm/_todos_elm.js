@@ -4476,7 +4476,9 @@ Elm.Main.make = function (_elm) {
    var view = function (model) {
       return A2($Html.div,
       _L.fromArray([]),
-      _L.fromArray([$Todos.view(model.todos)
+      _L.fromArray([A2($Todos.view,
+                   model.lastUpdated,
+                   model.todos)
                    ,A2($Html.p,
                    _L.fromArray([]),
                    _L.fromArray([$Html.text(model.authToken)]))]));
@@ -4501,10 +4503,11 @@ Elm.Main.make = function (_elm) {
                                   return _U.eq(m.id,
                                   action._0.id) ? action._0 : m;
                                },
-                               model.todos)]],
+                               model.todos)]
+                              ,["lastUpdated",action._0.id]],
               model);}
          _U.badCase($moduleName,
-         "between lines 28 and 38");
+         "between lines 28 and 41");
       }();
    });
    var UpdateTodo = function (a) {
@@ -4520,30 +4523,36 @@ Elm.Main.make = function (_elm) {
              ,_0: a};
    };
    var NoOp = {ctor: "NoOp"};
-   var actions = $Signal.mailbox(NoOp);
+   var box = $Signal.mailbox(NoOp);
+   var actions = $Signal.mergeMany(_L.fromArray([box.signal
+                                                ,A2($Signal.map,
+                                                UpdateTodo,
+                                                $Todo.updates.signal)
+                                                ,A2($Signal.map,
+                                                SetAuthToken,
+                                                getAuthToken)]));
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
    getCurrTodos,
    function ($) {
-      return $Signal.send(actions.address)(SetTodos($));
+      return $Signal.send(box.address)(SetTodos($));
    }));
    var init = {_: {}
               ,authToken: "noTokenYet"
+              ,lastUpdated: 0
               ,todos: _L.fromArray([])};
-   var model = A2($Signal.foldp,
+   var model = A3($Signal.foldp,
    update,
-   init)($Signal.mergeMany(_L.fromArray([actions.signal
-                                        ,A2($Signal.map,
-                                        UpdateTodo,
-                                        $Todo.updates.signal)
-                                        ,A2($Signal.map,
-                                        SetAuthToken,
-                                        getAuthToken)])));
+   init,
+   actions);
    var main = A2($Signal.map,
    view,
    model);
-   var Model = F2(function (a,b) {
+   var Model = F3(function (a,
+   b,
+   c) {
       return {_: {}
              ,authToken: b
+             ,lastUpdated: c
              ,todos: a};
    });
    _elm.Main.values = {_op: _op
@@ -4555,9 +4564,10 @@ Elm.Main.make = function (_elm) {
                       ,UpdateTodo: UpdateTodo
                       ,update: update
                       ,view: view
-                      ,actions: actions
-                      ,model: model
                       ,main: main
+                      ,model: model
+                      ,actions: actions
+                      ,box: box
                       ,getCurrTodos: getCurrTodos};
    return _elm.Main.values;
 };
@@ -13563,7 +13573,7 @@ Elm.Todo.make = function (_elm) {
             {case false: return "⬇︎";
                case true: return "⬆︎";}
             _U.badCase($moduleName,
-            "between lines 116 and 119");
+            "between lines 117 and 120");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13618,8 +13628,12 @@ Elm.Todo.make = function (_elm) {
          buttons);
       }();
    };
-   var view = function (t) {
+   var view = F2(function (id,t) {
       return function () {
+         var rowStyles = _U.eq(id,
+         t.id) ? _L.fromArray([{ctor: "_Tuple2"
+                               ,_0: "background-color"
+                               ,_1: "lightBlue"}]) : _L.fromArray([]);
          var buttons = controlButtons(t);
          var spanAtr = _L.fromArray([$Html$Attributes.$class(cellClass(t))]);
          var description = _L.fromArray([A2($Html.span,
@@ -13629,7 +13643,7 @@ Elm.Todo.make = function (_elm) {
          spanAtr,
          _L.fromArray([$Html.text(priorityDescription(t))]))]);
          return A2($Html.tr,
-         _L.fromArray([]),
+         _L.fromArray([$Html$Attributes.style(rowStyles)]),
          _L.fromArray([A2($Html.td,
                       _L.fromArray([]),
                       description)
@@ -13640,7 +13654,7 @@ Elm.Todo.make = function (_elm) {
                       _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
                       buttons)]));
       }();
-   };
+   });
    var Todo = F4(function (a,
    b,
    c,
@@ -13739,17 +13753,18 @@ Elm.Todos.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Todo = Elm.Todo.make(_elm);
-   var view = function (todos) {
+   var view = F2(function (lastUpdated,
+   todos) {
       return A2($Html.table,
       _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
       _L.fromArray([A2($Html.tbody,
       _L.fromArray([]),
       A2($List.map,
-      $Todo.view,
+      $Todo.view(lastUpdated),
       A2($List.sortWith,
       $Todo.todoCompare,
       todos)))]));
-   };
+   });
    _elm.Todos.values = {_op: _op
                        ,view: view};
    return _elm.Todos.values;
