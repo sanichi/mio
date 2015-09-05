@@ -74,11 +74,17 @@ box : Signal.Mailbox Action
 box =
   Signal.mailbox NoOp
 
+-- Rails URLs
+
+index : String
+index =
+  "/todos.json"
+
 -- TASKS
 
 getCurrTodos : Task Http.Error Todos
 getCurrTodos =
-  Http.get (Decode.list decodeTodo) "/todos.json"
+  Http.get (Decode.list decodeTodo) index
 
 
 sendCurrTodos : Todos -> Task Http.Error ()

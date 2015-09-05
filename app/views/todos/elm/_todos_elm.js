@@ -4470,9 +4470,10 @@ Elm.Main.make = function (_elm) {
       return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
       v);
    });
+   var index = "/todos.json";
    var getCurrTodos = A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
-   "/todos.json");
+   index);
    var view = function (model) {
       return A2($Html.div,
       _L.fromArray([]),
@@ -4571,6 +4572,7 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,box: box
+                      ,index: index
                       ,getCurrTodos: getCurrTodos
                       ,sendCurrTodos: sendCurrTodos};
    return _elm.Main.values;
