@@ -22,6 +22,10 @@ class Mass < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  def to_json
+    as_json(except: [:created_at, :updated_at])
+  end
+
   private
 
   def data_constraints

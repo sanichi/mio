@@ -6,6 +6,10 @@ class MassesController < ApplicationController
 
   def index
     @masses = Mass.search(params, masses_path, remote: true)
+    respond_to do |format|
+      format.html
+      format.json { render json: @masses.matches.map(&:to_json) }
+    end
   end
 
   def graph
