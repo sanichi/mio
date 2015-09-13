@@ -5,6 +5,7 @@ class MassesController < ApplicationController
   before_action :get_start, only: :graph
 
   def index
+    response.headers["Access-Control-Allow-Origin"] = "*" # allow cross origin requests
     @masses = Mass.search(params, masses_path, remote: true)
     respond_to do |format|
       format.html
