@@ -4464,16 +4464,29 @@ Elm.Main.make = function (_elm) {
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm),
    $Todos = Elm.Todos.make(_elm);
+   var performUpdates = Elm.Native.Task.make(_elm).performSignal("performUpdates",
+   A2($Signal.map,
+   $Todo.updateTodo,
+   $Todo.updates.signal));
+   var logUpdates = Elm.Native.Port.make(_elm).outboundSignal("logUpdates",
+   function (v) {
+      return v;
+   },
+   A2($Signal.map,
+   function ($) {
+      return $Basics.toString($Todo.updateBody($));
+   },
+   $Todo.updates.signal));
    var getAuthToken = Elm.Native.Port.make(_elm).inboundSignal("getAuthToken",
    "String",
    function (v) {
       return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
       v);
    });
-   var index = "/todos.json";
+   var indexUrl = "/todos.json";
    var getCurrTodos = A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
-   index);
+   indexUrl);
    var view = function (model) {
       return A2($Html.div,
       _L.fromArray([]),
@@ -4482,7 +4495,7 @@ Elm.Main.make = function (_elm) {
                    model.todos)
                    ,A2($Html.p,
                    _L.fromArray([]),
-                   _L.fromArray([$Html.text(model.authToken)]))]));
+                   _L.fromArray([$Html.text(model.token)]))]));
    };
    var update = F2(function (action,
    model) {
@@ -4490,12 +4503,26 @@ Elm.Main.make = function (_elm) {
          switch (action.ctor)
          {case "NoOp": return model;
             case "SetAuthToken":
-            return _U.replace([["authToken"
-                               ,action._0]],
+            return _U.replace([["token"
+                               ,action._0]
+                              ,["todos"
+                               ,A2($List.map,
+                               function (t) {
+                                  return _U.replace([["token"
+                                                     ,model.token]],
+                                  t);
+                               },
+                               model.todos)]],
               model);
             case "SetTodos":
             return _U.replace([["todos"
-                               ,action._0]],
+                               ,A2($List.map,
+                               function (t) {
+                                  return _U.replace([["token"
+                                                     ,model.token]],
+                                  t);
+                               },
+                               action._0)]],
               model);
             case "UpdateTodo":
             return _U.replace([["todos"
@@ -4508,7 +4535,7 @@ Elm.Main.make = function (_elm) {
                               ,["lastUpdated",action._0.id]],
               model);}
          _U.badCase($moduleName,
-         "between lines 28 and 41");
+         "between lines 27 and 45");
       }();
    });
    var UpdateTodo = function (a) {
@@ -4532,18 +4559,18 @@ Elm.Main.make = function (_elm) {
                                                 ,A2($Signal.map,
                                                 SetAuthToken,
                                                 getAuthToken)]));
-   var sendCurrTodos = function (todos) {
+   var mergeCurrTodos = function (todos) {
       return function ($) {
          return $Signal.send(box.address)(SetTodos($));
       }(todos);
    };
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
    getCurrTodos,
-   sendCurrTodos));
+   mergeCurrTodos));
    var init = {_: {}
-              ,authToken: "noTokenYet"
               ,lastUpdated: 0
-              ,todos: _L.fromArray([])};
+              ,todos: _L.fromArray([])
+              ,token: "noAuthAtStart"};
    var model = A3($Signal.foldp,
    update,
    init,
@@ -4555,9 +4582,9 @@ Elm.Main.make = function (_elm) {
    b,
    c) {
       return {_: {}
-             ,authToken: b
              ,lastUpdated: c
-             ,todos: a};
+             ,todos: a
+             ,token: b};
    });
    _elm.Main.values = {_op: _op
                       ,Model: Model
@@ -4572,9 +4599,9 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,box: box
-                      ,index: index
+                      ,indexUrl: indexUrl
                       ,getCurrTodos: getCurrTodos
-                      ,sendCurrTodos: sendCurrTodos};
+                      ,mergeCurrTodos: mergeCurrTodos};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
@@ -13504,6 +13531,7 @@ Elm.Todo.make = function (_elm) {
    $Misc = Elm.Misc.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
@@ -13551,12 +13579,55 @@ Elm.Todo.make = function (_elm) {
       t1.priority,
       t2.priority);
    });
-   var noTodo = {_: {}
-                ,description: ""
-                ,done: true
-                ,id: 0
-                ,priority: 1};
-   var updates = $Signal.mailbox(noTodo);
+   var updateBody = function (t) {
+      return $Http.string(A2($String.join,
+      "&",
+      _L.fromArray([A2($Basics._op["++"],
+                   "todo%5Bdescription%5D=",
+                   $Http.uriEncode(t.description))
+                   ,A2($Basics._op["++"],
+                   "todo%5Bpriority%5D=",
+                   $Basics.toString(t.priority))
+                   ,A2($Basics._op["++"],
+                   "todo%5Bdone%5D=",
+                   t.done ? "1" : "0")
+                   ,A2($Basics._op["++"],
+                   "authenticity_token=",
+                   $Http.uriEncode(t.token))
+                   ,"_method=patch"
+                   ,"commit=Save"
+                   ,"utf8=✓"])));
+   };
+   var updateUrl = function (t) {
+      return A2($Basics._op["++"],
+      "/todos/",
+      A2($Basics._op["++"],
+      $Basics.toString(t.id),
+      ".json"));
+   };
+   var updateTodo = function (t) {
+      return function () {
+         var request = {_: {}
+                       ,body: updateBody(t)
+                       ,headers: _L.fromArray([{ctor: "_Tuple2"
+                                               ,_0: "Content-Type"
+                                               ,_1: "application/x-www-form-urlencoded"}])
+                       ,url: updateUrl(t)
+                       ,verb: "POST"};
+         return A2($Http.fromJson,
+         $Json$Decode.string,
+         A2($Http.send,
+         $Http.defaultSettings,
+         request));
+      }();
+   };
+   var exampleTodo = {_: {}
+                     ,description: ""
+                     ,done: true
+                     ,id: 0
+                     ,priority: 1
+                     ,token: "noAuthAtStart"};
+   var updates = $Signal.mailbox(exampleTodo);
    var increaseDecreaseClickHandler = F2(function (t,
    up) {
       return function () {
@@ -13579,7 +13650,7 @@ Elm.Todo.make = function (_elm) {
             {case false: return "⬇︎";
                case true: return "⬆︎";}
             _U.badCase($moduleName,
-            "between lines 117 and 120");
+            "between lines 143 and 146");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13661,17 +13732,19 @@ Elm.Todo.make = function (_elm) {
                       buttons)]));
       }();
    });
-   var Todo = F4(function (a,
+   var Todo = F5(function (a,
    b,
    c,
-   d) {
+   d,
+   e) {
       return {_: {}
              ,description: a
              ,done: b
              ,id: c
-             ,priority: d};
+             ,priority: d
+             ,token: e};
    });
-   var decodeTodo = A5($Json$Decode.object4,
+   var decodeTodo = A6($Json$Decode.object5,
    Todo,
    A2($Json$Decode._op[":="],
    "description",
@@ -13684,45 +13757,15 @@ Elm.Todo.make = function (_elm) {
    $Json$Decode.$int),
    A2($Json$Decode._op[":="],
    "priority",
-   $Json$Decode.$int));
-   var updateTodo = function (id) {
-      return function () {
-         var request = {_: {}
-                       ,body: $Http.empty
-                       ,headers: _L.fromArray([])
-                       ,url: A2($Basics._op["++"],
-                       "/todos/",
-                       A2($Basics._op["++"],
-                       $Basics.toString(id),
-                       "/update.json"))
-                       ,verb: "PATCH"};
-         return A2($Http.fromJson,
-         decodeTodo,
-         A2($Http.send,
-         $Http.defaultSettings,
-         request));
-      }();
-   };
-   var update = function (action) {
-      return function () {
-         switch (action.ctor)
-         {case "_Tuple2":
-            switch (action._1)
-              {case "done":
-                 return $Maybe.Just(updateTodo(action._0));
-                 case "down":
-                 return $Maybe.Just(updateTodo(action._0));
-                 case "up":
-                 return $Maybe.Just(updateTodo(action._0));}
-              break;}
-         return $Maybe.Nothing;
-      }();
-   };
+   $Json$Decode.$int),
+   $Json$Decode.succeed("noAuthFromServer"));
    _elm.Todo.values = {_op: _op
                       ,Todo: Todo
-                      ,noTodo: noTodo
+                      ,exampleTodo: exampleTodo
                       ,decodeTodo: decodeTodo
-                      ,update: update
+                      ,updateUrl: updateUrl
+                      ,updateBody: updateBody
+                      ,updateTodo: updateTodo
                       ,todoCompare: todoCompare
                       ,view: view
                       ,priorityDescription: priorityDescription
@@ -13736,8 +13779,7 @@ Elm.Todo.make = function (_elm) {
                       ,increaseDecreaseClickHandler: increaseDecreaseClickHandler
                       ,doneButton: doneButton
                       ,cellClass: cellClass
-                      ,updates: updates
-                      ,updateTodo: updateTodo};
+                      ,updates: updates};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};

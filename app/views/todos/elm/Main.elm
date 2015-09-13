@@ -1,18 +1,17 @@
 import Html exposing (Html)
 import Http
 import Json.Decode as Decode
-import Maybe exposing (Maybe)
 import Signal exposing (Address)
 import Task exposing (Task)
-import Todo exposing (Todo, decodeTodo, updates)
+import Todo exposing (Todo, decodeTodo, exampleTodo, updateBody, updates, updateTodo)
 import Todos exposing (Todos)
 
 -- MODEL
 
-type alias Model = { todos: Todos, authToken: String, lastUpdated: Int }
+type alias Model = { todos: Todos, token: String, lastUpdated: Int }
 
 init : Model
-init = { todos = [ ], authToken = "noTokenYet", lastUpdated = 0 }
+init = { todos = [ ], token = "noAuthAtStart", lastUpdated = 0 }
 
 -- UPDATE
 
@@ -29,10 +28,15 @@ update action model =
     NoOp -> model
 
     SetTodos list ->
-      { model | todos <- list }
+      { model
+      | todos <- List.map (\t -> { t | token <- model.token }) list
+      }
 
     SetAuthToken value ->
-      { model | authToken <- value }
+      { model
+      | token <- value
+      , todos <- List.map (\t -> { t | token <- model.token }) model.todos
+      }
 
     UpdateTodo todo ->
       { model
@@ -46,7 +50,7 @@ view : Model -> Html
 view model =
   Html.div []
     [ Todos.view model.lastUpdated model.todos
-    , Html.p [] [ Html.text model.authToken]
+    , Html.p [] [ Html.text model.token]
     ]
 
 -- SIGNALS
@@ -76,24 +80,33 @@ box =
 
 -- Rails URLs
 
-index : String
-index =
+indexUrl : String
+indexUrl =
   "/todos.json"
 
 -- TASKS
 
 getCurrTodos : Task Http.Error Todos
 getCurrTodos =
-  Http.get (Decode.list decodeTodo) index
+  Http.get (Decode.list decodeTodo) indexUrl
 
 
-sendCurrTodos : Todos -> Task Http.Error ()
-sendCurrTodos todos =
+mergeCurrTodos : Todos -> Task Http.Error ()
+mergeCurrTodos todos =
   (Signal.send box.address << SetTodos) todos
 
+-- PORTS
 
 port runner : Task Http.Error ()
 port runner =
-  getCurrTodos `Task.andThen` sendCurrTodos
+  getCurrTodos `Task.andThen` mergeCurrTodos
 
 port getAuthToken: Signal String
+
+port logUpdates : Signal String
+port logUpdates =
+  Signal.map (updateBody >> toString) updates.signal
+
+port performUpdates : Signal (Task Http.Error String)
+port performUpdates =
+  Signal.map updateTodo updates.signal

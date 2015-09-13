@@ -24,10 +24,10 @@ class TodosController < ApplicationController
   end
 
   def update
-    if @todo.update(strong_params)
-      redirect_to todos_path
-    else
-      render action: "edit"
+    ok = @todo.update(strong_params)
+    respond_to do |format|
+      format.html { ok ? redirect_to(todos_path) : render(action: "edit") }
+      format.json { render json: (ok ? "OK" : "Error") }
     end
   end
 

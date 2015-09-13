@@ -1,12 +1,13 @@
 module Todo where
 
-import Dict exposing (Dict)
+import Dict
 import Html exposing (..)
 import Html.Attributes exposing (class, style)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
 import Misc exposing (priorityHigh, priorityLow, priorityString)
+import String
 import Task exposing (Task)
 
 -- MODEL
@@ -16,38 +17,63 @@ type alias Todo =
   , done: Bool
   , id: Int
   , priority: Int
+  , token: String
   }
 
 
-noTodo : Todo
-noTodo =
+exampleTodo : Todo
+exampleTodo =
   { description = ""
   , done = True
   , id = 0
   , priority = 1
+  , token = "noAuthAtStart"
   }
 
 
 decodeTodo : Decode.Decoder Todo
 decodeTodo =
-  Decode.object4 Todo
+  Decode.object5 Todo
     ("description" := Decode.string)
     ("done" := Decode.bool)
     ("id" := Decode.int)
     ("priority" := Decode.int)
+    (Decode.succeed "noAuthFromServer")
+
+-- URLS
+
+updateUrl : Todo -> String
+updateUrl t =
+  "/todos/" ++ (toString t.id) ++ ".json"
 
 -- UPDATE
 
-update : (Int, String) -> (Maybe (Task Http.Error Todo))
-update action =
-  case action of
-    (id, "up") -> Just (updateTodo id)
+updateBody : Todo -> Http.Body
+updateBody t =
+  Http.string <|
+    String.join "&"
+      [ "todo%5Bdescription%5D=" ++ (Http.uriEncode t.description)
+      , "todo%5Bpriority%5D=" ++ (toString t.priority)
+      , "todo%5Bdone%5D=" ++ if t.done then "1" else "0"
+      , "authenticity_token=" ++ (Http.uriEncode t.token)
+      , "_method=patch"
+      , "commit=Save"
+      , "utf8=✓"
+      ]
 
-    (id, "down") -> Just (updateTodo id)
-
-    (id, "done") -> Just (updateTodo id)
-
-    _ -> Nothing
+-- use Http.post sets Content-Type to text/plain which Rails rejects
+-- so here we use the full Http.send method just to fix that
+updateTodo : Todo -> Task Http.Error String
+updateTodo t =
+  let
+    request =
+      { verb = "POST"
+      , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+      , url = updateUrl t
+      , body = updateBody t
+      }
+  in
+    Http.fromJson Decode.string (Http.send Http.defaultSettings request)
 
 -- VIEW
 
@@ -165,18 +191,4 @@ cellClass todo =
 -- SIGNALS
 
 updates : Signal.Mailbox Todo
-updates = Signal.mailbox noTodo
-
--- TASKS
-
-updateTodo : Int -> Task Http.Error Todo
-updateTodo id =
-  let
-    request =
-      { verb = "PATCH"
-      , headers = []
-      , url = "/todos/" ++ (toString id) ++ "/update.json"
-      , body = Http.empty
-      }
-  in
-    Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
+updates = Signal.mailbox exampleTodo
