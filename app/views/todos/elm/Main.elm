@@ -1,4 +1,5 @@
 import Html exposing (Html)
+import Html.Attributes as Attr
 import Http
 import Json.Decode as Decode
 import Signal exposing (Address)
@@ -8,16 +9,27 @@ import Todos exposing (Todos)
 
 -- MODEL
 
-type alias Model = { todos: Todos, token: String, lastUpdated: Int }
+type alias Model =
+  { todos: Todos
+  , token: String
+  , lastUpdated: Int
+  , error: Maybe String
+  }
+
 
 init : Model
-init = { todos = [ ], token = "noAuthAtStart", lastUpdated = 0 }
+init =
+  { todos = [ ]
+  , token = "noAuthAtStart"
+  , lastUpdated = 0
+  , error = Nothing
+  }
 
 -- UPDATE
 
 type Action
   = NoOp
-  | SetTodos Todos
+  | SetTodos TodosResult
   | SetAuthToken String
   | UpdateTodo Todo
 
@@ -27,10 +39,18 @@ update action model =
   case action of
     NoOp -> model
 
-    SetTodos list ->
-      { model
-      | todos <- List.map (\t -> { t | token <- model.token }) list
-      }
+    SetTodos result ->
+      case result of
+        Ok list ->
+          { model
+          | todos <- List.map (\t -> { t | token <- model.token }) list
+          , error <- Nothing
+          }
+
+        Err msg ->
+          { model
+          | error <- Just (toString msg)
+          }
 
     SetAuthToken value ->
       { model
@@ -48,10 +68,19 @@ update action model =
 
 view : Model -> Html
 view model =
-  Html.div []
-    [ Todos.view model.lastUpdated model.todos
-    , Html.p [] [ Html.text model.token]
-    ]
+  let
+    error =
+      case model.error of
+        Just msg ->
+          Html.p [ ] [ Html.text ("Error: " ++ msg) ]
+
+        Nothing ->
+          Html.p [ Attr.hidden True ] [ ]
+  in
+    Html.div []
+      [ Todos.view model.lastUpdated model.todos
+      , error
+      ]
 
 -- SIGNALS
 
@@ -78,22 +107,19 @@ box : Signal.Mailbox Action
 box =
   Signal.mailbox NoOp
 
--- Rails URLs
-
-indexUrl : String
-indexUrl =
-  "/todos.json"
-
 -- TASKS
 
-getCurrTodos : Task Http.Error Todos
+type alias TodosResult = Result Http.Error Todos
+
+
+getCurrTodos : Task Http.Error TodosResult
 getCurrTodos =
-  Http.get (Decode.list decodeTodo) indexUrl
+  Task.toResult (Http.get (Decode.list decodeTodo) "/todos.json")
 
 
-mergeCurrTodos : Todos -> Task Http.Error ()
+mergeCurrTodos : TodosResult -> Task Http.Error ()
 mergeCurrTodos todos =
-  (Signal.send box.address << SetTodos) todos
+  Signal.send box.address <| SetTodos todos
 
 -- PORTS
 

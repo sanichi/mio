@@ -4455,6 +4455,7 @@ Elm.Main.make = function (_elm) {
    $moduleName = "Main",
    $Basics = Elm.Basics.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Http = Elm.Http.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
@@ -4483,19 +4484,33 @@ Elm.Main.make = function (_elm) {
       return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
       v);
    });
-   var indexUrl = "/todos.json";
-   var getCurrTodos = A2($Http.get,
+   var getCurrTodos = $Task.toResult(A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
-   indexUrl);
+   "/todos.json"));
    var view = function (model) {
-      return A2($Html.div,
-      _L.fromArray([]),
-      _L.fromArray([A2($Todos.view,
-                   model.lastUpdated,
-                   model.todos)
-                   ,A2($Html.p,
-                   _L.fromArray([]),
-                   _L.fromArray([$Html.text(model.token)]))]));
+      return function () {
+         var error = function () {
+            var _v0 = model.error;
+            switch (_v0.ctor)
+            {case "Just": return A2($Html.p,
+                 _L.fromArray([]),
+                 _L.fromArray([$Html.text(A2($Basics._op["++"],
+                 "Error: ",
+                 _v0._0))]));
+               case "Nothing":
+               return A2($Html.p,
+                 _L.fromArray([$Html$Attributes.hidden(true)]),
+                 _L.fromArray([]));}
+            _U.badCase($moduleName,
+            "between lines 73 and 79");
+         }();
+         return A2($Html.div,
+         _L.fromArray([]),
+         _L.fromArray([A2($Todos.view,
+                      model.lastUpdated,
+                      model.todos)
+                      ,error]));
+      }();
    };
    var update = F2(function (action,
    model) {
@@ -4515,15 +4530,26 @@ Elm.Main.make = function (_elm) {
                                model.todos)]],
               model);
             case "SetTodos":
-            return _U.replace([["todos"
-                               ,A2($List.map,
-                               function (t) {
-                                  return _U.replace([["token"
-                                                     ,model.token]],
-                                  t);
-                               },
-                               action._0)]],
-              model);
+            return function () {
+                 switch (action._0.ctor)
+                 {case "Err":
+                    return _U.replace([["error"
+                                       ,$Maybe.Just($Basics.toString(action._0._0))]],
+                      model);
+                    case "Ok":
+                    return _U.replace([["todos"
+                                       ,A2($List.map,
+                                       function (t) {
+                                          return _U.replace([["token"
+                                                             ,model.token]],
+                                          t);
+                                       },
+                                       action._0._0)]
+                                      ,["error",$Maybe.Nothing]],
+                      model);}
+                 _U.badCase($moduleName,
+                 "between lines 43 and 55");
+              }();
             case "UpdateTodo":
             return _U.replace([["todos"
                                ,A2($List.map,
@@ -4535,7 +4561,7 @@ Elm.Main.make = function (_elm) {
                               ,["lastUpdated",action._0.id]],
               model);}
          _U.badCase($moduleName,
-         "between lines 27 and 45");
+         "between lines 39 and 65");
       }();
    });
    var UpdateTodo = function (a) {
@@ -4560,14 +4586,13 @@ Elm.Main.make = function (_elm) {
                                                 SetAuthToken,
                                                 getAuthToken)]));
    var mergeCurrTodos = function (todos) {
-      return function ($) {
-         return $Signal.send(box.address)(SetTodos($));
-      }(todos);
+      return $Signal.send(box.address)(SetTodos(todos));
    };
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
    getCurrTodos,
    mergeCurrTodos));
    var init = {_: {}
+              ,error: $Maybe.Nothing
               ,lastUpdated: 0
               ,todos: _L.fromArray([])
               ,token: "noAuthAtStart"};
@@ -4578,10 +4603,12 @@ Elm.Main.make = function (_elm) {
    var main = A2($Signal.map,
    view,
    model);
-   var Model = F3(function (a,
+   var Model = F4(function (a,
    b,
-   c) {
+   c,
+   d) {
       return {_: {}
+             ,error: d
              ,lastUpdated: c
              ,todos: a
              ,token: b};
@@ -4599,7 +4626,6 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,box: box
-                      ,indexUrl: indexUrl
                       ,getCurrTodos: getCurrTodos
                       ,mergeCurrTodos: mergeCurrTodos};
    return _elm.Main.values;
