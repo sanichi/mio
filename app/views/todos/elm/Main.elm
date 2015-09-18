@@ -4,7 +4,7 @@ import Http
 import Json.Decode as Decode
 import Signal exposing (Address)
 import Task exposing (Task)
-import Todo exposing (Todo, decodeTodo, exampleTodo, updateBody, updates, updateTodo)
+import Todo exposing (Todo, TodoResult, decodeTodo, exampleTodo, updateBody, updates, updateTodo)
 import Todos exposing (Todos)
 
 -- MODEL
@@ -31,7 +31,7 @@ type Action
   = NoOp
   | SetTodos TodosResult
   | SetAuthToken String
-  | UpdateTodo Todo
+  | UpdateTodo TodoResult
 
 
 update : Action -> Model -> Model
@@ -47,22 +47,27 @@ update action model =
           , error <- Nothing
           }
 
-        Err msg ->
-          { model
-          | error <- Just (toString msg)
-          }
+        Err msg -> { model | error <- Just (toString msg) }
 
     SetAuthToken value ->
       { model
       | token <- value
-      , todos <- List.map (\t -> { t | token <- model.token }) model.todos
+      , todos <- List.map (\t -> { t | token <- value }) model.todos
       }
 
-    UpdateTodo todo ->
-      { model
-      | todos <- List.map (\m -> if m.id == todo.id then todo else m) model.todos
-      , lastUpdated <- todo.id
-      }
+    UpdateTodo result ->
+      case result of
+        Ok todo ->
+          let
+            todo' = { todo | token <- model.token }
+          in
+            { model
+            | todos <- List.map (\t -> if t.id == todo.id then todo' else t) model.todos
+            , lastUpdated <- todo.id
+            , error <- Nothing
+            }
+
+        Err msg -> { model | error <- Just (toString msg) }
 
 -- VIEW
 
@@ -75,7 +80,7 @@ view model =
           Html.p [ ] [ Html.text ("Error: " ++ msg) ]
 
         Nothing ->
-          Html.p [ Attr.hidden True ] [ ]
+          Html.p [ Attr.hidden True ] [ Html.text "No error" ]
   in
     Html.div []
       [ Todos.view model.lastUpdated model.todos
@@ -98,7 +103,6 @@ actions : Signal Action
 actions =
   Signal.mergeMany
     [ box.signal
-    , (Signal.map UpdateTodo updates.signal)
     , (Signal.map SetAuthToken getAuthToken)
     ]
 
@@ -114,12 +118,17 @@ type alias TodosResult = Result Http.Error Todos
 
 getCurrTodos : Task Http.Error TodosResult
 getCurrTodos =
-  Task.toResult (Http.get (Decode.list decodeTodo) "/todos.json")
+  Task.toResult <| Http.get (Decode.list decodeTodo) "/todos.json"
 
 
 mergeCurrTodos : TodosResult -> Task Http.Error ()
 mergeCurrTodos todos =
   Signal.send box.address <| SetTodos todos
+
+
+mergeTodo : TodoResult -> Task Http.Error ()
+mergeTodo todo =
+  Signal.send box.address <| UpdateTodo todo
 
 -- PORTS
 
@@ -133,6 +142,6 @@ port logUpdates : Signal String
 port logUpdates =
   Signal.map (updateBody >> toString) updates.signal
 
-port performUpdates : Signal (Task Http.Error String)
+port performUpdates : Signal (Task Http.Error ())
 port performUpdates =
-  Signal.map updateTodo updates.signal
+  Signal.map (\todo -> updateTodo todo `Task.andThen` mergeTodo) updates.signal

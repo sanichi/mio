@@ -27,7 +27,7 @@ class TodosController < ApplicationController
     ok = @todo.update(strong_params)
     respond_to do |format|
       format.html { ok ? redirect_to(todos_path) : render(action: "edit") }
-      format.json { render json: (ok ? "OK" : "Error") }
+      format.json { render json: ok ? @todo.to_json : @todo.errors.full_messages.to_json }
     end
   end
 

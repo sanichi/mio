@@ -21,6 +21,9 @@ type alias Todo =
   }
 
 
+type alias TodoResult = Result Http.Error Todo
+
+
 exampleTodo : Todo
 exampleTodo =
   { description = ""
@@ -61,9 +64,9 @@ updateBody t =
       , "utf8=✓"
       ]
 
--- use Http.post sets Content-Type to text/plain which Rails rejects
--- so here we use the full Http.send method just to fix that
-updateTodo : Todo -> Task Http.Error String
+-- Using Http.post sets the Content-Type to text/plain, which Rails rejects
+-- so here we use the full Http.send method just to fix that.
+updateTodo : Todo -> Task Http.Error TodoResult
 updateTodo t =
   let
     request =
@@ -73,7 +76,7 @@ updateTodo t =
       , body = updateBody t
       }
   in
-    Http.fromJson Decode.string (Http.send Http.defaultSettings request)
+    Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
 
 -- VIEW
 
