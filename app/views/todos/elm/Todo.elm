@@ -68,15 +68,19 @@ updateBody t =
 -- so here we use the full Http.send method just to fix that.
 updateTodo : Todo -> Task Http.Error TodoResult
 updateTodo t =
-  let
-    request =
-      { verb = "POST"
-      , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
-      , url = updateUrl t
-      , body = updateBody t
-      }
-  in
-    Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
+  if t.id > 0 then
+    let
+      request =
+        { verb = "POST"
+        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , url = updateUrl t
+        , body = updateBody t
+        }
+    in
+      Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
+  else
+    Task.fail <| Http.UnexpectedPayload "only update todos with ID > 0"
+
 
 -- VIEW
 

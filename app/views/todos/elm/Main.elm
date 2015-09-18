@@ -138,10 +138,6 @@ port runner =
 
 port getAuthToken: Signal String
 
-port logUpdates : Signal String
-port logUpdates =
-  Signal.map (updateBody >> toString) updates.signal
-
 port performUpdates : Signal (Task Http.Error ())
 port performUpdates =
   Signal.map (\todo -> updateTodo todo `Task.andThen` mergeTodo) updates.signal

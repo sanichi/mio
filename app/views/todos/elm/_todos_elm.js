@@ -4465,15 +4465,6 @@ Elm.Main.make = function (_elm) {
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm),
    $Todos = Elm.Todos.make(_elm);
-   var logUpdates = Elm.Native.Port.make(_elm).outboundSignal("logUpdates",
-   function (v) {
-      return v;
-   },
-   A2($Signal.map,
-   function ($) {
-      return $Basics.toString($Todo.updateBody($));
-   },
-   $Todo.updates.signal));
    var getAuthToken = Elm.Native.Port.make(_elm).inboundSignal("getAuthToken",
    "String",
    function (v) {
@@ -13680,7 +13671,7 @@ Elm.Todo.make = function (_elm) {
             {case false: return "⬇︎";
                case true: return "⬆︎";}
             _U.badCase($moduleName,
-            "between lines 146 and 149");
+            "between lines 150 and 153");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13790,7 +13781,8 @@ Elm.Todo.make = function (_elm) {
    $Json$Decode.$int),
    $Json$Decode.succeed("noAuthFromServer"));
    var updateTodo = function (t) {
-      return function () {
+      return _U.cmp(t.id,
+      0) > 0 ? function () {
          var request = {_: {}
                        ,body: updateBody(t)
                        ,headers: _L.fromArray([{ctor: "_Tuple2"
@@ -13803,7 +13795,7 @@ Elm.Todo.make = function (_elm) {
          A2($Http.send,
          $Http.defaultSettings,
          request)));
-      }();
+      }() : $Task.fail($Http.UnexpectedPayload("only update todos with ID > 0"));
    };
    _elm.Todo.values = {_op: _op
                       ,Todo: Todo
