@@ -4489,7 +4489,7 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Html$Attributes.hidden(true)]),
                  _L.fromArray([$Html.text("No error")]));}
             _U.badCase($moduleName,
-            "between lines 78 and 84");
+            "between lines 95 and 101");
          }();
          return A2($Html.div,
          _L.fromArray([]),
@@ -4503,19 +4503,36 @@ Elm.Main.make = function (_elm) {
    model) {
       return function () {
          switch (action.ctor)
-         {case "NoOp": return model;
+         {case "EditingDescription":
+            return function () {
+                 var newTodo = function (t) {
+                    return _U.replace([["editing"
+                                       ,_U.eq(t.id,
+                                       action._0) ? $Basics.not(t.editing) : false]],
+                    t);
+                 };
+                 return _U.replace([["todos"
+                                    ,A2($List.map,
+                                    newTodo,
+                                    model.todos)]],
+                 model);
+              }();
+            case "NoOp": return model;
             case "SetAuthToken":
-            return _U.replace([["token"
-                               ,action._0]
-                              ,["todos"
-                               ,A2($List.map,
-                               function (t) {
-                                  return _U.replace([["token"
-                                                     ,action._0]],
-                                  t);
-                               },
-                               model.todos)]],
-              model);
+            return function () {
+                 var newTodo = function (t) {
+                    return _U.replace([["token"
+                                       ,action._0]],
+                    t);
+                 };
+                 return _U.replace([["token"
+                                    ,action._0]
+                                   ,["todos"
+                                    ,A2($List.map,
+                                    newTodo,
+                                    model.todos)]],
+                 model);
+              }();
             case "SetTodos":
             return function () {
                  switch (action._0.ctor)
@@ -4528,14 +4545,16 @@ Elm.Main.make = function (_elm) {
                                        ,A2($List.map,
                                        function (t) {
                                           return _U.replace([["token"
-                                                             ,model.token]],
+                                                             ,model.token]
+                                                            ,["newDescription"
+                                                             ,t.description]],
                                           t);
                                        },
                                        action._0._0)]
                                       ,["error",$Maybe.Nothing]],
                       model);}
                  _U.badCase($moduleName,
-                 "between lines 43 and 52");
+                 "between lines 45 and 54");
               }();
             case "UpdateTodo":
             return function () {
@@ -4545,29 +4564,52 @@ Elm.Main.make = function (_elm) {
                                        ,$Maybe.Just($Basics.toString(action._0._0))]],
                       model);
                     case "Ok": return function () {
-                         var todo$ = _U.replace([["token"
-                                                 ,model.token]],
-                         action._0._0);
+                         var newTodo = function (t) {
+                            return _U.eq(t.id,
+                            action._0._0.id) ? _U.replace([["token"
+                                                           ,model.token]
+                                                          ,["newDescription"
+                                                           ,action._0._0.description]],
+                            action._0._0) : t;
+                         };
                          return _U.replace([["todos"
                                             ,A2($List.map,
-                                            function (t) {
-                                               return _U.eq(t.id,
-                                               action._0._0.id) ? todo$ : t;
-                                            },
+                                            newTodo,
                                             model.todos)]
                                            ,["lastUpdated",action._0._0.id]
                                            ,["error",$Maybe.Nothing]],
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 59 and 70");
-              }();}
+                 "between lines 55 and 71");
+              }();
+            case "UpdatingDescription":
+            switch (action._0.ctor)
+              {case "_Tuple2":
+                 return function () {
+                      var newTodo = function (t) {
+                         return _U.eq(t.id,
+                         action._0._0) ? _U.replace([["newDescription"
+                                                     ,action._0._1]],
+                         t) : t;
+                      };
+                      return _U.replace([["todos"
+                                         ,A2($List.map,
+                                         newTodo,
+                                         model.todos)]],
+                      model);
+                   }();}
+              break;}
          _U.badCase($moduleName,
-         "between lines 39 and 70");
+         "between lines 41 and 87");
       }();
    });
    var UpdateTodo = function (a) {
       return {ctor: "UpdateTodo"
+             ,_0: a};
+   };
+   var UpdatingDescription = function (a) {
+      return {ctor: "UpdatingDescription"
              ,_0: a};
    };
    var SetAuthToken = function (a) {
@@ -4578,12 +4620,22 @@ Elm.Main.make = function (_elm) {
       return {ctor: "SetTodos"
              ,_0: a};
    };
+   var EditingDescription = function (a) {
+      return {ctor: "EditingDescription"
+             ,_0: a};
+   };
    var NoOp = {ctor: "NoOp"};
    var box = $Signal.mailbox(NoOp);
    var actions = $Signal.mergeMany(_L.fromArray([box.signal
                                                 ,A2($Signal.map,
                                                 SetAuthToken,
-                                                getAuthToken)]));
+                                                getAuthToken)
+                                                ,A2($Signal.map,
+                                                EditingDescription,
+                                                $Todo.edits.signal)
+                                                ,A2($Signal.map,
+                                                UpdatingDescription,
+                                                $Todo.descUpdates.signal)]));
    var mergeCurrTodos = function (todos) {
       return $Signal.send(box.address)(SetTodos(todos));
    };
@@ -4627,8 +4679,10 @@ Elm.Main.make = function (_elm) {
                       ,Model: Model
                       ,init: init
                       ,NoOp: NoOp
+                      ,EditingDescription: EditingDescription
                       ,SetTodos: SetTodos
                       ,SetAuthToken: SetAuthToken
+                      ,UpdatingDescription: UpdatingDescription
                       ,UpdateTodo: UpdateTodo
                       ,update: update
                       ,view: view
@@ -13570,6 +13624,29 @@ Elm.Todo.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
+   var is13 = function (code) {
+      return _U.eq(code,
+      13) ? $Result.Ok({ctor: "_Tuple0"}) : $Result.Err("not the right key code");
+   };
+   var onEnter = F2(function (address,
+   value) {
+      return A3($Html$Events.on,
+      "keydown",
+      A2($Json$Decode.customDecoder,
+      $Html$Events.keyCode,
+      is13),
+      function (_v0) {
+         return function () {
+            return A2($Signal.message,
+            address,
+            value);
+         }();
+      });
+   });
+   var edits = $Signal.mailbox(0);
+   var descUpdates = $Signal.mailbox({ctor: "_Tuple2"
+                                     ,_0: 0
+                                     ,_1: ""});
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
    };
@@ -13595,7 +13672,10 @@ Elm.Todo.make = function (_elm) {
    });
    var editButton = function (t) {
       return A2($Html.span,
-      _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")]),
+      _L.fromArray([$Html$Attributes.$class("btn btn-info btn-xs")
+                   ,A2($Html$Events.onClick,
+                   edits.address,
+                   t.id)]),
       _L.fromArray([$Html.text("✍")]));
    };
    var priorityDescription = function (t) {
@@ -13645,7 +13725,9 @@ Elm.Todo.make = function (_elm) {
    var exampleTodo = {_: {}
                      ,description: ""
                      ,done: true
+                     ,editing: false
                      ,id: 0
+                     ,newDescription: ""
                      ,priority: 1
                      ,token: "noAuthAtStart"};
    var updates = $Signal.mailbox(exampleTodo);
@@ -13671,7 +13753,7 @@ Elm.Todo.make = function (_elm) {
             {case false: return "⬇︎";
                case true: return "⬆︎";}
             _U.badCase($moduleName,
-            "between lines 150 and 153");
+            "between lines 171 and 174");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13728,44 +13810,70 @@ Elm.Todo.make = function (_elm) {
    };
    var view = F2(function (id,t) {
       return function () {
+         var updater = A2($Html.div,
+         _L.fromArray([$Html$Attributes.$class("input-group input-group-md")]),
+         _L.fromArray([A2($Html.input,
+         _L.fromArray([$Html$Attributes.value(t.newDescription)
+                      ,$Html$Attributes.type$("text")
+                      ,$Html$Attributes.$class("form-control")
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      function (value) {
+                         return A2($Signal.message,
+                         descUpdates.address,
+                         {ctor: "_Tuple2"
+                         ,_0: t.id
+                         ,_1: value});
+                      })
+                      ,A2(onEnter,
+                      updates.address,
+                      _U.replace([["description"
+                                  ,t.newDescription]],
+                      t))]),
+         _L.fromArray([]))]));
+         var buttons = controlButtons(t);
          var rowStyles = _U.eq(id,
          t.id) ? _L.fromArray([{ctor: "_Tuple2"
                                ,_0: "background-color"
                                ,_1: "lightBlue"}]) : _L.fromArray([]);
-         var buttons = controlButtons(t);
          var spanAtr = _L.fromArray([$Html$Attributes.$class(cellClass(t))]);
-         var description = _L.fromArray([A2($Html.span,
+         var priority = A2($Html.span,
          spanAtr,
-         _L.fromArray([$Html.text(t.description)]))]);
-         var priority = _L.fromArray([A2($Html.span,
+         _L.fromArray([$Html.text(priorityDescription(t))]));
+         var description = A2($Html.span,
          spanAtr,
-         _L.fromArray([$Html.text(priorityDescription(t))]))]);
+         _L.fromArray([$Html.text(t.description)]));
          return A2($Html.tr,
          _L.fromArray([$Html$Attributes.style(rowStyles)]),
          _L.fromArray([A2($Html.td,
                       _L.fromArray([]),
-                      description)
+                      _L.fromArray([t.editing ? updater : description]))
                       ,A2($Html.td,
                       _L.fromArray([$Html$Attributes.$class("col-md-2")]),
-                      priority)
+                      _L.fromArray([priority]))
                       ,A2($Html.td,
                       _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
                       buttons)]));
       }();
    });
-   var Todo = F5(function (a,
+   var Todo = F7(function (a,
    b,
    c,
    d,
-   e) {
+   e,
+   f,
+   g) {
       return {_: {}
              ,description: a
              ,done: b
+             ,editing: f
              ,id: c
+             ,newDescription: g
              ,priority: d
              ,token: e};
    });
-   var decodeTodo = A6($Json$Decode.object5,
+   var decodeTodo = A8($Json$Decode.object7,
    Todo,
    A2($Json$Decode._op[":="],
    "description",
@@ -13779,7 +13887,9 @@ Elm.Todo.make = function (_elm) {
    A2($Json$Decode._op[":="],
    "priority",
    $Json$Decode.$int),
-   $Json$Decode.succeed("noAuthFromServer"));
+   $Json$Decode.succeed("noAuthFromServer"),
+   $Json$Decode.succeed(false),
+   $Json$Decode.succeed(""));
    var updateTodo = function (t) {
       return _U.cmp(t.id,
       0) > 0 ? function () {
@@ -13817,7 +13927,11 @@ Elm.Todo.make = function (_elm) {
                       ,increaseDecreaseClickHandler: increaseDecreaseClickHandler
                       ,doneButton: doneButton
                       ,cellClass: cellClass
-                      ,updates: updates};
+                      ,updates: updates
+                      ,descUpdates: descUpdates
+                      ,edits: edits
+                      ,onEnter: onEnter
+                      ,is13: is13};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};

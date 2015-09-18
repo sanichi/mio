@@ -4,7 +4,7 @@ import Http
 import Json.Decode as Decode
 import Signal exposing (Address)
 import Task exposing (Task)
-import Todo exposing (Todo, TodoResult, decodeTodo, exampleTodo, updateBody, updates, updateTodo)
+import Todo exposing (Todo, TodoResult, edits, decodeTodo, descUpdates, exampleTodo, updateBody, updates, updateTodo)
 import Todos exposing (Todos)
 
 -- MODEL
@@ -29,8 +29,10 @@ init =
 
 type Action
   = NoOp
+  | EditingDescription Int
   | SetTodos TodosResult
   | SetAuthToken String
+  | UpdatingDescription (Int, String)
   | UpdateTodo TodoResult
 
 
@@ -43,31 +45,46 @@ update action model =
       case result of
         Ok list ->
           { model
-          | todos <- List.map (\t -> { t | token <- model.token }) list
+          | todos <- List.map (\t -> { t | token <- model.token, newDescription <- t.description }) list
           , error <- Nothing
           }
 
         Err msg -> { model | error <- Just (toString msg) }
 
-    SetAuthToken value ->
-      { model
-      | token <- value
-      , todos <- List.map (\t -> { t | token <- value }) model.todos
-      }
-
     UpdateTodo result ->
       case result of
         Ok todo ->
           let
-            todo' = { todo | token <- model.token }
+            newTodo t =
+              if t.id == todo.id
+              then { todo | token <- model.token, newDescription <- todo.description }
+              else t
           in
             { model
-            | todos <- List.map (\t -> if t.id == todo.id then todo' else t) model.todos
+            | todos <- List.map newTodo model.todos
             , lastUpdated <- todo.id
             , error <- Nothing
             }
 
         Err msg -> { model | error <- Just (toString msg) }
+
+    EditingDescription id ->
+      let
+        newTodo t = { t | editing <- if t.id == id then not t.editing else False }
+      in
+        { model | todos <- List.map newTodo model.todos }
+
+    UpdatingDescription (id, description) ->
+      let
+        newTodo t = if t.id == id then { t | newDescription <- description } else t
+      in
+        { model | todos <- List.map newTodo model.todos }
+
+    SetAuthToken value ->
+      let
+        newTodo t = { t | token <- value }
+      in
+        { model | token <- value, todos <- List.map newTodo model.todos }
 
 -- VIEW
 
@@ -104,6 +121,8 @@ actions =
   Signal.mergeMany
     [ box.signal
     , (Signal.map SetAuthToken getAuthToken)
+    , (Signal.map EditingDescription edits.signal)
+    , (Signal.map UpdatingDescription descUpdates.signal)
     ]
 
 

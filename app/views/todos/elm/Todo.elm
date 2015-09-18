@@ -2,7 +2,7 @@ module Todo where
 
 import Dict
 import Html exposing (..)
-import Html.Attributes exposing (class, style)
+import Html.Attributes exposing (..)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
@@ -18,6 +18,8 @@ type alias Todo =
   , id: Int
   , priority: Int
   , token: String
+  , editing: Bool
+  , newDescription : String
   }
 
 
@@ -31,17 +33,21 @@ exampleTodo =
   , id = 0
   , priority = 1
   , token = "noAuthAtStart"
+  , editing = False
+  , newDescription = ""
   }
 
 
 decodeTodo : Decode.Decoder Todo
 decodeTodo =
-  Decode.object5 Todo
+  Decode.object7 Todo
     ("description" := Decode.string)
     ("done" := Decode.bool)
     ("id" := Decode.int)
     ("priority" := Decode.int)
     (Decode.succeed "noAuthFromServer")
+    (Decode.succeed False)
+    (Decode.succeed "")
 
 -- URLS
 
@@ -98,15 +104,28 @@ todoCompare t1 t2 =
 view : Int -> Todo -> Html
 view id t =
   let
-    spanAtr     = [ class (cellClass t) ]
-    description = [ span spanAtr [ text t.description ] ]
-    priority    = [ span spanAtr [ text (priorityDescription t) ] ]
-    buttons     = controlButtons t
-    rowStyles   = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
+    spanAtr = [ class (cellClass t) ]
+    rowStyles = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
+    priority = span spanAtr [ text (priorityDescription t) ]
+    buttons = controlButtons t
+    description = span spanAtr [ text t.description ]
+    updater =
+      div
+        [ class "input-group input-group-md" ]
+        [
+          input
+            [ value t.newDescription
+            , type' "text"
+            , class "form-control"
+            , Events.on "input" Events.targetValue (\value -> Signal.message descUpdates.address (t.id, value))
+            , onEnter updates.address { t | description <- t.newDescription }
+            ]
+            [ ]
+        ]
   in
     tr [ style rowStyles ]
-      [ td [ ] description
-      , td [ class "col-md-2" ] priority
+      [ td [ ] [ if t.editing then updater else description ]
+      , td [ class "col-md-2" ] [ priority ]
       , td [ class "col-md-3 text-center" ] buttons
       ]
 
@@ -127,7 +146,9 @@ controlButtons t =
 
 editButton : Todo -> Html
 editButton t =
-  span [ class "btn btn-info btn-xs" ] [ text "✍" ]
+  span
+    [ class "btn btn-info btn-xs", Events.onClick edits.address t.id ]
+    [ text "✍" ]
 
 
 increaseButton : Todo -> Html
@@ -199,3 +220,24 @@ cellClass todo =
 
 updates : Signal.Mailbox Todo
 updates = Signal.mailbox exampleTodo
+
+
+descUpdates : Signal.Mailbox (Int, String)
+descUpdates = Signal.mailbox (0, "")
+
+
+edits : Signal.Mailbox Int
+edits = Signal.mailbox 0
+
+-- UTILITIES
+
+onEnter : Signal.Address a -> a -> Attribute
+onEnter address value =
+    Events.on "keydown"
+      (Decode.customDecoder Events.keyCode is13)
+      (\_ -> Signal.message address value)
+
+
+is13 : Int -> Result String ()
+is13 code =
+  if code == 13 then Ok () else Err "not the right key code"
