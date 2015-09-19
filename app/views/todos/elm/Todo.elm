@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
-import Misc exposing (highPriority, lowPriority, priorities)
+import Misc exposing (delete, done, down, highPriority, lowPriority, priorities, up)
 import String
 import Task exposing (Task)
 
@@ -177,40 +177,40 @@ decreaseButton t =
 
 
 increaseDecreaseButton : Todo -> Bool -> Html
-increaseDecreaseButton t up =
+increaseDecreaseButton t bool =
   let
-    spanClass = increaseDecreaseSpanClass t up
-    clickHandler = increaseDecreaseClickHandler t up
+    spanClass = increaseDecreaseSpanClass t bool
+    clickHandler = increaseDecreaseClickHandler t bool
     spanAttrs = spanClass :: clickHandler
     arrow =
-      case up of
-        True -> "⬆︎"
-        False -> "⬇︎"
+      case bool of
+        True -> up
+        False -> down
   in
     span spanAttrs [ text arrow ]
 
 
 canIncreaseDecrease : Todo -> Bool -> Bool
-canIncreaseDecrease t up =
-  if up
+canIncreaseDecrease t bool =
+  if bool
     then t.priority > highPriority
     else t.priority < lowPriority
 
 
 increaseDecreaseSpanClass : Todo -> Bool -> Attribute
-increaseDecreaseSpanClass t up =
+increaseDecreaseSpanClass t bool =
   let
-    canChange = canIncreaseDecrease t up
+    canChange = canIncreaseDecrease t bool
     butColor = if canChange then "info" else "default"
   in
     class ("btn btn-" ++ butColor ++ " btn-xs")
 
 
 increaseDecreaseClickHandler : Todo -> Bool -> List Attribute
-increaseDecreaseClickHandler t up =
+increaseDecreaseClickHandler t bool =
   let
-    canChange = canIncreaseDecrease t up
-    newTodo = { t | priority <- t.priority + (if up then -1 else 1) }
+    canChange = canIncreaseDecrease t bool
+    newTodo = { t | priority <- t.priority + (if bool then -1 else 1) }
   in
     if canChange
     then [ Events.onClick updates.address newTodo ]
@@ -224,14 +224,14 @@ doneButton t =
   in
     span
       [ class "btn btn-success btn-xs", Events.onClick updates.address newTodo ]
-      [ text "✔︎" ]
+      [ text done ]
 
 
 deleteButton : Todo -> Html
 deleteButton t =
   span
     [ class "btn btn-danger btn-xs", Events.onClick deletes.address t ]
-    [ text "✘" ]
+    [ text delete ]
 
 
 cellClass : Todo -> String

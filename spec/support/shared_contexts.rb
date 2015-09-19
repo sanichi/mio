@@ -113,10 +113,15 @@ shared_context "test_data" do
 
   let(:new_todo)        { I18n.t("todo.new") }
   let(:todo_done)       { I18n.t("todo.done") }
-  let(:todo_elm)        { I18n.t("todo.elm") }
   let(:todo_priority)   { I18n.t("todo.priority") }
   let(:todo_priorities) { I18n.t("todo.priorities") }
   let(:todo_rails)      { I18n.t("todo.rails") }
   let(:todo_todo)       { I18n.t("todo.todo") }
   let(:todo_todos)      { I18n.t("todo.todos") }
+
+  let(:todo_elm)        { I18n.t("todo.elm.app") }
+  let(:todo_elm_delete) { I18n.t("todo.elm.delete") }
+  let(:todo_elm_done)   { I18n.t("todo.elm.done") }
+  let(:todo_elm_down)   { I18n.t("todo.elm.down") }
+  let(:todo_elm_up)     { I18n.t("todo.elm.up") }
 end

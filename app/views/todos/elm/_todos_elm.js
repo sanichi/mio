@@ -4827,6 +4827,10 @@ Elm.Misc.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
+   var up = "⬆︎";
+   var down = "⬇︎";
+   var done = "✔︎";
+   var $delete = "✘";
    var priorities = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
                                                  ,_0: 0
                                                  ,_1: "Urgent"}
@@ -4847,7 +4851,11 @@ Elm.Misc.make = function (_elm) {
    _elm.Misc.values = {_op: _op
                       ,highPriority: highPriority
                       ,lowPriority: lowPriority
-                      ,priorities: priorities};
+                      ,priorities: priorities
+                      ,$delete: $delete
+                      ,done: done
+                      ,down: down
+                      ,up: up};
    return _elm.Misc.values;
 };
 Elm.Native.Array = {};
@@ -13702,17 +13710,17 @@ Elm.Todo.make = function (_elm) {
       return todo.done ? "inactive" : "active";
    };
    var canIncreaseDecrease = F2(function (t,
-   up) {
-      return up ? _U.cmp(t.priority,
+   bool) {
+      return bool ? _U.cmp(t.priority,
       $Misc.highPriority) > 0 : _U.cmp(t.priority,
       $Misc.lowPriority) < 0;
    });
    var increaseDecreaseSpanClass = F2(function (t,
-   up) {
+   bool) {
       return function () {
          var canChange = A2(canIncreaseDecrease,
          t,
-         up);
+         bool);
          var butColor = canChange ? "info" : "default";
          return $Html$Attributes.$class(A2($Basics._op["++"],
          "btn btn-",
@@ -13793,35 +13801,35 @@ Elm.Todo.make = function (_elm) {
                      ,token: "noAuthAtStart"};
    var updates = $Signal.mailbox(exampleTodo);
    var increaseDecreaseClickHandler = F2(function (t,
-   up) {
+   bool) {
       return function () {
          var newTodo = _U.replace([["priority"
-                                   ,t.priority + (up ? -1 : 1)]],
+                                   ,t.priority + (bool ? -1 : 1)]],
          t);
          var canChange = A2(canIncreaseDecrease,
          t,
-         up);
+         bool);
          return canChange ? _L.fromArray([A2($Html$Events.onClick,
          updates.address,
          newTodo)]) : _L.fromArray([]);
       }();
    });
    var increaseDecreaseButton = F2(function (t,
-   up) {
+   bool) {
       return function () {
          var arrow = function () {
-            switch (up)
-            {case false: return "⬇︎";
-               case true: return "⬆︎";}
+            switch (bool)
+            {case false: return $Misc.down;
+               case true: return $Misc.up;}
             _U.badCase($moduleName,
             "between lines 186 and 189");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
-         up);
+         bool);
          var spanClass = A2(increaseDecreaseSpanClass,
          t,
-         up);
+         bool);
          var spanAttrs = A2($List._op["::"],
          spanClass,
          clickHandler);
@@ -13850,7 +13858,7 @@ Elm.Todo.make = function (_elm) {
                       ,A2($Html$Events.onClick,
                       updates.address,
                       newTodo)]),
-         _L.fromArray([$Html.text("✔︎")]));
+         _L.fromArray([$Html.text($Misc.done)]));
       }();
    };
    var deletes = $Signal.mailbox(exampleTodo);
@@ -13860,7 +13868,7 @@ Elm.Todo.make = function (_elm) {
                    ,A2($Html$Events.onClick,
                    deletes.address,
                    t)]),
-      _L.fromArray([$Html.text("✘")]));
+      _L.fromArray([$Html.text($Misc.$delete)]));
    };
    var controlButtons = function (t) {
       return function () {

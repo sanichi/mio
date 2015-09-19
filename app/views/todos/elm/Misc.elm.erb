@@ -11,3 +11,15 @@ lowPriority = <%= @priority_low %>
 priorities : Dict Int String
 priorities =
   Dict.fromList [ <%= @priority_desc.each_pair.map{ |k, v| '(%d, "%s")' % [k, v] }.join(", ") %> ]
+
+delete : String
+delete = "<%= I18n.t('todo.elm.delete') %>"
+
+done : String
+done = "<%= I18n.t('todo.elm.done') %>"
+
+down : String
+down = "<%= I18n.t('todo.elm.down') %>"
+
+up : String
+up = "<%= I18n.t('todo.elm.up') %>"

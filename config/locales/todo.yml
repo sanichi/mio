@@ -2,12 +2,17 @@ en:
   todo:
     done: Done
     edit: Edit Todo
-    elm: Elm
     new: New Todo
     priority: Priority
     rails: Rails
     todo: Todo
     todos: Todos
+    elm:
+      app: Elm
+      delete: ✘
+      done: ✔︎
+      down: ⬇︎
+      up: ⬆︎
     priorities:
       - Urgent
       - Important
