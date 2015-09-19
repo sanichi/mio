@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
-import Misc exposing (priorityHigh, priorityLow, priorityString)
+import Misc exposing (highPriority, lowPriority, priorities)
 import String
 import Task exposing (Task)
 
@@ -21,9 +21,6 @@ type alias Todo =
   , editing: Bool
   , newDescription : String
   }
-
-
-type alias TodoResult = Result Http.Error Todo
 
 
 exampleTodo : Todo
@@ -49,11 +46,9 @@ decodeTodo =
     (Decode.succeed False)
     (Decode.succeed "")
 
--- URLS
 
-updateUrl : Todo -> String
-updateUrl t =
-  "/todos/" ++ (toString t.id) ++ ".json"
+type alias UpdateResult = Result Http.Error Todo
+type alias DeleteResult = Result Http.Error Int
 
 -- UPDATE
 
@@ -70,23 +65,46 @@ updateBody t =
       , "utf8=✓"
       ]
 
--- Using Http.post sets the Content-Type to text/plain, which Rails rejects
--- so here we use the full Http.send method just to fix that.
-updateTodo : Todo -> Task Http.Error TodoResult
+
+updateTodo : Todo -> Task Http.Error UpdateResult
 updateTodo t =
   if t.id > 0 then
     let
       request =
         { verb = "POST"
         , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
-        , url = updateUrl t
+        , url = updateAndDeleteUrl t
         , body = updateBody t
         }
     in
       Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
   else
-    Task.fail <| Http.UnexpectedPayload "only update todos with ID > 0"
+    Task.fail <| Http.UnexpectedPayload "can't update todos unless ID > 0"
 
+
+deleteBody : Todo -> Http.Body
+deleteBody t =
+  Http.string <|
+    String.join "&"
+      [ "_method=delete"
+      , "authenticity_token=" ++ (Http.uriEncode t.token)
+      ]
+
+
+deleteTodo : Todo -> Task Http.Error DeleteResult
+deleteTodo t =
+  if t.id > 0 then
+    let
+      request =
+        { verb = "POST"
+        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , url = updateAndDeleteUrl t
+        , body = deleteBody t
+        }
+    in
+      Task.toResult <| Http.fromJson Decode.int (Http.send Http.defaultSettings request)
+  else
+    Task.fail <| Http.UnexpectedPayload "can't delete todos unless ID > 0"
 
 -- VIEW
 
@@ -104,11 +122,12 @@ todoCompare t1 t2 =
 view : Int -> Todo -> Html
 view id t =
   let
-    spanAtr = [ class (cellClass t) ]
+    spanAtr = class (cellClass t)
     rowStyles = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
-    priority = span spanAtr [ text (priorityDescription t) ]
     buttons = controlButtons t
-    description = span spanAtr [ text t.description ]
+    priority = span [ spanAtr ] [ text (priorityDescription t) ]
+    description =
+      span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
     updater =
       div
         [ class "input-group input-group-md" ]
@@ -117,7 +136,10 @@ view id t =
             [ value t.newDescription
             , type' "text"
             , class "form-control"
-            , Events.on "input" Events.targetValue (\value -> Signal.message descUpdates.address (t.id, value))
+            , size 50
+            , autofocus True
+            , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
+            , Events.onBlur edits.address (t.id, False)
             , onEnter updates.address { t | description <- t.newDescription }
             ]
             [ ]
@@ -132,23 +154,16 @@ view id t =
 
 priorityDescription : Todo -> String
 priorityDescription t =
-  Maybe.withDefault "Unknown" (Dict.get t.priority priorityString)
+  Maybe.withDefault "Unknown" (Dict.get t.priority priorities)
 
 
 controlButtons : Todo -> List Html
 controlButtons t =
   let
     space = text "\n"
-    buttons = List.map (\f -> f t) [editButton, increaseButton, decreaseButton, doneButton]
+    buttons = List.map (\f -> f t) [increaseButton, decreaseButton, doneButton, deleteButton]
   in
     List.intersperse space buttons
-
-
-editButton : Todo -> Html
-editButton t =
-  span
-    [ class "btn btn-info btn-xs", Events.onClick edits.address t.id ]
-    [ text "✍" ]
 
 
 increaseButton : Todo -> Html
@@ -178,8 +193,8 @@ increaseDecreaseButton t up =
 canIncreaseDecrease : Todo -> Bool -> Bool
 canIncreaseDecrease t up =
   if up
-    then t.priority > priorityHigh
-    else t.priority < priorityLow
+    then t.priority > highPriority
+    else t.priority < lowPriority
 
 
 increaseDecreaseSpanClass : Todo -> Bool -> Attribute
@@ -208,8 +223,15 @@ doneButton t =
     newTodo = { t | done <- if t.done then False else True }
   in
     span
-      [class "btn btn-success btn-xs", Events.onClick updates.address newTodo]
+      [ class "btn btn-success btn-xs", Events.onClick updates.address newTodo ]
       [ text "✔︎" ]
+
+
+deleteButton : Todo -> Html
+deleteButton t =
+  span
+    [ class "btn btn-danger btn-xs", Events.onClick deletes.address t ]
+    [ text "✘" ]
 
 
 cellClass : Todo -> String
@@ -218,18 +240,27 @@ cellClass todo =
 
 -- SIGNALS
 
+descriptions : Signal.Mailbox (Int, String)
+descriptions = Signal.mailbox (0, "")
+
+
 updates : Signal.Mailbox Todo
 updates = Signal.mailbox exampleTodo
 
 
-descUpdates : Signal.Mailbox (Int, String)
-descUpdates = Signal.mailbox (0, "")
+deletes : Signal.Mailbox Todo
+deletes = Signal.mailbox exampleTodo
 
 
-edits : Signal.Mailbox Int
-edits = Signal.mailbox 0
+edits : Signal.Mailbox (Int, Bool)
+edits = Signal.mailbox (0, False)
 
 -- UTILITIES
+
+updateAndDeleteUrl : Todo -> String
+updateAndDeleteUrl t =
+  "/todos/" ++ (toString t.id) ++ ".json"
+
 
 onEnter : Signal.Address a -> a -> Attribute
 onEnter address value =

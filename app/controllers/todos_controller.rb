@@ -27,7 +27,7 @@ class TodosController < ApplicationController
     ok = @todo.update(strong_params)
     respond_to do |format|
       format.html { ok ? redirect_to(todos_path) : render(action: "edit") }
-      format.json { render json: ok ? @todo.to_json : @todo.errors.full_messages.to_json }
+      format.json { render json: ok ? @todo.to_json : @todo.errors.full_messages.first.to_json }
     end
   end
 
@@ -37,7 +37,10 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
-    redirect_to todos_path
+    respond_to do |format|
+      format.html { redirect_to todos_path }
+      format.json { render json: @todo.id.to_json }
+    end
   end
 
   private

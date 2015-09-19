@@ -4,7 +4,11 @@ import Http
 import Json.Decode as Decode
 import Signal exposing (Address)
 import Task exposing (Task)
-import Todo exposing (Todo, TodoResult, edits, decodeTodo, descUpdates, exampleTodo, updateBody, updates, updateTodo)
+import Todo exposing
+  ( Todo, UpdateResult, DeleteResult
+  , exampleTodo, decodeTodo, updateTodo, deleteTodo
+  , edits, descriptions, updates, deletes
+  )
 import Todos exposing (Todos)
 
 -- MODEL
@@ -29,27 +33,30 @@ init =
 
 type Action
   = NoOp
-  | EditingDescription Int
+  | EditingDescription (Int, Bool)
   | SetTodos TodosResult
   | SetAuthToken String
   | UpdatingDescription (Int, String)
-  | UpdateTodo TodoResult
+  | UpdateTodo UpdateResult
+  | DeleteTodo DeleteResult
 
 
 update : Action -> Model -> Model
 update action model =
   case action of
-    NoOp -> model
+    NoOp ->
+      model
 
     SetTodos result ->
       case result of
         Ok list ->
-          { model
-          | todos <- List.map (\t -> { t | token <- model.token, newDescription <- t.description }) list
-          , error <- Nothing
-          }
+          let
+            newTodo t =  { t | token <- model.token, newDescription <- t.description }
+          in
+            { model | todos <- List.map newTodo list, error <- Nothing }
 
-        Err msg -> { model | error <- Just (toString msg) }
+        Err msg ->
+          { model | error <- Just (toString msg) }
 
     UpdateTodo result ->
       case result of
@@ -68,9 +75,20 @@ update action model =
 
         Err msg -> { model | error <- Just (toString msg) }
 
-    EditingDescription id ->
+    DeleteTodo result ->
+      case result of
+        Ok id ->
+          { model
+          | todos <- List.filter (\t -> t.id /= id) model.todos
+          , lastUpdated <- 0
+          , error <- Nothing
+          }
+
+        Err msg -> { model | error <- Just (toString msg) }
+
+    EditingDescription (id, bool) ->
       let
-        newTodo t = { t | editing <- if t.id == id then not t.editing else False }
+        newTodo t = { t | editing <- if t.id == id then bool else False }
       in
         { model | todos <- List.map newTodo model.todos }
 
@@ -84,7 +102,7 @@ update action model =
       let
         newTodo t = { t | token <- value }
       in
-        { model | token <- value, todos <- List.map newTodo model.todos }
+        { model | todos <- List.map newTodo model.todos, token <- value }
 
 -- VIEW
 
@@ -100,8 +118,8 @@ view model =
           Html.p [ Attr.hidden True ] [ Html.text "No error" ]
   in
     Html.div []
-      [ Todos.view model.lastUpdated model.todos
-      , error
+      [ error
+      , Todos.view model.lastUpdated model.todos
       ]
 
 -- SIGNALS
@@ -119,15 +137,15 @@ model =
 actions : Signal Action
 actions =
   Signal.mergeMany
-    [ box.signal
+    [ mailBox.signal
     , (Signal.map SetAuthToken getAuthToken)
     , (Signal.map EditingDescription edits.signal)
-    , (Signal.map UpdatingDescription descUpdates.signal)
+    , (Signal.map UpdatingDescription descriptions.signal)
     ]
 
 
-box : Signal.Mailbox Action
-box =
+mailBox : Signal.Mailbox Action
+mailBox =
   Signal.mailbox NoOp
 
 -- TASKS
@@ -142,12 +160,17 @@ getCurrTodos =
 
 mergeCurrTodos : TodosResult -> Task Http.Error ()
 mergeCurrTodos todos =
-  Signal.send box.address <| SetTodos todos
+  Signal.send mailBox.address <| SetTodos todos
 
 
-mergeTodo : TodoResult -> Task Http.Error ()
+mergeTodo : UpdateResult -> Task Http.Error ()
 mergeTodo todo =
-  Signal.send box.address <| UpdateTodo todo
+  Signal.send mailBox.address <| UpdateTodo todo
+
+
+removeTodo : DeleteResult -> Task Http.Error ()
+removeTodo id =
+  Signal.send mailBox.address <| DeleteTodo id
 
 -- PORTS
 
@@ -155,8 +178,15 @@ port runner : Task Http.Error ()
 port runner =
   getCurrTodos `Task.andThen` mergeCurrTodos
 
-port getAuthToken: Signal String
 
 port performUpdates : Signal (Task Http.Error ())
 port performUpdates =
   Signal.map (\todo -> updateTodo todo `Task.andThen` mergeTodo) updates.signal
+
+
+port performDeletes : Signal (Task Http.Error ())
+port performDeletes =
+  Signal.map (\todo -> deleteTodo todo `Task.andThen` removeTodo) deletes.signal
+
+
+port getAuthToken: Signal String
