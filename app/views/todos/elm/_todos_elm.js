@@ -4489,7 +4489,7 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Html$Attributes.hidden(true)]),
                  _L.fromArray([$Html.text("No error")]));}
             _U.badCase($moduleName,
-            "between lines 113 and 119");
+            "between lines 120 and 126");
          }();
          return A2($Html.div,
          _L.fromArray([]),
@@ -4503,7 +4503,34 @@ Elm.Main.make = function (_elm) {
    model) {
       return function () {
          switch (action.ctor)
-         {case "DeleteTodo":
+         {case "AddNewTodo":
+            return function () {
+                 switch (action._0.ctor)
+                 {case "Err":
+                    return _U.replace([["error"
+                                       ,$Maybe.Just($Basics.toString(action._0._0))]],
+                      model);
+                    case "Ok": return function () {
+                         var newTodo = function (t) {
+                            return _U.eq(t.id,
+                            0) ? _U.replace([["newDescription"
+                                             ,""]],
+                            t) : t;
+                         };
+                         return _U.replace([["todos"
+                                            ,A2($List._op["::"],
+                                            action._0._0,
+                                            A2($List.map,
+                                            newTodo,
+                                            model.todos))]
+                                           ,["lastUpdated",action._0._0.id]
+                                           ,["error",$Maybe.Nothing]],
+                         model);
+                      }();}
+                 _U.badCase($moduleName,
+                 "between lines 49 and 62");
+              }();
+            case "DeleteTodo":
             return function () {
                  switch (action._0.ctor)
                  {case "Err":
@@ -4522,7 +4549,7 @@ Elm.Main.make = function (_elm) {
                                       ,["error",$Maybe.Nothing]],
                       model);}
                  _U.badCase($moduleName,
-                 "between lines 79 and 89");
+                 "between lines 63 and 73");
               }();
             case "EditingDescription":
             switch (action._0.ctor)
@@ -4542,20 +4569,6 @@ Elm.Main.make = function (_elm) {
                    }();}
               break;
             case "NoOp": return model;
-            case "SetAuthToken":
-            return function () {
-                 var newTodo = function (t) {
-                    return _U.replace([["token"
-                                       ,action._0]],
-                    t);
-                 };
-                 return _U.replace([["todos"
-                                    ,A2($List.map,
-                                    newTodo,
-                                    model.todos)]
-                                   ,["token",action._0]],
-                 model);
-              }();
             case "SetTodos":
             return function () {
                  switch (action._0.ctor)
@@ -4565,50 +4578,24 @@ Elm.Main.make = function (_elm) {
                       model);
                     case "Ok": return function () {
                          var newTodo = function (t) {
-                            return _U.replace([["token"
-                                               ,model.token]
-                                              ,["newDescription"
+                            return _U.replace([["newDescription"
                                                ,t.description]],
                             t);
                          };
+                         var todos = A2($List.map,
+                         newTodo,
+                         A2($List._op["::"],
+                         $Todo.exampleTodo,
+                         action._0._0));
                          return _U.replace([["todos"
-                                            ,A2($List.map,
-                                            newTodo,
-                                            action._0._0)]
+                                            ,todos]
                                            ,["error",$Maybe.Nothing]],
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 51 and 61");
+                 "between lines 103 and 112");
               }();
-            case "UpdateTodo":
-            return function () {
-                 switch (action._0.ctor)
-                 {case "Err":
-                    return _U.replace([["error"
-                                       ,$Maybe.Just($Basics.toString(action._0._0))]],
-                      model);
-                    case "Ok": return function () {
-                         var newTodo = function (t) {
-                            return _U.eq(t.id,
-                            action._0._0.id) ? _U.replace([["token"
-                                                           ,model.token]
-                                                          ,["newDescription"
-                                                           ,action._0._0.description]],
-                            action._0._0) : t;
-                         };
-                         return _U.replace([["todos"
-                                            ,A2($List.map,
-                                            newTodo,
-                                            model.todos)]
-                                           ,["lastUpdated",action._0._0.id]
-                                           ,["error",$Maybe.Nothing]],
-                         model);
-                      }();}
-                 _U.badCase($moduleName,
-                 "between lines 62 and 78");
-              }();
-            case "UpdatingDescription":
+            case "UpdateDescription":
             switch (action._0.ctor)
               {case "_Tuple2":
                  return function () {
@@ -4624,46 +4611,68 @@ Elm.Main.make = function (_elm) {
                                          model.todos)]],
                       model);
                    }();}
-              break;}
+              break;
+            case "UpdateTodo":
+            return function () {
+                 switch (action._0.ctor)
+                 {case "Err":
+                    return _U.replace([["error"
+                                       ,$Maybe.Just($Basics.toString(action._0._0))]],
+                      model);
+                    case "Ok": return function () {
+                         var newTodo = function (t) {
+                            return _U.eq(t.id,
+                            action._0._0.id) ? _U.replace([["newDescription"
+                                                           ,action._0._0.description]],
+                            action._0._0) : t;
+                         };
+                         return _U.replace([["todos"
+                                            ,A2($List.map,
+                                            newTodo,
+                                            model.todos)]
+                                           ,["lastUpdated",action._0._0.id]
+                                           ,["error",$Maybe.Nothing]],
+                         model);
+                      }();}
+                 _U.badCase($moduleName,
+                 "between lines 86 and 102");
+              }();}
          _U.badCase($moduleName,
-         "between lines 46 and 105");
+         "between lines 44 and 112");
       }();
    });
-   var DeleteTodo = function (a) {
-      return {ctor: "DeleteTodo"
+   var SetTodos = function (a) {
+      return {ctor: "SetTodos"
              ,_0: a};
    };
    var UpdateTodo = function (a) {
       return {ctor: "UpdateTodo"
              ,_0: a};
    };
-   var UpdatingDescription = function (a) {
-      return {ctor: "UpdatingDescription"
-             ,_0: a};
-   };
-   var SetAuthToken = function (a) {
-      return {ctor: "SetAuthToken"
-             ,_0: a};
-   };
-   var SetTodos = function (a) {
-      return {ctor: "SetTodos"
+   var UpdateDescription = function (a) {
+      return {ctor: "UpdateDescription"
              ,_0: a};
    };
    var EditingDescription = function (a) {
       return {ctor: "EditingDescription"
              ,_0: a};
    };
+   var DeleteTodo = function (a) {
+      return {ctor: "DeleteTodo"
+             ,_0: a};
+   };
+   var AddNewTodo = function (a) {
+      return {ctor: "AddNewTodo"
+             ,_0: a};
+   };
    var NoOp = {ctor: "NoOp"};
    var mailBox = $Signal.mailbox(NoOp);
    var actions = $Signal.mergeMany(_L.fromArray([mailBox.signal
                                                 ,A2($Signal.map,
-                                                SetAuthToken,
-                                                getAuthToken)
-                                                ,A2($Signal.map,
                                                 EditingDescription,
                                                 $Todo.edits.signal)
                                                 ,A2($Signal.map,
-                                                UpdatingDescription,
+                                                UpdateDescription,
                                                 $Todo.descriptions.signal)]));
    var mergeCurrTodos = function (todos) {
       return $Signal.send(mailBox.address)(SetTodos(todos));
@@ -4671,6 +4680,17 @@ Elm.Main.make = function (_elm) {
    var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
    getCurrTodos,
    mergeCurrTodos));
+   var addNewTodo = function (todo) {
+      return $Signal.send(mailBox.address)(AddNewTodo(todo));
+   };
+   var performCreates = Elm.Native.Task.make(_elm).performSignal("performCreates",
+   A2($Signal.map,
+   function (todo) {
+      return A2($Task.andThen,
+      $Todo.createTodo(todo),
+      addNewTodo);
+   },
+   $Todo.creates.signal));
    var mergeTodo = function (todo) {
       return $Signal.send(mailBox.address)(UpdateTodo(todo));
    };
@@ -4696,8 +4716,7 @@ Elm.Main.make = function (_elm) {
    var init = {_: {}
               ,error: $Maybe.Nothing
               ,lastUpdated: 0
-              ,todos: _L.fromArray([])
-              ,token: "noAuthAtStart"};
+              ,todos: _L.fromArray([])};
    var model = A3($Signal.foldp,
    update,
    init,
@@ -4705,26 +4724,24 @@ Elm.Main.make = function (_elm) {
    var main = A2($Signal.map,
    view,
    model);
-   var Model = F4(function (a,
+   var Model = F3(function (a,
    b,
-   c,
-   d) {
+   c) {
       return {_: {}
-             ,error: d
-             ,lastUpdated: c
-             ,todos: a
-             ,token: b};
+             ,error: c
+             ,lastUpdated: b
+             ,todos: a};
    });
    _elm.Main.values = {_op: _op
                       ,Model: Model
                       ,init: init
                       ,NoOp: NoOp
-                      ,EditingDescription: EditingDescription
-                      ,SetTodos: SetTodos
-                      ,SetAuthToken: SetAuthToken
-                      ,UpdatingDescription: UpdatingDescription
-                      ,UpdateTodo: UpdateTodo
+                      ,AddNewTodo: AddNewTodo
                       ,DeleteTodo: DeleteTodo
+                      ,EditingDescription: EditingDescription
+                      ,UpdateDescription: UpdateDescription
+                      ,UpdateTodo: UpdateTodo
+                      ,SetTodos: SetTodos
                       ,update: update
                       ,view: view
                       ,main: main
@@ -4733,6 +4750,7 @@ Elm.Main.make = function (_elm) {
                       ,mailBox: mailBox
                       ,getCurrTodos: getCurrTodos
                       ,mergeCurrTodos: mergeCurrTodos
+                      ,addNewTodo: addNewTodo
                       ,mergeTodo: mergeTodo
                       ,removeTodo: removeTodo};
    return _elm.Main.values;
@@ -4827,35 +4845,39 @@ Elm.Misc.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var up = "⬆︎";
-   var down = "⬇︎";
-   var done = "✔︎";
-   var $delete = "✘";
-   var priorities = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                 ,_0: 0
-                                                 ,_1: "Urgent"}
-                                                ,{ctor: "_Tuple2"
-                                                 ,_0: 1
-                                                 ,_1: "Important"}
-                                                ,{ctor: "_Tuple2"
-                                                 ,_0: 2
-                                                 ,_1: "Medium"}
-                                                ,{ctor: "_Tuple2"
-                                                 ,_0: 3
-                                                 ,_1: "Low"}
-                                                ,{ctor: "_Tuple2"
-                                                 ,_0: 4
-                                                 ,_1: "Lowest"}]));
+   var maxDesc = 60;
+   var i18Up = "⬆︎";
+   var i18NewTodo = "New Todo";
+   var i18Down = "⬇︎";
+   var i18Done = "✔︎";
+   var i18Delete = "✘";
+   var i18Priorities = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                    ,_0: 0
+                                                    ,_1: "Urgent"}
+                                                   ,{ctor: "_Tuple2"
+                                                    ,_0: 1
+                                                    ,_1: "Important"}
+                                                   ,{ctor: "_Tuple2"
+                                                    ,_0: 2
+                                                    ,_1: "Medium"}
+                                                   ,{ctor: "_Tuple2"
+                                                    ,_0: 3
+                                                    ,_1: "Low"}
+                                                   ,{ctor: "_Tuple2"
+                                                    ,_0: 4
+                                                    ,_1: "Lowest"}]));
    var lowPriority = 4;
    var highPriority = 0;
    _elm.Misc.values = {_op: _op
                       ,highPriority: highPriority
                       ,lowPriority: lowPriority
-                      ,priorities: priorities
-                      ,$delete: $delete
-                      ,done: done
-                      ,down: down
-                      ,up: up};
+                      ,i18Priorities: i18Priorities
+                      ,i18Delete: i18Delete
+                      ,i18Done: i18Done
+                      ,i18Down: i18Down
+                      ,i18NewTodo: i18NewTodo
+                      ,i18Up: i18Up
+                      ,maxDesc: maxDesc};
    return _elm.Misc.values;
 };
 Elm.Native.Array = {};
@@ -13673,26 +13695,8 @@ Elm.Todo.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
-   $Task = Elm.Task.make(_elm);
-   var is13 = function (code) {
-      return _U.eq(code,
-      13) ? $Result.Ok({ctor: "_Tuple0"}) : $Result.Err("not the right key code");
-   };
-   var onEnter = F2(function (address,
-   value) {
-      return A3($Html$Events.on,
-      "keydown",
-      A2($Json$Decode.customDecoder,
-      $Html$Events.keyCode,
-      is13),
-      function (_v0) {
-         return function () {
-            return A2($Signal.message,
-            address,
-            value);
-         }();
-      });
-   });
+   $Task = Elm.Task.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var updateAndDeleteUrl = function (t) {
       return A2($Basics._op["++"],
       "/todos/",
@@ -13700,6 +13704,7 @@ Elm.Todo.make = function (_elm) {
       $Basics.toString(t.id),
       ".json"));
    };
+   var createUrl = "/todos.json";
    var edits = $Signal.mailbox({ctor: "_Tuple2"
                                ,_0: 0
                                ,_1: false});
@@ -13734,11 +13739,15 @@ Elm.Todo.make = function (_elm) {
       "Unknown",
       A2($Dict.get,
       t.priority,
-      $Misc.priorities));
+      $Misc.i18Priorities));
    };
    var todoCompare = F2(function (t1,
    t2) {
-      return A2($Basics.xor,
+      return _U.eq(t1.id,
+      0) || _U.eq(t2.id,
+      0) ? A2($Basics.compare,
+      t2.id,
+      t1.id) : A2($Basics.xor,
       t1.done,
       t2.done) ? t1.done ? $Basics.GT : $Basics.LT : _U.eq(t1.priority,
       t2.priority) ? A2($Basics.compare,
@@ -13748,12 +13757,7 @@ Elm.Todo.make = function (_elm) {
       t2.priority);
    });
    var deleteBody = function (t) {
-      return $Http.string(A2($String.join,
-      "&",
-      _L.fromArray(["_method=delete"
-                   ,A2($Basics._op["++"],
-                   "authenticity_token=",
-                   $Http.uriEncode(t.token))])));
+      return $Http.string("_method=delete");
    };
    var deleteTodo = function (t) {
       return _U.cmp(t.id,
@@ -13784,21 +13788,30 @@ Elm.Todo.make = function (_elm) {
                    ,A2($Basics._op["++"],
                    "todo%5Bdone%5D=",
                    t.done ? "1" : "0")
-                   ,A2($Basics._op["++"],
-                   "authenticity_token=",
-                   $Http.uriEncode(t.token))
                    ,"_method=patch"
+                   ,"commit=Save"
+                   ,"utf8=✓"])));
+   };
+   var createBody = function (t) {
+      return $Http.string(A2($String.join,
+      "&",
+      _L.fromArray([A2($Basics._op["++"],
+                   "todo%5Bdescription%5D=",
+                   $Http.uriEncode(t.description))
+                   ,A2($Basics._op["++"],
+                   "todo%5Bpriority%5D=",
+                   $Basics.toString(t.priority))
                    ,"commit=Save"
                    ,"utf8=✓"])));
    };
    var exampleTodo = {_: {}
                      ,description: ""
-                     ,done: true
+                     ,done: false
                      ,editing: false
                      ,id: 0
                      ,newDescription: ""
-                     ,priority: 1
-                     ,token: "noAuthAtStart"};
+                     ,priority: $Misc.highPriority};
+   var creates = $Signal.mailbox(exampleTodo);
    var updates = $Signal.mailbox(exampleTodo);
    var increaseDecreaseClickHandler = F2(function (t,
    bool) {
@@ -13819,10 +13832,11 @@ Elm.Todo.make = function (_elm) {
       return function () {
          var arrow = function () {
             switch (bool)
-            {case false: return $Misc.down;
-               case true: return $Misc.up;}
+            {case false:
+               return $Misc.i18Down;
+               case true: return $Misc.i18Up;}
             _U.badCase($moduleName,
-            "between lines 186 and 189");
+            "between lines 238 and 241");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13858,7 +13872,7 @@ Elm.Todo.make = function (_elm) {
                       ,A2($Html$Events.onClick,
                       updates.address,
                       newTodo)]),
-         _L.fromArray([$Html.text($Misc.done)]));
+         _L.fromArray([$Html.text($Misc.i18Done)]));
       }();
    };
    var deletes = $Signal.mailbox(exampleTodo);
@@ -13868,7 +13882,7 @@ Elm.Todo.make = function (_elm) {
                    ,A2($Html$Events.onClick,
                    deletes.address,
                    t)]),
-      _L.fromArray([$Html.text($Misc.$delete)]));
+      _L.fromArray([$Html.text($Misc.i18Delete)]));
    };
    var controlButtons = function (t) {
       return function () {
@@ -13880,21 +13894,55 @@ Elm.Todo.make = function (_elm) {
                       ,decreaseButton
                       ,doneButton
                       ,deleteButton]));
-         var space = $Html.text("\n");
+         var space = $Html.text($Util.nbsp);
          return A2($List.intersperse,
          space,
          buttons);
       }();
    };
    var view = F2(function (id,t) {
-      return function () {
+      return _U.eq(t.id,
+      0) ? function () {
          var updater = A2($Html.div,
-         _L.fromArray([$Html$Attributes.$class("input-group input-group-md")]),
+         _L.fromArray([$Html$Attributes.$class("input-group input-group-sm")]),
          _L.fromArray([A2($Html.input,
          _L.fromArray([$Html$Attributes.value(t.newDescription)
                       ,$Html$Attributes.type$("text")
                       ,$Html$Attributes.$class("form-control")
-                      ,$Html$Attributes.size(50)
+                      ,$Html$Attributes.size($Misc.maxDesc)
+                      ,$Html$Attributes.maxlength($Misc.maxDesc)
+                      ,$Html$Attributes.placeholder($Misc.i18NewTodo)
+                      ,$Html$Attributes.autofocus(true)
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      function (value) {
+                         return A2($Signal.message,
+                         descriptions.address,
+                         {ctor: "_Tuple2"
+                         ,_0: t.id
+                         ,_1: value});
+                      })
+                      ,A2($Util.onEnter,
+                      creates.address,
+                      _U.replace([["description"
+                                  ,t.newDescription]],
+                      t))]),
+         _L.fromArray([]))]));
+         return A2($Html.tr,
+         _L.fromArray([]),
+         _L.fromArray([A2($Html.td,
+         _L.fromArray([$Html$Attributes.colspan(3)]),
+         _L.fromArray([updater]))]));
+      }() : function () {
+         var updater = A2($Html.div,
+         _L.fromArray([$Html$Attributes.$class("input-group input-group-sm")]),
+         _L.fromArray([A2($Html.input,
+         _L.fromArray([$Html$Attributes.value(t.newDescription)
+                      ,$Html$Attributes.type$("text")
+                      ,$Html$Attributes.$class("form-control")
+                      ,$Html$Attributes.size($Misc.maxDesc)
+                      ,$Html$Attributes.maxlength($Misc.maxDesc)
                       ,$Html$Attributes.autofocus(true)
                       ,A3($Html$Events.on,
                       "input",
@@ -13911,7 +13959,7 @@ Elm.Todo.make = function (_elm) {
                       {ctor: "_Tuple2"
                       ,_0: t.id
                       ,_1: false})
-                      ,A2(onEnter,
+                      ,A2($Util.onEnter,
                       updates.address,
                       _U.replace([["description"
                                   ,t.newDescription]],
@@ -13943,27 +13991,25 @@ Elm.Todo.make = function (_elm) {
                       _L.fromArray([$Html$Attributes.$class("col-md-2")]),
                       _L.fromArray([priority]))
                       ,A2($Html.td,
-                      _L.fromArray([$Html$Attributes.$class("col-md-3 text-center")]),
+                      _L.fromArray([$Html$Attributes.$class("col-md-2 text-center")]),
                       buttons)]));
       }();
    });
-   var Todo = F7(function (a,
+   var Todo = F6(function (a,
    b,
    c,
    d,
    e,
-   f,
-   g) {
+   f) {
       return {_: {}
              ,description: a
              ,done: b
-             ,editing: f
+             ,editing: e
              ,id: c
-             ,newDescription: g
-             ,priority: d
-             ,token: e};
+             ,newDescription: f
+             ,priority: d};
    });
-   var decodeTodo = A8($Json$Decode.object7,
+   var decodeTodo = A7($Json$Decode.object6,
    Todo,
    A2($Json$Decode._op[":="],
    "description",
@@ -13977,9 +14023,25 @@ Elm.Todo.make = function (_elm) {
    A2($Json$Decode._op[":="],
    "priority",
    $Json$Decode.$int),
-   $Json$Decode.succeed("noAuthFromServer"),
    $Json$Decode.succeed(false),
    $Json$Decode.succeed(""));
+   var createTodo = function (t) {
+      return _U.cmp($String.length(t.description),
+      0) > 0 ? function () {
+         var request = {_: {}
+                       ,body: createBody(t)
+                       ,headers: _L.fromArray([{ctor: "_Tuple2"
+                                               ,_0: "Content-Type"
+                                               ,_1: "application/x-www-form-urlencoded"}])
+                       ,url: createUrl
+                       ,verb: "POST"};
+         return $Task.toResult(A2($Http.fromJson,
+         decodeTodo,
+         A2($Http.send,
+         $Http.defaultSettings,
+         request)));
+      }() : $Task.fail($Http.UnexpectedPayload("can\'t create todos without a description"));
+   };
    var updateTodo = function (t) {
       return _U.cmp(t.id,
       0) > 0 ? function () {
@@ -14001,6 +14063,8 @@ Elm.Todo.make = function (_elm) {
                       ,Todo: Todo
                       ,exampleTodo: exampleTodo
                       ,decodeTodo: decodeTodo
+                      ,createBody: createBody
+                      ,createTodo: createTodo
                       ,updateBody: updateBody
                       ,updateTodo: updateTodo
                       ,deleteBody: deleteBody
@@ -14019,12 +14083,12 @@ Elm.Todo.make = function (_elm) {
                       ,deleteButton: deleteButton
                       ,cellClass: cellClass
                       ,descriptions: descriptions
+                      ,creates: creates
                       ,updates: updates
                       ,deletes: deletes
                       ,edits: edits
-                      ,updateAndDeleteUrl: updateAndDeleteUrl
-                      ,onEnter: onEnter
-                      ,is13: is13};
+                      ,createUrl: createUrl
+                      ,updateAndDeleteUrl: updateAndDeleteUrl};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};
@@ -14048,15 +14112,16 @@ Elm.Todos.make = function (_elm) {
    $Todo = Elm.Todo.make(_elm);
    var view = F2(function (lastUpdated,
    todos) {
-      return A2($Html.table,
-      _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
-      _L.fromArray([A2($Html.tbody,
-      _L.fromArray([]),
-      A2($List.map,
-      $Todo.view(lastUpdated),
-      A2($List.sortWith,
-      $Todo.todoCompare,
-      todos)))]));
+      return function () {
+         var rows = $List.map($Todo.view(lastUpdated))(A2($List.sortWith,
+         $Todo.todoCompare,
+         todos));
+         return A2($Html.table,
+         _L.fromArray([$Html$Attributes.$class("table table-bordered table-striped")]),
+         _L.fromArray([A2($Html.tbody,
+         _L.fromArray([]),
+         rows)]));
+      }();
    });
    _elm.Todos.values = {_op: _op
                        ,view: view};
@@ -14126,6 +14191,53 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleX: scaleX
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
+};
+Elm.Util = Elm.Util || {};
+Elm.Util.make = function (_elm) {
+   "use strict";
+   _elm.Util = _elm.Util || {};
+   if (_elm.Util.values)
+   return _elm.Util.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Util",
+   $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm);
+   var is13 = function (code) {
+      return _U.eq(code,
+      13) ? $Result.Ok({ctor: "_Tuple0"}) : $Result.Err("not the right key code");
+   };
+   var nbsp = $String.fromList(_L.fromArray([$Char.fromCode(160)]));
+   var onEnter = F2(function (address,
+   value) {
+      return A3($Html$Events.on,
+      "keydown",
+      A2($Json$Decode.customDecoder,
+      $Html$Events.keyCode,
+      is13),
+      function (_v0) {
+         return function () {
+            return A2($Signal.message,
+            address,
+            value);
+         }();
+      });
+   });
+   _elm.Util.values = {_op: _op
+                      ,onEnter: onEnter
+                      ,nbsp: nbsp
+                      ,is13: is13};
+   return _elm.Util.values;
 };
 Elm.VirtualDom = Elm.VirtualDom || {};
 Elm.VirtualDom.make = function (_elm) {

@@ -6,9 +6,13 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
-import Misc exposing (delete, done, down, highPriority, lowPriority, priorities, up)
+import Misc exposing
+  ( i18Delete, i18Done, i18Down, i18NewTodo, i18Priorities, i18Up
+  , highPriority, lowPriority, maxDesc
+  )
 import String
 import Task exposing (Task)
+import Util exposing (is13, nbsp, onEnter)
 
 -- MODEL
 
@@ -17,7 +21,6 @@ type alias Todo =
   , done: Bool
   , id: Int
   , priority: Int
-  , token: String
   , editing: Bool
   , newDescription : String
   }
@@ -26,10 +29,9 @@ type alias Todo =
 exampleTodo : Todo
 exampleTodo =
   { description = ""
-  , done = True
+  , done = False
   , id = 0
-  , priority = 1
-  , token = "noAuthAtStart"
+  , priority = highPriority
   , editing = False
   , newDescription = ""
   }
@@ -37,20 +39,46 @@ exampleTodo =
 
 decodeTodo : Decode.Decoder Todo
 decodeTodo =
-  Decode.object7 Todo
+  Decode.object6 Todo
     ("description" := Decode.string)
     ("done" := Decode.bool)
     ("id" := Decode.int)
     ("priority" := Decode.int)
-    (Decode.succeed "noAuthFromServer")
     (Decode.succeed False)
     (Decode.succeed "")
 
 
+type alias CreateResult = Result Http.Error Todo
 type alias UpdateResult = Result Http.Error Todo
 type alias DeleteResult = Result Http.Error Int
 
 -- UPDATE
+
+createBody : Todo -> Http.Body
+createBody t =
+  Http.string <|
+    String.join "&"
+      [ "todo%5Bdescription%5D=" ++ (Http.uriEncode t.description)
+      , "todo%5Bpriority%5D=" ++ (toString t.priority)
+      , "commit=Save"
+      , "utf8=✓"
+      ]
+
+createTodo : Todo -> Task Http.Error CreateResult
+createTodo t =
+  if String.length t.description > 0 then
+    let
+      request =
+        { verb = "POST"
+        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , url = createUrl
+        , body = createBody t
+        }
+    in
+      Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
+  else
+    Task.fail <| Http.UnexpectedPayload "can't create todos without a description"
+
 
 updateBody : Todo -> Http.Body
 updateBody t =
@@ -59,7 +87,6 @@ updateBody t =
       [ "todo%5Bdescription%5D=" ++ (Http.uriEncode t.description)
       , "todo%5Bpriority%5D=" ++ (toString t.priority)
       , "todo%5Bdone%5D=" ++ if t.done then "1" else "0"
-      , "authenticity_token=" ++ (Http.uriEncode t.token)
       , "_method=patch"
       , "commit=Save"
       , "utf8=✓"
@@ -84,11 +111,7 @@ updateTodo t =
 
 deleteBody : Todo -> Http.Body
 deleteBody t =
-  Http.string <|
-    String.join "&"
-      [ "_method=delete"
-      , "authenticity_token=" ++ (Http.uriEncode t.token)
-      ]
+  Http.string <| "_method=delete"
 
 
 deleteTodo : Todo -> Task Http.Error DeleteResult
@@ -110,57 +133,86 @@ deleteTodo t =
 
 todoCompare : Todo -> Todo -> Order
 todoCompare t1 t2 =
-  if xor t1.done t2.done
+  if t1.id == 0 || t2.id == 0
+  then compare t2.id t1.id
+  else (
+    if xor t1.done t2.done
     then (if t1.done then GT else LT)
-    else
-      ( if t1.priority == t2.priority
-        then compare t1.description t2.description
-        else compare t1.priority t2.priority
-      )
+    else (
+      if t1.priority == t2.priority
+      then compare t1.description t2.description
+      else compare t1.priority t2.priority
+    )
+  )
 
 
 view : Int -> Todo -> Html
 view id t =
-  let
-    spanAtr = class (cellClass t)
-    rowStyles = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
-    buttons = controlButtons t
-    priority = span [ spanAtr ] [ text (priorityDescription t) ]
-    description =
-      span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
-    updater =
-      div
-        [ class "input-group input-group-md" ]
-        [
-          input
-            [ value t.newDescription
-            , type' "text"
-            , class "form-control"
-            , size 50
-            , autofocus True
-            , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
-            , Events.onBlur edits.address (t.id, False)
-            , onEnter updates.address { t | description <- t.newDescription }
-            ]
-            [ ]
+  if t.id == 0
+  then
+    let
+      updater =
+        div
+          [ class "input-group input-group-sm" ]
+          [
+            input
+              [ value t.newDescription
+              , type' "text"
+              , class "form-control"
+              , size maxDesc
+              , maxlength maxDesc
+              , placeholder i18NewTodo
+              , autofocus True
+              , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
+              , onEnter creates.address { t | description <- t.newDescription }
+              ]
+              [ ]
+          ]
+    in
+      tr [ ] [ td [ colspan 3 ] [ updater ] ]
+  else
+    let
+      spanAtr = class (cellClass t)
+      rowStyles = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
+      buttons = controlButtons t
+      priority = span [ spanAtr ] [ text (priorityDescription t) ]
+      description =
+        span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
+      updater =
+        div
+          [ class "input-group input-group-sm" ]
+          [
+            input
+              [ value t.newDescription
+              , type' "text"
+              , class "form-control"
+              , size maxDesc
+              , maxlength maxDesc
+              , autofocus True
+              , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
+              , Events.onBlur edits.address (t.id, False)
+              , onEnter updates.address { t | description <- t.newDescription }
+              ]
+              [ ]
+          ]
+    in
+      tr
+        [ style rowStyles ]
+        [ td [ ] [ if t.editing then updater else description ]
+        , td [ class "col-md-2" ] [ priority ]
+        , td [ class "col-md-2 text-center" ] buttons
         ]
-  in
-    tr [ style rowStyles ]
-      [ td [ ] [ if t.editing then updater else description ]
-      , td [ class "col-md-2" ] [ priority ]
-      , td [ class "col-md-3 text-center" ] buttons
-      ]
 
 
 priorityDescription : Todo -> String
 priorityDescription t =
-  Maybe.withDefault "Unknown" (Dict.get t.priority priorities)
+  Maybe.withDefault "Unknown" (Dict.get t.priority i18Priorities)
 
 
 controlButtons : Todo -> List Html
 controlButtons t =
   let
-    space = text "\n"
+    space = text nbsp
     buttons = List.map (\f -> f t) [increaseButton, decreaseButton, doneButton, deleteButton]
   in
     List.intersperse space buttons
@@ -184,8 +236,8 @@ increaseDecreaseButton t bool =
     spanAttrs = spanClass :: clickHandler
     arrow =
       case bool of
-        True -> up
-        False -> down
+        True -> i18Up
+        False -> i18Down
   in
     span spanAttrs [ text arrow ]
 
@@ -224,14 +276,14 @@ doneButton t =
   in
     span
       [ class "btn btn-success btn-xs", Events.onClick updates.address newTodo ]
-      [ text done ]
+      [ text i18Done ]
 
 
 deleteButton : Todo -> Html
 deleteButton t =
   span
     [ class "btn btn-danger btn-xs", Events.onClick deletes.address t ]
-    [ text delete ]
+    [ text i18Delete ]
 
 
 cellClass : Todo -> String
@@ -242,6 +294,10 @@ cellClass todo =
 
 descriptions : Signal.Mailbox (Int, String)
 descriptions = Signal.mailbox (0, "")
+
+
+creates : Signal.Mailbox Todo
+creates = Signal.mailbox exampleTodo
 
 
 updates : Signal.Mailbox Todo
@@ -257,18 +313,11 @@ edits = Signal.mailbox (0, False)
 
 -- UTILITIES
 
+createUrl : String
+createUrl =
+  "/todos.json"
+
+
 updateAndDeleteUrl : Todo -> String
 updateAndDeleteUrl t =
   "/todos/" ++ (toString t.id) ++ ".json"
-
-
-onEnter : Signal.Address a -> a -> Attribute
-onEnter address value =
-    Events.on "keydown"
-      (Decode.customDecoder Events.keyCode is13)
-      (\_ -> Signal.message address value)
-
-
-is13 : Int -> Result String ()
-is13 code =
-  if code == 13 then Ok () else Err "not the right key code"

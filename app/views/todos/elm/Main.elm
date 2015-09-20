@@ -5,9 +5,9 @@ import Json.Decode as Decode
 import Signal exposing (Address)
 import Task exposing (Task)
 import Todo exposing
-  ( Todo, UpdateResult, DeleteResult
-  , exampleTodo, decodeTodo, updateTodo, deleteTodo
-  , edits, descriptions, updates, deletes
+  ( CreateResult, DeleteResult, Todo, UpdateResult
+  , createTodo, decodeTodo, deleteTodo, exampleTodo, updateTodo
+  , creates, descriptions, edits, updates, deletes
   )
 import Todos exposing (Todos)
 
@@ -15,7 +15,6 @@ import Todos exposing (Todos)
 
 type alias Model =
   { todos: Todos
-  , token: String
   , lastUpdated: Int
   , error: Maybe String
   }
@@ -24,7 +23,6 @@ type alias Model =
 init : Model
 init =
   { todos = [ ]
-  , token = "noAuthAtStart"
   , lastUpdated = 0
   , error = Nothing
   }
@@ -33,12 +31,12 @@ init =
 
 type Action
   = NoOp
-  | EditingDescription (Int, Bool)
-  | SetTodos TodosResult
-  | SetAuthToken String
-  | UpdatingDescription (Int, String)
-  | UpdateTodo UpdateResult
+  | AddNewTodo CreateResult
   | DeleteTodo DeleteResult
+  | EditingDescription (Int, Bool)
+  | UpdateDescription (Int, String)
+  | UpdateTodo UpdateResult
+  | SetTodos TodosResult
 
 
 update : Action -> Model -> Model
@@ -47,28 +45,14 @@ update action model =
     NoOp ->
       model
 
-    SetTodos result ->
-      case result of
-        Ok list ->
-          let
-            newTodo t =  { t | token <- model.token, newDescription <- t.description }
-          in
-            { model | todos <- List.map newTodo list, error <- Nothing }
-
-        Err msg ->
-          { model | error <- Just (toString msg) }
-
-    UpdateTodo result ->
+    AddNewTodo result ->
       case result of
         Ok todo ->
           let
-            newTodo t =
-              if t.id == todo.id
-              then { todo | token <- model.token, newDescription <- todo.description }
-              else t
+            newTodo t = if t.id == 0 then { t | newDescription <- "" } else t
           in
             { model
-            | todos <- List.map newTodo model.todos
+            | todos <- todo :: (List.map newTodo model.todos)
             , lastUpdated <- todo.id
             , error <- Nothing
             }
@@ -92,17 +76,40 @@ update action model =
       in
         { model | todos <- List.map newTodo model.todos }
 
-    UpdatingDescription (id, description) ->
+    UpdateDescription (id, description) ->
       let
         newTodo t = if t.id == id then { t | newDescription <- description } else t
       in
         { model | todos <- List.map newTodo model.todos }
 
-    SetAuthToken value ->
-      let
-        newTodo t = { t | token <- value }
-      in
-        { model | todos <- List.map newTodo model.todos, token <- value }
+    UpdateTodo result ->
+      case result of
+        Ok todo ->
+          let
+            newTodo t =
+              if t.id == todo.id
+              then { todo | newDescription <- todo.description }
+              else t
+          in
+            { model
+            | todos <- List.map newTodo model.todos
+            , lastUpdated <- todo.id
+            , error <- Nothing
+            }
+
+        Err msg -> { model | error <- Just (toString msg) }
+
+    SetTodos result ->
+      case result of
+        Ok list ->
+          let
+            newTodo t =  { t | newDescription <- t.description }
+            todos = List.map newTodo (exampleTodo :: list)
+          in
+            { model | todos <- todos, error <- Nothing }
+
+        Err msg ->
+          { model | error <- Just (toString msg) }
 
 -- VIEW
 
@@ -138,9 +145,8 @@ actions : Signal Action
 actions =
   Signal.mergeMany
     [ mailBox.signal
-    , (Signal.map SetAuthToken getAuthToken)
     , (Signal.map EditingDescription edits.signal)
-    , (Signal.map UpdatingDescription descriptions.signal)
+    , (Signal.map UpdateDescription descriptions.signal)
     ]
 
 
@@ -163,6 +169,11 @@ mergeCurrTodos todos =
   Signal.send mailBox.address <| SetTodos todos
 
 
+addNewTodo : CreateResult -> Task Http.Error ()
+addNewTodo todo =
+  Signal.send mailBox.address <| AddNewTodo todo
+
+
 mergeTodo : UpdateResult -> Task Http.Error ()
 mergeTodo todo =
   Signal.send mailBox.address <| UpdateTodo todo
@@ -177,6 +188,11 @@ removeTodo id =
 port runner : Task Http.Error ()
 port runner =
   getCurrTodos `Task.andThen` mergeCurrTodos
+
+
+port performCreates : Signal (Task Http.Error ())
+port performCreates =
+  Signal.map (\todo -> createTodo todo `Task.andThen` addNewTodo) creates.signal
 
 
 port performUpdates : Signal (Task Http.Error ())

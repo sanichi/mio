@@ -1,6 +1,7 @@
 class TodosController < ApplicationController
   authorize_resource
   before_action :find_todo, only: [:toggle, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token, if: :json_request?
 
   def index
     @todos = Todo.ordered
@@ -16,10 +17,10 @@ class TodosController < ApplicationController
 
   def create
     @todo = Todo.new(strong_params)
-    if @todo.save
-      redirect_to todos_path
-    else
-      render "new"
+    ok = @todo.save
+    respond_to do |format|
+      format.html { ok ? redirect_to(todos_path) : render(action: "new") }
+      format.json { render json: ok ? @todo.to_json : @todo.errors.full_messages.first.to_json }
     end
   end
 
@@ -51,5 +52,9 @@ class TodosController < ApplicationController
 
   def strong_params
     params.require(:todo).permit(:description, :priority, :done)
+  end
+
+  def json_request?
+    request.format.json?
   end
 end
