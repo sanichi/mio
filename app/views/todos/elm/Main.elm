@@ -203,6 +203,3 @@ port performUpdates =
 port performDeletes : Signal (Task Http.Error ())
 port performDeletes =
   Signal.map (\todo -> deleteTodo todo `Task.andThen` removeTodo) deletes.signal
-
-
-port getAuthToken: Signal String

@@ -4465,12 +4465,6 @@ Elm.Main.make = function (_elm) {
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm),
    $Todos = Elm.Todos.make(_elm);
-   var getAuthToken = Elm.Native.Port.make(_elm).inboundSignal("getAuthToken",
-   "String",
-   function (v) {
-      return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-      v);
-   });
    var getCurrTodos = $Task.toResult(A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
    "/todos.json"));
