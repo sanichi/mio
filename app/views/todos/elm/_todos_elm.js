@@ -13817,11 +13817,9 @@ Elm.Todo.make = function (_elm) {
    var deleteTodo = function (id) {
       return _U.cmp(id,
       0) > 0 ? function () {
-         var request = {_: {}
-                       ,body: deleteBody
-                       ,headers: $Util.formContentType
-                       ,url: $Misc.updateAndDeleteUrl(id)
-                       ,verb: "POST"};
+         var request = A2($Util.postRequest,
+         $Misc.updateAndDeleteUrl(id),
+         deleteBody);
          return $Task.toResult(A2($Http.fromJson,
          $Json$Decode.$int,
          A2($Http.send,
@@ -13889,7 +13887,7 @@ Elm.Todo.make = function (_elm) {
                return $Misc.i18Down;
                case true: return $Misc.i18Up;}
             _U.badCase($moduleName,
-            "between lines 242 and 245");
+            "between lines 227 and 230");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -14077,11 +14075,9 @@ Elm.Todo.make = function (_elm) {
    var createTodo = function (t) {
       return _U.cmp($String.length(t.description),
       0) > 0 ? function () {
-         var request = {_: {}
-                       ,body: createBody(t)
-                       ,headers: $Util.formContentType
-                       ,url: $Misc.indexAndCreateUrl
-                       ,verb: "POST"};
+         var request = A2($Util.postRequest,
+         $Misc.indexAndCreateUrl,
+         createBody(t));
          return $Task.toResult(A2($Http.fromJson,
          decodeTodo,
          A2($Http.send,
@@ -14092,11 +14088,9 @@ Elm.Todo.make = function (_elm) {
    var updateTodo = function (t) {
       return _U.cmp(t.id,
       0) > 0 ? function () {
-         var request = {_: {}
-                       ,body: updateBody(t)
-                       ,headers: $Util.formContentType
-                       ,url: $Misc.updateAndDeleteUrl(t.id)
-                       ,verb: "POST"};
+         var request = A2($Util.postRequest,
+         $Misc.updateAndDeleteUrl(t.id),
+         updateBody(t));
          return $Task.toResult(A2($Http.fromJson,
          decodeTodo,
          A2($Http.send,
@@ -14257,17 +14251,18 @@ Elm.Util.make = function (_elm) {
    $Char = Elm.Char.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Events = Elm.Html.Events.make(_elm),
+   $Http = Elm.Http.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm);
+   var nbsp = $String.fromList(_L.fromArray([$Char.fromCode(160)]));
    var is13 = function (code) {
       return _U.eq(code,
       13) ? $Result.Ok({ctor: "_Tuple0"}) : $Result.Err("not the right key code");
    };
-   var nbsp = $String.fromList(_L.fromArray([$Char.fromCode(160)]));
    var onEnter = F2(function (address,
    value) {
       return A3($Html$Events.on,
@@ -14286,11 +14281,20 @@ Elm.Util.make = function (_elm) {
    var formContentType = _L.fromArray([{ctor: "_Tuple2"
                                        ,_0: "Content-Type"
                                        ,_1: "application/x-www-form-urlencoded"}]);
+   var postRequest = F2(function (url,
+   body) {
+      return {_: {}
+             ,body: body
+             ,headers: formContentType
+             ,url: url
+             ,verb: "POST"};
+   });
    _elm.Util.values = {_op: _op
                       ,formContentType: formContentType
-                      ,onEnter: onEnter
+                      ,is13: is13
                       ,nbsp: nbsp
-                      ,is13: is13};
+                      ,onEnter: onEnter
+                      ,postRequest: postRequest};
    return _elm.Util.values;
 };
 Elm.VirtualDom = Elm.VirtualDom || {};

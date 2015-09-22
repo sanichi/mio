@@ -13,7 +13,7 @@ import Misc exposing
   )
 import String
 import Task exposing (Task)
-import Util exposing (formContentType, is13, nbsp, onEnter)
+import Util exposing (is13, nbsp, onEnter, postRequest)
 
 -- MODEL
 
@@ -69,12 +69,7 @@ createTodo : Todo -> Task Http.Error CreateResult
 createTodo t =
   if String.length t.description > 0 then
     let
-      request =
-        { verb = "POST"
-        , headers = formContentType
-        , url = indexAndCreateUrl
-        , body = createBody t
-        }
+      request = postRequest indexAndCreateUrl (createBody t)
     in
       Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
   else
@@ -98,12 +93,7 @@ updateTodo : Todo -> Task Http.Error UpdateResult
 updateTodo t =
   if t.id > 0 then
     let
-      request =
-        { verb = "POST"
-        , headers = formContentType
-        , url = updateAndDeleteUrl t.id
-        , body = updateBody t
-        }
+      request = postRequest (updateAndDeleteUrl t.id) (updateBody t)
     in
       Task.toResult <| Http.fromJson decodeTodo (Http.send Http.defaultSettings request)
   else
@@ -119,12 +109,7 @@ deleteTodo : Int -> Task Http.Error DeleteResult
 deleteTodo id =
   if id > 0 then
     let
-      request =
-        { verb = "POST"
-        , headers = formContentType
-        , url = updateAndDeleteUrl id
-        , body = deleteBody
-        }
+      request = postRequest (updateAndDeleteUrl id) deleteBody
     in
       Task.toResult <| Http.fromJson Decode.int (Http.send Http.defaultSettings request)
   else
