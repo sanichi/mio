@@ -120,15 +120,15 @@ deleteTodo id =
 todoCompare : Todo -> Todo -> Order
 todoCompare t1 t2 =
   if t1.id == 0 || t2.id == 0
-  then compare t2.id t1.id
-  else (
-    if xor t1.done t2.done
-    then (if t1.done then GT else LT)
+    then compare t2.id t1.id
     else (
-      if t1.priority == t2.priority
-      then compare t1.description t2.description
-      else compare t1.priority t2.priority
-    )
+      if xor t1.done t2.done
+        then (if t1.done then GT else LT)
+        else (
+          if t1.priority == t2.priority
+            then compare t1.description t2.description
+            else compare t1.priority t2.priority
+        )
   )
 
 

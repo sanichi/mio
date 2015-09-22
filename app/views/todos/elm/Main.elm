@@ -55,9 +55,10 @@ update action model =
         Ok todo ->
           let
             newTodo t = if t.id == 0 then { t | newDescription <- "" } else t
+            todo' = { todo | newDescription <- todo.description }
           in
             { model
-            | todos <- todo :: (List.map newTodo model.todos)
+            | todos <- todo' :: (List.map newTodo model.todos)
             , lastUpdated <- todo.id
             , error <- Nothing
             }
@@ -108,8 +109,8 @@ update action model =
           let
             newTodo t =
               if t.id == todo.id
-              then { todo | newDescription <- todo.description }
-              else t
+                then { todo | newDescription <- todo.description }
+                else t
           in
             { model
             | todos <- List.map newTodo model.todos

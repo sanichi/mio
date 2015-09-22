@@ -4484,7 +4484,7 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Html$Attributes.hidden(true)]),
                  _L.fromArray([$Html.text("No error")]));}
             _U.badCase($moduleName,
-            "between lines 141 and 148");
+            "between lines 142 and 149");
          }();
          return A2($Html.div,
          _L.fromArray([]),
@@ -4507,6 +4507,9 @@ Elm.Main.make = function (_elm) {
                                        ,$Maybe.Just($Basics.toString(action._0._0))]],
                       model);
                     case "Ok": return function () {
+                         var todo$ = _U.replace([["newDescription"
+                                                 ,action._0._0.description]],
+                         action._0._0);
                          var newTodo = function (t) {
                             return _U.eq(t.id,
                             0) ? _U.replace([["newDescription"
@@ -4515,7 +4518,7 @@ Elm.Main.make = function (_elm) {
                          };
                          return _U.replace([["todos"
                                             ,A2($List._op["::"],
-                                            action._0._0,
+                                            todo$,
                                             A2($List.map,
                                             newTodo,
                                             model.todos))]
@@ -4524,7 +4527,7 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 54 and 67");
+                 "between lines 54 and 68");
               }();
             case "CancelDelete":
             return _U.replace([["maybeDelete"
@@ -4558,7 +4561,7 @@ Elm.Main.make = function (_elm) {
                                       ,["error",$Maybe.Nothing]],
                       model);}
                  _U.badCase($moduleName,
-                 "between lines 82 and 93");
+                 "between lines 83 and 94");
               }();
             case "EditingDescription":
             switch (action._0.ctor)
@@ -4602,7 +4605,7 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 124 and 133");
+                 "between lines 125 and 134");
               }();
             case "UpdateDescription":
             switch (action._0.ctor)
@@ -4645,10 +4648,10 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 106 and 123");
+                 "between lines 107 and 124");
               }();}
          _U.badCase($moduleName,
-         "between lines 49 and 133");
+         "between lines 49 and 134");
       }();
    });
    var SetTodos = function (a) {
