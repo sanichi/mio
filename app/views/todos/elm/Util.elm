@@ -7,15 +7,21 @@ import Json.Decode as Decode
 import String
 
 
+formContentType : List (String, String)
+formContentType =
+  [ ("Content-Type", "application/x-www-form-urlencoded") ]
+
+
 onEnter : Signal.Address a -> a -> Attribute
 onEnter address value =
-    Events.on "keydown"
-      (Decode.customDecoder Events.keyCode is13)
-      (\_ -> Signal.message address value)
+  Events.on "keydown"
+    (Decode.customDecoder Events.keyCode is13)
+    (\_ -> Signal.message address value)
 
 
 nbsp : String
-nbsp = String.fromList [ Char.fromCode 160 ]
+nbsp =
+  String.fromList [ Char.fromCode 160 ]
 
 
 is13 : Int -> Result String ()

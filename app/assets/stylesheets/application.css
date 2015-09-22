@@ -48,3 +48,6 @@ span.active {
 span.inactive {
   text-decoration: line-through;
 }
+tr.last-updated {
+  background-color: lightblue !important;
+}

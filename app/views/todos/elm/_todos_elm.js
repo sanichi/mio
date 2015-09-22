@@ -13819,9 +13819,7 @@ Elm.Todo.make = function (_elm) {
       0) > 0 ? function () {
          var request = {_: {}
                        ,body: deleteBody
-                       ,headers: _L.fromArray([{ctor: "_Tuple2"
-                                               ,_0: "Content-Type"
-                                               ,_1: "application/x-www-form-urlencoded"}])
+                       ,headers: $Util.formContentType
                        ,url: $Misc.updateAndDeleteUrl(id)
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
@@ -13944,7 +13942,9 @@ Elm.Todo.make = function (_elm) {
                       ,doneButton
                       ,deleteButton]));
          var space = $Html.text($Util.nbsp);
-         return $List.intersperse(space)(buttons);
+         return A2($List.intersperse,
+         space,
+         buttons);
       }();
    });
    var view = F3(function (lastUpdated,
@@ -13969,7 +13969,7 @@ Elm.Todo.make = function (_elm) {
                          return A2($Signal.message,
                          descriptions.address,
                          {ctor: "_Tuple2"
-                         ,_0: t.id
+                         ,_0: 0
                          ,_1: value});
                       })
                       ,A2($Util.onEnter,
@@ -14017,10 +14017,8 @@ Elm.Todo.make = function (_elm) {
          var buttons = A2(controlButtons,
          toDelete,
          t);
-         var rowStyles = _U.eq(lastUpdated,
-         t.id) ? _L.fromArray([{ctor: "_Tuple2"
-                               ,_0: "background-color"
-                               ,_1: "lightBlue"}]) : _L.fromArray([]);
+         var rowClass = _U.eq(lastUpdated,
+         t.id) ? "last-updated" : "";
          var spanAtr = $Html$Attributes.$class(cellClass(t));
          var priority = A2($Html.span,
          _L.fromArray([spanAtr]),
@@ -14034,7 +14032,7 @@ Elm.Todo.make = function (_elm) {
                       ,_1: true})]),
          _L.fromArray([$Html.text(t.description)]));
          return A2($Html.tr,
-         _L.fromArray([$Html$Attributes.style(rowStyles)]),
+         _L.fromArray([$Html$Attributes.$class(rowClass)]),
          _L.fromArray([A2($Html.td,
                       _L.fromArray([]),
                       _L.fromArray([t.editing ? updater : description]))
@@ -14081,9 +14079,7 @@ Elm.Todo.make = function (_elm) {
       0) > 0 ? function () {
          var request = {_: {}
                        ,body: createBody(t)
-                       ,headers: _L.fromArray([{ctor: "_Tuple2"
-                                               ,_0: "Content-Type"
-                                               ,_1: "application/x-www-form-urlencoded"}])
+                       ,headers: $Util.formContentType
                        ,url: $Misc.indexAndCreateUrl
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
@@ -14098,9 +14094,7 @@ Elm.Todo.make = function (_elm) {
       0) > 0 ? function () {
          var request = {_: {}
                        ,body: updateBody(t)
-                       ,headers: _L.fromArray([{ctor: "_Tuple2"
-                                               ,_0: "Content-Type"
-                                               ,_1: "application/x-www-form-urlencoded"}])
+                       ,headers: $Util.formContentType
                        ,url: $Misc.updateAndDeleteUrl(t.id)
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
@@ -14289,7 +14283,11 @@ Elm.Util.make = function (_elm) {
          }();
       });
    });
+   var formContentType = _L.fromArray([{ctor: "_Tuple2"
+                                       ,_0: "Content-Type"
+                                       ,_1: "application/x-www-form-urlencoded"}]);
    _elm.Util.values = {_op: _op
+                      ,formContentType: formContentType
                       ,onEnter: onEnter
                       ,nbsp: nbsp
                       ,is13: is13};

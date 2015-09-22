@@ -13,7 +13,7 @@ import Misc exposing
   )
 import String
 import Task exposing (Task)
-import Util exposing (is13, nbsp, onEnter)
+import Util exposing (formContentType, is13, nbsp, onEnter)
 
 -- MODEL
 
@@ -71,7 +71,7 @@ createTodo t =
     let
       request =
         { verb = "POST"
-        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , headers = formContentType
         , url = indexAndCreateUrl
         , body = createBody t
         }
@@ -100,7 +100,7 @@ updateTodo t =
     let
       request =
         { verb = "POST"
-        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , headers = formContentType
         , url = updateAndDeleteUrl t.id
         , body = updateBody t
         }
@@ -121,7 +121,7 @@ deleteTodo id =
     let
       request =
         { verb = "POST"
-        , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
+        , headers = formContentType
         , url = updateAndDeleteUrl id
         , body = deleteBody
         }
@@ -150,55 +150,55 @@ todoCompare t1 t2 =
 view : Int -> Int -> Todo -> Html
 view lastUpdated toDelete t =
   if t.id == 0
-  then
-    let
-      updater =
-        div
-          [ class "input-group input-group-sm" ]
-          [
-            input
-              [ value t.newDescription
-              , type' "text"
-              , class "form-control"
-              , size maxDesc
-              , maxlength maxDesc
-              , placeholder i18NewTodo
-              , autofocus True
-              , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
-              , onEnter creates.address { t | description <- t.newDescription }
-              ]
-              [ ]
-          ]
-    in
-      tr [ ] [ td [ colspan 3 ] [ updater ] ]
-  else
-    let
-      spanAtr = class (cellClass t)
-      rowStyles = if lastUpdated == t.id then [ ("background-color", "lightBlue") ] else [ ]
-      buttons = controlButtons toDelete t
-      priority = span [ spanAtr ] [ text (priorityDescription t) ]
-      description =
-        span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
-      updater =
-        div
-          [ class "input-group input-group-sm" ]
-          [
-            input
-              [ value t.newDescription
-              , type' "text"
-              , class "form-control"
-              , size maxDesc
-              , maxlength maxDesc
-              , autofocus True
-              , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
-              , Events.onBlur edits.address (t.id, False)
-              , onEnter updates.address { t | description <- t.newDescription }
-              ]
-              [ ]
-          ]
+    then
+      let
+        updater =
+          div
+            [ class "input-group input-group-sm" ]
+            [
+              input
+                [ value t.newDescription
+                , type' "text"
+                , class "form-control"
+                , size maxDesc
+                , maxlength maxDesc
+                , placeholder i18NewTodo
+                , autofocus True
+                , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (0, value))
+                , onEnter creates.address { t | description <- t.newDescription }
+                ]
+                [ ]
+            ]
+      in
+        tr [ ] [ td [ colspan 3 ] [ updater ] ]
+    else
+      let
+        spanAtr = class (cellClass t)
+        rowClass = if lastUpdated == t.id then "last-updated" else ""
+        buttons = controlButtons toDelete t
+        priority = span [ spanAtr ] [ text (priorityDescription t) ]
+        description =
+          span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
+        updater =
+          div
+            [ class "input-group input-group-sm" ]
+            [
+              input
+                [ value t.newDescription
+                , type' "text"
+                , class "form-control"
+                , size maxDesc
+                , maxlength maxDesc
+                , autofocus True
+                , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
+                , Events.onBlur edits.address (t.id, False)
+                , onEnter updates.address { t | description <- t.newDescription }
+                ]
+                [ ]
+            ]
     in
       tr
-        [ style rowStyles ]
+        [ class rowClass ]
         [ td [ ] [ if t.editing then updater else description ]
         , td [ class "col-md-2" ] [ priority ]
         , td [ class "col-md-2 text-center" ] buttons
@@ -219,7 +219,7 @@ controlButtons toDelete t =
         then [ cancelButton, (confirmButton t.id) ]
         else List.map (\f -> f t) [ increaseButton, decreaseButton, doneButton, deleteButton ]
   in
-    List.intersperse space <| buttons
+    List.intersperse space buttons
 
 
 increaseButton : Todo -> Html
@@ -269,8 +269,8 @@ increaseDecreaseClickHandler t bool =
     newTodo = { t | priority <- t.priority + (if bool then -1 else 1) }
   in
     if canChange
-    then [ Events.onClick updates.address newTodo ]
-    else [ ]
+      then [ Events.onClick updates.address newTodo ]
+      else [ ]
 
 
 cancelButton : Html
