@@ -15,10 +15,10 @@ import Todos exposing (Todos)
 -- MODEL
 
 type alias Model =
-  { todos: Todos
-  , lastUpdated: Int
-  , maybeDelete: Int
-  , error: Maybe String
+  { todos : Todos
+  , lastUpdated : Int
+  , maybeDelete : Int
+  , error : Maybe String
   }
 
 
@@ -93,7 +93,7 @@ update action model =
 
     EditingDescription (id, bool) ->
       let
-        newTodo t = { t | editing <- if t.id == id then bool else False }
+        newTodo t = { t | editingDescription <- if t.id == id then bool else False }
       in
         { model | todos <- List.map newTodo model.todos }
 

@@ -18,11 +18,11 @@ import Util exposing (is13, nbsp, onEnter, postRequest)
 -- MODEL
 
 type alias Todo =
-  { description: String
-  , done: Bool
-  , id: Int
-  , priority: Int
-  , editing: Bool
+  { description : String
+  , done : Bool
+  , id : Int
+  , priority : Int
+  , editingDescription : Bool
   , newDescription : String
   }
 
@@ -33,7 +33,7 @@ exampleTodo =
   , done = False
   , id = 0
   , priority = highPriority
-  , editing = False
+  , editingDescription = False
   , newDescription = ""
   }
 
@@ -184,7 +184,7 @@ view lastUpdated toDelete t =
     in
       tr
         [ class rowClass ]
-        [ td [ ] [ if t.editing then updater else description ]
+        [ td [ ] [ if t.editingDescription then updater else description ]
         , td [ class "col-md-2" ] [ priority ]
         , td [ class "col-md-2 text-center" ] buttons
         ]

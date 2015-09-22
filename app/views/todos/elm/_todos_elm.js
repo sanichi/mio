@@ -4568,7 +4568,7 @@ Elm.Main.make = function (_elm) {
               {case "_Tuple2":
                  return function () {
                       var newTodo = function (t) {
-                         return _U.replace([["editing"
+                         return _U.replace([["editingDescription"
                                             ,_U.eq(t.id,
                                             action._0._0) ? action._0._1 : false]],
                          t);
@@ -13861,7 +13861,7 @@ Elm.Todo.make = function (_elm) {
    var exampleTodo = {_: {}
                      ,description: ""
                      ,done: false
-                     ,editing: false
+                     ,editingDescription: false
                      ,id: 0
                      ,newDescription: ""
                      ,priority: $Misc.highPriority};
@@ -14036,7 +14036,7 @@ Elm.Todo.make = function (_elm) {
          _L.fromArray([$Html$Attributes.$class(rowClass)]),
          _L.fromArray([A2($Html.td,
                       _L.fromArray([]),
-                      _L.fromArray([t.editing ? updater : description]))
+                      _L.fromArray([t.editingDescription ? updater : description]))
                       ,A2($Html.td,
                       _L.fromArray([$Html$Attributes.$class("col-md-2")]),
                       _L.fromArray([priority]))
@@ -14054,7 +14054,7 @@ Elm.Todo.make = function (_elm) {
       return {_: {}
              ,description: a
              ,done: b
-             ,editing: e
+             ,editingDescription: e
              ,id: c
              ,newDescription: f
              ,priority: d};
