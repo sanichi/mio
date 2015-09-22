@@ -4460,6 +4460,7 @@ Elm.Main.make = function (_elm) {
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Misc = Elm.Misc.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Task = Elm.Task.make(_elm),
@@ -4467,7 +4468,7 @@ Elm.Main.make = function (_elm) {
    $Todos = Elm.Todos.make(_elm);
    var getCurrTodos = $Task.toResult(A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
-   "/todos.json"));
+   $Misc.indexAndCreateUrl));
    var view = function (model) {
       return function () {
          var error = function () {
@@ -4483,13 +4484,14 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Html$Attributes.hidden(true)]),
                  _L.fromArray([$Html.text("No error")]));}
             _U.badCase($moduleName,
-            "between lines 120 and 126");
+            "between lines 141 and 148");
          }();
          return A2($Html.div,
          _L.fromArray([]),
          _L.fromArray([error
-                      ,A2($Todos.view,
+                      ,A3($Todos.view,
                       model.lastUpdated,
+                      model.maybeDelete,
                       model.todos)]));
       }();
    };
@@ -4522,8 +4524,20 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 49 and 62");
+                 "between lines 54 and 67");
               }();
+            case "CancelDelete":
+            return _U.replace([["maybeDelete"
+                               ,0]
+                              ,["lastUpdated",0]
+                              ,["error",$Maybe.Nothing]],
+              model);
+            case "ConfirmDelete":
+            return _U.replace([["maybeDelete"
+                               ,action._0]
+                              ,["lastUpdated",action._0]
+                              ,["error",$Maybe.Nothing]],
+              model);
             case "DeleteTodo":
             return function () {
                  switch (action._0.ctor)
@@ -4540,10 +4554,11 @@ Elm.Main.make = function (_elm) {
                                        },
                                        model.todos)]
                                       ,["lastUpdated",0]
+                                      ,["maybeDelete",0]
                                       ,["error",$Maybe.Nothing]],
                       model);}
                  _U.badCase($moduleName,
-                 "between lines 63 and 73");
+                 "between lines 82 and 93");
               }();
             case "EditingDescription":
             switch (action._0.ctor)
@@ -4587,7 +4602,7 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 103 and 112");
+                 "between lines 124 and 133");
               }();
             case "UpdateDescription":
             switch (action._0.ctor)
@@ -4625,14 +4640,15 @@ Elm.Main.make = function (_elm) {
                                             newTodo,
                                             model.todos)]
                                            ,["lastUpdated",action._0._0.id]
+                                           ,["maybeDelete",0]
                                            ,["error",$Maybe.Nothing]],
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 86 and 102");
+                 "between lines 106 and 123");
               }();}
          _U.badCase($moduleName,
-         "between lines 44 and 112");
+         "between lines 49 and 133");
       }();
    });
    var SetTodos = function (a) {
@@ -4655,6 +4671,11 @@ Elm.Main.make = function (_elm) {
       return {ctor: "DeleteTodo"
              ,_0: a};
    };
+   var ConfirmDelete = function (a) {
+      return {ctor: "ConfirmDelete"
+             ,_0: a};
+   };
+   var CancelDelete = {ctor: "CancelDelete"};
    var AddNewTodo = function (a) {
       return {ctor: "AddNewTodo"
              ,_0: a};
@@ -4667,7 +4688,13 @@ Elm.Main.make = function (_elm) {
                                                 $Todo.edits.signal)
                                                 ,A2($Signal.map,
                                                 UpdateDescription,
-                                                $Todo.descriptions.signal)]));
+                                                $Todo.descriptions.signal)
+                                                ,A2($Signal.map,
+                                                $Basics.always(CancelDelete),
+                                                $Todo.cancellations.signal)
+                                                ,A2($Signal.map,
+                                                ConfirmDelete,
+                                                $Todo.confirmations.signal)]));
    var mergeCurrTodos = function (todos) {
       return $Signal.send(mailBox.address)(SetTodos(todos));
    };
@@ -4701,15 +4728,16 @@ Elm.Main.make = function (_elm) {
    };
    var performDeletes = Elm.Native.Task.make(_elm).performSignal("performDeletes",
    A2($Signal.map,
-   function (todo) {
+   function (id) {
       return A2($Task.andThen,
-      $Todo.deleteTodo(todo),
+      $Todo.deleteTodo(id),
       removeTodo);
    },
    $Todo.deletes.signal));
    var init = {_: {}
               ,error: $Maybe.Nothing
               ,lastUpdated: 0
+              ,maybeDelete: 0
               ,todos: _L.fromArray([])};
    var model = A3($Signal.foldp,
    update,
@@ -4718,12 +4746,14 @@ Elm.Main.make = function (_elm) {
    var main = A2($Signal.map,
    view,
    model);
-   var Model = F3(function (a,
+   var Model = F4(function (a,
    b,
-   c) {
+   c,
+   d) {
       return {_: {}
-             ,error: c
+             ,error: d
              ,lastUpdated: b
+             ,maybeDelete: c
              ,todos: a};
    });
    _elm.Main.values = {_op: _op
@@ -4731,6 +4761,8 @@ Elm.Main.make = function (_elm) {
                       ,init: init
                       ,NoOp: NoOp
                       ,AddNewTodo: AddNewTodo
+                      ,CancelDelete: CancelDelete
+                      ,ConfirmDelete: ConfirmDelete
                       ,DeleteTodo: DeleteTodo
                       ,EditingDescription: EditingDescription
                       ,UpdateDescription: UpdateDescription
@@ -4839,12 +4871,22 @@ Elm.Misc.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
+   var updateAndDeleteUrl = function (id) {
+      return A2($Basics._op["++"],
+      "/todos/",
+      A2($Basics._op["++"],
+      $Basics.toString(id),
+      ".json"));
+   };
+   var indexAndCreateUrl = "/todos.json";
    var maxDesc = 60;
    var i18Up = "⬆︎";
    var i18NewTodo = "New Todo";
    var i18Down = "⬇︎";
    var i18Done = "✔︎";
    var i18Delete = "✘";
+   var i18Confirm = "Confirm";
+   var i18Cancel = "Cancel";
    var i18Priorities = $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
                                                     ,_0: 0
                                                     ,_1: "Urgent"}
@@ -4866,12 +4908,16 @@ Elm.Misc.make = function (_elm) {
                       ,highPriority: highPriority
                       ,lowPriority: lowPriority
                       ,i18Priorities: i18Priorities
+                      ,i18Cancel: i18Cancel
+                      ,i18Confirm: i18Confirm
                       ,i18Delete: i18Delete
                       ,i18Done: i18Done
                       ,i18Down: i18Down
                       ,i18NewTodo: i18NewTodo
                       ,i18Up: i18Up
-                      ,maxDesc: maxDesc};
+                      ,maxDesc: maxDesc
+                      ,indexAndCreateUrl: indexAndCreateUrl
+                      ,updateAndDeleteUrl: updateAndDeleteUrl};
    return _elm.Misc.values;
 };
 Elm.Native.Array = {};
@@ -13691,23 +13737,40 @@ Elm.Todo.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm),
    $Util = Elm.Util.make(_elm);
-   var updateAndDeleteUrl = function (t) {
-      return A2($Basics._op["++"],
-      "/todos/",
-      A2($Basics._op["++"],
-      $Basics.toString(t.id),
-      ".json"));
-   };
-   var createUrl = "/todos.json";
-   var edits = $Signal.mailbox({ctor: "_Tuple2"
-                               ,_0: 0
-                               ,_1: false});
    var descriptions = $Signal.mailbox({ctor: "_Tuple2"
                                       ,_0: 0
                                       ,_1: ""});
+   var edits = $Signal.mailbox({ctor: "_Tuple2"
+                               ,_0: 0
+                               ,_1: false});
+   var deletes = $Signal.mailbox(0);
+   var confirmations = $Signal.mailbox(0);
+   var cancellations = $Signal.mailbox({ctor: "_Tuple0"});
    var cellClass = function (todo) {
       return todo.done ? "inactive" : "active";
    };
+   var deleteButton = function (t) {
+      return A2($Html.span,
+      _L.fromArray([$Html$Attributes.$class("btn btn-danger btn-xs")
+                   ,A2($Html$Events.onClick,
+                   confirmations.address,
+                   t.id)]),
+      _L.fromArray([$Html.text($Misc.i18Delete)]));
+   };
+   var confirmButton = function (id) {
+      return A2($Html.span,
+      _L.fromArray([$Html$Attributes.$class("btn btn-danger btn-xs")
+                   ,A2($Html$Events.onClick,
+                   deletes.address,
+                   id)]),
+      _L.fromArray([$Html.text($Misc.i18Confirm)]));
+   };
+   var cancelButton = A2($Html.span,
+   _L.fromArray([$Html$Attributes.$class("btn btn-default btn-xs")
+                ,A2($Html$Events.onClick,
+                cancellations.address,
+                {ctor: "_Tuple0"})]),
+   _L.fromArray([$Html.text($Misc.i18Cancel)]));
    var canIncreaseDecrease = F2(function (t,
    bool) {
       return bool ? _U.cmp(t.priority,
@@ -13750,18 +13813,16 @@ Elm.Todo.make = function (_elm) {
       t1.priority,
       t2.priority);
    });
-   var deleteBody = function (t) {
-      return $Http.string("_method=delete");
-   };
-   var deleteTodo = function (t) {
-      return _U.cmp(t.id,
+   var deleteBody = $Http.string("_method=delete");
+   var deleteTodo = function (id) {
+      return _U.cmp(id,
       0) > 0 ? function () {
          var request = {_: {}
-                       ,body: deleteBody(t)
+                       ,body: deleteBody
                        ,headers: _L.fromArray([{ctor: "_Tuple2"
                                                ,_0: "Content-Type"
                                                ,_1: "application/x-www-form-urlencoded"}])
-                       ,url: updateAndDeleteUrl(t)
+                       ,url: $Misc.updateAndDeleteUrl(id)
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
          $Json$Decode.$int,
@@ -13830,7 +13891,7 @@ Elm.Todo.make = function (_elm) {
                return $Misc.i18Down;
                case true: return $Misc.i18Up;}
             _U.badCase($moduleName,
-            "between lines 238 and 241");
+            "between lines 242 and 245");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13869,18 +13930,12 @@ Elm.Todo.make = function (_elm) {
          _L.fromArray([$Html.text($Misc.i18Done)]));
       }();
    };
-   var deletes = $Signal.mailbox(exampleTodo);
-   var deleteButton = function (t) {
-      return A2($Html.span,
-      _L.fromArray([$Html$Attributes.$class("btn btn-danger btn-xs")
-                   ,A2($Html$Events.onClick,
-                   deletes.address,
-                   t)]),
-      _L.fromArray([$Html.text($Misc.i18Delete)]));
-   };
-   var controlButtons = function (t) {
+   var controlButtons = F2(function (toDelete,
+   t) {
       return function () {
-         var buttons = A2($List.map,
+         var buttons = _U.eq(t.id,
+         toDelete) ? _L.fromArray([cancelButton
+                                  ,confirmButton(t.id)]) : A2($List.map,
          function (f) {
             return f(t);
          },
@@ -13889,12 +13944,12 @@ Elm.Todo.make = function (_elm) {
                       ,doneButton
                       ,deleteButton]));
          var space = $Html.text($Util.nbsp);
-         return A2($List.intersperse,
-         space,
-         buttons);
+         return $List.intersperse(space)(buttons);
       }();
-   };
-   var view = F2(function (id,t) {
+   });
+   var view = F3(function (lastUpdated,
+   toDelete,
+   t) {
       return _U.eq(t.id,
       0) ? function () {
          var updater = A2($Html.div,
@@ -13959,8 +14014,10 @@ Elm.Todo.make = function (_elm) {
                                   ,t.newDescription]],
                       t))]),
          _L.fromArray([]))]));
-         var buttons = controlButtons(t);
-         var rowStyles = _U.eq(id,
+         var buttons = A2(controlButtons,
+         toDelete,
+         t);
+         var rowStyles = _U.eq(lastUpdated,
          t.id) ? _L.fromArray([{ctor: "_Tuple2"
                                ,_0: "background-color"
                                ,_1: "lightBlue"}]) : _L.fromArray([]);
@@ -14027,7 +14084,7 @@ Elm.Todo.make = function (_elm) {
                        ,headers: _L.fromArray([{ctor: "_Tuple2"
                                                ,_0: "Content-Type"
                                                ,_1: "application/x-www-form-urlencoded"}])
-                       ,url: createUrl
+                       ,url: $Misc.indexAndCreateUrl
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
          decodeTodo,
@@ -14044,7 +14101,7 @@ Elm.Todo.make = function (_elm) {
                        ,headers: _L.fromArray([{ctor: "_Tuple2"
                                                ,_0: "Content-Type"
                                                ,_1: "application/x-www-form-urlencoded"}])
-                       ,url: updateAndDeleteUrl(t)
+                       ,url: $Misc.updateAndDeleteUrl(t.id)
                        ,verb: "POST"};
          return $Task.toResult(A2($Http.fromJson,
          decodeTodo,
@@ -14073,16 +14130,18 @@ Elm.Todo.make = function (_elm) {
                       ,canIncreaseDecrease: canIncreaseDecrease
                       ,increaseDecreaseSpanClass: increaseDecreaseSpanClass
                       ,increaseDecreaseClickHandler: increaseDecreaseClickHandler
+                      ,cancelButton: cancelButton
+                      ,confirmButton: confirmButton
                       ,doneButton: doneButton
                       ,deleteButton: deleteButton
                       ,cellClass: cellClass
-                      ,descriptions: descriptions
+                      ,cancellations: cancellations
+                      ,confirmations: confirmations
                       ,creates: creates
-                      ,updates: updates
                       ,deletes: deletes
                       ,edits: edits
-                      ,createUrl: createUrl
-                      ,updateAndDeleteUrl: updateAndDeleteUrl};
+                      ,descriptions: descriptions
+                      ,updates: updates};
    return _elm.Todo.values;
 };
 Elm.Todos = Elm.Todos || {};
@@ -14104,10 +14163,13 @@ Elm.Todos.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Todo = Elm.Todo.make(_elm);
-   var view = F2(function (lastUpdated,
+   var view = F3(function (lastUpdated,
+   toDelete,
    todos) {
       return function () {
-         var rows = $List.map($Todo.view(lastUpdated))(A2($List.sortWith,
+         var rows = $List.map(A2($Todo.view,
+         lastUpdated,
+         toDelete))(A2($List.sortWith,
          $Todo.todoCompare,
          todos));
          return A2($Html.table,

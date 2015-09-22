@@ -8,10 +8,10 @@ type alias Todos = List Todo
 
 -- VIEW
 
-view : Int -> Todos -> Html
-view lastUpdated todos =
+view : Int -> Int -> Todos -> Html
+view lastUpdated toDelete todos =
   let
-    rows = List.map (Todo.view lastUpdated) <| List.sortWith todoCompare todos
+    rows = List.map (Todo.view lastUpdated toDelete) <| List.sortWith todoCompare todos
   in
     table
       [ class "table table-bordered table-striped" ]

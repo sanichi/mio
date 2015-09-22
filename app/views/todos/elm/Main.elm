@@ -2,12 +2,13 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Http
 import Json.Decode as Decode
+import Misc exposing (indexAndCreateUrl)
 import Signal exposing (Address)
 import Task exposing (Task)
 import Todo exposing
   ( CreateResult, DeleteResult, Todo, UpdateResult
   , createTodo, decodeTodo, deleteTodo, exampleTodo, updateTodo
-  , creates, descriptions, edits, updates, deletes
+  , cancellations, confirmations, creates, deletes, descriptions, edits, updates
   )
 import Todos exposing (Todos)
 
@@ -16,6 +17,7 @@ import Todos exposing (Todos)
 type alias Model =
   { todos: Todos
   , lastUpdated: Int
+  , maybeDelete: Int
   , error: Maybe String
   }
 
@@ -24,6 +26,7 @@ init : Model
 init =
   { todos = [ ]
   , lastUpdated = 0
+  , maybeDelete = 0
   , error = Nothing
   }
 
@@ -32,6 +35,8 @@ init =
 type Action
   = NoOp
   | AddNewTodo CreateResult
+  | CancelDelete
+  | ConfirmDelete Int
   | DeleteTodo DeleteResult
   | EditingDescription (Int, Bool)
   | UpdateDescription (Int, String)
@@ -59,12 +64,27 @@ update action model =
 
         Err msg -> { model | error <- Just (toString msg) }
 
+    CancelDelete ->
+      { model
+      | maybeDelete <- 0
+      , lastUpdated <- 0
+      , error <- Nothing
+      }
+
+    ConfirmDelete id ->
+      { model
+      | maybeDelete <- id
+      , lastUpdated <- id
+      , error <- Nothing
+      }
+
     DeleteTodo result ->
       case result of
         Ok id ->
           { model
           | todos <- List.filter (\t -> t.id /= id) model.todos
           , lastUpdated <- 0
+          , maybeDelete <- 0
           , error <- Nothing
           }
 
@@ -94,6 +114,7 @@ update action model =
             { model
             | todos <- List.map newTodo model.todos
             , lastUpdated <- todo.id
+            , maybeDelete <- 0
             , error <- Nothing
             }
 
@@ -123,10 +144,11 @@ view model =
 
         Nothing ->
           Html.p [ Attr.hidden True ] [ Html.text "No error" ]
+
   in
     Html.div []
       [ error
-      , Todos.view model.lastUpdated model.todos
+      , Todos.view model.lastUpdated model.maybeDelete model.todos
       ]
 
 -- SIGNALS
@@ -147,6 +169,8 @@ actions =
     [ mailBox.signal
     , (Signal.map EditingDescription edits.signal)
     , (Signal.map UpdateDescription descriptions.signal)
+    , (Signal.map (always CancelDelete) cancellations.signal)
+    , (Signal.map ConfirmDelete confirmations.signal)
     ]
 
 
@@ -161,7 +185,7 @@ type alias TodosResult = Result Http.Error Todos
 
 getCurrTodos : Task Http.Error TodosResult
 getCurrTodos =
-  Task.toResult <| Http.get (Decode.list decodeTodo) "/todos.json"
+  Task.toResult <| Http.get (Decode.list decodeTodo) indexAndCreateUrl
 
 
 mergeCurrTodos : TodosResult -> Task Http.Error ()
@@ -202,4 +226,4 @@ port performUpdates =
 
 port performDeletes : Signal (Task Http.Error ())
 port performDeletes =
-  Signal.map (\todo -> deleteTodo todo `Task.andThen` removeTodo) deletes.signal
+  Signal.map (\id -> deleteTodo id `Task.andThen` removeTodo) deletes.signal

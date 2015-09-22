@@ -16,6 +16,14 @@ i18Priorities =
   Dict.fromList [ (0, "Urgent"), (1, "Important"), (2, "Medium"), (3, "Low"), (4, "Lowest") ]
 
 
+i18Cancel : String
+i18Cancel = "Cancel"
+
+
+i18Confirm : String
+i18Confirm = "Confirm"
+
+
 i18Delete : String
 i18Delete = "✘"
 
@@ -38,3 +46,13 @@ i18Up = "⬆︎"
 
 maxDesc : Int
 maxDesc = 60
+
+
+indexAndCreateUrl : String
+indexAndCreateUrl =
+  "/todos.json"
+
+
+updateAndDeleteUrl : Int -> String
+updateAndDeleteUrl id =
+  "/todos/" ++ (toString id) ++ ".json"

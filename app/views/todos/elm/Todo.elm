@@ -7,8 +7,9 @@ import Html.Events as Events
 import Http
 import Json.Decode as Decode exposing ((:=))
 import Misc exposing
-  ( i18Delete, i18Done, i18Down, i18NewTodo, i18Priorities, i18Up
+  ( i18Cancel, i18Confirm, i18Delete, i18Done, i18Down, i18NewTodo, i18Priorities, i18Up
   , highPriority, lowPriority, maxDesc
+  , indexAndCreateUrl, updateAndDeleteUrl
   )
 import String
 import Task exposing (Task)
@@ -71,7 +72,7 @@ createTodo t =
       request =
         { verb = "POST"
         , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
-        , url = createUrl
+        , url = indexAndCreateUrl
         , body = createBody t
         }
     in
@@ -100,7 +101,7 @@ updateTodo t =
       request =
         { verb = "POST"
         , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
-        , url = updateAndDeleteUrl t
+        , url = updateAndDeleteUrl t.id
         , body = updateBody t
         }
     in
@@ -109,20 +110,20 @@ updateTodo t =
     Task.fail <| Http.UnexpectedPayload "can't update todos unless ID > 0"
 
 
-deleteBody : Todo -> Http.Body
-deleteBody t =
-  Http.string <| "_method=delete"
+deleteBody : Http.Body
+deleteBody =
+  Http.string "_method=delete"
 
 
-deleteTodo : Todo -> Task Http.Error DeleteResult
-deleteTodo t =
-  if t.id > 0 then
+deleteTodo : Int -> Task Http.Error DeleteResult
+deleteTodo id =
+  if id > 0 then
     let
       request =
         { verb = "POST"
         , headers = [ ("Content-Type", "application/x-www-form-urlencoded") ]
-        , url = updateAndDeleteUrl t
-        , body = deleteBody t
+        , url = updateAndDeleteUrl id
+        , body = deleteBody
         }
     in
       Task.toResult <| Http.fromJson Decode.int (Http.send Http.defaultSettings request)
@@ -146,8 +147,8 @@ todoCompare t1 t2 =
   )
 
 
-view : Int -> Todo -> Html
-view id t =
+view : Int -> Int -> Todo -> Html
+view lastUpdated toDelete t =
   if t.id == 0
   then
     let
@@ -173,8 +174,8 @@ view id t =
   else
     let
       spanAtr = class (cellClass t)
-      rowStyles = if id == t.id then [ ("background-color", "lightBlue") ] else [ ]
-      buttons = controlButtons t
+      rowStyles = if lastUpdated == t.id then [ ("background-color", "lightBlue") ] else [ ]
+      buttons = controlButtons toDelete t
       priority = span [ spanAtr ] [ text (priorityDescription t) ]
       description =
         span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
@@ -209,13 +210,16 @@ priorityDescription t =
   Maybe.withDefault "Unknown" (Dict.get t.priority i18Priorities)
 
 
-controlButtons : Todo -> List Html
-controlButtons t =
+controlButtons : Int -> Todo -> List Html
+controlButtons toDelete t =
   let
     space = text nbsp
-    buttons = List.map (\f -> f t) [increaseButton, decreaseButton, doneButton, deleteButton]
+    buttons =
+      if t.id == toDelete
+        then [ cancelButton, (confirmButton t.id) ]
+        else List.map (\f -> f t) [ increaseButton, decreaseButton, doneButton, deleteButton ]
   in
-    List.intersperse space buttons
+    List.intersperse space <| buttons
 
 
 increaseButton : Todo -> Html
@@ -269,6 +273,20 @@ increaseDecreaseClickHandler t bool =
     else [ ]
 
 
+cancelButton : Html
+cancelButton =
+  span
+    [ class "btn btn-default btn-xs", Events.onClick cancellations.address () ]
+    [ text i18Cancel ]
+
+
+confirmButton : Int -> Html
+confirmButton id =
+  span
+    [ class "btn btn-danger btn-xs", Events.onClick deletes.address id ]
+    [ text i18Confirm ]
+
+
 doneButton : Todo -> Html
 doneButton t =
   let
@@ -282,7 +300,7 @@ doneButton t =
 deleteButton : Todo -> Html
 deleteButton t =
   span
-    [ class "btn btn-danger btn-xs", Events.onClick deletes.address t ]
+    [ class "btn btn-danger btn-xs", Events.onClick confirmations.address t.id ]
     [ text i18Delete ]
 
 
@@ -292,32 +310,29 @@ cellClass todo =
 
 -- SIGNALS
 
-descriptions : Signal.Mailbox (Int, String)
-descriptions = Signal.mailbox (0, "")
+cancellations : Signal.Mailbox ()
+cancellations = Signal.mailbox ()
+
+
+confirmations : Signal.Mailbox Int
+confirmations = Signal.mailbox 0
 
 
 creates : Signal.Mailbox Todo
 creates = Signal.mailbox exampleTodo
 
 
-updates : Signal.Mailbox Todo
-updates = Signal.mailbox exampleTodo
-
-
-deletes : Signal.Mailbox Todo
-deletes = Signal.mailbox exampleTodo
+deletes : Signal.Mailbox Int
+deletes = Signal.mailbox 0
 
 
 edits : Signal.Mailbox (Int, Bool)
 edits = Signal.mailbox (0, False)
 
--- UTILITIES
 
-createUrl : String
-createUrl =
-  "/todos.json"
+descriptions : Signal.Mailbox (Int, String)
+descriptions = Signal.mailbox (0, "")
 
 
-updateAndDeleteUrl : Todo -> String
-updateAndDeleteUrl t =
-  "/todos/" ++ (toString t.id) ++ ".json"
+updates : Signal.Mailbox Todo
+updates = Signal.mailbox exampleTodo

@@ -9,6 +9,8 @@ en:
     todos: Todos
     elm:
       app: Elm
+      cancel: Cancel
+      confirm: Confirm
       delete: ✘
       done: ✔︎
       down: ⬇︎
