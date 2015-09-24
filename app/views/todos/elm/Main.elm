@@ -1,16 +1,15 @@
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Http
-import Json.Decode as Decode
-import Misc exposing (indexAndCreateUrl)
 import Signal exposing (Address)
 import Task exposing (Task)
 import Todo exposing
-  ( CreateResult, DeleteResult, Todo, UpdateResult
-  , createTodo, decodeTodo, deleteTodo, exampleTodo, updateTodo
+  ( Todo
+  , CreateResult, DeleteResult, UpdateResult
+  , createTodo, deleteTodo, exampleTodo, updateTodo
   , cancellations, confirmations, creates, deletes, descriptions, edits, updates
   )
-import Todos exposing (Todos)
+import Todos exposing (Todos, TodosResult, getInitialTodos)
 
 -- MODEL
 
@@ -170,23 +169,14 @@ actions =
     [ mailBox.signal
     , (Signal.map EditingDescription edits.signal)
     , (Signal.map UpdateDescription descriptions.signal)
-    , (Signal.map (always CancelDelete) cancellations.signal)
     , (Signal.map ConfirmDelete confirmations.signal)
+    , (Signal.map (always CancelDelete) cancellations.signal)
     ]
 
 
 mailBox : Signal.Mailbox Action
 mailBox =
   Signal.mailbox NoOp
-
--- TASKS
-
-type alias TodosResult = Result Http.Error Todos
-
-
-getCurrTodos : Task Http.Error TodosResult
-getCurrTodos =
-  Task.toResult <| Http.get (Decode.list decodeTodo) indexAndCreateUrl
 
 
 mergeCurrTodos : TodosResult -> Task Http.Error ()
@@ -210,9 +200,9 @@ removeTodo id =
 
 -- PORTS
 
-port runner : Task Http.Error ()
-port runner =
-  getCurrTodos `Task.andThen` mergeCurrTodos
+port performIndex : Task Http.Error ()
+port performIndex =
+  getInitialTodos `Task.andThen` mergeCurrTodos
 
 
 port performCreates : Signal (Task Http.Error ())

@@ -2,9 +2,14 @@ module Todos where
 
 import Html exposing (Html, table, tbody)
 import Html.Attributes exposing (class)
-import Todo exposing (Todo, todoCompare)
+import Http
+import Json.Decode as Decode
+import Misc exposing (indexAndCreateUrl)
+import Task exposing (Task)
+import Todo exposing (Todo, decodeTodo, todoCompare)
 
 type alias Todos = List Todo
+type alias TodosResult = Result Http.Error Todos
 
 -- VIEW
 
@@ -16,3 +21,9 @@ view lastUpdated toDelete todos =
     table
       [ class "table table-bordered table-striped" ]
       [ tbody [ ] rows ]
+
+-- OTHER
+
+getInitialTodos : Task Http.Error TodosResult
+getInitialTodos =
+  Task.toResult <| Http.get (Decode.list decodeTodo) indexAndCreateUrl

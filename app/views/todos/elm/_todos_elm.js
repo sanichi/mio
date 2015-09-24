@@ -4457,18 +4457,13 @@ Elm.Main.make = function (_elm) {
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Http = Elm.Http.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $Misc = Elm.Misc.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm),
    $Todos = Elm.Todos.make(_elm);
-   var getCurrTodos = $Task.toResult(A2($Http.get,
-   $Json$Decode.list($Todo.decodeTodo),
-   $Misc.indexAndCreateUrl));
    var view = function (model) {
       return function () {
          var error = function () {
@@ -4484,7 +4479,7 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Html$Attributes.hidden(true)]),
                  _L.fromArray([$Html.text("No error")]));}
             _U.badCase($moduleName,
-            "between lines 142 and 149");
+            "between lines 141 and 148");
          }();
          return A2($Html.div,
          _L.fromArray([]),
@@ -4527,7 +4522,7 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 54 and 68");
+                 "between lines 53 and 67");
               }();
             case "CancelDelete":
             return _U.replace([["maybeDelete"
@@ -4561,7 +4556,7 @@ Elm.Main.make = function (_elm) {
                                       ,["error",$Maybe.Nothing]],
                       model);}
                  _U.badCase($moduleName,
-                 "between lines 83 and 94");
+                 "between lines 82 and 93");
               }();
             case "EditingDescription":
             switch (action._0.ctor)
@@ -4605,7 +4600,7 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 125 and 134");
+                 "between lines 124 and 133");
               }();
             case "UpdateDescription":
             switch (action._0.ctor)
@@ -4648,10 +4643,10 @@ Elm.Main.make = function (_elm) {
                          model);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 107 and 124");
+                 "between lines 106 and 123");
               }();}
          _U.badCase($moduleName,
-         "between lines 49 and 134");
+         "between lines 48 and 133");
       }();
    });
    var SetTodos = function (a) {
@@ -4693,16 +4688,16 @@ Elm.Main.make = function (_elm) {
                                                 UpdateDescription,
                                                 $Todo.descriptions.signal)
                                                 ,A2($Signal.map,
-                                                $Basics.always(CancelDelete),
-                                                $Todo.cancellations.signal)
-                                                ,A2($Signal.map,
                                                 ConfirmDelete,
-                                                $Todo.confirmations.signal)]));
+                                                $Todo.confirmations.signal)
+                                                ,A2($Signal.map,
+                                                $Basics.always(CancelDelete),
+                                                $Todo.cancellations.signal)]));
    var mergeCurrTodos = function (todos) {
       return $Signal.send(mailBox.address)(SetTodos(todos));
    };
-   var runner = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
-   getCurrTodos,
+   var performIndex = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
+   $Todos.getInitialTodos,
    mergeCurrTodos));
    var addNewTodo = function (todo) {
       return $Signal.send(mailBox.address)(AddNewTodo(todo));
@@ -4777,7 +4772,6 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,mailBox: mailBox
-                      ,getCurrTodos: getCurrTodos
                       ,mergeCurrTodos: mergeCurrTodos
                       ,addNewTodo: addNewTodo
                       ,mergeTodo: mergeTodo
@@ -14149,11 +14143,18 @@ Elm.Todos.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Http = Elm.Http.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Misc = Elm.Misc.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm);
+   var getInitialTodos = $Task.toResult(A2($Http.get,
+   $Json$Decode.list($Todo.decodeTodo),
+   $Misc.indexAndCreateUrl));
    var view = F3(function (lastUpdated,
    toDelete,
    todos) {
@@ -14171,7 +14172,8 @@ Elm.Todos.make = function (_elm) {
       }();
    });
    _elm.Todos.values = {_op: _op
-                       ,view: view};
+                       ,view: view
+                       ,getInitialTodos: getInitialTodos};
    return _elm.Todos.values;
 };
 Elm.Transform2D = Elm.Transform2D || {};
