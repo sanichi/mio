@@ -9,7 +9,7 @@ import Todo exposing
   , createTodo, deleteTodo, exampleTodo, updateTodo
   , cancellations, confirmations, creates, deletes, descriptions, edits, updates
   )
-import Todos exposing (Todos, TodosResult, getInitialTodos)
+import Todos exposing (Todos, TodosResult, getTodos)
 
 -- MODEL
 
@@ -179,13 +179,13 @@ mailBox =
   Signal.mailbox NoOp
 
 
-mergeCurrTodos : TodosResult -> Task Http.Error ()
-mergeCurrTodos todos =
+initTodos : TodosResult -> Task Http.Error ()
+initTodos todos =
   Signal.send mailBox.address <| SetTodos todos
 
 
-addNewTodo : CreateResult -> Task Http.Error ()
-addNewTodo todo =
+addTodo : CreateResult -> Task Http.Error ()
+addTodo todo =
   Signal.send mailBox.address <| AddNewTodo todo
 
 
@@ -202,12 +202,12 @@ removeTodo id =
 
 port performIndex : Task Http.Error ()
 port performIndex =
-  getInitialTodos `Task.andThen` mergeCurrTodos
+  getTodos `Task.andThen` initTodos
 
 
 port performCreates : Signal (Task Http.Error ())
 port performCreates =
-  Signal.map (\todo -> createTodo todo `Task.andThen` addNewTodo) creates.signal
+  Signal.map (\todo -> createTodo todo `Task.andThen` addTodo) creates.signal
 
 
 port performUpdates : Signal (Task Http.Error ())

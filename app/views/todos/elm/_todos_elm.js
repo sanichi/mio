@@ -4693,13 +4693,13 @@ Elm.Main.make = function (_elm) {
                                                 ,A2($Signal.map,
                                                 $Basics.always(CancelDelete),
                                                 $Todo.cancellations.signal)]));
-   var mergeCurrTodos = function (todos) {
+   var initTodos = function (todos) {
       return $Signal.send(mailBox.address)(SetTodos(todos));
    };
    var performIndex = Elm.Native.Task.make(_elm).perform(A2($Task.andThen,
-   $Todos.getInitialTodos,
-   mergeCurrTodos));
-   var addNewTodo = function (todo) {
+   $Todos.getTodos,
+   initTodos));
+   var addTodo = function (todo) {
       return $Signal.send(mailBox.address)(AddNewTodo(todo));
    };
    var performCreates = Elm.Native.Task.make(_elm).performSignal("performCreates",
@@ -4707,7 +4707,7 @@ Elm.Main.make = function (_elm) {
    function (todo) {
       return A2($Task.andThen,
       $Todo.createTodo(todo),
-      addNewTodo);
+      addTodo);
    },
    $Todo.creates.signal));
    var mergeTodo = function (todo) {
@@ -4772,8 +4772,8 @@ Elm.Main.make = function (_elm) {
                       ,model: model
                       ,actions: actions
                       ,mailBox: mailBox
-                      ,mergeCurrTodos: mergeCurrTodos
-                      ,addNewTodo: addNewTodo
+                      ,initTodos: initTodos
+                      ,addTodo: addTodo
                       ,mergeTodo: mergeTodo
                       ,removeTodo: removeTodo};
    return _elm.Main.values;
@@ -14152,7 +14152,7 @@ Elm.Todos.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $Task = Elm.Task.make(_elm),
    $Todo = Elm.Todo.make(_elm);
-   var getInitialTodos = $Task.toResult(A2($Http.get,
+   var getTodos = $Task.toResult(A2($Http.get,
    $Json$Decode.list($Todo.decodeTodo),
    $Misc.indexAndCreateUrl));
    var view = F3(function (lastUpdated,
@@ -14173,7 +14173,7 @@ Elm.Todos.make = function (_elm) {
    });
    _elm.Todos.values = {_op: _op
                        ,view: view
-                       ,getInitialTodos: getInitialTodos};
+                       ,getTodos: getTodos};
    return _elm.Todos.values;
 };
 Elm.Transform2D = Elm.Transform2D || {};

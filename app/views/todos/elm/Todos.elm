@@ -24,6 +24,6 @@ view lastUpdated toDelete todos =
 
 -- OTHER
 
-getInitialTodos : Task Http.Error TodosResult
-getInitialTodos =
+getTodos : Task Http.Error TodosResult
+getTodos =
   Task.toResult <| Http.get (Decode.list decodeTodo) indexAndCreateUrl
