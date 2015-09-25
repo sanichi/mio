@@ -13,6 +13,8 @@ describe "Todo Elm" do
   end
 
   context "updates", js: true do
+    let(:data) { build(:todo) }
+
     def cell(row, i)
       tmpl = '//div[@id="elm"]/div/table/tbody/tr[%d][td[1]/span[@class="%s" and .="%s"] and td[2]/span[.="%s"]]'
       text = @todo[i].description
@@ -23,6 +25,14 @@ describe "Todo Elm" do
 
     def button(i, text)
       '//tr[@id="todo_%d"]/td[3]/span[.="%s"]' % [@todo[i].id, text]
+    end
+
+    def description(i)
+      '//tr[@id="todo_%d"]/td[1]/span' % @todo[i].id
+    end
+
+    def input(i=nil)
+      '//input[@id="description_%d"]' % (i ? @todo[i].id : 0)
     end
 
     def expect_rows(page, i, j=nil, k=nil)
@@ -120,6 +130,29 @@ describe "Todo Elm" do
       find(:xpath, button(0, todo_elm_confirm)).click
       wait_a_while
       expect(Todo.count).to eq 0
+    end
+
+    it "edit" do
+      find(:xpath, description(0)).click
+      find(:xpath, input(0)).send_keys("x")
+      find(:xpath, input(0)).send_keys(:return)
+      reload
+
+      expect(@todo[0].description).to eq "Todo 5x"
+      expect_rows(page, 0, 1, 2)
+    end
+
+    it "create" do
+      find(:xpath, input).send_keys(data.description)
+      find(:xpath, input).send_keys(:return)
+
+      wait_a_while
+      expect(Todo.count).to eq 4
+
+      todo = Todo.last
+      expect(todo.description).to eq data.description
+      expect(todo.priority).to eq Todo::PRIORITIES[0]
+      expect(todo.done).to eq false
     end
   end
 end
