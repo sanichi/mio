@@ -144,6 +144,7 @@ view lastUpdated toDelete t =
               input
                 [ value t.newDescription
                 , type' "text"
+                , id "description_0"
                 , class "form-control"
                 , size maxDesc
                 , maxlength maxDesc
@@ -163,7 +164,7 @@ view lastUpdated toDelete t =
         buttons = controlButtons toDelete t
         priority = span [ spanAtr ] [ text (priorityDescription t) ]
         description =
-          span [ spanAtr, Events.onDoubleClick edits.address (t.id, True) ] [ text t.description ]
+          span [ spanAtr, Events.onClick edits.address (t.id, True) ] [ text t.description ]
         updater =
           div
             [ class "input-group input-group-sm" ]
@@ -171,6 +172,7 @@ view lastUpdated toDelete t =
               input
                 [ value t.newDescription
                 , type' "text"
+                , id <| "description_" ++ (toString t.id)
                 , class "form-control"
                 , size maxDesc
                 , maxlength maxDesc

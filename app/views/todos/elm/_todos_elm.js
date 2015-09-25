@@ -13884,7 +13884,7 @@ Elm.Todo.make = function (_elm) {
                return $Misc.i18Down;
                case true: return $Misc.i18Up;}
             _U.badCase($moduleName,
-            "between lines 227 and 230");
+            "between lines 229 and 232");
          }();
          var clickHandler = A2(increaseDecreaseClickHandler,
          t,
@@ -13952,6 +13952,7 @@ Elm.Todo.make = function (_elm) {
          _L.fromArray([A2($Html.input,
          _L.fromArray([$Html$Attributes.value(t.newDescription)
                       ,$Html$Attributes.type$("text")
+                      ,$Html$Attributes.id("description_0")
                       ,$Html$Attributes.$class("form-control")
                       ,$Html$Attributes.size($Misc.maxDesc)
                       ,$Html$Attributes.maxlength($Misc.maxDesc)
@@ -13984,6 +13985,9 @@ Elm.Todo.make = function (_elm) {
          _L.fromArray([A2($Html.input,
          _L.fromArray([$Html$Attributes.value(t.newDescription)
                       ,$Html$Attributes.type$("text")
+                      ,$Html$Attributes.id(A2($Basics._op["++"],
+                      "description_",
+                      $Basics.toString(t.id)))
                       ,$Html$Attributes.$class("form-control")
                       ,$Html$Attributes.size($Misc.maxDesc)
                       ,$Html$Attributes.maxlength($Misc.maxDesc)
@@ -14020,7 +14024,7 @@ Elm.Todo.make = function (_elm) {
          _L.fromArray([$Html.text(priorityDescription(t))]));
          var description = A2($Html.span,
          _L.fromArray([spanAtr
-                      ,A2($Html$Events.onDoubleClick,
+                      ,A2($Html$Events.onClick,
                       edits.address,
                       {ctor: "_Tuple2"
                       ,_0: t.id
