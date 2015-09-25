@@ -119,9 +119,11 @@ shared_context "test_data" do
   let(:todo_todo)       { I18n.t("todo.todo") }
   let(:todo_todos)      { I18n.t("todo.todos") }
 
-  let(:todo_elm)        { I18n.t("todo.elm.app") }
-  let(:todo_elm_delete) { I18n.t("todo.elm.delete") }
-  let(:todo_elm_done)   { I18n.t("todo.elm.done") }
-  let(:todo_elm_down)   { I18n.t("todo.elm.down") }
-  let(:todo_elm_up)     { I18n.t("todo.elm.up") }
+  let(:todo_elm)         { I18n.t("todo.elm.app") }
+  let(:todo_elm_cancel)  { I18n.t("todo.elm.cancel") }
+  let(:todo_elm_confirm) { I18n.t("todo.elm.confirm") }
+  let(:todo_elm_delete)  { I18n.t("todo.elm.delete") }
+  let(:todo_elm_done)    { I18n.t("todo.elm.done") }
+  let(:todo_elm_down)    { I18n.t("todo.elm.down") }
+  let(:todo_elm_up)      { I18n.t("todo.elm.up") }
 end

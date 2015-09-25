@@ -183,7 +183,7 @@ view lastUpdated toDelete t =
             ]
     in
       tr
-        [ class rowClass ]
+        [ class rowClass, id ("todo_" ++ (toString t.id)) ]
         [ td [ ] [ if t.editingDescription then updater else description ]
         , td [ class "col-md-2" ] [ priority ]
         , td [ class "col-md-2 text-center" ] buttons

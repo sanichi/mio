@@ -14027,7 +14027,10 @@ Elm.Todo.make = function (_elm) {
                       ,_1: true})]),
          _L.fromArray([$Html.text(t.description)]));
          return A2($Html.tr,
-         _L.fromArray([$Html$Attributes.$class(rowClass)]),
+         _L.fromArray([$Html$Attributes.$class(rowClass)
+                      ,$Html$Attributes.id(A2($Basics._op["++"],
+                      "todo_",
+                      $Basics.toString(t.id)))]),
          _L.fromArray([A2($Html.td,
                       _L.fromArray([]),
                       _L.fromArray([t.editingDescription ? updater : description]))
