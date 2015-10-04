@@ -167,10 +167,10 @@ actions : Signal Action
 actions =
   Signal.mergeMany
     [ mailBox.signal
-    , (Signal.map EditingDescription edits.signal)
-    , (Signal.map UpdateDescription descriptions.signal)
-    , (Signal.map ConfirmDelete confirmations.signal)
-    , (Signal.map (always CancelDelete) cancellations.signal)
+    , Signal.map EditingDescription edits.signal
+    , Signal.map UpdateDescription descriptions.signal
+    , Signal.map ConfirmDelete confirmations.signal
+    , Signal.map (always CancelDelete) cancellations.signal
     ]
 
 

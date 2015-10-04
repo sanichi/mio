@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :people do
     get :match, on: :collection
     get :relative, on: :member
+    get :tree, on: :collection
   end
   resources :pictures
   resources :sessions, only: [:create]

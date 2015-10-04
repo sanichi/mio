@@ -57,4 +57,11 @@ namespace :elm do
       compile_and_minify "pills_elm"
     end
   end
+
+  desc "make and minify the Elm JS file for Family Tree"
+  task :tree do
+    Dir.chdir("app/views/people/tree") do
+      compile_and_minify "tree_elm"
+    end
+  end
 end

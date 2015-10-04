@@ -108,6 +108,20 @@ class Person < ActiveRecord::Base
     Relation.infer(my_ancestor, their_ancestor, male)
   end
 
+  def tree_hash(focus=false)
+    h = Hash.new
+    if focus
+      h[:person] = tree_hash
+      h[:father] = father.try(:tree_hash)
+      h[:mother] = mother.try(:tree_hash)
+      h[:families] = tree_families
+    else
+      h[:id] = id
+      h[:name] = name(full: false, with_known_as: true).gsub(/ /, "&nbsp;")
+    end
+    h
+  end
+
   private
 
   def tidy_text
@@ -172,5 +186,17 @@ class Person < ActiveRecord::Base
     end.first
     their_best = theirs[my_best.person.id]
     [my_best, their_best]
+  end
+
+  def tree_families
+    hash = Hash.new { |h, k| h[k] = Array.new }
+    children.each { |c| hash[c.send(male?? :mother : :father)].push(c) }
+    partners.each { |p| hash[p] }
+    hash.each_pair.each_with_object([]) do |(partner, children), array|
+      family = Hash.new
+      family[:partner] = partner.try(:tree_hash)
+      family[:children] = children.sort_by(&:born).map(&:tree_hash)
+      array.push family
+    end
   end
 end

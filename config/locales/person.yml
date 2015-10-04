@@ -5,6 +5,7 @@ en:
     died: Died
     edit: Edit Person
     family: Family
+    family_tree: Family Tree
     father: Father
     female: Female
     first_name: First name
@@ -23,6 +24,7 @@ en:
     person: Person
     relationship_to: Relationship To
     siblings: Siblings
+    tree: Tree
     order:
       born: by born
       first: by first name

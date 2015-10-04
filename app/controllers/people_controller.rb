@@ -13,6 +13,14 @@ class PeopleController < ApplicationController
     end
   end
 
+  def tree
+    @person = Person.find_by(id: params[:id]) || current_user.person || Person.offset(rand(Person.count)).first
+    respond_to do |format|
+      format.html
+      format.json { render json: @person.tree_hash(true) }
+    end
+  end
+
   def relative
     p = Person.find_by(id: params[:id])
     o = Person.find_by(id: params[:other])

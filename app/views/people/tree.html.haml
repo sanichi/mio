@@ -1,0 +1,11 @@
+= render "utils/title", key: "person.family_tree"
+
+- content_for :javascript do
+  = render "people/tree_elm.min.js"
+
+.row
+  .col-md-12
+    #elm
+
+= javascript_tag do
+  = render "tree.js", person: @person
