@@ -1,7 +1,7 @@
 module Box where
 
 import Array
-import Config exposing (boxBgColor, lineColor, border, level, margin, padding, newFocus)
+import Config exposing (boxBgColor, lineColor, border, level, margin, padding, newFocus, smallStyle, textStyle)
 import Family exposing (Person, People)
 import Graphics.Collage as Graphic exposing (Form)
 import Graphics.Element as Element exposing (Element)
@@ -73,14 +73,17 @@ box2 focus person =
   let
     m = Signal.message newFocus.address person.id
 
-    t = Text.fromString person.name
+    t = Text.fromString person.name |> Text.style textStyle
     t' = if focus then Text.bold t else t
 
-    e = Element.centered t'
+    y = Text.fromString person.years |> Text.style smallStyle
+    y' = if focus then Text.bold y else y
+
+    e = Text.join (Text.fromString "\n") [t', y'] |> Element.centered
     w = Element.widthOf e
     h = Element.heightOf e
 
-    a = if focus then 4 else 0
+    a = if focus then 2 else 0
 
     w' = 2 * (ceiling ((toFloat w) / 2.0) + (padding.x + a))
     h' = 2 * (ceiling ((toFloat h) / 2.0) + (padding.y + a))
@@ -139,8 +142,8 @@ partner (x, y) partner =
     , lines <- [ l ]
     }
 
-children : Point -> People -> Box
-children (x, y) people =
+children : Point -> Float -> People -> Box
+children (x, y) h people =
   let
     bx1 = Array.map box people
     wds = Array.map (\b -> b.w) bx1
@@ -149,7 +152,7 @@ children (x, y) people =
     bx2 = Array.indexedMap (\i b -> move (x + toFloat (Maybe.withDefault 0 (Array.get i mds)), toFloat -level) b) bx1
     b1 = Array.get 0 bx2 |> Maybe.withDefault emptyBox
     b2 = Array.get ((Array.length bx2) - 1) bx2 |> Maybe.withDefault emptyBox
-    ym = Point.average (x, y) (top b1) |> snd
+    ym = Point.average (x, h) (top b1) |> snd
     ls = Array.map (\m -> line (top m) (m.x, ym)) bx2 |> Array.toList
     l1 = line (x, y) (x, ym)
     l2 = line (b1.x, ym) (b2.x, ym)

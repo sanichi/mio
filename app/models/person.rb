@@ -37,8 +37,10 @@ class Person < ActiveRecord::Base
     (reversed ? "#{ln}, #{fn}" : "#{fn} #{ln}") + years
   end
 
-  def years
-    born || died ? "#{born}-#{died}" : ""
+  def years(plus: false)
+    b = plus ? born_plus : born
+    d = plus ? died_plus : died
+    "#{b}-#{d}"
   end
 
   def born_plus
@@ -126,6 +128,7 @@ class Person < ActiveRecord::Base
     else
       h[:id] = id
       h[:name] = name(full: false, with_known_as: true).gsub(/ /, "&nbsp;")
+      h[:years] = years(plus: true)
     end
     h
   end

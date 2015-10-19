@@ -2,6 +2,7 @@ module Config where
 
 import Color exposing (Color)
 import Signal
+import Text exposing (defaultStyle)
 
 -- COLORS
 
@@ -20,13 +21,28 @@ border : Int
 border = 1
 
 level : Int
-level = 80
+level = 100
 
 margin : { x : Int, y : Int }
 margin = { x = 18, y = 18 }
 
 padding : { x : Int, y : Int }
-padding = { x = 3, y = 3 }
+padding = { x = 4, y = 4 }
+
+-- TEXT
+
+textStyle : Text.Style
+textStyle =
+  { defaultStyle
+  | typeface <- ["Verdana", "Helvetica", "sans-serif"]
+  , height <- Just 15
+  }
+
+smallStyle : Text.Style
+smallStyle =
+  { textStyle
+  | height <- Just 11
+  }
 
 -- SHARED MAILBOXES
 

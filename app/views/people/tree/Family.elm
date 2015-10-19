@@ -5,12 +5,14 @@ import Array exposing (Array)
 type alias Person =
   { id : Int
   , name : String
+  , years : String
   }
 
 nobody : Person
 nobody =
   { id = 0
   , name = "Initialising..."
+  , years = ""
   }
 
 type alias People =

@@ -53,8 +53,9 @@ view model =
               case f.partner of
                 Nothing -> Box.bottom focusBox
                 Just p -> Point.average (Box.right focusBox) (Box.left partnerBox)
+            bot = Box.bottom focusBox |> snd
           in
-            if Array.isEmpty f.children then Box.emptyBox else Box.children handle f.children
+            if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot f.children
     adjust =
       if partnerBox.w > 0
         then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> (*) -1.0
