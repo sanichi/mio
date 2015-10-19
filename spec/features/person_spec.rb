@@ -21,7 +21,9 @@ describe Person do
       fill_in person_first_names, with: data.first_names
       fill_in person_known_as, with: data.known_as
       fill_in person_born, with: data.born
+      check person_born_guess if data.born_guess
       fill_in person_died, with: data.died
+      check person_died_guess if data.died_guess
       select father.name(reversed: true, with_years: true, with_married_name: true), from: person_father
       select mother.name(reversed: true, with_years: true, with_married_name: true), from: person_mother
       fill_in person_notes, with: data.notes
@@ -38,7 +40,9 @@ describe Person do
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq data.known_as
       expect(p.born).to eq data.born
+      expect(p.born_guess).to eq data.born_guess
       expect(p.died).to eq data.died
+      expect(p.died_guess).to eq data.died_guess
       expect(p.male).to eq data.male
       expect(p.married_name).to eq data.married_name
       expect(p.father_id).to eq father.id
@@ -62,7 +66,9 @@ describe Person do
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq p.first_names.split(" ").first
       expect(p.born).to eq data.born
+      expect(p.born_guess).to eq false
       expect(p.died).to be_nil
+      expect(p.died_guess).to eq false
       expect(p.male).to eq false
       expect(p.married_name).to be_nil
       expect(p.father_id).to be_nil
@@ -131,6 +137,7 @@ describe Person do
 
       expect(page).to have_title edit_person
       fill_in person_died, with: year
+      check person_died_guess
       click_button save
 
       expect(page).to have_title person.name(full: false)
@@ -139,6 +146,7 @@ describe Person do
       p = Person.last
 
       expect(p.died).to eq year
+      expect(p.died_guess).to eq true
     end
   end
 

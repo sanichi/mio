@@ -1,8 +1,10 @@
 en:
   person:
     born: Born
+    born_guess: Born guess?
     children: Children
     died: Died
+    died_guess: Died guess?
     edit: Edit Person
     family: Family
     family_tree: Family Tree

@@ -24,11 +24,11 @@
           %td= t("person.#{@person.male ? '' : 'fe'}male")
         %tr
           %th= t("person.born")
-          %td= @person.born
+          %td= @person.born_plus
         - if @person.died.present?
           %tr
             %th= t("person.died")
-            %td= @person.died
+            %td= @person.died_plus
         - if @person.father.present?
           %tr
             %th= t("person.father")

@@ -83,7 +83,9 @@ shared_context "test_data" do
   let(:new_person)          { I18n.t("person.new") }
   let(:people)              { I18n.t("person.people") }
   let(:person_born)         { I18n.t("person.born") }
+  let(:person_born_guess)   { I18n.t("person.born_guess") }
   let(:person_died)         { I18n.t("person.died") }
+  let(:person_died_guess)   { I18n.t("person.died_guess") }
   let(:person_father)       { I18n.t("person.father") }
   let(:person_female)       { I18n.t("person.male") }
   let(:person_first_names)  { I18n.t("person.first_names") }

@@ -41,6 +41,14 @@ class Person < ActiveRecord::Base
     born || died ? "#{born}-#{died}" : ""
   end
 
+  def born_plus
+    year_plus(born, born_guess)
+  end
+
+  def died_plus
+    died ? year_plus(died, died_guess) : nil
+  end
+
   def notes_html
     to_html(notes)
   end
@@ -198,5 +206,9 @@ class Person < ActiveRecord::Base
       family[:children] = children.sort_by(&:born).map(&:tree_hash)
       array.push family
     end
+  end
+
+  def year_plus(year, guess)
+    "%d%s" % [year, guess ? "?" : ""]
   end
 end
