@@ -1,12 +1,14 @@
 = render "utils/title", text: @picture.person.name(full: false)
 
 = render "prev_next", picture: @picture
-          
+
 .text-center.top_margin
   - Picture::SIZE.each_pair do |nm, sz|
     - unless nm == :tn
       %div{class: "visible-#{nm}-block"}
         = image_tag @picture.image.url(nm)
+  - if @picture.portrait
+    %div{title: t("picture.portrait")}= "☐"
 
 - if @picture.description.present?
   .panel.panel-default.top_margin

@@ -129,6 +129,7 @@ class Person < ActiveRecord::Base
       h[:id] = id
       h[:name] = name(full: false, with_known_as: true).gsub(/ /, "&nbsp;")
       h[:years] = years(plus: true)
+      h[:picture] = sample_portrait_path
     end
     h
   end
@@ -213,5 +214,10 @@ class Person < ActiveRecord::Base
 
   def year_plus(year, guess)
     "%d%s" % [year, guess ? "?" : ""]
+  end
+
+  def sample_portrait_path
+    sample = pictures.where(portrait: true).sample
+    sample ? sample.image.url : "/system/images/blank_#{male ? '' : 'wo'}man.png"
   end
 end

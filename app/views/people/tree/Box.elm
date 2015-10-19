@@ -1,7 +1,12 @@
 module Box where
 
 import Array
-import Config exposing (boxBgColor, lineColor, border, level, margin, padding, newFocus, smallStyle, textStyle)
+import Config exposing
+  ( boxBgColor, lineColor
+  , border, level, margin, padding, thumbSize
+  , smallStyle, textStyle
+  , newFocus
+  )
 import Family exposing (Person, People)
 import Graphics.Collage as Graphic exposing (Form)
 import Graphics.Element as Element exposing (Element)
@@ -85,7 +90,7 @@ box2 focus person =
 
     a = if focus then 2 else 0
 
-    w' = 2 * (ceiling ((toFloat w) / 2.0) + (padding.x + a))
+    w' = 2 * (ceiling ((toFloat w) / 2.0) + (padding.x + a)) |> max thumbSize
     h' = 2 * (ceiling ((toFloat h) / 2.0) + (padding.y + a))
     e' = Element.container w' h' Element.middle e |> Element.color boxBgColor |> Input.clickable m
 

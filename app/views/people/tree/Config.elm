@@ -29,6 +29,9 @@ margin = { x = 18, y = 18 }
 padding : { x : Int, y : Int }
 padding = { x = 4, y = 4 }
 
+thumbSize : Int
+thumbSize = 100
+
 -- TEXT
 
 textStyle : Text.Style

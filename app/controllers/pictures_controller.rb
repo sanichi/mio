@@ -42,6 +42,6 @@ class PicturesController < ApplicationController
   end
 
   def strong_params
-    params.require(:picture).permit(:description, :image, :person_id)
+    params.require(:picture).permit(:description, :image, :person_id, :portrait)
   end
 end

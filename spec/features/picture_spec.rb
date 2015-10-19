@@ -19,6 +19,7 @@ describe Picture do
     it "success" do
       click_link new_picture
       fill_in description, with: data.description
+      check picture_portrait if data.portrait
       attach_file picture_file, image_dir + file
       select person.name(reversed: true, with_years: true), from: person_person
       click_button save
@@ -29,6 +30,7 @@ describe Picture do
       p = Picture.last
 
       expect(p.description).to eq data.description
+      expect(p.portrait).to eq data.portrait
       expect(p.person_id).to eq person.id
       expect(p.image_file_name).to eq file
       expect(p.image_content_type).to eq "image/jpeg"
@@ -42,6 +44,7 @@ describe Picture do
       it "bad name" do
         click_link new_picture
         fill_in description, with: data.description
+        check picture_portrait if data.portrait
         attach_file picture_file, image_dir + file_bad_name
         select person.name(reversed: true, with_years: true), from: person_person
         click_button save
@@ -54,6 +57,7 @@ describe Picture do
       it "bad type" do
         click_link new_picture
         fill_in description, with: data.description
+        check picture_portrait if data.portrait
         attach_file picture_file, image_dir + file_bad_type
         select person.name(reversed: true, with_years: true), from: person_person
         click_button save
