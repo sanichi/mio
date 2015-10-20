@@ -69,32 +69,32 @@ move (dx, dy) box =
 
 -- MAPPINGS
 
-box : Person -> Box
-box p =
-  box2 False p
+box : (Float, Float) -> Person -> Box
+box d p =
+  box2 False d p
 
-box2 : Bool -> Person -> Box
-box2 focus person =
+box2 : Bool -> (Float, Float) -> Person -> Box
+box2 isFocus (dx, dy) person =
   let
     m = Signal.message newFocus.address person.id
 
     t = Text.fromString person.name |> Text.style textStyle
-    t' = if focus then Text.bold t else t
+    t' = if isFocus then Text.bold t else t
 
     y = Text.fromString person.years |> Text.style smallStyle
-    y' = if focus then Text.bold y else y
+    y' = if isFocus then Text.bold y else y
 
     e = Text.join (Text.fromString "\n") [t', y'] |> Element.centered
     w = Element.widthOf e
     h = Element.heightOf e
 
-    a = if focus then 2 else 0
+    a = if isFocus then 2 else 0
 
     w' = 2 * (ceiling ((toFloat w) / 2.0) + (padding.x + a)) |> max thumbSize
     h' = 2 * (ceiling ((toFloat h) / 2.0) + (padding.y + a))
     e' = Element.container w' h' Element.middle e |> Element.color boxBgColor |> Input.clickable m
 
-    b = if focus then 1 else 0
+    b = if isFocus then 1 else 0
 
     w'' = w' + 2 * (border + b)
     h'' = h' + 2 * (border + b)
@@ -104,8 +104,14 @@ box2 focus person =
     h''' = h'' + 2 * margin.y
     e''' = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
 
+    p = Element.image thumbSize thumbSize person.picture
+
+    px = dx * 0.5 * toFloat (w''' + thumbSize)
+    py = dy * 0.5 * toFloat (h''' + thumbSize)
+    p' = Graphic.toForm p |> Graphic.move (px, py)
+
   in
-    { forms = [ e''' ]
+    { forms = [ e''', p' ]
     , lines = [ ]
     , w = w'''
     , h = h'''
@@ -119,8 +125,8 @@ parents (x, y) father mother =
     b =
       case (father, mother) of
         (Nothing, Nothing) -> emptyBox
-        (Just f, Nothing)  -> box f
-        (Nothing, Just m)  -> box m
+        (Just f, Nothing)  -> box (0, 1) f
+        (Nothing, Just m)  -> box (0, 1) m
         (Just f, Just m)   -> couple f m
     t =
       move (0, (toFloat level)) b
@@ -138,7 +144,7 @@ parents (x, y) father mother =
 partner : Point -> Person -> Box
 partner (x, y) partner =
   let
-    b = box partner
+    b = box (1, 0) partner
     m = move (x + (toFloat (margin.x + (b.w // 2))), y) b
     l = line (x, y) (left m)
   in
@@ -150,7 +156,7 @@ partner (x, y) partner =
 children : Point -> Float -> People -> Box
 children (x, y) h people =
   let
-    bx1 = Array.map box people
+    bx1 = Array.map (box (0, -1)) people
     wds = Array.map (\b -> b.w) bx1
     wid = Array.foldl (\w t -> w + t) 0 wds
     mds = Array.indexedMap (\i w -> (w - wid) // 2 + (Array.foldl (\w t -> w + t) 0 (Array.slice 0 i wds))) wds
@@ -173,8 +179,8 @@ children (x, y) h people =
 couple : Person -> Person -> Box
 couple p1 p2 =
   let
-    b1 = box p1
-    b2 = box p2
+    b1 = box (0, 1) p1
+    b2 = box (0, 1) p2
     m1 = move (toFloat(-b1.w // 2), 0) b1
     m2 = move (toFloat( b2.w // 2), 0) b2
     hb = line (right m1) (left m2)

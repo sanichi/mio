@@ -21,7 +21,7 @@ border : Int
 border = 1
 
 level : Int
-level = 100
+level = 180
 
 margin : { x : Int, y : Int }
 margin = { x = 18, y = 18 }

@@ -34,7 +34,7 @@ view : Model -> Element
 view model =
   let
     focus = model.focus
-    focusBox = Box.box2 True focus.person
+    focusBox = Box.box2 True (-1, 0) focus.person
     parentsBox = Box.parents (Box.top focusBox) focus.father focus.mother
     family = Array.get model.family focus.families
     partnerBox =
