@@ -104,7 +104,8 @@ box2 isFocus (dx, dy) person =
     h''' = h'' + 2 * margin.y
     e''' = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
 
-    p = Element.image thumbSize thumbSize person.picture
+    ts = thumbSize + if isFocus then 20 else 0
+    p = Element.image ts ts person.picture |> Input.clickable m
 
     px = dx * 0.5 * toFloat (w''' + thumbSize)
     py = dy * 0.5 * toFloat (h''' + thumbSize)

@@ -312,10 +312,7 @@ Elm.Box.make = function (_elm) {
          switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
-                 var p = A3($Graphics$Element.image,
-                 $Config.thumbSize,
-                 $Config.thumbSize,
-                 person.picture);
+                 var ts = $Config.thumbSize + (isFocus ? 20 : 0);
                  var b = isFocus ? 1 : 0;
                  var a = isFocus ? 2 : 0;
                  var y = $Text.style($Config.smallStyle)($Text.fromString(person.years));
@@ -335,9 +332,6 @@ Elm.Box.make = function (_elm) {
                  var h$$ = h$ + 2 * ($Config.border + b);
                  var h$$$ = h$$ + 2 * $Config.margin.y;
                  var py = _v0._1 * 0.5 * $Basics.toFloat(h$$$ + $Config.thumbSize);
-                 var p$ = $Graphics$Collage.move({ctor: "_Tuple2"
-                                                 ,_0: px
-                                                 ,_1: py})($Graphics$Collage.toForm(p));
                  var m = A2($Signal.message,
                  $Config.newFocus.address,
                  person.id);
@@ -356,6 +350,13 @@ Elm.Box.make = function (_elm) {
                  h$$$,
                  $Graphics$Element.middle,
                  e$$));
+                 var p = $Graphics$Input.clickable(m)(A3($Graphics$Element.image,
+                 ts,
+                 ts,
+                 person.picture));
+                 var p$ = $Graphics$Collage.move({ctor: "_Tuple2"
+                                                 ,_0: px
+                                                 ,_1: py})($Graphics$Collage.toForm(p));
                  return {_: {}
                         ,forms: _L.fromArray([e$$$,p$])
                         ,h: h$$$
@@ -365,7 +366,7 @@ Elm.Box.make = function (_elm) {
                         ,y: 0.0};
               }();}
          _U.badCase($moduleName,
-         "between lines 78 and 120");
+         "between lines 78 and 121");
       }();
    });
    var box = F2(function (d,p) {
@@ -426,7 +427,7 @@ Elm.Box.make = function (_elm) {
                  m);
               }();}
          _U.badCase($moduleName,
-         "between lines 146 and 154");
+         "between lines 147 and 155");
       }();
    });
    var right = function (box) {
@@ -587,7 +588,7 @@ Elm.Box.make = function (_elm) {
                         ,y: b1.y};
               }();}
          _U.badCase($moduleName,
-         "between lines 158 and 177");
+         "between lines 159 and 178");
       }();
    });
    var emptyForm = $Graphics$Collage.toForm($Graphics$Element.empty);
@@ -624,7 +625,7 @@ Elm.Box.make = function (_elm) {
                               break;}
                          break;}
                     _U.badCase($moduleName,
-                    "between lines 126 and 131");
+                    "between lines 127 and 132");
                  }();
                  var t = A2(move,
                  {ctor: "_Tuple2"
@@ -667,7 +668,7 @@ Elm.Box.make = function (_elm) {
                  t);
               }();}
          _U.badCase($moduleName,
-         "between lines 124 and 142");
+         "between lines 125 and 143");
       }();
    });
    var Box = F6(function (a,
@@ -2323,7 +2324,7 @@ Elm.Family.make = function (_elm) {
    var nobody = {_: {}
                 ,id: 0
                 ,name: "Initialising..."
-                ,picture: "/system/images/blank_woman.png"
+                ,picture: "/images/blank_woman.png"
                 ,years: ""};
    var blur = {_: {}
               ,families: $Array.empty

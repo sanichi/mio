@@ -14,7 +14,7 @@ nobody =
   { id = 0
   , name = "Initialising..."
   , years = ""
-  , picture = "/system/images/blank_woman.png"
+  , picture = "/images/blank_woman.png"
   }
 
 type alias People =
