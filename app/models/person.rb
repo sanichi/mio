@@ -218,6 +218,6 @@ class Person < ActiveRecord::Base
 
   def sample_portrait_path
     sample = pictures.where(portrait: true).sample
-    sample ? sample.image.url(:tn) : "/system/images/blank_#{male ? '' : 'wo'}man.png"
+    sample ? sample.image.url(:tn) : "/images/blank_#{male ? '' : 'wo'}man.png"
   end
 end
