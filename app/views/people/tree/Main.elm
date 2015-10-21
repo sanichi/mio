@@ -1,7 +1,7 @@
 import Array
 import Box exposing (Box)
 import Color
-import Config exposing (bgColor, level, newFocus)
+import Config exposing (bgColor, level, newFocus, shifts)
 import Dict exposing (Dict)
 import Family exposing (Person, People, Focus, Family)
 import Graphics.Collage as Graphic exposing (Form)
@@ -18,6 +18,7 @@ type alias Model =
   , height: Int
   , focus: Focus
   , family : Int
+  , shift : Int
   }
 
 init : Model
@@ -26,6 +27,7 @@ init =
   , height = 4 * level
   , focus = Family.blur
   , family = 0
+  , shift = 0
   }
 
 -- VIEW
@@ -58,16 +60,20 @@ view model =
             if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot f.children
     adjust =
       if partnerBox.w > 0
-        then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> (*) -1.0
-        else 0.0
+        then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> round
+        else 0
+    leftOverflow = Box.overflow True model.width model.height (model.shift - adjust) childrenBox
+    rightOverflow = Box.overflow False model.width model.height (model.shift - adjust) childrenBox
     boxes = [ focusBox, parentsBox, partnerBox, childrenBox ]
-    forms = boxes |> List.map .forms |> List.concat
-    lines = boxes |> List.map .lines |> List.concat
+    unshiftedForms =
+      List.append
+        (boxes |> List.map .lines |> List.concat) -- lines must be first, otherwise
+        (boxes |> List.map .forms |> List.concat) -- onclicks don't work (Elm bug)
+    shift = toFloat (model.shift - adjust)
+    shiftedForms = List.map (Graphic.move (shift, 0)) unshiftedForms
+    forms = List.append shiftedForms [leftOverflow, rightOverflow]
   in
-    List.append lines forms
-      |> List.map (Graphic.move (adjust, 0))
-      |> Graphic.collage model.width model.height
-      |> Element.color bgColor
+    Graphic.collage model.width model.height forms |> Element.color bgColor
 
 -- UPDATE
 
@@ -75,6 +81,7 @@ type Action
   = NoOp
   | UpdateContainer (Int, Int)
   | ChangeFocus Focus
+  | Shift Int
 
 update : Action -> Model -> Model
 update action model =
@@ -86,11 +93,19 @@ update action model =
       { model
       | width <- w
       , height <- h
+      , shift <- 0
       }
 
     ChangeFocus f ->
       { model
       | focus <- f
+      , family <- 0
+      , shift <- 0
+      }
+
+    Shift delta ->
+      { model
+      | shift <- model.shift + delta
       , family <- 0
       }
 
@@ -109,6 +124,7 @@ actions =
   Signal.mergeMany
     [ Signal.map UpdateContainer Window.dimensions
     , Signal.map ChangeFocus foci
+    , Signal.map Shift shifts.signal
     ]
 
 -- PORTS

@@ -3,9 +3,9 @@ module Box where
 import Array
 import Config exposing
   ( boxBgColor, lineColor
-  , border, level, margin, padding, thumbSize
-  , smallStyle, textStyle
-  , newFocus
+  , border, deltaShift, level, margin, padding, thumbSize
+  , largeStyle, smallStyle, textStyle
+  , newFocus, shifts
   )
 import Family exposing (Person, People)
 import Graphics.Collage as Graphic exposing (Form)
@@ -193,6 +193,41 @@ couple p1 p2 =
     , x = (b1.x + b2.x) / 2.0
     , y = b1.y
     }
+
+overflow : Bool -> Int -> Int -> Int -> Box -> Form
+overflow leftSide width height shift widestBox =
+  let
+    point = if leftSide then left widestBox else right widestBox
+    extreme = 2 * (shift + round (fst point))
+    offEdge = if leftSide then extreme <= -width else extreme >= width
+  in
+    if offEdge
+      then
+        let
+          delta = if leftSide then deltaShift else -deltaShift
+          m = Signal.message shifts.address delta
+
+          arrow = if leftSide then "☜" else "☞"
+          t = Text.fromString arrow |> Text.style largeStyle
+          e = Element.centered t
+          w = Element.widthOf e
+          h = Element.heightOf e
+
+          w' = 2 * (ceiling ((toFloat w) / 2.0) + padding.x)
+          h' = 2 * (ceiling ((toFloat h) / 2.0) + padding.y)
+          e' = Element.container w' h' Element.middle e |> Input.clickable m
+
+          x =
+            let
+              dx = toFloat (width - w') / 2.0
+            in
+              if leftSide then -dx else dx
+          y = toFloat (height - h') / 2.0
+
+        in
+          Graphic.toForm e' |> Graphic.move (x, y)
+      else
+        emptyForm
 
 -- MISC
 

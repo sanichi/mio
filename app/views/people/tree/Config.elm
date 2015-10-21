@@ -20,6 +20,9 @@ lineColor = Color.black
 border : Int
 border = 1
 
+deltaShift : Int
+deltaShift = 50
+
 level : Int
 level = 180
 
@@ -47,7 +50,16 @@ smallStyle =
   | height <- Just 11
   }
 
+largeStyle : Text.Style
+largeStyle =
+  { textStyle
+  | height <- Just 40
+  }
+
 -- SHARED MAILBOXES
 
 newFocus : Signal.Mailbox Int
 newFocus = Signal.mailbox 0
+
+shifts : Signal.Mailbox Int
+shifts = Signal.mailbox 0
