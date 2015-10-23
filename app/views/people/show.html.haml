@@ -2,6 +2,20 @@
 - content_for :javascript do
   = render "relation_completer.js", id: @person.id
 
+.text-center
+  .btn-group
+    = link_to t("person.tree"), tree_people_path(id: @person.id), class: "btn btn-success"
+    = link_to t("person.people"), people_path, class: "btn btn-success"
+    = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
+    - if can?(:manage, Person)
+      = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"
+    - if can?(:create, Picture)
+      = link_to t("picture.new"), new_picture_path(person_id: @person.id), class: "btn btn-info"
+    - if can?(:create, Partnership)
+      = link_to t("partnership.new"), new_partnership_path(person_id: @person.id), class: "btn btn-info"
+
+%p
+
 .row
   .col-xs-offset-0.col-xs-12.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8
     %table{class: "table table-bordered table-striped"}
@@ -57,16 +71,3 @@
     .panel-heading
       = t("notes")
     .panel-body= @person.notes_html
-
-%p
-
-.text-center
-  - if can?(:manage, Person)
-    = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"
-  - if can?(:create, Picture)
-    = link_to t("picture.new"), new_picture_path(person_id: @person.id), class: "btn btn-info"
-  - if can?(:create, Partnership)
-    = link_to t("partnership.new"), new_partnership_path(person_id: @person.id), class: "btn btn-info"
-  = link_to t("person.people"), people_path, class: "btn btn-success"
-  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
-  = link_to t("person.tree"), tree_people_path(id: @person.id), class: "btn btn-success"
