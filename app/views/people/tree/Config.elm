@@ -21,7 +21,7 @@ border : Int
 border = 1
 
 deltaShift : Int
-deltaShift = 50
+deltaShift = 200
 
 level : Int
 level = 180

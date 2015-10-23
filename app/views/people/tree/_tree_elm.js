@@ -1297,7 +1297,7 @@ Elm.Config.make = function (_elm) {
                 ,x: 18
                 ,y: 18};
    var level = 180;
-   var deltaShift = 50;
+   var deltaShift = 200;
    var border = 1;
    var lineColor = $Color.black;
    var boxBgColor = $Color.white;
