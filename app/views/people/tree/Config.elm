@@ -58,8 +58,11 @@ largeStyle =
 
 -- SHARED MAILBOXES
 
-newFocus : Signal.Mailbox Int
-newFocus = Signal.mailbox 0
+family : Signal.Mailbox Int
+family = Signal.mailbox 0
+
+focus : Signal.Mailbox Int
+focus = Signal.mailbox 0
 
 shifts : Signal.Mailbox Int
 shifts = Signal.mailbox 0

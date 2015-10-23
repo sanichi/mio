@@ -9,3 +9,7 @@ average p1 p2 =
     y = ((snd p1) + (snd p2)) / 2.0
   in
     (x, y)
+
+moveX : Float -> Point -> Point
+moveX delta point =
+  ((fst point) + delta, snd point)

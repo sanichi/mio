@@ -1,7 +1,7 @@
 import Array
 import Box exposing (Box)
 import Color
-import Config exposing (bgColor, level, newFocus, shifts)
+import Config exposing (bgColor, family, level, margin, focus, shifts)
 import Dict exposing (Dict)
 import Family exposing (Person, People, Focus, Family)
 import Graphics.Collage as Graphic exposing (Form)
@@ -45,7 +45,7 @@ view model =
         Just f ->
           case f.partner of
             Nothing -> Box.emptyBox
-            Just p -> Box.partner (Box.right focusBox) p
+            Just p -> Box.partner (Box.right focusBox) (model.family, Array.length focus.families) p
     childrenBox =
       case family of
         Nothing -> Box.emptyBox
@@ -54,7 +54,7 @@ view model =
             handle =
               case f.partner of
                 Nothing -> Box.bottom focusBox
-                Just p -> Point.average (Box.right focusBox) (Box.left partnerBox)
+                Just p -> Box.right focusBox |> Point.moveX (toFloat margin.x)
             bot = Box.bottom focusBox |> snd
           in
             if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot f.children
@@ -82,6 +82,7 @@ type Action
   | UpdateContainer (Int, Int)
   | ChangeFocus Focus
   | Shift Int
+  | SwitchFamily Int
 
 update : Action -> Model -> Model
 update action model =
@@ -107,6 +108,11 @@ update action model =
       | shift <- model.shift + delta
       }
 
+    SwitchFamily index ->
+      { model
+      | family <- index
+      }
+
 -- SIGNALS
 
 main : Signal Element
@@ -123,6 +129,7 @@ actions =
     [ Signal.map UpdateContainer Window.dimensions
     , Signal.map ChangeFocus foci
     , Signal.map Shift shifts.signal
+    , Signal.map SwitchFamily family.signal
     ]
 
 -- PORTS
@@ -130,4 +137,4 @@ actions =
 port foci : Signal Focus
 
 port getFocus : Signal Int
-port getFocus = newFocus.signal
+port getFocus = focus.signal

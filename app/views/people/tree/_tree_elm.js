@@ -333,7 +333,7 @@ Elm.Box.make = function (_elm) {
                  var h$$$ = h$$ + 2 * $Config.margin.y;
                  var py = _v0._1 * 0.5 * $Basics.toFloat(h$$$ + $Config.thumbSize);
                  var m = A2($Signal.message,
-                 $Config.newFocus.address,
+                 $Config.focus.address,
                  person.id);
                  var e$ = $Graphics$Input.clickable(m)($Graphics$Element.color($Config.boxBgColor)(A4($Graphics$Element.container,
                  w$,
@@ -402,34 +402,6 @@ Elm.Box.make = function (_elm) {
              ,_0: box.x - $Basics.toFloat((box.w / 2 | 0) - $Config.margin.y)
              ,_1: box.y};
    };
-   var partner = F2(function (_v8,
-   partner) {
-      return function () {
-         switch (_v8.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var b = A2(box,
-                 {ctor: "_Tuple2",_0: 1,_1: 0},
-                 partner);
-                 var m = A2(move,
-                 {ctor: "_Tuple2"
-                 ,_0: _v8._0 + $Basics.toFloat($Config.margin.x + (b.w / 2 | 0))
-                 ,_1: _v8._1},
-                 b);
-                 var l = A2(line,
-                 {ctor: "_Tuple2"
-                 ,_0: _v8._0
-                 ,_1: _v8._1},
-                 left(m));
-                 return _U.replace([["forms"
-                                    ,m.forms]
-                                   ,["lines",_L.fromArray([l])]],
-                 m);
-              }();}
-         _U.badCase($moduleName,
-         "between lines 147 and 155");
-      }();
-   });
    var right = function (box) {
       return {ctor: "_Tuple2"
              ,_0: box.x + $Basics.toFloat((box.w / 2 | 0) - $Config.margin.y)
@@ -490,11 +462,11 @@ Elm.Box.make = function (_elm) {
                   ,w: 0
                   ,x: 0.0
                   ,y: 0.0};
-   var children = F3(function (_v12,
+   var children = F3(function (_v8,
    h,
    people) {
       return function () {
-         switch (_v12.ctor)
+         switch (_v8.ctor)
          {case "_Tuple2":
             return function () {
                  var bx1 = A2($Array.map,
@@ -527,7 +499,7 @@ Elm.Box.make = function (_elm) {
                  F2(function (i,b) {
                     return A2(move,
                     {ctor: "_Tuple2"
-                    ,_0: _v12._0 + $Basics.toFloat(A2($Maybe.withDefault,
+                    ,_0: _v8._0 + $Basics.toFloat(A2($Maybe.withDefault,
                     0,
                     A2($Array.get,i,mds)))
                     ,_1: $Basics.toFloat(0 - $Config.level)},
@@ -539,15 +511,15 @@ Elm.Box.make = function (_elm) {
                  bx2));
                  var ym = $Basics.snd(A2($Point.average,
                  {ctor: "_Tuple2"
-                 ,_0: _v12._0
+                 ,_0: _v8._0
                  ,_1: h},
                  top(b1)));
                  var l1 = A2(line,
                  {ctor: "_Tuple2"
-                 ,_0: _v12._0
-                 ,_1: _v12._1},
+                 ,_0: _v8._0
+                 ,_1: _v8._1},
                  {ctor: "_Tuple2"
-                 ,_0: _v12._0
+                 ,_0: _v8._0
                  ,_1: ym});
                  var b2 = $Maybe.withDefault(emptyBox)(A2($Array.get,
                  $Array.length(bx2) - 1,
@@ -588,38 +560,87 @@ Elm.Box.make = function (_elm) {
                         ,y: b1.y};
               }();}
          _U.badCase($moduleName,
-         "between lines 159 and 178");
+         "between lines 169 and 188");
+      }();
+   });
+   var familyToggler = F2(function (index,
+   families) {
+      return _U.cmp(families,
+      1) < 1 ? emptyBox : function () {
+         var s = A2($Basics._op["++"],
+         $Basics.toString(index + 1),
+         A2($Basics._op["++"],
+         " of ",
+         $Basics.toString(families)));
+         var t = $Text.style($Config.textStyle)($Text.fromString(s));
+         var e = $Graphics$Element.centered(t);
+         var w = $Graphics$Element.widthOf(e);
+         var w$ = 2 * ($Basics.ceiling($Basics.toFloat(w) / 2.0) + $Config.padding.x);
+         var w$$ = w$ + 2 * $Config.border;
+         var w$$$ = w$$ + 2 * $Config.margin.x;
+         var h = $Graphics$Element.heightOf(e);
+         var h$ = 2 * ($Basics.ceiling($Basics.toFloat(h) / 2.0) + $Config.padding.y);
+         var h$$ = h$ + 2 * $Config.border;
+         var h$$$ = h$$ + 2 * $Config.margin.y;
+         var n = index + 1;
+         var n$ = _U.cmp(n,
+         families) < 0 ? n : 0;
+         var m = A2($Signal.message,
+         $Config.family.address,
+         n$);
+         var e$ = $Graphics$Input.clickable(m)($Graphics$Element.color($Config.boxBgColor)(A4($Graphics$Element.container,
+         w$,
+         h$,
+         $Graphics$Element.middle,
+         e)));
+         var e$$ = $Graphics$Element.color($Config.lineColor)(A4($Graphics$Element.container,
+         w$$,
+         h$$,
+         $Graphics$Element.middle,
+         e$));
+         var f = $Graphics$Collage.toForm(A4($Graphics$Element.container,
+         w$$$,
+         h$$$,
+         $Graphics$Element.middle,
+         e$$));
+         return {_: {}
+                ,forms: _L.fromArray([f])
+                ,h: h$$$
+                ,lines: _L.fromArray([])
+                ,w: w$$$
+                ,x: 0.0
+                ,y: 0.0};
       }();
    });
    var emptyForm = $Graphics$Collage.toForm($Graphics$Element.empty);
-   var parents = F3(function (_v16,
+   var parents = F3(function (_v12,
    father,
    mother) {
       return function () {
-         switch (_v16.ctor)
+         switch (_v12.ctor)
          {case "_Tuple2":
             return function () {
                  var b = function () {
-                    var _v20 = {ctor: "_Tuple2"
+                    var _v16 = {ctor: "_Tuple2"
                                ,_0: father
                                ,_1: mother};
-                    switch (_v20.ctor)
+                    switch (_v16.ctor)
                     {case "_Tuple2":
-                       switch (_v20._0.ctor)
+                       switch (_v16._0.ctor)
                          {case "Just":
-                            switch (_v20._1.ctor)
+                            switch (_v16._1.ctor)
                               {case "Just": return A2(couple,
-                                   _v20._0._0,
-                                   _v20._1._0);
+                                   _v16._0._0,
+                                   _v16._1._0);
                                  case "Nothing": return A2(box,
                                    {ctor: "_Tuple2",_0: 0,_1: 1},
-                                   _v20._0._0);}
+                                   _v16._0._0);}
                               break;
                             case "Nothing":
-                            switch (_v20._1.ctor)
+                            switch (_v16._1.ctor)
                               {case "Just": return A2(box,
                                    {ctor: "_Tuple2",_0: 0,_1: 1},
-                                   _v20._1._0);
+                                   _v16._1._0);
                                  case "Nothing":
                                  return emptyBox;}
                               break;}
@@ -633,22 +654,22 @@ Elm.Box.make = function (_elm) {
                  ,_1: $Basics.toFloat($Config.level)},
                  b);
                  var l = function () {
-                    var _v26 = {ctor: "_Tuple2"
+                    var _v22 = {ctor: "_Tuple2"
                                ,_0: father
                                ,_1: mother};
-                    switch (_v26.ctor)
+                    switch (_v22.ctor)
                     {case "_Tuple2":
-                       switch (_v26._0.ctor)
+                       switch (_v22._0.ctor)
                          {case "Just":
-                            switch (_v26._1.ctor)
+                            switch (_v22._1.ctor)
                               {case "Just": return A2(line,
                                    middle(t),
                                    {ctor: "_Tuple2"
-                                   ,_0: _v16._0
-                                   ,_1: _v16._1});}
+                                   ,_0: _v12._0
+                                   ,_1: _v12._1});}
                               break;
                             case "Nothing":
-                            switch (_v26._1.ctor)
+                            switch (_v22._1.ctor)
                               {case "Nothing":
                                  return emptyForm;}
                               break;}
@@ -656,8 +677,8 @@ Elm.Box.make = function (_elm) {
                     return A2(line,
                     bottom(t),
                     {ctor: "_Tuple2"
-                    ,_0: _v16._0
-                    ,_1: _v16._1});
+                    ,_0: _v12._0
+                    ,_1: _v12._1});
                  }();
                  return _U.replace([["forms"
                                     ,t.forms]
@@ -669,6 +690,62 @@ Elm.Box.make = function (_elm) {
               }();}
          _U.badCase($moduleName,
          "between lines 125 and 143");
+      }();
+   });
+   var partner = F3(function (_v27,
+   _v28,
+   partner) {
+      return function () {
+         switch (_v28.ctor)
+         {case "_Tuple2":
+            return function () {
+                 switch (_v27.ctor)
+                 {case "_Tuple2":
+                    return function () {
+                         var t = A2(familyToggler,
+                         _v28._0,
+                         _v28._1);
+                         var t$ = A2(move,
+                         {ctor: "_Tuple2"
+                         ,_0: _v27._0 + $Basics.toFloat($Config.margin.x + (t.w / 2 | 0))
+                         ,_1: 0},
+                         t);
+                         var b = A2(box,
+                         {ctor: "_Tuple2",_0: 1,_1: 0},
+                         partner);
+                         var d = $Basics.toFloat($Config.margin.x + (b.w / 2 | 0) + (_U.cmp(t.w,
+                         0) > 0 ? t.w - $Config.margin.x : 0));
+                         var b$ = A2(move,
+                         {ctor: "_Tuple2"
+                         ,_0: _v27._0 + d
+                         ,_1: _v27._1},
+                         b);
+                         var l1 = _U.eq(t.w,0) ? A2(line,
+                         {ctor: "_Tuple2"
+                         ,_0: _v27._0
+                         ,_1: _v27._1},
+                         left(b$)) : A2(line,
+                         {ctor: "_Tuple2"
+                         ,_0: _v27._0
+                         ,_1: _v27._1},
+                         left(t$));
+                         var l2 = _U.eq(t.w,
+                         0) ? emptyForm : A2(line,
+                         right(t$),
+                         left(b$));
+                         return _U.replace([["forms"
+                                            ,A2($List.append,
+                                            t$.forms,
+                                            b$.forms)]
+                                           ,["lines"
+                                            ,_L.fromArray([l1,l2])]],
+                         b$);
+                      }();}
+                 _U.badCase($moduleName,
+                 "between lines 147 and 165");
+              }();}
+         _U.badCase($moduleName,
+         "between lines 147 and 165");
       }();
    });
    var overflow = F5(function (leftSide,
@@ -740,6 +817,7 @@ Elm.Box.make = function (_elm) {
                      ,partner: partner
                      ,children: children
                      ,couple: couple
+                     ,familyToggler: familyToggler
                      ,overflow: overflow
                      ,line: line};
    return _elm.Box.values;
@@ -1278,7 +1356,8 @@ Elm.Config.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $Text = Elm.Text.make(_elm);
    var shifts = $Signal.mailbox(0);
-   var newFocus = $Signal.mailbox(0);
+   var focus = $Signal.mailbox(0);
+   var family = $Signal.mailbox(0);
    var textStyle = _U.replace([["typeface"
                                ,_L.fromArray(["Verdana"
                                              ,"Helvetica"
@@ -1318,7 +1397,8 @@ Elm.Config.make = function (_elm) {
                         ,textStyle: textStyle
                         ,smallStyle: smallStyle
                         ,largeStyle: largeStyle
-                        ,newFocus: newFocus
+                        ,family: family
+                        ,focus: focus
                         ,shifts: shifts};
    return _elm.Config.values;
 };
@@ -3699,7 +3779,7 @@ Elm.Main.make = function (_elm) {
    function (v) {
       return v;
    },
-   $Config.newFocus.signal);
+   $Config.focus.signal);
    var foci = Elm.Native.Port.make(_elm).inboundSignal("foci",
    "Family.Focus",
    function (v) {
@@ -3779,6 +3859,10 @@ Elm.Main.make = function (_elm) {
             return _U.replace([["shift"
                                ,model.shift + action._0]],
               model);
+            case "SwitchFamily":
+            return _U.replace([["family"
+                               ,action._0]],
+              model);
             case "UpdateContainer":
             switch (action._0.ctor)
               {case "_Tuple2":
@@ -3788,9 +3872,13 @@ Elm.Main.make = function (_elm) {
                    model);}
               break;}
          _U.badCase($moduleName,
-         "between lines 88 and 108");
+         "between lines 89 and 114");
       }();
    });
+   var SwitchFamily = function (a) {
+      return {ctor: "SwitchFamily"
+             ,_0: a};
+   };
    var Shift = function (a) {
       return {ctor: "Shift",_0: a};
    };
@@ -3810,7 +3898,10 @@ Elm.Main.make = function (_elm) {
                                                 foci)
                                                 ,A2($Signal.map,
                                                 Shift,
-                                                $Config.shifts.signal)]));
+                                                $Config.shifts.signal)
+                                                ,A2($Signal.map,
+                                                SwitchFamily,
+                                                $Config.family.signal)]));
    var NoOp = {ctor: "NoOp"};
    var view = function (model) {
       return function () {
@@ -3826,43 +3917,16 @@ Elm.Main.make = function (_elm) {
          var family = A2($Array.get,
          model.family,
          focus.families);
-         var partnerBox = function () {
-            switch (family.ctor)
-            {case "Just":
-               return function () {
-                    var _v8 = family._0.partner;
-                    switch (_v8.ctor)
-                    {case "Just":
-                       return A2($Box.partner,
-                         $Box.right(focusBox),
-                         _v8._0);
-                       case "Nothing":
-                       return $Box.emptyBox;}
-                    _U.badCase($moduleName,
-                    "between lines 46 and 49");
-                 }();
-               case "Nothing":
-               return $Box.emptyBox;}
-            _U.badCase($moduleName,
-            "between lines 43 and 49");
-         }();
-         var adjust = _U.cmp(partnerBox.w,
-         0) > 0 ? $Basics.round($Basics.fst(A2($Point.average,
-         $Box.right(focusBox),
-         $Box.left(partnerBox)))) : 0;
-         var shift = $Basics.toFloat(model.shift - adjust);
          var childrenBox = function () {
             switch (family.ctor)
             {case "Just":
                return function () {
                     var bot = $Basics.snd($Box.bottom(focusBox));
                     var handle = function () {
-                       var _v12 = family._0.partner;
-                       switch (_v12.ctor)
+                       var _v9 = family._0.partner;
+                       switch (_v9.ctor)
                        {case "Just":
-                          return A2($Point.average,
-                            $Box.right(focusBox),
-                            $Box.left(partnerBox));
+                          return $Point.moveX($Basics.toFloat($Config.margin.x))($Box.right(focusBox));
                           case "Nothing":
                           return $Box.bottom(focusBox);}
                        _U.badCase($moduleName,
@@ -3878,6 +3942,33 @@ Elm.Main.make = function (_elm) {
             _U.badCase($moduleName,
             "between lines 50 and 61");
          }();
+         var partnerBox = function () {
+            switch (family.ctor)
+            {case "Just":
+               return function () {
+                    var _v13 = family._0.partner;
+                    switch (_v13.ctor)
+                    {case "Just":
+                       return A3($Box.partner,
+                         $Box.right(focusBox),
+                         {ctor: "_Tuple2"
+                         ,_0: model.family
+                         ,_1: $Array.length(focus.families)},
+                         _v13._0);
+                       case "Nothing":
+                       return $Box.emptyBox;}
+                    _U.badCase($moduleName,
+                    "between lines 46 and 49");
+                 }();
+               case "Nothing":
+               return $Box.emptyBox;}
+            _U.badCase($moduleName,
+            "between lines 43 and 49");
+         }();
+         var adjust = _U.cmp(partnerBox.w,
+         0) > 0 ? $Basics.round($Basics.fst(A2($Point.average,
+         $Box.right(focusBox),
+         $Box.left(partnerBox)))) : 0;
          var leftOverflow = A5($Box.overflow,
          true,
          model.width,
@@ -3890,6 +3981,7 @@ Elm.Main.make = function (_elm) {
          model.height,
          model.shift - adjust,
          childrenBox);
+         var shift = $Basics.toFloat(model.shift - adjust);
          var boxes = _L.fromArray([focusBox
                                   ,parentsBox
                                   ,partnerBox
@@ -3949,6 +4041,7 @@ Elm.Main.make = function (_elm) {
                       ,UpdateContainer: UpdateContainer
                       ,ChangeFocus: ChangeFocus
                       ,Shift: Shift
+                      ,SwitchFamily: SwitchFamily
                       ,update: update
                       ,main: main
                       ,model: model
@@ -10207,6 +10300,12 @@ Elm.Point.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
+   var moveX = F2(function (delta,
+   point) {
+      return {ctor: "_Tuple2"
+             ,_0: $Basics.fst(point) + delta
+             ,_1: $Basics.snd(point)};
+   });
    var average = F2(function (p1,
    p2) {
       return function () {
@@ -10218,7 +10317,8 @@ Elm.Point.make = function (_elm) {
       }();
    });
    _elm.Point.values = {_op: _op
-                       ,average: average};
+                       ,average: average
+                       ,moveX: moveX};
    return _elm.Point.values;
 };
 Elm.Result = Elm.Result || {};

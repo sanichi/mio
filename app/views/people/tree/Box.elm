@@ -5,7 +5,7 @@ import Config exposing
   ( boxBgColor, lineColor
   , border, deltaShift, level, margin, padding, thumbSize
   , largeStyle, smallStyle, textStyle
-  , newFocus, shifts
+  , family, focus, shifts
   )
 import Family exposing (Person, People)
 import Graphics.Collage as Graphic exposing (Form)
@@ -76,7 +76,7 @@ box d p =
 box2 : Bool -> (Float, Float) -> Person -> Box
 box2 isFocus (dx, dy) person =
   let
-    m = Signal.message newFocus.address person.id
+    m = Signal.message focus.address person.id
 
     t = Text.fromString person.name |> Text.style textStyle
     t' = if isFocus then Text.bold t else t
@@ -142,16 +142,26 @@ parents (x, y) father mother =
      , lines <- l :: t.lines
      }
 
-partner : Point -> Person -> Box
-partner (x, y) partner =
+partner : Point -> (Int, Int) -> Person -> Box
+partner (x, y) (index, families) partner =
   let
     b = box (1, 0) partner
-    m = move (x + (toFloat (margin.x + (b.w // 2))), y) b
-    l = line (x, y) (left m)
+    t = familyToggler index families
+    t' = move (x + toFloat (margin.x + t.w // 2), 0) t
+    d = toFloat (margin.x + (b.w // 2) + (if t.w > 0 then t.w - margin.x else 0))
+    b' = move (x + d, y) b
+    l1 =
+      if t.w == 0
+        then line (x, y) (left b')
+        else line (x, y) (left t')
+    l2 =
+      if t.w == 0
+        then emptyForm
+        else line (right t') (left b')
   in
-    { m
-    | forms <- m.forms
-    , lines <- [ l ]
+    { b'
+    | forms <- List.append t'.forms b'.forms
+    , lines <- [l1, l2]
     }
 
 children : Point -> Float -> People -> Box
@@ -193,6 +203,45 @@ couple p1 p2 =
     , x = (b1.x + b2.x) / 2.0
     , y = b1.y
     }
+
+familyToggler : Int -> Int -> Box
+familyToggler index families =
+  if families <= 1
+    then emptyBox
+    else
+      let
+        n = index + 1
+        n' = if n < families then n else 0
+
+        m = Signal.message family.address n'
+
+        s = (toString (index + 1)) ++ " of " ++ (toString families)
+        t = Text.fromString s |> Text.style textStyle
+
+        e = Element.centered t
+        w = Element.widthOf e
+        h = Element.heightOf e
+
+        w' = 2 * (ceiling ((toFloat w) / 2.0) + padding.x)
+        h' = 2 * (ceiling ((toFloat h) / 2.0) + padding.y)
+        e' = Element.container w' h' Element.middle e |> Element.color boxBgColor |> Input.clickable m
+
+        w'' = w' + 2 * border
+        h'' = h' + 2 * border
+        e'' = Element.container w'' h'' Element.middle e' |> Element.color lineColor
+
+        w''' = w'' + 2 * margin.x
+        h''' = h'' + 2 * margin.y
+        f = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
+
+      in
+        { forms = [ f ]
+        , lines = [ ]
+        , w = w'''
+        , h = h'''
+        , x = 0.0
+        , y = 0.0
+        }
 
 overflow : Bool -> Int -> Int -> Int -> Box -> Form
 overflow leftSide width height shift widestBox =
