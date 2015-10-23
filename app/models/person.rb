@@ -202,9 +202,19 @@ class Person < ActiveRecord::Base
 
   def tree_families
     hash = Hash.new { |h, k| h[k] = Array.new }
-    children.each { |c| hash[c.send(male?? :mother : :father)].push(c) }
-    partners.each { |p| hash[p] }
-    hash.each_pair.each_with_object([]) do |(partner, children), array|
+    order = Hash.new(0)
+    children.each do |child|
+      partner = child.send(male ? :mother : :father)
+      hash[partner].push(child)
+      order[partner] = child.born if !order[partner] || order[partner] > child.born
+    end
+    partnerships.each do |partnership|
+      partner = partnership.send(male ? :wife : :husband)
+      hash[partner] # create a key with no children if it doesn't exist alreay
+      order[partner] = partnership.wedding if !order[partner] || order[partner] > partnership.wedding
+    end
+    hash.each_key.sort{ |a,b| order[a] <=> order[b] }.each_with_object([]) do |partner, array|
+      children = hash[partner]
       family = Hash.new
       family[:partner] = partner.try(:tree_hash)
       family[:children] = children.sort_by(&:born).map(&:tree_hash)
