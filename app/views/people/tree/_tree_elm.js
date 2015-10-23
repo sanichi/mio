@@ -3777,20 +3777,18 @@ Elm.Main.make = function (_elm) {
             case "NoOp": return model;
             case "Shift":
             return _U.replace([["shift"
-                               ,model.shift + action._0]
-                              ,["family",0]],
+                               ,model.shift + action._0]],
               model);
             case "UpdateContainer":
             switch (action._0.ctor)
               {case "_Tuple2":
                  return _U.replace([["width"
                                     ,action._0._0]
-                                   ,["height",action._0._1]
-                                   ,["shift",0]],
+                                   ,["height",action._0._1]],
                    model);}
               break;}
          _U.badCase($moduleName,
-         "between lines 88 and 110");
+         "between lines 88 and 108");
       }();
    });
    var Shift = function (a) {

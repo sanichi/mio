@@ -93,7 +93,6 @@ update action model =
       { model
       | width <- w
       , height <- h
-      , shift <- 0
       }
 
     ChangeFocus f ->
@@ -106,7 +105,6 @@ update action model =
     Shift delta ->
       { model
       | shift <- model.shift + delta
-      , family <- 0
       }
 
 -- SIGNALS
