@@ -312,9 +312,7 @@ Elm.Box.make = function (_elm) {
          switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
-                 var ts = $Config.thumbSize + (isFocus ? 20 : 0);
                  var b = isFocus ? 1 : 0;
-                 var a = isFocus ? 2 : 0;
                  var y = $Text.style($Config.smallStyle)($Text.fromString(person.years));
                  var y$ = isFocus ? $Text.bold(y) : y;
                  var t = $Text.style($Config.textStyle)($Text.fromString(person.name));
@@ -323,12 +321,12 @@ Elm.Box.make = function (_elm) {
                  $Text.fromString("\n"),
                  _L.fromArray([t$,y$])));
                  var w = $Graphics$Element.widthOf(e);
-                 var w$ = $Basics.max($Config.thumbSize)(2 * ($Basics.ceiling($Basics.toFloat(w) / 2.0) + ($Config.padding.x + a)));
+                 var w$ = $Basics.max($Config.thumbSize)(2 * ($Basics.ceiling($Basics.toFloat(w) / 2.0) + $Config.padding.x));
                  var w$$ = w$ + 2 * ($Config.border + b);
                  var w$$$ = w$$ + 2 * $Config.margin.x;
                  var px = _v0._0 * 0.5 * $Basics.toFloat(w$$$ + $Config.thumbSize);
                  var h = $Graphics$Element.heightOf(e);
-                 var h$ = 2 * ($Basics.ceiling($Basics.toFloat(h) / 2.0) + ($Config.padding.y + a));
+                 var h$ = 2 * ($Basics.ceiling($Basics.toFloat(h) / 2.0) + $Config.padding.y);
                  var h$$ = h$ + 2 * ($Config.border + b);
                  var h$$$ = h$$ + 2 * $Config.margin.y;
                  var py = _v0._1 * 0.5 * $Basics.toFloat(h$$$ + $Config.thumbSize);
@@ -351,8 +349,8 @@ Elm.Box.make = function (_elm) {
                  $Graphics$Element.middle,
                  e$$));
                  var p = $Graphics$Input.clickable(m)(A3($Graphics$Element.image,
-                 ts,
-                 ts,
+                 $Config.thumbSize,
+                 $Config.thumbSize,
                  person.picture));
                  var p$ = $Graphics$Collage.move({ctor: "_Tuple2"
                                                  ,_0: px
@@ -366,7 +364,7 @@ Elm.Box.make = function (_elm) {
                         ,y: 0.0};
               }();}
          _U.badCase($moduleName,
-         "between lines 78 and 121");
+         "between lines 78 and 118");
       }();
    });
    var box = F2(function (d,p) {
@@ -560,7 +558,7 @@ Elm.Box.make = function (_elm) {
                         ,y: b1.y};
               }();}
          _U.badCase($moduleName,
-         "between lines 169 and 188");
+         "between lines 166 and 185");
       }();
    });
    var familyToggler = F2(function (index,
@@ -646,7 +644,7 @@ Elm.Box.make = function (_elm) {
                               break;}
                          break;}
                     _U.badCase($moduleName,
-                    "between lines 127 and 132");
+                    "between lines 124 and 129");
                  }();
                  var t = A2(move,
                  {ctor: "_Tuple2"
@@ -689,7 +687,7 @@ Elm.Box.make = function (_elm) {
                  t);
               }();}
          _U.badCase($moduleName,
-         "between lines 125 and 143");
+         "between lines 122 and 140");
       }();
    });
    var partner = F3(function (_v27,
@@ -742,10 +740,10 @@ Elm.Box.make = function (_elm) {
                          b$);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 147 and 165");
+                 "between lines 144 and 162");
               }();}
          _U.badCase($moduleName,
-         "between lines 147 and 165");
+         "between lines 144 and 162");
       }();
    });
    var overflow = F5(function (leftSide,

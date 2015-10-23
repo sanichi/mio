@@ -4,10 +4,10 @@ var app = Elm.embed(Elm.Main, $('#elm').get(0), { foci: foc });
 app.ports.foci.send(foc);
 app.ports.getFocus.subscribe(get_focus);
 
-function get_focus(id) {
+function get_focus(id, keep_on_tree) {
   if (!is_pos_int(id)) return;
 
-  if (last_id == id) {
+  if (last_id == id && !keep_on_tree) {
     document.location.href = "/people/" +id;
   }
   else
@@ -24,3 +24,17 @@ function get_focus(id) {
 function is_pos_int(n) {
   return Number(n) === n && n % 1 === 0 && n > 0;
 }
+
+$(function() {
+  $('#term').autocomplete({
+    source: '/people/match.json',
+    minLength: 2,
+    select: function(event, ui) {
+      if (ui.item) {
+        get_focus(ui.item.id, true);
+      }
+      $(this).val('');
+      return false;
+    }
+  });
+});

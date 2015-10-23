@@ -88,10 +88,8 @@ box2 isFocus (dx, dy) person =
     w = Element.widthOf e
     h = Element.heightOf e
 
-    a = if isFocus then 2 else 0
-
-    w' = 2 * (ceiling ((toFloat w) / 2.0) + (padding.x + a)) |> max thumbSize
-    h' = 2 * (ceiling ((toFloat h) / 2.0) + (padding.y + a))
+    w' = 2 * (ceiling ((toFloat w) / 2.0) + padding.x) |> max thumbSize
+    h' = 2 * (ceiling ((toFloat h) / 2.0) + padding.y)
     e' = Element.container w' h' Element.middle e |> Element.color boxBgColor |> Input.clickable m
 
     b = if isFocus then 1 else 0
@@ -104,8 +102,7 @@ box2 isFocus (dx, dy) person =
     h''' = h'' + 2 * margin.y
     e''' = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
 
-    ts = thumbSize + if isFocus then 20 else 0
-    p = Element.image ts ts person.picture |> Input.clickable m
+    p = Element.image thumbSize thumbSize person.picture |> Input.clickable m
 
     px = dx * 0.5 * toFloat (w''' + thumbSize)
     py = dy * 0.5 * toFloat (h''' + thumbSize)
