@@ -206,12 +206,12 @@ class Person < ActiveRecord::Base
     children.each do |child|
       partner = child.send(male ? :mother : :father)
       hash[partner].push(child)
-      order[partner] = child.born if !order[partner] || order[partner] > child.born
+      order[partner] = child.born if order[partner] == 0 || order[partner] > child.born
     end
     partnerships.each do |partnership|
       partner = partnership.send(male ? :wife : :husband)
-      hash[partner] # create a key with no children if it doesn't exist alreay
-      order[partner] = partnership.wedding if !order[partner] || order[partner] > partnership.wedding
+      hash[partner]
+      order[partner] = partnership.wedding if order[partner] == 0 || order[partner] > partnership.wedding
     end
     hash.each_key.sort{ |a,b| order[a] <=> order[b] }.each_with_object([]) do |partner, array|
       children = hash[partner]
