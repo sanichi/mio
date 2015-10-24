@@ -21,10 +21,6 @@ function get_focus(id, keep_on_tree) {
   }
 }
 
-function is_pos_int(n) {
-  return Number(n) === n && n % 1 === 0 && n > 0;
-}
-
 $(function() {
   $('#term').autocomplete({
     source: '/people/match.json',
@@ -38,3 +34,21 @@ $(function() {
     }
   });
 });
+
+function toggle_help() {
+  if ($('#toggler').text() == 'Help')
+  {
+    $('#help').show();
+    $('#toggler').text('Hide');
+  }
+  else
+  {
+    $('#help').hide();
+    $('#toggler').text('Help');
+  }
+  return false;
+}
+
+function is_pos_int(n) {
+  return Number(n) === n && n % 1 === 0 && n > 0;
+}
