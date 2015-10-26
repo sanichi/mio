@@ -23,6 +23,8 @@ type alias Box =
   , h : Int
   , x : Float
   , y : Float
+  , leftMost : Int
+  , rightMost : Int
   }
 
 emptyForm : Form
@@ -36,6 +38,8 @@ emptyBox =
   , h = 0
   , x = 0.0
   , y = 0.0
+  , leftMost = 0
+  , rightMost = 0
   }
 
 middle : Box -> Point
@@ -63,6 +67,8 @@ move (dx, dy) box =
   { box
   | x <- box.x + dx
   , y <- box.y + dy
+  , leftMost <- box.leftMost + (round dx)
+  , rightMost <- box.rightMost + (round dx)
   , forms <- List.map (Graphic.move (dx, dy)) box.forms
   , lines <- List.map (Graphic.move (dx, dy)) box.lines
   }
@@ -108,6 +114,9 @@ box2 isFocus (dx, dy) person =
     py = dy * 0.5 * toFloat (h''' + thumbSize)
     p' = Graphic.toForm p |> Graphic.move (px, py)
 
+    lm = min ((round px) - thumbSize // 2) (-w''' // 2)
+    rm = max ((round px) + thumbSize // 2) (w''' // 2)
+
   in
     { forms = [ e''', p' ]
     , lines = [ ]
@@ -115,6 +124,8 @@ box2 isFocus (dx, dy) person =
     , h = h'''
     , x = 0.0
     , y = 0.0
+    , leftMost = lm
+    , rightMost = rm
     }
 
 parents : (Float, Float) -> Maybe Person -> Maybe Person -> Box
@@ -182,6 +193,8 @@ children (x, y) h people =
     , h = b1.h
     , x = (b1.x + b2.x) / 2.0
     , y = b1.y
+    , leftMost = (round b1.x) - (b1.w // 2)
+    , rightMost = (round b2.x) + (b2.w // 2)
     }
 
 couple : Person -> Person -> Box
@@ -199,6 +212,8 @@ couple p1 p2 =
     , h = b1.h
     , x = (b1.x + b2.x) / 2.0
     , y = b1.y
+    , leftMost = m1.leftMost
+    , rightMost = m2.rightMost
     }
 
 familyToggler : Int -> Int -> Box
@@ -238,13 +253,14 @@ familyToggler index families =
         , h = h'''
         , x = 0.0
         , y = 0.0
+        , leftMost = -w''' // 2
+        , rightMost = w''' // 2
         }
 
-overflow : Bool -> Int -> Int -> Int -> Box -> Form
-overflow leftSide width height shift widestBox =
+overflow : Bool -> Int -> Int -> Int -> Int -> Form
+overflow leftSide width height shift edge =
   let
-    point = if leftSide then left widestBox else right widestBox
-    extreme = 2 * (shift + round (fst point))
+    extreme = 2 * (shift + edge)
     offEdge = if leftSide then extreme <= -width else extreme >= width
   in
     if offEdge
@@ -274,6 +290,14 @@ overflow leftSide width height shift widestBox =
           Graphic.toForm e' |> Graphic.move (x, y)
       else
         emptyForm
+
+leftMost : List Box -> Int
+leftMost boxes =
+  List.foldl (\b x -> if b.leftMost < x then b.leftMost else x) 0 boxes
+
+rightMost : List Box -> Int
+rightMost boxes =
+  List.foldl (\b x -> if b.rightMost > x then b.rightMost else x) 0 boxes
 
 -- MISC
 

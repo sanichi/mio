@@ -62,8 +62,10 @@ view model =
       if partnerBox.w > 0
         then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> round
         else 0
-    leftOverflow = Box.overflow True model.width model.height (model.shift - adjust) childrenBox
-    rightOverflow = Box.overflow False model.width model.height (model.shift - adjust) childrenBox
+    leftMost = Box.leftMost [focusBox, partnerBox, childrenBox]
+    rightMost = Box.rightMost [focusBox, partnerBox, childrenBox]
+    leftOverflow = Box.overflow True model.width model.height (model.shift - adjust) leftMost
+    rightOverflow = Box.overflow False model.width model.height (model.shift - adjust) rightMost
     boxes = [ focusBox, parentsBox, partnerBox, childrenBox ]
     unshiftedForms =
       List.append

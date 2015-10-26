@@ -305,6 +305,24 @@ Elm.Box.make = function (_elm) {
          path);
       }();
    });
+   var rightMost = function (boxes) {
+      return A3($List.foldl,
+      F2(function (b,x) {
+         return _U.cmp(b.rightMost,
+         x) > 0 ? b.rightMost : x;
+      }),
+      0,
+      boxes);
+   };
+   var leftMost = function (boxes) {
+      return A3($List.foldl,
+      F2(function (b,x) {
+         return _U.cmp(b.leftMost,
+         x) < 0 ? b.leftMost : x;
+      }),
+      0,
+      boxes);
+   };
    var box2 = F3(function (isFocus,
    _v0,
    person) {
@@ -325,6 +343,12 @@ Elm.Box.make = function (_elm) {
                  var w$$ = w$ + 2 * ($Config.border + b);
                  var w$$$ = w$$ + 2 * $Config.margin.x;
                  var px = _v0._0 * 0.5 * $Basics.toFloat(w$$$ + $Config.thumbSize);
+                 var lm = A2($Basics.min,
+                 $Basics.round(px) - ($Config.thumbSize / 2 | 0),
+                 (0 - w$$$) / 2 | 0);
+                 var rm = A2($Basics.max,
+                 $Basics.round(px) + ($Config.thumbSize / 2 | 0),
+                 w$$$ / 2 | 0);
                  var h = $Graphics$Element.heightOf(e);
                  var h$ = 2 * ($Basics.ceiling($Basics.toFloat(h) / 2.0) + $Config.padding.y);
                  var h$$ = h$ + 2 * ($Config.border + b);
@@ -358,13 +382,15 @@ Elm.Box.make = function (_elm) {
                  return {_: {}
                         ,forms: _L.fromArray([e$$$,p$])
                         ,h: h$$$
+                        ,leftMost: lm
                         ,lines: _L.fromArray([])
+                        ,rightMost: rm
                         ,w: w$$$
                         ,x: 0.0
                         ,y: 0.0};
               }();}
          _U.badCase($moduleName,
-         "between lines 78 and 118");
+         "between lines 84 and 129");
       }();
    });
    var box = F2(function (d,p) {
@@ -378,6 +404,10 @@ Elm.Box.make = function (_elm) {
             return _U.replace([["x"
                                ,box.x + _v4._0]
                               ,["y",box.y + _v4._1]
+                              ,["leftMost"
+                               ,box.leftMost + $Basics.round(_v4._0)]
+                              ,["rightMost"
+                               ,box.rightMost + $Basics.round(_v4._0)]
                               ,["forms"
                                ,A2($List.map,
                                $Graphics$Collage.move({ctor: "_Tuple2"
@@ -392,7 +422,7 @@ Elm.Box.make = function (_elm) {
                                box.lines)]],
               box);}
          _U.badCase($moduleName,
-         "between lines 63 and 68");
+         "between lines 67 and 74");
       }();
    });
    var left = function (box) {
@@ -432,7 +462,9 @@ Elm.Box.make = function (_elm) {
                 m1.forms,
                 m2.forms)
                 ,h: b1.h
+                ,leftMost: m1.leftMost
                 ,lines: _L.fromArray([hb])
+                ,rightMost: m2.rightMost
                 ,w: b1.w + b2.w
                 ,x: (b1.x + b2.x) / 2.0
                 ,y: b1.y};
@@ -456,7 +488,9 @@ Elm.Box.make = function (_elm) {
    var emptyBox = {_: {}
                   ,forms: _L.fromArray([])
                   ,h: 0
+                  ,leftMost: 0
                   ,lines: _L.fromArray([])
+                  ,rightMost: 0
                   ,w: 0
                   ,x: 0.0
                   ,y: 0.0};
@@ -545,9 +579,11 @@ Elm.Box.make = function (_elm) {
                         },
                         bx2)))
                         ,h: b1.h
+                        ,leftMost: $Basics.round(b1.x) - (b1.w / 2 | 0)
                         ,lines: A2($List.append,
                         ls,
                         _L.fromArray([l1,l2]))
+                        ,rightMost: $Basics.round(b2.x) + (b2.w / 2 | 0)
                         ,w: A3($Array.foldl,
                         F2(function (b,l) {
                            return b.w + l;
@@ -558,7 +594,7 @@ Elm.Box.make = function (_elm) {
                         ,y: b1.y};
               }();}
          _U.badCase($moduleName,
-         "between lines 166 and 185");
+         "between lines 177 and 198");
       }();
    });
    var familyToggler = F2(function (index,
@@ -604,7 +640,9 @@ Elm.Box.make = function (_elm) {
          return {_: {}
                 ,forms: _L.fromArray([f])
                 ,h: h$$$
+                ,leftMost: (0 - w$$$) / 2 | 0
                 ,lines: _L.fromArray([])
+                ,rightMost: w$$$ / 2 | 0
                 ,w: w$$$
                 ,x: 0.0
                 ,y: 0.0};
@@ -644,7 +682,7 @@ Elm.Box.make = function (_elm) {
                               break;}
                          break;}
                     _U.badCase($moduleName,
-                    "between lines 124 and 129");
+                    "between lines 135 and 140");
                  }();
                  var t = A2(move,
                  {ctor: "_Tuple2"
@@ -687,7 +725,7 @@ Elm.Box.make = function (_elm) {
                  t);
               }();}
          _U.badCase($moduleName,
-         "between lines 122 and 140");
+         "between lines 133 and 151");
       }();
    });
    var partner = F3(function (_v27,
@@ -740,20 +778,19 @@ Elm.Box.make = function (_elm) {
                          b$);
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 144 and 162");
+                 "between lines 155 and 173");
               }();}
          _U.badCase($moduleName,
-         "between lines 144 and 162");
+         "between lines 155 and 173");
       }();
    });
    var overflow = F5(function (leftSide,
    width,
    height,
    shift,
-   widestBox) {
+   edge) {
       return function () {
-         var point = leftSide ? left(widestBox) : right(widestBox);
-         var extreme = 2 * (shift + $Basics.round($Basics.fst(point)));
+         var extreme = 2 * (shift + edge);
          var offEdge = leftSide ? _U.cmp(extreme,
          0 - width) < 1 : _U.cmp(extreme,
          width) > -1;
@@ -785,16 +822,20 @@ Elm.Box.make = function (_elm) {
          }() : emptyForm;
       }();
    });
-   var Box = F6(function (a,
+   var Box = F8(function (a,
    b,
    c,
    d,
    e,
-   f) {
+   f,
+   g,
+   h) {
       return {_: {}
              ,forms: a
              ,h: d
+             ,leftMost: g
              ,lines: b
+             ,rightMost: h
              ,w: c
              ,x: e
              ,y: f};
@@ -817,6 +858,8 @@ Elm.Box.make = function (_elm) {
                      ,couple: couple
                      ,familyToggler: familyToggler
                      ,overflow: overflow
+                     ,leftMost: leftMost
+                     ,rightMost: rightMost
                      ,line: line};
    return _elm.Box.values;
 };
@@ -3870,7 +3913,7 @@ Elm.Main.make = function (_elm) {
                    model);}
               break;}
          _U.badCase($moduleName,
-         "between lines 89 and 114");
+         "between lines 91 and 116");
       }();
    });
    var SwitchFamily = function (a) {
@@ -3967,19 +4010,25 @@ Elm.Main.make = function (_elm) {
          0) > 0 ? $Basics.round($Basics.fst(A2($Point.average,
          $Box.right(focusBox),
          $Box.left(partnerBox)))) : 0;
+         var shift = $Basics.toFloat(model.shift - adjust);
+         var leftMost = $Box.leftMost(_L.fromArray([focusBox
+                                                   ,partnerBox
+                                                   ,childrenBox]));
          var leftOverflow = A5($Box.overflow,
          true,
          model.width,
          model.height,
          model.shift - adjust,
-         childrenBox);
+         leftMost);
+         var rightMost = $Box.rightMost(_L.fromArray([focusBox
+                                                     ,partnerBox
+                                                     ,childrenBox]));
          var rightOverflow = A5($Box.overflow,
          false,
          model.width,
          model.height,
          model.shift - adjust,
-         childrenBox);
-         var shift = $Basics.toFloat(model.shift - adjust);
+         rightMost);
          var boxes = _L.fromArray([focusBox
                                   ,parentsBox
                                   ,partnerBox
