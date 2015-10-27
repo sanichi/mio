@@ -75,12 +75,12 @@ move (dx, dy) box =
 
 -- MAPPINGS
 
-box : (Float, Float) -> Person -> Box
-box d p =
-  box2 False d p
+box : (Float, Float) -> Int -> Person -> Box
+box delta picture person =
+  box2 False delta picture person
 
-box2 : Bool -> (Float, Float) -> Person -> Box
-box2 isFocus (dx, dy) person =
+box2 : Bool -> (Float, Float) -> Int -> Person -> Box
+box2 isFocus (dx, dy) picture person =
   let
     m = Signal.message focus.address person.id
 
@@ -108,7 +108,7 @@ box2 isFocus (dx, dy) person =
     h''' = h'' + 2 * margin.y
     e''' = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
 
-    p = Element.image thumbSize thumbSize person.picture |> Input.clickable m
+    p = Element.image thumbSize thumbSize (Family.picturePath picture person) |> Input.clickable m
 
     px = dx * 0.5 * toFloat (w''' + thumbSize)
     py = dy * 0.5 * toFloat (h''' + thumbSize)
@@ -128,15 +128,15 @@ box2 isFocus (dx, dy) person =
     , rightMost = rm
     }
 
-parents : (Float, Float) -> Maybe Person -> Maybe Person -> Box
-parents (x, y) father mother =
+parents : (Float, Float) -> Int -> Maybe Person -> Maybe Person -> Box
+parents (x, y) picture father mother =
   let
     b =
       case (father, mother) of
         (Nothing, Nothing) -> emptyBox
-        (Just f, Nothing)  -> box (0, 1) f
-        (Nothing, Just m)  -> box (0, 1) m
-        (Just f, Just m)   -> couple f m
+        (Just f, Nothing)  -> box (0, 1) picture f
+        (Nothing, Just m)  -> box (0, 1) picture m
+        (Just f, Just m)   -> couple picture f m
     t =
       move (0, (toFloat level)) b
     l =
@@ -150,10 +150,10 @@ parents (x, y) father mother =
      , lines <- l :: t.lines
      }
 
-partner : Point -> (Int, Int) -> Person -> Box
-partner (x, y) (index, families) partner =
+partner : Point -> (Int, Int) -> Int -> Person -> Box
+partner (x, y) (index, families) picture partner =
   let
-    b = box (1, 0) partner
+    b = box (1, 0) picture partner
     t = familyToggler index families
     t' = move (x + toFloat (margin.x + t.w // 2), 0) t
     d = toFloat (margin.x + (b.w // 2) + (if t.w > 0 then t.w - margin.x else 0))
@@ -172,10 +172,10 @@ partner (x, y) (index, families) partner =
     , lines <- [l1, l2]
     }
 
-children : Point -> Float -> People -> Box
-children (x, y) h people =
+children : Point -> Float -> Int -> People -> Box
+children (x, y) h picture people =
   let
-    bx1 = Array.map (box (0, -1)) people
+    bx1 = Array.map (box (0, -1) picture) people
     wds = Array.map (\b -> b.w) bx1
     wid = Array.foldl (\w t -> w + t) 0 wds
     mds = Array.indexedMap (\i w -> (w - wid) // 2 + (Array.foldl (\w t -> w + t) 0 (Array.slice 0 i wds))) wds
@@ -197,11 +197,11 @@ children (x, y) h people =
     , rightMost = (round b2.x) + (b2.w // 2)
     }
 
-couple : Person -> Person -> Box
-couple p1 p2 =
+couple : Int -> Person -> Person -> Box
+couple picture p1 p2 =
   let
-    b1 = box (0, 1) p1
-    b2 = box (0, 1) p2
+    b1 = box (0, 1) picture p1
+    b2 = box (0, 1) picture p2
     m1 = move (toFloat(-b1.w // 2), 0) b1
     m2 = move (toFloat( b2.w // 2), 0) b2
     hb = line (right m1) (left m2)

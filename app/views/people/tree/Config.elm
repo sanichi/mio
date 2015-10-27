@@ -56,6 +56,11 @@ largeStyle =
   | height <- Just 40
   }
 
+-- TIME
+
+changePictures : Float
+changePictures = 7
+
 -- SHARED MAILBOXES
 
 family : Signal.Mailbox Int

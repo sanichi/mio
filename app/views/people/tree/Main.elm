@@ -1,7 +1,7 @@
 import Array
 import Box exposing (Box)
 import Color
-import Config exposing (bgColor, family, level, margin, focus, shifts)
+import Config exposing (bgColor, changePictures, family, level, margin, focus, shifts)
 import Dict exposing (Dict)
 import Family exposing (Person, People, Focus, Family)
 import Graphics.Collage as Graphic exposing (Form)
@@ -9,6 +9,7 @@ import Graphics.Element as Element exposing (Element)
 import Point
 import String
 import Text
+import Time exposing (Time)
 import Window
 
 -- MODEL
@@ -18,6 +19,7 @@ type alias Model =
   , height: Int
   , focus: Focus
   , family : Int
+  , picture : Int
   , shift : Int
   }
 
@@ -27,6 +29,7 @@ init =
   , height = 4 * level
   , focus = Family.blur
   , family = 0
+  , picture = 0
   , shift = 0
   }
 
@@ -36,8 +39,8 @@ view : Model -> Element
 view model =
   let
     focus = model.focus
-    focusBox = Box.box2 True (-1, 0) focus.person
-    parentsBox = Box.parents (Box.top focusBox) focus.father focus.mother
+    focusBox = Box.box2 True (-1, 0) model.picture focus.person
+    parentsBox = Box.parents (Box.top focusBox) model.picture focus.father focus.mother
     family = Array.get model.family focus.families
     partnerBox =
       case family of
@@ -45,7 +48,7 @@ view model =
         Just f ->
           case f.partner of
             Nothing -> Box.emptyBox
-            Just p -> Box.partner (Box.right focusBox) (model.family, Array.length focus.families) p
+            Just p -> Box.partner (Box.right focusBox) (model.family, Array.length focus.families) model.picture p
     childrenBox =
       case family of
         Nothing -> Box.emptyBox
@@ -57,7 +60,7 @@ view model =
                 Just p -> Box.right focusBox |> Point.moveX (toFloat margin.x)
             bot = Box.bottom focusBox |> snd
           in
-            if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot f.children
+            if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot model.picture f.children
     adjust =
       if partnerBox.w > 0
         then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> round
@@ -85,6 +88,7 @@ type Action
   | ChangeFocus Focus
   | Shift Int
   | SwitchFamily Int
+  | RolloverPictures
 
 update : Action -> Model -> Model
 update action model =
@@ -115,6 +119,11 @@ update action model =
       | family <- index
       }
 
+    RolloverPictures ->
+      { model
+      | picture <- model.picture + 1
+      }
+
 -- SIGNALS
 
 main : Signal Element
@@ -132,7 +141,11 @@ actions =
     , Signal.map ChangeFocus foci
     , Signal.map Shift shifts.signal
     , Signal.map SwitchFamily family.signal
+    , Signal.map (always RolloverPictures) pictureClock
     ]
+
+pictureClock : Signal Time
+pictureClock = changePictures * Time.second |> Time.every
 
 -- PORTS
 
