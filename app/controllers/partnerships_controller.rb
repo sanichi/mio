@@ -47,6 +47,6 @@ class PartnershipsController < ApplicationController
   end
 
   def strong_params
-    params.require(:partnership).permit(:divorce, :husband_id, :marriage, :wedding, :wife_id)
+    params.require(:partnership).permit(:divorce, :divorce_guess, :husband_id, :marriage, :wedding, :wedding_guess, :wife_id)
   end
 end

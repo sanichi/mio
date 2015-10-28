@@ -9,7 +9,9 @@
         = render "utils/select_completer_for", shared.merge(param: :husband_id, text: t("partnership.husband"), menu: partnership_husband_menu(partnership), width: 4)
         = render "utils/select_completer_for", shared.merge(param: :wife_id, text: t("partnership.wife"), menu: partnership_wife_menu(partnership), width: 4)
         = render "utils/text_field_for", shared.merge(param: :wedding, text: t("partnership.wedding"), width: 3)
+        = render "utils/check_box_for", shared.merge(param: :wedding_guess, text: t("partnership.wedding_guess"), width: 1)
         = render "utils/text_field_for", shared.merge(param: :divorce, text: t("partnership.divorce"), width: 3)
+        = render "utils/check_box_for", shared.merge(param: :divorce_guess, text: t("partnership.divorce_guess"), width: 1)
         = render "utils/check_box_for", shared.merge(param: :marriage, text: t("partnership.marriage"), width: 1)
 
       .row

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019212955) do
+ActiveRecord::Schema.define(version: 20151028165300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,13 +92,15 @@ ActiveRecord::Schema.define(version: 20151019212955) do
   end
 
   create_table "partnerships", force: :cascade do |t|
-    t.integer  "divorce",    limit: 2
+    t.integer  "divorce",       limit: 2
     t.integer  "husband_id"
-    t.integer  "wedding",    limit: 2
+    t.integer  "wedding",       limit: 2
     t.integer  "wife_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.boolean  "marriage",             default: true
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "marriage",                default: true
+    t.boolean  "wedding_guess",           default: false
+    t.boolean  "divorce_guess",           default: false
   end
 
   create_table "people", force: :cascade do |t|

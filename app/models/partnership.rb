@@ -28,8 +28,20 @@ class Partnership < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
-  def years
-    divorce ? "#{wedding}-#{divorce}" : wedding.to_s
+  def years(plus=false)
+    if plus
+      divorce ? "#{wedding_plus}-#{divorce_plus}" : wedding_plus
+    else
+      divorce ? "#{wedding}-#{divorce}" : wedding.to_s
+    end
+  end
+
+  def wedding_plus
+    year_plus(wedding, wedding_guess)
+  end
+
+  def divorce_plus
+    divorce ? year_plus(divorce, divorce_guess) : nil
   end
 
   private
@@ -42,5 +54,9 @@ class Partnership < ActiveRecord::Base
       errors.add(:wedding, "can't marry before husband born") if husband.present? && husband.born >= wedding
       errors.add(:born, "can't be marry before wife born") if wife.present? && wife.born >= wedding
     end
+  end
+
+  def year_plus(year, guess)
+    "%d%s" % [year, guess ? "?" : ""]
   end
 end

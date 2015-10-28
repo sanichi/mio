@@ -20,6 +20,9 @@ describe Partnership do
       select husband.name(reversed: true, with_years: true), from: partnership_husband
       select wife.name(reversed: true, with_years: true), from: partnership_wife
       fill_in partnership_wedding, with: data.wedding
+      check partnership_wedding_guess if data.wedding_guess
+      fill_in partnership_divorce, with: data.divorce if data.divorce
+      check partnership_divorce_guess if data.divorce_guess
       uncheck partnership_marriage unless data.marriage
       click_button save
 
@@ -31,7 +34,9 @@ describe Partnership do
       expect(p.husband_id).to eq husband.id
       expect(p.wife.id).to eq wife.id
       expect(p.wedding).to eq data.wedding
+      expect(p.wedding_guess).to eq data.wedding_guess
       expect(p.divorce).to be_nil
+      expect(p.divorce_guess).to eq data.divorce_guess
       expect(p.marriage).to be data.marriage
     end
   end
@@ -99,6 +104,7 @@ describe Partnership do
       click_link edit
       expect(page).to have_title edit_partnership
       fill_in partnership_divorce, with: year
+      check partnership_divorce_guess
       click_button save
 
       expect(page).to have_title partnership_singular
@@ -107,6 +113,7 @@ describe Partnership do
       p = Partnership.last
 
       expect(p.divorce).to eq year
+      expect(p.divorce_guess).to eq true
     end
   end
 

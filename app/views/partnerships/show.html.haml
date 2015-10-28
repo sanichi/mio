@@ -12,11 +12,11 @@
           %td= link_to @partnership.wife.name, @partnership.wife
         %tr
           %th= t("partnership.wedding")
-          %td= @partnership.wedding
+          %td= @partnership.wedding_plus
         - if @partnership.divorce.present?
           %tr
             %th= t("partnership.divorce")
-            %td= @partnership.divorce
+            %td= @partnership.divorce_plus
         %tr
           %th= t("partnership.marriage")
           %td= t(@partnership.marriage ? "yes" : "no")

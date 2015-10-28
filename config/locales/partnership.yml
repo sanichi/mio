@@ -1,6 +1,7 @@
 en:
   partnership:
     divorce: Finish
+    divorce_guess: Finish guess?
     edit: Edit Partnership
     husband: Male
     marriage: Marriage
@@ -9,3 +10,4 @@ en:
     new: New Partnership
     wife: Female
     wedding: Start
+    wedding_guess: Start guess?
