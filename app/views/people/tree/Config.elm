@@ -59,7 +59,7 @@ largeStyle =
 -- TIME
 
 changePictures : Float
-changePictures = 7
+changePictures = 5
 
 -- SHARED MAILBOXES
 

@@ -1418,7 +1418,7 @@ Elm.Config.make = function (_elm) {
    var shifts = $Signal.mailbox(0);
    var focus = $Signal.mailbox(0);
    var family = $Signal.mailbox(0);
-   var changePictures = 7;
+   var changePictures = 5;
    var textStyle = _U.replace([["typeface"
                                ,_L.fromArray(["Verdana"
                                              ,"Helvetica"
