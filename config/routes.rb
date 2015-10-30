@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   end
   resources :partnerships
   resources :people do
+    get :checks, on: :collection
     get :match, on: :collection
     get :relative, on: :member
     get :tree, on: :collection

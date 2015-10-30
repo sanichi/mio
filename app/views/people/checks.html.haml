@@ -1,0 +1,24 @@
+= render "utils/title", key: "person.checks.title", header: true
+
+.row
+  .col-lg-offset-2.col-lg-8.col-md-offset-1.col-md-10.col-sm-offset-0.col-sm-12
+    - @checks.public_methods(false).select{|m| m.match(/\Apeople_/)}.each do |check|
+      %h4= t("person.checks.#{check}")
+      - people = @checks.send(check)
+      %ul
+        - if people.empty?
+          %li= t("none")
+        - else
+          - people.each do |p|
+            %li= link_to p.name(with_years: true, reversed: true), p
+    - @checks.public_methods(false).select{|m| m.match(/\Apartners_/)}.each do |check|
+      %h4= t("person.checks.#{check}")
+      - partnerships = @checks.send(check)
+      %ul
+        - if partnerships.empty?
+          %li= t("none")
+        - else
+          - partnerships.each do |p|
+            %li
+              = link_to p do
+                = "%s ● %s" % [p.husband.name(with_years: true, reversed: true), p.wife.name(with_years: true, reversed: true)]

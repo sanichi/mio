@@ -30,6 +30,10 @@ class PeopleController < ApplicationController
     end
   end
 
+  def checks
+    @checks = PeopleChecks.new
+  end
+
   def new
     @person = Person.new
   end

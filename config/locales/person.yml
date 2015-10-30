@@ -27,6 +27,18 @@ en:
     relationship_to: Relationship To
     siblings: Siblings
     tree: Tree
+    checks:
+      partners_guessed_year_wedding: Partnerships with Guessed Start
+      partners_guessed_year_divorce: Partnerships with Guessed End
+      partners_missing: Missing Partnerships
+      people_females_with_male_name: Females with a Male First Name
+      people_guessed_year_born: People with guessed YOB
+      people_guessed_year_died: People with guessed YOD
+      people_males_with_maiden_name: Males with a Maiden Name
+      people_males_with_female_name: Males with a Female First Name
+      people_unknown_maiden_name: Females with Unknown Maiden Name
+      people_unknown_year_died: People with Unknown YOD
+      title: Checklist
     order:
       born: by born
       first: by first name
