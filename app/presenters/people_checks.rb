@@ -28,15 +28,15 @@ class PeopleChecks
     Person.by_last_name.where(male: true).select do|person|
       person.first_names.match(/\b(aaa
         |Agnes|Alena|Alexandra|Alice|Ann(e|ie)?|Anna(belle)?|Arlene
-        |Carmen|Carol(ina)?|Catherine|Colina|Colleen
-        |Deborah|Dorothy
+        |Carmen|Carey|Carol(ina)?|Catherine|Christin[ae]|Colina|Colleen
+        |Deborah|Dian[ae]|Dilys|Dorothy
         |Edith|Elizabeth|Elsie|Emerie
         |Fanny|Faye|Francis
         |Grace
         |Hannah|Helen|Hester
         |Irene|Isabella|Isobel|Ivy
         |Jane|Janet|Jean|Jeanie|Johanna|Julia|June
-        |Kat(e|herine|ie)|Kathleen
+        |Kat(e|herine|ie)|Kathleen|Kristin[ae]
         |Louisa|Louise
         |Lynds(a|e|)y
         |Margaret|Margretta|Marjorie|Mary|Maud|Maureen|Mona
@@ -45,8 +45,8 @@ class PeopleChecks
         |Patricia|Paula|Penelope
         |Roberta|Rosemary|Ruth
         |Sandra|Sarah|Sheena
-        |Trace?y
-        |Victoria
+        |Trace?y|Tricia
+        |Victoria|Violet
         |Winni(e|fred)?
       )\b/ix)
     end
@@ -55,23 +55,25 @@ class PeopleChecks
   def people_females_with_male_name
     Person.by_last_name.where(male: false).select do|person|
       person.first_names.match(/\b(aaa
-        |Albert|Alexander|Alistair|Archi(bald|e)|Arthur
-        |Bill|Bruce
-        |Chamath|Charl(es|ie)|Colin|Cyril
-        |Dave|David|Doug(ie|las)?
+        |Albert|Alexander|Alfred|Alistair|Archi(bald|e)|Arthur
+        |Ben(jamin)?|Bill|Bruce
+        |Chamath|Charl(es|ie)|Colin|Connor|Cyril
+        |Dave|David|Des(mond)?|Doug(ie|las)?
+        |Edmond|Edward
         |Fred(erick)?
-        |George
+        |George|Grant
         |Har(old|ry)|Henry|Hugh
-        |Ian|Iain
-        |Jackey|Jake|James|Jim(my)?|Joe|John|Joseph
+        |Iai?n
+        |Jackey|Jake|James|Jim(my)?|Joe|Joh?n|Joseph
         |Karl|Ken|Ken(neth)?|Kerr|Kirk
-        |Leandro
-        |Malcolm|Mark|Martin
+        |Larry|Leandro
+        |Malcolm|Mark|Martin|Mic(hael|k)|Mikey?
         |Nathan|Neil|Nigel
         |Peter
         |Richard|Robert|Robin|Ross
-        |Samuel|Scott|Simon|Stephen|Steven?|Stuart
+        |Samuel|Simon|Stephen|Steven?|Stuart
         |Terr(ence|y)|Thomas|Tom
+        |Vince(nt)?
         |Walter|William
       )\b/ix)
     end
