@@ -11,14 +11,16 @@
   %span.input-group.input-group-sm
     = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30
 
-%p
-  %a{id: "toggler", href: "#", onclick: "toggle_help()"} Help
-%div{id: "help", style: "display: none"}
+%p= render "utils/help_button"
+
+- content_for :help_title do
+  = t("person.help.tree")
+- content_for :help do
   %ul
     %li The parents, partners and children of <b>one person at a time</b> are shown (the name of the person currently in focus is in <b>bold</b>).
-    %li To <b>change focus</b> either <b>click</b> on a parent, partner or child or <b>search</b> for names in the box just above this help.
-    %li To cycle through <b>partners</b> of the focus (when more than 1) click the <b>number/total</b> box (e.g. "<em>1 of 3</em>", "<em>2 of 3</em>", etc.).
-    %li Clicking the name or picture of the focus exits the tree; it goes to their <b>details page</b>.
+    %li To <b>change focus</b> click on a parent (above), partner (to the right) or child (below). Alternatively, you can <b>search</b> for names in the text box below the tree.
+    %li To cycle through <b>partners</b> of the focus (when there's more than 1) click the number/total box (e.g. "<em>1 of 3</em>", "<em>2 of 3</em>", etc.).
+    %li Clicking the name or picture of the focus takes you to their details page where you might find <b>notes and more photos</b>.
 
 = javascript_tag do
   = render "tree.js", person: @person

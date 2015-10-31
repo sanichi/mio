@@ -39,6 +39,9 @@ en:
       people_unknown_maiden_name: Females with Unknown Maiden Name
       people_unknown_year_died: People with Unknown YOD
       title: Checklist
+    help:
+      search: How to Search for People
+      tree: How to Use the Family Tree
     order:
       born: by born
       first: by first name
