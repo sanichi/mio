@@ -66,24 +66,21 @@
         %strong= t("person.born")
       Enter a year (e.g. "1927"), a range (e.g. "1925-1935") or a limit (e.g. ">1900" or "<=1960") to
       constrain the year of birth. Every person in the database has a year of birth (though some may
-      be estimates - see
-      %em= t("notes")
-      below).
+      be estimates).
     %li
       = succeed(":") do
         %strong= t("person.died")
       Similar to
       %em Born
       (see above) except the constraint is on the year of death instead of year of birth.
-      Not all people in the database have a year of death (because either it's unknown or
-      the person is still alive) and those people will not match if you constrain it.
+      Some people in the database will not have a year of death (because either it's unknown
+      or the person is still alive) and those people will not match if you constrain it.
     %li
       = succeed(":") do
         %strong= t("notes")
-      Enter a one or more terms (case insensitive, not necessarily full words) to match person
-      notes such as a place name (e.g. "Enniskillen", "Ballywalter") or professions (e.g. "farmer",
-      "mayor"). If a person's year of birth or death has been estimated then this will be noted
-      and you can find them by searching notes for the word "guess".
+      Enter one or more terms (case insensitive, not necessarily full words) to match person
+      notes such as a place name (e.g. "Enniskillen", "Ballywalter") or professions (e.g.
+      "farmer", "mayor").
     %li
       = succeed(":") do
         %strong= %w/last first known born/.map{ |g| t("person.order.#{g}") }.join("/")
@@ -91,5 +88,5 @@
     %li
       = succeed(":") do
         %strong= %w/frst next prev last/.map{ |p| t("pagination.#{p}") }.join("/")
-      Click one to page forward and backwards through the results when there are more
+      Click one one of these to page forward and backwards through the results when there are more
       than the maximum per-page (10).
