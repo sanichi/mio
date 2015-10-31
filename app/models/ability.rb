@@ -8,7 +8,7 @@ class Ability
     end
 
     if user.tree_view?
-      can :read, [Person, Picture, Partnership]
+      can [:read, :tree, :checks], [Person, Picture, Partnership]
     end
 
     can [:read, :graph], Mass

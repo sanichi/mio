@@ -40,9 +40,9 @@
               %li= link_to t("picture.pictures"), pictures_path
             - if can?(:read, Partnership)
               %li= link_to t("partnership.partnerships"), partnerships_path
-            - if can?(:read, Person)
+            - if can?(:tree, Person)
               %li= link_to t("person.tree"), tree_people_path
-            - if can?(:read, Person)
+            - if can?(:checks, Person)
               %li= link_to t("person.checks.title"), checks_people_path
       - if can?(:read, Todo)
         %li.dropdown
