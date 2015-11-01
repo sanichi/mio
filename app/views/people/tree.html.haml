@@ -11,7 +11,10 @@
   %span.input-group.input-group-sm
     = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30
 
-%p= render "utils/help_button"
+.text-center.top_margin
+  = render "utils/help_button"
+  = link_to t("person.people"), people_path, class: "btn btn-success"
+  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
 
 - content_for :help_title do
   = t("person.help.tree")

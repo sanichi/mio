@@ -18,6 +18,7 @@
   - if can?(:create, Picture)
     = link_to t("picture.new"), new_picture_path, class: "btn btn-info"
   = link_to t("person.people"), people_path, class: "btn btn-success"
+  = link_to t("person.tree"), tree_people_path, class: "btn btn-success"
 
 - content_for :help_title do
   = "How to Search and View Pictures"
