@@ -12,7 +12,6 @@
       = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
       = text_field_tag :wedding, params[:wedding], class: "form-control", placeholder: t("partnership.wedding"), size: 12
     = button_tag t("search"), type: "submit", class: "btn btn-success"
-    = render "utils/help_button"
 
 %p
 
@@ -30,6 +29,10 @@
 .text-center
   - if can?(:create, Partnership)
     = link_to t("partnership.new"), new_partnership_path, class: "btn btn-info"
+  = render "utils/help_button"
+  = link_to t("person.people"), people_path, class: "btn btn-success"
+  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
+  = link_to t("person.tree"), tree_people_path, class: "btn btn-success"
 
 - content_for :help_title do
   = "How to Search for Partnerships"
@@ -53,8 +56,8 @@
       %em= t("person.male")
       above but will constrain the female half of the partnership
       and also search the pre-marriage surname.
-      For example, "coyle orr" will match women who were at
-      one time called "Coyle" and at another time "Orr".
+      For example, "coyle orr" will match women who were originally
+      called "Coyle" then later called "Orr" (or the other way around).
     %li
       = succeed(":") do
         %strong= t("partnership.wedding")
