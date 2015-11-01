@@ -9,6 +9,7 @@ class MassesController < ApplicationController
     @masses = Mass.search(params, masses_path, remote: true)
     respond_to do |format|
       format.html
+      format.js
       format.json { render json: @masses.matches.map(&:to_json) }
     end
   end

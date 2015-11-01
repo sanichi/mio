@@ -15,5 +15,5 @@
     - if u == unit.key
       .btn.btn-default= t("mass.unit.short.#{u}")
     - else
-      = link_to t("mass.unit.short.#{u}"), masses.page_path(unit: u), remote: true, class: "btn btn-success"
+      = link_to t("mass.unit.short.#{u}"), masses.page_path(unit: u, format: "js"), remote: true, class: "btn btn-success"
   = link_to t("graph"), graph_masses_path(unit: unit.key), class: "btn btn-info"
