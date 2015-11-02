@@ -44,6 +44,8 @@
               %li= link_to t("person.tree"), tree_people_path
             - if can?(:checks, Person)
               %li= link_to t("person.checks.title"), checks_people_path
+            - if can?(:read, HistoricalEvent)
+              %li= link_to t("historical_event.events"), historical_events_path
       - if can?(:read, Todo)
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do

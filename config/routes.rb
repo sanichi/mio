@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :links, except: [:index, :show]
     resources :returns, except: [:index, :show]
   end
+  resources :historical_events, except: [:show]
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end

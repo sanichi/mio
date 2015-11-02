@@ -131,4 +131,10 @@ shared_context "test_data" do
   let(:todo_elm_done)    { I18n.t("todo.elm.done") }
   let(:todo_elm_down)    { I18n.t("todo.elm.down") }
   let(:todo_elm_up)      { I18n.t("todo.elm.up") }
+
+  let(:edit_historical_event)   { I18n.t("historical_event.edit") }
+  let(:historical_event_finish) { I18n.t("historical_event.finish") }
+  let(:historical_event_start)  { I18n.t("historical_event.start") }
+  let(:historical_events)       { I18n.t("historical_event.events") }
+  let(:new_historical_event)    { I18n.t("historical_event.new") }
 end

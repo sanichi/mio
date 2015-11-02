@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028165300) do
+ActiveRecord::Schema.define(version: 20151102085627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 20151028165300) do
     t.integer  "size"
     t.string   "stars"
     t.boolean  "srri_estimated",                                     default: false
+  end
+
+  create_table "historical_events", force: :cascade do |t|
+    t.integer  "start",       limit: 2
+    t.integer  "finish",      limit: 2
+    t.string   "description", limit: 50
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "incomes", force: :cascade do |t|

@@ -1,0 +1,14 @@
+.row
+  .col-md-offset-2.col-md-8
+    = form_for event, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: event, col: "md", pad: 4, width: 3 }
+        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
+        = render "utils/text_field_for", shared.merge(param: :start, text: t("historical_event.start"))
+        = render "utils/text_field_for", shared.merge(param: :finish, text: t("historical_event.finish"))
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), historical_events_path, class: "btn btn-default"
+          - unless event.new_record?
+            = link_to t("delete"), event, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
