@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
       redirect_to root_path
       success = true
     else
+      flash.now[:alert] = I18n.t("login.invalid").sample
       render "new"
       success = false
     end

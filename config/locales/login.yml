@@ -2,3 +2,8 @@ en:
   login:
     ip: IP Address
     logins: Logins
+    invalid:
+      - Dooh!
+      - Wrong!
+      - No! No! No!
+      - Are you kidding?
