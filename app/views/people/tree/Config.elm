@@ -40,20 +40,20 @@ thumbSize = 100
 textStyle : Text.Style
 textStyle =
   { defaultStyle
-  | typeface <- ["Verdana", "Helvetica", "sans-serif"]
-  , height <- Just 15
+  | typeface = ["Verdana", "Helvetica", "sans-serif"]
+  , height = Just 15
   }
 
 smallStyle : Text.Style
 smallStyle =
   { textStyle
-  | height <- Just 11
+  | height = Just 11
   }
 
 largeStyle : Text.Style
 largeStyle =
   { textStyle
-  | height <- Just 40
+  | height = Just 40
   }
 
 -- TIME

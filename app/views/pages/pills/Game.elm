@@ -49,17 +49,17 @@ updatePlay event g =
         if List.isEmpty collided && not outside
           then
             { g
-            | pills  <- List.map (updatePill t) untouched
-            , player <- updatePlayer mp g.player
-            , score <- g.score + (List.length captured)
+            | pills  = List.map (updatePill t) untouched
+            , player = updatePlayer mp g.player
+            , score = g.score + (List.length captured)
             }
           else
             { defaultGame
-            | maxScore <- max g.maxScore g.score
-            , player <- defaultPlayer
-            , score <- g.score
-            , seed <- g.seed
-            , state <- Over
+            | maxScore = max g.maxScore g.score
+            , player = defaultPlayer
+            , score = g.score
+            , seed = g.seed
+            , state = Over
             }
     Add ->
       let
@@ -68,8 +68,8 @@ updatePlay event g =
         c = if p < capturePillProb then capturePillCol else defPillCol
       in
         { g
-        | pills <- (newPill x c) :: g.pills
-        , seed <- seed''
+        | pills = (newPill x c) :: g.pills
+        , seed = seed''
         }
     Click ->
       g
@@ -90,9 +90,9 @@ updateGame event g =
       if click event
         then
           { defaultGame
-          | seed <- g.seed
-          , maxScore <- g.maxScore
-          , state <- Play
+          | seed = g.seed
+          , maxScore = g.maxScore
+          , state = Play
           }
         else g
 

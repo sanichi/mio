@@ -29,7 +29,7 @@ delta = fps frameRate
 
 input : Signal (Time, (Int, Int))
 input =
-  (,) <~ map inSeconds delta ~ mouseSignal delta
+  map2 (,) (map inSeconds delta) (mouseSignal delta)
 
 
 events =
@@ -42,4 +42,4 @@ events =
 
 main : Signal Element
 main =
-  render <~ Window.dimensions ~ foldp updateGame defaultGame events
+  map2 render Window.dimensions (foldp updateGame defaultGame events)

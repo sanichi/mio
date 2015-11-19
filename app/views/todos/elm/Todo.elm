@@ -151,7 +151,7 @@ view lastUpdated toDelete t =
                 , placeholder i18NewTodo
                 , autofocus True
                 , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (0, value))
-                , onEnter creates.address { t | description <- t.newDescription }
+                , onEnter creates.address { t | description = t.newDescription }
                 ]
                 [ ]
             ]
@@ -179,7 +179,7 @@ view lastUpdated toDelete t =
                 , autofocus True
                 , Events.on "input" Events.targetValue (\value -> Signal.message descriptions.address (t.id, value))
                 , Events.onBlur edits.address (t.id, False)
-                , onEnter updates.address { t | description <- t.newDescription }
+                , onEnter updates.address { t | description = t.newDescription }
                 ]
                 [ ]
             ]
@@ -253,7 +253,7 @@ increaseDecreaseClickHandler : Todo -> Bool -> List Attribute
 increaseDecreaseClickHandler t bool =
   let
     canChange = canIncreaseDecrease t bool
-    newTodo = { t | priority <- t.priority + (if bool then -1 else 1) }
+    newTodo = { t | priority = t.priority + (if bool then -1 else 1) }
   in
     if canChange
       then [ Events.onClick updates.address newTodo ]
@@ -277,7 +277,7 @@ confirmButton id =
 doneButton : Todo -> Html
 doneButton t =
   let
-    newTodo = { t | done <- if t.done then False else True }
+    newTodo = { t | done = if t.done then False else True }
   in
     span
       [ class "btn btn-success btn-xs", Events.onClick updates.address newTodo ]

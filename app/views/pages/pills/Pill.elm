@@ -27,14 +27,14 @@ defaultPill =
 newPill : Float -> Color -> Pill
 newPill x c =
   { defaultPill
-  | pos <- (x, hHeight)
-  , col <- c
+  | pos = (x, hHeight)
+  , col = c
   }
 
 
 updatePill : Time -> Pill -> Pill
 updatePill t p =
-  { p | pos <- vAdd p.pos <| vMul t p.vel }
+  { p | pos = vAdd p.pos <| vMul t p.vel }
 
 
 viewPill : Pill -> Form

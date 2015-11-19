@@ -98,30 +98,30 @@ update action model =
 
     UpdateContainer (w,h) ->
       { model
-      | width <- w
-      , height <- h
+      | width = w
+      , height = h
       }
 
     ChangeFocus f ->
       { model
-      | focus <- f
-      , family <- 0
-      , shift <- 0
+      | focus = f
+      , family = 0
+      , shift = 0
       }
 
     Shift delta ->
       { model
-      | shift <- model.shift + delta
+      | shift = model.shift + delta
       }
 
     SwitchFamily index ->
       { model
-      | family <- index
+      | family = index
       }
 
     RolloverPictures ->
       { model
-      | picture <- model.picture + 1
+      | picture = model.picture + 1
       }
 
 -- SIGNALS

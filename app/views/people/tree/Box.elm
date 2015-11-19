@@ -65,12 +65,12 @@ left box =
 move : Point -> Box -> Box
 move (dx, dy) box =
   { box
-  | x <- box.x + dx
-  , y <- box.y + dy
-  , leftMost <- box.leftMost + (round dx)
-  , rightMost <- box.rightMost + (round dx)
-  , forms <- List.map (Graphic.move (dx, dy)) box.forms
-  , lines <- List.map (Graphic.move (dx, dy)) box.lines
+  | x = box.x + dx
+  , y = box.y + dy
+  , leftMost = box.leftMost + (round dx)
+  , rightMost = box.rightMost + (round dx)
+  , forms = List.map (Graphic.move (dx, dy)) box.forms
+  , lines = List.map (Graphic.move (dx, dy)) box.lines
   }
 
 -- MAPPINGS
@@ -146,8 +146,8 @@ parents (x, y) picture father mother =
         _                  -> line (bottom t) (x, y)
   in
      { t
-     | forms <- t.forms
-     , lines <- l :: t.lines
+     | forms = t.forms
+     , lines = l :: t.lines
      }
 
 partner : Point -> (Int, Int) -> Int -> Person -> Box
@@ -168,8 +168,8 @@ partner (x, y) (index, families) picture partner =
         else line (right t') (left b')
   in
     { b'
-    | forms <- List.append t'.forms b'.forms
-    , lines <- [l1, l2]
+    | forms = List.append t'.forms b'.forms
+    , lines = [l1, l2]
     }
 
 children : Point -> Float -> Int -> People -> Box

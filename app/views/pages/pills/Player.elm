@@ -13,14 +13,14 @@ type alias Player = Pill
 defaultPlayer : Player
 defaultPlayer =
   { defaultPill
-  | col <- defPlayerCol
-  , pos <- (0, height + defPillRad)
+  | col = defPlayerCol
+  , pos = (0, height + defPillRad)
   }
 
 
 updatePlayer : (Int, Int) -> Player -> Player
 updatePlayer (x, y) p =
-  { p | pos <- (toFloat x, toFloat y) }
+  { p | pos = (toFloat x, toFloat y) }
 
 
 relative : (Int, Int) -> (Int, Int) -> (Int, Int)
@@ -35,4 +35,4 @@ center (w, h) =
 
 mouseSignal : Signal Time -> Signal (Int, Int)
 mouseSignal delta =
-  sampleOn delta (relative <~ (map center Window.dimensions) ~ Mouse.position)
+  sampleOn delta (map2 relative (map center Window.dimensions) Mouse.position)

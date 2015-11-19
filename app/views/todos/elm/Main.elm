@@ -53,54 +53,54 @@ update action model =
       case result of
         Ok todo ->
           let
-            newTodo t = if t.id == 0 then { t | newDescription <- "" } else t
-            todo' = { todo | newDescription <- todo.description }
+            newTodo t = if t.id == 0 then { t | newDescription = "" } else t
+            todo' = { todo | newDescription = todo.description }
           in
             { model
-            | todos <- todo' :: (List.map newTodo model.todos)
-            , lastUpdated <- todo.id
-            , error <- Nothing
+            | todos = todo' :: (List.map newTodo model.todos)
+            , lastUpdated = todo.id
+            , error = Nothing
             }
 
-        Err msg -> { model | error <- Just (toString msg) }
+        Err msg -> { model | error = Just (toString msg) }
 
     CancelDelete ->
       { model
-      | maybeDelete <- 0
-      , lastUpdated <- 0
-      , error <- Nothing
+      | maybeDelete = 0
+      , lastUpdated = 0
+      , error = Nothing
       }
 
     ConfirmDelete id ->
       { model
-      | maybeDelete <- id
-      , lastUpdated <- id
-      , error <- Nothing
+      | maybeDelete = id
+      , lastUpdated = id
+      , error = Nothing
       }
 
     DeleteTodo result ->
       case result of
         Ok id ->
           { model
-          | todos <- List.filter (\t -> t.id /= id) model.todos
-          , lastUpdated <- 0
-          , maybeDelete <- 0
-          , error <- Nothing
+          | todos = List.filter (\t -> t.id /= id) model.todos
+          , lastUpdated = 0
+          , maybeDelete = 0
+          , error = Nothing
           }
 
-        Err msg -> { model | error <- Just (toString msg) }
+        Err msg -> { model | error = Just (toString msg) }
 
     EditingDescription (id, bool) ->
       let
-        newTodo t = { t | editingDescription <- if t.id == id then bool else False }
+        newTodo t = { t | editingDescription = if t.id == id then bool else False }
       in
-        { model | todos <- List.map newTodo model.todos }
+        { model | todos = List.map newTodo model.todos }
 
     UpdateDescription (id, description) ->
       let
-        newTodo t = if t.id == id then { t | newDescription <- description } else t
+        newTodo t = if t.id == id then { t | newDescription = description } else t
       in
-        { model | todos <- List.map newTodo model.todos }
+        { model | todos = List.map newTodo model.todos }
 
     UpdateTodo result ->
       case result of
@@ -108,29 +108,29 @@ update action model =
           let
             newTodo t =
               if t.id == todo.id
-                then { todo | newDescription <- todo.description }
+                then { todo | newDescription = todo.description }
                 else t
           in
             { model
-            | todos <- List.map newTodo model.todos
-            , lastUpdated <- todo.id
-            , maybeDelete <- 0
-            , error <- Nothing
+            | todos = List.map newTodo model.todos
+            , lastUpdated = todo.id
+            , maybeDelete = 0
+            , error = Nothing
             }
 
-        Err msg -> { model | error <- Just (toString msg) }
+        Err msg -> { model | error = Just (toString msg) }
 
     SetTodos result ->
       case result of
         Ok list ->
           let
-            newTodo t =  { t | newDescription <- t.description }
+            newTodo t =  { t | newDescription = t.description }
             todos = List.map newTodo (exampleTodo :: list)
           in
-            { model | todos <- todos, error <- Nothing }
+            { model | todos = todos, error = Nothing }
 
         Err msg ->
-          { model | error <- Just (toString msg) }
+          { model | error = Just (toString msg) }
 
 -- VIEW
 
