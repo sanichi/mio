@@ -14,7 +14,6 @@ gem "whenever", require: false
 gem "paperclip", "~> 4.2"
 
 group :development do
-  gem "mysql2"
   gem "capistrano-rails"
   gem "capistrano-rails-console"
   gem "capistrano-passenger"
