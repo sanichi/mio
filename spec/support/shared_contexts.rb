@@ -79,6 +79,8 @@ shared_context "test_data" do
   let(:user_role) { I18n.t("user.role") }
   let(:users)     { I18n.t("user.users") }
 
+  let(:login_logins)     { I18n.t("login.logins") }
+
   let(:edit_person)         { I18n.t("person.edit") }
   let(:new_person)          { I18n.t("person.new") }
   let(:people)              { I18n.t("person.people") }

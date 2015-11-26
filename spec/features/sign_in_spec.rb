@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "Authentication" do
   include_context "test_data"
-  
+
   let(:user) { create(:user) }
 
   context "sign in" do
@@ -45,19 +45,40 @@ describe "Authentication" do
 
       visit new_upload_path
       expect(page).to have_title new_upload
+
+      visit todos_path
+      expect(page).to have_title todo_todos
+
+      visit elm_todos_path
+      expect(page).to have_title todo_todos
+
+      visit users_path
+      expect(page).to have_title users
+
+      visit logins_path
+      expect(page).to have_title login_logins
     end
 
     it "signed out" do
       visit transactions_path
-      expect(page).to_not have_title transactions
       expect(page).to have_title sign_in
 
       visit uploads_path
-      expect(page).to_not have_title uploads
       expect(page).to have_title sign_in
 
       visit new_upload_path
-      expect(page).to_not have_title new_upload
+      expect(page).to have_title sign_in
+
+      visit todos_path
+      expect(page).to have_title sign_in
+
+      visit elm_todos_path
+      expect(page).to have_title sign_in
+
+      visit users_path
+      expect(page).to have_title sign_in
+
+      visit logins_path
       expect(page).to have_title sign_in
     end
   end
