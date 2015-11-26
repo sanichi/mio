@@ -1,3 +1,10 @@
+- content_for :head do
+  = javascript_include_tag "highlight.pack.js"
+  = stylesheet_link_tag "highlight"
+
+- content_for :javascript do
+  = render "utils/highlight.js"
+
 = render "utils/title", text: @blog.title
 
 = render "panel", blog: @blog, index: false

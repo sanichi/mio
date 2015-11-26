@@ -10,7 +10,7 @@
       .pull-right
         = link_to t("edit"), edit_blog_path(blog), class: "btn btn-info btn-xs"
   .panel-body
-    = blog.story_html(short: index)
+    ~ blog.story_html(short: index)
     - if index && blog.paragraphs > 1
       %p= link_to t("blog.more"), blog
   - unless index
