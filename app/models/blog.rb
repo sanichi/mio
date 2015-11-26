@@ -26,11 +26,11 @@ class Blog < ActiveRecord::Base
   end
 
   def paragraphs
-    story.scan(/\n\n/).length + 1
+    story.split(/\n\n/).length
   end
 
   def first_paragraph
-    story.match(/\A(\S.*?)\n\n/) ? $1 : story
+    story.split(/\n\n/).first
   end
 
   private
