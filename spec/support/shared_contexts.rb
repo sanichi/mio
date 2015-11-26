@@ -137,4 +137,10 @@ shared_context "test_data" do
   let(:historical_event_start)  { I18n.t("historical_event.start") }
   let(:historical_events)       { I18n.t("historical_event.events") }
   let(:new_historical_event)    { I18n.t("historical_event.new") }
+
+  let(:edit_blog)  { I18n.t("blog.edit") }
+  let(:new_blog)   { I18n.t("blog.new") }
+  let(:blog_title) { I18n.t("blog.title") }
+  let(:blog_story) { I18n.t("blog.story") }
+  let(:blogs)      { I18n.t("blog.blog") }
 end

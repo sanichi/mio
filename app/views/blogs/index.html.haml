@@ -1,0 +1,17 @@
+= render "utils/title", key: "blog.blog"
+
+.text-center
+  = form_tag blogs_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", size: 16
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+#results.top_margin
+  .row
+    .col-md-offset-1.col-md-10.col-xs-12
+      = render "results", blogs: @blogs
+
+.text-center.top_margin
+  - if can?(:create, Blog)
+    = link_to t("blog.new"), new_blog_path, class: "btn btn-info"

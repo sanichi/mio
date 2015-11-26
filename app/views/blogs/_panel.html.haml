@@ -1,0 +1,20 @@
+- defined?(date_format) || date_format = "%b %e, %Y"
+- defined?(index) || index = true
+
+.panel.panel-default
+  .panel-heading
+    = blog.created_at.strftime(date_format)
+    = t("separator")
+    %b= link_to_if index, blog.title, blog
+    - if index && can?(:edit, blog)
+      .pull-right
+        = link_to t("edit"), edit_blog_path(blog), class: "btn btn-info btn-xs"
+  .panel-body
+    = blog.story_html(short: index)
+    - if index && blog.paragraphs > 1
+      %p= link_to t("blog.more"), blog
+  - unless index
+    .panel-footer.small
+      = succeed(":") do
+        = t("updated_at")
+      = blog.updated_at.to_s(:nosec)

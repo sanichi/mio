@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    = form_for blog, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: blog, col: "md", pad: 1, width: 9}
+        = render "utils/text_field_for", shared.merge(param: :title, text: t("blog.title"))
+        = render "utils/text_area_for", shared.merge(param: :story, text: t("blog.story"))
+
+      .row
+        .col-md-offset-2.col-md-10
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), blog.new_record?? blogs_path : blog, class: "btn btn-default"
+          - unless blog.new_record?
+            = link_to t("delete"), blog, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

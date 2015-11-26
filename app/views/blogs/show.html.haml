@@ -1,0 +1,10 @@
+= render "utils/title", text: @blog.title
+
+= render "panel", blog: @blog, index: false
+
+.text-center.top_margin
+  = link_to t("blog.blog"), blogs_path, class: "btn btn-success"
+  - if can?(:edit, Blog)
+    = link_to t("edit"), edit_blog_path(@blog), class: "btn btn-info"
+  - if can?(:delete, Blog)
+    = link_to t("delete"), @blog, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

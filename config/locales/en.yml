@@ -7,7 +7,7 @@ en:
   both: both
   cancel: Cancel
   close: Close
-  created_at: Created At
+  created_at: Created at
   cross: ✘
   date: Date
   delete: Delete
@@ -27,6 +27,7 @@ en:
   notes: Notes
   order: Order
   prev: Prev
+  query: Query
   save: Save
   search: Search
   select: Please select
@@ -36,7 +37,7 @@ en:
   tick: ✔
   total: Total
   unknown: Unknown
-  updated_at: Last Updated
+  updated_at: Last updated
   view: View
   "no": "No"
   "yes": "Yes"

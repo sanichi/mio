@@ -56,6 +56,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.search(params, path, opt={})
+    sql = nil
     matches =
     case params[:order]
     when "first" then by_first_name
@@ -63,11 +64,10 @@ class Person < ActiveRecord::Base
     when "known" then by_known_as
     else              by_last_name
     end
-    sql = nil
-    matches = matches.where(sql) if (sql = cross_constraint(params[:name]))
-    matches = matches.where(sql) if (sql = cross_constraint(params[:notes], cols: ["notes"]))
-    matches = matches.where(sql) if (sql = numerical_constraint(params[:born], :born))
-    matches = matches.where(sql) if (sql = numerical_constraint(params[:died], :died))
+    matches = matches.where(sql) if sql = cross_constraint(params[:name])
+    matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
+    matches = matches.where(sql) if sql = numerical_constraint(params[:born], :born)
+    matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
     paginate(matches, params, path, opt)

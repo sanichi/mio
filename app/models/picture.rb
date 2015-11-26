@@ -19,8 +19,8 @@ class Picture < ActiveRecord::Base
   def self.search(params)
     sql = nil
     matches = joins(:person).includes(:person)
-    matches = matches.where(sql) if (sql = cross_constraint(params[:name], table: :people))
-    matches = matches.where(sql) if (sql = cross_constraint(params[:description], cols: ["description"]))
+    matches = matches.where(sql) if sql = cross_constraint(params[:name], table: :people)
+    matches = matches.where(sql) if sql = cross_constraint(params[:description], cols: %w{description})
     matches
   end
 

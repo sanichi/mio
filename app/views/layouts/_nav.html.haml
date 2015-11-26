@@ -6,6 +6,8 @@
       %span.icon-bar
   .collapse.navbar-collapse.navbar-ex1-collapse
     %ul.nav.navbar-nav
+      - if can?(:read, Blog)
+        %li= link_to t("blog.blog"), blogs_path
       - if can?(:read, Mass)
         %li= link_to t("mass.mass"), graph_masses_path
       %li.dropdown

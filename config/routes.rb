@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
+  resources :blogs
   resources :expenses, except: [:show]
   resources :funds do
     resources :comments, except: [:index, :show]
