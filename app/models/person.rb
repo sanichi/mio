@@ -6,6 +6,10 @@ class Person < ActiveRecord::Base
   has_many :pictures
   belongs_to :father, class_name: "Person"
   belongs_to :mother, class_name: "Person"
+  has_many :partnerships_as_male, class_name: "Partnership", foreign_key: "husband_id", dependent: :destroy
+  has_many :partnerships_as_female, class_name: "Partnership", foreign_key: "wife_id", dependent: :destroy
+  has_many :fathered_children, class_name: "Person", foreign_key: "father_id", dependent: :nullify
+  has_many :mothered_children, class_name: "Person", foreign_key: "mother_id", dependent: :nullify
 
   MAX_FN = 100
   MAX_KA = 20
@@ -89,13 +93,23 @@ class Person < ActiveRecord::Base
     @children ||= Person.by_born.where("#{male ? 'father' : 'mother'}_id = #{id}")
   end
 
-  def siblings
-    return [] unless father_id || mother_id
-    return @siblings if @siblings
-    clauses = []
-    clauses.push("father_id = #{father_id}") if father_id
-    clauses.push("mother_id = #{mother_id}") if mother_id
-    @siblings = Person.by_born.where(clauses.join(" OR ")).where.not(id: id)
+  def siblings(full: false, younger: false, older: false)
+    if !father_id && !mother_id
+      []
+    else
+      clauses = []
+      clauses.push("father_id = #{father_id}") if father_id
+      clauses.push("mother_id = #{mother_id}") if mother_id
+      op = " #{full ? 'AND' : 'OR'} "
+      all = Person.by_born.where(clauses.join(op)).to_a
+      if younger && !older
+        all.take_while{ |s| s.id != id }
+      elsif older && !younger
+        all.reverse.take_while{ |s| s.id != id }.reverse
+      else
+        all.select{ |s| s.id != id }
+      end
+    end
   end
 
   def partners

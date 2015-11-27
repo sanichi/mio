@@ -220,4 +220,109 @@ describe Person do
       expect(mark.partners.map(&:id)).to eq [aphrodite.id, pat.id, lynda.id]
     end
   end
+
+  context "#siblings" do
+    let!(:terry)     { create(:person, born: 1930, male: true) }
+    let!(:anne)      { create(:person, born: 1930, male: false) }
+    let!(:elma)      { create(:person, born: 1934, male: false) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma) }
+
+    it "all siblings" do
+      expect(terry.siblings.map(&:id)).to eq []
+      expect(anne.siblings.map(&:id)).to eq []
+      expect(elma.siblings.map(&:id)).to eq []
+      expect(jonathan.siblings.map(&:id)).to eq [stuart.id, ishbel.id, helen.id]
+      expect(stuart.siblings.map(&:id)).to eq [jonathan.id, ishbel.id, helen.id]
+      expect(ishbel.siblings.map(&:id)).to eq [jonathan.id, stuart.id, helen.id]
+      expect(helen.siblings.map(&:id)).to eq [jonathan.id, stuart.id, ishbel.id]
+    end
+
+    it "full siblings" do
+      expect(jonathan.siblings(full: true).map(&:id)).to eq []
+      expect(stuart.siblings(full: true).map(&:id)).to eq [ishbel.id, helen.id]
+      expect(ishbel.siblings(full: true).map(&:id)).to eq [stuart.id, helen.id]
+      expect(helen.siblings(full: true).map(&:id)).to eq [stuart.id, ishbel.id]
+    end
+
+    it "younger siblings" do
+      expect(jonathan.siblings(younger: true).map(&:id)).to eq []
+      expect(stuart.siblings(younger: true).map(&:id)).to eq [jonathan.id]
+      expect(ishbel.siblings(younger: true).map(&:id)).to eq [jonathan.id, stuart.id]
+      expect(helen.siblings(younger: true).map(&:id)).to eq [jonathan.id, stuart.id, ishbel.id]
+    end
+
+    it "older siblings" do
+      expect(jonathan.siblings(older: true).map(&:id)).to eq [stuart.id, ishbel.id, helen.id]
+      expect(stuart.siblings(older: true).map(&:id)).to eq [ishbel.id, helen.id]
+      expect(ishbel.siblings(older: true).map(&:id)).to eq [helen.id]
+      expect(helen.siblings(older: true).map(&:id)).to eq []
+    end
+
+    it "full younger siblings" do
+      expect(jonathan.siblings(full: true, younger: true).map(&:id)).to eq []
+      expect(stuart.siblings(full: true, younger: true).map(&:id)).to eq []
+      expect(ishbel.siblings(full: true, younger: true).map(&:id)).to eq [stuart.id]
+      expect(helen.siblings(full: true, younger: true).map(&:id)).to eq [stuart.id, ishbel.id]
+    end
+
+    it "full older siblings" do
+      expect(jonathan.siblings(full: true, older: true).map(&:id)).to eq []
+      expect(stuart.siblings(full: true, older: true).map(&:id)).to eq [ishbel.id, helen.id]
+      expect(ishbel.siblings(full: true, older: true).map(&:id)).to eq [helen.id]
+      expect(helen.siblings(full: true, older: true).map(&:id)).to eq []
+    end
+  end
+
+  context "destruction" do
+    let!(:terry)     { create(:person, born: 1930, male: true) }
+    let!(:anne)      { create(:person, born: 1930, male: false) }
+    let!(:elma)      { create(:person, born: 1934, male: false) }
+    let!(:t_a)       { create(:partnership, husband: terry, wedding: 1959, wife: anne) }
+    let!(:t_e)       { create(:partnership, husband: terry, wedding: 1965, wife: elma) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma) }
+
+    it "husband => partnership" do
+      expect(Partnership.count).to eq 2
+      terry.destroy
+      expect(Partnership.count).to eq 0
+    end
+
+    it "wife => partnership" do
+      expect(Partnership.count).to eq 2
+      anne.destroy
+      expect(Partnership.count).to eq 1
+      elma.destroy
+      expect(Partnership.count).to eq 0
+    end
+
+    it "father => child relationships" do
+      terry.destroy
+      [jonathan, stuart, ishbel, helen].each do |p|
+        p.reload
+        expect(p.father_id).to be_nil
+        expect(p.mother_id).to_not be_nil
+      end
+    end
+
+    it "mother => child relationships" do
+      anne.destroy
+      [jonathan, stuart, ishbel, helen].each do |p|
+        p.reload
+        expect(p.mother_id).to eq p.id == jonathan.id ? nil : elma.id
+        expect(p.father_id).to_not be_nil
+      end
+      elma.destroy
+      [jonathan, stuart, ishbel, helen].each do |p|
+        p.reload
+        expect(p.mother_id).to be_nil
+        expect(p.father_id).to_not be_nil
+      end
+    end
+  end
 end
