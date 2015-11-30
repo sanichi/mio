@@ -102,9 +102,9 @@ class Person < ActiveRecord::Base
       clauses.push("mother_id = #{mother_id}") if mother_id
       op = " #{full ? 'AND' : 'OR'} "
       all = Person.by_born.where(clauses.join(op)).to_a
-      if younger && !older
+      if older && !younger
         all.take_while{ |s| s.id != id }
-      elsif older && !younger
+      elsif younger && !older
         all.reverse.take_while{ |s| s.id != id }.reverse
       else
         all.select{ |s| s.id != id }
@@ -139,6 +139,8 @@ class Person < ActiveRecord::Base
       h[:father] = father.try(:tree_hash)
       h[:mother] = mother.try(:tree_hash)
       h[:families] = tree_families
+      h[:younger_siblings] = siblings(full: true, younger: true).map(&:tree_hash)
+      h[:older_siblings] = siblings(full: true, older: true).map(&:tree_hash)
     else
       h[:id] = id
       h[:name] = name(full: false, with_known_as: true).gsub(/ /, "&nbsp;")

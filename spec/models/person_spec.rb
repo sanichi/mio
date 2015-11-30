@@ -247,32 +247,32 @@ describe Person do
       expect(helen.siblings(full: true).map(&:id)).to eq [stuart.id, ishbel.id]
     end
 
-    it "younger siblings" do
-      expect(jonathan.siblings(younger: true).map(&:id)).to eq []
-      expect(stuart.siblings(younger: true).map(&:id)).to eq [jonathan.id]
-      expect(ishbel.siblings(younger: true).map(&:id)).to eq [jonathan.id, stuart.id]
-      expect(helen.siblings(younger: true).map(&:id)).to eq [jonathan.id, stuart.id, ishbel.id]
+    it "older siblings" do
+      expect(jonathan.siblings(younger: true).map(&:id)).to eq [stuart.id, ishbel.id, helen.id]
+      expect(stuart.siblings(younger: true).map(&:id)).to eq [ishbel.id, helen.id]
+      expect(ishbel.siblings(younger: true).map(&:id)).to eq [helen.id]
+      expect(helen.siblings(younger: true).map(&:id)).to eq []
     end
 
     it "older siblings" do
-      expect(jonathan.siblings(older: true).map(&:id)).to eq [stuart.id, ishbel.id, helen.id]
-      expect(stuart.siblings(older: true).map(&:id)).to eq [ishbel.id, helen.id]
-      expect(ishbel.siblings(older: true).map(&:id)).to eq [helen.id]
-      expect(helen.siblings(older: true).map(&:id)).to eq []
+      expect(jonathan.siblings(older: true).map(&:id)).to eq []
+      expect(stuart.siblings(older: true).map(&:id)).to eq [jonathan.id]
+      expect(ishbel.siblings(older: true).map(&:id)).to eq [jonathan.id, stuart.id]
+      expect(helen.siblings(older: true).map(&:id)).to eq [jonathan.id, stuart.id, ishbel.id]
     end
 
     it "full younger siblings" do
       expect(jonathan.siblings(full: true, younger: true).map(&:id)).to eq []
-      expect(stuart.siblings(full: true, younger: true).map(&:id)).to eq []
-      expect(ishbel.siblings(full: true, younger: true).map(&:id)).to eq [stuart.id]
-      expect(helen.siblings(full: true, younger: true).map(&:id)).to eq [stuart.id, ishbel.id]
+      expect(stuart.siblings(full: true, younger: true).map(&:id)).to eq [ishbel.id, helen.id]
+      expect(ishbel.siblings(full: true, younger: true).map(&:id)).to eq [helen.id]
+      expect(helen.siblings(full: true, younger: true).map(&:id)).to eq []
     end
 
     it "full older siblings" do
       expect(jonathan.siblings(full: true, older: true).map(&:id)).to eq []
-      expect(stuart.siblings(full: true, older: true).map(&:id)).to eq [ishbel.id, helen.id]
-      expect(ishbel.siblings(full: true, older: true).map(&:id)).to eq [helen.id]
-      expect(helen.siblings(full: true, older: true).map(&:id)).to eq []
+      expect(stuart.siblings(full: true, older: true).map(&:id)).to eq []
+      expect(ishbel.siblings(full: true, older: true).map(&:id)).to eq [stuart.id]
+      expect(helen.siblings(full: true, older: true).map(&:id)).to eq [stuart.id, ishbel.id]
     end
   end
 
