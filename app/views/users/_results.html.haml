@@ -2,4 +2,5 @@
   %tr
     %td= link_to user.email, user
     %td= user.person.name(full: false) if user.person
+    %td= t("user.roles.#{user.role}")
 = render "utils/pagination_links", pager: users, columns: 1
