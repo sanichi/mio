@@ -1,7 +1,7 @@
 - defined?(date_format) || date_format = "%b %e, %Y"
 - defined?(index) || index = true
 
-.panel.panel-default
+.panel{class: "panel-#{blog.draft ? 'warning' : 'default'}"}
   .panel-heading
     = blog.created_at.strftime(date_format)
     = t("separator")

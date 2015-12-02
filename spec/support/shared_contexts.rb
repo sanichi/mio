@@ -142,6 +142,7 @@ shared_context "test_data" do
 
   let(:edit_blog)  { I18n.t("blog.edit") }
   let(:new_blog)   { I18n.t("blog.new") }
+  let(:blog_draft) { I18n.t("blog.draft") }
   let(:blog_title) { I18n.t("blog.title") }
   let(:blog_story) { I18n.t("blog.story") }
   let(:blogs)      { I18n.t("blog.blog") }

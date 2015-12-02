@@ -3,7 +3,7 @@ class BlogsController < ApplicationController
   before_action :find_blog, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blogs = Blog.search(params)
+    @blogs = Blog.search(params, current_user)
   end
 
   def new
@@ -39,7 +39,11 @@ class BlogsController < ApplicationController
   end
 
   def strong_params(add_user: false)
-    params[:blog][:user_id] = session[:user_id] if add_user
-    params.require(:blog).permit(:story, :title, :user_id)
+    allowed = [:draft, :story, :title]
+    if add_user
+      params[:blog][:user_id] = session[:user_id]
+      allowed.push(:user_id)
+    end
+    params.require(:blog).permit(*allowed)
   end
 end

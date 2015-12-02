@@ -1,6 +1,7 @@
 en:
   blog:
     blog: Blog
+    draft: Draft
     edit: Edit Blog
     more: See full article …
     new: New Blog

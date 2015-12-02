@@ -14,9 +14,16 @@ class Blog < ActiveRecord::Base
 
   scope :ordered, -> { order(created_at: :desc) }
 
-  def self.search(params)
+  def self.search(params, user)
     sql = nil
     matches = ordered
+    unless user.admin?
+      if user.guest?
+        matches = matches.where(published)
+      else
+        matches = matches.where(published.or(owner(user.id)))
+      end
+    end
     matches = matches.where(sql) if sql = cross_constraint(params[:q], cols: %w{title story})
     matches
   end
@@ -41,4 +48,16 @@ class Blog < ActiveRecord::Base
     story.rstrip!
     story.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
   end
+
+  class << self
+    def owner(id)
+      arel_table[:user_id].eq(id)
+    end
+
+    def published
+      arel_table[:draft].eq(false)
+    end
+  end
+
+  private_class_method :owner, :published
 end

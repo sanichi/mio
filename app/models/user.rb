@@ -18,20 +18,30 @@ class User < ActiveRecord::Base
   validates :person_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
   validates :role, inclusion: { in: ROLES }
 
-  def self.search(params, path, opt={})
-    matches = joins(:person).includes(:person).order(:email)
-    matches = matches.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
-    matches = matches.where("people.last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
-    if params[:first_names].present?
-      pattern = "%#{params[:first_names]}%"
-      matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
-    end
-    paginate(matches, params, path, opt)
-  end
-
   ROLES.each do |role|
     define_method "#{role}?" do
       self.role == role
+    end
+  end
+
+  def guest?
+    !id
+  end
+
+  class << self
+    def search(params, path, opt={})
+      matches = joins(:person).includes(:person).order(:email)
+      matches = matches.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
+      matches = matches.where("people.last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
+      if params[:first_names].present?
+        pattern = "%#{params[:first_names]}%"
+        matches = matches.where("first_names ILIKE ? OR known_as ILIKE ?", pattern, pattern)
+      end
+      paginate(matches, params, path, opt)
+    end
+
+    def guest
+      new(role: "none")
     end
   end
 

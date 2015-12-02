@@ -4,6 +4,7 @@
       %fieldset
         - shared = { form: f, object: blog, col: "md", pad: 1, width: 9}
         = render "utils/text_field_for", shared.merge(param: :title, text: t("blog.title"))
+        = render "utils/check_box_for", shared.merge(param: :draft, text: t("blog.draft"), width: 1)
         = render "utils/text_area_for", shared.merge(param: :story, text: t("blog.story"), rows: 40)
 
       .row
