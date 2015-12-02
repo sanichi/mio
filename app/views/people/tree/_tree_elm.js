@@ -9104,6 +9104,7 @@ Elm.Config.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
    $Debug = Elm.Debug.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -9116,30 +9117,55 @@ Elm.Config.make = function (_elm) {
    var changePictures = 5;
    var textStyle = _U.update($Text.defaultStyle,
    {typeface: _U.list(["Verdana","Helvetica","sans-serif"])
-   ,height: $Maybe.Just(15)});
-   var smallStyle = _U.update(textStyle,{height: $Maybe.Just(11)});
+   ,height: $Maybe.Just(15)
+   ,color: $Color.black});
    var largeStyle = _U.update(textStyle,{height: $Maybe.Just(40)});
+   var smallStyle = _U.update(textStyle,{height: $Maybe.Just(11)});
+   var smallFocusStyle = _U.update(smallStyle,
+   {color: $Color.white});
+   var focusStyle = _U.update(textStyle,{color: $Color.white});
    var thumbSize = 100;
    var padding = {x: 4,y: 4};
    var margin = {x: 18,y: 18};
-   var level = 180;
+   var initialWidth = 500;
    var deltaShift = 200;
    var border = 1;
+   var boxHeight = function () {
+      var year = A2($Text.style,
+      smallStyle,
+      $Text.fromString("2000"));
+      var name = A2($Text.style,textStyle,$Text.fromString("Name"));
+      var combined = $Graphics$Element.centered(A2($Text.join,
+      $Text.fromString("\n"),
+      _U.list([name,year])));
+      return $Graphics$Element.heightOf(combined) + 2 * (padding.y + border + margin.y);
+   }();
+   var levelHeight = boxHeight + thumbSize + margin.y;
+   var initialHeight = 3 * levelHeight;
+   var adjustY = 0.5 * $Basics.toFloat(levelHeight - boxHeight);
    var lineColor = $Color.black;
+   var focusBgColor = A3($Color.rgb,24,188,156);
    var boxBgColor = $Color.white;
    var bgColor = A3($Color.rgb,176,224,230);
    return _elm.Config.values = {_op: _op
                                ,bgColor: bgColor
                                ,boxBgColor: boxBgColor
+                               ,focusBgColor: focusBgColor
                                ,lineColor: lineColor
+                               ,adjustY: adjustY
                                ,border: border
+                               ,boxHeight: boxHeight
                                ,deltaShift: deltaShift
-                               ,level: level
+                               ,initialHeight: initialHeight
+                               ,initialWidth: initialWidth
+                               ,levelHeight: levelHeight
                                ,margin: margin
                                ,padding: padding
                                ,thumbSize: thumbSize
-                               ,textStyle: textStyle
+                               ,focusStyle: focusStyle
                                ,smallStyle: smallStyle
+                               ,smallFocusStyle: smallFocusStyle
+                               ,textStyle: textStyle
                                ,largeStyle: largeStyle
                                ,changePictures: changePictures
                                ,family: family
@@ -9160,8 +9186,13 @@ Elm.Family.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var Focus = F4(function (a,b,c,d) {
-      return {person: a,father: b,mother: c,families: d};
+   var Focus = F6(function (a,b,c,d,e,f) {
+      return {person: a
+             ,father: b
+             ,mother: c
+             ,families: d
+             ,younger_siblings: e
+             ,older_siblings: f};
    });
    var Family = F2(function (a,b) {
       return {partner: a,children: b};
@@ -9172,9 +9203,11 @@ Elm.Family.make = function (_elm) {
                 ,years: ""
                 ,pictures: $Array.fromList(_U.list([default_picture_path]))};
    var blur = {person: nobody
-              ,father: $Maybe.Nothing
-              ,mother: $Maybe.Nothing
-              ,families: $Array.empty};
+              ,father: nobody
+              ,mother: nobody
+              ,families: $Array.empty
+              ,younger_siblings: $Array.empty
+              ,older_siblings: $Array.empty};
    var picturePath = F2(function (picture,person) {
       var total = $Array.length(person.pictures);
       var index = _U.cmp(total,1) < 0 ? 0 : A2($Basics._op["%"],
@@ -9265,27 +9298,24 @@ Elm.Box.make = function (_elm) {
       0,
       boxes);
    };
-   var box2 = F4(function (isFocus,_p0,picture,person) {
-      var _p1 = _p0;
-      var b = isFocus ? 1 : 0;
+   var box2 = F3(function (isFocus,picture,person) {
+      var px = 0.0;
+      var bg = isFocus ? $Config.focusBgColor : $Config.boxBgColor;
       var y = A2($Text.style,
-      $Config.smallStyle,
+      isFocus ? $Config.smallFocusStyle : $Config.smallStyle,
       $Text.fromString(person.years));
-      var y$ = isFocus ? $Text.bold(y) : y;
       var t = A2($Text.style,
-      $Config.textStyle,
+      isFocus ? $Config.focusStyle : $Config.textStyle,
       $Text.fromString(person.name));
-      var t$ = isFocus ? $Text.bold(t) : t;
       var e = $Graphics$Element.centered(A2($Text.join,
       $Text.fromString("\n"),
-      _U.list([t$,y$])));
+      _U.list([t,y])));
       var w = $Graphics$Element.widthOf(e);
       var w$ = A2($Basics.max,
       $Config.thumbSize,
       2 * ($Basics.ceiling($Basics.toFloat(w) / 2.0) + $Config.padding.x));
-      var w$$ = w$ + 2 * ($Config.border + b);
+      var w$$ = w$ + 2 * $Config.border;
       var w$$$ = w$$ + 2 * $Config.margin.x;
-      var px = _p1._0 * 0.5 * $Basics.toFloat(w$$$ + $Config.thumbSize);
       var lm = A2($Basics.min,
       $Basics.round(px) - ($Config.thumbSize / 2 | 0),
       (0 - w$$$) / 2 | 0);
@@ -9294,14 +9324,14 @@ Elm.Box.make = function (_elm) {
       w$$$ / 2 | 0);
       var h = $Graphics$Element.heightOf(e);
       var h$ = 2 * ($Basics.ceiling($Basics.toFloat(h) / 2.0) + $Config.padding.y);
-      var h$$ = h$ + 2 * ($Config.border + b);
+      var h$$ = h$ + 2 * $Config.border;
       var h$$$ = h$$ + 2 * $Config.margin.y;
-      var py = _p1._1 * 0.5 * $Basics.toFloat(h$$$ + $Config.thumbSize);
+      var py = -0.5 * $Basics.toFloat(h$$$ + $Config.thumbSize);
       var m = A2($Signal.message,$Config.focus.address,person.id);
-      var e$ = A2($Graphics$Input.clickable,
-      m,
-      A2($Graphics$Element.color,
-      $Config.boxBgColor,
+      var clickable = _U.eq(person.id,
+      0) ? $Basics.identity : $Graphics$Input.clickable(m);
+      var e$ = clickable(A2($Graphics$Element.color,
+      bg,
       A4($Graphics$Element.container,
       w$,
       h$,
@@ -9319,9 +9349,7 @@ Elm.Box.make = function (_elm) {
       h$$$,
       $Graphics$Element.middle,
       e$$));
-      var p = A2($Graphics$Input.clickable,
-      m,
-      A3($Graphics$Element.image,
+      var p = clickable(A3($Graphics$Element.image,
       $Config.thumbSize,
       $Config.thumbSize,
       A2($Family.picturePath,picture,person)));
@@ -9337,23 +9365,23 @@ Elm.Box.make = function (_elm) {
              ,leftMost: lm
              ,rightMost: rm};
    });
-   var box = F3(function (delta,picture,person) {
-      return A4(box2,false,delta,picture,person);
+   var box = F2(function (picture,person) {
+      return A3(box2,false,picture,person);
    });
-   var move = F2(function (_p2,box) {
-      var _p3 = _p2;
-      var _p5 = _p3._1;
-      var _p4 = _p3._0;
+   var move = F2(function (_p0,box) {
+      var _p1 = _p0;
+      var _p3 = _p1._1;
+      var _p2 = _p1._0;
       return _U.update(box,
-      {x: box.x + _p4
-      ,y: box.y + _p5
-      ,leftMost: box.leftMost + $Basics.round(_p4)
-      ,rightMost: box.rightMost + $Basics.round(_p4)
+      {x: box.x + _p2
+      ,y: box.y + _p3
+      ,leftMost: box.leftMost + $Basics.round(_p2)
+      ,rightMost: box.rightMost + $Basics.round(_p2)
       ,forms: A2($List.map,
-      $Graphics$Collage.move({ctor: "_Tuple2",_0: _p4,_1: _p5}),
+      $Graphics$Collage.move({ctor: "_Tuple2",_0: _p2,_1: _p3}),
       box.forms)
       ,lines: A2($List.map,
-      $Graphics$Collage.move({ctor: "_Tuple2",_0: _p4,_1: _p5}),
+      $Graphics$Collage.move({ctor: "_Tuple2",_0: _p2,_1: _p3}),
       box.lines)});
    });
    var left = function (box) {
@@ -9367,11 +9395,11 @@ Elm.Box.make = function (_elm) {
              ,_1: box.y};
    };
    var couple = F3(function (picture,p1,p2) {
-      var b2 = A3(box,{ctor: "_Tuple2",_0: 0,_1: 1},picture,p2);
+      var b2 = A2(box,picture,p2);
       var m2 = A2(move,
       {ctor: "_Tuple2",_0: $Basics.toFloat(b2.w / 2 | 0),_1: 0},
       b2);
-      var b1 = A3(box,{ctor: "_Tuple2",_0: 0,_1: 1},picture,p1);
+      var b1 = A2(box,picture,p1);
       var m1 = A2(move,
       {ctor: "_Tuple2",_0: $Basics.toFloat((0 - b1.w) / 2 | 0),_1: 0},
       b1);
@@ -9398,6 +9426,20 @@ Elm.Box.make = function (_elm) {
    var middle = function (box) {
       return {ctor: "_Tuple2",_0: box.x,_1: box.y};
    };
+   var parents = F4(function (_p4,picture,father,mother) {
+      var _p5 = _p4;
+      var b = A3(couple,picture,father,mother);
+      var t = A2(move,
+      {ctor: "_Tuple2"
+      ,_0: 0
+      ,_1: $Basics.toFloat($Config.levelHeight)},
+      b);
+      var l = A2(line,
+      middle(t),
+      {ctor: "_Tuple2",_0: _p5._0,_1: _p5._1});
+      return _U.update(t,
+      {forms: t.forms,lines: A2($List._op["::"],l,t.lines)});
+   });
    var emptyBox = {forms: _U.list([])
                   ,lines: _U.list([])
                   ,w: 0
@@ -9409,9 +9451,7 @@ Elm.Box.make = function (_elm) {
    var children = F4(function (_p6,h,picture,people) {
       var _p7 = _p6;
       var _p8 = _p7._0;
-      var bx1 = A2($Array.map,
-      A2(box,{ctor: "_Tuple2",_0: 0,_1: -1},picture),
-      people);
+      var bx1 = A2($Array.map,box(picture),people);
       var wds = A2($Array.map,function (b) {    return b.w;},bx1);
       var wid = A3($Array.foldl,
       F2(function (w,t) {    return w + t;}),
@@ -9432,14 +9472,12 @@ Elm.Box.make = function (_elm) {
          ,_0: _p8 + $Basics.toFloat(A2($Maybe.withDefault,
          0,
          A2($Array.get,i,mds)))
-         ,_1: $Basics.toFloat(0 - $Config.level)},
+         ,_1: $Basics.toFloat(0 - $Config.levelHeight)},
          b);
       }),
       bx1);
       var b1 = A2($Maybe.withDefault,emptyBox,A2($Array.get,0,bx2));
-      var ym = $Basics.snd(A2($Point.average,
-      {ctor: "_Tuple2",_0: _p8,_1: h},
-      top(b1)));
+      var ym = $Basics.snd(top(b1)) + $Basics.toFloat($Config.margin.y);
       var l1 = A2(line,
       {ctor: "_Tuple2",_0: _p8,_1: _p7._1},
       {ctor: "_Tuple2",_0: _p8,_1: ym});
@@ -9460,6 +9498,63 @@ Elm.Box.make = function (_elm) {
              },
              bx2)))
              ,lines: A2($List.append,ls,_U.list([l1,l2]))
+             ,w: A3($Array.foldl,
+             F2(function (b,l) {    return b.w + l;}),
+             0,
+             bx2)
+             ,h: b1.h
+             ,x: (b1.x + b2.x) / 2.0
+             ,y: b1.y
+             ,leftMost: $Basics.round(b1.x) - (b1.w / 2 | 0)
+             ,rightMost: $Basics.round(b2.x) + (b2.w / 2 | 0)};
+   });
+   var siblings = F3(function (edge,picture,people) {
+      var bx1 = A2($Array.map,box(picture),people);
+      var wds = A2($Array.map,function (b) {    return b.w;},bx1);
+      var wid = A3($Array.foldl,
+      F2(function (w,t) {    return w + t;}),
+      0,
+      wds);
+      var start = edge - $Basics.toFloat(_U.cmp(edge,
+      0) < 0 ? wid : 0);
+      var mds = A2($Array.indexedMap,
+      F2(function (i,w) {
+         return (w / 2 | 0) + A3($Array.foldl,
+         F2(function (w,t) {    return w + t;}),
+         0,
+         A3($Array.slice,0,i,wds));
+      }),
+      wds);
+      var bx2 = A2($Array.indexedMap,
+      F2(function (i,b) {
+         return A2(move,
+         {ctor: "_Tuple2"
+         ,_0: start + $Basics.toFloat(A2($Maybe.withDefault,
+         0,
+         A2($Array.get,i,mds)))
+         ,_1: 0},
+         b);
+      }),
+      bx1);
+      var b1 = A2($Maybe.withDefault,emptyBox,A2($Array.get,0,bx2));
+      var ym = $Basics.snd(top(b1)) + $Basics.toFloat($Config.margin.y);
+      var b2 = A2($Maybe.withDefault,
+      emptyBox,
+      A2($Array.get,$Array.length(bx2) - 1,bx2));
+      var l2 = A2(line,
+      {ctor: "_Tuple2",_0: _U.cmp(edge,0) < 0 ? b1.x : b2.x,_1: ym},
+      {ctor: "_Tuple2",_0: 0,_1: ym});
+      var ls = $Array.toList(A2($Array.map,
+      function (m) {
+         return A2(line,top(m),{ctor: "_Tuple2",_0: m.x,_1: ym});
+      },
+      bx2));
+      return {forms: $List.concat($Array.toList(A2($Array.map,
+             function (b) {
+                return b.forms;
+             },
+             bx2)))
+             ,lines: A2($List._op["::"],l2,ls)
              ,w: A3($Array.foldl,
              F2(function (b,l) {    return b.w + l;}),
              0,
@@ -9520,82 +9615,25 @@ Elm.Box.make = function (_elm) {
          }
    });
    var emptyForm = $Graphics$Collage.toForm($Graphics$Element.empty);
-   var parents = F4(function (_p9,picture,father,mother) {
-      var _p10 = _p9;
-      var _p14 = _p10._1;
-      var _p13 = _p10._0;
-      var b = function () {
-         var _p11 = {ctor: "_Tuple2",_0: father,_1: mother};
-         if (_p11._0.ctor === "Nothing") {
-               if (_p11._1.ctor === "Nothing") {
-                     return emptyBox;
-                  } else {
-                     return A3(box,
-                     {ctor: "_Tuple2",_0: 0,_1: 1},
-                     picture,
-                     _p11._1._0);
-                  }
-            } else {
-               if (_p11._1.ctor === "Nothing") {
-                     return A3(box,
-                     {ctor: "_Tuple2",_0: 0,_1: 1},
-                     picture,
-                     _p11._0._0);
-                  } else {
-                     return A3(couple,picture,_p11._0._0,_p11._1._0);
-                  }
-            }
-      }();
-      var t = A2(move,
-      {ctor: "_Tuple2",_0: 0,_1: $Basics.toFloat($Config.level)},
-      b);
-      var l = function () {
-         var _p12 = {ctor: "_Tuple2",_0: father,_1: mother};
-         _v5_2: do {
-            if (_p12.ctor === "_Tuple2") {
-                  if (_p12._0.ctor === "Nothing") {
-                        if (_p12._1.ctor === "Nothing") {
-                              return emptyForm;
-                           } else {
-                              break _v5_2;
-                           }
-                     } else {
-                        if (_p12._1.ctor === "Just") {
-                              return A2(line,
-                              middle(t),
-                              {ctor: "_Tuple2",_0: _p13,_1: _p14});
-                           } else {
-                              break _v5_2;
-                           }
-                     }
-               } else {
-                  break _v5_2;
-               }
-         } while (false);
-         return A2(line,bottom(t),{ctor: "_Tuple2",_0: _p13,_1: _p14});
-      }();
-      return _U.update(t,
-      {forms: t.forms,lines: A2($List._op["::"],l,t.lines)});
-   });
-   var partner = F4(function (_p16,_p15,picture,partner) {
-      var _p17 = _p16;
-      var _p20 = _p17._1;
-      var _p19 = _p17._0;
-      var _p18 = _p15;
-      var t = A2(familyToggler,_p18._0,_p18._1);
+   var partner = F4(function (_p10,_p9,picture,partner) {
+      var _p11 = _p10;
+      var _p14 = _p11._1;
+      var _p13 = _p11._0;
+      var _p12 = _p9;
+      var t = A2(familyToggler,_p12._0,_p12._1);
       var t$ = A2(move,
       {ctor: "_Tuple2"
-      ,_0: _p19 + $Basics.toFloat($Config.margin.x + (t.w / 2 | 0))
+      ,_0: _p13 + $Basics.toFloat($Config.margin.x + (t.w / 2 | 0))
       ,_1: 0},
       t);
-      var b = A3(box,{ctor: "_Tuple2",_0: 1,_1: 0},picture,partner);
+      var b = A2(box,picture,partner);
       var d = $Basics.toFloat($Config.margin.x + (b.w / 2 | 0) + (_U.cmp(t.w,
       0) > 0 ? t.w - $Config.margin.x : 0));
-      var b$ = A2(move,{ctor: "_Tuple2",_0: _p19 + d,_1: _p20},b);
+      var b$ = A2(move,{ctor: "_Tuple2",_0: _p13 + d,_1: _p14},b);
       var l1 = _U.eq(t.w,0) ? A2(line,
-      {ctor: "_Tuple2",_0: _p19,_1: _p20},
+      {ctor: "_Tuple2",_0: _p13,_1: _p14},
       left(b$)) : A2(line,
-      {ctor: "_Tuple2",_0: _p19,_1: _p20},
+      {ctor: "_Tuple2",_0: _p13,_1: _p14},
       left(t$));
       var l2 = _U.eq(t.w,0) ? emptyForm : A2(line,right(t$),left(b$));
       return _U.update(b$,
@@ -9660,6 +9698,7 @@ Elm.Box.make = function (_elm) {
                             ,parents: parents
                             ,partner: partner
                             ,children: children
+                            ,siblings: siblings
                             ,couple: couple
                             ,familyToggler: familyToggler
                             ,overflow: overflow
@@ -9697,80 +9736,112 @@ Elm.Main.make = function (_elm) {
    var foci = Elm.Native.Port.make(_elm).inboundSignal("foci",
    "Family.Focus",
    function (v) {
-      return typeof v === "object" && "person" in v && "father" in v && "mother" in v && "families" in v ? {_: {}
-                                                                                                           ,person: typeof v.person === "object" && "id" in v.person && "name" in v.person && "years" in v.person && "pictures" in v.person ? {_: {}
-                                                                                                                                                                                                                                              ,id: typeof v.person.id === "number" && isFinite(v.person.id) && Math.floor(v.person.id) === v.person.id ? v.person.id : _U.badPort("an integer",
-                                                                                                                                                                                                                                              v.person.id)
-                                                                                                                                                                                                                                              ,name: typeof v.person.name === "string" || typeof v.person.name === "object" && v.person.name instanceof String ? v.person.name : _U.badPort("a string",
-                                                                                                                                                                                                                                              v.person.name)
-                                                                                                                                                                                                                                              ,years: typeof v.person.years === "string" || typeof v.person.years === "object" && v.person.years instanceof String ? v.person.years : _U.badPort("a string",
-                                                                                                                                                                                                                                              v.person.years)
-                                                                                                                                                                                                                                              ,pictures: typeof v.person.pictures === "object" && v.person.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.person.pictures.map(function (v) {
-                                                                                                                                                                                                                                                 return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-                                                                                                                                                                                                                                                 v);
-                                                                                                                                                                                                                                              })) : _U.badPort("an array",
-                                                                                                                                                                                                                                              v.person.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
-                                                                                                           v.person)
-                                                                                                           ,father: v.father === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v.father === "object" && "id" in v.father && "name" in v.father && "years" in v.father && "pictures" in v.father ? {_: {}
-                                                                                                                                                                                                                                                                                                                           ,id: typeof v.father.id === "number" && isFinite(v.father.id) && Math.floor(v.father.id) === v.father.id ? v.father.id : _U.badPort("an integer",
-                                                                                                                                                                                                                                                                                                                           v.father.id)
-                                                                                                                                                                                                                                                                                                                           ,name: typeof v.father.name === "string" || typeof v.father.name === "object" && v.father.name instanceof String ? v.father.name : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                           v.father.name)
-                                                                                                                                                                                                                                                                                                                           ,years: typeof v.father.years === "string" || typeof v.father.years === "object" && v.father.years instanceof String ? v.father.years : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                           v.father.years)
-                                                                                                                                                                                                                                                                                                                           ,pictures: typeof v.father.pictures === "object" && v.father.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.father.pictures.map(function (v) {
-                                                                                                                                                                                                                                                                                                                              return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                              v);
-                                                                                                                                                                                                                                                                                                                           })) : _U.badPort("an array",
-                                                                                                                                                                                                                                                                                                                           v.father.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
-                                                                                                           v.father))
-                                                                                                           ,mother: v.mother === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v.mother === "object" && "id" in v.mother && "name" in v.mother && "years" in v.mother && "pictures" in v.mother ? {_: {}
-                                                                                                                                                                                                                                                                                                                           ,id: typeof v.mother.id === "number" && isFinite(v.mother.id) && Math.floor(v.mother.id) === v.mother.id ? v.mother.id : _U.badPort("an integer",
-                                                                                                                                                                                                                                                                                                                           v.mother.id)
-                                                                                                                                                                                                                                                                                                                           ,name: typeof v.mother.name === "string" || typeof v.mother.name === "object" && v.mother.name instanceof String ? v.mother.name : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                           v.mother.name)
-                                                                                                                                                                                                                                                                                                                           ,years: typeof v.mother.years === "string" || typeof v.mother.years === "object" && v.mother.years instanceof String ? v.mother.years : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                           v.mother.years)
-                                                                                                                                                                                                                                                                                                                           ,pictures: typeof v.mother.pictures === "object" && v.mother.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.mother.pictures.map(function (v) {
-                                                                                                                                                                                                                                                                                                                              return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                              v);
-                                                                                                                                                                                                                                                                                                                           })) : _U.badPort("an array",
-                                                                                                                                                                                                                                                                                                                           v.mother.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
-                                                                                                           v.mother))
-                                                                                                           ,families: typeof v.families === "object" && v.families instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.families.map(function (v) {
-                                                                                                              return typeof v === "object" && "partner" in v && "children" in v ? {_: {}
-                                                                                                                                                                                  ,partner: v.partner === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v.partner === "object" && "id" in v.partner && "name" in v.partner && "years" in v.partner && "pictures" in v.partner ? {_: {}
-                                                                                                                                                                                                                                                                                                                                                                                                         ,id: typeof v.partner.id === "number" && isFinite(v.partner.id) && Math.floor(v.partner.id) === v.partner.id ? v.partner.id : _U.badPort("an integer",
-                                                                                                                                                                                                                                                                                                                                                                                                         v.partner.id)
-                                                                                                                                                                                                                                                                                                                                                                                                         ,name: typeof v.partner.name === "string" || typeof v.partner.name === "object" && v.partner.name instanceof String ? v.partner.name : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                                                                                                         v.partner.name)
-                                                                                                                                                                                                                                                                                                                                                                                                         ,years: typeof v.partner.years === "string" || typeof v.partner.years === "object" && v.partner.years instanceof String ? v.partner.years : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                                                                                                         v.partner.years)
-                                                                                                                                                                                                                                                                                                                                                                                                         ,pictures: typeof v.partner.pictures === "object" && v.partner.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.partner.pictures.map(function (v) {
-                                                                                                                                                                                                                                                                                                                                                                                                            return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                                                                                                                                            v);
-                                                                                                                                                                                                                                                                                                                                                                                                         })) : _U.badPort("an array",
-                                                                                                                                                                                                                                                                                                                                                                                                         v.partner.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
-                                                                                                                                                                                  v.partner))
-                                                                                                                                                                                  ,children: typeof v.children === "object" && v.children instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.children.map(function (v) {
-                                                                                                                                                                                     return typeof v === "object" && "id" in v && "name" in v && "years" in v && "pictures" in v ? {_: {}
-                                                                                                                                                                                                                                                                                   ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
-                                                                                                                                                                                                                                                                                   v.id)
-                                                                                                                                                                                                                                                                                   ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                   v.name)
-                                                                                                                                                                                                                                                                                   ,years: typeof v.years === "string" || typeof v.years === "object" && v.years instanceof String ? v.years : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                   v.years)
-                                                                                                                                                                                                                                                                                   ,pictures: typeof v.pictures === "object" && v.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.pictures.map(function (v) {
-                                                                                                                                                                                                                                                                                      return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-                                                                                                                                                                                                                                                                                      v);
-                                                                                                                                                                                                                                                                                   })) : _U.badPort("an array",
-                                                                                                                                                                                                                                                                                   v.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
-                                                                                                                                                                                     v);
-                                                                                                                                                                                  })) : _U.badPort("an array",
-                                                                                                                                                                                  v.children)} : _U.badPort("an object with fields `partner`, `children`",
-                                                                                                              v);
-                                                                                                           })) : _U.badPort("an array",
-                                                                                                           v.families)} : _U.badPort("an object with fields `person`, `father`, `mother`, `families`",
+      return typeof v === "object" && "person" in v && "father" in v && "mother" in v && "families" in v && "younger_siblings" in v && "older_siblings" in v ? {_: {}
+                                                                                                                                                               ,person: typeof v.person === "object" && "id" in v.person && "name" in v.person && "years" in v.person && "pictures" in v.person ? {_: {}
+                                                                                                                                                                                                                                                                                                  ,id: typeof v.person.id === "number" && isFinite(v.person.id) && Math.floor(v.person.id) === v.person.id ? v.person.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                  v.person.id)
+                                                                                                                                                                                                                                                                                                  ,name: typeof v.person.name === "string" || typeof v.person.name === "object" && v.person.name instanceof String ? v.person.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.person.name)
+                                                                                                                                                                                                                                                                                                  ,years: typeof v.person.years === "string" || typeof v.person.years === "object" && v.person.years instanceof String ? v.person.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.person.years)
+                                                                                                                                                                                                                                                                                                  ,pictures: typeof v.person.pictures === "object" && v.person.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.person.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                                                     return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                     v);
+                                                                                                                                                                                                                                                                                                  })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                  v.person.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                               v.person)
+                                                                                                                                                               ,father: typeof v.father === "object" && "id" in v.father && "name" in v.father && "years" in v.father && "pictures" in v.father ? {_: {}
+                                                                                                                                                                                                                                                                                                  ,id: typeof v.father.id === "number" && isFinite(v.father.id) && Math.floor(v.father.id) === v.father.id ? v.father.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                  v.father.id)
+                                                                                                                                                                                                                                                                                                  ,name: typeof v.father.name === "string" || typeof v.father.name === "object" && v.father.name instanceof String ? v.father.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.father.name)
+                                                                                                                                                                                                                                                                                                  ,years: typeof v.father.years === "string" || typeof v.father.years === "object" && v.father.years instanceof String ? v.father.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.father.years)
+                                                                                                                                                                                                                                                                                                  ,pictures: typeof v.father.pictures === "object" && v.father.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.father.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                                                     return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                     v);
+                                                                                                                                                                                                                                                                                                  })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                  v.father.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                               v.father)
+                                                                                                                                                               ,mother: typeof v.mother === "object" && "id" in v.mother && "name" in v.mother && "years" in v.mother && "pictures" in v.mother ? {_: {}
+                                                                                                                                                                                                                                                                                                  ,id: typeof v.mother.id === "number" && isFinite(v.mother.id) && Math.floor(v.mother.id) === v.mother.id ? v.mother.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                  v.mother.id)
+                                                                                                                                                                                                                                                                                                  ,name: typeof v.mother.name === "string" || typeof v.mother.name === "object" && v.mother.name instanceof String ? v.mother.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.mother.name)
+                                                                                                                                                                                                                                                                                                  ,years: typeof v.mother.years === "string" || typeof v.mother.years === "object" && v.mother.years instanceof String ? v.mother.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                  v.mother.years)
+                                                                                                                                                                                                                                                                                                  ,pictures: typeof v.mother.pictures === "object" && v.mother.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.mother.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                                                     return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                     v);
+                                                                                                                                                                                                                                                                                                  })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                  v.mother.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                               v.mother)
+                                                                                                                                                               ,families: typeof v.families === "object" && v.families instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.families.map(function (v) {
+                                                                                                                                                                  return typeof v === "object" && "partner" in v && "children" in v ? {_: {}
+                                                                                                                                                                                                                                      ,partner: typeof v.partner === "object" && "id" in v.partner && "name" in v.partner && "years" in v.partner && "pictures" in v.partner ? {_: {}
+                                                                                                                                                                                                                                                                                                                                                                               ,id: typeof v.partner.id === "number" && isFinite(v.partner.id) && Math.floor(v.partner.id) === v.partner.id ? v.partner.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                               v.partner.id)
+                                                                                                                                                                                                                                                                                                                                                                               ,name: typeof v.partner.name === "string" || typeof v.partner.name === "object" && v.partner.name instanceof String ? v.partner.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                                                               v.partner.name)
+                                                                                                                                                                                                                                                                                                                                                                               ,years: typeof v.partner.years === "string" || typeof v.partner.years === "object" && v.partner.years instanceof String ? v.partner.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                                                               v.partner.years)
+                                                                                                                                                                                                                                                                                                                                                                               ,pictures: typeof v.partner.pictures === "object" && v.partner.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.partner.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                                                                                                                                  return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                                                                  v);
+                                                                                                                                                                                                                                                                                                                                                                               })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                                                                                               v.partner.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                                                                                                      v.partner)
+                                                                                                                                                                                                                                      ,children: typeof v.children === "object" && v.children instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.children.map(function (v) {
+                                                                                                                                                                                                                                         return typeof v === "object" && "id" in v && "name" in v && "years" in v && "pictures" in v ? {_: {}
+                                                                                                                                                                                                                                                                                                                                       ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                       v.id)
+                                                                                                                                                                                                                                                                                                                                       ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                       v.name)
+                                                                                                                                                                                                                                                                                                                                       ,years: typeof v.years === "string" || typeof v.years === "object" && v.years instanceof String ? v.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                       v.years)
+                                                                                                                                                                                                                                                                                                                                       ,pictures: typeof v.pictures === "object" && v.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                                                                                          return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                          v);
+                                                                                                                                                                                                                                                                                                                                       })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                                                       v.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                                                                                                         v);
+                                                                                                                                                                                                                                      })) : _U.badPort("an array",
+                                                                                                                                                                                                                                      v.children)} : _U.badPort("an object with fields `partner`, `children`",
+                                                                                                                                                                  v);
+                                                                                                                                                               })) : _U.badPort("an array",
+                                                                                                                                                               v.families)
+                                                                                                                                                               ,younger_siblings: typeof v.younger_siblings === "object" && v.younger_siblings instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.younger_siblings.map(function (v) {
+                                                                                                                                                                  return typeof v === "object" && "id" in v && "name" in v && "years" in v && "pictures" in v ? {_: {}
+                                                                                                                                                                                                                                                                ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                v.id)
+                                                                                                                                                                                                                                                                ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                v.name)
+                                                                                                                                                                                                                                                                ,years: typeof v.years === "string" || typeof v.years === "object" && v.years instanceof String ? v.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                v.years)
+                                                                                                                                                                                                                                                                ,pictures: typeof v.pictures === "object" && v.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                   return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                   v);
+                                                                                                                                                                                                                                                                })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                v.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                                  v);
+                                                                                                                                                               })) : _U.badPort("an array",
+                                                                                                                                                               v.younger_siblings)
+                                                                                                                                                               ,older_siblings: typeof v.older_siblings === "object" && v.older_siblings instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.older_siblings.map(function (v) {
+                                                                                                                                                                  return typeof v === "object" && "id" in v && "name" in v && "years" in v && "pictures" in v ? {_: {}
+                                                                                                                                                                                                                                                                ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                v.id)
+                                                                                                                                                                                                                                                                ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                v.name)
+                                                                                                                                                                                                                                                                ,years: typeof v.years === "string" || typeof v.years === "object" && v.years instanceof String ? v.years : _U.badPort("a string",
+                                                                                                                                                                                                                                                                v.years)
+                                                                                                                                                                                                                                                                ,pictures: typeof v.pictures === "object" && v.pictures instanceof Array ? Elm.Native.Array.make(_elm).fromJSArray(v.pictures.map(function (v) {
+                                                                                                                                                                                                                                                                   return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                                                                                                                                                   v);
+                                                                                                                                                                                                                                                                })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                v.pictures)} : _U.badPort("an object with fields `id`, `name`, `years`, `pictures`",
+                                                                                                                                                                  v);
+                                                                                                                                                               })) : _U.badPort("an array",
+                                                                                                                                                               v.older_siblings)} : _U.badPort("an object with fields `person`, `father`, `mother`, `families`, `younger_siblings`, `older_siblings`",
       v);
    });
    var pictureClock = $Time.every($Config.changePictures * $Time.second);
@@ -9809,12 +9880,9 @@ Elm.Main.make = function (_elm) {
                                            pictureClock)]));
    var NoOp = {ctor: "NoOp"};
    var view = function (model) {
+      var shiftY = $Config.adjustY;
       var focus = model.focus;
-      var focusBox = A4($Box.box2,
-      true,
-      {ctor: "_Tuple2",_0: -1,_1: 0},
-      model.picture,
-      focus.person);
+      var focusBox = A3($Box.box2,true,model.picture,focus.person);
       var parentsBox = A4($Box.parents,
       $Box.top(focusBox),
       model.picture,
@@ -9826,71 +9894,81 @@ Elm.Main.make = function (_elm) {
          if (_p1.ctor === "Nothing") {
                return $Box.emptyBox;
             } else {
-               var _p3 = _p1._0;
+               var _p2 = _p1._0;
                var bot = $Basics.snd($Box.bottom(focusBox));
-               var handle = function () {
-                  var _p2 = _p3.partner;
-                  if (_p2.ctor === "Nothing") {
-                        return $Box.bottom(focusBox);
-                     } else {
-                        return A2($Point.moveX,
-                        $Basics.toFloat($Config.margin.x),
-                        $Box.right(focusBox));
-                     }
-               }();
-               return $Array.isEmpty(_p3.children) ? $Box.emptyBox : A4($Box.children,
+               var handle = A2($Point.moveX,
+               $Basics.toFloat($Config.margin.x),
+               $Box.right(focusBox));
+               return $Array.isEmpty(_p2.children) ? $Box.emptyBox : A4($Box.children,
                handle,
                bot,
                model.picture,
-               _p3.children);
+               _p2.children);
             }
       }();
       var partnerBox = function () {
-         var _p4 = family;
-         if (_p4.ctor === "Nothing") {
+         var _p3 = family;
+         if (_p3.ctor === "Nothing") {
                return $Box.emptyBox;
             } else {
-               var _p5 = _p4._0.partner;
-               if (_p5.ctor === "Nothing") {
-                     return $Box.emptyBox;
-                  } else {
-                     return A4($Box.partner,
-                     $Box.right(focusBox),
-                     {ctor: "_Tuple2"
-                     ,_0: model.family
-                     ,_1: $Array.length(focus.families)},
-                     model.picture,
-                     _p5._0);
-                  }
+               return A4($Box.partner,
+               $Box.right(focusBox),
+               {ctor: "_Tuple2"
+               ,_0: model.family
+               ,_1: $Array.length(focus.families)},
+               model.picture,
+               _p3._0.partner);
             }
       }();
-      var adjust = _U.cmp(partnerBox.w,
+      var adjustX = _U.cmp(partnerBox.w,
       0) > 0 ? $Basics.round($Basics.fst(A2($Point.average,
       $Box.right(focusBox),
       $Box.left(partnerBox)))) : 0;
-      var shift = $Basics.toFloat(model.shift - adjust);
-      var leftMost = $Box.leftMost(_U.list([focusBox
-                                           ,partnerBox
-                                           ,childrenBox]));
+      var shiftX = $Basics.toFloat(model.shift - adjustX);
+      var youngSibsBox = function () {
+         if ($Array.isEmpty(focus.younger_siblings))
+         return $Box.emptyBox; else {
+               var rightEdge = A2($Maybe.withDefault,
+               0,
+               $List.maximum(A2($List.map,
+               $Basics.fst,
+               A2($List.map,$Box.right,_U.list([focusBox,partnerBox])))));
+               return A3($Box.siblings,
+               rightEdge,
+               model.picture,
+               focus.younger_siblings);
+            }
+      }();
+      var oldSibsBox = function () {
+         if ($Array.isEmpty(focus.older_siblings))
+         return $Box.emptyBox; else {
+               var leftEdge = $Basics.fst($Box.left(focusBox));
+               return A3($Box.siblings,
+               leftEdge,
+               model.picture,
+               focus.older_siblings);
+            }
+      }();
+      var boxes = _U.list([focusBox
+                          ,parentsBox
+                          ,partnerBox
+                          ,childrenBox
+                          ,youngSibsBox
+                          ,oldSibsBox]);
+      var leftMost = $Box.leftMost(boxes);
       var leftOverflow = A5($Box.overflow,
       true,
       model.width,
       model.height,
-      model.shift - adjust,
+      model.shift - adjustX,
       leftMost);
-      var rightMost = $Box.rightMost(_U.list([focusBox
-                                             ,partnerBox
-                                             ,childrenBox]));
+      var rightMost = $Box.rightMost(boxes);
       var rightOverflow = A5($Box.overflow,
       false,
       model.width,
       model.height,
-      model.shift - adjust,
+      model.shift - adjustX,
       rightMost);
-      var boxes = _U.list([focusBox
-                          ,parentsBox
-                          ,partnerBox
-                          ,childrenBox]);
       var unshiftedForms = A2($List.append,
       $List.concat(A2($List.map,
       function (_) {
@@ -9903,7 +9981,7 @@ Elm.Main.make = function (_elm) {
       },
       boxes)));
       var shiftedForms = A2($List.map,
-      $Graphics$Collage.move({ctor: "_Tuple2",_0: shift,_1: 0}),
+      $Graphics$Collage.move({ctor: "_Tuple2",_0: shiftX,_1: shiftY}),
       unshiftedForms);
       var forms = A2($List.append,
       shiftedForms,
@@ -9912,8 +9990,8 @@ Elm.Main.make = function (_elm) {
       $Config.bgColor,
       A3($Graphics$Collage.collage,model.width,model.height,forms));
    };
-   var init = {width: 500
-              ,height: 4 * $Config.level
+   var init = {width: $Config.initialWidth
+              ,height: $Config.initialHeight
               ,focus: $Family.blur
               ,family: 0
               ,picture: 0

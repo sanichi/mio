@@ -2,9 +2,9 @@ module Box where
 
 import Array
 import Config exposing
-  ( boxBgColor, lineColor
-  , border, deltaShift, level, margin, padding, thumbSize
-  , largeStyle, smallStyle, textStyle
+  ( boxBgColor, focusBgColor, lineColor
+  , border, deltaShift, levelHeight, margin, padding, thumbSize
+  , focusStyle, largeStyle, smallFocusStyle, smallStyle, textStyle
   , family, focus, shifts
   )
 import Family exposing (Person, People)
@@ -75,48 +75,44 @@ move (dx, dy) box =
 
 -- MAPPINGS
 
-box : (Float, Float) -> Int -> Person -> Box
-box delta picture person =
-  box2 False delta picture person
+box : Int -> Person -> Box
+box picture person =
+  box2 False picture person
 
-box2 : Bool -> (Float, Float) -> Int -> Person -> Box
-box2 isFocus (dx, dy) picture person =
+box2 : Bool -> Int -> Person -> Box
+box2 isFocus picture person =
   let
     m = Signal.message focus.address person.id
 
-    t = Text.fromString person.name |> Text.style textStyle
-    t' = if isFocus then Text.bold t else t
+    t = Text.fromString person.name |> Text.style (if isFocus then focusStyle else textStyle)
+    y = Text.fromString person.years |> Text.style (if isFocus then smallFocusStyle else smallStyle)
 
-    y = Text.fromString person.years |> Text.style smallStyle
-    y' = if isFocus then Text.bold y else y
-
-    e = Text.join (Text.fromString "\n") [t', y'] |> Element.centered
+    e = Text.join (Text.fromString "\n") [t, y] |> Element.centered
     w = Element.widthOf e
     h = Element.heightOf e
 
     w' = 2 * (ceiling ((toFloat w) / 2.0) + padding.x) |> max thumbSize
     h' = 2 * (ceiling ((toFloat h) / 2.0) + padding.y)
-    e' = Element.container w' h' Element.middle e |> Element.color boxBgColor |> Input.clickable m
+    bg = if isFocus then focusBgColor else boxBgColor
+    clickable = if person.id == 0 then identity else Input.clickable m
+    e' = Element.container w' h' Element.middle e |> Element.color bg |> clickable
 
-    b = if isFocus then 1 else 0
-
-    w'' = w' + 2 * (border + b)
-    h'' = h' + 2 * (border + b)
+    w'' = w' + 2 * border
+    h'' = h' + 2 * border
     e'' = Element.container w'' h'' Element.middle e' |> Element.color lineColor
 
     w''' = w'' + 2 * margin.x
     h''' = h'' + 2 * margin.y
     e''' = Element.container w''' h''' Element.middle e'' |> Graphic.toForm
 
-    p = Element.image thumbSize thumbSize (Family.picturePath picture person) |> Input.clickable m
+    p = Element.image thumbSize thumbSize (Family.picturePath picture person) |> clickable
 
-    px = dx * 0.5 * toFloat (w''' + thumbSize)
-    py = dy * 0.5 * toFloat (h''' + thumbSize)
+    px = 0.0
+    py = -0.5 * toFloat (h''' + thumbSize)
     p' = Graphic.toForm p |> Graphic.move (px, py)
 
     lm = min ((round px) - thumbSize // 2) (-w''' // 2)
     rm = max ((round px) + thumbSize // 2) (w''' // 2)
-
   in
     { forms = [ e''', p' ]
     , lines = [ ]
@@ -128,32 +124,22 @@ box2 isFocus (dx, dy) picture person =
     , rightMost = rm
     }
 
-parents : (Float, Float) -> Int -> Maybe Person -> Maybe Person -> Box
+parents : (Float, Float) -> Int -> Person -> Person -> Box
 parents (x, y) picture father mother =
   let
-    b =
-      case (father, mother) of
-        (Nothing, Nothing) -> emptyBox
-        (Just f, Nothing)  -> box (0, 1) picture f
-        (Nothing, Just m)  -> box (0, 1) picture m
-        (Just f, Just m)   -> couple picture f m
-    t =
-      move (0, (toFloat level)) b
-    l =
-      case (father, mother) of
-        (Nothing, Nothing) -> emptyForm
-        (Just m, Just f)   -> line (middle t) (x, y)
-        _                  -> line (bottom t) (x, y)
+    b = couple picture father mother
+    t = move (0, (toFloat levelHeight)) b
+    l = line (middle t) (x, y)
   in
-     { t
-     | forms = t.forms
-     , lines = l :: t.lines
-     }
+    { t
+    | forms = t.forms
+    , lines = l :: t.lines
+    }
 
 partner : Point -> (Int, Int) -> Int -> Person -> Box
 partner (x, y) (index, families) picture partner =
   let
-    b = box (1, 0) picture partner
+    b = box picture partner
     t = familyToggler index families
     t' = move (x + toFloat (margin.x + t.w // 2), 0) t
     d = toFloat (margin.x + (b.w // 2) + (if t.w > 0 then t.w - margin.x else 0))
@@ -175,14 +161,14 @@ partner (x, y) (index, families) picture partner =
 children : Point -> Float -> Int -> People -> Box
 children (x, y) h picture people =
   let
-    bx1 = Array.map (box (0, -1) picture) people
+    bx1 = Array.map (box picture) people
     wds = Array.map (\b -> b.w) bx1
     wid = Array.foldl (\w t -> w + t) 0 wds
     mds = Array.indexedMap (\i w -> (w - wid) // 2 + (Array.foldl (\w t -> w + t) 0 (Array.slice 0 i wds))) wds
-    bx2 = Array.indexedMap (\i b -> move (x + toFloat (Maybe.withDefault 0 (Array.get i mds)), toFloat -level) b) bx1
+    bx2 = Array.indexedMap (\i b -> move (x + toFloat (Maybe.withDefault 0 (Array.get i mds)), toFloat -levelHeight) b) bx1
     b1 = Array.get 0 bx2 |> Maybe.withDefault emptyBox
     b2 = Array.get ((Array.length bx2) - 1) bx2 |> Maybe.withDefault emptyBox
-    ym = Point.average (x, h) (top b1) |> snd
+    ym = snd (top b1) + toFloat margin.y
     ls = Array.map (\m -> line (top m) (m.x, ym)) bx2 |> Array.toList
     l1 = line (x, y) (x, ym)
     l2 = line (b1.x, ym) (b2.x, ym)
@@ -197,11 +183,36 @@ children (x, y) h picture people =
     , rightMost = (round b2.x) + (b2.w // 2)
     }
 
+siblings : Float -> Int -> People -> Box
+siblings edge picture people =
+  let
+    bx1 = Array.map (box picture) people
+    wds = Array.map (\b -> b.w) bx1
+    wid = Array.foldl (\w t -> w + t) 0 wds
+    mds = Array.indexedMap (\i w -> w // 2 + (Array.foldl (\w t -> w + t) 0 (Array.slice 0 i wds))) wds
+    start = edge - toFloat (if edge < 0 then wid else 0)
+    bx2 = Array.indexedMap (\i b -> move (start + toFloat (Maybe.withDefault 0 (Array.get i mds)), 0) b) bx1
+    b1 = Array.get 0 bx2 |> Maybe.withDefault emptyBox
+    b2 = Array.get ((Array.length bx2) - 1) bx2 |> Maybe.withDefault emptyBox
+    ym = snd (top b1) + toFloat margin.y
+    ls = Array.map (\m -> line (top m) (m.x, ym)) bx2 |> Array.toList
+    l2 = line (if edge < 0 then b1.x else b2.x, ym) (0, ym)
+  in
+    { forms = Array.map (\b -> b.forms) bx2 |> Array.toList |> List.concat
+    , lines = l2 :: ls
+    , w = Array.foldl (\b l -> b.w + l) 0 bx2
+    , h = b1.h
+    , x = (b1.x + b2.x) / 2.0
+    , y = b1.y
+    , leftMost = (round b1.x) - (b1.w // 2)
+    , rightMost = (round b2.x) + (b2.w // 2)
+    }
+
 couple : Int -> Person -> Person -> Box
 couple picture p1 p2 =
   let
-    b1 = box (0, 1) picture p1
-    b2 = box (0, 1) picture p2
+    b1 = box picture p1
+    b2 = box picture p2
     m1 = move (toFloat(-b1.w // 2), 0) b1
     m2 = move (toFloat( b2.w // 2), 0) b2
     hb = line (right m1) (left m2)

@@ -33,7 +33,7 @@ type alias People =
   Array Person
 
 type alias Family =
-  { partner : Maybe Person
+  { partner : Person
   , children : People
   }
 
@@ -42,15 +42,19 @@ type alias Families =
 
 type alias Focus =
   { person : Person
-  , father : Maybe Person
-  , mother : Maybe Person
+  , father : Person
+  , mother : Person
   , families : Families
+  , younger_siblings : People
+  , older_siblings : People
   }
 
 blur : Focus
 blur =
   { person = nobody
-  , father = Nothing
-  , mother = Nothing
+  , father = nobody
+  , mother = nobody
   , families = Array.empty
+  , younger_siblings = Array.empty
+  , older_siblings = Array.empty
   }

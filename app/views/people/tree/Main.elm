@@ -1,7 +1,7 @@
 import Array
 import Box exposing (Box)
 import Color
-import Config exposing (bgColor, changePictures, family, level, margin, focus, shifts)
+import Config exposing (bgColor, changePictures, family, margin, focus, shifts)
 import Dict exposing (Dict)
 import Family exposing (Person, People, Focus, Family)
 import Graphics.Collage as Graphic exposing (Form)
@@ -25,8 +25,8 @@ type alias Model =
 
 init : Model
 init =
-  { width = 500
-  , height = 4 * level
+  { width = Config.initialWidth
+  , height = Config.initialHeight
   , focus = Family.blur
   , family = 0
   , picture = 0
@@ -39,43 +39,54 @@ view : Model -> Element
 view model =
   let
     focus = model.focus
-    focusBox = Box.box2 True (-1, 0) model.picture focus.person
+    focusBox = Box.box2 True model.picture focus.person
     parentsBox = Box.parents (Box.top focusBox) model.picture focus.father focus.mother
     family = Array.get model.family focus.families
     partnerBox =
       case family of
         Nothing -> Box.emptyBox
-        Just f ->
-          case f.partner of
-            Nothing -> Box.emptyBox
-            Just p -> Box.partner (Box.right focusBox) (model.family, Array.length focus.families) model.picture p
+        Just f -> Box.partner (Box.right focusBox) (model.family, Array.length focus.families) model.picture f.partner
     childrenBox =
       case family of
         Nothing -> Box.emptyBox
         Just f ->
           let
-            handle =
-              case f.partner of
-                Nothing -> Box.bottom focusBox
-                Just p -> Box.right focusBox |> Point.moveX (toFloat margin.x)
+            handle = Box.right focusBox |> Point.moveX (toFloat margin.x)
             bot = Box.bottom focusBox |> snd
           in
             if Array.isEmpty f.children then Box.emptyBox else Box.children handle bot model.picture f.children
-    adjust =
+    youngSibsBox =
+      if Array.isEmpty focus.younger_siblings
+        then Box.emptyBox
+        else
+          let
+            rightEdge = [focusBox, partnerBox] |> List.map Box.right |> List.map fst |> List.maximum |> Maybe.withDefault 0
+          in
+            Box.siblings rightEdge model.picture focus.younger_siblings
+    oldSibsBox =
+      if Array.isEmpty focus.older_siblings
+        then Box.emptyBox
+        else
+          let
+            leftEdge = fst (Box.left focusBox)
+          in
+            Box.siblings leftEdge model.picture focus.older_siblings
+    adjustX =
       if partnerBox.w > 0
         then Point.average (Box.right focusBox) (Box.left partnerBox) |> fst |> round
         else 0
-    leftMost = Box.leftMost [focusBox, partnerBox, childrenBox]
-    rightMost = Box.rightMost [focusBox, partnerBox, childrenBox]
-    leftOverflow = Box.overflow True model.width model.height (model.shift - adjust) leftMost
-    rightOverflow = Box.overflow False model.width model.height (model.shift - adjust) rightMost
-    boxes = [ focusBox, parentsBox, partnerBox, childrenBox ]
+    boxes = [ focusBox, parentsBox, partnerBox, childrenBox, youngSibsBox, oldSibsBox ]
+    leftMost = Box.leftMost boxes
+    rightMost = Box.rightMost boxes
+    leftOverflow = Box.overflow True model.width model.height (model.shift - adjustX) leftMost
+    rightOverflow = Box.overflow False model.width model.height (model.shift - adjustX) rightMost
     unshiftedForms =
       List.append
         (boxes |> List.map .lines |> List.concat) -- lines must be first, otherwise
         (boxes |> List.map .forms |> List.concat) -- onclicks don't work (Elm bug)
-    shift = toFloat (model.shift - adjust)
-    shiftedForms = List.map (Graphic.move (shift, 0)) unshiftedForms
+    shiftX = toFloat (model.shift - adjustX)
+    shiftY = Config.adjustY
+    shiftedForms = List.map (Graphic.move (shiftX, shiftY)) unshiftedForms
     forms = List.append shiftedForms [leftOverflow, rightOverflow]
   in
     Graphic.collage model.width model.height forms |> Element.color bgColor

@@ -136,8 +136,8 @@ class Person < ActiveRecord::Base
     h = Hash.new
     if focus
       h[:person] = tree_hash
-      h[:father] = father.try(:tree_hash)
-      h[:mother] = mother.try(:tree_hash)
+      h[:father] = father.try(:tree_hash) || dummy_person(true)
+      h[:mother] = mother.try(:tree_hash) || dummy_person(false)
       h[:families] = tree_families
       h[:younger_siblings] = siblings(full: true, younger: true).map(&:tree_hash)
       h[:older_siblings] = siblings(full: true, older: true).map(&:tree_hash)
@@ -232,7 +232,7 @@ class Person < ActiveRecord::Base
     hash.each_key.sort{ |a,b| order[a] <=> order[b] }.each_with_object([]) do |partner, array|
       children = hash[partner]
       family = Hash.new
-      family[:partner] = partner.try(:tree_hash)
+      family[:partner] = partner.try(:tree_hash) || dummy_person(!male)
       family[:children] = children.sort_by(&:born).map(&:tree_hash)
       array.push family
     end
@@ -244,7 +244,20 @@ class Person < ActiveRecord::Base
 
   def portrait_paths
     paths = pictures.where(portrait: true).map { |p| p.image.url(:tn) }
-    paths.push "/images/blank_#{male ? '' : 'wo'}man.png" if paths.empty?
+    paths.push dummy_portrait_path(male) if paths.empty?
     paths
+  end
+
+  def dummy_portrait_path(gender)
+    "/images/blank_#{gender ? '' : 'wo'}man.png"
+  end
+
+  def dummy_person(gender)
+    h = Hash.new
+    h[:id] = 0
+    h[:name] = "?"
+    h[:years] = "?"
+    h[:pictures] = Array(dummy_portrait_path(gender))
+    h
   end
 end

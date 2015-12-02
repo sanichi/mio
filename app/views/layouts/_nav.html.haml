@@ -36,14 +36,14 @@
             = t("family")
             %b.caret
           %ul.dropdown-menu
+            - if can?(:tree, Person)
+              %li= link_to t("person.tree"), tree_people_path
             - if can?(:read, Person)
               %li= link_to t("person.people"), people_path
             - if can?(:read, Picture)
               %li= link_to t("picture.pictures"), pictures_path
             - if can?(:read, Partnership)
               %li= link_to t("partnership.partnerships"), partnerships_path
-            - if can?(:tree, Person)
-              %li= link_to t("person.tree"), tree_people_path
             - if can?(:checks, Person)
               %li= link_to t("person.checks.title"), checks_people_path
             - if can?(:read, HistoricalEvent)
