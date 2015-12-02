@@ -3,11 +3,10 @@
 
 .panel{class: "panel-#{blog.draft ? 'warning' : 'default'}"}
   .panel-heading
-    = blog.created_at.strftime(date_format)
-    = t("separator")
     %b= link_to_if index, blog.title, blog
-    - if index && can?(:edit, blog)
-      .pull-right
+    .pull-right
+      %small= blog.created_at.strftime(date_format)
+      - if index && can?(:edit, blog)
         = link_to t("edit"), edit_blog_path(blog), class: "btn btn-info btn-xs"
   .panel-body
     ~ blog.story_html(short: index)
