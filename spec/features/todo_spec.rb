@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Todo do
-  include_context "test_data"
-
   let(:data) { build(:todo) }
 
   before(:each) do

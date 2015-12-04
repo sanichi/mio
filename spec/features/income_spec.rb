@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Income do
-  include_context "test_data"
-
   let(:data)     { build(:income) }
   let(:category) { I18n.t("income.category.#{data.category}") }
   let(:period)   { I18n.t("income.period.#{data.period}") }

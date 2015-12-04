@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Expense do
-  include_context "test_data"
-
   let(:data)     { build(:expense) }
   let(:category) { I18n.t("expense.category.#{data.category}") }
   let(:period)   { I18n.t("expense.period.#{data.period}") }
@@ -49,7 +47,7 @@ describe Expense do
       expect(Expense.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
-    
+
     it "invalid amount" do
       click_link t(:expense_new)
       fill_in t(:description), with: data.description

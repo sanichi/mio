@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe User do
-  include_context "test_data"
-
   let(:atrs) { attributes_for(:user) }
   let(:data) { build(:user) }
   let(:role) { I18n.t("user.roles.#{data.role}") }
@@ -65,7 +63,7 @@ describe User do
     it "password" do
       visit user_path(user)
       click_link t(:edit)
-      
+
       new_password = user.password.reverse
 
       expect(page).to have_title t(:user_edit)

@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe HistoricalEvent do
-  include_context "test_data"
-
   let(:data) { build(:historical_event) }
 
   before(:each) do

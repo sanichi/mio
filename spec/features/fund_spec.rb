@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Fund do
-  include_context "test_data"
-
   let(:data)     { build(:fund) }
   let(:attrs)    { attributes_for(:fund) }
   let(:category) { I18n.t("fund.category.#{data.category}") }

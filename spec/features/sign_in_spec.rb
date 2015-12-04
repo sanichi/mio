@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe "Authentication" do
-  include_context "test_data"
-
   let(:user) { create(:user) }
 
   context "sign in" do

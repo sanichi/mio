@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Person do
-  include_context "test_data"
-
   let(:data) { build(:blog) }
 
   before(:each) do

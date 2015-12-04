@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Mass do
-  include_context "test_data"
-
   before(:each) do
     login
     visit masses_path

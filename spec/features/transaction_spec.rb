@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Transaction do
-  include_context "test_data"
-
   before(:each) do
     login
     visit new_upload_path

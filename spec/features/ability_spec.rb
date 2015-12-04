@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Ability do
-  include_context "test_data"
-
   let(:title) { "//h1[.='%s']" }
   let(:table) { "//table/tbody/tr[td[.='%s'] and td[.='%s'] and td[.='%s']]" }
 

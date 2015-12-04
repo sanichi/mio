@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Partnership do
-  include_context "test_data"
-
   let(:atrs) { attributes_for(:partnership) }
   let(:data) { build(:partnership) }
 

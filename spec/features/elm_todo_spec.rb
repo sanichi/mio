@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe "Todo Elm" do
-  include_context "test_data"
-
   before(:each) do
     @todo = [1, 2, 3].each_with_index.map do |p, i|
       create(:todo, description: "Todo #{5-i}", priority: p, done: false)

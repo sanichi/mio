@@ -47,3 +47,7 @@ end
 def t(key, *arg)
   I18n.t(key.to_s.gsub("_", ".").gsub("..", "_"), *arg)
 end
+
+def error
+  "div.help-block"
+end

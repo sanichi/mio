@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Person do
-  include_context "test_data"
-
   let(:data)    { build(:person) }
   let!(:father) { create(:person, male: true, born: data.born - 26) }
   let!(:mother) { create(:person, male: false, born: data.born - 24) }

@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Picture do
-  include_context "test_data"
-
   let(:data)     { build(:picture) }
   let!(:person1) { create(:person) }
   let!(:person2) { create(:person) }
