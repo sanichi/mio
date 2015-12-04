@@ -98,4 +98,13 @@ class PeopleChecks
   def partners_guessed_year_divorce
     Partnership.order(:wedding).where.not(divorce: nil).where(divorce_guess: true).all
   end
+
+  def pictures_with_no_people
+    Picture.pluck(:id) - PersonPicture.pluck(:picture_id).uniq.sort
+  end
+
+  def pictures_portraits_without_a_single_person
+    count = PersonPicture.group(:picture_id).count
+    Picture.where(portrait: true).pluck(:id).select{ |id| count[id] != 1 }.sort
+  end
 end

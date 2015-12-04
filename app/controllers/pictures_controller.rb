@@ -10,7 +10,7 @@ class PicturesController < ApplicationController
   def new
     person_id = params[:person_id].to_i
     person = Person.find_by(id: person_id) if person_id > 0
-    people = person ? [person] : []
+    people = [person].compact
     @picture = Picture.new(people: people)
   end
 

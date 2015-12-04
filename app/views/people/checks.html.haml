@@ -22,3 +22,12 @@
             %li
               = link_to p do
                 = "%s ● %s" % [p.husband.name(with_years: true, reversed: true), p.wife.name(with_years: true, reversed: true)]
+    - @checks.public_methods(false).select{|m| m.match(/\Apictures_/)}.each do |check|
+      %h4= t("person.checks.#{check}")
+      - picture_ids = @checks.send(check)
+      %ul
+        - if picture_ids.empty?
+          %li= t("none")
+        - else
+          - picture_ids.each do |id|
+            %li= link_to id, picture_path(id)

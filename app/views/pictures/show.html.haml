@@ -10,14 +10,14 @@
   - if @picture.portrait
     %div{title: t("picture.portrait")}= "☐"
 
-- people = @picture.people
+- people = @picture.people.by_last_name
 - unless people.empty?
   %p.top_margin
     = succeed(":") do
       = t("picture.in")
   %ul
     - people.each_with_index do |p, i|
-      %li= link_to p.name(with_years: true, with_married_name: true), tree_people_path(id: p.id)
+      %li= link_to p.name(reversed: true, with_years: true, with_married_name: true), tree_people_path(id: p.id)
 
 - if @picture.description.present?
   .panel.panel-default.top_margin
