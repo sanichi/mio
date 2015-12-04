@@ -27,12 +27,11 @@
     %li
       = succeed(":") do
         %strong= t("name")
-      Each picture is linked to one person (even if there is more than one person in the picture)
-      so you can search for pictures using one or more terms to match the first, last or "known as"
-      names of the associated people. Terms are case insensitive, don't have to be full names and
-      order is not important. For example, a fairly specific search might be:
+      You can search for pictures using one or more terms to match the first, last or "known as"
+      names of the people associated with each picture. Terms are case insensitive, don't have to
+      be full names and order is not important. For example, a fairly specific search might be:
       %em "john smith"
-      which would only find pictures linked with people who had names matching both those terms.
+      which would only find pictures linked to people who had names matching both those terms.
       In contrast, a less specific search example is:
       %em "jo sm"
       which would match pictures associated with John Smith but also Joe Smyth, Jo Dinsmore, and so on.
@@ -43,8 +42,11 @@
       such as place names, years or the names of people in the picture other than the main person
       linked to it (see above). Enter one or more case-insensitive terms (not necessarily full words)
       to match on. Only pictures with descriptions matching all terms will be in the results.
+      An example of a search term that works well with image descriptions is:
+      = succeed(".") do
+        %em "wedding"
     %li
       = succeed(":") do
         %strong= t("view")
-      To view the full size version of a picture with it's description just click on the
-      thumbnail (small version) below.
+      To view the full size version of any picture (along side it's description and a list of
+      people associated with it) just click on it.

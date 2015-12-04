@@ -1,4 +1,4 @@
-= render "utils/title", text: @picture.person.name(full: false)
+= render "utils/title", text: @picture.title
 
 = render "prev_next", picture: @picture
 
@@ -9,6 +9,15 @@
         = image_tag @picture.image.url(nm)
   - if @picture.portrait
     %div{title: t("picture.portrait")}= "☐"
+
+- people = @picture.people
+- unless people.empty?
+  %p.top_margin
+    = succeed(":") do
+      = t("picture.in")
+  %ul
+    - people.each_with_index do |p, i|
+      %li= link_to p.name(with_years: true, with_married_name: true), tree_people_path(id: p.id)
 
 - if @picture.description.present?
   .panel.panel-default.top_margin

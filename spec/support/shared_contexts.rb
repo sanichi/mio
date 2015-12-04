@@ -100,12 +100,6 @@ shared_context "test_data" do
   let(:person_notes)        { I18n.t("person.notes") }
   let(:person_person)       { I18n.t("person.person") }
 
-  let(:edit_picture)     { I18n.t("picture.edit") }
-  let(:new_picture)      { I18n.t("picture.new") }
-  let(:pictures)         { I18n.t("picture.pictures") }
-  let(:picture_file)     { I18n.t("picture.file") }
-  let(:picture_portrait) { I18n.t("picture.portrait") }
-
   let(:edit_partnership)          { I18n.t("partnership.edit") }
   let(:partnership_divorce)       { I18n.t("partnership.divorce") }
   let(:partnership_divorce_guess) { I18n.t("partnership.divorce_guess") }

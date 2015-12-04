@@ -1,9 +1,12 @@
 en:
   picture:
+    in: People in (or associated with) this picture
     edit: Edit Picture
     file: Image File
     new: New Picture
     original: Original
+    person: "Person %{number}"
     picture: Picture
     pictures: Pictures
     portrait: Portrait
+    title: "Picture %{id}"

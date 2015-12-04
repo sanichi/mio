@@ -15,6 +15,7 @@ class PicturesController < ApplicationController
 
   def create
     @picture = Picture.new(strong_params)
+    update_people
     if @picture.save
       redirect_to @picture
     else
@@ -23,6 +24,7 @@ class PicturesController < ApplicationController
   end
 
   def update
+    update_people
     if @picture.update(strong_params)
       redirect_to @picture
     else
@@ -32,16 +34,20 @@ class PicturesController < ApplicationController
 
   def destroy
     @picture.destroy
-    redirect_to @picture.person
+    redirect_to pictures_path
   end
 
   private
 
   def find_picture
-    @picture = Picture.find(params[:id])
+    @picture = Picture.includes(:people).find(params[:id])
   end
 
   def strong_params
-    params.require(:picture).permit(:description, :image, :person_id, :portrait)
+    params.require(:picture).permit(:description, :image, :portrait)
+  end
+
+  def update_people
+    @picture.update_people(params[:picture][:people])
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202200051) do
+ActiveRecord::Schema.define(version: 20151203091922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,14 @@ ActiveRecord::Schema.define(version: 20151202200051) do
     t.boolean  "born_guess",               default: false
     t.boolean  "died_guess",               default: false
   end
+
+  create_table "people_pictures", id: false, force: :cascade do |t|
+    t.integer "person_id",  null: false
+    t.integer "picture_id", null: false
+  end
+
+  add_index "people_pictures", ["person_id"], name: "index_people_pictures_on_person_id", using: :btree
+  add_index "people_pictures", ["picture_id"], name: "index_people_pictures_on_picture_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.string   "image_file_name"

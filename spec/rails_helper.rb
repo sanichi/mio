@@ -34,12 +34,16 @@ end
 def login(role="admin")
   user = create(:user, role: role)
   visit sign_in_path
-  click_link sign_in
-  fill_in email, with: user.email
-  fill_in password, with: user.password
-  click_button sign_in
+  click_link t(:session_sign__in)
+  fill_in t(:email), with: user.email
+  fill_in t(:session_password), with: user.password
+  click_button t(:session_sign__in)
 end
 
 def wait_a_while(delay=0.3)
   sleep(delay)
+end
+
+def t(key, *arg)
+  I18n.t(key.to_s.gsub("_", ".").gsub("..", "_"), *arg)
 end

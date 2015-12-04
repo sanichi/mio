@@ -3,7 +3,7 @@ class Person < ActiveRecord::Base
   include Pageable
   include Remarkable
 
-  has_many :pictures
+  has_and_belongs_to_many :pictures
   belongs_to :father, class_name: "Person"
   belongs_to :mother, class_name: "Person"
   has_many :partnerships_as_male, class_name: "Partnership", foreign_key: "husband_id", dependent: :destroy
