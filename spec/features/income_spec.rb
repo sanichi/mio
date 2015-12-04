@@ -14,16 +14,16 @@ describe Income do
 
   context "create" do
     it "success" do
-      click_link new_income
-      fill_in description, with: data.description
-      select category, from: income_category
-      select period, from: income_period
-      fill_in amount, with: data.amount
-      fill_in joint, with: data.joint
-      fill_in income_start, with: data.start.to_s(:db)
-      click_button save
+      click_link t(:income_new)
+      fill_in t(:description), with: data.description
+      select category, from: t(:income_category_category)
+      select period, from: t(:income_period_period)
+      fill_in t(:amount), with: data.amount
+      fill_in t(:income_joint), with: data.joint
+      fill_in t(:income_start), with: data.start.to_s(:db)
+      click_button t(:save)
 
-      expect(page).to have_title incomes
+      expect(page).to have_title t(:income_incomes)
 
       expect(Income.count).to eq 1
       e = Income.first
@@ -41,26 +41,26 @@ describe Income do
 
   context "failure" do
     it "no decription" do
-      click_link new_income
-      select category, from: income_category
-      select period, from: income_period
-      fill_in amount, with: data.amount
-      click_button save
+      click_link t(:income_new)
+      select category, from: t(:income_category_category)
+      select period, from: t(:income_period_period)
+      fill_in t(:amount), with: data.amount
+      click_button t(:save)
 
-      expect(page).to have_title new_income
+      expect(page).to have_title t(:income_new)
       expect(Income.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
 
     it "invalid amount" do
-      click_link new_income
-      fill_in description, with: data.description
-      select category, from: income_category
-      select period, from: income_period
-      fill_in amount, with: "-1000.0"
-      click_button save
+      click_link t(:income_new)
+      fill_in t(:description), with: data.description
+      select category, from: t(:income_category_category)
+      select period, from: t(:income_period_period)
+      fill_in t(:amount), with: "-1000.0"
+      click_button t(:save)
 
-      expect(page).to have_title new_income
+      expect(page).to have_title t(:income_new)
       expect(Income.count).to eq 0
       expect(page).to have_css(error, text: "greater than 0")
     end
@@ -71,13 +71,13 @@ describe Income do
 
     it "success" do
       visit incomes_path
-      click_link edit
+      click_link t(:edit)
 
-      expect(page).to have_title edit_income
-      select category, from: income_category
-      click_button save
+      expect(page).to have_title t(:income_edit)
+      select category, from: t(:income_category_category)
+      click_button t(:save)
 
-      expect(page).to have_title incomes
+      expect(page).to have_title t(:income_incomes)
 
       expect(Income.count).to eq 1
       e = Income.first
@@ -91,10 +91,10 @@ describe Income do
 
     it "success" do
       visit incomes_path
-      click_link edit
-      click_link delete
+      click_link t(:edit)
+      click_link t(:delete)
 
-      expect(page).to have_title incomes
+      expect(page).to have_title t(:income_incomes)
       expect(Income.count).to eq 0
     end
   end

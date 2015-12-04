@@ -13,9 +13,9 @@ describe Transaction do
     let(:sample2) { "capital-2.csv" }
 
     it "one order" do
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample1)
-      click_button load
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample1)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 1
       u = Upload.last
@@ -23,10 +23,10 @@ describe Transaction do
       expect(u.error).to be_nil
 
       visit uploads_path
-      click_link new_upload
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample1)
-      click_button load
+      click_link t(:upload_new)
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample1)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 2
       u = Upload.last
@@ -34,10 +34,10 @@ describe Transaction do
       expect(u.error).to match(/all.*duplicates/i)
 
       visit uploads_path
-      click_link new_upload
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample2)
-      click_button load
+      click_link t(:upload_new)
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample2)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 3
       u = Upload.last
@@ -48,9 +48,9 @@ describe Transaction do
     end
 
     it "other order" do
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample2)
-      click_button load
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample2)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 1
       u = Upload.last
@@ -58,10 +58,10 @@ describe Transaction do
       expect(u.error).to be_nil
 
       visit uploads_path
-      click_link new_upload
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample2)
-      click_button load
+      click_link t(:upload_new)
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample2)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 2
       u = Upload.last
@@ -69,10 +69,10 @@ describe Transaction do
       expect(u.error).to match(/all.*duplicates/i)
 
       visit uploads_path
-      click_link new_upload
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample1)
-      click_button load
+      click_link t(:upload_new)
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample1)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 3
       u = Upload.last

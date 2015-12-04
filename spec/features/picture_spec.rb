@@ -105,7 +105,7 @@ describe Picture do
 
     before(:each) do
       visit picture_path(picture)
-      click_link edit
+      click_link t(:edit)
     end
 
     it "people" do
@@ -130,8 +130,8 @@ describe Picture do
       expect(picture.description).to be_present
 
       expect(page).to have_title t(:picture_edit)
-      fill_in description, with: ""
-      click_button save
+      fill_in t(:description), with: ""
+      click_button t(:save)
 
       picture.reload
       expect(page).to have_title t(:picture_title, id: picture.id)

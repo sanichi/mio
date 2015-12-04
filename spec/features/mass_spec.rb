@@ -12,13 +12,13 @@ describe Mass do
     let(:data)  { build(:mass) }
 
     it "success" do
-      click_link new_measurement
-      fill_in measurement_date, with: data.date
-      fill_in measurement_start, with: data.start
-      fill_in measurement_finish, with: data.finish
-      click_button save
+      click_link t(:mass_new)
+      fill_in t(:mass_date), with: data.date
+      fill_in t(:mass_start), with: data.start
+      fill_in t(:mass_finish), with: data.finish
+      click_button t(:save)
 
-      expect(page).to have_title measurements
+      expect(page).to have_title t(:mass_data)
 
       expect(Mass.count).to eq 1
       m = Mass.first
@@ -30,56 +30,56 @@ describe Mass do
 
     context "failure" do
       it "not enough" do
-        click_link new_measurement
-        fill_in measurement_date, with: data.date
-        click_button save
+        click_link t(:mass_new)
+        fill_in t(:mass_date), with: data.date
+        click_button t(:save)
 
-        expect(page).to have_title new_measurement
+        expect(page).to have_title t(:mass_new)
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "at least 1")
       end
 
       it "out of range" do
-        click_link new_measurement
-        fill_in measurement_date, with: data.date
-        fill_in measurement_start, with: data.start
-        fill_in measurement_finish, with: Mass::MAX_KG + 10
-        click_button save
+        click_link t(:mass_new)
+        fill_in t(:mass_date), with: data.date
+        fill_in t(:mass_start), with: data.start
+        fill_in t(:mass_finish), with: Mass::MAX_KG + 10
+        click_button t(:save)
 
-        expect(page).to have_title new_measurement
+        expect(page).to have_title t(:mass_new)
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "must be less than")
       end
 
       it "no date" do
-        click_link new_measurement
-        fill_in measurement_date, with: ""
-        fill_in measurement_start, with: data.start
-        fill_in measurement_finish, with: data.finish
-        click_button save
+        click_link t(:mass_new)
+        fill_in t(:mass_date), with: ""
+        fill_in t(:mass_start), with: data.start
+        fill_in t(:mass_finish), with: data.finish
+        click_button t(:save)
 
-        expect(page).to have_title new_measurement
+        expect(page).to have_title t(:mass_new)
         expect(Mass.count).to eq 0
         expect(page).to have_css(error, text: "can't be blank")
       end
 
       it "duplicate date" do
-        click_link new_measurement
-        fill_in measurement_date, with: data.date
-        fill_in measurement_start, with: data.start
-        fill_in measurement_finish, with: data.finish
-        click_button save
+        click_link t(:mass_new)
+        fill_in t(:mass_date), with: data.date
+        fill_in t(:mass_start), with: data.start
+        fill_in t(:mass_finish), with: data.finish
+        click_button t(:save)
 
-        expect(page).to have_title measurements
+        expect(page).to have_title t(:mass_data)
         expect(Mass.count).to eq 1
 
-        click_link new_measurement
-        fill_in measurement_date, with: data.date
-        fill_in measurement_start, with: data.start
-        fill_in measurement_finish, with: data.finish
-        click_button save
+        click_link t(:mass_new)
+        fill_in t(:mass_date), with: data.date
+        fill_in t(:mass_start), with: data.start
+        fill_in t(:mass_finish), with: data.finish
+        click_button t(:save)
 
-        expect(page).to have_title new_measurement
+        expect(page).to have_title t(:mass_new)
         expect(Mass.count).to eq 1
         expect(page).to have_css(error, text: "has already been taken")
       end
@@ -92,14 +92,14 @@ describe Mass do
 
     it "success" do
       visit masses_path
-      click_link edit
+      click_link t(:edit)
 
-      expect(page).to have_title edit_measurement
-      fill_in measurement_start, with: data.start + 10
-      fill_in measurement_finish, with: ""
-      click_button save
+      expect(page).to have_title t(:mass_edit)
+      fill_in t(:mass_start), with: data.start + 10
+      fill_in t(:mass_finish), with: ""
+      click_button t(:save)
 
-      expect(page).to have_title measurements
+      expect(page).to have_title t(:mass_data)
 
       expect(Mass.count).to eq 1
       m = Mass.first
@@ -115,10 +115,10 @@ describe Mass do
 
     it "success" do
       visit masses_path
-      click_link edit
-      click_link delete
+      click_link t(:edit)
+      click_link t(:delete)
 
-      expect(page).to have_title measurements
+      expect(page).to have_title t(:mass_data)
       expect(Mass.count).to eq 0
     end
   end

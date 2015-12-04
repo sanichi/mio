@@ -12,13 +12,13 @@ describe HistoricalEvent do
 
   context "create" do
     it "success" do
-      click_link new_historical_event
-      fill_in description, with: data.description
-      fill_in historical_event_start, with: data.start
-      fill_in historical_event_finish, with: data.finish
-      click_button save
+      click_link t(:historical__event_new)
+      fill_in t(:description), with: data.description
+      fill_in t(:historical__event_start), with: data.start
+      fill_in t(:historical__event_finish), with: data.finish
+      click_button t(:save)
 
-      expect(page).to have_title historical_events
+      expect(page).to have_title t(:historical__event_events)
 
       expect(HistoricalEvent.count).to eq 1
       e = HistoricalEvent.first
@@ -31,24 +31,24 @@ describe HistoricalEvent do
 
   context "failure" do
     it "no decription" do
-      click_link new_historical_event
-      fill_in historical_event_start, with: data.start
-      fill_in historical_event_finish, with: data.finish
-      click_button save
+      click_link t(:historical__event_new)
+      fill_in t(:historical__event_start), with: data.start
+      fill_in t(:historical__event_finish), with: data.finish
+      click_button t(:save)
 
-      expect(page).to have_title new_historical_event
+      expect(page).to have_title t(:historical__event_new)
       expect(HistoricalEvent.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
 
     it "invalid years" do
-      click_link new_historical_event
-      fill_in description, with: data.description
-      fill_in historical_event_start, with: data.finish
-      fill_in historical_event_finish, with: data.start
-      click_button save
+      click_link t(:historical__event_new)
+      fill_in t(:description), with: data.description
+      fill_in t(:historical__event_start), with: data.finish
+      fill_in t(:historical__event_finish), with: data.start
+      click_button t(:save)
 
-      expect(page).to have_title new_historical_event
+      expect(page).to have_title t(:historical__event_new)
       expect(HistoricalEvent.count).to eq 0
       expect(page).to have_css(error, text: "finish before start")
     end
@@ -59,17 +59,17 @@ describe HistoricalEvent do
 
     it "success" do
       visit historical_events_path
-      click_link edit
+      click_link t(:edit)
 
       expect(HistoricalEvent.count).to eq 1
       e = HistoricalEvent.first
       finish = e.finish
 
-      expect(page).to have_title edit_historical_event
-      fill_in historical_event_finish, with: finish + 1
-      click_button save
+      expect(page).to have_title t(:historical__event_edit)
+      fill_in t(:historical__event_finish), with: finish + 1
+      click_button t(:save)
 
-      expect(page).to have_title historical_events
+      expect(page).to have_title t(:historical__event_events)
 
       e.reload
       expect(e.finish).to eq finish + 1
@@ -81,10 +81,10 @@ describe HistoricalEvent do
 
     it "success" do
       visit historical_events_path
-      click_link edit
-      click_link delete
+      click_link t(:edit)
+      click_link t(:delete)
 
-      expect(page).to have_title historical_events
+      expect(page).to have_title t(:historical__event_events)
       expect(HistoricalEvent.count).to eq 0
     end
   end

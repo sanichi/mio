@@ -7,20 +7,20 @@ describe Person do
 
   before(:each) do
     login
-    click_link blogs
+    click_link t(:blog_blog)
   end
 
   context "create" do
     it "success" do
-      click_link new_blog
-      fill_in blog_title, with: data.title
+      click_link t(:blog_new)
+      fill_in t(:blog_title), with: data.title
       if data.draft
-        check blog_draft
+        check t(:blog_draft)
       else
-        uncheck blog_draft
+        uncheck t(:blog_draft)
       end
-      fill_in blog_story, with: data.story
-      click_button save
+      fill_in t(:blog_story), with: data.story
+      click_button t(:save)
 
       expect(page).to have_title data.title
 
@@ -36,11 +36,11 @@ describe Person do
 
   context "failure" do
     it "no title" do
-      click_link new_blog
-      fill_in blog_story, with: data.story
-      click_button save
+      click_link t(:blog_new)
+      fill_in t(:blog_story), with: data.story
+      click_button t(:save)
 
-      expect(page).to have_title new_blog
+      expect(page).to have_title t(:blog_new)
       expect(Blog.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
@@ -51,12 +51,12 @@ describe Person do
 
     it "change title and publish" do
       visit blog_path(blog)
-      click_link edit
+      click_link t(:edit)
 
-      expect(page).to have_title edit_blog
-      fill_in blog_title, with: data.title
-      uncheck blog_draft
-      click_button save
+      expect(page).to have_title t(:blog_edit)
+      fill_in t(:blog_title), with: data.title
+      uncheck t(:blog_draft)
+      click_button t(:save)
 
       expect(page).to have_title data.title
 
@@ -75,10 +75,10 @@ describe Person do
       expect(Blog.count).to eq 1
 
       visit blog_path(blog)
-      click_link edit
-      click_link delete
+      click_link t(:edit)
+      click_link t(:delete)
 
-      expect(page).to have_title blogs
+      expect(page).to have_title t(:blog_blog)
       expect(Blog.count).to eq 0
     end
   end

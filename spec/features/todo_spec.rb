@@ -11,16 +11,16 @@ describe Todo do
 
   context "create" do
     before(:each) do
-      click_link todo_rails
+      click_link t(:todo_rails)
     end
 
     it "success" do
-      click_link new_todo
-      fill_in description, with: data.description
-      select todo_priorities[data.priority], from: todo_priority
-      click_button save
+      click_link t(:todo_new)
+      fill_in t(:description), with: data.description
+      select t(:todo_priorities)[data.priority], from: t(:todo_priority)
+      click_button t(:save)
 
-      expect(page).to have_title todo_todo
+      expect(page).to have_title t(:todo_todo)
 
       expect(Todo.count).to eq 1
       t = Todo.last
@@ -33,15 +33,15 @@ describe Todo do
 
   context "failure" do
     before(:each) do
-      click_link todo_rails
+      click_link t(:todo_rails)
     end
 
     it "no description" do
-      click_link new_todo
-      select todo_priorities[data.priority], from: todo_priority
-      click_button save
+      click_link t(:todo_new)
+      select t(:todo_priorities)[data.priority], from: t(:todo_priority)
+      click_button t(:save)
 
-      expect(page).to have_title new_todo
+      expect(page).to have_title t(:todo_new)
       expect(Todo.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
@@ -53,11 +53,11 @@ describe Todo do
     it "priority" do
       new_priority = (todo.priority + 1) % Todo::PRIORITIES.size
 
-      click_link todo_rails
-      click_link edit
+      click_link t(:todo_rails)
+      click_link t(:edit)
 
-      select todo_priorities[new_priority], from: todo_priority
-      click_button save
+      select t(:todo_priorities)[new_priority], from: t(:todo_priority)
+      click_button t(:save)
 
       todo.reload
       expect(todo.priority).to eq new_priority
@@ -66,9 +66,9 @@ describe Todo do
     it "done", js: true do
       expect(todo.done).to be false
 
-      click_link todo_todos
-      click_link todo_rails
-      click_link todo_done
+      click_link t(:todo_todos)
+      click_link t(:todo_rails)
+      click_link t(:todo_done)
       wait_a_while
 
       expect(page).to have_xpath("//tr[@id='todo_tr_#{todo.id}']/td/span[@class='inactive']")
@@ -76,7 +76,7 @@ describe Todo do
       todo.reload
       expect(todo.done).to be true
 
-      click_link todo_done
+      click_link t(:todo_done)
       wait_a_while
 
       expect(page).to have_xpath("//tr[@id='todo_tr_#{todo.id}']/td/span[@class='active']")
@@ -88,11 +88,11 @@ describe Todo do
     it "delete" do
       expect(Todo.count).to eq 1
 
-      click_link todo_rails
-      click_link edit
-      click_link delete
+      click_link t(:todo_rails)
+      click_link t(:edit)
+      click_link t(:delete)
 
-      expect(page).to have_title todo_todos
+      expect(page).to have_title t(:todo_todos)
 
       expect(Todo.count).to eq 0
     end

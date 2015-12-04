@@ -8,8 +8,8 @@ describe "Todo Elm" do
       create(:todo, description: "Todo #{5-i}", priority: p, done: false)
     end
     login
-    click_link todo_todos
-    click_link todo_elm
+    click_link t(:todo_todos)
+    click_link t(:todo_elm_app)
   end
 
   context "updates", js: true do
@@ -19,7 +19,7 @@ describe "Todo Elm" do
       tmpl = '//div[@id="elm"]/div/table/tbody/tr[%d][td[1]/span[@class="%s" and .="%s"] and td[2]/span[.="%s"]]'
       text = @todo[i].description
       done = @todo[i].done ? "inactive" : "active"
-      prty = todo_priorities[@todo[i].priority]
+      prty = t(:todo_priorities)[@todo[i].priority]
       tmpl % [row, done, text, prty]
     end
 
@@ -53,17 +53,17 @@ describe "Todo Elm" do
       expect(@todo[2].priority).to eq 3
       expect_rows(page, 0, 1, 2)
 
-      find(:xpath, button(0, todo_elm_down)).click
+      find(:xpath, button(0, t(:todo_elm_down))).click
       reload
       expect(@todo[0].priority).to eq 2
       expect_rows(page, 1, 0, 2)
 
-      find(:xpath, button(2, todo_elm_up)).click
+      find(:xpath, button(2, t(:todo_elm_up))).click
       reload
       expect(@todo[2].priority).to eq 2
       expect_rows(page, 2, 1, 0)
 
-      find(:xpath, button(1, todo_elm_up)).click
+      find(:xpath, button(1, t(:todo_elm_up))).click
       reload
       expect(@todo[1].priority).to eq 1
       expect_rows(page, 1, 2, 0)
@@ -76,22 +76,22 @@ describe "Todo Elm" do
       expect(@todo[2].done).to eq false
       expect_rows(page, 0, 1, 2)
 
-      find(:xpath, button(0, todo_elm_done)).click
+      find(:xpath, button(0, t(:todo_elm_done))).click
       reload
       expect(@todo[0].done).to eq true
       expect_rows(page, 1, 2, 0)
 
-      find(:xpath, button(1, todo_elm_done)).click
+      find(:xpath, button(1, t(:todo_elm_done))).click
       reload
       expect(@todo[1].done).to eq true
       expect_rows(page, 2, 0, 1)
 
-      find(:xpath, button(2, todo_elm_done)).click
+      find(:xpath, button(2, t(:todo_elm_done))).click
       reload
       expect(@todo[2].done).to eq true
       expect_rows(page, 0, 1, 2)
 
-      [0, 1, 2].each { |i| find(:xpath, button(i, todo_elm_done)).click }
+      [0, 1, 2].each { |i| find(:xpath, button(i, t(:todo_elm_done))).click }
       reload
       expect(@todo[0].done).to eq false
       expect(@todo[1].done).to eq false
@@ -103,26 +103,26 @@ describe "Todo Elm" do
       expect(Todo.count).to eq 3
       expect_rows(page, 0, 1, 2)
 
-      find(:xpath, button(0, todo_elm_delete)).click
-      find(:xpath, button(0, todo_elm_cancel)).click
+      find(:xpath, button(0, t(:todo_elm_delete))).click
+      find(:xpath, button(0, t(:todo_elm_cancel))).click
       wait_a_while
       expect(Todo.count).to eq 3
       expect_rows(page, 0, 1, 2)
 
-      find(:xpath, button(1, todo_elm_delete)).click
-      find(:xpath, button(1, todo_elm_confirm)).click
+      find(:xpath, button(1, t(:todo_elm_delete))).click
+      find(:xpath, button(1, t(:todo_elm_confirm))).click
       wait_a_while
       expect(Todo.count).to eq 2
       expect_rows(page, 0, 2)
 
-      find(:xpath, button(2, todo_elm_delete)).click
-      find(:xpath, button(2, todo_elm_confirm)).click
+      find(:xpath, button(2, t(:todo_elm_delete))).click
+      find(:xpath, button(2, t(:todo_elm_confirm))).click
       wait_a_while
       expect(Todo.count).to eq 1
       expect_rows(page, 0)
 
-      find(:xpath, button(0, todo_elm_delete)).click
-      find(:xpath, button(0, todo_elm_confirm)).click
+      find(:xpath, button(0, t(:todo_elm_delete))).click
+      find(:xpath, button(0, t(:todo_elm_confirm))).click
       wait_a_while
       expect(Todo.count).to eq 0
     end

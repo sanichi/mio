@@ -14,12 +14,12 @@ describe Upload do
     let(:table) { "//table/tbody/tr[th[.='%s'] and td[.='%s']]" }
 
     it "success" do
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample)
-      click_button load
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample)
+      click_button t(:upload_load)
 
-      expect(page).to have_title upload
-      expect(page).to have_xpath table % [name, sample]
+      expect(page).to have_title t(:upload_upload)
+      expect(page).to have_xpath table % [t(:name), sample]
 
       expect(Upload.count).to eq 1
       u = Upload.first
@@ -38,32 +38,32 @@ describe Upload do
       let(:image)  { "small-image.png" }
 
       it "missing file" do
-        select capital, from: account
-        click_button load
+        select t(:upload_account_cap), from: t(:upload_account_acc)
+        click_button t(:upload_load)
 
-        expect(page).to have_title new_upload
+        expect(page).to have_title t(:upload_new)
         expect(page).to have_xpath error % "missing"
 
         expect(Upload.count).to eq 0
       end
 
       it "empty file" do
-        select capital, from: account
-        attach_file file_upload, test_file_path(empty)
-        click_button load
+        select t(:upload_account_cap), from: t(:upload_account_acc)
+        attach_file t(:upload_file), test_file_path(empty)
+        click_button t(:upload_load)
 
-        expect(page).to have_title new_upload
+        expect(page).to have_title t(:upload_new)
         expect(page).to have_xpath error % "blank"
 
         expect(Upload.count).to eq 0
       end
 
       it "wrong content-type" do
-        select capital, from: account
-        attach_file file_upload, test_file_path(image)
-        click_button load
+        select t(:upload_account_cap), from: t(:upload_account_acc)
+        attach_file t(:upload_file), test_file_path(image)
+        click_button t(:upload_load)
 
-        expect(page).to have_title new_upload
+        expect(page).to have_title t(:upload_new)
         expect(page).to have_xpath error % "image/png"
 
         expect(Upload.count).to eq 0
@@ -73,15 +73,15 @@ describe Upload do
 
   context "delete" do
     it "success" do
-      select capital, from: account
-      attach_file file_upload, test_file_path(sample)
-      click_button load
+      select t(:upload_account_cap), from: t(:upload_account_acc)
+      attach_file t(:upload_file), test_file_path(sample)
+      click_button t(:upload_load)
 
       expect(Upload.count).to eq 1
       expect(Transaction.count).to eq 5
 
-      click_link delete
-      expect(page).to have_title uploads
+      click_link t(:delete)
+      expect(page).to have_title t(:upload_uploads)
 
       expect(Upload.count).to eq 0
       expect(Transaction.count).to eq 0
