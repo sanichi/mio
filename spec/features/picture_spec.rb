@@ -138,9 +138,12 @@ describe Picture do
   end
 
   context "delete" do
-    let!(:picture) { create(:picture) }
+    let!(:picture) { create(:picture, people: [person1, person2, person3]) }
 
     it "success" do
+      expect(Picture.count).to eq 1
+      expect(PersonPicture.count).to eq 3
+
       visit picture_path(picture)
       click_link t(:edit)
       click_link t(:delete)
