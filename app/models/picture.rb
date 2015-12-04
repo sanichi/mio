@@ -21,6 +21,7 @@ class Picture < ActiveRecord::Base
     matches = joins(:people)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], table: :people)
     matches = matches.where(sql) if sql = cross_constraint(params[:description], cols: %w{description})
+    matches = matches.distinct
     matches
   end
 
