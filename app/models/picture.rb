@@ -49,7 +49,7 @@ class Picture < ActiveRecord::Base
     if people.empty?
       I18n.t("picture.picture")
     else
-      people.sort{ |a, b| a.first_names <=> b.first_names }.map{ |p| p.name(full: false) }.join(", ").truncate(MAX_TITLE);
+      people.sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ").truncate(MAX_TITLE);
     end
   end
 end
