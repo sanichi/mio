@@ -9114,7 +9114,7 @@ Elm.Config.make = function (_elm) {
    var shifts = $Signal.mailbox(0);
    var focus = $Signal.mailbox(0);
    var family = $Signal.mailbox(0);
-   var changePictures = 5;
+   var changePictures = 4;
    var textStyle = _U.update($Text.defaultStyle,
    {typeface: _U.list(["Verdana","Helvetica","sans-serif"])
    ,height: $Maybe.Just(15)
