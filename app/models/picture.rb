@@ -5,6 +5,7 @@ class Picture < ActiveRecord::Base
   TYPES = "jpe?g|gif|png"
   SIZE = { tn: 100, xs: 300, sm: 600, md: 900, lg: 1200 }
   MAX_SIZE = (Rails.env.test?? 1 : 50).megabytes
+  MAX_TITLE = 50
 
   has_and_belongs_to_many :people
 
@@ -29,10 +30,6 @@ class Picture < ActiveRecord::Base
     to_html(description)
   end
 
-  def title
-    I18n.t("picture.title", id: id)
-  end
-
   def update_people(ids)
     return unless ids.respond_to?(:map)
     new_ids = ids.map(&:to_i).uniq.select{ |id| id > 0 }.sort
@@ -45,5 +42,14 @@ class Picture < ActiveRecord::Base
 
   def normalize_attributes
     self.description = nil unless description.present?
+    self.title = calculate_title
+  end
+
+  def calculate_title
+    if people.empty?
+      I18n.t("picture.picture")
+    else
+      people.sort{ |a, b| a.first_names <=> b.first_names }.map{ |p| p.name(full: false) }.join(", ").truncate(MAX_TITLE);
+    end
   end
 end

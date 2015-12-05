@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Picture do
   let(:data)     { build(:picture) }
-  let!(:person1) { create(:person) }
-  let!(:person2) { create(:person) }
-  let!(:person3) { create(:person) }
+  let!(:person1) { create(:person, first_names: "Alvin") }
+  let!(:person2) { create(:person, first_names: "Billy") }
+  let!(:person3) { create(:person, first_names: "Colin") }
 
   let(:image_dir) { Rails.root + "spec/files/" }
 
@@ -30,13 +30,15 @@ describe Picture do
         expect(Picture.count).to eq 1
         p = Picture.last
 
-        expect(page).to have_title t(:picture_title, id: p.id)
+        title = "#{person1.name(full: false)}, #{person2.name(full: false)}"
+        expect(page).to have_title title
 
         expect(p.description).to eq data.description
         expect(p.portrait).to eq data.portrait
         expect(p.people.size).to eq 2
         expect(p.people).to be_include(person1)
         expect(p.people).to be_include(person2)
+        expect(p.title).to eq title
         expect(p.image_file_name).to eq file
         expect(p.image_content_type).to eq "image/jpeg"
         expect(p.image_file_size).to eq 13738
@@ -53,11 +55,13 @@ describe Picture do
         expect(Picture.count).to eq 1
         p = Picture.last
 
-        expect(page).to have_title t(:picture_title, id: p.id)
+        title = t(:picture_picture)
+        expect(page).to have_title title
 
         expect(p.description).to eq data.description
         expect(p.portrait).to eq data.portrait
         expect(p.people.size).to eq 0
+        expect(p.title).to eq title
         expect(p.image_file_name).to eq file
         expect(p.image_content_type).to eq "image/jpeg"
         expect(p.image_file_size).to eq 13738
@@ -104,22 +108,23 @@ describe Picture do
     before(:each) do
       visit picture_path(picture)
       click_link t(:edit)
-    end
-
-    it "people" do
       expect(page).to have_title t(:picture_edit)
       expect(Picture.count).to eq 1
       expect(PersonPicture.count).to eq 2
+    end
 
+    it "people" do
       select person3.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
       select t(:select), from: t(:picture_person, number: 2)
       click_button t(:save)
 
-      expect(page).to have_title t(:picture_title, id: picture.id)
+      title = person3.name(full: false)
+      expect(page).to have_title title
       expect(Picture.count).to eq 1
       expect(PersonPicture.count).to eq 1
 
       picture.reload
+      expect(picture.title).to eq title
       expect(picture.people.size).to eq 1
       expect(picture.people.first).to eq person3
     end
@@ -131,8 +136,11 @@ describe Picture do
       fill_in t(:description), with: ""
       click_button t(:save)
 
+      expect(page).to_not have_title t(:picture_edit)
+      expect(Picture.count).to eq 1
+      expect(PersonPicture.count).to eq 2
+
       picture.reload
-      expect(page).to have_title t(:picture_title, id: picture.id)
       expect(picture.description).to be_nil
     end
   end
