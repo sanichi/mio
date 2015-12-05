@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Picture do
   let(:data)     { build(:picture) }
-  let!(:person1) { create(:person, first_names: "Alvin") }
-  let!(:person2) { create(:person, first_names: "Billy") }
-  let!(:person3) { create(:person, first_names: "Colin") }
+  let!(:person1) { create(:person) }
+  let!(:person2) { create(:person) }
+  let!(:person3) { create(:person) }
 
   let(:image_dir) { Rails.root + "spec/files/" }
 
@@ -30,7 +30,7 @@ describe Picture do
         expect(Picture.count).to eq 1
         p = Picture.last
 
-        title = "#{person1.name(full: false)}, #{person2.name(full: false)}"
+        title = [person1, person2].sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ")
         expect(page).to have_title title
 
         expect(p.description).to eq data.description
