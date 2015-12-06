@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception # prevent CSRF attacks by raising an exception
   helper_method :authenticated?
+  before_action :enable_miniprofiler
 
   rescue_from CanCan::AccessDenied do |exception|
     logger.warn "Access denied for #{exception.action} #{exception.subject} from #{request.ip}"
@@ -21,5 +22,13 @@ class ApplicationController < ActionController::Base
   def prev_next(key, objects)
     return unless objects.any?
     session[key] = "_#{objects.map(&:id).join('_')}_"
+  end
+
+  private
+
+  def enable_miniprofiler
+    if Rails.env.production? && current_user.admin?
+      Rack::MiniProfiler.authorize_request
+    end
   end
 end
