@@ -12,6 +12,7 @@ gem "cancancan", "~> 1.10"
 gem "redcarpet", "~> 3.2"
 gem "whenever", require: false
 gem "paperclip", "~> 4.2"
+gem 'rack-mini-profiler', require: false
 
 group :development do
   gem "capistrano-rails"
