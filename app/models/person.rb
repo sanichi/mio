@@ -256,7 +256,7 @@ class Person < ActiveRecord::Base
     h = Hash.new
     h[:id] = 0
     h[:name] = "?"
-    h[:years] = "?"
+    h[:years] = "&nbsp;"
     h[:pictures] = Array(dummy_portrait_path(gender))
     h
   end
