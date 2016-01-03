@@ -17,13 +17,13 @@ class Favourite < ActiveRecord::Base
 
   scope :by_year, -> { order(year: :desc, name: :asc) }
 
-  def self.search(params, path)
+  def self.search(params, path, opt={})
     matches = by_year
     matches = matches.where(category: params[:category].to_i) if params[:category].present?
     matches = matches.where("fans LIKE ?", "%#{params[:fan]}%") if params[:fan].present?
     constraint = numerical_constraint(params[:year], :year)
     matches = matches.where(constraint) if constraint
-    paginate(matches, params, path)
+    paginate(matches, params, path, opt)
   end
 
   def update_people(ids)
