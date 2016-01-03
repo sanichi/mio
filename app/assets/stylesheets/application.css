@@ -51,3 +51,9 @@ span.inactive {
 tr.last-updated {
   background-color: lightblue !important;
 }
+
+/* For monospaced textareas. */
+textarea.monospace {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 0.8em;
+}

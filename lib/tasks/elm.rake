@@ -64,4 +64,11 @@ namespace :elm do
       compile_and_minify "tree_elm"
     end
   end
+
+  desc "make and minify the Elm JS file for AOC"
+  task :aoc do
+    Dir.chdir("app/views/pages/aoc") do
+      compile_and_minify "aoc_elm"
+    end
+  end
 end

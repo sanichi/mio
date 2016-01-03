@@ -2,3 +2,9 @@ en:
   pages:
     games: Games
     pills: Blue PiLL
+    aoc:
+      answer: Answer
+      day: Day
+      input: Input
+      short: AOC
+      title: Advent of Code

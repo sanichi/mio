@@ -1,0 +1,24 @@
+= render "utils/title", key: "pages.aoc.title"
+
+- content_for :javascript do
+  = render "aoc_elm.min.js"
+  = render "aoc.js"
+
+.row
+  .col-xs-12
+    %form{class: "form-horizontal", role: "form"}
+      .form-group
+        %label.control-label.col-xs-2= t("pages.aoc.day")
+        .col-xs-4.col-sm-3.col-md-2
+          %select{class: "form-control input-sm", size: "1", id: "day"}
+            %option{value: ""}= t("select")
+            - (1..25).each do |day|
+              %option{value: "#{day}"}= day
+      .form-group
+        %label.control-label.col-xs-2= t("pages.aoc.answer")
+        .col-xs-5
+          %input{class: "form-control", type: "text", id: "answer"}
+      .form-group
+        %label.control-label.col-xs-2= t("pages.aoc.input")
+        .col-xs-10
+          %textarea{class: "form-control monospace", rows: "50", id: "input"}

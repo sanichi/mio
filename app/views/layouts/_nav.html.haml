@@ -68,5 +68,8 @@
               %li= link_to t("user.users"), users_path
             - if can?(:read, Login)
               %li= link_to t("login.logins"), logins_path
+      - if current_user.admin?
+        %li= link_to t("pages.aoc.short"), aoc_path
+
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"
