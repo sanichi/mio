@@ -1,6 +1,6 @@
 - favourites.matches.each do |favourite|
   %tr
-    %td= link_to_if favourite.link, favourite.name, favourite.link
+    %td= link_to_if favourite.link, favourite.name, favourite.link, target: "_external"
     %td= favourite.fans
     %td.text-center= I18n.t("favourite.categories")[favourite.category]
     %td.text-center= favourite.year
