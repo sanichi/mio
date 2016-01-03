@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :blogs
   resources :expenses, except: [:show]
+  resources :favourites, except: [:show]
   resources :funds do
     resources :comments, except: [:index, :show]
     resources :links, except: [:index, :show]

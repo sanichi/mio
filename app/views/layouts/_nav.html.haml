@@ -10,6 +10,8 @@
         %li= link_to t("blog.blog"), blogs_path
       - if can?(:read, Mass)
         %li= link_to t("mass.mass"), graph_masses_path
+      - if can?(:read, Favourite)
+        %li= link_to t("favourite.favourites"), favourites_path
       %li.dropdown
         = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
           = t("pages.games")

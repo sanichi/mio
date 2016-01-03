@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151205103051) do
+ActiveRecord::Schema.define(version: 20160102172401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 20151205103051) do
     t.string   "period",      limit: 10
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+  end
+
+  create_table "favourites", force: :cascade do |t|
+    t.integer  "category",   limit: 2
+    t.string   "fans",       limit: 50
+    t.string   "name",       limit: 50
+    t.string   "link",       limit: 100
+    t.integer  "year"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "funds", force: :cascade do |t|
