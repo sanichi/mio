@@ -15,7 +15,7 @@ class Favourite < ActiveRecord::Base
   validates :year, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YEAR, less_than_or_equal_to: Date.today.year }
   validates :link, format: { with: /\Ahttps?:\/\/[^\s]+\z/ }, length: { maximum: MAX_LINK }, allow_nil: true
 
-  scope :by_year, -> { order(year: :desc) }
+  scope :by_year, -> { order(year: :desc, name: :asc) }
 
   def self.search(params, path)
     matches = by_year
