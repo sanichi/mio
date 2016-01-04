@@ -18,6 +18,8 @@
         %label.control-label.col-xs-2= t("pages.aoc.answer")
         .col-xs-5
           %input{class: "form-control", type: "text", id: "answer"}
+        .col-xs-5.text-center
+          = image_tag "loader.gif", size: "20x20", alt: t("loading"), id: "loading", style: "display: none"
       .form-group
         %label.control-label.col-xs-2= t("pages.aoc.input")
         .col-xs-10

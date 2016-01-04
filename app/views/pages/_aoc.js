@@ -17,6 +17,7 @@ function solve_aoc_problem(year, day) {
   var file = '/aoc/' + year + '/' + day + '.txt';
   $.ajax({url: file}).done(function(text) {
     $('#input').val(text);
+    $('#loading').show();
     elm_app.ports.problem.send([year, day, text]);
   });
 }
@@ -24,4 +25,5 @@ function solve_aoc_problem(year, day) {
 // When the Elm app sends back a solution, display it.
 function display_aoc_answer(output) {
   $('#answer').val(output);
+  $('#loading').hide();
 }
