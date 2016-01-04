@@ -8,6 +8,13 @@
   .col-xs-12
     %form{class: "form-horizontal", role: "form"}
       .form-group
+        %label.control-label.col-xs-2= t("pages.aoc.year")
+        .col-xs-4.col-sm-3.col-md-2
+          %select{class: "form-control input-sm", size: "1", id: "year"}
+            %option{value: ""}= t("select")
+            - (2015..2015).each do |year|
+              %option{value: "#{year}", selected: year == 2015}= year
+      .form-group
         %label.control-label.col-xs-2= t("pages.aoc.day")
         .col-xs-4.col-sm-3.col-md-2
           %select{class: "form-control input-sm", size: "1", id: "day"}
