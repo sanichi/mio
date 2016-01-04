@@ -1,4 +1,5 @@
 import Y15D01
+import Y15D02
 
 -- Model
 
@@ -6,7 +7,7 @@ type alias Model = String
 
 init : Model
 init =
-  "no problem yet"
+  "no problem"
 
 -- Update
 
@@ -22,8 +23,13 @@ update action model =
 
     Problem (year, day, input) ->
       case (year, day) of
-        (2015,  1) -> Y15D01.answer(input)
+        (2015,  1) -> join (Y15D01.part1 input) (Y15D01.part2 input)
+        (2015,  2) -> join (Y15D02.part1 input) (Y15D02.part2 input)
         _ -> "year " ++ (toString year) ++ ", day " ++ (toString day) ++ ": not implemented yet"
+
+join : String -> String -> String
+join p1 p2 =
+  p1 ++ " " ++ p2
 
 -- Signals
 

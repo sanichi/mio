@@ -6527,25 +6527,168 @@ Elm.String.make = function (_elm) {
                                ,any: any
                                ,all: all};
 };
-Elm.Util = Elm.Util || {};
-Elm.Util.make = function (_elm) {
+Elm.Native.Regex = {};
+Elm.Native.Regex.make = function(localRuntime) {
+	localRuntime.Native = localRuntime.Native || {};
+	localRuntime.Native.Regex = localRuntime.Native.Regex || {};
+	if (localRuntime.Native.Regex.values)
+	{
+		return localRuntime.Native.Regex.values;
+	}
+	if ('values' in Elm.Native.Regex)
+	{
+		return localRuntime.Native.Regex.values = Elm.Native.Regex.values;
+	}
+
+	var List = Elm.Native.List.make(localRuntime);
+	var Maybe = Elm.Maybe.make(localRuntime);
+
+	function escape(str)
+	{
+		return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	}
+	function caseInsensitive(re)
+	{
+		return new RegExp(re.source, 'gi');
+	}
+	function regex(raw)
+	{
+		return new RegExp(raw, 'g');
+	}
+
+	function contains(re, string)
+	{
+		return string.match(re) !== null;
+	}
+
+	function find(n, re, str)
+	{
+		n = n.ctor === 'All' ? Infinity : n._0;
+		var out = [];
+		var number = 0;
+		var string = str;
+		var lastIndex = re.lastIndex;
+		var prevLastIndex = -1;
+		var result;
+		while (number++ < n && (result = re.exec(string)))
+		{
+			if (prevLastIndex === re.lastIndex) break;
+			var i = result.length - 1;
+			var subs = new Array(i);
+			while (i > 0)
+			{
+				var submatch = result[i];
+				subs[--i] = submatch === undefined
+					? Maybe.Nothing
+					: Maybe.Just(submatch);
+			}
+			out.push({
+				match: result[0],
+				submatches: List.fromArray(subs),
+				index: result.index,
+				number: number
+			});
+			prevLastIndex = re.lastIndex;
+		}
+		re.lastIndex = lastIndex;
+		return List.fromArray(out);
+	}
+
+	function replace(n, re, replacer, string)
+	{
+		n = n.ctor === 'All' ? Infinity : n._0;
+		var count = 0;
+		function jsReplacer(match)
+		{
+			if (count++ >= n)
+			{
+				return match;
+			}
+			var i = arguments.length - 3;
+			var submatches = new Array(i);
+			while (i > 0)
+			{
+				var submatch = arguments[i];
+				submatches[--i] = submatch === undefined
+					? Maybe.Nothing
+					: Maybe.Just(submatch);
+			}
+			return replacer({
+				match: match,
+				submatches: List.fromArray(submatches),
+				index: arguments[i - 1],
+				number: count
+			});
+		}
+		return string.replace(re, jsReplacer);
+	}
+
+	function split(n, re, str)
+	{
+		n = n.ctor === 'All' ? Infinity : n._0;
+		if (n === Infinity)
+		{
+			return List.fromArray(str.split(re));
+		}
+		var string = str;
+		var result;
+		var out = [];
+		var start = re.lastIndex;
+		while (n--)
+		{
+			if (!(result = re.exec(string))) break;
+			out.push(string.slice(start, result.index));
+			start = re.lastIndex;
+		}
+		out.push(string.slice(start));
+		return List.fromArray(out);
+	}
+
+	return Elm.Native.Regex.values = {
+		regex: regex,
+		caseInsensitive: caseInsensitive,
+		escape: escape,
+
+		contains: F2(contains),
+		find: F3(find),
+		replace: F4(replace),
+		split: F3(split)
+	};
+};
+
+Elm.Regex = Elm.Regex || {};
+Elm.Regex.make = function (_elm) {
    "use strict";
-   _elm.Util = _elm.Util || {};
-   if (_elm.Util.values) return _elm.Util.values;
+   _elm.Regex = _elm.Regex || {};
+   if (_elm.Regex.values) return _elm.Regex.values;
    var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Native$Regex = Elm.Native.Regex.make(_elm);
    var _op = {};
-   var joinParts = F2(function (part1,part2) {
-      return A2($Basics._op["++"],
-      part1,
-      A2($Basics._op["++"]," ",part2));
+   var split = $Native$Regex.split;
+   var replace = $Native$Regex.replace;
+   var find = $Native$Regex.find;
+   var AtMost = function (a) {    return {ctor: "AtMost",_0: a};};
+   var All = {ctor: "All"};
+   var Match = F4(function (a,b,c,d) {
+      return {match: a,submatches: b,index: c,number: d};
    });
-   return _elm.Util.values = {_op: _op,joinParts: joinParts};
+   var contains = $Native$Regex.contains;
+   var caseInsensitive = $Native$Regex.caseInsensitive;
+   var regex = $Native$Regex.regex;
+   var escape = $Native$Regex.escape;
+   var Regex = {ctor: "Regex"};
+   return _elm.Regex.values = {_op: _op
+                              ,regex: regex
+                              ,escape: escape
+                              ,caseInsensitive: caseInsensitive
+                              ,contains: contains
+                              ,find: find
+                              ,replace: replace
+                              ,split: split
+                              ,Match: Match
+                              ,All: All
+                              ,AtMost: AtMost};
 };
 Elm.Y15D01 = Elm.Y15D01 || {};
 Elm.Y15D01.make = function (_elm) {
@@ -6559,8 +6702,7 @@ Elm.Y15D01.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm),
-   $Util = Elm.Util.make(_elm);
+   $String = Elm.String.make(_elm);
    var _op = {};
    var position = F3(function (floor,step,instructions) {
       position: while (true) if (_U.cmp(floor,0) < 0) return step;
@@ -6617,15 +6759,84 @@ Elm.Y15D01.make = function (_elm) {
    var part1 = function (input) {
       return $Basics.toString(A2(count,0,input));
    };
-   var answer = function (input) {
-      return A2($Util.joinParts,part1(input),part2(input));
-   };
    return _elm.Y15D01.values = {_op: _op
-                               ,answer: answer
                                ,part1: part1
                                ,part2: part2
                                ,count: count
                                ,position: position};
+};
+Elm.Y15D02 = Elm.Y15D02 || {};
+Elm.Y15D02.make = function (_elm) {
+   "use strict";
+   _elm.Y15D02 = _elm.Y15D02 || {};
+   if (_elm.Y15D02.values) return _elm.Y15D02.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm);
+   var _op = {};
+   var ribbon = F3(function (l,w,h) {
+      var volume = l * w * h;
+      var perimeters = _U.list([l + w,w + h,h + l]);
+      var perimeter = A2($Maybe.withDefault,
+      0,
+      $List.minimum(perimeters));
+      return 2 * perimeter + volume;
+   });
+   var wrapping = F3(function (l,w,h) {
+      var sides = _U.list([l * w,w * h,h * l]);
+      var paper = 2 * $List.sum(sides);
+      var slack = A2($Maybe.withDefault,0,$List.minimum(sides));
+      return paper + slack;
+   });
+   var sumLine = F3(function (counter,line,count) {
+      var dimensions = A2($List.map,
+      $Maybe.withDefault(0),
+      A2($List.map,
+      $Result.toMaybe,
+      A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("[1-9]\\d*"),line)))));
+      var extra = function () {
+         var _p0 = dimensions;
+         if (_p0.ctor === "::" && _p0._1.ctor === "::" && _p0._1._1.ctor === "::" && _p0._1._1._1.ctor === "[]")
+         {
+               return A3(counter,_p0._0,_p0._1._0,_p0._1._1._0);
+            } else {
+               return 0;
+            }
+      }();
+      return count + extra;
+   });
+   var sumInput = F2(function (counter,input) {
+      var lines = A3($Regex.split,
+      $Regex.All,
+      $Regex.regex("\n"),
+      input);
+      return A3($List.foldl,sumLine(counter),0,lines);
+   });
+   var part2 = function (input) {
+      return $Basics.toString(A2(sumInput,ribbon,input));
+   };
+   var part1 = function (input) {
+      return $Basics.toString(A2(sumInput,wrapping,input));
+   };
+   return _elm.Y15D02.values = {_op: _op
+                               ,part1: part1
+                               ,part2: part2
+                               ,sumInput: sumInput
+                               ,sumLine: sumLine
+                               ,wrapping: wrapping
+                               ,ribbon: ribbon};
 };
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
@@ -6639,7 +6850,8 @@ Elm.Main.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $Y15D01 = Elm.Y15D01.make(_elm);
+   $Y15D01 = Elm.Y15D01.make(_elm),
+   $Y15D02 = Elm.Y15D02.make(_elm);
    var _op = {};
    var problem = Elm.Native.Port.make(_elm).inboundSignal("problem",
    "( Int, Int, String )",
@@ -6652,27 +6864,37 @@ Elm.Main.make = function (_elm) {
                                                            ,_2: typeof v[2] === "string" || typeof v[2] === "object" && v[2] instanceof String ? v[2] : _U.badPort("a string",
                                                            v[2])} : _U.badPort("an array",v);
    });
+   var join = F2(function (p1,p2) {
+      return A2($Basics._op["++"],p1,A2($Basics._op["++"]," ",p2));
+   });
    var update = F2(function (action,model) {
       var _p0 = action;
       if (_p0.ctor === "NoOp") {
             return model;
          } else {
-            var _p3 = _p0._0._0;
+            var _p4 = _p0._0._0;
+            var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
-            var _p1 = {ctor: "_Tuple2",_0: _p3,_1: _p2};
-            if (_p1.ctor === "_Tuple2" && _p1._0 === 2015 && _p1._1 === 1) {
-                  return $Y15D01.answer(_p0._0._2);
-               } else {
-                  return A2($Basics._op["++"],
-                  "year ",
-                  A2($Basics._op["++"],
-                  $Basics.toString(_p3),
-                  A2($Basics._op["++"],
-                  ", day ",
-                  A2($Basics._op["++"],
-                  $Basics.toString(_p2),
-                  ": not implemented yet"))));
-               }
+            var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
+            _v1_2: do {
+               if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
+                     switch (_p1._1)
+                     {case 1: return A2(join,$Y15D01.part1(_p3),$Y15D01.part2(_p3));
+                        case 2: return A2(join,$Y15D02.part1(_p3),$Y15D02.part2(_p3));
+                        default: break _v1_2;}
+                  } else {
+                     break _v1_2;
+                  }
+            } while (false);
+            return A2($Basics._op["++"],
+            "year ",
+            A2($Basics._op["++"],
+            $Basics.toString(_p4),
+            A2($Basics._op["++"],
+            ", day ",
+            A2($Basics._op["++"],
+            $Basics.toString(_p2),
+            ": not implemented yet"))));
          }
    });
    var Problem = function (a) {
@@ -6680,7 +6902,7 @@ Elm.Main.make = function (_elm) {
    };
    var actions = A2($Signal.map,Problem,problem);
    var NoOp = {ctor: "NoOp"};
-   var init = "no problem yet";
+   var init = "no problem";
    var model = A3($Signal.foldp,update,init,actions);
    var answer = Elm.Native.Port.make(_elm).outboundSignal("answer",
    function (v) {
@@ -6692,6 +6914,7 @@ Elm.Main.make = function (_elm) {
                              ,NoOp: NoOp
                              ,Problem: Problem
                              ,update: update
+                             ,join: join
                              ,model: model
                              ,actions: actions};
 };

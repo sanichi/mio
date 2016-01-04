@@ -1,12 +1,6 @@
 module Y15D01 where
 
 import String
-import Util exposing (joinParts)
-
-
-answer : String -> String
-answer input =
-  joinParts (part1 input) (part2 input)
 
 
 part1 : String -> String
