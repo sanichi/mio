@@ -6,34 +6,11 @@
       %span.icon-bar
   .collapse.navbar-collapse.navbar-ex1-collapse
     %ul.nav.navbar-nav
+
       - if can?(:read, Blog)
         %li= link_to t("blog.blog"), blogs_path
-      - if can?(:read, Mass)
-        %li= link_to t("mass.mass"), graph_masses_path
-      - if can?(:read, Favourite)
-        %li= link_to t("favourite.favourites"), favourites_path
-      - if can?(:pills, Page)
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("pages.games")
-            %b.caret
-          %ul.dropdown-menu
-            %li= link_to t("pages.pills"), pills_path
-      - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("money")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Transaction)
-              %li= link_to t("transaction.transactions"), summary_transactions_path
-            - if can?(:read, Expense)
-              %li= link_to t("expense.expenses"), expenses_path
-            - if can?(:read, Income)
-              %li= link_to t("income.incomes"), graph_incomes_path
-            - if can?(:read, Fund)
-              %li= link_to t("fund.funds"), funds_path
-      - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
+
+      - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("family")
@@ -51,6 +28,7 @@
               %li= link_to t("person.checks.title"), checks_people_path
             - if can?(:read, HistoricalEvent)
               %li= link_to t("historical_event.events"), historical_events_path
+
       - if can?(:read, Todo)
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
@@ -59,18 +37,40 @@
           %ul.dropdown-menu
             %li= link_to t("todo.elm.app"), elm_todos_path
             %li= link_to t("todo.rails"), todos_path
-      - if [User, Login].map{|c| can?(:read, c) }.any?
+
+      - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("authentication")
+            = t("money")
             %b.caret
           %ul.dropdown-menu
+            - if can?(:read, Transaction)
+              %li= link_to t("transaction.transactions"), summary_transactions_path
+            - if can?(:read, Expense)
+              %li= link_to t("expense.expenses"), expenses_path
+            - if can?(:read, Income)
+              %li= link_to t("income.incomes"), graph_incomes_path
+            - if can?(:read, Fund)
+              %li= link_to t("fund.funds"), funds_path
+
+      - if can?(:pills, Page) || can?(:aoc, Page) || [User, Login, Favourite, Mass].map{ |c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("other")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, Mass)
+              %li= link_to t("mass.mass"), graph_masses_path
+            - if can?(:read, Favourite)
+              %li= link_to t("favourite.favourites"), favourites_path
+            - if can?(:aoc, Page)
+              %li= link_to t("pages.aoc.short"), aoc_path
+            - if can?(:pills, Page)
+              %li= link_to t("pages.pills"), pills_path
             - if can?(:read, User)
               %li= link_to t("user.users"), users_path
             - if can?(:read, Login)
               %li= link_to t("login.logins"), logins_path
-      - if can?(:aoc, Page)
-        %li= link_to t("pages.aoc.short"), aoc_path
 
     %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"
