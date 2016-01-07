@@ -9128,6 +9128,88 @@ Elm.Y15D19.make = function (_elm) {
                                ,bracRgx: bracRgx
                                ,comaRgx: comaRgx};
 };
+Elm.Y15D25 = Elm.Y15D25 || {};
+Elm.Y15D25.make = function (_elm) {
+   "use strict";
+   _elm.Y15D25 = _elm.Y15D25 || {};
+   if (_elm.Y15D25.values) return _elm.Y15D25.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm);
+   var _op = {};
+   var start = {code: 20151125,row: 1,col: 1};
+   var Model = F3(function (a,b,c) {
+      return {code: a,row: b,col: c};
+   });
+   var search = F2(function (_p0,model) {
+      search: while (true) {
+         var _p1 = _p0;
+         var _p4 = _p1._0;
+         var _p3 = _p1._1;
+         if (_U.eq(_p4,model.row) && _U.eq(_p3,model.col)) return model;
+         else {
+               var code$ = A2($Basics._op["%"],
+               model.code * 252533,
+               33554393);
+               var _p2 = _U.cmp(model.row,1) > 0 ? {ctor: "_Tuple2"
+                                                   ,_0: model.row - 1
+                                                   ,_1: model.col + 1} : {ctor: "_Tuple2",_0: model.col + 1,_1: 1};
+               var row$ = _p2._0;
+               var col$ = _p2._1;
+               var _v1 = {ctor: "_Tuple2",_0: _p4,_1: _p3},
+               _v2 = {code: code$,row: row$,col: col$};
+               _p0 = _v1;
+               model = _v2;
+               continue search;
+            }
+      }
+   });
+   var parse = function (input) {
+      var numbers = A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      $Maybe.withDefault("1"),
+      A2($Maybe.withDefault,
+      _U.list([$Maybe.Just("1"),$Maybe.Just("1")]),
+      $List.head(A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("code at row (\\d+), column (\\d+)"),
+      input))))));
+      var _p5 = function () {
+         var _p6 = numbers;
+         if (_p6.ctor === "::" && _p6._0.ctor === "Ok" && _p6._1.ctor === "::" && _p6._1._0.ctor === "Ok" && _p6._1._1.ctor === "[]")
+         {
+               return {ctor: "_Tuple2",_0: _p6._0._0,_1: _p6._1._0._0};
+            } else {
+               return {ctor: "_Tuple2",_0: 1,_1: 1};
+            }
+      }();
+      var row = _p5._0;
+      var col = _p5._1;
+      return {ctor: "_Tuple2",_0: row,_1: col};
+   };
+   var answer = function (input) {
+      var target = parse(input);
+      var model = A2(search,target,start);
+      return $Basics.toString(model.code);
+   };
+   return _elm.Y15D25.values = {_op: _op
+                               ,answer: answer
+                               ,parse: parse
+                               ,search: search
+                               ,Model: Model
+                               ,start: start};
+};
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
    "use strict";
@@ -9144,7 +9226,8 @@ Elm.Main.make = function (_elm) {
    $Y15D02 = Elm.Y15D02.make(_elm),
    $Y15D03 = Elm.Y15D03.make(_elm),
    $Y15D05 = Elm.Y15D05.make(_elm),
-   $Y15D19 = Elm.Y15D19.make(_elm);
+   $Y15D19 = Elm.Y15D19.make(_elm),
+   $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var problem = Elm.Native.Port.make(_elm).inboundSignal("problem",
    "( Int, Int, String )",
@@ -9166,7 +9249,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_5: do {
+            _v1_6: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -9174,9 +9257,10 @@ Elm.Main.make = function (_elm) {
                         case 3: return $Y15D03.answers(_p3);
                         case 5: return $Y15D05.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
-                        default: break _v1_5;}
+                        case 25: return $Y15D25.answer(_p3);
+                        default: break _v1_6;}
                   } else {
-                     break _v1_5;
+                     break _v1_6;
                   }
             } while (false);
             return A2($Basics._op["++"],

@@ -25,7 +25,9 @@ function solve_aoc_problem(y, d) {
     $.ajax({url: file}).done(function(text) {
       $('#input').val(text);
       $('#loading').show();
-      elm_app.ports.problem.send([year, day, text]);
+      setTimeout(function() { // flush DOM changes
+        elm_app.ports.problem.send([year, day, text]);
+      }, 10);
     });
   }
 }
