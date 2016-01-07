@@ -1,6 +1,7 @@
 import Y15D01
 import Y15D02
 import Y15D03
+import Y15D19
 
 -- Model
 
@@ -27,6 +28,7 @@ update action model =
         (2015,  1) -> join (Y15D01.part1 input) (Y15D01.part2 input)
         (2015,  2) -> join (Y15D02.part1 input) (Y15D02.part2 input)
         (2015,  3) -> join (Y15D03.part1 input) (Y15D03.part2 input)
+        (2015, 19) -> join (Y15D19.part1 input) (Y15D19.part2 input)
         _ -> "year " ++ (toString year) ++ ", day " ++ (toString day) ++ ": not implemented yet"
 
 join : String -> String -> String
