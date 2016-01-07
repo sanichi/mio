@@ -8619,6 +8619,26 @@ Elm.Regex.make = function (_elm) {
                               ,All: All
                               ,AtMost: AtMost};
 };
+Elm.Util = Elm.Util || {};
+Elm.Util.make = function (_elm) {
+   "use strict";
+   _elm.Util = _elm.Util || {};
+   if (_elm.Util.values) return _elm.Util.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var join = F2(function (p1,p2) {
+      return A2($Basics._op["++"],
+      p1,
+      A2($Basics._op["++"]," | ",p2));
+   });
+   return _elm.Util.values = {_op: _op,join: join};
+};
 Elm.Y15D01 = Elm.Y15D01 || {};
 Elm.Y15D01.make = function (_elm) {
    "use strict";
@@ -8631,7 +8651,8 @@ Elm.Y15D01.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm);
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var _op = {};
    var position = F3(function (floor,step,instructions) {
       position: while (true) if (_U.cmp(floor,0) < 0) return step;
@@ -8688,7 +8709,13 @@ Elm.Y15D01.make = function (_elm) {
    var part1 = function (input) {
       return $Basics.toString(A2(count,0,input));
    };
+   var answers = function (input) {
+      var p2 = part2(input);
+      var p1 = part1(input);
+      return A2($Util.join,p1,p2);
+   };
    return _elm.Y15D01.values = {_op: _op
+                               ,answers: answers
                                ,part1: part1
                                ,part2: part2
                                ,count: count
@@ -8707,7 +8734,8 @@ Elm.Y15D02.make = function (_elm) {
    $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm);
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var _op = {};
    var ribbon = F3(function (l,w,h) {
       var volume = l * w * h;
@@ -8759,7 +8787,13 @@ Elm.Y15D02.make = function (_elm) {
    var part1 = function (input) {
       return $Basics.toString(A2(sumInput,wrapping,input));
    };
+   var answers = function (input) {
+      var p2 = part2(input);
+      var p1 = part1(input);
+      return A2($Util.join,p1,p2);
+   };
    return _elm.Y15D02.values = {_op: _op
+                               ,answers: answers
                                ,part1: part1
                                ,part2: part2
                                ,sumInput: sumInput
@@ -8781,7 +8815,8 @@ Elm.Y15D03.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm);
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var _op = {};
    var visit = F3(function (x,y,visited) {
       var key = A2($Basics._op["++"],
@@ -8868,7 +8903,13 @@ Elm.Y15D03.make = function (_elm) {
    var part1 = function (input) {
       return A2(christmas,1,input);
    };
+   var answers = function (input) {
+      var p2 = part2(input);
+      var p1 = part1(input);
+      return A2($Util.join,p1,p2);
+   };
    return _elm.Y15D03.values = {_op: _op
+                               ,answers: answers
                                ,part1: part1
                                ,part2: part2
                                ,christmas: christmas
@@ -8893,7 +8934,8 @@ Elm.Y15D05.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var _op = {};
    var twipsRgx = $Regex.regex("(.).\\1");
    var pairsRgx = $Regex.regex("(..).*\\1");
@@ -8931,7 +8973,13 @@ Elm.Y15D05.make = function (_elm) {
    var part1 = function (input) {
       return A2(parse,input,nice1);
    };
+   var answers = function (input) {
+      var p2 = part2(input);
+      var p1 = part1(input);
+      return A2($Util.join,p1,p2);
+   };
    return _elm.Y15D05.values = {_op: _op
+                               ,answers: answers
                                ,part1: part1
                                ,part2: part2
                                ,parse: parse
@@ -8959,7 +9007,8 @@ Elm.Y15D19.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Set = Elm.Set.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm);
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
    var _op = {};
    var comaRgx = $Regex.regex("Y");
    var bracRgx = $Regex.regex("(Ar|Rn)");
@@ -9097,7 +9146,13 @@ Elm.Y15D19.make = function (_elm) {
    var part1 = function (input) {
       return A2(prepare,input,molecules);
    };
+   var answers = function (input) {
+      var p2 = part2(input);
+      var p1 = part1(input);
+      return A2($Util.join,p1,p2);
+   };
    return _elm.Y15D19.values = {_op: _op
+                               ,answers: answers
                                ,part1: part1
                                ,part2: part2
                                ,Model: Model
@@ -9145,9 +9200,6 @@ Elm.Main.make = function (_elm) {
                                                            ,_2: typeof v[2] === "string" || typeof v[2] === "object" && v[2] instanceof String ? v[2] : _U.badPort("a string",
                                                            v[2])} : _U.badPort("an array",v);
    });
-   var join = F2(function (p1,p2) {
-      return A2($Basics._op["++"],p1,A2($Basics._op["++"]," ",p2));
-   });
    var update = F2(function (action,model) {
       var _p0 = action;
       if (_p0.ctor === "NoOp") {
@@ -9160,11 +9212,11 @@ Elm.Main.make = function (_elm) {
             _v1_5: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
-                     {case 1: return A2(join,$Y15D01.part1(_p3),$Y15D01.part2(_p3));
-                        case 2: return A2(join,$Y15D02.part1(_p3),$Y15D02.part2(_p3));
-                        case 3: return A2(join,$Y15D03.part1(_p3),$Y15D03.part2(_p3));
-                        case 5: return A2(join,$Y15D05.part1(_p3),$Y15D05.part2(_p3));
-                        case 19: return A2(join,$Y15D19.part1(_p3),$Y15D19.part2(_p3));
+                     {case 1: return $Y15D01.answers(_p3);
+                        case 2: return $Y15D02.answers(_p3);
+                        case 3: return $Y15D03.answers(_p3);
+                        case 5: return $Y15D05.answers(_p3);
+                        case 19: return $Y15D19.answers(_p3);
                         default: break _v1_5;}
                   } else {
                      break _v1_5;
@@ -9198,7 +9250,6 @@ Elm.Main.make = function (_elm) {
                              ,NoOp: NoOp
                              ,Problem: Problem
                              ,update: update
-                             ,join: join
                              ,model: model
                              ,actions: actions};
 };

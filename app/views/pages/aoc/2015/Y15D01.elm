@@ -1,6 +1,16 @@
 module Y15D01 where
 
 import String
+import Util exposing (join)
+
+
+answers : String -> String
+answers input =
+  let
+    p1 = part1 input
+    p2 = part2 input
+  in
+    join p1 p2
 
 
 part1 : String -> String

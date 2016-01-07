@@ -1,6 +1,16 @@
 module Y15D05 where
 
 import Regex exposing (HowMany(All), Regex, find, regex)
+import Util exposing (join)
+
+
+answers : String -> String
+answers input =
+  let
+    p1 = part1 input
+    p2 = part2 input
+  in
+    join p1 p2
 
 
 part1 : String -> String
