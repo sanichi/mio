@@ -81,6 +81,7 @@ extractMolecule submatches =
         [ Just m ] -> m
         _ -> ""
 
+
 count : Regex -> Model -> Int
 count rgx model =
   find All rgx model.molecule |> List.length
