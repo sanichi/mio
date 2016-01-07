@@ -8881,6 +8881,70 @@ Elm.Y15D03.make = function (_elm) {
                                ,updateSanta: updateSanta
                                ,visit: visit};
 };
+Elm.Y15D05 = Elm.Y15D05 || {};
+Elm.Y15D05.make = function (_elm) {
+   "use strict";
+   _elm.Y15D05 = _elm.Y15D05 || {};
+   if (_elm.Y15D05.values) return _elm.Y15D05.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var twipsRgx = $Regex.regex("(.).\\1");
+   var pairsRgx = $Regex.regex("(..).*\\1");
+   var badieRgx = $Regex.regex("(:?ab|cd|pq|xy)");
+   var dubleRgx = $Regex.regex("(.)\\1");
+   var vowelRgx = $Regex.regex("[aeiou]");
+   var stringRgx = $Regex.regex("[a-z]{10,}");
+   var count = F2(function (rgx,string) {
+      return $List.length(A3($Regex.find,$Regex.All,rgx,string));
+   });
+   var nice2 = function (string) {
+      var twips = A2(count,twipsRgx,string);
+      var pairs = A2(count,pairsRgx,string);
+      return _U.cmp(pairs,0) > 0 && _U.cmp(twips,0) > 0;
+   };
+   var nice1 = function (string) {
+      var badies = A2(count,badieRgx,string);
+      var dubles = A2(count,dubleRgx,string);
+      var vowels = A2(count,vowelRgx,string);
+      return _U.cmp(vowels,3) > -1 && (_U.cmp(dubles,
+      0) > 0 && _U.eq(badies,0));
+   };
+   var parse = F2(function (input,nice) {
+      return $Basics.toString($List.length(A2($List.filter,
+      nice,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,stringRgx,input)))));
+   });
+   var part2 = function (input) {
+      return A2(parse,input,nice2);
+   };
+   var part1 = function (input) {
+      return A2(parse,input,nice1);
+   };
+   return _elm.Y15D05.values = {_op: _op
+                               ,part1: part1
+                               ,part2: part2
+                               ,parse: parse
+                               ,nice1: nice1
+                               ,nice2: nice2
+                               ,count: count
+                               ,stringRgx: stringRgx
+                               ,vowelRgx: vowelRgx
+                               ,dubleRgx: dubleRgx
+                               ,badieRgx: badieRgx
+                               ,pairsRgx: pairsRgx
+                               ,twipsRgx: twipsRgx};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -9067,6 +9131,7 @@ Elm.Main.make = function (_elm) {
    $Y15D01 = Elm.Y15D01.make(_elm),
    $Y15D02 = Elm.Y15D02.make(_elm),
    $Y15D03 = Elm.Y15D03.make(_elm),
+   $Y15D05 = Elm.Y15D05.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm);
    var _op = {};
    var problem = Elm.Native.Port.make(_elm).inboundSignal("problem",
@@ -9092,16 +9157,17 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_4: do {
+            _v1_5: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return A2(join,$Y15D01.part1(_p3),$Y15D01.part2(_p3));
                         case 2: return A2(join,$Y15D02.part1(_p3),$Y15D02.part2(_p3));
                         case 3: return A2(join,$Y15D03.part1(_p3),$Y15D03.part2(_p3));
+                        case 5: return A2(join,$Y15D05.part1(_p3),$Y15D05.part2(_p3));
                         case 19: return A2(join,$Y15D19.part1(_p3),$Y15D19.part2(_p3));
-                        default: break _v1_4;}
+                        default: break _v1_5;}
                   } else {
-                     break _v1_4;
+                     break _v1_5;
                   }
             } while (false);
             return A2($Basics._op["++"],
