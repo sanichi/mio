@@ -8339,6 +8339,123 @@ Elm.Dict.make = function (_elm) {
                              ,toList: toList
                              ,fromList: fromList};
 };
+Elm.Set = Elm.Set || {};
+Elm.Set.make = function (_elm) {
+   "use strict";
+   _elm.Set = _elm.Set || {};
+   if (_elm.Set.values) return _elm.Set.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm);
+   var _op = {};
+   var foldr = F3(function (f,b,_p0) {
+      var _p1 = _p0;
+      return A3($Dict.foldr,
+      F3(function (k,_p2,b) {    return A2(f,k,b);}),
+      b,
+      _p1._0);
+   });
+   var foldl = F3(function (f,b,_p3) {
+      var _p4 = _p3;
+      return A3($Dict.foldl,
+      F3(function (k,_p5,b) {    return A2(f,k,b);}),
+      b,
+      _p4._0);
+   });
+   var toList = function (_p6) {
+      var _p7 = _p6;
+      return $Dict.keys(_p7._0);
+   };
+   var size = function (_p8) {
+      var _p9 = _p8;
+      return $Dict.size(_p9._0);
+   };
+   var member = F2(function (k,_p10) {
+      var _p11 = _p10;
+      return A2($Dict.member,k,_p11._0);
+   });
+   var isEmpty = function (_p12) {
+      var _p13 = _p12;
+      return $Dict.isEmpty(_p13._0);
+   };
+   var Set_elm_builtin = function (a) {
+      return {ctor: "Set_elm_builtin",_0: a};
+   };
+   var empty = Set_elm_builtin($Dict.empty);
+   var singleton = function (k) {
+      return Set_elm_builtin(A2($Dict.singleton,
+      k,
+      {ctor: "_Tuple0"}));
+   };
+   var insert = F2(function (k,_p14) {
+      var _p15 = _p14;
+      return Set_elm_builtin(A3($Dict.insert,
+      k,
+      {ctor: "_Tuple0"},
+      _p15._0));
+   });
+   var fromList = function (xs) {
+      return A3($List.foldl,insert,empty,xs);
+   };
+   var map = F2(function (f,s) {
+      return fromList(A2($List.map,f,toList(s)));
+   });
+   var remove = F2(function (k,_p16) {
+      var _p17 = _p16;
+      return Set_elm_builtin(A2($Dict.remove,k,_p17._0));
+   });
+   var union = F2(function (_p19,_p18) {
+      var _p20 = _p19;
+      var _p21 = _p18;
+      return Set_elm_builtin(A2($Dict.union,_p20._0,_p21._0));
+   });
+   var intersect = F2(function (_p23,_p22) {
+      var _p24 = _p23;
+      var _p25 = _p22;
+      return Set_elm_builtin(A2($Dict.intersect,_p24._0,_p25._0));
+   });
+   var diff = F2(function (_p27,_p26) {
+      var _p28 = _p27;
+      var _p29 = _p26;
+      return Set_elm_builtin(A2($Dict.diff,_p28._0,_p29._0));
+   });
+   var filter = F2(function (p,_p30) {
+      var _p31 = _p30;
+      return Set_elm_builtin(A2($Dict.filter,
+      F2(function (k,_p32) {    return p(k);}),
+      _p31._0));
+   });
+   var partition = F2(function (p,_p33) {
+      var _p34 = _p33;
+      var _p35 = A2($Dict.partition,
+      F2(function (k,_p36) {    return p(k);}),
+      _p34._0);
+      var p1 = _p35._0;
+      var p2 = _p35._1;
+      return {ctor: "_Tuple2"
+             ,_0: Set_elm_builtin(p1)
+             ,_1: Set_elm_builtin(p2)};
+   });
+   return _elm.Set.values = {_op: _op
+                            ,empty: empty
+                            ,singleton: singleton
+                            ,insert: insert
+                            ,remove: remove
+                            ,isEmpty: isEmpty
+                            ,member: member
+                            ,size: size
+                            ,foldl: foldl
+                            ,foldr: foldr
+                            ,map: map
+                            ,filter: filter
+                            ,partition: partition
+                            ,union: union
+                            ,intersect: intersect
+                            ,diff: diff
+                            ,toList: toList
+                            ,fromList: fromList};
+};
 Elm.Native.Regex = {};
 Elm.Native.Regex.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -8776,7 +8893,9 @@ Elm.Y15D19.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Set = Elm.Set.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm);
    var _op = {};
    var comaRgx = $Regex.regex("Y");
    var bracRgx = $Regex.regex("(Ar|Rn)");
@@ -8789,25 +8908,87 @@ Elm.Y15D19.make = function (_elm) {
       rgx,
       model.molecule));
    });
+   var addToReplacements = F5(function (matches,
+   from,
+   to,
+   molecule,
+   replacements) {
+      addToReplacements: while (true) {
+         var _p0 = matches;
+         if (_p0.ctor === "[]") {
+               return replacements;
+            } else {
+               var _p1 = _p0._0;
+               var right = A3($String.slice,
+               _p1.index + $String.length(from),
+               -1,
+               molecule);
+               var left = A3($String.slice,0,_p1.index,molecule);
+               var replacement = A2($Basics._op["++"],
+               left,
+               A2($Basics._op["++"],to,right));
+               var replacements$ = A2($Set.insert,replacement,replacements);
+               var _v1 = _p0._1,
+               _v2 = from,
+               _v3 = to,
+               _v4 = molecule,
+               _v5 = replacements$;
+               matches = _v1;
+               from = _v2;
+               to = _v3;
+               molecule = _v4;
+               replacements = _v5;
+               continue addToReplacements;
+            }
+      }
+   });
+   var iterateRules = function (model) {
+      iterateRules: while (true) {
+         var _p2 = model.rules;
+         if (_p2.ctor === "[]") {
+               return model;
+            } else {
+               var _p3 = _p2._0;
+               var to = $Basics.snd(_p3);
+               var from = $Basics.fst(_p3);
+               var matches = A3($Regex.find,
+               $Regex.All,
+               $Regex.regex(from),
+               model.molecule);
+               var replacements$ = A5(addToReplacements,
+               matches,
+               from,
+               to,
+               model.molecule,
+               model.replacements);
+               var model$ = {rules: _p2._1
+                            ,molecule: model.molecule
+                            ,replacements: replacements$};
+               var _v7 = model$;
+               model = _v7;
+               continue iterateRules;
+            }
+      }
+   };
    var extractMolecule = function (submatches) {
-      var _p0 = submatches;
-      if (_p0.ctor === "Nothing") {
+      var _p4 = submatches;
+      if (_p4.ctor === "Nothing") {
             return "";
          } else {
-            var _p1 = _p0._0;
-            if (_p1.ctor === "::" && _p1._0.ctor === "Just" && _p1._1.ctor === "[]")
+            var _p5 = _p4._0;
+            if (_p5.ctor === "::" && _p5._0.ctor === "Just" && _p5._1.ctor === "[]")
             {
-                  return _p1._0._0;
+                  return _p5._0._0;
                } else {
                   return "";
                }
          }
    };
    var extractRule = function (submatches) {
-      var _p2 = submatches;
-      if (_p2.ctor === "::" && _p2._0.ctor === "Just" && _p2._1.ctor === "::" && _p2._1._0.ctor === "Just" && _p2._1._1.ctor === "[]")
+      var _p6 = submatches;
+      if (_p6.ctor === "::" && _p6._0.ctor === "Just" && _p6._1.ctor === "::" && _p6._1._0.ctor === "Just" && _p6._1._1.ctor === "[]")
       {
-            return {ctor: "_Tuple2",_0: _p2._0._0,_1: _p2._1._0._0};
+            return {ctor: "_Tuple2",_0: _p6._0._0,_1: _p6._1._0._0};
          } else {
             return {ctor: "_Tuple2",_0: "",_1: ""};
          }
@@ -8825,7 +9006,9 @@ Elm.Y15D19.make = function (_elm) {
          return _.submatches;
       },
       A3($Regex.find,$Regex.All,ruleRgx,input)));
-      return {rules: rules,molecule: molecule};
+      return {rules: rules
+             ,molecule: molecule
+             ,replacements: $Set.empty};
    };
    var askalski = function (model) {
       var comas = A2(count,comaRgx,model);
@@ -8833,13 +9016,16 @@ Elm.Y15D19.make = function (_elm) {
       var atoms = A2(count,atomRgx,model);
       return $Basics.toString(atoms - bracs - 2 * comas - 1);
    };
-   var molecules = function (model) {    return "PART 1";};
+   var molecules = function (model) {
+      var model$ = iterateRules(model);
+      return $Basics.toString($Set.size(model$.replacements));
+   };
    var prepare = F2(function (input,analyser) {
       var model = parse(input);
       return analyser(model);
    });
-   var Model = F2(function (a,b) {
-      return {rules: a,molecule: b};
+   var Model = F3(function (a,b,c) {
+      return {rules: a,molecule: b,replacements: c};
    });
    var part2 = function (input) {
       return A2(prepare,input,askalski);
@@ -8857,6 +9043,8 @@ Elm.Y15D19.make = function (_elm) {
                                ,parse: parse
                                ,extractRule: extractRule
                                ,extractMolecule: extractMolecule
+                               ,iterateRules: iterateRules
+                               ,addToReplacements: addToReplacements
                                ,count: count
                                ,ruleRgx: ruleRgx
                                ,moleRgx: moleRgx

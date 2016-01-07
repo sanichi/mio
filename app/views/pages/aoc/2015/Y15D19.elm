@@ -1,6 +1,7 @@
 module Y15D19 where
 
-import Regex exposing (Regex, HowMany(All), regex, find)
+import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
+import Set exposing (Set)
 import String
 
 
@@ -15,8 +16,9 @@ part2 input =
 
 
 type alias Model =
-  { rules    : List Rule
-  , molecule : String
+  { rules        : List Rule
+  , molecule     : String
+  , replacements : Set String
   }
 
 
@@ -34,7 +36,10 @@ prepare input analyser =
 
 molecules : Model -> String
 molecules model =
-  "PART 1"
+  let
+    model' = iterateRules model
+  in
+    Set.size model'.replacements |> toString
 
 
 askalski : Model -> String
@@ -62,6 +67,7 @@ parse input =
   in
     { rules = rules
     , molecule = molecule
+    , replacements = Set.empty
     }
 
 
@@ -80,6 +86,40 @@ extractMolecule submatches =
       case list of
         [ Just m ] -> m
         _ -> ""
+
+
+iterateRules : Model -> Model
+iterateRules model =
+  case model.rules of
+    [] -> model
+    rule :: rules ->
+      let
+        from = fst rule
+        to = snd rule
+        matches = find All (regex from) model.molecule
+        replacements' = addToReplacements matches from to model.molecule model.replacements
+        model' =
+          { rules = rules
+          , molecule = model.molecule
+          , replacements = replacements'
+          }
+      in
+        iterateRules model'
+
+
+addToReplacements : List Match -> String -> String -> String -> Set String -> Set String
+addToReplacements matches from to molecule replacements =
+  case matches of
+    [ ] ->
+      replacements
+    match :: rest ->
+      let
+        left = String.slice 0 match.index molecule
+        right = String.slice (match.index + String.length from) -1 molecule
+        replacement = left ++ to ++ right
+        replacements' = Set.insert replacement replacements
+      in
+        addToReplacements rest from to molecule replacements'
 
 
 count : Regex -> Model -> Int
