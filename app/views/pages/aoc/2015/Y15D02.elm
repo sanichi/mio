@@ -8,20 +8,10 @@ import Util exposing (join)
 answers : String -> String
 answers input =
   let
-    p1 = part1 input
-    p2 = part2 input
+    p1 = sumInput wrapping input |> toString
+    p2 = sumInput ribbon input |> toString
   in
     join p1 p2
-
-
-part1 : String -> String
-part1 input =
-  sumInput wrapping input |> toString
-
-
-part2 : String -> String
-part2 input =
-  sumInput ribbon input |> toString
 
 
 sumInput : (Int -> Int -> Int -> Int) -> String -> Int

@@ -9,20 +9,11 @@ import Util exposing (join)
 answers : String -> String
 answers input =
   let
-    p1 = part1 input
-    p2 = part2 input
+    model = parse input
+    p1 = molecules model
+    p2 = askalski model
   in
     join p1 p2
-
-
-part1 : String -> String
-part1 input =
-  prepare input molecules
-
-
-part2 : String -> String
-part2 input =
-  prepare input askalski
 
 
 type alias Model =
@@ -34,14 +25,6 @@ type alias Model =
 
 type alias Rule =
   (String, String)
-
-
-prepare : String -> (Model -> String) -> String
-prepare input analyser =
-  let
-    model = parse input
-  in
-    analyser model
 
 
 molecules : Model -> String

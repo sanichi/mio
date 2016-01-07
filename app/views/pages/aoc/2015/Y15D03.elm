@@ -9,20 +9,10 @@ import Util exposing (join)
 answers : String -> String
 answers input =
   let
-    p1 = part1 input
-    p2 = part2 input
+    p1 = christmas 1 input
+    p2 = christmas 2 input
   in
     join p1 p2
-
-
-part1 : String -> String
-part1 input =
-  christmas 1 input
-
-
-part2 : String -> String
-part2 input =
-  christmas 2 input
 
 
 christmas : Int -> String -> String

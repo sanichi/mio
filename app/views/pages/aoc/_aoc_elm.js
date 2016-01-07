@@ -8703,21 +8703,13 @@ Elm.Y15D01.make = function (_elm) {
          return floor;
       }
    });
-   var part2 = function (input) {
-      return $Basics.toString(A3(position,0,0,input));
-   };
-   var part1 = function (input) {
-      return $Basics.toString(A2(count,0,input));
-   };
    var answers = function (input) {
-      var p2 = part2(input);
-      var p1 = part1(input);
+      var p2 = $Basics.toString(A3(position,0,0,input));
+      var p1 = $Basics.toString(A2(count,0,input));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D01.values = {_op: _op
                                ,answers: answers
-                               ,part1: part1
-                               ,part2: part2
                                ,count: count
                                ,position: position};
 };
@@ -8781,21 +8773,13 @@ Elm.Y15D02.make = function (_elm) {
       input);
       return A3($List.foldl,sumLine(counter),0,lines);
    });
-   var part2 = function (input) {
-      return $Basics.toString(A2(sumInput,ribbon,input));
-   };
-   var part1 = function (input) {
-      return $Basics.toString(A2(sumInput,wrapping,input));
-   };
    var answers = function (input) {
-      var p2 = part2(input);
-      var p1 = part1(input);
+      var p2 = $Basics.toString(A2(sumInput,ribbon,input));
+      var p1 = $Basics.toString(A2(sumInput,wrapping,input));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D02.values = {_op: _op
                                ,answers: answers
-                               ,part1: part1
-                               ,part2: part2
                                ,sumInput: sumInput
                                ,sumLine: sumLine
                                ,wrapping: wrapping
@@ -8897,21 +8881,13 @@ Elm.Y15D03.make = function (_elm) {
             return $Basics.toString($List.length($Dict.keys(model.visited)));
          }
    });
-   var part2 = function (input) {
-      return A2(christmas,2,input);
-   };
-   var part1 = function (input) {
-      return A2(christmas,1,input);
-   };
    var answers = function (input) {
-      var p2 = part2(input);
-      var p1 = part1(input);
+      var p2 = A2(christmas,2,input);
+      var p1 = A2(christmas,1,input);
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D03.values = {_op: _op
                                ,answers: answers
-                               ,part1: part1
-                               ,part2: part2
                                ,christmas: christmas
                                ,Santa: Santa
                                ,initSanta: initSanta
@@ -8958,31 +8934,24 @@ Elm.Y15D05.make = function (_elm) {
       return _U.cmp(vowels,3) > -1 && (_U.cmp(dubles,
       0) > 0 && _U.eq(badies,0));
    };
-   var parse = F2(function (input,nice) {
+   var countNice = F2(function (nice,strings) {
       return $Basics.toString($List.length(A2($List.filter,
       nice,
-      A2($List.map,
+      strings)));
+   });
+   var answers = function (input) {
+      var strings = A2($List.map,
       function (_) {
          return _.match;
       },
-      A3($Regex.find,$Regex.All,stringRgx,input)))));
-   });
-   var part2 = function (input) {
-      return A2(parse,input,nice2);
-   };
-   var part1 = function (input) {
-      return A2(parse,input,nice1);
-   };
-   var answers = function (input) {
-      var p2 = part2(input);
-      var p1 = part1(input);
+      A3($Regex.find,$Regex.All,stringRgx,input));
+      var p1 = A2(countNice,nice1,strings);
+      var p2 = A2(countNice,nice2,strings);
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D05.values = {_op: _op
                                ,answers: answers
-                               ,part1: part1
-                               ,part2: part2
-                               ,parse: parse
+                               ,countNice: countNice
                                ,nice1: nice1
                                ,nice2: nice2
                                ,count: count
@@ -9133,30 +9102,18 @@ Elm.Y15D19.make = function (_elm) {
       var model$ = iterateRules(model);
       return $Basics.toString($Set.size(model$.replacements));
    };
-   var prepare = F2(function (input,analyser) {
-      var model = parse(input);
-      return analyser(model);
-   });
    var Model = F3(function (a,b,c) {
       return {rules: a,molecule: b,replacements: c};
    });
-   var part2 = function (input) {
-      return A2(prepare,input,askalski);
-   };
-   var part1 = function (input) {
-      return A2(prepare,input,molecules);
-   };
    var answers = function (input) {
-      var p2 = part2(input);
-      var p1 = part1(input);
+      var model = parse(input);
+      var p1 = molecules(model);
+      var p2 = askalski(model);
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D19.values = {_op: _op
                                ,answers: answers
-                               ,part1: part1
-                               ,part2: part2
                                ,Model: Model
-                               ,prepare: prepare
                                ,molecules: molecules
                                ,askalski: askalski
                                ,parse: parse

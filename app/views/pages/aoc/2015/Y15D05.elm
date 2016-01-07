@@ -7,29 +7,16 @@ import Util exposing (join)
 answers : String -> String
 answers input =
   let
-    p1 = part1 input
-    p2 = part2 input
+    strings = find All stringRgx input |> List.map .match
+    p1 = countNice nice1 strings
+    p2 = countNice nice2 strings
   in
     join p1 p2
 
 
-part1 : String -> String
-part1 input =
-  parse input nice1
-
-
-part2 : String -> String
-part2 input =
-  parse input nice2
-
-
-parse : String -> (String -> Bool) -> String
-parse input nice =
-  find All stringRgx input
-    |> List.map .match
-    |> List.filter nice
-    |> List.length
-    |> toString
+countNice : (String -> Bool) -> List String -> String
+countNice nice strings =
+  strings |> List.filter nice |> List.length |> toString
 
 
 nice1 : String -> Bool
