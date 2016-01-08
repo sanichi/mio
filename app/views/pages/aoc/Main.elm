@@ -1,6 +1,7 @@
 import Y15D01
 import Y15D02
 import Y15D03
+import Y15D04
 import Y15D05
 import Y15D19
 import Y15D25
@@ -30,6 +31,7 @@ update action model =
         (2015,  1) -> Y15D01.answers input
         (2015,  2) -> Y15D02.answers input
         (2015,  3) -> Y15D03.answers input
+        (2015,  4) -> Y15D04.answers input
         (2015,  5) -> Y15D05.answers input
         (2015, 19) -> Y15D19.answers input
         (2015, 25) -> Y15D25.answer  input

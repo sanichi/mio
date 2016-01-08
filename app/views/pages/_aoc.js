@@ -5,7 +5,7 @@ $(function() {
   elm_app = Elm.worker(Elm.Main, { problem: [2015, 1, ""] });
   elm_app.ports.answer.subscribe(display_aoc_answer);
 
-  // See if we can send a problem to the Elm app every time the menus update.
+  // Send a problem to the Elm app every time the menus update.
   $('#year').change(function() {
     solve_aoc_problem($(this).val(), $('#day').val());
   });
