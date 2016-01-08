@@ -1,6 +1,5 @@
 class Favourite < ActiveRecord::Base
   include Constrainable
-  include Pageable
 
   MAX_FANS = 50
   MAX_LINK = 100
@@ -17,13 +16,14 @@ class Favourite < ActiveRecord::Base
 
   scope :by_year, -> { order(year: :desc, name: :asc) }
 
-  def self.search(params, path, opt={})
+  def self.search(params)
     matches = by_year
+    matches = matches.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
     matches = matches.where(category: params[:category].to_i) if params[:category].present?
     matches = matches.where("fans LIKE ?", "%#{params[:fan]}%") if params[:fan].present?
     constraint = numerical_constraint(params[:year], :year)
     matches = matches.where(constraint) if constraint
-    paginate(matches, params, path, opt)
+    matches.all
   end
 
   def update_people(ids)

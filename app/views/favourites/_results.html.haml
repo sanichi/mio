@@ -1,4 +1,4 @@
-- favourites.matches.each do |favourite|
+- favourites.each do |favourite|
   %tr
     %td= link_to_if favourite.link, favourite.name, favourite.link, target: "_external"
     %td= favourite.fans
@@ -6,4 +6,3 @@
     %td.text-center= favourite.year
     - if can?(:edit, favourite)
       %td.text-center= link_to t("edit"), edit_favourite_path(favourite), class: "btn btn-info btn-xs"
-= render "utils/pagination_links", pager: favourites, columns: 4 + (can?(:edit, Favourite) ? 1 : 0)
