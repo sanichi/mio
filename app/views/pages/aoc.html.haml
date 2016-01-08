@@ -20,7 +20,9 @@
           %select{class: "form-control input-sm", size: "1", id: "day"}
             %option{value: ""}= t("select")
             - (1..25).each do |day|
-              %option{value: "#{day}"}= day
+              %option{value: "#{day}"}
+                = day
+                = "🌳" if [1, 2, 3, 5, 19, 25].include? day
       .form-group
         %label.control-label.col-xs-2= t("pages.aoc.answer")
         .col-xs-5
