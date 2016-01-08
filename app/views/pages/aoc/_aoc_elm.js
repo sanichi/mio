@@ -9255,6 +9255,195 @@ Elm.Y15D05.make = function (_elm) {
                                ,pairsRgx: pairsRgx
                                ,twipsRgx: twipsRgx};
 };
+Elm.Y15D06 = Elm.Y15D06 || {};
+Elm.Y15D06.make = function (_elm) {
+   "use strict";
+   _elm.Y15D06 = _elm.Y15D06 || {};
+   if (_elm.Y15D06.values) return _elm.Y15D06.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var initModel = {ctor: "_Tuple2"
+                   ,_0: A2($Array.repeat,1000000,0)
+                   ,_1: A2($Array.repeat,1000000,0)};
+   var Instruction = F3(function (a,b,c) {
+      return {action: a,from: b,to: c};
+   });
+   var Off = {ctor: "Off"};
+   var On = {ctor: "On"};
+   var Toggle = {ctor: "Toggle"};
+   var badInstruction = {action: Toggle
+                        ,from: {ctor: "_Tuple2",_0: 1,_1: 1}
+                        ,to: {ctor: "_Tuple2",_0: 0,_1: 0}};
+   var parseInstruction = function (submatches) {
+      var _p0 = submatches;
+      if (_p0.ctor === "::" && _p0._0.ctor === "Just" && _p0._1.ctor === "::" && _p0._1._0.ctor === "Just" && _p0._1._1.ctor === "::" && _p0._1._1._0.ctor === "Just" && _p0._1._1._1.ctor === "::" && _p0._1._1._1._0.ctor === "Just" && _p0._1._1._1._1.ctor === "::" && _p0._1._1._1._1._0.ctor === "Just" && _p0._1._1._1._1._1.ctor === "[]")
+      {
+            var ty$ = $String.toInt(_p0._1._1._1._1._0._0);
+            var tx$ = $String.toInt(_p0._1._1._1._0._0);
+            var fy$ = $String.toInt(_p0._1._1._0._0);
+            var fx$ = $String.toInt(_p0._1._0._0);
+            var a$ = function () {
+               var _p1 = _p0._0._0;
+               switch (_p1)
+               {case "toggle": return $Maybe.Just(Toggle);
+                  case "turn on": return $Maybe.Just(On);
+                  case "turn off": return $Maybe.Just(Off);
+                  default: return $Maybe.Nothing;}
+            }();
+            var _p2 = {ctor: "_Tuple5"
+                      ,_0: a$
+                      ,_1: fx$
+                      ,_2: fy$
+                      ,_3: tx$
+                      ,_4: ty$};
+            if (_p2.ctor === "_Tuple5" && _p2._0.ctor === "Just" && _p2._1.ctor === "Ok" && _p2._2.ctor === "Ok" && _p2._3.ctor === "Ok" && _p2._4.ctor === "Ok")
+            {
+                  var _p6 = _p2._4._0;
+                  var _p5 = _p2._3._0;
+                  var _p4 = _p2._2._0;
+                  var _p3 = _p2._1._0;
+                  return _U.cmp(_p3,0) > -1 && (_U.cmp(_p4,0) > -1 && (_U.cmp(_p3,
+                  _p5) < 1 && (_U.cmp(_p4,_p6) < 1 && (_U.cmp(_p5,
+                  1000) < 0 && _U.cmp(_p6,1000) < 0)))) ? {action: _p2._0._0
+                                                          ,from: {ctor: "_Tuple2",_0: _p3,_1: _p4}
+                                                          ,to: {ctor: "_Tuple2",_0: _p5,_1: _p6}} : badInstruction;
+               } else {
+                  return badInstruction;
+               }
+         } else {
+            return badInstruction;
+         }
+   };
+   var index = function (instruction) {
+      var y = $Basics.snd(instruction.from);
+      var x = $Basics.fst(instruction.from);
+      return x + 1000 * y;
+   };
+   var updateCell = F2(function (instruction,lights) {
+      var l2 = $Basics.snd(lights);
+      var l1 = $Basics.fst(lights);
+      var k = index(instruction);
+      var v1 = A2($Maybe.withDefault,0,A2($Array.get,k,l1));
+      var v1$ = function () {
+         var _p7 = instruction.action;
+         switch (_p7.ctor)
+         {case "Toggle": return _U.eq(v1,1) ? 0 : 1;
+            case "On": return 1;
+            default: return 0;}
+      }();
+      var v2 = A2($Maybe.withDefault,0,A2($Array.get,k,l2));
+      var v2$ = function () {
+         var _p8 = instruction.action;
+         switch (_p8.ctor)
+         {case "Toggle": return v2 + 2;
+            case "On": return v2 + 1;
+            default: return _U.eq(v2,0) ? 0 : v2 - 1;}
+      }();
+      return {ctor: "_Tuple2"
+             ,_0: A3($Array.set,k,v1$,l1)
+             ,_1: A3($Array.set,k,v2$,l2)};
+   });
+   var updateCol = F2(function (instruction,lights) {
+      updateCol: while (true) {
+         var ty = $Basics.snd(instruction.to);
+         var fy = $Basics.snd(instruction.from);
+         var lights$ = A2(updateCell,instruction,lights);
+         if (_U.eq(fy,ty)) return lights$; else {
+               var tx = $Basics.fst(instruction.to);
+               var fx = $Basics.fst(instruction.from);
+               var instruction$ = _U.update(instruction,
+               {from: {ctor: "_Tuple2",_0: fx,_1: fy + 1}
+               ,to: {ctor: "_Tuple2",_0: tx,_1: ty}});
+               var _v5 = instruction$,_v6 = lights$;
+               instruction = _v5;
+               lights = _v6;
+               continue updateCol;
+            }
+      }
+   });
+   var updateRow = F2(function (instruction,lights) {
+      updateRow: while (true) {
+         var tx = $Basics.fst(instruction.to);
+         var fx = $Basics.fst(instruction.from);
+         var lights$ = A2(updateCol,instruction,lights);
+         if (_U.eq(fx,tx)) return lights$; else {
+               var ty = $Basics.snd(instruction.to);
+               var fy = $Basics.snd(instruction.from);
+               var instruction$ = _U.update(instruction,
+               {from: {ctor: "_Tuple2",_0: fx + 1,_1: fy}
+               ,to: {ctor: "_Tuple2",_0: tx,_1: ty}});
+               var _v7 = instruction$,_v8 = lights$;
+               instruction = _v7;
+               lights = _v8;
+               continue updateRow;
+            }
+      }
+   });
+   var process = F2(function (instructions,lights) {
+      process: while (true) {
+         var _p9 = instructions;
+         if (_p9.ctor === "[]") {
+               return lights;
+            } else {
+               var lights$ = A2(updateRow,_p9._0,lights);
+               var _v10 = _p9._1,_v11 = lights$;
+               instructions = _v10;
+               lights = _v11;
+               continue process;
+            }
+      }
+   });
+   var parse = function (input) {
+      var rgx = $Regex.regex("(toggle|turn (?:on|off)) (\\d+),(\\d+) through (\\d+),(\\d+)");
+      return A2($List.filter,
+      function (i) {
+         return !_U.eq(i,badInstruction);
+      },
+      A2($List.map,
+      parseInstruction,
+      A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,$Regex.All,rgx,input))));
+   };
+   var answers = function (input) {
+      var instructions = parse(input);
+      var model = A2(process,instructions,initModel);
+      var p1 = $Basics.toString($List.length(A2($List.filter,
+      function (l) {
+         return _U.eq(l,1);
+      },
+      $Array.toList($Basics.fst(model)))));
+      var p2 = $Basics.toString($List.sum($Array.toList($Basics.snd(model))));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D06.values = {_op: _op
+                               ,answers: answers
+                               ,parse: parse
+                               ,process: process
+                               ,updateRow: updateRow
+                               ,updateCol: updateCol
+                               ,updateCell: updateCell
+                               ,index: index
+                               ,parseInstruction: parseInstruction
+                               ,Toggle: Toggle
+                               ,On: On
+                               ,Off: Off
+                               ,Instruction: Instruction
+                               ,badInstruction: badInstruction
+                               ,initModel: initModel};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -9520,6 +9709,7 @@ Elm.Main.make = function (_elm) {
    $Y15D03 = Elm.Y15D03.make(_elm),
    $Y15D04 = Elm.Y15D04.make(_elm),
    $Y15D05 = Elm.Y15D05.make(_elm),
+   $Y15D06 = Elm.Y15D06.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -9543,7 +9733,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_7: do {
+            _v1_8: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -9551,11 +9741,12 @@ Elm.Main.make = function (_elm) {
                         case 3: return $Y15D03.answers(_p3);
                         case 4: return $Y15D04.answers(_p3);
                         case 5: return $Y15D05.answers(_p3);
+                        case 6: return $Y15D06.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_7;}
+                        default: break _v1_8;}
                   } else {
-                     break _v1_7;
+                     break _v1_8;
                   }
             } while (false);
             return A2($Basics._op["++"],

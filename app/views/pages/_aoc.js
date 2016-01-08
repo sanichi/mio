@@ -2,7 +2,7 @@ var elm_app;
 
 $(function() {
   // Embed the elm app as a worker.
-  elm_app = Elm.worker(Elm.Main, { problem: [2015, 1, ""] });
+  elm_app = Elm.worker(Elm.Main, { problem: [2015, 1, ''] });
   elm_app.ports.answer.subscribe(display_aoc_answer);
 
   // Send a problem to the Elm app every time the menus update.
@@ -23,6 +23,7 @@ function solve_aoc_problem(y, d) {
   {
     var file = '/aoc/' + year + '/' + day + '.txt';
     $.ajax({url: file}).done(function(text) {
+      $('#answer').val('');
       $('#input').val(text);
       $('#loading').show();
       setTimeout(function() { // flush DOM changes
