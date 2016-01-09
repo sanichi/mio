@@ -8,9 +8,17 @@ en:
     favourite: Favourite
     favourites: Favourites
     link: Link
+    mark: Mark
+    sandra: Sandra
     new: New Favourite
     person: Fan
     categories:
       - Film
       - TV
       - Book
+    votes:
+      - None
+      - 😀
+      - 😢
+      - 😧
+      - 🤔

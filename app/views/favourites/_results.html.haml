@@ -1,7 +1,8 @@
 - favourites.each do |favourite|
   %tr
     %td= link_to_if favourite.link, favourite.name, favourite.link, target: "_external"
-    %td= favourite.fans
+    %td.text-center= t("favourite.votes")[favourite.mark] if favourite.mark > 0
+    %td.text-center= t("favourite.votes")[favourite.sandra] if favourite.sandra > 0
     %td.text-center= I18n.t("favourite.categories")[favourite.category]
     %td.text-center= favourite.year
     - if can?(:edit, favourite)

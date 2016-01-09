@@ -39,6 +39,6 @@ class FavouritesController < ApplicationController
   end
 
   def strong_params
-    params.require(:favourite).permit(:category, :fans, :link, :name, :year)
+    params.require(:favourite).permit(:category, :link, :mark, :name, :sandra, :year)
   end
 end

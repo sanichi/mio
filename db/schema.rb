@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102172401) do
+ActiveRecord::Schema.define(version: 20160109105219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,8 +52,10 @@ ActiveRecord::Schema.define(version: 20160102172401) do
     t.string   "name",       limit: 50
     t.string   "link",       limit: 100
     t.integer  "year"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "mark",       limit: 2,   default: 0
+    t.integer  "sandra",     limit: 2,   default: 0
   end
 
   create_table "funds", force: :cascade do |t|

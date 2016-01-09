@@ -12,8 +12,17 @@ module FavouritesHelper
   end
 
   def favourite_fan_search_menu(fan)
-    fans = Favourite.pluck(:fans).reduce([]){ |c, f| c << f.scan(/[A-Z][a-z]+/) }.flatten.uniq.sort.map{ |f| [f, f] }
-    fans.unshift [t("favourite.any_fan"), ""]
+    fans =
+    [
+      [t("favourite.any_fan"), ""],
+      [t("favourite.mark"),   "m"],
+      [t("favourite.sandra"), "s"],
+    ]
     options_for_select(fans, fan)
+  end
+
+  def favourite_vote_menu(vote)
+    votes = t("favourite.votes").each_with_index.map { |v, i| [v, i] }
+    options_for_select(votes, vote)
   end
 end
