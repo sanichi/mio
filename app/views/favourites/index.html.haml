@@ -24,10 +24,10 @@
       %thead
         %tr
           %th= t("name")
-          %th.text-center.col-xs-1= t("favourite.mark")
-          %th.text-center.col-xs-1= t("favourite.sandra")
           %th.text-center.col-xs-1= t("favourite.category")
           %th.text-center.col-xs-1= t("year")
+          %th.text-center.col-xs-1= t("favourite.mark")
+          %th.text-center.col-xs-1= t("favourite.sandra")
           - if can?(:edit, Favourite)
             %th.col-xs-1
       %tbody{id: "results"}
