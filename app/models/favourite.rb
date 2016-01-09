@@ -4,6 +4,7 @@ class Favourite < ActiveRecord::Base
   MAX_LINK = 100
   MAX_NAME = 50
   MIN_YEAR = 1900
+  MAX_FANS = 50 # legacy
 
   before_validation :normalize_attributes, :at_least_one_vote
 
