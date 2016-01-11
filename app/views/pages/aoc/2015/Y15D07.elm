@@ -2,7 +2,6 @@ module Y15D07 where
 
 import Bitwise
 import Dict exposing (Dict)
-import Regex exposing (HowMany(AtMost), find, regex)
 import String
 import Util exposing (join)
 

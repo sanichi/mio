@@ -9758,6 +9758,108 @@ Elm.Y15D07.make = function (_elm) {
                                ,Rshift: Rshift
                                ,Not: Not};
 };
+Elm.Y15D08 = Elm.Y15D08 || {};
+Elm.Y15D08.make = function (_elm) {
+   "use strict";
+   _elm.Y15D08 = _elm.Y15D08 || {};
+   if (_elm.Y15D08.values) return _elm.Y15D08.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var escape = function (line) {
+      var r1 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("\\\\"),
+      function (_p0) {
+         return "\\\\";
+      },
+      line);
+      var r2 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("\""),
+      function (_p1) {
+         return "\\\"";
+      },
+      r1);
+      var r3 = A2($Basics._op["++"],
+      "\"",
+      A2($Basics._op["++"],r2,"\""));
+      return r3;
+   };
+   var unescape = function (line) {
+      var r1 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("(^\"|\"$)"),
+      function (_p2) {
+         return "";
+      },
+      line);
+      var r2 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("\\\\\""),
+      function (_p3) {
+         return "_";
+      },
+      r1);
+      var r3 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("\\\\\\\\"),
+      function (_p4) {
+         return ".";
+      },
+      r2);
+      var r4 = A4($Regex.replace,
+      $Regex.All,
+      $Regex.regex("\\\\x[0-9a-f]{2}"),
+      function (_p5) {
+         return "-";
+      },
+      r3);
+      return r4;
+   };
+   var escLength = function (lines) {
+      return $List.sum(A2($List.map,
+      $String.length,
+      A2($Debug.log,"escaped",A2($List.map,escape,lines))));
+   };
+   var memLength = function (lines) {
+      return $List.sum(A2($List.map,
+      $String.length,
+      A2($List.map,unescape,lines)));
+   };
+   var chrLength = function (lines) {
+      return $List.sum(A2($List.map,$String.length,lines));
+   };
+   var parseInput = function (input) {
+      return A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input));
+   };
+   var answers = function (input) {
+      var strings = parseInput(input);
+      var p1 = $Basics.toString(chrLength(strings) - memLength(strings));
+      var p2 = $Basics.toString(escLength(strings) - chrLength(strings));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D08.values = {_op: _op
+                               ,answers: answers
+                               ,parseInput: parseInput
+                               ,chrLength: chrLength
+                               ,memLength: memLength
+                               ,escLength: escLength
+                               ,unescape: unescape
+                               ,escape: escape};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -10025,6 +10127,7 @@ Elm.Main.make = function (_elm) {
    $Y15D05 = Elm.Y15D05.make(_elm),
    $Y15D06 = Elm.Y15D06.make(_elm),
    $Y15D07 = Elm.Y15D07.make(_elm),
+   $Y15D08 = Elm.Y15D08.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10048,7 +10151,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_9: do {
+            _v1_10: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10058,11 +10161,12 @@ Elm.Main.make = function (_elm) {
                         case 5: return $Y15D05.answers(_p3);
                         case 6: return $Y15D06.answers(_p3);
                         case 7: return $Y15D07.answers(_p3);
+                        case 8: return $Y15D08.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_9;}
+                        default: break _v1_10;}
                   } else {
-                     break _v1_9;
+                     break _v1_10;
                   }
             } while (false);
             return A2($Basics._op["++"],
