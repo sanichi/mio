@@ -8918,12 +8918,50 @@ Elm.Util.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var select = function (xs) {
+      var _p0 = xs;
+      if (_p0.ctor === "[]") {
+            return _U.list([]);
+         } else {
+            var _p4 = _p0._1;
+            var _p3 = _p0._0;
+            return A2($List._op["::"],
+            {ctor: "_Tuple2",_0: _p3,_1: _p4},
+            A2($List.map,
+            function (_p1) {
+               var _p2 = _p1;
+               return {ctor: "_Tuple2"
+                      ,_0: _p2._0
+                      ,_1: A2($List._op["::"],_p3,_p2._1)};
+            },
+            select(_p4)));
+         }
+   };
+   var permutations = function (xs$) {
+      var _p5 = xs$;
+      if (_p5.ctor === "[]") {
+            return _U.list([_U.list([])]);
+         } else {
+            var f = function (_p6) {
+               var _p7 = _p6;
+               return A2($List.map,
+               F2(function (x,y) {
+                  return A2($List._op["::"],x,y);
+               })(_p7._0),
+               permutations(_p7._1));
+            };
+            return A2($List.concatMap,f,select(_p5));
+         }
+   };
    var join = F2(function (p1,p2) {
       return A2($Basics._op["++"],
       p1,
       A2($Basics._op["++"]," | ",p2));
    });
-   return _elm.Util.values = {_op: _op,join: join};
+   return _elm.Util.values = {_op: _op
+                             ,join: join
+                             ,permutations: permutations
+                             ,select: select};
 };
 Elm.Y15D01 = Elm.Y15D01 || {};
 Elm.Y15D01.make = function (_elm) {
@@ -9828,7 +9866,7 @@ Elm.Y15D08.make = function (_elm) {
    var escLength = function (lines) {
       return $List.sum(A2($List.map,
       $String.length,
-      A2($Debug.log,"escaped",A2($List.map,escape,lines))));
+      A2($List.map,escape,lines)));
    };
    var memLength = function (lines) {
       return $List.sum(A2($List.map,
@@ -9859,6 +9897,127 @@ Elm.Y15D08.make = function (_elm) {
                                ,escLength: escLength
                                ,unescape: unescape
                                ,escape: escape};
+};
+Elm.Y15D09 = Elm.Y15D09 || {};
+Elm.Y15D09.make = function (_elm) {
+   "use strict";
+   _elm.Y15D09 = _elm.Y15D09 || {};
+   if (_elm.Y15D09.values) return _elm.Y15D09.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var initModel = {distances: $Dict.empty,cities: _U.list([])};
+   var Model = F2(function (a,b) {
+      return {distances: a,cities: b};
+   });
+   var key = F2(function (c1,c2) {
+      return A2($Basics._op["++"],c1,A2($Basics._op["++"],"|",c2));
+   });
+   var pairs = function (list) {
+      var _p0 = list;
+      if (_p0.ctor === "[]") {
+            return _U.list([]);
+         } else {
+            if (_p0._1.ctor === "[]") {
+                  return _U.list([]);
+               } else {
+                  var _p1 = _p0._1._0;
+                  return A2($List._op["::"],
+                  {ctor: "_Tuple2",_0: _p0._0,_1: _p1},
+                  pairs(A2($List._op["::"],_p1,_p0._1._1)));
+               }
+         }
+   };
+   var parseLine = F2(function (line,model) {
+      var matches = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("^(\\w+) to (\\w+) = (\\d+)$"),
+      line));
+      var _p2 = matches;
+      if (_p2.ctor === "::" && _p2._0.ctor === "::" && _p2._0._0.ctor === "Just" && _p2._0._1.ctor === "::" && _p2._0._1._0.ctor === "Just" && _p2._0._1._1.ctor === "::" && _p2._0._1._1._0.ctor === "Just" && _p2._0._1._1._1.ctor === "[]" && _p2._1.ctor === "[]")
+      {
+            var _p4 = _p2._0._1._0._0;
+            var _p3 = _p2._0._0._0;
+            var cities$ = A2($List.member,
+            _p3,
+            model.cities) ? model.cities : A2($List._op["::"],
+            _p3,
+            model.cities);
+            var cities = A2($List.member,
+            _p4,
+            cities$) ? cities$ : A2($List._op["::"],_p4,cities$);
+            var di = A2($Maybe.withDefault,
+            0,
+            $Result.toMaybe($String.toInt(_p2._0._1._1._0._0)));
+            var distances = A3($Dict.insert,
+            A2(key,_p4,_p3),
+            di,
+            A3($Dict.insert,A2(key,_p3,_p4),di,model.distances));
+            return _U.update(model,{distances: distances,cities: cities});
+         } else {
+            return model;
+         }
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      initModel,
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var extreme = function (model) {
+      var f = function (_p5) {
+         var _p6 = _p5;
+         return A2($Maybe.withDefault,
+         0,
+         A2($Dict.get,A2(key,_p6._0,_p6._1),model.distances));
+      };
+      return A2($List.map,
+      function (p) {
+         return $List.sum(A2($List.map,f,p));
+      },
+      A2($List.map,
+      function (perm) {
+         return pairs(perm);
+      },
+      $Util.permutations(model.cities)));
+   };
+   var answers = function (input) {
+      var model = parseInput(input);
+      var extremes = extreme(model);
+      var p1 = $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.minimum(extremes)));
+      var p2 = $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.maximum(extremes)));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D09.values = {_op: _op
+                               ,answers: answers
+                               ,extreme: extreme
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,pairs: pairs
+                               ,key: key
+                               ,Model: Model
+                               ,initModel: initModel};
 };
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
@@ -10128,6 +10287,7 @@ Elm.Main.make = function (_elm) {
    $Y15D06 = Elm.Y15D06.make(_elm),
    $Y15D07 = Elm.Y15D07.make(_elm),
    $Y15D08 = Elm.Y15D08.make(_elm),
+   $Y15D09 = Elm.Y15D09.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10151,7 +10311,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_10: do {
+            _v1_11: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10162,11 +10322,12 @@ Elm.Main.make = function (_elm) {
                         case 6: return $Y15D06.answers(_p3);
                         case 7: return $Y15D07.answers(_p3);
                         case 8: return $Y15D08.answers(_p3);
+                        case 9: return $Y15D09.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_10;}
+                        default: break _v1_11;}
                   } else {
-                     break _v1_10;
+                     break _v1_11;
                   }
             } while (false);
             return A2($Basics._op["++"],
