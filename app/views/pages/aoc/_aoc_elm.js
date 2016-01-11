@@ -3160,6 +3160,58 @@ Elm.Array.make = function (_elm) {
                               ,foldl: foldl
                               ,foldr: foldr};
 };
+Elm.Native.Bitwise = {};
+Elm.Native.Bitwise.make = function(localRuntime) {
+	localRuntime.Native = localRuntime.Native || {};
+	localRuntime.Native.Bitwise = localRuntime.Native.Bitwise || {};
+	if (localRuntime.Native.Bitwise.values)
+	{
+		return localRuntime.Native.Bitwise.values;
+	}
+
+	function and(a, b) { return a & b; }
+	function or(a, b) { return a | b; }
+	function xor(a, b) { return a ^ b; }
+	function not(a) { return ~a; }
+	function sll(a, offset) { return a << offset; }
+	function sra(a, offset) { return a >> offset; }
+	function srl(a, offset) { return a >>> offset; }
+
+	return localRuntime.Native.Bitwise.values = {
+		and: F2(and),
+		or: F2(or),
+		xor: F2(xor),
+		complement: not,
+		shiftLeft: F2(sll),
+		shiftRightArithmatic: F2(sra),
+		shiftRightLogical: F2(srl)
+	};
+};
+
+Elm.Bitwise = Elm.Bitwise || {};
+Elm.Bitwise.make = function (_elm) {
+   "use strict";
+   _elm.Bitwise = _elm.Bitwise || {};
+   if (_elm.Bitwise.values) return _elm.Bitwise.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Native$Bitwise = Elm.Native.Bitwise.make(_elm);
+   var _op = {};
+   var shiftRightLogical = $Native$Bitwise.shiftRightLogical;
+   var shiftRight = $Native$Bitwise.shiftRightArithmatic;
+   var shiftLeft = $Native$Bitwise.shiftLeft;
+   var complement = $Native$Bitwise.complement;
+   var xor = $Native$Bitwise.xor;
+   var or = $Native$Bitwise.or;
+   var and = $Native$Bitwise.and;
+   return _elm.Bitwise.values = {_op: _op
+                                ,and: and
+                                ,or: or
+                                ,xor: xor
+                                ,complement: complement
+                                ,shiftLeft: shiftLeft
+                                ,shiftRight: shiftRight
+                                ,shiftRightLogical: shiftRightLogical};
+};
 Elm.Native.Char = {};
 Elm.Native.Char.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -9444,6 +9496,268 @@ Elm.Y15D06.make = function (_elm) {
                                ,badInstruction: badInstruction
                                ,initModel: initModel};
 };
+Elm.Y15D07 = Elm.Y15D07 || {};
+Elm.Y15D07.make = function (_elm) {
+   "use strict";
+   _elm.Y15D07 = _elm.Y15D07 || {};
+   if (_elm.Y15D07.values) return _elm.Y15D07.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Bitwise = Elm.Bitwise.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Not = function (a) {    return {ctor: "Not",_0: a};};
+   var Rshift = F2(function (a,b) {
+      return {ctor: "Rshift",_0: a,_1: b};
+   });
+   var Lshift = F2(function (a,b) {
+      return {ctor: "Lshift",_0: a,_1: b};
+   });
+   var Or = F2(function (a,b) {
+      return {ctor: "Or",_0: a,_1: b};
+   });
+   var And = F2(function (a,b) {
+      return {ctor: "And",_0: a,_1: b};
+   });
+   var Pass = function (a) {    return {ctor: "Pass",_0: a};};
+   var NoOp = function (a) {    return {ctor: "NoOp",_0: a};};
+   var maxValue = 65535;
+   var parseInt = function (i) {
+      return A2($Maybe.withDefault,
+      0,
+      $Result.toMaybe($String.toInt(i)));
+   };
+   var parseConnection = function (connection) {
+      var words = A2($String.split," ",connection);
+      var _p0 = words;
+      _v0_6: do {
+         if (_p0.ctor === "::" && _p0._1.ctor === "::" && _p0._1._1.ctor === "::")
+         {
+               if (_p0._1._1._1.ctor === "[]") {
+                     if (_p0._1._0 === "->") {
+                           return {ctor: "_Tuple2",_0: _p0._1._1._0,_1: Pass(_p0._0)};
+                        } else {
+                           break _v0_6;
+                        }
+                  } else {
+                     if (_p0._1._1._1._1.ctor === "::") {
+                           if (_p0._1._1._1._0 === "->" && _p0._1._1._1._1._1.ctor === "[]")
+                           {
+                                 switch (_p0._1._0)
+                                 {case "AND": return {ctor: "_Tuple2"
+                                                     ,_0: _p0._1._1._1._1._0
+                                                     ,_1: A2(And,_p0._0,_p0._1._1._0)};
+                                    case "OR": return {ctor: "_Tuple2"
+                                                      ,_0: _p0._1._1._1._1._0
+                                                      ,_1: A2(Or,_p0._0,_p0._1._1._0)};
+                                    case "LSHIFT": return {ctor: "_Tuple2"
+                                                          ,_0: _p0._1._1._1._1._0
+                                                          ,_1: A2(Lshift,_p0._0,parseInt(_p0._1._1._0))};
+                                    case "RSHIFT": return {ctor: "_Tuple2"
+                                                          ,_0: _p0._1._1._1._1._0
+                                                          ,_1: A2(Rshift,_p0._0,parseInt(_p0._1._1._0))};
+                                    default: break _v0_6;}
+                              } else {
+                                 break _v0_6;
+                              }
+                        } else {
+                           if (_p0._0 === "NOT" && _p0._1._1._0 === "->") {
+                                 return {ctor: "_Tuple2"
+                                        ,_0: _p0._1._1._1._0
+                                        ,_1: Not(_p0._1._0)};
+                              } else {
+                                 break _v0_6;
+                              }
+                        }
+                  }
+            } else {
+               break _v0_6;
+            }
+      } while (false);
+      return {ctor: "_Tuple2",_0: connection,_1: NoOp(0)};
+   };
+   var parseLines = F2(function (lines,circuit) {
+      parseLines: while (true) {
+         var _p1 = lines;
+         if (_p1.ctor === "[]") {
+               return circuit;
+            } else {
+               var _p3 = _p1._1;
+               var _p2 = parseConnection(_p1._0);
+               var wire = _p2._0;
+               var action = _p2._1;
+               var circuit$ = A3($Dict.insert,wire,action,circuit);
+               if (_U.eq(wire,"") && _U.eq(action,NoOp(0))) {
+                     var _v2 = _p3,_v3 = circuit;
+                     lines = _v2;
+                     circuit = _v3;
+                     continue parseLines;
+                  } else {
+                     var _v4 = _p3,_v5 = circuit$;
+                     lines = _v4;
+                     circuit = _v5;
+                     continue parseLines;
+                  }
+            }
+      }
+   });
+   var parseInput = function (input) {
+      return A2(parseLines,
+      A2($String.split,"\n",input),
+      $Dict.empty);
+   };
+   var getVal = F2(function (wire,circuit) {
+      var val = A2($Dict.get,wire,circuit);
+      var _p4 = val;
+      if (_p4.ctor === "Nothing") {
+            return 0;
+         } else {
+            var _p5 = _p4._0;
+            if (_p5.ctor === "NoOp") {
+                  return _p5._0;
+               } else {
+                  return 0;
+               }
+         }
+   });
+   var reduce = F2(function (wire,circuit) {
+      var val = A2($Dict.get,wire,circuit);
+      var _p6 = val;
+      if (_p6.ctor === "Nothing") {
+            return A3($Dict.insert,wire,NoOp(0),circuit);
+         } else {
+            var _p7 = function () {
+               var _p8 = _p6._0;
+               switch (_p8.ctor)
+               {case "NoOp": return {ctor: "_Tuple3"
+                                    ,_0: _p8._0
+                                    ,_1: circuit
+                                    ,_2: false};
+                  case "Pass": var _p9 = A2(reduce1,_p8._0,circuit);
+                    var i = _p9._0;
+                    var c = _p9._1;
+                    return {ctor: "_Tuple3",_0: i,_1: c,_2: true};
+                  case "And": var _p10 = A3(reduce2,_p8._0,_p8._1,circuit);
+                    var i = _p10._0;
+                    var j = _p10._1;
+                    var c = _p10._2;
+                    return {ctor: "_Tuple3"
+                           ,_0: A2($Bitwise.and,i,j)
+                           ,_1: c
+                           ,_2: true};
+                  case "Or": var _p11 = A3(reduce2,_p8._0,_p8._1,circuit);
+                    var i = _p11._0;
+                    var j = _p11._1;
+                    var c = _p11._2;
+                    return {ctor: "_Tuple3",_0: A2($Bitwise.or,i,j),_1: c,_2: true};
+                  case "Lshift": var _p12 = A2(reduce1,_p8._0,circuit);
+                    var j = _p12._0;
+                    var c = _p12._1;
+                    var k = A2($Bitwise.shiftLeft,j,_p8._1);
+                    return {ctor: "_Tuple3",_0: k,_1: c,_2: true};
+                  case "Rshift": var _p13 = A2(reduce1,_p8._0,circuit);
+                    var j = _p13._0;
+                    var c = _p13._1;
+                    return {ctor: "_Tuple3"
+                           ,_0: A2($Bitwise.shiftRight,j,_p8._1)
+                           ,_1: c
+                           ,_2: true};
+                  default: var _p14 = A2(reduce1,_p8._0,circuit);
+                    var i = _p14._0;
+                    var c = _p14._1;
+                    var j = $Bitwise.complement(i);
+                    var k = _U.cmp(j,0) < 0 ? maxValue + j + 1 : j;
+                    return {ctor: "_Tuple3",_0: k,_1: c,_2: true};}
+            }();
+            var k = _p7._0;
+            var circuit$ = _p7._1;
+            var insert = _p7._2;
+            return insert ? A3($Dict.insert,
+            wire,
+            NoOp(k),
+            circuit$) : circuit$;
+         }
+   });
+   var reduce1 = F2(function (w,circuit) {
+      var i = $String.toInt(w);
+      var _p15 = i;
+      if (_p15.ctor === "Ok") {
+            return {ctor: "_Tuple2",_0: _p15._0,_1: circuit};
+         } else {
+            var circuit$ = A2(reduce,w,circuit);
+            return {ctor: "_Tuple2",_0: A2(getVal,w,circuit$),_1: circuit$};
+         }
+   });
+   var reduce2 = F3(function (w1,w2,circuit) {
+      var i2 = $String.toInt(w2);
+      var i1 = $String.toInt(w1);
+      var _p16 = {ctor: "_Tuple2",_0: i1,_1: i2};
+      if (_p16._0.ctor === "Ok") {
+            if (_p16._1.ctor === "Ok") {
+                  return {ctor: "_Tuple3"
+                         ,_0: _p16._0._0
+                         ,_1: _p16._1._0
+                         ,_2: circuit};
+               } else {
+                  var circuit$ = A2(reduce,w2,circuit);
+                  return {ctor: "_Tuple3"
+                         ,_0: _p16._0._0
+                         ,_1: A2(getVal,w2,circuit$)
+                         ,_2: circuit$};
+               }
+         } else {
+            if (_p16._1.ctor === "Ok") {
+                  var circuit$ = A2(reduce,w1,circuit);
+                  return {ctor: "_Tuple3"
+                         ,_0: A2(getVal,w1,circuit$)
+                         ,_1: _p16._1._0
+                         ,_2: circuit$};
+               } else {
+                  var circuit$ = A2(reduce,w1,circuit);
+                  var circuit$$ = A2(reduce,w2,circuit$);
+                  return {ctor: "_Tuple3"
+                         ,_0: A2(getVal,w1,circuit$)
+                         ,_1: A2(getVal,w2,circuit$$)
+                         ,_2: circuit$$};
+               }
+         }
+   });
+   var answers = function (input) {
+      var circuit = parseInput(input);
+      var circuit1 = A2(reduce,"a",circuit);
+      var p1 = $Basics.toString(A2(getVal,"a",circuit1));
+      var circuit2 = A2(reduce,
+      "a",
+      A3($Dict.insert,"b",NoOp(3176),circuit));
+      var p2 = $Basics.toString(A2(getVal,"a",circuit2));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D07.values = {_op: _op
+                               ,answers: answers
+                               ,reduce: reduce
+                               ,reduce1: reduce1
+                               ,reduce2: reduce2
+                               ,getVal: getVal
+                               ,parseInput: parseInput
+                               ,parseLines: parseLines
+                               ,parseConnection: parseConnection
+                               ,parseInt: parseInt
+                               ,maxValue: maxValue
+                               ,NoOp: NoOp
+                               ,Pass: Pass
+                               ,And: And
+                               ,Or: Or
+                               ,Lshift: Lshift
+                               ,Rshift: Rshift
+                               ,Not: Not};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -9710,6 +10024,7 @@ Elm.Main.make = function (_elm) {
    $Y15D04 = Elm.Y15D04.make(_elm),
    $Y15D05 = Elm.Y15D05.make(_elm),
    $Y15D06 = Elm.Y15D06.make(_elm),
+   $Y15D07 = Elm.Y15D07.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -9733,7 +10048,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_8: do {
+            _v1_9: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -9742,11 +10057,12 @@ Elm.Main.make = function (_elm) {
                         case 4: return $Y15D04.answers(_p3);
                         case 5: return $Y15D05.answers(_p3);
                         case 6: return $Y15D06.answers(_p3);
+                        case 7: return $Y15D07.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_8;}
+                        default: break _v1_9;}
                   } else {
-                     break _v1_8;
+                     break _v1_9;
                   }
             } while (false);
             return A2($Basics._op["++"],
