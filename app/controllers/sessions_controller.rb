@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email], encrypted_password: Digest::MD5.hexdigest(params[:password]))
     if user
       session[:user_id] = user.id
-      redirect_to root_path
+      redirect_to last_path
       success = true
     else
       flash.now[:alert] = I18n.t("login.invalid").sample
@@ -15,6 +15,12 @@ class SessionsController < ApplicationController
 
   def destroy
     session.delete(:user_id)
-    redirect_to root_path
+    redirect_to last_path
+  end
+
+  private
+
+  def last_path
+    session[:last_path] || root_path
   end
 end

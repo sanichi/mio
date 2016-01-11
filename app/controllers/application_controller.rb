@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception # prevent CSRF attacks by raising an exception
   helper_method :authenticated?
   before_action :enable_miniprofiler
+  before_action :remember_last_non_autenticated_path
 
   rescue_from CanCan::AccessDenied do |exception|
     logger.warn "Access denied for #{exception.action} #{exception.subject} from #{request.ip}"
@@ -30,5 +31,11 @@ class ApplicationController < ActionController::Base
     if Rails.env.production? && current_user.admin?
       Rack::MiniProfiler.authorize_request
     end
+  end
+
+  def remember_last_non_autenticated_path
+    return if request.method != "GET" || request.format != "text/html" || request.xhr?
+    return if !current_user.guest? || controller_name == "sessions"
+    session[:last_path] = request.path
   end
 end
