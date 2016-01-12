@@ -24,7 +24,7 @@ parse input =
   find (AtMost 1) (regex "\\d+") input
     |> List.map .match
     |> List.head
-    |> Maybe.withDefault "no secret key found"
+    |> Maybe.withDefault "no digits found"
 
 
 conway : Int -> String -> String

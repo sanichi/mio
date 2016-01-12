@@ -10056,7 +10056,7 @@ Elm.Y15D10.make = function (_elm) {
    });
    var parse = function (input) {
       return A2($Maybe.withDefault,
-      "no secret key found",
+      "no digits found",
       $List.head(A2($List.map,
       function (_) {
          return _.match;
@@ -10076,6 +10076,118 @@ Elm.Y15D10.make = function (_elm) {
                                ,parse: parse
                                ,conway: conway
                                ,mapper: mapper};
+};
+Elm.Y15D11 = Elm.Y15D11 || {};
+Elm.Y15D11.make = function (_elm) {
+   "use strict";
+   _elm.Y15D11 = _elm.Y15D11 || {};
+   if (_elm.Y15D11.values) return _elm.Y15D11.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var has_enough_pairs = function (p) {
+      return A2($Regex.contains,
+      $Regex.regex("(.)\\1.*(.)(?!\\1)\\2"),
+      p);
+   };
+   var has_a_straight = function (p) {
+      return A2($Regex.contains,
+      $Regex.regex("(abc|bcd|cde|def|efg|fgh|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)"),
+      p);
+   };
+   var is_not_confusing = function (p) {
+      return $Basics.not(A2($Regex.contains,
+      $Regex.regex("[iol]"),
+      p));
+   };
+   var increment = function (p) {
+      var parts = $List.head(A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("^([a-z]*)([a-y])(z*)$"),
+      p)));
+      var _p0 = parts;
+      if (_p0.ctor === "Just" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::" && _p0._0._1._0.ctor === "Just" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "[]")
+      {
+            var c1 = A2($String.repeat,
+            $String.length(_p0._0._1._1._0._0),
+            "a");
+            var b1 = $String.uncons(_p0._0._1._0._0);
+            var b2 = function () {
+               var _p1 = b1;
+               if (_p1.ctor === "Just" && _p1._0.ctor === "_Tuple2") {
+                     return $String.fromChar($Char.fromCode(A2(F2(function (x,y) {
+                        return x + y;
+                     }),
+                     1,
+                     $Char.toCode(_p1._0._0))));
+                  } else {
+                     return "";
+                  }
+            }();
+            return A2($Regex.contains,
+            $Regex.regex("^[b-z]$"),
+            b2) ? A2($Basics._op["++"],
+            _p0._0._0._0,
+            A2($Basics._op["++"],b2,c1)) : A2($Basics._op["++"],
+            "invalid (",
+            A2($Basics._op["++"],p,")"));
+         } else {
+            return A2($Basics._op["++"],
+            "invalid (",
+            A2($Basics._op["++"],p,")"));
+         }
+   };
+   var next = function (q) {
+      next: while (true) {
+         var p = increment(q);
+         if (A2($String.startsWith,"invalid",p)) return p;
+         else if (is_not_confusing(p) && (has_a_straight(p) && has_enough_pairs(p)))
+            return p; else {
+                  var _v2 = p;
+                  q = _v2;
+                  continue next;
+               }
+      }
+   };
+   var parse = function (input) {
+      return A2($Maybe.withDefault,
+      "no password found",
+      $List.head(A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("[a-z]{8}"),
+      input))));
+   };
+   var answers = function (input) {
+      var p0 = parse(input);
+      var p1 = next(p0);
+      var p2 = next(p1);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D11.values = {_op: _op
+                               ,answers: answers
+                               ,parse: parse
+                               ,next: next
+                               ,increment: increment
+                               ,is_not_confusing: is_not_confusing
+                               ,has_a_straight: has_a_straight
+                               ,has_enough_pairs: has_enough_pairs};
 };
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
@@ -10347,6 +10459,7 @@ Elm.Main.make = function (_elm) {
    $Y15D08 = Elm.Y15D08.make(_elm),
    $Y15D09 = Elm.Y15D09.make(_elm),
    $Y15D10 = Elm.Y15D10.make(_elm),
+   $Y15D11 = Elm.Y15D11.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10370,7 +10483,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_12: do {
+            _v1_13: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10383,11 +10496,12 @@ Elm.Main.make = function (_elm) {
                         case 8: return $Y15D08.answers(_p3);
                         case 9: return $Y15D09.answers(_p3);
                         case 10: return $Y15D10.answers(_p3);
+                        case 11: return $Y15D11.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_12;}
+                        default: break _v1_13;}
                   } else {
-                     break _v1_12;
+                     break _v1_13;
                   }
             } while (false);
             return A2($Basics._op["++"],
