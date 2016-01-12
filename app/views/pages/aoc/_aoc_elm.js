@@ -10019,6 +10019,64 @@ Elm.Y15D09.make = function (_elm) {
                                ,Model: Model
                                ,initModel: initModel};
 };
+Elm.Y15D10 = Elm.Y15D10 || {};
+Elm.Y15D10.make = function (_elm) {
+   "use strict";
+   _elm.Y15D10 = _elm.Y15D10 || {};
+   if (_elm.Y15D10.values) return _elm.Y15D10.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var mapper = function (match) {
+      var $char = A2($String.left,1,match.match);
+      var length = $Basics.toString($String.length(match.match));
+      return A2($Basics._op["++"],length,$char);
+   };
+   var conway = F2(function (count,digits) {
+      conway: while (true) if (_U.cmp(count,0) < 1) return digits;
+      else {
+            var digits$ = A4($Regex.replace,
+            $Regex.All,
+            $Regex.regex("(\\d)\\1*"),
+            mapper,
+            digits);
+            var _v0 = count - 1,_v1 = digits$;
+            count = _v0;
+            digits = _v1;
+            continue conway;
+         }
+   });
+   var parse = function (input) {
+      return A2($Maybe.withDefault,
+      "no secret key found",
+      $List.head(A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.AtMost(1),$Regex.regex("\\d+"),input))));
+   };
+   var answers = function (input) {
+      var digits = parse(input);
+      var digits$ = A2(conway,40,digits);
+      var p1 = $Basics.toString($String.length(digits$));
+      var digits$$ = A2(conway,10,digits$);
+      var p2 = $Basics.toString($String.length(digits$$));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D10.values = {_op: _op
+                               ,answers: answers
+                               ,parse: parse
+                               ,conway: conway
+                               ,mapper: mapper};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -10288,6 +10346,7 @@ Elm.Main.make = function (_elm) {
    $Y15D07 = Elm.Y15D07.make(_elm),
    $Y15D08 = Elm.Y15D08.make(_elm),
    $Y15D09 = Elm.Y15D09.make(_elm),
+   $Y15D10 = Elm.Y15D10.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10311,7 +10370,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_11: do {
+            _v1_12: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10323,11 +10382,12 @@ Elm.Main.make = function (_elm) {
                         case 7: return $Y15D07.answers(_p3);
                         case 8: return $Y15D08.answers(_p3);
                         case 9: return $Y15D09.answers(_p3);
+                        case 10: return $Y15D10.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_11;}
+                        default: break _v1_12;}
                   } else {
-                     break _v1_11;
+                     break _v1_12;
                   }
             } while (false);
             return A2($Basics._op["++"],
