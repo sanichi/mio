@@ -10282,6 +10282,170 @@ Elm.Y15D12.make = function (_elm) {
                                ,answers: answers
                                ,count: count};
 };
+Elm.Y15D13 = Elm.Y15D13 || {};
+Elm.Y15D13.make = function (_elm) {
+   "use strict";
+   _elm.Y15D13 = _elm.Y15D13 || {};
+   if (_elm.Y15D13.values) return _elm.Y15D13.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Set = Elm.Set.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var initModel = {happiness: $Dict.empty,people: $Set.empty};
+   var Model = F2(function (a,b) {
+      return {happiness: a,people: b};
+   });
+   var outer = function (list) {
+      var last = $List.head($List.reverse(list));
+      var first = $List.head(list);
+      var _p0 = {ctor: "_Tuple2",_0: first,_1: last};
+      if (_p0.ctor === "_Tuple2" && _p0._0.ctor === "Just" && _p0._1.ctor === "Just")
+      {
+            return $Maybe.Just({ctor: "_Tuple2"
+                               ,_0: _p0._1._0
+                               ,_1: _p0._0._0});
+         } else {
+            return $Maybe.Nothing;
+         }
+   };
+   var inner = function (list) {
+      var _p1 = list;
+      if (_p1.ctor === "::" && _p1._1.ctor === "::") {
+            var _p2 = _p1._1._0;
+            return A2($List._op["::"],
+            {ctor: "_Tuple2",_0: _p1._0,_1: _p2},
+            inner(A2($List._op["::"],_p2,_p1._1._1)));
+         } else {
+            return _U.list([]);
+         }
+   };
+   var pairup = function (list) {
+      var pair = outer(list);
+      var pairs = inner(list);
+      var _p3 = pair;
+      if (_p3.ctor === "Just" && _p3._0.ctor === "_Tuple2") {
+            return A2($List._op["::"],
+            {ctor: "_Tuple2",_0: _p3._0._0,_1: _p3._0._1},
+            pairs);
+         } else {
+            return pairs;
+         }
+   };
+   var key = F2(function (p1,p2) {
+      return A2($Basics._op["++"],p1,A2($Basics._op["++"],"|",p2));
+   });
+   var parseLine = F2(function (line,model) {
+      var matches = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("^(\\w+) would (gain|lose) (\\d+) happiness units by sitting next to (\\w+)\\.$"),
+      line));
+      var _p4 = matches;
+      if (_p4.ctor === "::" && _p4._0.ctor === "::" && _p4._0._0.ctor === "Just" && _p4._0._1.ctor === "::" && _p4._0._1._0.ctor === "Just" && _p4._0._1._1.ctor === "::" && _p4._0._1._1._0.ctor === "Just" && _p4._0._1._1._1.ctor === "::" && _p4._0._1._1._1._0.ctor === "Just" && _p4._0._1._1._1._1.ctor === "[]" && _p4._1.ctor === "[]")
+      {
+            var _p6 = _p4._0._1._1._1._0._0;
+            var _p5 = _p4._0._0._0;
+            var p = A2($Set.insert,_p6,A2($Set.insert,_p5,model.people));
+            var j = A2($Result.withDefault,
+            0,
+            $String.toInt(_p4._0._1._1._0._0));
+            var k = _U.eq(_p4._0._1._0._0,"gain") ? j : 0 - j;
+            var h = A3($Dict.insert,A2(key,_p5,_p6),k,model.happiness);
+            return {happiness: h,people: p};
+         } else {
+            return model;
+         }
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      initModel,
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var addMe = function (model) {
+      var h0 = model.happiness;
+      var a = $Set.toList(model.people);
+      var me = "Me";
+      var p = A2($Set.insert,me,model.people);
+      var h1 = A3($List.foldl,
+      F2(function (p,h) {
+         return A3($Dict.insert,A2(key,me,p),0,h);
+      }),
+      h0,
+      a);
+      var h2 = A3($List.foldl,
+      F2(function (p,h) {
+         return A3($Dict.insert,A2(key,p,me),0,h);
+      }),
+      h1,
+      a);
+      return {happiness: h2,people: p};
+   };
+   var pairValue = F3(function (p1,p2,h) {
+      var v2 = A2($Maybe.withDefault,
+      0,
+      A2($Dict.get,A2(key,p2,p1),h));
+      var v1 = A2($Maybe.withDefault,0,A2($Dict.get,A2(key,p1,p2),h));
+      return v1 + v2;
+   });
+   var happinesses = function (model) {
+      var f = function (_p7) {
+         var _p8 = _p7;
+         return A3(pairValue,_p8._0,_p8._1,model.happiness);
+      };
+      return A2($List.map,
+      function (pairs) {
+         return $List.sum(A2($List.map,f,pairs));
+      },
+      A2($List.map,
+      function (perm) {
+         return pairup(perm);
+      },
+      $Util.permutations($Set.toList(model.people))));
+   };
+   var answers = function (input) {
+      var m1 = parseInput(input);
+      var a1 = happinesses(m1);
+      var p1 = $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.maximum(a1)));
+      var m2 = addMe(m1);
+      var a2 = happinesses(m2);
+      var p2 = $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.maximum(a2)));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D13.values = {_op: _op
+                               ,answers: answers
+                               ,happinesses: happinesses
+                               ,pairValue: pairValue
+                               ,addMe: addMe
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,key: key
+                               ,pairup: pairup
+                               ,inner: inner
+                               ,outer: outer
+                               ,Model: Model
+                               ,initModel: initModel};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -10554,6 +10718,7 @@ Elm.Main.make = function (_elm) {
    $Y15D10 = Elm.Y15D10.make(_elm),
    $Y15D11 = Elm.Y15D11.make(_elm),
    $Y15D12 = Elm.Y15D12.make(_elm),
+   $Y15D13 = Elm.Y15D13.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10577,7 +10742,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_14: do {
+            _v1_15: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10592,11 +10757,12 @@ Elm.Main.make = function (_elm) {
                         case 10: return $Y15D10.answers(_p3);
                         case 11: return $Y15D11.answers(_p3);
                         case 12: return $Y15D12.answers(_p3);
+                        case 13: return $Y15D13.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_14;}
+                        default: break _v1_15;}
                   } else {
-                     break _v1_14;
+                     break _v1_15;
                   }
             } while (false);
             return A2($Basics._op["++"],
