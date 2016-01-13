@@ -31,7 +31,7 @@ class PeopleChecks
         |Carmen|Carey|Carol(ina)?|Catherine|Christin[ae]|Colina|Colleen
         |Deborah|Dian[ae]|Dilys|Dorothy
         |Edith|Elizabeth|Elsie|Emerie
-        |Fanny|Faye|Francis
+        |Fanny|Faye
         |Grace
         |Hannah|Helen|Hester
         |Irene|Isabella|Isobel|Ivy
