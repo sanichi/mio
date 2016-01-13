@@ -10821,11 +10821,11 @@ Elm.Y15D25.make = function (_elm) {
                                ,Model: Model
                                ,start: start};
 };
-Elm.Main = Elm.Main || {};
-Elm.Main.make = function (_elm) {
+Elm.Y15 = Elm.Y15 || {};
+Elm.Y15.make = function (_elm) {
    "use strict";
-   _elm.Main = _elm.Main || {};
-   if (_elm.Main.values) return _elm.Main.values;
+   _elm.Y15 = _elm.Y15 || {};
+   if (_elm.Y15.values) return _elm.Y15.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
@@ -10850,6 +10850,47 @@ Elm.Main.make = function (_elm) {
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
+   var answers = F2(function (day,input) {
+      var _p0 = day;
+      switch (_p0)
+      {case 1: return $Y15D01.answers(input);
+         case 2: return $Y15D02.answers(input);
+         case 3: return $Y15D03.answers(input);
+         case 4: return $Y15D04.answers(input);
+         case 5: return $Y15D05.answers(input);
+         case 6: return $Y15D06.answers(input);
+         case 7: return $Y15D07.answers(input);
+         case 8: return $Y15D08.answers(input);
+         case 9: return $Y15D09.answers(input);
+         case 10: return $Y15D10.answers(input);
+         case 11: return $Y15D11.answers(input);
+         case 12: return $Y15D12.answers(input);
+         case 13: return $Y15D13.answers(input);
+         case 14: return $Y15D14.answers(input);
+         case 19: return $Y15D19.answers(input);
+         case 25: return $Y15D25.answer(input);
+         default: return A2($Basics._op["++"],
+           "year 2015, day ",
+           A2($Basics._op["++"],
+           $Basics.toString(day),
+           ": not implemented yet"));}
+   });
+   return _elm.Y15.values = {_op: _op,answers: answers};
+};
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values) return _elm.Main.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Y15 = Elm.Y15.make(_elm);
+   var _op = {};
    var problem = Elm.Native.Port.make(_elm).inboundSignal("problem",
    "( Int, Int, String )",
    function (v) {
@@ -10866,43 +10907,17 @@ Elm.Main.make = function (_elm) {
       if (_p0.ctor === "NoOp") {
             return model;
          } else {
-            var _p4 = _p0._0._0;
-            var _p3 = _p0._0._2;
-            var _p2 = _p0._0._1;
-            var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_16: do {
-               if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
-                     switch (_p1._1)
-                     {case 1: return $Y15D01.answers(_p3);
-                        case 2: return $Y15D02.answers(_p3);
-                        case 3: return $Y15D03.answers(_p3);
-                        case 4: return $Y15D04.answers(_p3);
-                        case 5: return $Y15D05.answers(_p3);
-                        case 6: return $Y15D06.answers(_p3);
-                        case 7: return $Y15D07.answers(_p3);
-                        case 8: return $Y15D08.answers(_p3);
-                        case 9: return $Y15D09.answers(_p3);
-                        case 10: return $Y15D10.answers(_p3);
-                        case 11: return $Y15D11.answers(_p3);
-                        case 12: return $Y15D12.answers(_p3);
-                        case 13: return $Y15D13.answers(_p3);
-                        case 14: return $Y15D14.answers(_p3);
-                        case 19: return $Y15D19.answers(_p3);
-                        case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_16;}
-                  } else {
-                     break _v1_16;
-                  }
-            } while (false);
-            return A2($Basics._op["++"],
-            "year ",
-            A2($Basics._op["++"],
-            $Basics.toString(_p4),
-            A2($Basics._op["++"],
-            ", day ",
-            A2($Basics._op["++"],
-            $Basics.toString(_p2),
-            ": not implemented yet"))));
+            var _p2 = _p0._0._0;
+            var _p1 = _p2;
+            if (_p1 === 2015) {
+                  return A2($Y15.answers,_p0._0._1,_p0._0._2);
+               } else {
+                  return A2($Basics._op["++"],
+                  "year ",
+                  A2($Basics._op["++"],
+                  $Basics.toString(_p2),
+                  ": not available yet"));
+               }
          }
    });
    var Problem = function (a) {
