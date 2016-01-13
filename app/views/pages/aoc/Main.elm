@@ -11,6 +11,7 @@ import Y15D10
 import Y15D11
 import Y15D12
 import Y15D13
+import Y15D14
 import Y15D19
 import Y15D25
 
@@ -49,6 +50,7 @@ update action model =
         (2015, 11) -> Y15D11.answers input
         (2015, 12) -> Y15D12.answers input
         (2015, 13) -> Y15D13.answers input
+        (2015, 14) -> Y15D14.answers input
         (2015, 19) -> Y15D19.answers input
         (2015, 25) -> Y15D25.answer  input
         _ -> "year " ++ (toString year) ++ ", day " ++ (toString day) ++ ": not implemented yet"

@@ -10446,6 +10446,133 @@ Elm.Y15D13.make = function (_elm) {
                                ,Model: Model
                                ,initModel: initModel};
 };
+Elm.Y15D14 = Elm.Y15D14 || {};
+Elm.Y15D14.make = function (_elm) {
+   "use strict";
+   _elm.Y15D14 = _elm.Y15D14 || {};
+   if (_elm.Y15D14.values) return _elm.Y15D14.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Reindeer = F6(function (a,b,c,d,e,f) {
+      return {name: a,speed: b,time: c,rest: d,km: e,score: f};
+   });
+   var parseLine = F2(function (line,model) {
+      var matches = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("^(\\w+) can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds\\.$"),
+      line));
+      var _p0 = matches;
+      if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::" && _p0._0._1._0.ctor === "Just" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "::" && _p0._0._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
+      {
+            var r2 = A2($Result.withDefault,
+            0,
+            $String.toInt(_p0._0._1._1._1._0._0));
+            var t2 = A2($Result.withDefault,
+            0,
+            $String.toInt(_p0._0._1._1._0._0));
+            var s2 = A2($Result.withDefault,
+            0,
+            $String.toInt(_p0._0._1._0._0));
+            var reindeer = {name: _p0._0._0._0
+                           ,speed: s2
+                           ,time: t2
+                           ,rest: r2
+                           ,km: 0
+                           ,score: 0};
+            return A2($List._op["::"],reindeer,model);
+         } else {
+            return model;
+         }
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      _U.list([]),
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var distance = F2(function (t,r) {
+      var cyc = r.time + r.rest;
+      var tmp = A2($Basics.rem,t,cyc);
+      var rdr = _U.cmp(tmp,r.time) > 0 ? r.time : tmp;
+      return ((t / cyc | 0) * r.time + rdr) * r.speed;
+   });
+   var score = F3(function (t,time,model) {
+      score: while (true) if (_U.cmp(t,time) > -1) return model;
+      else {
+            var t$ = t + 1;
+            var model1 = A2($List.map,
+            function (r) {
+               return _U.update(r,{km: A2(distance,t$,r)});
+            },
+            model);
+            var maxDst = A2($Maybe.withDefault,
+            0,
+            $List.maximum(A2($List.map,
+            function (_) {
+               return _.km;
+            },
+            model1)));
+            var model2 = A2($List.map,
+            function (r) {
+               return _U.update(r,
+               {score: r.score + (_U.eq(r.km,maxDst) ? 1 : 0)});
+            },
+            model1);
+            var _v1 = t$,_v2 = time,_v3 = model2;
+            t = _v1;
+            time = _v2;
+            model = _v3;
+            continue score;
+         }
+   });
+   var bestScore = F2(function (time,model) {
+      return $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.maximum(A2($List.map,
+      function (_) {
+         return _.score;
+      },
+      A3(score,0,time,model)))));
+   });
+   var maxDistance = F2(function (time,model) {
+      return $Basics.toString(A2($Maybe.withDefault,
+      0,
+      $List.maximum(A2($List.map,distance(time),model))));
+   });
+   var answers = function (input) {
+      var time = 2503;
+      var model = parseInput(input);
+      var p1 = A2(maxDistance,time,model);
+      var p2 = A2(bestScore,time,model);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D14.values = {_op: _op
+                               ,answers: answers
+                               ,maxDistance: maxDistance
+                               ,bestScore: bestScore
+                               ,distance: distance
+                               ,score: score
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,Reindeer: Reindeer};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -10719,6 +10846,7 @@ Elm.Main.make = function (_elm) {
    $Y15D11 = Elm.Y15D11.make(_elm),
    $Y15D12 = Elm.Y15D12.make(_elm),
    $Y15D13 = Elm.Y15D13.make(_elm),
+   $Y15D14 = Elm.Y15D14.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10742,7 +10870,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_15: do {
+            _v1_16: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10758,11 +10886,12 @@ Elm.Main.make = function (_elm) {
                         case 11: return $Y15D11.answers(_p3);
                         case 12: return $Y15D12.answers(_p3);
                         case 13: return $Y15D13.answers(_p3);
+                        case 14: return $Y15D14.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_15;}
+                        default: break _v1_16;}
                   } else {
-                     break _v1_15;
+                     break _v1_16;
                   }
             } while (false);
             return A2($Basics._op["++"],
