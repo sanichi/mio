@@ -153,19 +153,13 @@ class Person < ActiveRecord::Base
   private
 
   def tidy_text
-    %w[first_names known_as last_name].each { |m| send("#{m}=", "") if send(m).nil? }
-    last_name.squish!
-    first_names.squish!
-    known_as.squish!
-    if known_as.blank? && first_names.present?
-      self.known_as = first_names.split(" ").first
-    end
+    last_name&.squish!
+    first_names&.squish!
+    known_as&.squish!
+    married_name&.squish!
+    self.married_name = nil if married_name.blank?
+    self.known_as = first_names&.split(" ")&.first if known_as.blank? && first_names.present?
     self.notes = nil if notes.blank?
-    if male || married_name.blank?
-      self.married_name = nil
-    else
-      married_name.squish!
-    end
   end
 
   def years_must_make_sense

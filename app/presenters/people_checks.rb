@@ -20,7 +20,7 @@ class PeopleChecks
     end
   end
 
-  def people_males_with_maiden_name
+  def people_males_with_married_name
     Person.by_last_name.where(male: true).where.not(married_name: nil).all
   end
 
