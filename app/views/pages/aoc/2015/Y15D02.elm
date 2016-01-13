@@ -29,8 +29,7 @@ sumLine counter line count =
       Regex.find Regex.All (Regex.regex "[1-9]\\d*") line
         |> List.map .match
         |> List.map String.toInt
-        |> List.map Result.toMaybe
-        |> List.map (Maybe.withDefault 0)
+        |> List.map (Result.withDefault 0)
     extra =
       case dimensions of
         [l, w, h] -> counter l w h

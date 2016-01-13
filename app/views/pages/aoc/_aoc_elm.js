@@ -8671,6 +8671,63 @@ Elm.Regex.make = function (_elm) {
                               ,All: All
                               ,AtMost: AtMost};
 };
+/* Help from JS for things that are too difficult or impossible in Elm. */
+
+var make = function make(elm) {
+  elm.Native = elm.Native || {};
+  elm.Native.Help = elm.Native.Help || {};
+
+  if (elm.Native.Help.values) return elm.Native.Help.values;
+
+  return {
+    'no_red': no_red
+  };
+};
+
+Elm.Native.Help = {};
+Elm.Native.Help.make = make;
+
+var no_red = function(json) {
+  return JSON.stringify(filter_red(JSON.parse(json)));
+}
+
+var filter_red = function(obj, parent, key) {
+  if (typeof obj == 'object')
+  {
+    var red = false;
+    if (!Array.isArray(obj) && parent)
+    {
+      Object.keys(obj).forEach(function(key) {
+        if (obj[key] == 'red') red = true;
+      });
+      if (red) delete parent[key];
+    }
+    if (!red) {
+      Object.keys(obj).forEach(function(key) {
+        filter_red(obj[key], obj, key);
+      });
+    }
+  }
+  return parent ? undefined : obj;
+}
+
+Elm.Help = Elm.Help || {};
+Elm.Help.make = function (_elm) {
+   "use strict";
+   _elm.Help = _elm.Help || {};
+   if (_elm.Help.values) return _elm.Help.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$Help = Elm.Native.Help.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var no_red = $Native$Help.no_red;
+   return _elm.Help.values = {_op: _op,no_red: no_red};
+};
 //
 // Based on https://github.com/NoRedInk/take-home/wiki/Writing-your-first-Elm-Native-module
 //
@@ -9069,16 +9126,14 @@ Elm.Y15D02.make = function (_elm) {
    });
    var sumLine = F3(function (counter,line,count) {
       var dimensions = A2($List.map,
-      $Maybe.withDefault(0),
-      A2($List.map,
-      $Result.toMaybe,
+      $Result.withDefault(0),
       A2($List.map,
       $String.toInt,
       A2($List.map,
       function (_) {
          return _.match;
       },
-      A3($Regex.find,$Regex.All,$Regex.regex("[1-9]\\d*"),line)))));
+      A3($Regex.find,$Regex.All,$Regex.regex("[1-9]\\d*"),line))));
       var extra = function () {
          var _p0 = dimensions;
          if (_p0.ctor === "::" && _p0._1.ctor === "::" && _p0._1._1.ctor === "::" && _p0._1._1._1.ctor === "[]")
@@ -9568,9 +9623,7 @@ Elm.Y15D07.make = function (_elm) {
    var NoOp = function (a) {    return {ctor: "NoOp",_0: a};};
    var maxValue = 65535;
    var parseInt = function (i) {
-      return A2($Maybe.withDefault,
-      0,
-      $Result.toMaybe($String.toInt(i)));
+      return A2($Result.withDefault,0,$String.toInt(i));
    };
    var parseConnection = function (connection) {
       var words = A2($String.split," ",connection);
@@ -9959,9 +10012,9 @@ Elm.Y15D09.make = function (_elm) {
             var cities = A2($List.member,
             _p4,
             cities$) ? cities$ : A2($List._op["::"],_p4,cities$);
-            var di = A2($Maybe.withDefault,
+            var di = A2($Result.withDefault,
             0,
-            $Result.toMaybe($String.toInt(_p2._0._1._1._0._0)));
+            $String.toInt(_p2._0._1._1._0._0));
             var distances = A3($Dict.insert,
             A2(key,_p4,_p3),
             di,
@@ -10188,6 +10241,46 @@ Elm.Y15D11.make = function (_elm) {
                                ,is_not_confusing: is_not_confusing
                                ,has_a_straight: has_a_straight
                                ,has_enough_pairs: has_enough_pairs};
+};
+Elm.Y15D12 = Elm.Y15D12 || {};
+Elm.Y15D12.make = function (_elm) {
+   "use strict";
+   _elm.Y15D12 = _elm.Y15D12 || {};
+   if (_elm.Y15D12.values) return _elm.Y15D12.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Help = Elm.Help.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var count = function (json) {
+      return $Basics.toString($List.sum(A2($List.map,
+      $Result.withDefault(0),
+      A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,
+      $Regex.All,
+      $Regex.regex("-?[1-9]\\d*"),
+      json))))));
+   };
+   var answers = function (input) {
+      var p2 = count($Help.no_red(input));
+      var p1 = count(input);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D12.values = {_op: _op
+                               ,answers: answers
+                               ,count: count};
 };
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
@@ -10460,6 +10553,7 @@ Elm.Main.make = function (_elm) {
    $Y15D09 = Elm.Y15D09.make(_elm),
    $Y15D10 = Elm.Y15D10.make(_elm),
    $Y15D11 = Elm.Y15D11.make(_elm),
+   $Y15D12 = Elm.Y15D12.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10483,7 +10577,7 @@ Elm.Main.make = function (_elm) {
             var _p3 = _p0._0._2;
             var _p2 = _p0._0._1;
             var _p1 = {ctor: "_Tuple2",_0: _p4,_1: _p2};
-            _v1_13: do {
+            _v1_14: do {
                if (_p1.ctor === "_Tuple2" && _p1._0 === 2015) {
                      switch (_p1._1)
                      {case 1: return $Y15D01.answers(_p3);
@@ -10497,11 +10591,12 @@ Elm.Main.make = function (_elm) {
                         case 9: return $Y15D09.answers(_p3);
                         case 10: return $Y15D10.answers(_p3);
                         case 11: return $Y15D11.answers(_p3);
+                        case 12: return $Y15D12.answers(_p3);
                         case 19: return $Y15D19.answers(_p3);
                         case 25: return $Y15D25.answer(_p3);
-                        default: break _v1_13;}
+                        default: break _v1_14;}
                   } else {
-                     break _v1_13;
+                     break _v1_14;
                   }
             } while (false);
             return A2($Basics._op["++"],

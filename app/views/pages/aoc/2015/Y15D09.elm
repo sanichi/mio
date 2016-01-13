@@ -42,7 +42,7 @@ parseLine line model =
     case matches of
       [ [ Just c1, Just c2, Just d ] ] ->
         let
-          di = String.toInt d |> Result.toMaybe |> Maybe.withDefault 0
+          di = String.toInt d |> Result.withDefault 0
           distances =
             model.distances
               |> Dict.insert (key c1 c2) di

@@ -161,7 +161,7 @@ parseConnection connection =
 
 parseInt : String -> Int
 parseInt i =
-  String.toInt i |> Result.toMaybe |> Maybe.withDefault 0
+  String.toInt i |> Result.withDefault 0
 
 
 maxValue : Int
