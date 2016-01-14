@@ -10,20 +10,20 @@ answers input =
   let
     model = parseInput input
     cookie = initCookie model 100
-    p1 = highScore model 0 cookie |> toString
-    p2 = List.length model |> toString
+    p1 = highScore model Nothing    0 cookie |> toString
+    p2 = highScore model (Just 500) 0 cookie |> toString
   in
     join p1 p2
 
 
-highScore : Model -> Int -> Cookie -> Int
-highScore model oldHigh oldCookie =
+highScore : Model -> Maybe Int -> Int -> Cookie -> Int
+highScore model calories oldHigh oldCookie =
   let
-    newHigh = List.maximum [score model oldCookie, oldHigh] |> Maybe.withDefault oldHigh
+    newHigh = List.maximum [score model calories oldCookie, oldHigh] |> Maybe.withDefault oldHigh
     newCookie = next oldCookie
   in
     case newCookie of
-      Just cookie -> highScore model newHigh cookie
+      Just cookie -> highScore model calories newHigh cookie
       Nothing -> newHigh
 
 
@@ -62,17 +62,26 @@ increment l =
     n :: rest -> n + 1 :: rest
 
 
-score : Model -> Cookie -> Int
-score m c =
+score : Model -> Maybe Int -> Cookie -> Int
+score m calories cookie =
   let
-    cp = List.map2 (*) (List.map .capacity   m) c |> List.sum
-    du = List.map2 (*) (List.map .durability m) c |> List.sum
-    fl = List.map2 (*) (List.map .flavor     m) c |> List.sum
-    tx = List.map2 (*) (List.map .texture    m) c |> List.sum
+    excluded =
+      case calories of
+        Just c  -> c /= (List.map2 (*) (List.map .calories m) cookie |> List.sum)
+        Nothing -> False
   in
-    [ cp, du, fl, tx ]
-      |> List.map (\s -> if s < 0 then 0 else s)
-      |> List.product
+    if excluded
+      then 0
+      else
+        let
+          cp = List.map2 (*) (List.map .capacity   m) cookie |> List.sum
+          du = List.map2 (*) (List.map .durability m) cookie |> List.sum
+          fl = List.map2 (*) (List.map .flavor     m) cookie |> List.sum
+          tx = List.map2 (*) (List.map .texture    m) cookie |> List.sum
+        in
+          [ cp, du, fl, tx ]
+            |> List.map (\s -> if s < 0 then 0 else s)
+            |> List.product
 
 
 parseInput : String -> Model

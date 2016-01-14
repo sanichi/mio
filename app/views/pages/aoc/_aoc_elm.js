@@ -10648,64 +10648,78 @@ Elm.Y15D15.make = function (_elm) {
       },
       A2($String.split,"\n",input)));
    };
-   var score = F2(function (m,c) {
-      var tx = $List.sum(A3($List.map2,
-      F2(function (x,y) {    return x * y;}),
-      A2($List.map,function (_) {    return _.texture;},m),
-      c));
-      var fl = $List.sum(A3($List.map2,
-      F2(function (x,y) {    return x * y;}),
-      A2($List.map,function (_) {    return _.flavor;},m),
-      c));
-      var du = $List.sum(A3($List.map2,
-      F2(function (x,y) {    return x * y;}),
-      A2($List.map,function (_) {    return _.durability;},m),
-      c));
-      var cp = $List.sum(A3($List.map2,
-      F2(function (x,y) {    return x * y;}),
-      A2($List.map,function (_) {    return _.capacity;},m),
-      c));
-      return $List.product(A2($List.map,
-      function (s) {
-         return _U.cmp(s,0) < 0 ? 0 : s;
-      },
-      _U.list([cp,du,fl,tx])));
+   var score = F3(function (m,calories,cookie) {
+      var excluded = function () {
+         var _p1 = calories;
+         if (_p1.ctor === "Just") {
+               return !_U.eq(_p1._0,
+               $List.sum(A3($List.map2,
+               F2(function (x,y) {    return x * y;}),
+               A2($List.map,function (_) {    return _.calories;},m),
+               cookie)));
+            } else {
+               return false;
+            }
+      }();
+      if (excluded) return 0; else {
+            var tx = $List.sum(A3($List.map2,
+            F2(function (x,y) {    return x * y;}),
+            A2($List.map,function (_) {    return _.texture;},m),
+            cookie));
+            var fl = $List.sum(A3($List.map2,
+            F2(function (x,y) {    return x * y;}),
+            A2($List.map,function (_) {    return _.flavor;},m),
+            cookie));
+            var du = $List.sum(A3($List.map2,
+            F2(function (x,y) {    return x * y;}),
+            A2($List.map,function (_) {    return _.durability;},m),
+            cookie));
+            var cp = $List.sum(A3($List.map2,
+            F2(function (x,y) {    return x * y;}),
+            A2($List.map,function (_) {    return _.capacity;},m),
+            cookie));
+            return $List.product(A2($List.map,
+            function (s) {
+               return _U.cmp(s,0) < 0 ? 0 : s;
+            },
+            _U.list([cp,du,fl,tx])));
+         }
    });
    var increment = function (l) {
-      var _p1 = l;
-      if (_p1.ctor === "[]") {
+      var _p2 = l;
+      if (_p2.ctor === "[]") {
             return _U.list([]);
          } else {
-            return A2($List._op["::"],_p1._0 + 1,_p1._1);
+            return A2($List._op["::"],_p2._0 + 1,_p2._1);
          }
    };
    var rollover = function (l) {
       rollover: while (true) {
-         var _p2 = l;
-         if (_p2.ctor === "[]") {
+         var _p3 = l;
+         if (_p3.ctor === "[]") {
                return {ctor: "_Tuple2",_0: 0,_1: _U.list([])};
             } else {
-               if (_p2._0 === 1) {
-                     var _v3 = _p2._1;
-                     l = _v3;
+               if (_p3._0 === 1) {
+                     var _v4 = _p3._1;
+                     l = _v4;
                      continue rollover;
                   } else {
                      return {ctor: "_Tuple2"
-                            ,_0: _p2._0 - 1
-                            ,_1: increment(_p2._1)};
+                            ,_0: _p3._0 - 1
+                            ,_1: increment(_p3._1)};
                   }
             }
       }
    };
    var next = function (c) {
-      var _p3 = c;
-      if (_p3.ctor === "[]") {
+      var _p4 = c;
+      if (_p4.ctor === "[]") {
             return $Maybe.Nothing;
          } else {
-            if (_p3._0 === 1) {
-                  var _p4 = rollover(_p3._1);
-                  var n = _p4._0;
-                  var l = _p4._1;
+            if (_p4._0 === 1) {
+                  var _p5 = rollover(_p4._1);
+                  var n = _p5._0;
+                  var l = _p5._1;
                   if (_U.eq(n,0)) return $Maybe.Nothing; else {
                         var ones = A2($List.repeat,
                         $List.length(c) - $List.length(l) - 1,
@@ -10716,23 +10730,25 @@ Elm.Y15D15.make = function (_elm) {
                      }
                } else {
                   return $Maybe.Just(A2($List._op["::"],
-                  _p3._0 - 1,
-                  increment(_p3._1)));
+                  _p4._0 - 1,
+                  increment(_p4._1)));
                }
          }
    };
-   var highScore = F3(function (model,oldHigh,oldCookie) {
+   var highScore = F4(function (model,calories,oldHigh,oldCookie) {
       highScore: while (true) {
          var newCookie = next(oldCookie);
          var newHigh = A2($Maybe.withDefault,
          oldHigh,
-         $List.maximum(_U.list([A2(score,model,oldCookie),oldHigh])));
-         var _p5 = newCookie;
-         if (_p5.ctor === "Just") {
-               var _v6 = model,_v7 = newHigh,_v8 = _p5._0;
-               model = _v6;
-               oldHigh = _v7;
-               oldCookie = _v8;
+         $List.maximum(_U.list([A3(score,model,calories,oldCookie)
+                               ,oldHigh])));
+         var _p6 = newCookie;
+         if (_p6.ctor === "Just") {
+               var _v7 = model,_v8 = calories,_v9 = newHigh,_v10 = _p6._0;
+               model = _v7;
+               calories = _v8;
+               oldHigh = _v9;
+               oldCookie = _v10;
                continue highScore;
             } else {
                return newHigh;
@@ -10742,8 +10758,16 @@ Elm.Y15D15.make = function (_elm) {
    var answers = function (input) {
       var model = parseInput(input);
       var cookie = A2(initCookie,model,100);
-      var p1 = $Basics.toString(A3(highScore,model,0,cookie));
-      var p2 = $Basics.toString($List.length(model));
+      var p1 = $Basics.toString(A4(highScore,
+      model,
+      $Maybe.Nothing,
+      0,
+      cookie));
+      var p2 = $Basics.toString(A4(highScore,
+      model,
+      $Maybe.Just(500),
+      0,
+      cookie));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D15.values = {_op: _op
