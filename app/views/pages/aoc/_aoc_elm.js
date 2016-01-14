@@ -10573,6 +10573,88 @@ Elm.Y15D14.make = function (_elm) {
                                ,parseLine: parseLine
                                ,Reindeer: Reindeer};
 };
+Elm.Y15D15 = Elm.Y15D15 || {};
+Elm.Y15D15.make = function (_elm) {
+   "use strict";
+   _elm.Y15D15 = _elm.Y15D15 || {};
+   if (_elm.Y15D15.values) return _elm.Y15D15.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Ingredient = F6(function (a,b,c,d,e,f) {
+      return {name: a
+             ,capacity: b
+             ,durability: c
+             ,flavor: d
+             ,texture: e
+             ,calories: f};
+   });
+   var parseInt = function (s) {
+      return A2($Result.withDefault,0,$String.toInt(s));
+   };
+   var parseLine = F2(function (line,model) {
+      var rgx = A2($Basics._op["++"],
+      "^(\\w+): ",
+      A2($Basics._op["++"],
+      "capacity (-?\\d+), ",
+      A2($Basics._op["++"],
+      "durability (-?\\d+), ",
+      A2($Basics._op["++"],
+      "flavor (-?\\d+), ",
+      A2($Basics._op["++"],
+      "texture (-?\\d+), ",
+      "calories (-?\\d+)$")))));
+      var matches = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,$Regex.AtMost(1),$Regex.regex(rgx),line));
+      var _p0 = matches;
+      if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::" && _p0._0._1._0.ctor === "Just" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "::" && _p0._0._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1.ctor === "::" && _p0._0._1._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1._1.ctor === "::" && _p0._0._1._1._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
+      {
+            var cl2 = parseInt(_p0._0._1._1._1._1._1._0._0);
+            var tx2 = parseInt(_p0._0._1._1._1._1._0._0);
+            var fl2 = parseInt(_p0._0._1._1._1._0._0);
+            var du2 = parseInt(_p0._0._1._1._0._0);
+            var cp2 = parseInt(_p0._0._1._0._0);
+            return A2($List._op["::"],
+            A6(Ingredient,_p0._0._0._0,cp2,du2,fl2,tx2,cl2),
+            model);
+         } else {
+            return model;
+         }
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      _U.list([]),
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var answers = function (input) {
+      var model = parseInput(input);
+      var p1 = $Basics.toString($List.length(model));
+      var p2 = $Basics.toString($List.length(model));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D15.values = {_op: _op
+                               ,answers: answers
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,parseInt: parseInt
+                               ,Ingredient: Ingredient};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -10847,6 +10929,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D12 = Elm.Y15D12.make(_elm),
    $Y15D13 = Elm.Y15D13.make(_elm),
    $Y15D14 = Elm.Y15D14.make(_elm),
+   $Y15D15 = Elm.Y15D15.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -10867,6 +10950,7 @@ Elm.Y15.make = function (_elm) {
          case 12: return $Y15D12.answers(input);
          case 13: return $Y15D13.answers(input);
          case 14: return $Y15D14.answers(input);
+         case 15: return $Y15D15.answers(input);
          case 19: return $Y15D19.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
