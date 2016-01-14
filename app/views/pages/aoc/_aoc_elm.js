@@ -10589,6 +10589,12 @@ Elm.Y15D15.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Util = Elm.Util.make(_elm);
    var _op = {};
+   var initCookie = F2(function (model,total) {
+      var size = $List.length(model);
+      var first = total - size + 1;
+      var ones = A2($List.repeat,size - 1,1);
+      return A2($List._op["::"],first,ones);
+   });
    var Ingredient = F6(function (a,b,c,d,e,f) {
       return {name: a
              ,capacity: b
@@ -10642,18 +10648,116 @@ Elm.Y15D15.make = function (_elm) {
       },
       A2($String.split,"\n",input)));
    };
+   var score = F2(function (m,c) {
+      var tx = $List.sum(A3($List.map2,
+      F2(function (x,y) {    return x * y;}),
+      A2($List.map,function (_) {    return _.texture;},m),
+      c));
+      var fl = $List.sum(A3($List.map2,
+      F2(function (x,y) {    return x * y;}),
+      A2($List.map,function (_) {    return _.flavor;},m),
+      c));
+      var du = $List.sum(A3($List.map2,
+      F2(function (x,y) {    return x * y;}),
+      A2($List.map,function (_) {    return _.durability;},m),
+      c));
+      var cp = $List.sum(A3($List.map2,
+      F2(function (x,y) {    return x * y;}),
+      A2($List.map,function (_) {    return _.capacity;},m),
+      c));
+      return $List.product(A2($List.map,
+      function (s) {
+         return _U.cmp(s,0) < 0 ? 0 : s;
+      },
+      _U.list([cp,du,fl,tx])));
+   });
+   var increment = function (l) {
+      var _p1 = l;
+      if (_p1.ctor === "[]") {
+            return _U.list([]);
+         } else {
+            return A2($List._op["::"],_p1._0 + 1,_p1._1);
+         }
+   };
+   var rollover = function (l) {
+      rollover: while (true) {
+         var _p2 = l;
+         if (_p2.ctor === "[]") {
+               return {ctor: "_Tuple2",_0: 0,_1: _U.list([])};
+            } else {
+               if (_p2._0 === 1) {
+                     var _v3 = _p2._1;
+                     l = _v3;
+                     continue rollover;
+                  } else {
+                     return {ctor: "_Tuple2"
+                            ,_0: _p2._0 - 1
+                            ,_1: increment(_p2._1)};
+                  }
+            }
+      }
+   };
+   var next = function (c) {
+      var _p3 = c;
+      if (_p3.ctor === "[]") {
+            return $Maybe.Nothing;
+         } else {
+            if (_p3._0 === 1) {
+                  var _p4 = rollover(_p3._1);
+                  var n = _p4._0;
+                  var l = _p4._1;
+                  if (_U.eq(n,0)) return $Maybe.Nothing; else {
+                        var ones = A2($List.repeat,
+                        $List.length(c) - $List.length(l) - 1,
+                        1);
+                        return $Maybe.Just(A2($List._op["::"],
+                        n,
+                        A2($Basics._op["++"],ones,l)));
+                     }
+               } else {
+                  return $Maybe.Just(A2($List._op["::"],
+                  _p3._0 - 1,
+                  increment(_p3._1)));
+               }
+         }
+   };
+   var highScore = F3(function (model,oldHigh,oldCookie) {
+      highScore: while (true) {
+         var newCookie = next(oldCookie);
+         var newHigh = A2($Maybe.withDefault,
+         oldHigh,
+         $List.maximum(_U.list([A2(score,model,oldCookie),oldHigh])));
+         var _p5 = newCookie;
+         if (_p5.ctor === "Just") {
+               var _v6 = model,_v7 = newHigh,_v8 = _p5._0;
+               model = _v6;
+               oldHigh = _v7;
+               oldCookie = _v8;
+               continue highScore;
+            } else {
+               return newHigh;
+            }
+      }
+   });
    var answers = function (input) {
       var model = parseInput(input);
-      var p1 = $Basics.toString($List.length(model));
+      var cookie = A2(initCookie,model,100);
+      var p1 = $Basics.toString(A3(highScore,model,0,cookie));
       var p2 = $Basics.toString($List.length(model));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D15.values = {_op: _op
                                ,answers: answers
+                               ,highScore: highScore
+                               ,next: next
+                               ,rollover: rollover
+                               ,increment: increment
+                               ,score: score
                                ,parseInput: parseInput
                                ,parseLine: parseLine
                                ,parseInt: parseInt
-                               ,Ingredient: Ingredient};
+                               ,Ingredient: Ingredient
+                               ,initCookie: initCookie};
 };
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
