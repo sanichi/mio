@@ -10783,6 +10783,134 @@ Elm.Y15D15.make = function (_elm) {
                                ,Ingredient: Ingredient
                                ,initCookie: initCookie};
 };
+Elm.Y15D16 = Elm.Y15D16 || {};
+Elm.Y15D16.make = function (_elm) {
+   "use strict";
+   _elm.Y15D16 = _elm.Y15D16 || {};
+   if (_elm.Y15D16.values) return _elm.Y15D16.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Sue = F2(function (a,b) {    return {number: a,props: b};});
+   var parseInt = function (s) {
+      return A2($Result.withDefault,0,$String.toInt(s));
+   };
+   var parseLine = F2(function (line,model) {
+      var cs = "(akitas|cars|cats|children|goldfish|perfumes|pomeranians|samoyeds|trees|vizslas): (\\d+)";
+      var rx = A2($Basics._op["++"],
+      "Sue ([1-9]\\d*): ",
+      A2($String.join,", ",A2($List.repeat,3,cs)));
+      var ms = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,$Regex.AtMost(1),$Regex.regex(rx),line));
+      var _p0 = ms;
+      if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::" && _p0._0._1._0.ctor === "Just" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "::" && _p0._0._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1.ctor === "::" && _p0._0._1._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1._1.ctor === "::" && _p0._0._1._1._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1._1._1.ctor === "::" && _p0._0._1._1._1._1._1._1._0.ctor === "Just" && _p0._0._1._1._1._1._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
+      {
+            var d = A3($Dict.insert,
+            _p0._0._1._1._1._1._1._0._0,
+            parseInt(_p0._0._1._1._1._1._1._1._0._0),
+            A3($Dict.insert,
+            _p0._0._1._1._1._0._0,
+            parseInt(_p0._0._1._1._1._1._0._0),
+            A3($Dict.insert,
+            _p0._0._1._0._0,
+            parseInt(_p0._0._1._1._0._0),
+            $Dict.empty)));
+            var i = parseInt(_p0._0._0._0);
+            return A2($List._op["::"],A2(Sue,i,d),model);
+         } else {
+            return model;
+         }
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      _U.list([]),
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var match2 = F3(function (prop,val,prevProp) {
+      if ($Basics.not(prevProp)) return false; else {
+            var _p1 = prop;
+            switch (_p1)
+            {case "akitas": return _U.eq(val,0);
+               case "cars": return _U.eq(val,2);
+               case "cats": return _U.cmp(val,7) > 0;
+               case "children": return _U.eq(val,3);
+               case "goldfish": return _U.cmp(val,5) < 0;
+               case "perfumes": return _U.eq(val,1);
+               case "pomeranians": return _U.cmp(val,3) < 0;
+               case "samoyeds": return _U.eq(val,2);
+               case "trees": return _U.cmp(val,3) > 0;
+               case "vizslas": return _U.eq(val,0);
+               default: return false;}
+         }
+   });
+   var match1 = F3(function (prop,val,prevProp) {
+      if ($Basics.not(prevProp)) return false; else {
+            var _p2 = prop;
+            switch (_p2)
+            {case "akitas": return _U.eq(val,0);
+               case "cars": return _U.eq(val,2);
+               case "cats": return _U.eq(val,7);
+               case "children": return _U.eq(val,3);
+               case "goldfish": return _U.eq(val,5);
+               case "perfumes": return _U.eq(val,1);
+               case "pomeranians": return _U.eq(val,3);
+               case "samoyeds": return _U.eq(val,2);
+               case "trees": return _U.eq(val,3);
+               case "vizslas": return _U.eq(val,0);
+               default: return false;}
+         }
+   });
+   var sue = F2(function (hit,model) {
+      var sues = A2($List.filter,
+      function (s) {
+         return A3($Dict.foldl,hit,true,s.props);
+      },
+      model);
+      var _p3 = $List.length(sues);
+      switch (_p3)
+      {case 0: return "none";
+         case 1: return $Basics.toString(A2($Maybe.withDefault,
+           0,
+           $List.head(A2($List.map,
+           function (_) {
+              return _.number;
+           },
+           sues))));
+         default: return "too many";}
+   });
+   var answers = function (input) {
+      var model = parseInput(input);
+      var p1 = A2(sue,match1,model);
+      var p2 = A2(sue,match2,model);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D16.values = {_op: _op
+                               ,answers: answers
+                               ,sue: sue
+                               ,match1: match1
+                               ,match2: match2
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,parseInt: parseInt
+                               ,Sue: Sue};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -11058,6 +11186,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D13 = Elm.Y15D13.make(_elm),
    $Y15D14 = Elm.Y15D14.make(_elm),
    $Y15D15 = Elm.Y15D15.make(_elm),
+   $Y15D16 = Elm.Y15D16.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -11079,6 +11208,7 @@ Elm.Y15.make = function (_elm) {
          case 13: return $Y15D13.answers(input);
          case 14: return $Y15D14.answers(input);
          case 15: return $Y15D15.answers(input);
+         case 16: return $Y15D16.answers(input);
          case 19: return $Y15D19.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],

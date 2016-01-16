@@ -22,7 +22,7 @@
             - (1..25).each do |day|
               %option{value: "#{day}"}
                 = day
-                = "🌳" unless [16, 17, 18, 20, 21, 22, 23, 24].include? day # done
+                = "🌳" unless [17, 18, 20, 21, 22, 23, 24].include? day # done
                 = "🕰" if [4, 6, 10, 11, 13, 15].include? day # slow
       .form-group
         %label.control-label.col-xs-2= t("pages.aoc.answer")
