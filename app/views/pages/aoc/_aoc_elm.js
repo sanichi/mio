@@ -11360,6 +11360,81 @@ Elm.Y15D19.make = function (_elm) {
                                ,bracRgx: bracRgx
                                ,comaRgx: comaRgx};
 };
+Elm.Y15D20 = Elm.Y15D20 || {};
+Elm.Y15D20.make = function (_elm) {
+   "use strict";
+   _elm.Y15D20 = _elm.Y15D20 || {};
+   if (_elm.Y15D20.values) return _elm.Y15D20.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var parseInput = function (input) {
+      return A2($Result.withDefault,
+      0,
+      $String.toInt(A2($Maybe.withDefault,
+      "0",
+      $List.head(A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,
+      $Regex.AtMost(1),
+      $Regex.regex("\\d+"),
+      input))))));
+   };
+   var fac = F4(function (n,i,l,fs) {
+      if (_U.cmp($Basics.toFloat(i),l) > 0) return fs; else {
+            var fs1 = function () {
+               if (!_U.eq(A2($Basics.rem,n,i),0)) return fs; else {
+                     var j = n / i | 0;
+                     var fs2 = A2($List._op["::"],i,fs);
+                     return _U.eq(j,i) ? fs2 : A2($List._op["::"],j,fs2);
+                  }
+            }();
+            return A2($Basics._op["++"],fs1,A4(fac,n,i + 1,l,fs));
+         }
+   });
+   var factors = function (n) {
+      return A4(fac,
+      n,
+      1,
+      $Basics.sqrt($Basics.toFloat(n)),
+      _U.list([]));
+   };
+   var house1 = F2(function (goal,house) {
+      house1: while (true) {
+         var presents = $List.sum(A2($List.map,
+         F2(function (x,y) {    return x * y;})(10),
+         factors(house)));
+         if (_U.cmp(presents,goal) > -1) return house; else {
+               var _v0 = goal,_v1 = house + 1;
+               goal = _v0;
+               house = _v1;
+               continue house1;
+            }
+      }
+   });
+   var answers = function (input) {
+      var p2 = $Basics.toString(4);
+      var goal = parseInput(input);
+      var p1 = $Basics.toString(A2(house1,goal,1));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D20.values = {_op: _op
+                               ,answers: answers
+                               ,house1: house1
+                               ,factors: factors
+                               ,fac: fac
+                               ,parseInput: parseInput};
+};
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
    "use strict";
@@ -11473,6 +11548,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D17 = Elm.Y15D17.make(_elm),
    $Y15D18 = Elm.Y15D18.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
+   $Y15D20 = Elm.Y15D20.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var answers = F2(function (day,input) {
@@ -11497,6 +11573,7 @@ Elm.Y15.make = function (_elm) {
          case 17: return $Y15D17.answers(input);
          case 18: return $Y15D18.answers(input);
          case 19: return $Y15D19.answers(input);
+         case 20: return $Y15D20.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
            "year 2015, day ",
