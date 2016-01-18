@@ -10990,6 +10990,210 @@ Elm.Y15D17.make = function (_elm) {
                                ,combos: combos
                                ,parseInput: parseInput};
 };
+Elm.Y15D18 = Elm.Y15D18 || {};
+Elm.Y15D18.make = function (_elm) {
+   "use strict";
+   _elm.Y15D18 = _elm.Y15D18 || {};
+   if (_elm.Y15D18.values) return _elm.Y15D18.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var initModel = {lights: $Array.empty
+                   ,size: 0
+                   ,maxIndex: 0
+                   ,stuck: false};
+   var Model = F4(function (a,b,c,d) {
+      return {lights: a,size: b,maxIndex: c,stuck: d};
+   });
+   var debug = function (model) {
+      var chars = A2($String.join,
+      "",
+      A2($List.map,
+      function (b) {
+         return b ? "#" : ".";
+      },
+      $Array.toList(model.lights)));
+      var lines = A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,
+      $Regex.All,
+      $Regex.regex(A2($Basics._op["++"],
+      ".{",
+      A2($Basics._op["++"],$Basics.toString(model.size),"}"))),
+      chars));
+      return A2($Basics._op["++"],A2($String.join,"\n",lines),"\n");
+   };
+   var parseInput = function (input) {
+      var a = A3($List.foldl,
+      $Array.push,
+      $Array.empty,
+      A2($List.map,
+      function (s) {
+         return _U.eq(s,"#");
+      },
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("[#.]"),input))));
+      var s = $Basics.ceiling($Basics.sqrt($Basics.toFloat($Array.length(a))));
+      var m = s - 1;
+      return A4(Model,a,s,m,false);
+   };
+   var count = function (model) {
+      return $List.length(A2($List.filter,
+      $Basics.identity,
+      $Array.toList(model.lights)));
+   };
+   var outside = F2(function (model,_p0) {
+      var _p1 = _p0;
+      var _p3 = _p1._0;
+      var _p2 = _p1._1;
+      return _U.cmp(_p3,model.maxIndex) > 0 || (_U.cmp(_p3,
+      0) < 0 || (_U.cmp(_p2,model.maxIndex) > 0 || _U.cmp(_p2,
+      0) < 0));
+   });
+   var next = F2(function (model,_p4) {
+      var _p5 = _p4;
+      var _p7 = _p5._0;
+      var _p6 = _p5._1;
+      return _U.cmp(_p6,model.maxIndex) > -1 ? {ctor: "_Tuple2"
+                                               ,_0: _p7 + 1
+                                               ,_1: 0} : {ctor: "_Tuple2",_0: _p7,_1: _p6 + 1};
+   });
+   var corner = F2(function (model,_p8) {
+      var _p9 = _p8;
+      var _p11 = _p9._0;
+      var _p10 = _p9._1;
+      return (_U.eq(_p11,0) || _U.eq(_p11,
+      model.maxIndex)) && (_U.eq(_p10,0) || _U.eq(_p10,
+      model.maxIndex));
+   });
+   var index = F2(function (model,_p12) {
+      var _p13 = _p12;
+      return _p13._0 * model.size + _p13._1;
+   });
+   var stick = function (model) {
+      var a = A3($Array.set,
+      A2(index,
+      model,
+      {ctor: "_Tuple2",_0: model.maxIndex,_1: model.maxIndex}),
+      true,
+      A3($Array.set,
+      A2(index,model,{ctor: "_Tuple2",_0: model.maxIndex,_1: 0}),
+      true,
+      A3($Array.set,
+      A2(index,model,{ctor: "_Tuple2",_0: 0,_1: model.maxIndex}),
+      true,
+      A3($Array.set,
+      A2(index,model,{ctor: "_Tuple2",_0: 0,_1: 0}),
+      true,
+      model.lights))));
+      return _U.update(model,{lights: a,stuck: true});
+   };
+   var query = F2(function (model,cell) {
+      return A2(outside,
+      model,
+      cell) ? false : A2($Maybe.withDefault,
+      false,
+      A2($Array.get,A2(index,model,cell),model.lights));
+   });
+   var neighbours = F2(function (model,_p14) {
+      var _p15 = _p14;
+      var ds = _U.list([{ctor: "_Tuple2",_0: -1,_1: -1}
+                       ,{ctor: "_Tuple2",_0: 0,_1: -1}
+                       ,{ctor: "_Tuple2",_0: 1,_1: -1}
+                       ,{ctor: "_Tuple2",_0: -1,_1: 0}
+                       ,{ctor: "_Tuple2",_0: 1,_1: 0}
+                       ,{ctor: "_Tuple2",_0: -1,_1: 1}
+                       ,{ctor: "_Tuple2",_0: 0,_1: 1}
+                       ,{ctor: "_Tuple2",_0: 1,_1: 1}]);
+      return $List.length(A2($List.filter,
+      $Basics.identity,
+      A2($List.map,
+      query(model),
+      A2($List.map,
+      function (_p16) {
+         var _p17 = _p16;
+         return {ctor: "_Tuple2"
+                ,_0: _p15._0 + _p17._0
+                ,_1: _p15._1 + _p17._1};
+      },
+      ds))));
+   });
+   var newVal = F2(function (model,cell) {
+      if (model.stuck && A2(corner,model,cell)) return true; else {
+            var n = A2(neighbours,model,cell);
+            return A2(query,model,cell) ? _U.eq(n,2) || _U.eq(n,
+            3) : _U.eq(n,3);
+         }
+   });
+   var sweep = F3(function (oldModel,model,cell) {
+      sweep: while (true) if (A2(outside,model,cell)) return model;
+      else {
+            var v = A2(newVal,oldModel,cell);
+            var model = _U.update(model,
+            {lights: A3($Array.set,A2(index,model,cell),v,model.lights)});
+            var nextCell = A2(next,model,cell);
+            var _v6 = oldModel,_v7 = model,_v8 = nextCell;
+            oldModel = _v6;
+            model = _v7;
+            cell = _v8;
+            continue sweep;
+         }
+   });
+   var step = function (model) {
+      var oldModel = model;
+      var start = {ctor: "_Tuple2",_0: 0,_1: 0};
+      return A3(sweep,oldModel,model,start);
+   };
+   var steps = F2(function (n,model) {
+      steps: while (true) if (_U.cmp(n,0) < 1) return model; else {
+            var _v9 = n - 1,_v10 = step(model);
+            n = _v9;
+            model = _v10;
+            continue steps;
+         }
+   });
+   var answers = function (input) {
+      var nm = 100;
+      var model = parseInput(input);
+      var m1 = A2(steps,nm,model);
+      var p1 = $Basics.toString(count(m1));
+      var m2 = A2(steps,nm,stick(model));
+      var p2 = $Basics.toString(count(m2));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D18.values = {_op: _op
+                               ,answers: answers
+                               ,steps: steps
+                               ,step: step
+                               ,sweep: sweep
+                               ,newVal: newVal
+                               ,neighbours: neighbours
+                               ,query: query
+                               ,index: index
+                               ,corner: corner
+                               ,next: next
+                               ,outside: outside
+                               ,count: count
+                               ,stick: stick
+                               ,parseInput: parseInput
+                               ,debug: debug
+                               ,Model: Model
+                               ,initModel: initModel};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -11267,6 +11471,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D15 = Elm.Y15D15.make(_elm),
    $Y15D16 = Elm.Y15D16.make(_elm),
    $Y15D17 = Elm.Y15D17.make(_elm),
+   $Y15D18 = Elm.Y15D18.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -11290,6 +11495,7 @@ Elm.Y15.make = function (_elm) {
          case 15: return $Y15D15.answers(input);
          case 16: return $Y15D16.answers(input);
          case 17: return $Y15D17.answers(input);
+         case 18: return $Y15D18.answers(input);
          case 19: return $Y15D19.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
