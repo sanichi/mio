@@ -9010,15 +9010,38 @@ Elm.Util.make = function (_elm) {
             return A2($List.concatMap,f,select(_p5));
          }
    };
+   var combinations = F2(function (n,list) {
+      return _U.cmp(n,0) < 0 || _U.cmp(n,
+      $List.length(list)) > 0 ? _U.list([]) : A2(combo,n,list);
+   });
+   var combo = F2(function (n,list) {
+      if (_U.eq(n,0)) return _U.list([_U.list([])]);
+      else if (_U.eq(n,$List.length(list))) return _U.list([list]);
+         else {
+               var _p8 = list;
+               if (_p8.ctor === "[]") {
+                     return _U.list([]);
+                  } else {
+                     var _p9 = _p8._1;
+                     var c2 = A2(combinations,n,_p9);
+                     var c1 = A2($List.map,
+                     F2(function (x,y) {
+                        return A2($List._op["::"],x,y);
+                     })(_p8._0),
+                     A2(combinations,n - 1,_p9));
+                     return A2($Basics._op["++"],c1,c2);
+                  }
+            }
+   });
    var join = F2(function (p1,p2) {
       return A2($Basics._op["++"],
       p1,
       A2($Basics._op["++"]," | ",p2));
    });
    return _elm.Util.values = {_op: _op
+                             ,combinations: combinations
                              ,join: join
-                             ,permutations: permutations
-                             ,select: select};
+                             ,permutations: permutations};
 };
 Elm.Y15D01 = Elm.Y15D01 || {};
 Elm.Y15D01.make = function (_elm) {
@@ -10911,6 +10934,62 @@ Elm.Y15D16.make = function (_elm) {
                                ,parseInt: parseInt
                                ,Sue: Sue};
 };
+Elm.Y15D17 = Elm.Y15D17 || {};
+Elm.Y15D17.make = function (_elm) {
+   "use strict";
+   _elm.Y15D17 = _elm.Y15D17 || {};
+   if (_elm.Y15D17.values) return _elm.Y15D17.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var parseInput = function (input) {
+      return A2($List.filter,
+      function (i) {
+         return _U.cmp(i,0) > 0;
+      },
+      A2($List.map,
+      $Result.withDefault(0),
+      A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("[1-9]\\d*"),input)))));
+   };
+   var combos = F3(function (n,total,model) {
+      if (_U.eq(n,0)) return {ctor: "_Tuple2",_0: 0,_1: 0}; else {
+            var _p0 = A3(combos,n - 1,total,model);
+            var q = _p0._0;
+            var r = _p0._1;
+            var p = $List.length(A2($List.filter,
+            function (c) {
+               return _U.eq($List.sum(c),total);
+            },
+            A2($Util.combinations,n,model)));
+            return {ctor: "_Tuple2",_0: p + q,_1: _U.eq(r,0) ? p : r};
+         }
+   });
+   var answers = function (input) {
+      var model = parseInput(input);
+      var number = A3(combos,$List.length(model),150,model);
+      var p1 = $Basics.toString($Basics.fst(number));
+      var p2 = $Basics.toString($Basics.snd(number));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D17.values = {_op: _op
+                               ,answers: answers
+                               ,combos: combos
+                               ,parseInput: parseInput};
+};
 Elm.Y15D19 = Elm.Y15D19 || {};
 Elm.Y15D19.make = function (_elm) {
    "use strict";
@@ -11187,6 +11266,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D14 = Elm.Y15D14.make(_elm),
    $Y15D15 = Elm.Y15D15.make(_elm),
    $Y15D16 = Elm.Y15D16.make(_elm),
+   $Y15D17 = Elm.Y15D17.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
@@ -11209,6 +11289,7 @@ Elm.Y15.make = function (_elm) {
          case 14: return $Y15D14.answers(input);
          case 15: return $Y15D15.answers(input);
          case 16: return $Y15D16.answers(input);
+         case 17: return $Y15D17.answers(input);
          case 19: return $Y15D19.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
