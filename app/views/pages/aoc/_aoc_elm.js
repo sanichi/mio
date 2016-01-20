@@ -11409,28 +11409,46 @@ Elm.Y15D20.make = function (_elm) {
       $Basics.sqrt($Basics.toFloat(n)),
       _U.list([]));
    };
+   var house2 = F2(function (goal,house) {
+      house2: while (true) {
+         var presents = $List.sum(A2($List.map,
+         F2(function (x,y) {    return x * y;})(11),
+         A2($List.filter,
+         function (elf) {
+            return _U.cmp(house / elf | 0,50) < 1;
+         },
+         factors(house))));
+         if (_U.cmp(presents,goal) > -1) return house; else {
+               var _v0 = goal,_v1 = house + 1;
+               goal = _v0;
+               house = _v1;
+               continue house2;
+            }
+      }
+   });
    var house1 = F2(function (goal,house) {
       house1: while (true) {
          var presents = $List.sum(A2($List.map,
          F2(function (x,y) {    return x * y;})(10),
          factors(house)));
          if (_U.cmp(presents,goal) > -1) return house; else {
-               var _v0 = goal,_v1 = house + 1;
-               goal = _v0;
-               house = _v1;
+               var _v2 = goal,_v3 = house + 1;
+               goal = _v2;
+               house = _v3;
                continue house1;
             }
       }
    });
    var answers = function (input) {
-      var p2 = $Basics.toString(4);
       var goal = parseInput(input);
       var p1 = $Basics.toString(A2(house1,goal,1));
+      var p2 = $Basics.toString(A2(house2,goal,1));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D20.values = {_op: _op
                                ,answers: answers
                                ,house1: house1
+                               ,house2: house2
                                ,factors: factors
                                ,fac: fac
                                ,parseInput: parseInput};

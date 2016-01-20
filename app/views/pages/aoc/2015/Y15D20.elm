@@ -11,7 +11,7 @@ answers input =
   let
     goal = parseInput input
     p1 = house1 goal 1 |> toString
-    p2 = 4 |> toString
+    p2 = house2 goal 1 |> toString
   in
     join p1 p2
 
@@ -29,42 +29,18 @@ house1 goal house =
       else house1 goal (house + 1)
 
 
--- house2 : Int -> Int -> Dict Int Int -> Int
--- house2 goal elf houses =
---   let
---     presents = 11 * elf
---     (newHouses, done) = deliver50 goal elf presents 1
---   in
---     if done
---       then elf
---       else house2 goal (elf + 1) newHouses
---
---
--- deliver50 : Int -> Int -> Int -> Int -> Dict Int Int -> (Dict Int Int, Bool)
--- deliver50 goal elf presents offset houses =
---   if offset > 50
---     then (houses, False)
---     else
---       let
---         house = elf * offset
---         current = Dict.get house houses |> Maybe.withDefault 0
---         updated = current + presents
---         newHouses = Dict.insert house (current + presents) houses
---       in
---         (newHouses, updated >= goal)
--- my $elf = 1;
--- while ($elf < $goal)
--- {
---     my $presents = $elf * 11;
---     for (my $offset=1; $offset<=50; $offset++)
---     {
---         my $house = $elf * $offset;
---         last if $house > $goal;
---         $presents[$house] += $presents;
---     }
---     last if $presents[$elf] >= $goal;
---     $elf++;
--- }
+house2 : Int -> Int -> Int
+house2 goal house =
+  let
+    presents =
+      factors house
+        |> List.filter (\elf -> house // elf <= 50)
+        |> List.map ((*) 11)
+        |> List.sum
+  in
+    if presents >= goal
+      then house
+      else house2 goal (house + 1)
 
 
 factors : Int -> List Int
