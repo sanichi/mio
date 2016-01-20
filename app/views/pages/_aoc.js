@@ -19,13 +19,18 @@ $(function() {
 function solve_aoc_problem(y, d) {
   var year = parseInt(y, 10);
   var day  = parseInt(d, 10);
+  $('#answer').val('');
+  $('#input').val('');
+  $('#code').hide();
+  $('#loading').hide();
   if (!isNaN(day) && !isNaN(year))
   {
     var file = '/aoc/' + year + '/' + day + '.txt';
     $.ajax({url: file}).done(function(text) {
-      $('#answer').val('');
       $('#input').val(text);
       $('#loading').show();
+      $('#code').attr('href', code_link(year, day));
+      $('#code').show();
       setTimeout(function() { // flush DOM changes
         elm_app.ports.problem.send([year, day, text]);
       }, 10);
@@ -37,4 +42,11 @@ function solve_aoc_problem(y, d) {
 function display_aoc_answer(output) {
   $('#answer').val(output);
   $('#loading').hide();
+}
+
+// Link to code for given year and day.
+function code_link(year, day) {
+  var yy = year.toString().substring(2, 4);
+  var dd = (day < 10 ? '0' : '') + day;
+  return 'https://bitbucket.org/sanichi/sni_mio_app/src/5f9048c84102cdb8eff1c23c91c1a571c19234b5/app/views/pages/aoc/' + year + '/Y' + yy + 'D' + dd + '.elm?at=master&fileviewer=file-view-default';
 }
