@@ -33,7 +33,7 @@ function solve_aoc_problem(y, d) {
       $('#code').show();
       setTimeout(function() { // flush DOM changes
         elm_app.ports.problem.send([year, day, text]);
-      }, 10);
+      }, 100);
     });
   }
 }

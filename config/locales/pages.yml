@@ -3,8 +3,10 @@ en:
     pills: Blue PiLL
     aoc:
       answer: Answer
+      code: Elm code
       day: Day
       input: Input
       short: AOC
+      thinking: Please wait, I'm thinking ...
       title: Advent of Code
       year: Year
