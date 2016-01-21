@@ -11453,6 +11453,53 @@ Elm.Y15D20.make = function (_elm) {
                                ,fac: fac
                                ,parseInput: parseInput};
 };
+Elm.Y15D21 = Elm.Y15D21 || {};
+Elm.Y15D21.make = function (_elm) {
+   "use strict";
+   _elm.Y15D21 = _elm.Y15D21 || {};
+   if (_elm.Y15D21.values) return _elm.Y15D21.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Fighter = F3(function (a,b,c) {
+      return {hits: a,damage: b,armor: c};
+   });
+   var parseInput = function (input) {
+      var ns = A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("\\d+"),input)));
+      var _p0 = ns;
+      if (_p0.ctor === "::" && _p0._0.ctor === "Ok" && _p0._1.ctor === "::" && _p0._1._0.ctor === "Ok" && _p0._1._1.ctor === "::" && _p0._1._1._0.ctor === "Ok" && _p0._1._1._1.ctor === "[]")
+      {
+            return A3(Fighter,_p0._0._0,_p0._1._0._0,_p0._1._1._0._0);
+         } else {
+            return A3(Fighter,0,0,0);
+         }
+   };
+   var answers = function (input) {
+      var me = A3(Fighter,8,5,5);
+      var p2 = $Basics.toString(me);
+      var boss = parseInput(input);
+      var p1 = $Basics.toString(boss);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D21.values = {_op: _op
+                               ,answers: answers
+                               ,parseInput: parseInput
+                               ,Fighter: Fighter};
+};
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
    "use strict";
@@ -11567,6 +11614,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D18 = Elm.Y15D18.make(_elm),
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D20 = Elm.Y15D20.make(_elm),
+   $Y15D21 = Elm.Y15D21.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var answers = F2(function (day,input) {
@@ -11592,6 +11640,7 @@ Elm.Y15.make = function (_elm) {
          case 18: return $Y15D18.answers(input);
          case 19: return $Y15D19.answers(input);
          case 20: return $Y15D20.answers(input);
+         case 21: return $Y15D21.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
            "year 2015, day ",

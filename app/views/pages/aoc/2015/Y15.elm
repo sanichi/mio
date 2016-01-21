@@ -20,6 +20,7 @@ import Y15D17
 import Y15D18
 import Y15D19
 import Y15D20
+import Y15D21
 import Y15D25
 
 answers : Int -> String -> String
@@ -45,5 +46,6 @@ answers day input =
     18 -> Y15D18.answers input
     19 -> Y15D19.answers input
     20 -> Y15D20.answers input
+    21 -> Y15D21.answers input
     25 -> Y15D25.answer  input
     _ -> "year 2015, day " ++ (toString day) ++ ": not implemented yet"
