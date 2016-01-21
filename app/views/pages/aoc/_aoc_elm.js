@@ -11617,6 +11617,43 @@ Elm.Y15D21.make = function (_elm) {
                                ,Index: Index
                                ,initIndex: initIndex};
 };
+Elm.Y15D22 = Elm.Y15D22 || {};
+Elm.Y15D22.make = function (_elm) {
+   "use strict";
+   _elm.Y15D22 = _elm.Y15D22 || {};
+   if (_elm.Y15D22.values) return _elm.Y15D22.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var parseInput = function (input) {
+      return A2($List.map,
+      $Result.withDefault(0),
+      A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("\\d+"),input))));
+   };
+   var answers = function (input) {
+      var data = parseInput(input);
+      var p1 = $Basics.toString(data);
+      var p2 = $Basics.toString(data);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D22.values = {_op: _op
+                               ,answers: answers
+                               ,parseInput: parseInput};
+};
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
    "use strict";
@@ -11732,6 +11769,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D19 = Elm.Y15D19.make(_elm),
    $Y15D20 = Elm.Y15D20.make(_elm),
    $Y15D21 = Elm.Y15D21.make(_elm),
+   $Y15D22 = Elm.Y15D22.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var answers = F2(function (day,input) {
@@ -11758,6 +11796,7 @@ Elm.Y15.make = function (_elm) {
          case 19: return $Y15D19.answers(input);
          case 20: return $Y15D20.answers(input);
          case 21: return $Y15D21.answers(input);
+         case 22: return $Y15D22.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
            "year 2015, day ",
