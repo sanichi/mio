@@ -48,5 +48,5 @@ function display_aoc_answer(output) {
 function code_link(year, day) {
   var yy = year.toString().substring(2, 4);
   var dd = (day < 10 ? '0' : '') + day;
-  return 'https://bitbucket.org/sanichi/sni_mio_app/src/5f9048c84102cdb8eff1c23c91c1a571c19234b5/app/views/pages/aoc/' + year + '/Y' + yy + 'D' + dd + '.elm?at=master&fileviewer=file-view-default';
+  return 'https://bitbucket.org/sanichi/sni_mio_app/src/master/app/views/pages/aoc/' + year + '/Y' + yy + 'D' + dd + '.elm';
 }
