@@ -11459,6 +11459,7 @@ Elm.Y15D21.make = function (_elm) {
    _elm.Y15D21 = _elm.Y15D21 || {};
    if (_elm.Y15D21.values) return _elm.Y15D21.values;
    var _U = Elm.Native.Utils.make(_elm),
+   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $List = Elm.List.make(_elm),
@@ -11469,8 +11470,12 @@ Elm.Y15D21.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Util = Elm.Util.make(_elm);
    var _op = {};
-   var Fighter = F3(function (a,b,c) {
-      return {hits: a,damage: b,armor: c};
+   var Index = F4(function (a,b,c,d) {
+      return {w: a,a: b,r1: c,r2: d};
+   });
+   var initIndex = $Maybe.Just(A4(Index,0,0,0,1));
+   var Fighter = F5(function (a,b,c,d,e) {
+      return {hitp: a,damage: b,armor: c,cost: d,player: e};
    });
    var parseInput = function (input) {
       var ns = A2($List.map,
@@ -11483,22 +11488,134 @@ Elm.Y15D21.make = function (_elm) {
       var _p0 = ns;
       if (_p0.ctor === "::" && _p0._0.ctor === "Ok" && _p0._1.ctor === "::" && _p0._1._0.ctor === "Ok" && _p0._1._1.ctor === "::" && _p0._1._1._0.ctor === "Ok" && _p0._1._1._1.ctor === "[]")
       {
-            return A3(Fighter,_p0._0._0,_p0._1._0._0,_p0._1._1._0._0);
+            return A5(Fighter,
+            _p0._0._0,
+            _p0._1._0._0,
+            _p0._1._1._0._0,
+            0,
+            false);
          } else {
-            return A3(Fighter,0,0,0);
+            return A5(Fighter,0,0,0,0,false);
          }
    };
+   var rings = $Array.fromList(_U.list([_U.list([0,0,0])
+                                       ,_U.list([0,0,0])
+                                       ,_U.list([25,1,0])
+                                       ,_U.list([50,2,0])
+                                       ,_U.list([100,3,0])
+                                       ,_U.list([20,0,1])
+                                       ,_U.list([40,0,2])
+                                       ,_U.list([80,0,3])]));
+   var armors = $Array.fromList(_U.list([_U.list([0,0,0])
+                                        ,_U.list([13,0,1])
+                                        ,_U.list([31,0,2])
+                                        ,_U.list([53,0,3])
+                                        ,_U.list([75,0,4])
+                                        ,_U.list([102,0,5])]));
+   var weapons = $Array.fromList(_U.list([_U.list([8,4,0])
+                                         ,_U.list([10,5,0])
+                                         ,_U.list([25,6,0])
+                                         ,_U.list([40,7,0])
+                                         ,_U.list([74,8,0])]));
+   var winner = F2(function (attacker,defender) {
+      winner: while (true) if (_U.cmp(attacker.hitp,0) < 1)
+      return defender.player; else {
+            var damage = attacker.damage - defender.armor;
+            var hitp = defender.hitp - (_U.cmp(damage,1) < 0 ? 1 : damage);
+            var damaged = _U.update(defender,{hitp: hitp});
+            var _v1 = damaged,_v2 = attacker;
+            attacker = _v1;
+            defender = _v2;
+            continue winner;
+         }
+   });
+   var nextIndex = function (i) {
+      return _U.cmp(i.r2,7) < 0 ? $Maybe.Just(_U.update(i,
+      {r2: i.r2 + 1})) : _U.cmp(i.r1,6) < 0 ? $Maybe.Just(_U.update(i,
+      {r1: i.r1 + 1,r2: i.r1 + 2})) : _U.cmp(i.a,
+      5) < 0 ? $Maybe.Just(_U.update(i,
+      {a: i.a + 1,r1: 0,r2: 1})) : _U.cmp(i.w,
+      4) < 0 ? $Maybe.Just(_U.update(i,
+      {w: i.w + 1,a: 0,r1: 0,r2: 1})) : $Maybe.Nothing;
+   };
+   var fighterFromIndex = function (i) {
+      var ring2 = A2($Maybe.withDefault,
+      _U.list([0,0,0]),
+      A2($Array.get,i.r2,rings));
+      var ring1 = A2($Maybe.withDefault,
+      _U.list([0,0,0]),
+      A2($Array.get,i.r1,rings));
+      var armor = A2($Maybe.withDefault,
+      _U.list([0,0,0]),
+      A2($Array.get,i.a,armors));
+      var weapon = A2($Maybe.withDefault,
+      _U.list([0,0,0]),
+      A2($Array.get,i.w,weapons));
+      var totals = A5($List.map4,
+      F4(function (w,a,r1,r2) {    return w + a + r1 + r2;}),
+      weapon,
+      armor,
+      ring1,
+      ring2);
+      var _p1 = totals;
+      if (_p1.ctor === "::" && _p1._1.ctor === "::" && _p1._1._1.ctor === "::" && _p1._1._1._1.ctor === "[]")
+      {
+            return A5(Fighter,100,_p1._1._0,_p1._1._1._0,_p1._0,true);
+         } else {
+            return A5(Fighter,0,0,0,0,true);
+         }
+   };
+   var highest = F3(function (pwin,pcost,best) {
+      return $Basics.not(pwin) && _U.cmp(pcost,best) > 0;
+   });
+   var lowest = F3(function (pwin,pcost,best) {
+      return pwin && (_U.eq(best,0) || _U.cmp(pcost,best) < 0);
+   });
+   var search = F4(function (boss,candidate,best,index) {
+      search: while (true) {
+         var _p2 = index;
+         if (_p2.ctor === "Nothing") {
+               return best;
+            } else {
+               var _p3 = _p2._0;
+               var player = fighterFromIndex(_p3);
+               var nextBest = A3(candidate,
+               A2(winner,player,boss),
+               player.cost,
+               best) ? player.cost : best;
+               var _v5 = boss,
+               _v6 = candidate,
+               _v7 = nextBest,
+               _v8 = nextIndex(_p3);
+               boss = _v5;
+               candidate = _v6;
+               best = _v7;
+               index = _v8;
+               continue search;
+            }
+      }
+   });
    var answers = function (input) {
-      var me = A3(Fighter,8,5,5);
-      var p2 = $Basics.toString(me);
       var boss = parseInput(input);
-      var p1 = $Basics.toString(boss);
+      var p1 = $Basics.toString(A4(search,boss,lowest,0,initIndex));
+      var p2 = $Basics.toString(A4(search,boss,highest,0,initIndex));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D21.values = {_op: _op
                                ,answers: answers
+                               ,search: search
+                               ,lowest: lowest
+                               ,highest: highest
+                               ,fighterFromIndex: fighterFromIndex
+                               ,nextIndex: nextIndex
+                               ,winner: winner
+                               ,weapons: weapons
+                               ,armors: armors
+                               ,rings: rings
                                ,parseInput: parseInput
-                               ,Fighter: Fighter};
+                               ,Fighter: Fighter
+                               ,Index: Index
+                               ,initIndex: initIndex};
 };
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
