@@ -146,10 +146,10 @@ type alias Fighter =
 
 
 type alias Index =
-  { w      : Int
-  , a      : Int
-  , r1     : Int
-  , r2     : Int
+  { w  : Int
+  , a  : Int
+  , r1 : Int
+  , r2 : Int
   }
 
 
