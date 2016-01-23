@@ -11639,6 +11639,7 @@ Elm.Y15D23.make = function (_elm) {
    _elm.Y15D23 = _elm.Y15D23 || {};
    if (_elm.Y15D23.values) return _elm.Y15D23.values;
    var _U = Elm.Native.Utils.make(_elm),
+   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $List = Elm.List.make(_elm),
@@ -11660,57 +11661,41 @@ Elm.Y15D23.make = function (_elm) {
       },
       A3($Regex.find,$Regex.AtMost(1),$Regex.regex(rx),line));
       var _p0 = ms;
-      _v0_3: do {
-         if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::")
-         {
-               if (_p0._0._1._0.ctor === "Just") {
-                     if (_p0._0._1._1.ctor === "::") {
-                           if (_p0._0._1._1._0.ctor === "Just") {
-                                 if (_p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]") {
-                                       var i = A2($Result.withDefault,
-                                       0,
-                                       $String.toInt(_p0._0._1._1._0._0));
-                                       return A2($List._op["::"],
-                                       A3(Instruction,_p0._0._0._0,_p0._0._1._0._0,i),
-                                       model);
-                                    } else {
-                                       break _v0_3;
-                                    }
-                              } else {
-                                 if (_p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]") {
-                                       return A2($List._op["::"],
-                                       A3(Instruction,_p0._0._0._0,_p0._0._1._0._0,0),
-                                       model);
-                                    } else {
-                                       break _v0_3;
-                                    }
-                              }
-                        } else {
-                           break _v0_3;
-                        }
+      if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._1.ctor === "::" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
+      {
+            var a$ = function () {
+               var _p1 = _p0._0._1._1._0;
+               if (_p1.ctor === "Just") {
+                     return A2($Result.withDefault,0,$String.toInt(_p1._0));
                   } else {
-                     if (_p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
-                     {
-                           var i = A2($Result.withDefault,
-                           0,
-                           $String.toInt(_p0._0._1._1._0._0));
-                           return A2($List._op["::"],
-                           A3(Instruction,_p0._0._0._0,"x",i),
-                           model);
-                        } else {
-                           break _v0_3;
-                        }
+                     return 0;
                   }
-            } else {
-               break _v0_3;
-            }
-      } while (false);
-      return model;
+            }();
+            var r$ = function () {
+               var _p2 = _p0._0._1._0;
+               if (_p2.ctor === "Just") {
+                     return _p2._0;
+                  } else {
+                     return "";
+                  }
+            }();
+            var n$ = function () {
+               var _p3 = _p0._0._0;
+               if (_p3.ctor === "Just") {
+                     return _p3._0;
+                  } else {
+                     return "";
+                  }
+            }();
+            return A2($Array.push,A3(Instruction,n$,r$,a$),model);
+         } else {
+            return model;
+         }
    });
    var parseInput = function (input) {
       return A3($List.foldl,
       parseLine,
-      _U.list([]),
+      $Array.empty,
       A2($List.filter,
       function (l) {
          return !_U.eq(l,"");
@@ -11719,7 +11704,7 @@ Elm.Y15D23.make = function (_elm) {
    };
    var answers = function (input) {
       var model = parseInput(input);
-      var p1 = $Basics.toString($List.length(model));
+      var p1 = $Basics.toString($Array.length(model));
       var p2 = $Basics.toString(model);
       return A2($Util.join,p1,p2);
    };
