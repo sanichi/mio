@@ -11653,14 +11653,18 @@ Elm.Y15D23.make = function (_elm) {
    var Instruction = F3(function (a,b,c) {
       return {name: a,reg: b,arg: c};
    });
+   var Model = F4(function (a,b,c,d) {
+      return {instructions: a,a: b,b: c,i: d};
+   });
+   var initModel = {instructions: $Array.empty,a: 0,b: 0,i: 0};
    var parseLine = F2(function (line,model) {
       var rx = "^(hlf|inc|jie|jio|jmp|tpl)\\s+(a|b)?,?\\s*\\+?(-?\\d*)?";
-      var ms = A2($List.map,
+      var sm = A2($List.map,
       function (_) {
          return _.submatches;
       },
       A3($Regex.find,$Regex.AtMost(1),$Regex.regex(rx),line));
-      var _p0 = ms;
+      var _p0 = sm;
       if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._1.ctor === "::" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
       {
             var a$ = function () {
@@ -11687,7 +11691,10 @@ Elm.Y15D23.make = function (_elm) {
                      return "";
                   }
             }();
-            return A2($Array.push,A3(Instruction,n$,r$,a$),model);
+            return _U.update(model,
+            {instructions: A2($Array.push,
+            A3(Instruction,n$,r$,a$),
+            model.instructions)});
          } else {
             return model;
          }
@@ -11695,23 +11702,72 @@ Elm.Y15D23.make = function (_elm) {
    var parseInput = function (input) {
       return A3($List.foldl,
       parseLine,
-      $Array.empty,
+      initModel,
       A2($List.filter,
       function (l) {
          return !_U.eq(l,"");
       },
       A2($String.split,"\n",input)));
    };
+   var run = function (model) {
+      run: while (true) {
+         var instruction = A2($Array.get,model.i,model.instructions);
+         var _p4 = instruction;
+         if (_p4.ctor === "Nothing") {
+               return model;
+            } else {
+               var _p6 = _p4._0;
+               var model$ = function () {
+                  var _p5 = _p6.name;
+                  switch (_p5)
+                  {case "inc": return _U.update(model,
+                       {i: model.i + 1
+                       ,a: _U.eq(_p6.reg,"a") ? model.a + 1 : model.a
+                       ,b: _U.eq(_p6.reg,"b") ? model.b + 1 : model.b});
+                     case "hlf": return _U.update(model,
+                       {i: model.i + 1
+                       ,a: _U.eq(_p6.reg,"a") ? model.a / 2 | 0 : model.a
+                       ,b: _U.eq(_p6.reg,"b") ? model.b / 2 | 0 : model.b});
+                     case "tpl": return _U.update(model,
+                       {i: model.i + 1
+                       ,a: _U.eq(_p6.reg,"a") ? model.a * 3 : model.a
+                       ,b: _U.eq(_p6.reg,"b") ? model.b * 3 : model.b});
+                     case "jmp": return _U.update(model,{i: model.i + _p6.arg});
+                     case "jie": return _U.update(model,
+                       {i: model.i + (_U.eq(_p6.reg,"a") && _U.eq(A2($Basics.rem,
+                       model.a,
+                       2),
+                       0) || _U.eq(_p6.reg,"b") && _U.eq(A2($Basics.rem,model.b,2),
+                       0) ? _p6.arg : 1)});
+                     case "jio": return _U.update(model,
+                       {i: model.i + (_U.eq(_p6.reg,"a") && _U.eq(model.a,
+                       1) || _U.eq(_p6.reg,"b") && _U.eq(model.b,1) ? _p6.arg : 1)});
+                     default: return model;}
+               }();
+               var _v6 = model$;
+               model = _v6;
+               continue run;
+            }
+      }
+   };
    var answers = function (input) {
-      var model = parseInput(input);
-      var p1 = $Basics.toString($Array.length(model));
-      var p2 = $Basics.toString(model);
+      var model1 = parseInput(input);
+      var model2 = _U.update(model1,{a: 1});
+      var p2 = $Basics.toString(function (_) {
+         return _.b;
+      }(run(model2)));
+      var p1 = $Basics.toString(function (_) {
+         return _.b;
+      }(run(model1)));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D23.values = {_op: _op
                                ,answers: answers
+                               ,run: run
                                ,parseInput: parseInput
                                ,parseLine: parseLine
+                               ,initModel: initModel
+                               ,Model: Model
                                ,Instruction: Instruction};
 };
 Elm.Y15D25 = Elm.Y15D25 || {};
