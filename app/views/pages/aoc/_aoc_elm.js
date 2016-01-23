@@ -11627,32 +11627,11 @@ Elm.Y15D22.make = function (_elm) {
    $Debug = Elm.Debug.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm),
-   $Util = Elm.Util.make(_elm);
+   $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var parseInput = function (input) {
-      return A2($List.map,
-      $Result.withDefault(0),
-      A2($List.map,
-      $String.toInt,
-      A2($List.map,
-      function (_) {
-         return _.match;
-      },
-      A3($Regex.find,$Regex.All,$Regex.regex("\\d+"),input))));
-   };
-   var answers = function (input) {
-      var data = parseInput(input);
-      var p1 = $Basics.toString(data);
-      var p2 = $Basics.toString(data);
-      return A2($Util.join,p1,p2);
-   };
-   return _elm.Y15D22.values = {_op: _op
-                               ,answers: answers
-                               ,parseInput: parseInput};
+   var answers = function (input) {    return "not implemented";};
+   return _elm.Y15D22.values = {_op: _op,answers: answers};
 };
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
