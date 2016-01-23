@@ -43,7 +43,7 @@ run model =
                 { model
                 | registers = update r (\v -> v * 3) model
                 , i = model.i + 1
-              }
+                }
               Jmp j ->
                 { model
                 | i = model.i + j
