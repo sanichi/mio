@@ -11792,6 +11792,100 @@ Elm.Y15D23.make = function (_elm) {
                                ,Jie: Jie
                                ,Jio: Jio};
 };
+Elm.Y15D24 = Elm.Y15D24 || {};
+Elm.Y15D24.make = function (_elm) {
+   "use strict";
+   _elm.Y15D24 = _elm.Y15D24 || {};
+   if (_elm.Y15D24.values) return _elm.Y15D24.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var parseInput = function (input) {
+      return A2($List.filter,
+      function (w) {
+         return !_U.eq(w,0);
+      },
+      A2($List.map,
+      $Result.withDefault(0),
+      A2($List.map,
+      $String.toInt,
+      A2($List.map,
+      function (_) {
+         return _.match;
+      },
+      A3($Regex.find,$Regex.All,$Regex.regex("\\d+"),input)))));
+   };
+   var searchCombo = F3(function (qe,weight,combos) {
+      searchCombo: while (true) {
+         var _p0 = combos;
+         if (_p0.ctor === "[]") {
+               return qe;
+            } else {
+               var _p1 = _p0._0;
+               var qe$ = function () {
+                  if (!_U.eq($List.sum(_p1),weight)) return qe; else {
+                        var qe$$ = $List.product(_p1);
+                        return _U.eq(qe,0) || _U.cmp(qe$$,qe) < 0 ? qe$$ : qe;
+                     }
+               }();
+               var _v1 = qe$,_v2 = weight,_v3 = _p0._1;
+               qe = _v1;
+               weight = _v2;
+               combos = _v3;
+               continue searchCombo;
+            }
+      }
+   });
+   var searchLength = F5(function (qe,
+   length,
+   maxLen,
+   weight,
+   weights) {
+      searchLength: while (true) if (_U.cmp(length,maxLen) > 0)
+      return qe; else {
+            var combos = A2($Util.combinations,length,weights);
+            var qe$ = A3(searchCombo,qe,weight,combos);
+            if (_U.cmp(qe$,0) > 0) return qe$; else {
+                  var _v4 = qe,
+                  _v5 = length + 1,
+                  _v6 = maxLen,
+                  _v7 = weight,
+                  _v8 = weights;
+                  qe = _v4;
+                  length = _v5;
+                  maxLen = _v6;
+                  weight = _v7;
+                  weights = _v8;
+                  continue searchLength;
+               }
+         }
+   });
+   var bestQe = F2(function (groups,weights) {
+      var maxLen = $List.length(weights) - groups + 1;
+      var weight = $List.sum(weights) / groups | 0;
+      return A5(searchLength,0,1,maxLen,weight,weights);
+   });
+   var answers = function (input) {
+      var weights = parseInput(input);
+      var p1 = $Basics.toString(A2(bestQe,3,weights));
+      var p2 = $Basics.toString(A2(bestQe,4,weights));
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D24.values = {_op: _op
+                               ,answers: answers
+                               ,bestQe: bestQe
+                               ,searchLength: searchLength
+                               ,searchCombo: searchCombo
+                               ,parseInput: parseInput};
+};
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
    "use strict";
@@ -11909,6 +12003,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D21 = Elm.Y15D21.make(_elm),
    $Y15D22 = Elm.Y15D22.make(_elm),
    $Y15D23 = Elm.Y15D23.make(_elm),
+   $Y15D24 = Elm.Y15D24.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var answers = F2(function (day,input) {
@@ -11937,6 +12032,7 @@ Elm.Y15.make = function (_elm) {
          case 21: return $Y15D21.answers(input);
          case 22: return $Y15D22.answers(input);
          case 23: return $Y15D23.answers(input);
+         case 24: return $Y15D24.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
            "year 2015, day ",
