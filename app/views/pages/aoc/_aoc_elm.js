@@ -11642,6 +11642,7 @@ Elm.Y15D23.make = function (_elm) {
    $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Regex = Elm.Regex.make(_elm),
@@ -11650,15 +11651,25 @@ Elm.Y15D23.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Util = Elm.Util.make(_elm);
    var _op = {};
-   var Instruction = F3(function (a,b,c) {
-      return {name: a,reg: b,arg: c};
+   var Jio = F2(function (a,b) {
+      return {ctor: "Jio",_0: a,_1: b};
    });
-   var Model = F4(function (a,b,c,d) {
-      return {instructions: a,a: b,b: c,i: d};
+   var Jie = F2(function (a,b) {
+      return {ctor: "Jie",_0: a,_1: b};
    });
-   var initModel = {instructions: $Array.empty,a: 0,b: 0,i: 0};
+   var Jmp = function (a) {    return {ctor: "Jmp",_0: a};};
+   var Tpl = function (a) {    return {ctor: "Tpl",_0: a};};
+   var Hlf = function (a) {    return {ctor: "Hlf",_0: a};};
+   var Inc = function (a) {    return {ctor: "Inc",_0: a};};
+   var NoOp = {ctor: "NoOp"};
+   var Model = F3(function (a,b,c) {
+      return {instructions: a,registers: b,i: c};
+   });
+   var initModel = {instructions: $Array.empty
+                   ,registers: $Dict.empty
+                   ,i: 0};
    var parseLine = F2(function (line,model) {
-      var rx = "^(hlf|inc|jie|jio|jmp|tpl)\\s+(a|b)?,?\\s*\\+?(-?\\d*)?";
+      var rx = "^([a-z]{3})\\s+(a|b)?,?\\s*\\+?(-?\\d*)?";
       var sm = A2($List.map,
       function (_) {
          return _.submatches;
@@ -11667,34 +11678,24 @@ Elm.Y15D23.make = function (_elm) {
       var _p0 = sm;
       if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._1.ctor === "::" && _p0._0._1._1.ctor === "::" && _p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
       {
-            var a$ = function () {
-               var _p1 = _p0._0._1._1._0;
-               if (_p1.ctor === "Just") {
-                     return A2($Result.withDefault,0,$String.toInt(_p1._0));
-                  } else {
-                     return 0;
-                  }
-            }();
-            var r$ = function () {
-               var _p2 = _p0._0._1._0;
-               if (_p2.ctor === "Just") {
-                     return _p2._0;
-                  } else {
-                     return "";
-                  }
-            }();
-            var n$ = function () {
-               var _p3 = _p0._0._0;
-               if (_p3.ctor === "Just") {
-                     return _p3._0;
-                  } else {
-                     return "";
-                  }
+            var j = A2($Result.withDefault,
+            0,
+            $String.toInt(A2($Maybe.withDefault,"",_p0._0._1._1._0)));
+            var r = A2($Maybe.withDefault,"",_p0._0._1._0);
+            var n = A2($Maybe.withDefault,"",_p0._0._0);
+            var i = function () {
+               var _p1 = n;
+               switch (_p1)
+               {case "inc": return Inc(r);
+                  case "hlf": return Hlf(r);
+                  case "tpl": return Tpl(r);
+                  case "jmp": return Jmp(j);
+                  case "jie": return A2(Jie,r,j);
+                  case "jio": return A2(Jio,r,j);
+                  default: return NoOp;}
             }();
             return _U.update(model,
-            {instructions: A2($Array.push,
-            A3(Instruction,n$,r$,a$),
-            model.instructions)});
+            {instructions: A2($Array.push,i,model.instructions)});
          } else {
             return model;
          }
@@ -11709,66 +11710,87 @@ Elm.Y15D23.make = function (_elm) {
       },
       A2($String.split,"\n",input)));
    };
+   var get = F2(function (reg,model) {
+      return A2($Maybe.withDefault,
+      0,
+      A2($Dict.get,reg,model.registers));
+   });
+   var update = F3(function (name,f,model) {
+      var value = f(A2(get,name,model));
+      return A3($Dict.insert,name,value,model.registers);
+   });
    var run = function (model) {
       run: while (true) {
          var instruction = A2($Array.get,model.i,model.instructions);
-         var _p4 = instruction;
-         if (_p4.ctor === "Nothing") {
+         var _p2 = instruction;
+         if (_p2.ctor === "Nothing") {
                return model;
             } else {
-               var _p6 = _p4._0;
                var model$ = function () {
-                  var _p5 = _p6.name;
-                  switch (_p5)
-                  {case "inc": return _U.update(model,
-                       {i: model.i + 1
-                       ,a: _U.eq(_p6.reg,"a") ? model.a + 1 : model.a
-                       ,b: _U.eq(_p6.reg,"b") ? model.b + 1 : model.b});
-                     case "hlf": return _U.update(model,
-                       {i: model.i + 1
-                       ,a: _U.eq(_p6.reg,"a") ? model.a / 2 | 0 : model.a
-                       ,b: _U.eq(_p6.reg,"b") ? model.b / 2 | 0 : model.b});
-                     case "tpl": return _U.update(model,
-                       {i: model.i + 1
-                       ,a: _U.eq(_p6.reg,"a") ? model.a * 3 : model.a
-                       ,b: _U.eq(_p6.reg,"b") ? model.b * 3 : model.b});
-                     case "jmp": return _U.update(model,{i: model.i + _p6.arg});
-                     case "jie": return _U.update(model,
-                       {i: model.i + (_U.eq(_p6.reg,"a") && _U.eq(A2($Basics.rem,
-                       model.a,
-                       2),
-                       0) || _U.eq(_p6.reg,"b") && _U.eq(A2($Basics.rem,model.b,2),
-                       0) ? _p6.arg : 1)});
-                     case "jio": return _U.update(model,
-                       {i: model.i + (_U.eq(_p6.reg,"a") && _U.eq(model.a,
-                       1) || _U.eq(_p6.reg,"b") && _U.eq(model.b,1) ? _p6.arg : 1)});
-                     default: return model;}
+                  var _p3 = _p2._0;
+                  switch (_p3.ctor)
+                  {case "Inc": return _U.update(model,
+                       {registers: A3(update,
+                       _p3._0,
+                       function (v) {
+                          return v + 1;
+                       },
+                       model)
+                       ,i: model.i + 1});
+                     case "Hlf": return _U.update(model,
+                       {registers: A3(update,
+                       _p3._0,
+                       function (v) {
+                          return v / 2 | 0;
+                       },
+                       model)
+                       ,i: model.i + 1});
+                     case "Tpl": return _U.update(model,
+                       {registers: A3(update,
+                       _p3._0,
+                       function (v) {
+                          return v * 3;
+                       },
+                       model)
+                       ,i: model.i + 1});
+                     case "Jmp": return _U.update(model,{i: model.i + _p3._0});
+                     case "Jie": return _U.update(model,
+                       {i: model.i + (_U.eq(A2($Basics.rem,A2(get,_p3._0,model),2),
+                       0) ? _p3._1 : 1)});
+                     case "Jio": return _U.update(model,
+                       {i: model.i + (_U.eq(A2(get,_p3._0,model),1) ? _p3._1 : 1)});
+                     default: return _U.update(model,{i: model.i + 1});}
                }();
-               var _v6 = model$;
-               model = _v6;
+               var _v4 = model$;
+               model = _v4;
                continue run;
             }
       }
    };
    var answers = function (input) {
       var model1 = parseInput(input);
-      var model2 = _U.update(model1,{a: 1});
-      var p2 = $Basics.toString(function (_) {
-         return _.b;
-      }(run(model2)));
-      var p1 = $Basics.toString(function (_) {
-         return _.b;
-      }(run(model1)));
+      var model2 = _U.update(model1,
+      {registers: A3($Dict.insert,"a",1,model1.registers)});
+      var p2 = $Basics.toString(A2(get,"b",run(model2)));
+      var p1 = $Basics.toString(A2(get,"b",run(model1)));
       return A2($Util.join,p1,p2);
    };
    return _elm.Y15D23.values = {_op: _op
                                ,answers: answers
                                ,run: run
+                               ,update: update
+                               ,get: get
                                ,parseInput: parseInput
                                ,parseLine: parseLine
                                ,initModel: initModel
                                ,Model: Model
-                               ,Instruction: Instruction};
+                               ,NoOp: NoOp
+                               ,Inc: Inc
+                               ,Hlf: Hlf
+                               ,Tpl: Tpl
+                               ,Jmp: Jmp
+                               ,Jie: Jie
+                               ,Jio: Jio};
 };
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
