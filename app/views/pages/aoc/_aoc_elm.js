@@ -11633,6 +11633,102 @@ Elm.Y15D22.make = function (_elm) {
    var answers = function (input) {    return "not implemented";};
    return _elm.Y15D22.values = {_op: _op,answers: answers};
 };
+Elm.Y15D23 = Elm.Y15D23 || {};
+Elm.Y15D23.make = function (_elm) {
+   "use strict";
+   _elm.Y15D23 = _elm.Y15D23 || {};
+   if (_elm.Y15D23.values) return _elm.Y15D23.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Util = Elm.Util.make(_elm);
+   var _op = {};
+   var Instruction = F3(function (a,b,c) {
+      return {name: a,reg: b,arg: c};
+   });
+   var parseLine = F2(function (line,model) {
+      var rx = "^(hlf|inc|jie|jio|jmp|tpl)\\s+(a|b)?,?\\s*\\+?(-?\\d*)?";
+      var ms = A2($List.map,
+      function (_) {
+         return _.submatches;
+      },
+      A3($Regex.find,$Regex.AtMost(1),$Regex.regex(rx),line));
+      var _p0 = ms;
+      _v0_3: do {
+         if (_p0.ctor === "::" && _p0._0.ctor === "::" && _p0._0._0.ctor === "Just" && _p0._0._1.ctor === "::")
+         {
+               if (_p0._0._1._0.ctor === "Just") {
+                     if (_p0._0._1._1.ctor === "::") {
+                           if (_p0._0._1._1._0.ctor === "Just") {
+                                 if (_p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]") {
+                                       var i = A2($Result.withDefault,
+                                       0,
+                                       $String.toInt(_p0._0._1._1._0._0));
+                                       return A2($List._op["::"],
+                                       A3(Instruction,_p0._0._0._0,_p0._0._1._0._0,i),
+                                       model);
+                                    } else {
+                                       break _v0_3;
+                                    }
+                              } else {
+                                 if (_p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]") {
+                                       return A2($List._op["::"],
+                                       A3(Instruction,_p0._0._0._0,_p0._0._1._0._0,0),
+                                       model);
+                                    } else {
+                                       break _v0_3;
+                                    }
+                              }
+                        } else {
+                           break _v0_3;
+                        }
+                  } else {
+                     if (_p0._0._1._1.ctor === "::" && _p0._0._1._1._0.ctor === "Just" && _p0._0._1._1._1.ctor === "[]" && _p0._1.ctor === "[]")
+                     {
+                           var i = A2($Result.withDefault,
+                           0,
+                           $String.toInt(_p0._0._1._1._0._0));
+                           return A2($List._op["::"],
+                           A3(Instruction,_p0._0._0._0,"x",i),
+                           model);
+                        } else {
+                           break _v0_3;
+                        }
+                  }
+            } else {
+               break _v0_3;
+            }
+      } while (false);
+      return model;
+   });
+   var parseInput = function (input) {
+      return A3($List.foldl,
+      parseLine,
+      _U.list([]),
+      A2($List.filter,
+      function (l) {
+         return !_U.eq(l,"");
+      },
+      A2($String.split,"\n",input)));
+   };
+   var answers = function (input) {
+      var model = parseInput(input);
+      var p1 = $Basics.toString($List.length(model));
+      var p2 = $Basics.toString(model);
+      return A2($Util.join,p1,p2);
+   };
+   return _elm.Y15D23.values = {_op: _op
+                               ,answers: answers
+                               ,parseInput: parseInput
+                               ,parseLine: parseLine
+                               ,Instruction: Instruction};
+};
 Elm.Y15D25 = Elm.Y15D25 || {};
 Elm.Y15D25.make = function (_elm) {
    "use strict";
@@ -11749,6 +11845,7 @@ Elm.Y15.make = function (_elm) {
    $Y15D20 = Elm.Y15D20.make(_elm),
    $Y15D21 = Elm.Y15D21.make(_elm),
    $Y15D22 = Elm.Y15D22.make(_elm),
+   $Y15D23 = Elm.Y15D23.make(_elm),
    $Y15D25 = Elm.Y15D25.make(_elm);
    var _op = {};
    var answers = F2(function (day,input) {
@@ -11776,6 +11873,7 @@ Elm.Y15.make = function (_elm) {
          case 20: return $Y15D20.answers(input);
          case 21: return $Y15D21.answers(input);
          case 22: return $Y15D22.answers(input);
+         case 23: return $Y15D23.answers(input);
          case 25: return $Y15D25.answer(input);
          default: return A2($Basics._op["++"],
            "year 2015, day ",

@@ -102,6 +102,6 @@ type alias Model = List Sue
 
 
 type alias Sue =
-  { number : Int,
-    props  : Dict String Int
+  { number : Int
+  , props  : Dict String Int
   }
