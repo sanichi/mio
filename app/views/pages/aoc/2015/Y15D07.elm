@@ -10,6 +10,7 @@ answers : String -> String
 answers input =
   let
     circuit = parseInput input
+
     circuit1 = reduce "a" circuit
     p1 = getVal "a" circuit1 |> toString
 
