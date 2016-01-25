@@ -1,4 +1,4 @@
-var elm_app;
+var elm_app, date;
 
 $(function() {
   // Embed the elm app as a worker.
@@ -32,6 +32,7 @@ function solve_aoc_problem(y, d) {
       $('#code').attr('href', code_link(year, day));
       $('#code').show();
       setTimeout(function() { // flush DOM changes
+        date = new Date;
         elm_app.ports.problem.send([year, day, text]);
       }, 100);
     });
@@ -40,7 +41,7 @@ function solve_aoc_problem(y, d) {
 
 // When the Elm app sends back a solution, display it.
 function display_aoc_answer(output) {
-  $('#answer').val(output);
+  $('#answer').val(output + seconds(date));
   $('#loading').hide();
 }
 
@@ -49,4 +50,12 @@ function code_link(year, day) {
   var yy = year.toString().substring(2, 4);
   var dd = (day < 10 ? '0' : '') + day;
   return 'https://bitbucket.org/sanichi/sni_mio_app/src/master/app/views/pages/aoc/' + year + '/Y' + yy + 'D' + dd + '.elm';
+}
+
+// Calculate time difference for display.
+function seconds(d1)
+{
+  var d2 = new Date;
+  var diff = ((d2 - d1) / 1000).toFixed(2);
+  return ' (' + diff + 's)';
 }
