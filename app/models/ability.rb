@@ -10,6 +10,6 @@ class Ability
     can [:read, :tree, :checks, :match, :relative], Person
     can :read, [Blog, Picture, Partnership, Favourite]
     can [:read, :graph], Mass
-    can :pills, Page
+    can [:aoc, :pills], Page
   end
 end
