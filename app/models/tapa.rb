@@ -32,5 +32,6 @@ class Tapa < ActiveRecord::Base
     keywords&.sub!(/\A\s*,/, "")
     keywords&.sub!(/,\s*\z/, "")
     keywords&.gsub!(/\s*,\s*/, ", ")
+    self.keywords = nil unless keywords.present?
   end
 end
