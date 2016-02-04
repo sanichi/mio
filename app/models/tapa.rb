@@ -1,4 +1,5 @@
 class Tapa < ActiveRecord::Base
+  include Constrainable
   include Pageable
 
   MAX_TITLE = 50
@@ -14,9 +15,10 @@ class Tapa < ActiveRecord::Base
 
   def self.search(params, path, opt={})
     matches = by_number
-    matches = matches.where(number: params[:number].to_i) if params[:number]&.match(/\A[1-9]\d*\z/)
-    if params[:query].present?
-      q = params[:query].squish
+    if sql = numerical_constraint(params[:number], :number)
+      matches = matches.where(sql)
+    end
+    if (q = params[:query]).present?
       matches = matches.where("(title ILIKE ? OR keywords ILIKE ?)", "%#{q}%", "%#{q}%")
     end
     paginate(matches, params, path, opt)

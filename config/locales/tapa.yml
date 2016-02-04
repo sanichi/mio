@@ -4,7 +4,10 @@ en:
     keywords: Keywords
     new: New Podcast
     number: Number
-    tapas: Ruby Tapas
+    query: Title or Keywords
+    tapas: Search Ruby Tapas
     title: Title
+    help:
+      search: How to Search for Ruby Tapas
     short:
       number: "#"

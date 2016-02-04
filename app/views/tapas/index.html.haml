@@ -1,20 +1,16 @@
-= render "utils/title", key: "tapa.tapas"
+= render "utils/title", key: "tapa.tapas", header: true
 
-- query = t("tapa.title") + "/" + t("tapa.keywords")
-
-.text-center
+.text-center.top_margin
   = form_tag tapas_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
       = label_tag :number, t("tapa.number"), class: "sr-only"
       = text_field_tag :number, params[:number], class: "form-control", placeholder: t("tapa.number"), size: 10
     .form-group
-      = label_tag :query, query, class: "sr-only"
-      = text_field_tag :query, params[:query], class: "form-control", placeholder: query, size: 30
+      = label_tag :query, t("tapa.query"), class: "sr-only"
+      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("tapa.query"), size: 30
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-%p
-
-.row
+.row.top_margin
   .col-xs-12
     %table{class: "table table-bordered table-striped"}
       %thead
@@ -30,3 +26,25 @@
 .text-center
   - if can?(:create, Tapa)
     = link_to t("tapa.new"), new_tapa_path, class: "btn btn-info"
+  = render "utils/help_button"
+
+
+- content_for :help_title do
+  = t("tapa.help.search")
+- content_for :help do
+  %p Constrained the search with:
+  %ul
+    %li
+      = succeed(":") do
+        %strong= t("tapa.number")
+      enter a single number (e.g. "1"),
+      an inequality (e.g. "> 100" or "<= 200") or
+      a range (e.g. "100-200").
+    %li
+      = succeed(":") do
+        %strong= t("tapa.query")
+      enter some part of the title or keywords (case insensitive).
+  %p When ready to search, hit the "Enter" key or click "Search".
+  %p
+    Note that keywords sometimes consist of a class name,
+    followed by the hash or period, followed by a method name (e.g. "Fixnum#to_s").
