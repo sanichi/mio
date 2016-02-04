@@ -59,7 +59,7 @@ describe Tapa do
     it "failure" do
       click_link t(:edit)
 
-      fill_in t(:tapa_keywords), with: ""
+      fill_in t(:tapa_title), with: ""
       click_button t(:save)
 
       expect(page).to have_title t(:tapa_edit)

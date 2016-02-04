@@ -7,7 +7,7 @@ class Tapa < ActiveRecord::Base
 
   before_validation :canonicalize
 
-  validates :keywords, presence: true, length: { maximum: MAX_KEYWORDS }
+  validates :keywords, length: { maximum: MAX_KEYWORDS }, allow_nil: true
   validates :number, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
