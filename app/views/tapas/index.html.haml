@@ -32,7 +32,10 @@
 - content_for :help_title do
   = t("tapa.help.search")
 - content_for :help do
-  %p This is a searchable list of Avdi Grimm's Ruby Tapas podcasts.
+  %p
+    This is a searchable list of Avdi Grimm's
+    = link_to "Ruby Tapas", "https://rubytapas.dpdcart.com/subscriber/content", target: "external"
+    screencasts.
   %p Constrain the search with:
   %ul
     %li
