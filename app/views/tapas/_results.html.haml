@@ -5,3 +5,4 @@
     %td= tapa.keywords
     - if can?(:edit, tapa)
       %td.text-center= link_to t("edit"), edit_tapa_path(tapa), class: "btn btn-info btn-xs"
+= render "utils/pagination_links", pager: tapas, columns: 3 + (can?(:edit, Tapa) ? 1 : 0)
