@@ -33,11 +33,12 @@ Rails.application.routes.draw do
   end
   resources :pictures
   resources :sessions, only: [:create]
-  resources :transactions, only: [:index, :show] { get :summary, on: :collection }
+  resources :tapas, except: [:show]
   resources :todos, except: [:show] do
     get :toggle, on: :member
     get :elm, on: :collection
   end
+  resources :transactions, only: [:index, :show] { get :summary, on: :collection }
   resources :uploads, except: [:edit, :update]
   resources :users
 end

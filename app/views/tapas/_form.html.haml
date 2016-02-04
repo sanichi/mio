@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    = form_for tapa, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: tapa, col: "md", pad: 2 }
+        = render "utils/text_field_for", shared.merge(param: :number, text: t("tapa.number"), width: 2)
+        = render "utils/text_field_for", shared.merge(param: :title, text: t("tapa.title"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :keywords, text: t("tapa.keywords"), width: 6)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), tapas_path, class: "btn btn-default"
+          - unless tapa.new_record?
+            = link_to t("delete"), tapa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

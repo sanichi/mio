@@ -8,7 +8,7 @@ class Ability
     end
 
     can [:read, :tree, :checks, :match, :relative], Person
-    can :read, [Blog, Picture, Partnership, Favourite]
+    can :read, [Blog, Favourite, Picture, Partnership, Tapa]
     can [:read, :graph], Mass
     can [:aoc, :pills], Page
   end

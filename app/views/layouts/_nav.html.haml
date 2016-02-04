@@ -53,7 +53,7 @@
             - if can?(:read, Fund)
               %li= link_to t("fund.funds"), funds_path
 
-      - if can?(:pills, Page) || can?(:aoc, Page) || [User, Login, Favourite, Mass].map{ |c| can?(:read, c) }.any?
+      - if can?(:pills, Page) || can?(:aoc, Page) || [User, Login, Favourite, Mass, Ta].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("other")
@@ -61,10 +61,12 @@
           %ul.dropdown-menu
             - if can?(:read, Mass)
               %li= link_to t("mass.mass"), graph_masses_path
-            - if can?(:read, Favourite)
-              %li= link_to t("favourite.favourites"), favourites_path
             - if can?(:aoc, Page)
               %li= link_to t("pages.aoc.short"), aoc_path
+            - if can?(:read, Tapa)
+              %li= link_to t("tapa.tapas"), tapas_path
+            - if can?(:read, Favourite)
+              %li= link_to t("favourite.favourites"), favourites_path
             - if can?(:pills, Page)
               %li= link_to t("pages.pills"), pills_path
             - if can?(:read, User)

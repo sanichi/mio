@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160109125520) do
+ActiveRecord::Schema.define(version: 20160204183724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,14 @@ ActiveRecord::Schema.define(version: 20160109125520) do
   end
 
   add_index "returns", ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id", using: :btree
+
+  create_table "tapas", force: :cascade do |t|
+    t.string   "title",      limit: 50
+    t.string   "keywords",   limit: 100
+    t.integer  "number",     limit: 2
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "todos", force: :cascade do |t|
     t.string   "description", limit: 60

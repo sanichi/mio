@@ -1,0 +1,32 @@
+= render "utils/title", key: "tapa.tapas"
+
+- query = t("tapa.title") + "/" + t("tapa.keywords")
+
+.text-center
+  = form_tag tapas_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :number, t("tapa.number"), class: "sr-only"
+      = text_field_tag :number, params[:number], class: "form-control", placeholder: t("tapa.number"), size: 10
+    .form-group
+      = label_tag :query, query, class: "sr-only"
+      = text_field_tag :query, params[:query], class: "form-control", placeholder: query, size: 30
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+%p
+
+.row
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center.col-xs-1= t("tapa.short.number")
+          %th= t("tapa.title")
+          %th= t("tapa.keywords")
+          - if can?(:edit, Tapa)
+            %th.col-xs-1
+      %tbody{id: "results"}
+        = render "results", tapas: @tapas
+
+.text-center
+  - if can?(:create, Tapa)
+    = link_to t("tapa.new"), new_tapa_path, class: "btn btn-info"
