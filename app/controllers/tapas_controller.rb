@@ -13,7 +13,7 @@ class TapasController < ApplicationController
   def create
     @tapa = Tapa.new(strong_params)
     if @tapa.save
-      redirect_to tapas_path
+      redirect_to top_of_index
     else
       render action: "new"
     end
@@ -21,7 +21,7 @@ class TapasController < ApplicationController
 
   def update
     if @tapa.update(strong_params)
-      redirect_to tapas_path
+      redirect_to top_of_index
     else
       render action: "edit"
     end
@@ -40,5 +40,9 @@ class TapasController < ApplicationController
 
   def strong_params
     params.require(:tapa).permit(:keywords, :number, :title)
+  end
+
+  def top_of_index
+    url_for controller: "tapas", action: "index", number: ">=#{@tapa.number}", only_path: true
   end
 end
