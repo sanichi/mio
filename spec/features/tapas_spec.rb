@@ -15,6 +15,7 @@ describe Tapa do
       fill_in t(:tapa_number), with: data.number
       fill_in t(:tapa_title), with: data.title
       fill_in t(:tapa_keywords), with: data.keywords
+      fill_in t(:tapa_post__id), with: data.post_id
       click_button t(:save)
 
       expect(page).to have_title t(:tapa_tapas)
@@ -25,6 +26,7 @@ describe Tapa do
       expect(t.number).to eq data.number
       expect(t.title).to eq data.title
       expect(t.keywords).to eq data.keywords
+      expect(t.post_id).to eq data.post_id
     end
 
     it "failure" do
@@ -32,6 +34,7 @@ describe Tapa do
       fill_in t(:tapa_number), with: tapa.number
       fill_in t(:tapa_title), with: data.title
       fill_in t(:tapa_keywords), with: data.keywords
+      fill_in t(:tapa_post__id), with: data.post_id
       click_button t(:save)
 
       expect(page).to have_title t(:tapa_new)

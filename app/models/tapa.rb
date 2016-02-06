@@ -9,6 +9,7 @@ class Tapa < ActiveRecord::Base
 
   validates :keywords, length: { maximum: MAX_KEYWORDS }, allow_nil: true
   validates :number, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
+  validates :post_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
   scope :by_number,  -> { order(:number) }
@@ -22,6 +23,10 @@ class Tapa < ActiveRecord::Base
       matches = matches.where("(title ILIKE ? OR keywords ILIKE ?)", "%#{q}%", "%#{q}%")
     end
     paginate(matches, params, path, opt)
+  end
+
+  def post_url
+    "https://rubytapas.dpdcart.com/subscriber/post?id=#{post_id}"
   end
 
   private

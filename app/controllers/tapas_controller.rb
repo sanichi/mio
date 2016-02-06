@@ -39,7 +39,7 @@ class TapasController < ApplicationController
   end
 
   def strong_params
-    params.require(:tapa).permit(:keywords, :number, :title)
+    params.require(:tapa).permit(:keywords, :number, :post_id, :title)
   end
 
   def top_of_index
