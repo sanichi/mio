@@ -1,6 +1,6 @@
 - tapas.matches.each do |tapa|
   %tr
-    %td= tapa.number
+    %td.text-center= tapa.number
     %td= link_to tapa.title, tapa.post_url, target: "external"
     %td= tapa.keywords
     - if can?(:edit, tapa)
