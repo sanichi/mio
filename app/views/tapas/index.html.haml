@@ -1,5 +1,8 @@
 = render "utils/title", key: "tapa.tapas", header: true
 
+= content_for :javascript do
+  = render "reset.js"
+
 .text-center.top_margin
   = form_tag tapas_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
@@ -9,6 +12,7 @@
       = label_tag :query, t("tapa.query"), class: "sr-only"
       = text_field_tag :query, params[:query], class: "form-control", placeholder: t("tapa.query"), size: 30
     = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
   .col-xs-12.col-md-10.col-md-offset-1
