@@ -1,6 +1,6 @@
 class TapasController < ApplicationController
   authorize_resource
-  before_action :find_tapa, only: [:edit, :update, :destroy]
+  before_action :find_tapa, only: [:edit, :update, :destroy, :notes]
 
   def index
     @tapas = Tapa.search(params, tapas_path, remote: true)
@@ -32,6 +32,10 @@ class TapasController < ApplicationController
     redirect_to tapas_path
   end
 
+  def notes
+    render html: @tapa.notes_html
+  end
+
   private
 
   def find_tapa
@@ -39,7 +43,7 @@ class TapasController < ApplicationController
   end
 
   def strong_params
-    params.require(:tapa).permit(:keywords, :number, :post_id, :title)
+    params.require(:tapa).permit(:keywords, :notes, :number, :post_id, :title)
   end
 
   def top_of_index

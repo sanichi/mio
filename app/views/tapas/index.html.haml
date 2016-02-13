@@ -1,7 +1,7 @@
 = render "utils/title", key: "tapa.tapas", header: true
 
 = content_for :javascript do
-  = render "reset.js"
+  = render "tapas.js"
 
 .text-center.top_margin
   = form_tag tapas_path, method: :get, remote: true, class: "form-inline", role: "form" do
@@ -22,6 +22,7 @@
           %th.text-center.col-xs-1= t("tapa.short.number")
           %th= t("tapa.title")
           %th= t("tapa.keywords")
+          %th.text-center.col-xs-1= t("notes")
           - if can?(:edit, Tapa)
             %th.col-xs-1
       %tbody{id: "results"}
@@ -32,6 +33,7 @@
     = link_to t("tapa.new"), new_tapa_path, class: "btn btn-info"
   = render "utils/help_button"
 
+= render "notes_popup"
 
 - content_for :help_title do
   = t("tapa.help.search")

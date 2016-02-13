@@ -1,0 +1,10 @@
+#notes.modal.fade{tabindex: "-2", role: "dialog", "aria-labelledby" => "notes-title", "data-backdrop" => "false"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      .modal-header
+        %button{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => t("close")}
+          %span{"aria-hidden" => "true"}= t("cross")
+        %h4#notes-title= t("notes")
+      .modal-body Hello
+      .modal-footer
+        %button{type: "button", class: "btn btn-default", "data-dismiss" => "modal"}= t("close")

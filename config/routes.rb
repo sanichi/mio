@@ -33,7 +33,9 @@ Rails.application.routes.draw do
   end
   resources :pictures
   resources :sessions, only: [:create]
-  resources :tapas, except: [:show]
+  resources :tapas, except: [:show] do
+    get :notes, on: :member
+  end
   resources :todos, except: [:show] do
     get :toggle, on: :member
     get :elm, on: :collection

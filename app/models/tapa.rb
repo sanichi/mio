@@ -1,6 +1,7 @@
 class Tapa < ActiveRecord::Base
   include Constrainable
   include Pageable
+  include Remarkable
 
   MAX_TITLE = 50
   MAX_KEYWORDS = 100
@@ -29,6 +30,10 @@ class Tapa < ActiveRecord::Base
     "https://rubytapas.dpdcart.com/subscriber/post?id=#{post_id}"
   end
 
+  def notes_html
+    to_html(notes)
+  end
+
   private
 
   def canonicalize
@@ -38,5 +43,6 @@ class Tapa < ActiveRecord::Base
     keywords&.sub!(/,\s*\z/, "")
     keywords&.gsub!(/\s*,\s*/, ", ")
     self.keywords = nil unless keywords.present?
+    self.notes = nil if notes.blank?
   end
 end
