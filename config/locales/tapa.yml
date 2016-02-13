@@ -5,7 +5,7 @@ en:
     new: New Podcast
     number: Number
     post_id: Post ID
-    query: Title or Keywords
+    query: Title/Keywords/Notes
     tapas: Ruby Tapas
     title: Title
     help:
