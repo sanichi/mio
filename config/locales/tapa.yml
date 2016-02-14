@@ -6,6 +6,7 @@ en:
     number: Number
     post_id: Post ID
     query: Title/Keywords/Notes
+    star: Star
     tapas: Ruby Tapas
     title: Title
     help:

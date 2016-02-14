@@ -23,6 +23,7 @@ class Tapa < ActiveRecord::Base
     if (q = params[:query]).present?
       matches = matches.where("(title ILIKE ? OR keywords ILIKE ? OR notes ILIKE ?)", "%#{q}%", "%#{q}%", "%#{q}%")
     end
+    matches = matches.where(star: true) if params[:star].present?
     paginate(matches, params, path, opt)
   end
 

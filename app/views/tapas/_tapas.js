@@ -4,6 +4,7 @@ $(function() {
     e.preventDefault();
     $('#number').val('');
     $('#query').val('');
+    $('#star').val('');
     $(this).parents('form').submit();
   });
 

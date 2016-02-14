@@ -3,6 +3,7 @@
     %td.text-center= tapa.number
     %td= link_to tapa.title, tapa.post_url, target: "external"
     %td= tapa.keywords
+    %td.text-center= tapa.star ? t("symbol.star") : ""
     %td.text-center
       - if tapa.notes.present?
         %button{type: "button", class: "btn btn-success btn-xs", "data-toggle" => "modal", "data-target" => "#notes", "data-id" => tapa.id, "data-number" => tapa.number}= t("symbol.note")

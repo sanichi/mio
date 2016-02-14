@@ -16,6 +16,7 @@ describe Tapa do
       fill_in t(:tapa_title), with: data.title
       fill_in t(:tapa_keywords), with: data.keywords
       fill_in t(:tapa_post__id), with: data.post_id
+      check t(:tapa_star) if data.star
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -28,6 +29,7 @@ describe Tapa do
       expect(t.title).to eq data.title
       expect(t.keywords).to eq data.keywords
       expect(t.post_id).to eq data.post_id
+      expect(t.star).to eq data.star
       expect(t.notes).to eq data.notes
     end
 
@@ -37,6 +39,7 @@ describe Tapa do
       fill_in t(:tapa_title), with: data.title
       fill_in t(:tapa_keywords), with: data.keywords
       fill_in t(:tapa_post__id), with: data.post_id
+      check t(:tapa_star) if data.star
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 

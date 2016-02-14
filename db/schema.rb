@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160213140602) do
+ActiveRecord::Schema.define(version: 20160214190613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -183,10 +183,11 @@ ActiveRecord::Schema.define(version: 20160213140602) do
     t.string   "title",      limit: 50
     t.string   "keywords",   limit: 100
     t.integer  "number",     limit: 2
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "post_id"
     t.text     "notes"
+    t.boolean  "star",                   default: false
   end
 
   create_table "todos", force: :cascade do |t|

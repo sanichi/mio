@@ -5,5 +5,6 @@ FactoryGirl.define do
     sequence(:post_id) { |p| p }
     title              { Faker::Book.title.truncate(Tapa::MAX_TITLE) }
     notes              { Faker::Lorem.paragraph(2) }
+    star               { [true, false].sample }
   end
 end
