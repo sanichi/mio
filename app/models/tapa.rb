@@ -3,8 +3,9 @@ class Tapa < ActiveRecord::Base
   include Pageable
   include Remarkable
 
-  MAX_TITLE = 50
   MAX_KEYWORDS = 100
+  MAX_TITLE = 50
+  POST_URL = "https://rubytapas.dpdcart.com/subscriber/post?id=%d"
 
   before_validation :canonicalize
 
@@ -31,7 +32,7 @@ class Tapa < ActiveRecord::Base
   end
 
   def post_url
-    "https://rubytapas.dpdcart.com/subscriber/post?id=#{post_id}"
+    POST_URL % post_id.to_i
   end
 
   def notes_html
