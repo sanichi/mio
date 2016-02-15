@@ -1,8 +1,9 @@
 module TapaHelper
-  def tapa_star_search_menu(selected)
+  def tapa_other_search_menu(selected)
     stars = [
-      [t("any"), ""],
-      [t("symbol.star"), "1"],
+      [t("all"), ""],
+      [t("symbol.star"), "star"],
+      [t("symbol.note"), "notes"],
     ]
     options_for_select(stars, selected)
   end

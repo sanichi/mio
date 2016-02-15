@@ -3,7 +3,7 @@
     .modal-content
       .modal-header
         %button{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => t("close")}
-          %span{"aria-hidden" => "true"}= t("cross")
+          %span{"aria-hidden" => "true"}= t("symbol.cross")
         %h4#help-title.modal-title= content_for?(:help_title) ? yield(:help_title) : t("help")
       .modal-body
         = yield :help

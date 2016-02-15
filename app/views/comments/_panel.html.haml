@@ -1,7 +1,7 @@
 .panel.panel-default
   .panel-heading
     = comment.date.strftime(date_format)
-    = t("separator")
+    = t("symbol.separator")
     = comment.source
     - if can?(:edit, comment)
       .pull-right

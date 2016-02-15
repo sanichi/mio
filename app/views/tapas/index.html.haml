@@ -12,8 +12,8 @@
       = label_tag :query, t("tapa.query"), class: "sr-only"
       = text_field_tag :query, params[:query], class: "form-control", placeholder: t("tapa.query"), size: 30
     .form-group
-      = label_tag :star, t("tapa.star"), class: "sr-only"
-      = select_tag :star, tapa_star_search_menu(params[:star]), class: "form-control auto-submit"
+      = label_tag :other, t("other"), class: "sr-only"
+      = select_tag :other, tapa_other_search_menu(params[:other]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
@@ -25,7 +25,6 @@
           %th.text-center.col-xs-1= t("tapa.short.number")
           %th= t("tapa.title")
           %th= t("tapa.keywords")
-          %th.text-center.col-xs-1= t("tapa.star")
           %th.text-center.col-xs-1= t("notes")
           - if can?(:edit, Tapa)
             %th.col-xs-1

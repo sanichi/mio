@@ -8,7 +8,6 @@ en:
   cancel: Cancel
   close: Close
   created_at: Created at
-  cross: ✘
   date: Date
   delete: Delete
   description: Description
@@ -34,10 +33,8 @@ en:
   save: Save
   search: Search
   select: Please select
-  separator: ●
   size: Size
   sure: Sure?
-  tick: ✔
   total: Total
   unknown: Unknown
   updated_at: Last updated
@@ -61,7 +58,10 @@ en:
     sign_in: Sign in
     sign_out: Sign out
   symbol:
+    cross: ✘
     next: →
-    note: 🗒
+    note: 📝
     prev: ←
+    separator: ●
     star: ⭐️
+    tick: ✔
