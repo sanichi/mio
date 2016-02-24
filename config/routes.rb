@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     get :tree, on: :collection
   end
   resources :pictures
+  resources :residents
   resources :sessions, only: [:create]
   resources :tapas, except: [:show] do
     get :notes, on: :member

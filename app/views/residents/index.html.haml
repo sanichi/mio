@@ -1,0 +1,44 @@
+= render "utils/title", key: "resident.residents", header: true
+
+= content_for :javascript do
+  = render "residents.js"
+
+.text-center.top_margin
+  = form_tag residents_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :first_names, t("person.first_names"), class: "sr-only"
+      = text_field_tag :first_names, params[:first_names], class: "form-control", placeholder: t("person.first_names"), size: 10
+    .form-group
+      = label_tag :last_name, t("person.last_name"), class: "sr-only"
+      = text_field_tag :last_name, params[:last_name], class: "form-control", placeholder: t("person.last_name"), size: 10
+    .form-group
+      = label_tag :block, t("resident.block"), class: "sr-only"
+      = text_field_tag :block, params[:block], class: "form-control", placeholder: t("resident.block"), size: 4
+    .form-group
+      = label_tag :flat, t("resident.flat"), class: "sr-only"
+      = text_field_tag :flat, params[:flat], class: "form-control", placeholder: t("resident.flat"), size: 4
+    .form-group
+      = label_tag :bay, t("resident.bay"), class: "sr-only"
+      = text_field_tag :bay, params[:bay], class: "form-control", placeholder: t("resident.bay"), size: 4
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+
+
+.row.top_margin
+  .col-xs-12.col-md-10.col-md-offset-1
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center.col-xs-1= t("resident.block")
+          %th.text-center.col-xs-1= t("resident.flat")
+          %th.text-center.col-xs-1= t("resident.bay")
+          %th= t("name")
+          %th= t("email")
+          - if can?(:edit, Resident)
+            %th.col-xs-1
+      %tbody{id: "results"}
+        = render "results", residents: @residents
+
+- if can?(:create, Resident)
+  .text-center.top_margin
+    = link_to t("resident.new"), new_resident_path, class: "btn btn-info"

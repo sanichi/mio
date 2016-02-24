@@ -1,0 +1,18 @@
+.row
+  .col-md-12
+    = form_for resident, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: resident, col: "md", pad: 3 }
+        = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 4)
+        = render "utils/select_for", shared.merge(param: :block, text: t("resident.block"), width: 2, menu: resident_block_menu(resident))
+        = render "utils/select_for", shared.merge(param: :flat, text: t("resident.flat"), width: 2, menu: resident_flat_menu(resident))
+        = render "utils/select_for", shared.merge(param: :bay, text: t("resident.bay"), width: 1, menu: resident_bay_menu(resident))
+
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), residents_path, class: "btn btn-default"
+          - unless resident.new_record?
+            = link_to t("delete"), resident, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
