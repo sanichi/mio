@@ -1,0 +1,18 @@
+= render "utils/title", text: @vehicle.registration
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("vehicle.registration")
+          %td= @vehicle.registration
+        %tr
+          %th= t("vehicle.owner")
+          %td= link_to @vehicle.resident.name, @vehicle.resident if @vehicle.resident
+
+.text-center
+  = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  - if can?(:manage, Vehicle)
+    = link_to t("edit"), edit_vehicle_path(@vehicle), class: "btn btn-info"
+    = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"

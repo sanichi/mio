@@ -45,6 +45,7 @@
             %b.caret
           %ul.dropdown-menu
             %li= link_to t("resident.residents"), residents_path
+            %li= link_to t("vehicle.vehicles"), vehicles_path
 
       - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
         %li.dropdown

@@ -50,6 +50,7 @@ describe Resident do
 
   context "edit" do
     it "success" do
+      click_link resident.name
       click_link t(:edit)
 
       expect(page).to have_title t(:resident_edit)
@@ -65,6 +66,7 @@ describe Resident do
     end
 
     it "failure" do
+      click_link resident.name
       click_link t(:edit)
 
       fill_in t(:person_last__name), with: ""
@@ -79,6 +81,7 @@ describe Resident do
     it "success" do
       expect(Resident.count).to eq 1
 
+      click_link resident.name
       click_link t(:edit)
       click_link t(:delete)
 

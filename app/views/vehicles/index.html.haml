@@ -1,0 +1,30 @@
+= render "utils/title", key: "vehicle.vehicles", header: true
+
+= content_for :javascript do
+  = render "vehicles.js"
+
+.text-center.top_margin
+  = form_tag vehicles_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :registration, t("vehicle.registration"), class: "sr-only"
+      = text_field_tag :registration, params[:registration], class: "form-control", placeholder: t("vehicle.registration"), size: 10
+    .form-group
+      = label_tag :owner, t("vehicle.owner"), class: "sr-only"
+      = text_field_tag :owner, params[:owner], class: "form-control", placeholder: t("vehicle.owner"), size: 10
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("vehicle.registration")
+          %th= t("vehicle.owner")
+      %tbody{id: "results"}
+        = render "results", vehicles: @vehicles
+
+- if can?(:create, Vehicle)
+  .text-center.top_margin
+    = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"
+    = link_to t("resident.residents"), residents_path, class: "btn btn-success"

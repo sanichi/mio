@@ -29,16 +29,15 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
+          %th= t("name")
           %th.text-center.col-xs-1= t("resident.block")
           %th.text-center.col-xs-1= t("resident.flat")
           %th.text-center.col-xs-1= t("resident.bay")
-          %th= t("name")
           %th= t("email")
-          - if can?(:edit, Resident)
-            %th.col-xs-1
       %tbody{id: "results"}
         = render "results", residents: @residents
 
 - if can?(:create, Resident)
   .text-center.top_margin
     = link_to t("resident.new"), new_resident_path, class: "btn btn-info"
+    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"

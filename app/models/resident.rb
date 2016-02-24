@@ -9,6 +9,8 @@ class Resident < ActiveRecord::Base
   MAX_FLAT = 9
   MIN_FLAT = 1
 
+  has_many :vehicles, dependent: :nullify
+
   before_validation :canonicalize
 
   validates :bay, numericality: { integer_only: true, greater_than_or_equal_to: MIN_BAY, less_than_or_equal_to: MAX_BAY }
@@ -19,6 +21,7 @@ class Resident < ActiveRecord::Base
   validates :email, format: { with: /\A[^\s@]+@[^\s@]+\z/ }, length: { maximum: User::MAX_EMAIL }, uniqueness: true, allow_nil: true
 
   scope :by_block_flat,  -> { order(:block, :flat) }
+  scope :by_name,  -> { order(:first_names, :last_name) }
 
   def name
     "#{first_names} #{last_name}"

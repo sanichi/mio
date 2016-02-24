@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    = form_for vehicle, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: vehicle, col: "md", pad: 3 }
+        = render "utils/text_field_for", shared.merge(param: :registration, text: t("vehicle.registration"), width: 4)
+        = render "utils/select_for", shared.merge(param: :resident_id, text: t("vehicle.owner"), width: 4, menu: vehicle_owner_menu(vehicle))
+
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), vehicles_path, class: "btn btn-default"
+          - unless vehicle.new_record?
+            = link_to t("delete"), vehicle, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
