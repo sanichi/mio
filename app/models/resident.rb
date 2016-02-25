@@ -21,10 +21,10 @@ class Resident < ActiveRecord::Base
   validates :email, format: { with: /\A[^\s@]+@[^\s@]+\z/ }, length: { maximum: User::MAX_EMAIL }, uniqueness: true, allow_nil: true
 
   scope :by_block_flat,  -> { order(:block, :flat) }
-  scope :by_name,  -> { order(:first_names, :last_name) }
+  scope :by_name,  -> { order(:last_name, :first_names) }
 
   def name
-    "#{first_names} #{last_name}"
+    "#{last_name}, #{first_names}"
   end
 
   def location
@@ -32,7 +32,7 @@ class Resident < ActiveRecord::Base
   end
 
   def self.search(params, path, opt={})
-    matches = by_block_flat
+    matches = by_name
     if sql = numerical_constraint(params[:block], :block)
       matches = matches.where(sql)
     end
