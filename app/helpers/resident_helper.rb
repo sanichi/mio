@@ -10,9 +10,4 @@ module ResidentHelper
     flt.unshift [t("select"), ""] if resident.new_record?
     options_for_select(flt, resident.flat)
   end
-
-  def resident_bay_menu(resident)
-    bay = (Resident::MIN_BAY..Resident::MAX_BAY).map { |b| [b, b] }
-    options_for_select(bay, resident.bay)
-  end
 end

@@ -11,9 +11,6 @@
           %th= t("resident.flat")
           %td= @resident.location
         %tr
-          %th= t("resident.bay")
-          %td= @resident.bay if @resident.bay > 0
-        %tr
           %th= t("email")
           %td= @resident.email
         %tr
@@ -21,6 +18,11 @@
           %td
             - @resident.vehicles.each do |vehicle|
               = link_to vehicle.registration, vehicle
+        %tr
+          %th= t("bay.bays")
+          %td
+            - @resident.bays.each do |bay|
+              = link_to bay.name, bay
 
 .text-center
   - if can?(:manage, Resident)

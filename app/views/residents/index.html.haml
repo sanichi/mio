@@ -17,9 +17,6 @@
     .form-group
       = label_tag :flat, t("resident.flat"), class: "sr-only"
       = text_field_tag :flat, params[:flat], class: "form-control", placeholder: t("resident.flat"), size: 4
-    .form-group
-      = label_tag :bay, t("resident.bay"), class: "sr-only"
-      = text_field_tag :bay, params[:bay], class: "form-control", placeholder: t("resident.bay"), size: 4
     = button_tag t("search"), type: "submit", class: "btn btn-success"
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
@@ -32,7 +29,6 @@
           %th= t("name")
           %th.text-center.col-xs-1= t("resident.block")
           %th.text-center.col-xs-1= t("resident.flat")
-          %th.text-center.col-xs-1= t("resident.bay")
           %th= t("email")
       %tbody{id: "results"}
         = render "results", residents: @residents

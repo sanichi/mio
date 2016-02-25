@@ -3,6 +3,5 @@
     %td= link_to resident.name, resident
     %td.text-center= resident.block
     %td.text-center= resident.flat
-    %td.text-center= resident.bay if resident.bay > 0
     %td= resident.email
-= render "utils/pagination_links", pager: residents, columns: 5
+= render "utils/pagination_links", pager: residents, columns: 4

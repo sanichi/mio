@@ -17,7 +17,6 @@ describe Resident do
       fill_in t(:email), with: data.email
       select data.block, from: t(:resident_block)
       select data.flat, from: t(:resident_flat)
-      select data.bay, from: t(:resident_bay)
       click_button t(:save)
 
       expect(page).to have_title t(:resident_resident)
@@ -30,7 +29,6 @@ describe Resident do
       expect(r.email).to eq data.email
       expect(r.block).to eq data.block
       expect(r.flat).to eq data.flat
-      expect(r.bay).to eq data.bay
     end
 
     it "failure" do
@@ -39,7 +37,6 @@ describe Resident do
       fill_in t(:email), with: data.email
       select data.block, from: t(:resident_block)
       select data.flat, from: t(:resident_flat)
-      select data.bay, from: t(:resident_bay)
       click_button t(:save)
 
       expect(page).to have_title t(:resident_new)
