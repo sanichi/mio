@@ -1,0 +1,20 @@
+= render "utils/title", text: t("bay.bay"), header: true
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("bay.number")
+          %td= @bay.number
+        %tr
+          %th= t("bay.owner")
+          %td= link_to @bay.resident.name, @bay.resident if @bay.resident
+
+.text-center
+  - if can?(:manage, Bay)
+    = link_to t("edit"), edit_bay_path(@bay), class: "btn btn-info"
+    = link_to t("bay.new"), new_bay_path, class: "btn btn-info"
+  = link_to t("bay.bays"), bays_path, class: "btn btn-success"
+  = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"

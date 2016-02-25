@@ -7,8 +7,8 @@ class Vehicle < ActiveRecord::Base
 
   before_validation :canonicalize
 
-  validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
   validates :registration, presence: true, length: { maximum: MAX_REG }, uniqueness: true
+  validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
 
   scope :by_registration,  -> { order(:registration) }
 

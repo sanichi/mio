@@ -20,7 +20,7 @@ describe Resident do
       select data.bay, from: t(:resident_bay)
       click_button t(:save)
 
-      expect(page).to have_title "#{data.last_name}, #{data.first_names}"
+      expect(page).to have_title t(:resident_resident)
 
       expect(Resident.count).to eq 2
       r = Resident.last
@@ -57,12 +57,12 @@ describe Resident do
       fill_in t(:person_first__names), with: data.first_names
       click_button t(:save)
 
+      expect(page).to have_title t(:resident_resident)
+
       expect(Resident.count).to eq 1
       r = Resident.last
 
       expect(r.first_names).to eq data.first_names
-
-      expect(page).to have_title r.name
     end
 
     it "failure" do

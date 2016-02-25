@@ -1,0 +1,31 @@
+= render "utils/title", key: "bay.bays", header: true
+
+= content_for :javascript do
+  = render "bays.js"
+
+.text-center.top_margin
+  = form_tag bays_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :number, t("bay.number"), class: "sr-only"
+      = text_field_tag :number, params[:number], class: "form-control", placeholder: t("bay.number"), size: 10
+    .form-group
+      = label_tag :owner, t("bay.owner"), class: "sr-only"
+      = text_field_tag :owner, params[:owner], class: "form-control", placeholder: t("bay.owner"), size: 10
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("bay.number")
+          %th= t("bay.owner")
+      %tbody{id: "results"}
+        = render "results", bays: @bays
+
+- if can?(:create, Bay)
+  .text-center.top_margin
+    = link_to t("bay.new"), new_bay_path, class: "btn btn-info"
+    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"

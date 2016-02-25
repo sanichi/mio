@@ -2,4 +2,4 @@
   %tr
     %td= link_to vehicle.registration, vehicle
     %td= link_to vehicle.resident.name, vehicle.resident if vehicle.resident
-= render "utils/pagination_links", pager: vehicles, columns: 2 + (can?(:edit, Resident) ? 1 : 0)
+= render "utils/pagination_links", pager: vehicles, columns: 2

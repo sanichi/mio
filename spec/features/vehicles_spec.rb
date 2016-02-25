@@ -17,7 +17,7 @@ describe Vehicle do
       select resident.name, from: t(:vehicle_owner)
       click_button t(:save)
 
-      expect(page).to have_title data.registration
+      expect(page).to have_title t(:vehicle_vehicle)
 
       expect(Vehicle.count).to eq 2
       v = Vehicle.last
@@ -46,12 +46,12 @@ describe Vehicle do
       fill_in t(:vehicle_registration), with: data.registration
       click_button t(:save)
 
+      expect(page).to have_title t(:vehicle_vehicle)
+
       expect(Vehicle.count).to eq 1
       v = Vehicle.last
 
       expect(v.registration).to eq data.registration
-
-      expect(page).to have_title v.registration
     end
 
     it "failure" do
