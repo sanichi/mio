@@ -8,7 +8,7 @@ class Vehicle < ActiveRecord::Base
 
   before_validation :canonicalize
 
-  validates :registration, presence: true, length: { maximum: MAX_REG }, uniqueness: true
+  validates :registration, presence: true, length: { maximum: MAX_REG }, format: { with: /\A[A-Z0-9]+[A-Z0-9]+\z/ }, uniqueness: true
   validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
 
   scope :by_registration,  -> { order(:registration) }
@@ -28,6 +28,6 @@ class Vehicle < ActiveRecord::Base
   private
 
   def canonicalize
-    registration&.squish!.upcase
+    registration&.squish!.upcase!
   end
 end
