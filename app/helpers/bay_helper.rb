@@ -11,9 +11,9 @@ module BayHelper
     options_for_select(bays, bay_id)
   end
 
-  def bay_menu
+  def bay_menu(bay_id)
     bays = Bay.by_number.map { |b| [b.name, b.id] }
     bays.unshift [t("select"), ""]
-    options_for_select(bays)
+    options_for_select(bays, bay_id)
   end
 end

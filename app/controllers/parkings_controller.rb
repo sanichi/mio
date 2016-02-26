@@ -7,6 +7,12 @@ class ParkingsController < ApplicationController
 
   def new
     @parking = Parking.new
+    if (vid = params[:vehicle].to_i) > 0
+      @parking.vehicle_id = vid
+    end
+    if (bid = params[:bay].to_i) > 0
+      @parking.bay_id = bid
+    end
   end
 
   def create

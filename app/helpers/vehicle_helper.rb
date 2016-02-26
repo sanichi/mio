@@ -11,9 +11,9 @@ module VehicleHelper
     options_for_select(cars, vehicle_id)
   end
 
-  def vehicle_menu
+  def vehicle_menu(vehicle_id)
     cars = Vehicle.by_registration.map { |v| [v.registration, v.id] }
     cars.unshift [t("select"), ""]
-    options_for_select(cars)
+    options_for_select(cars, vehicle_id)
   end
 end
