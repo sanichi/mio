@@ -1,0 +1,6 @@
+- defined?(align) || align = "center"
+- defined?(cols)  || cols = 1
+
+%td{class: "text-#{align}", colspan: cols}
+  - if bay
+    %button{type: "button", class: "btn btn-sm btn-success bay", "data-bay" => bay.id}= bay.name
