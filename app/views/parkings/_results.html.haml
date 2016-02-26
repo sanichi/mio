@@ -6,6 +6,6 @@
     %td.text-center= link_to parking.bay.name, parking.bay
     %td.text-center= link_to parking.vehicle.registration, parking.vehicle
     - if can?(:delete, Parking)
-      %td.text-center= link_to t("symbol.cross"), parking, class: "btn btn-danger btn-xs", method: :delete, data: { confirm: t("sure") }
+      %td.text-center= link_to t("symbol.cross"), parking, class: "btn btn-default btn-xs", method: :delete, data: { confirm: t("sure") }
 
 = render "utils/pagination_links", pager: parkings, columns: 5 + (can?(:delete, Parking) ? 1 : 0)
