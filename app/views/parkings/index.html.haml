@@ -20,10 +20,10 @@
       %thead
         %tr
           %th.text-center.col-xs-1= t("day")
-          %th.text-center.col-xs-2= t("date")
+          %th.text-center= t("date")
           %th.text-center.col-xs-1= t("time")
-          %th.text-center.col-xs-3= t("bay.bay")
-          %th.text-center.col-xs-4= t("vehicle.vehicle")
+          %th.text-center.col-xs-1= t("bay.bay")
+          %th.text-center= t("vehicle.vehicle")
           - if can?(:delete, Parking)
             %th.col-xs-1
       %tbody{id: "results"}
