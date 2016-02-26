@@ -15,7 +15,7 @@
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
@@ -24,8 +24,9 @@
       %tbody{id: "results"}
         = render "results", bays: @bays
 
-- if can?(:create, Bay)
-  .text-center.top_margin
+.text-center.top_margin
+  - if can?(:create, Bay)
     = link_to t("bay.new"), new_bay_path, class: "btn btn-info"
-    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
-    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  = link_to t("parking.parkings"), parkings_path, class: "btn btn-success"

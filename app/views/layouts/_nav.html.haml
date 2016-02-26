@@ -47,6 +47,7 @@
             %li= link_to t("resident.residents"), residents_path
             %li= link_to t("vehicle.vehicles"), vehicles_path
             %li= link_to t("bay.bays"), bays_path
+            %li= link_to t("parking.parkings"), parkings_path
 
       - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
         %li.dropdown

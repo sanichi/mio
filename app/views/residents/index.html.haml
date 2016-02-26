@@ -33,8 +33,9 @@
       %tbody{id: "results"}
         = render "results", residents: @residents
 
-- if can?(:create, Resident)
-  .text-center.top_margin
+.text-center.top_margin
+  - if can?(:create, Resident)
     = link_to t("resident.new"), new_resident_path, class: "btn btn-info"
-    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
-    = link_to t("bay.bays"), bays_path, class: "btn btn-success"
+  = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  = link_to t("bay.bays"), bays_path, class: "btn btn-success"
+  = link_to t("parking.parkings"), parkings_path, class: "btn btn-success"

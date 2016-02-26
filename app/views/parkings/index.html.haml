@@ -1,0 +1,37 @@
+= render "utils/title", key: "parking.parkings", header: true
+
+= content_for :javascript do
+  = render "parkings.js"
+
+.text-center.top_margin
+  = form_tag parkings_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :vehicle, t("vehicle.vehicle"), class: "sr-only"
+      = select_tag :vehicle, vehicle_search_menu(params[:vehicle]), class: "form-control auto-submit"
+    .form-group
+      = label_tag :bay, t("bay.bay"), class: "sr-only"
+      = select_tag :bay, bay_search_menu(params[:bay]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center.col-xs-1= t("day")
+          %th.text-center.col-xs-2= t("date")
+          %th.text-center.col-xs-1= t("time")
+          %th.text-center.col-xs-3= t("bay.bay")
+          %th.text-center.col-xs-4= t("vehicle.vehicle")
+          - if can?(:delete, Parking)
+            %th.col-xs-1
+      %tbody{id: "results"}
+        = render "results", parkings: @parkings
+
+.text-center.top_margin
+  - if can?(:create, Parking)
+    = link_to t("parking.new"), new_parking_path, class: "btn btn-info"
+  = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  = link_to t("bay.bays"), bays_path, class: "btn btn-success"

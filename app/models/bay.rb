@@ -6,6 +6,7 @@ class Bay < ActiveRecord::Base
   MIN_NUM = 0
 
   belongs_to :resident
+  has_many :parkings, dependent: :destroy
 
   validates :number, numericality: { integer_only: true, greater_than_or_equal_to: MIN_NUM, less_than_or_equal_to: MAX_NUM }, uniqueness: true
   validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true

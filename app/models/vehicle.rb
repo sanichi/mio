@@ -4,6 +4,7 @@ class Vehicle < ActiveRecord::Base
   MAX_REG = 8
 
   belongs_to :resident
+  has_many :parkings, dependent: :destroy
 
   before_validation :canonicalize
 

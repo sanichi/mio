@@ -1,5 +1,6 @@
 en:
   vehicle:
+    any: Any Vehicle
     edit: Edit Vehicle
     new: New Vehicle
     owner: Owner

@@ -1,5 +1,5 @@
 - bays.matches.each do |bay|
   %tr
-    %td= link_to bay.name, bay
+    %td.col-xs-1= link_to bay.name, bay
     %td= link_to bay.resident.name, bay.resident if bay.resident
 = render "utils/pagination_links", pager: bays, columns: 2

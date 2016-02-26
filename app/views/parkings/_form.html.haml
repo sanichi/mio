@@ -1,0 +1,12 @@
+.row
+  .col-md-12
+    = form_for parking, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: parking, col: "md", pad: 3 }
+        = render "utils/select_for", shared.merge(param: :vehicle_id, text: t("vehicle.vehicle"), width: 4, menu: vehicle_menu)
+        = render "utils/select_for", shared.merge(param: :bay_id, text: t("bay.bay"), width: 4, menu: bay_menu)
+
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), parkings_path, class: "btn btn-default"

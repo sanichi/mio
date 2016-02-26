@@ -9,6 +9,7 @@ en:
   close: Close
   created_at: Created at
   date: Date
+  day: Day
   delete: Delete
   description: Description
   edit: Edit
@@ -35,6 +36,7 @@ en:
   select: Please select
   size: Size
   sure: Sure?
+  time: Time
   total: Total
   unknown: Unknown
   updated_at: Last updated
