@@ -13,6 +13,7 @@ class ParkingsController < ApplicationController
     if (bid = params[:bay].to_i) > 0
       @parking.bay_id = bid
     end
+    @bay = Bay.all.each_with_object({}) { |b, h| h[b.number] = b }
   end
 
   def create

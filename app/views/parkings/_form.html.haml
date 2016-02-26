@@ -1,3 +1,6 @@
+= content_for :javascript do
+  = render "form.js"
+
 .row
   .col-md-12
     = form_for parking, html: { class: "form-horizontal", role: "form" } do |f|
@@ -10,3 +13,24 @@
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), parkings_path, class: "btn btn-default"
+
+- klass = "btn btn-sm btn-warning bay"
+.row.top_margin
+  .col-md-offset-3.col-md-9
+    %table
+      %tbody
+        %tr
+          - 23.step(13, -1).each do |num|
+            %td.text-center
+              - if bay = @bay[num]
+                %button{type: "button", class: klass, "data-bay" => bay.id}= bay.name
+        %tr
+          - [44, 32, 37, 30, 40, 41].each do |num|
+            %td.text-center
+              - if bay = @bay[num]
+                %button{type: "button", class: klass, "data-bay" => bay.id}= bay.name
+          - 3.times do
+            %td
+          %td.text-right{colspan: 2}
+            - if bay = @bay[0]
+              %button{type: "button", class: klass, "data-bay" => bay.id}= bay.name
