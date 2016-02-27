@@ -1,5 +1,6 @@
 class ParkingsController < ApplicationController
   authorize_resource
+  before_action :bays_for_buttons, except: [:destroy]
 
   def index
     @parkings = Parking.search(params, parkings_path, remote: true)
@@ -7,7 +8,6 @@ class ParkingsController < ApplicationController
 
   def new
     @parking = Parking.new
-    bays_for_buttons
     if (vid = params[:vehicle].to_i) > 0
       @parking.vehicle_id = vid
     end
@@ -21,7 +21,6 @@ class ParkingsController < ApplicationController
     if @parking.save
       redirect_to parkings_path
     else
-      bays_for_buttons
       render action: "new"
     end
   end

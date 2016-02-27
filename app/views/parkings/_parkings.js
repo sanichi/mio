@@ -5,4 +5,9 @@ $(function() {
     $('#bay').val('');
     $(this).parents('form').submit();
   });
+  $(function() {
+    $('.bay.btn').click(function(e) {
+      $('#bay').val($(this).data('bay')).parents('form').submit();
+    });
+  });
 });

@@ -9,19 +9,11 @@
         = render "utils/select_for", shared.merge(param: :vehicle_id, text: t("vehicle.vehicle"), width: 4, menu: vehicle_menu(parking.vehicle_id))
         = render "utils/select_for", shared.merge(param: :bay_id, text: t("bay.bay"), width: 4, menu: bay_menu(parking.bay_id))
 
+      .row.bottom_margin
+        .col-md-offset-3.col-md-9
+          = render "bay_buttons", bay: @bay
+
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), parkings_path, class: "btn btn-default"
-
-.row.top_margin
-  .col-md-offset-3.col-md-9
-    %table
-      %tbody
-        %tr
-          - 23.step(13, -1).each do |n|
-            = render "bay_button", bay: @bay[n]
-        %tr
-          - [44, 32, 37, 30, 40, 41, nil, nil, nil].each do |n|
-            = render "bay_button", bay: @bay[n]
-          = render "bay_button", bay: @bay[0], cols: 2, align: "right"
