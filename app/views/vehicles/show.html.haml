@@ -12,7 +12,7 @@
           %td= link_to @vehicle.resident.name, @vehicle.resident if @vehicle.resident
 
 .text-center
-  = link_to t("parking.parkings"), parkings_path(vehicle: @vehicle.id), class: "btn btn-warning"
+  = link_to t("parking.parkings"), parkings_path(vehicle: @vehicle.id), class: "btn btn-success"
   - if can?(:create, Parking)
     = link_to t("parking.new"), new_parking_path(vehicle: @vehicle.id), class: "btn btn-info"
   - if can?(:manage, Vehicle)
