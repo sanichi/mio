@@ -2,12 +2,14 @@ class Vehicle < ActiveRecord::Base
   include Pageable
 
   MAX_REG = 8
+  MAX_DESC = 20
 
   belongs_to :resident
   has_many :parkings, dependent: :destroy
 
   before_validation :canonicalize
 
+  validates :description, presence: true, length: { maximum: MAX_DESC }
   validates :registration, presence: true, length: { maximum: MAX_REG }, format: { with: /\A[A-Z0-9]+( [A-Z0-9]+)?\z/ }, uniqueness: true
   validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
 
@@ -16,6 +18,9 @@ class Vehicle < ActiveRecord::Base
   def self.search(params, path, opt={})
     matches = by_registration
     matches = matches.includes(:resident).joins("LEFT JOIN residents ON vehicles.resident_id = residents.id")
+    if (q = params[:description]).present?
+      matches = matches.where("description ILIKE ?", "%#{q}%")
+    end
     if (q = params[:registration]).present?
       matches = matches.where("registration ILIKE ?", "%#{q}%")
     end
@@ -28,6 +33,7 @@ class Vehicle < ActiveRecord::Base
   private
 
   def canonicalize
+    description&.squish!
     registration&.squish!.upcase!
   end
 end

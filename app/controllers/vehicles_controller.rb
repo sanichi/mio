@@ -39,6 +39,6 @@ class VehiclesController < ApplicationController
   end
 
   def strong_params
-    params.require(:vehicle).permit(:registration, :resident_id)
+    params.require(:vehicle).permit(:description, :registration, :resident_id)
   end
 end

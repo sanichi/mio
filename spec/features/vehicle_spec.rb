@@ -14,6 +14,7 @@ describe Vehicle do
     it "success" do
       click_link t(:vehicle_new)
       fill_in t(:vehicle_registration), with: data.registration
+      fill_in t(:description), with: data.description
       select resident.name, from: t(:vehicle_owner)
       click_button t(:save)
 
@@ -23,11 +24,13 @@ describe Vehicle do
       v = Vehicle.last
 
       expect(v.registration).to eq data.registration
+      expect(v.description).to eq data.description
       expect(v.resident_id).to eq resident.id
     end
 
     it "failure" do
       click_link t(:vehicle_new)
+      fill_in t(:description), with: data.description
       select resident.name, from: t(:vehicle_owner)
       click_button t(:save)
 
@@ -58,7 +61,7 @@ describe Vehicle do
       click_link vehicle.registration
       click_link t(:edit)
 
-      fill_in t(:vehicle_registration), with: ""
+      fill_in t(:description), with: ""
       click_button t(:save)
 
       expect(page).to have_title t(:vehicle_edit)

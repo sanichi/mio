@@ -8,6 +8,9 @@
           %th= t("vehicle.registration")
           %td= @vehicle.registration
         %tr
+          %th= t("description")
+          %td= @vehicle.description
+        %tr
           %th= t("vehicle.owner")
           %td= link_to @vehicle.resident.name, @vehicle.resident if @vehicle.resident
 
