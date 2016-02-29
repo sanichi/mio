@@ -236,6 +236,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rails-console
   capybara
+  chronic (~> 0.10)
   database_cleaner
   factory_girl_rails (~> 4.0)
   faker

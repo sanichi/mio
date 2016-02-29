@@ -1,4 +1,5 @@
 en:
   parking:
-    parkings: Parkings
     new: New Parking
+    noted_at: Noted
+    parkings: Parkings

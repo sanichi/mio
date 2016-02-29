@@ -1,12 +1,17 @@
 class Parking < ActiveRecord::Base
   include Pageable
 
+  attr_accessor :noted_at_string
+
   belongs_to :vehicle, required: true
   belongs_to :bay, required: true
 
-  scope :by_date,  -> { order(created_at: :desc) }
+  scope :by_date,  -> { order(noted_at: :desc) }
+
+  before_validation :canonicalize
 
   validates :bay_id, :vehicle_id, numericality: { integer_only: true, greater_than: 0 }
+  validate :noted_at_constraint
 
   def self.search(params, path, opt={})
     matches = by_date
@@ -23,6 +28,21 @@ class Parking < ActiveRecord::Base
   private
 
   def canonicalize
-    registration&.squish!.upcase
+    self.noted_at_string = "now" if noted_at_string.blank?
+    self.noted_at = Chronic.parse(noted_at_string)
+  end
+
+  def noted_at_constraint
+    error = nil
+
+    if noted_at.blank?
+      error = "invalid"
+    elsif noted_at > Time.now
+      error = "in the future"
+    elsif noted_at < Time.now.days_ago(2)
+      error = "too far in the past"
+    end
+
+    errors.add(:noted_at_string, error) if error
   end
 end
