@@ -1,0 +1,36 @@
+= render "utils/title", text: t("flat.flat"), header: true
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("flat.building")
+          %td= @flat.building
+        %tr
+          %th= t("flat.number")
+          %td= @flat.number
+        %tr
+          %th= t("flat.block")
+          %td= @flat.block
+        %tr
+          %th= t("flat.bay")
+          %td= @flat.bay
+        %tr
+          %th= t("flat.category")
+          %td= @flat.category
+        %tr
+          %th= t("flat.name")
+          %td= @flat.name
+        %tr
+          %th= t("flat.owner")
+          %td= link_to @flat.owner.name, @flat.owner if @flat.owner
+        %tr
+          %th= t("flat.tenant")
+          %td= link_to @flat.tenant.name, @flat.tenant if @flat.tenant
+
+.text-center
+  - if can?(:manage, Flat)
+    = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-info"
+    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
+  = link_to t("flat.flats"), flats_path, class: "btn btn-success"

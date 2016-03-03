@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
+  resources :flats
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection

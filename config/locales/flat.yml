@@ -1,0 +1,15 @@
+en:
+  flat:
+    address: Address
+    bay: Plot
+    building: Building
+    block: Block
+    category: Type
+    edit: Edit Flat
+    flat: Flat
+    flats: Flats
+    name: Name
+    new: New Flat
+    number: Number
+    owner: Owner
+    tenant: Tenant

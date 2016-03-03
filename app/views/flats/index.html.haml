@@ -1,0 +1,53 @@
+= render "utils/title", key: "flat.flats", header: true
+
+= content_for :javascript do
+  = render "flats.js"
+
+.text-center.top_margin
+  = form_tag flats_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :building, t("flat.building"), class: "sr-only"
+      = text_field_tag :building, params[:building], class: "form-control", placeholder: t("flat.building"), size: 5
+    .form-group
+      = label_tag :number, t("flat.number"), class: "sr-only"
+      = text_field_tag :number, params[:number], class: "form-control", placeholder: t("flat.number"), size: 5
+    .form-group
+      = label_tag :block, t("flat.block"), class: "sr-only"
+      = text_field_tag :block, params[:block], class: "form-control", placeholder: t("flat.block"), size: 5
+    .form-group
+      = label_tag :bay, t("flat.bay"), class: "sr-only"
+      = text_field_tag :bay, params[:bay], class: "form-control", placeholder: t("flat.bay"), size: 5
+    .form-group
+      = label_tag :category, t("flat.category"), class: "sr-only"
+      = text_field_tag :category, params[:category], class: "form-control", placeholder: t("flat.category"), size: 5
+    .form-group
+      = label_tag :name, t("flat.name"), class: "sr-only"
+      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("flat.name"), size: 5
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, flat_search_order_menu(params[:order]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("flat.address")
+          %th.text-center= t("flat.block")
+          %th.text-center= t("flat.bay")
+          %th= t("flat.category")
+          %th= t("flat.name")
+      %tbody{id: "results"}
+        = render "results", flats: @flats
+
+.text-center.top_margin
+  - if can?(:create, Flat)
+    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
+  - if can?(:read, Resident)
+    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  - if can?(:read, Bay)
+    = link_to t("bay.bays"), bays_path, class: "btn btn-success"
+  - if can?(:read, Parking)
+    = link_to t("parking.parkings"), parkings_path, class: "btn btn-success"
