@@ -24,13 +24,15 @@ class Flat < ActiveRecord::Base
 
   scope :by_address,  -> { order(:building, :number) }
   scope :by_bay,      -> { order(:bay, :building, :number) }
+  scope :by_block,    -> { order(:block, :building, :number) }
   scope :by_category, -> { order(:category, :name, :building, :number) }
   scope :by_name,     -> { order(:name, :category, :building, :number) }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
     when "bay"      then by_bay
-    when "category" then by_type
+    when "block"    then by_block
+    when "category" then by_category
     when "name"     then by_name
     else                 by_address
     end
