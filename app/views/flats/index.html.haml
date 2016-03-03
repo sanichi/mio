@@ -37,7 +37,7 @@
           %th.text-center= t("flat.address")
           %th.text-center= t("flat.block")
           %th.text-center= t("flat.bay")
-          %th= t("flat.category")
+          %th.text-center= t("flat.category")
           %th= t("flat.name")
       %tbody{id: "results"}
         = render "results", flats: @flats
