@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 describe Flat do
-  let(:data)    { build(:flat) }
-  let!(:flat)   { create(:flat) }
-  let!(:owner)  { create(:resident) }
-  let!(:tenant) { create(:resident) }
-  let(:flat2)   { create(:flat) }
+  let(:data)      { build(:flat) }
+  let!(:flat)     { create(:flat) }
+  let!(:owner)    { create(:resident) }
+  let!(:tenant)   { create(:resident) }
+  let!(:resident) { create(:resident) }
+  let(:flat2)     { create(:flat) }
 
   before(:each) do
     login
@@ -72,7 +73,7 @@ describe Flat do
       expect(f.number).to eq data.number
     end
 
-    it "failure" do
+    it "failure (duplicate bay)" do
       click_link flat.address
       click_link t(:edit)
 
@@ -81,6 +82,18 @@ describe Flat do
 
       expect(page).to have_title t(:flat_edit)
       expect(page).to have_css(error, text: "already been taken")
+    end
+
+    it "failure (tenant is owner)" do
+      click_link flat.address
+      click_link t(:edit)
+
+      select resident.name, from: t(:flat_owner)
+      select resident.name, from: t(:flat_tenant)
+      click_button t(:save)
+
+      expect(page).to have_title t(:flat_edit)
+      expect(page).to have_css(error, text: "tenant can't be owner")
     end
   end
 

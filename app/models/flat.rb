@@ -6,7 +6,7 @@ class Flat < ActiveRecord::Base
   BLOCKS = (1..23).to_a
   BUILDINGS = (5..21).to_a
   NUMBERS = (1..9).to_a
-  CATEGORIES = %w/A A1 A2 A3 A4 B B1 B2 B-upper C C1 CM E E1 P1 P3/
+  CATEGORIES = %w/A A1 A2 A3 A4 B B1 B2 BM B-upper C C1 CM E E1 P1 P3/
   NAMES = %w/Albany Clofars Comet Concord Dart Eagle Fortune Hopewell Leith Penthouse Raith Rohilla Ronan Salamander Sirius Unicorn/
 
   belongs_to :owner, class_name: "Resident", foreign_key: "owner_id"
@@ -19,6 +19,8 @@ class Flat < ActiveRecord::Base
   validates :name, inclusion: { in: NAMES }
   validates :category, inclusion: { in: CATEGORIES }
   validates :owner_id, :tenant_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
+
+  validate :tenant_cant_be_owner
 
   scope :by_address,  -> { order(:building, :number) }
   scope :by_bay,      -> { order(:bay, :building, :number) }
@@ -48,5 +50,13 @@ class Flat < ActiveRecord::Base
 
   def address
     [building, number].compact.join("/")
+  end
+
+  private
+
+  def tenant_cant_be_owner
+    if owner_id.present? and tenant_id == owner_id
+      errors.add(:tenant_id, "tenant can't be owner")
+    end
   end
 end
