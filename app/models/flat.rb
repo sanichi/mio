@@ -7,7 +7,7 @@ class Flat < ActiveRecord::Base
   BUILDINGS = (5..21).to_a
   NUMBERS = (1..9).to_a
   CATEGORIES = %w/A A1 A2 A3 A4 B B1 B2 BM B-upper C C1 CM E E1 P1 P3/
-  NAMES = %w/Albany Clofars Comet Concord Dart Eagle Fortune Hopewell Leith Penthouse Raith Rohilla Ronan Salamander Sirius Unicorn/
+  NAMES = %w/Albany Clofars Comet Concord Dart Eagle Fortune Hopewill Leith Penthouse Raith Rohilla Ronan Salamander Sirius Unicorn/
 
   belongs_to :owner, class_name: "Resident", foreign_key: "owner_id"
   belongs_to :tenant, class_name: "Resident", foreign_key: "tenant_id"
