@@ -15,8 +15,6 @@ describe Resident do
       fill_in t(:person_first__names), with: data.first_names
       fill_in t(:person_last__name), with: data.last_name
       fill_in t(:email), with: data.email
-      select data.block, from: t(:resident_block)
-      select data.flat, from: t(:resident_flat)
       click_button t(:save)
 
       expect(page).to have_title t(:resident_resident)
@@ -27,16 +25,12 @@ describe Resident do
       expect(r.first_names).to eq data.first_names
       expect(r.last_name).to eq data.last_name
       expect(r.email).to eq data.email
-      expect(r.block).to eq data.block
-      expect(r.flat).to eq data.flat
     end
 
     it "failure" do
       click_link t(:resident_new)
       fill_in t(:person_last__name), with: data.last_name
       fill_in t(:email), with: data.email
-      select data.block, from: t(:resident_block)
-      select data.flat, from: t(:resident_flat)
       click_button t(:save)
 
       expect(page).to have_title t(:resident_new)

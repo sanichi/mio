@@ -6,8 +6,6 @@
         = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 4)
         = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 4)
         = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 4)
-        = render "utils/select_for", shared.merge(param: :block, text: t("resident.block"), width: 2, menu: resident_block_menu(resident))
-        = render "utils/select_for", shared.merge(param: :flat, text: t("resident.flat"), width: 2, menu: resident_flat_menu(resident))
 
       .row
         .col-md-offset-4.col-md-8

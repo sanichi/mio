@@ -1,6 +1,5 @@
 - residents.matches.each do |resident|
   %tr
     %td= link_to resident.name, resident
-    %td.text-center= resident.block
-    %td.text-center= resident.flat
-= render "utils/pagination_links", pager: residents, columns: 3
+    %td= resident.email
+= render "utils/pagination_links", pager: residents, columns: 2
