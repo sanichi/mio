@@ -32,4 +32,4 @@
   - if (focus != :vehicle || vehicle) && can?(:read, Vehicle)
     = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
   - if focus != :parking && can?(:read, Parking)
-    = link_to t("parking.parkings"), parkings_path(vehicle: vehicle&.id), class: "btn btn-success"
+    = link_to t("parking.parkings"), parkings_path(vehicle: vehicle&.id, bay: flat&.bay), class: "btn btn-success"
