@@ -12,8 +12,8 @@
       = label_tag :description, t("description"), class: "sr-only"
       = text_field_tag :description, params[:description], class: "form-control", placeholder: t("description"), size: 10
     .form-group
-      = label_tag :owner, t("vehicle.owner"), class: "sr-only"
-      = text_field_tag :owner, params[:owner], class: "form-control", placeholder: t("vehicle.owner"), size: 10
+      = label_tag :owner, t("owner"), class: "sr-only"
+      = text_field_tag :owner, params[:owner], class: "form-control", placeholder: t("owner"), size: 10
     = button_tag t("search"), type: "submit", class: "btn btn-success"
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
@@ -24,7 +24,7 @@
         %tr
           %th= t("vehicle.registration")
           %th= t("description")
-          %th= t("vehicle.owner")
+          %th= t("owner")
       %tbody{id: "results"}
         = render "results", vehicles: @vehicles
 

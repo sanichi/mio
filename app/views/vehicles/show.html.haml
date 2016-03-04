@@ -11,7 +11,7 @@
           %th= t("description")
           %td= @vehicle.description
         %tr
-          %th= t("vehicle.owner")
+          %th= t("owner")
           %td= link_to @vehicle.resident.name, @vehicle.resident if @vehicle.resident
 
 .text-center

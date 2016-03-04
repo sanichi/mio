@@ -15,7 +15,7 @@ describe Vehicle do
       click_link t(:vehicle_new)
       fill_in t(:vehicle_registration), with: data.registration
       fill_in t(:description), with: data.description
-      select resident.name, from: t(:vehicle_owner)
+      select resident.name, from: t(:owner)
       click_button t(:save)
 
       expect(page).to have_title t(:vehicle_vehicle)
@@ -31,7 +31,7 @@ describe Vehicle do
     it "failure" do
       click_link t(:vehicle_new)
       fill_in t(:description), with: data.description
-      select resident.name, from: t(:vehicle_owner)
+      select resident.name, from: t(:owner)
       click_button t(:save)
 
       expect(page).to have_title t(:vehicle_new)

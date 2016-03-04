@@ -15,6 +15,16 @@
           %td
             - @resident.vehicles.each do |vehicle|
               = link_to vehicle.registration, vehicle
+        %tr
+          %th= t("owner")
+          %td
+            - @resident.ownerships.each do |flat|
+              = link_to flat.address, flat
+        %tr
+          %th= t("flat.tenant")
+          %td
+            - @resident.tenancies.each do |flat|
+              = link_to flat.address, flat
 
 .text-center
   - if can?(:manage, Resident)

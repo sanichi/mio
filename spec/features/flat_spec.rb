@@ -22,7 +22,7 @@ describe Flat do
       select data.bay, from: t(:flat_bay)
       select data.category, from: t(:flat_category)
       select data.name, from: t(:flat_name)
-      select owner.name, from: t(:flat_owner)
+      select owner.name, from: t(:owner)
       select tenant.name, from: t(:flat_tenant)
       click_button t(:save)
 
@@ -88,7 +88,7 @@ describe Flat do
       click_link flat.address
       click_link t(:edit)
 
-      select resident.name, from: t(:flat_owner)
+      select resident.name, from: t(:owner)
       select resident.name, from: t(:flat_tenant)
       click_button t(:save)
 
