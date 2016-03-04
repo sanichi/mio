@@ -2,8 +2,8 @@ class Resident < ActiveRecord::Base
   include Pageable
 
   has_many :vehicles, dependent: :nullify
-  has_many :ownerships, class_name: "Flat", foreign_key: "owner_id"
-  has_many :tenancies, class_name: "Flat", foreign_key: "tenant_id"
+  has_many :ownerships, class_name: "Flat", foreign_key: "owner_id", dependent: :nullify
+  has_many :tenancies, class_name: "Flat", foreign_key: "tenant_id", dependent: :nullify
 
   before_validation :canonicalize
 
