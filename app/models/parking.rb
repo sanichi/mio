@@ -4,6 +4,7 @@ class Parking < ActiveRecord::Base
   attr_accessor :noted_at_string
 
   belongs_to :vehicle, required: true
+  belongs_to :flat, foreign_key: "bay", primary_key: "bay"
 
   scope :by_date,  -> { order(noted_at: :desc) }
 
@@ -15,7 +16,7 @@ class Parking < ActiveRecord::Base
 
   def self.search(params, path, opt={})
     matches = by_date
-    matches = matches.includes(:vehicle)
+    matches = matches.includes(:vehicle).includes(:flat)
     if (vid = params[:vehicle].to_i) > 0
       matches = matches.where(vehicle_id: vid)
     end
