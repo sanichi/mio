@@ -13,7 +13,7 @@ class Resident < ActiveRecord::Base
 
   validates :block, numericality: { integer_only: true, greater_than_or_equal_to: MIN_BLOCK, less_than_or_equal_to: MAX_BLOCK }
   validates :flat, numericality: { integer_only: true, greater_than_or_equal_to: MIN_FLAT, less_than_or_equal_to: MAX_FLAT }
-  validates :last_name, presence: true, length: { maximum: Person::MAX_LN }, uniqueness: { scape: :first_names }
+  validates :last_name, presence: true, length: { maximum: Person::MAX_LN }, uniqueness: { scope: :first_names }
   validates :first_names, presence: true, length: { maximum: Person::MAX_FN }
   validates :email, format: { with: /\A[^\s@]+@[^\s@]+\z/ }, length: { maximum: User::MAX_EMAIL }, uniqueness: true, allow_nil: true
 
