@@ -1,0 +1,35 @@
+-# Currently used on index and show pages for the related concepts of
+-# residents, flats, vehicles and parkings. An exceptions is show for
+-# parkings, which doesn't exists.
+- defined?(resident) || resident = nil
+- defined?(flat)     || flat     = nil
+- defined?(vehicle)  || vehicle  = nil
+
+.text-center.top_margin
+  -# Edit button (not for parkings).
+  - if resident && can?(:update, resident)
+    = link_to t("edit"), edit_resident_path(resident), class: "btn btn-info"
+  - if flat && can?(:update, flat)
+    = link_to t("edit"), edit_flat_path(flat), class: "btn btn-info"
+  - if vehicle && can?(:update, vehicle)
+    = link_to t("edit"), edit_vehicle_path(vehicle), class: "btn btn-info"
+
+  -# New button.
+  - if focus == :resident && can?(:create, Resident)
+    = link_to t("resident.new"), new_resident_path, class: "btn btn-info"
+  - if focus == :flat && can?(:create, Flat)
+    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
+  - if focus == :vehicle && can?(:create, Vehicle)
+    = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"
+  - if (focus == :parking || vehicle) && can?(:create, Parking)
+    = link_to t("parking.new"), new_parking_path(vehicle: vehicle&.id), class: "btn btn-info"
+
+  -# Links to this and/or related lists.
+  - if (focus != :resident || resident) && can?(:read, Resident)
+    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  - if (focus != :flat || flat) && can?(:read, Flat)
+    = link_to t("flat.flats"), flats_path, class: "btn btn-success"
+  - if (focus != :vehicle || vehicle) && can?(:read, Vehicle)
+    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  - if focus != :parking && can?(:read, Parking)
+    = link_to t("parking.parkings"), parkings_path(vehicle: vehicle&.id), class: "btn btn-success"
