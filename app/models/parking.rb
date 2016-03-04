@@ -26,6 +26,10 @@ class Parking < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  def deletable?
+    created_at > Time.now.days_ago(2)
+  end
+
   private
 
   def canonicalize

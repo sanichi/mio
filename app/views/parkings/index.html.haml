@@ -19,18 +19,7 @@
 
 .row.top_margin
   .col-xs-12.col-md-8.col-md-offset-2
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.text-center.col-xs-1= t("day")
-          %th.text-center= t("date")
-          %th.text-center.col-xs-1= t("time")
-          %th.text-center.col-xs-1= t("flat.bay")
-          %th.text-center.col-xs-1= t("flat.flat")
-          %th.text-center= t("vehicle.vehicle")
-          - if can?(:delete, Parking)
-            %th.col-xs-1
-      %tbody{id: "results"}
-        = render "results", parkings: @parkings
+    %table{id: "results", class: "table table-bordered table-striped"}
+      = render "results", parkings: @parkings, extra: @extra
 
 = render "residents/bottom_links", focus: :parking
