@@ -2,4 +2,13 @@
   %tr
     %td= link_to resident.name, resident
     %td= resident.email
-= render "utils/pagination_links", pager: residents, columns: 2
+    %td
+      - resident.ownerships.each do |flat|
+        = link_to flat.address, flat
+      - resident.tenancies.each do |flat|
+        = link_to flat.address, flat
+    %td
+      - resident.vehicles.each do |vehicle|
+        = link_to vehicle.registration, vehicle
+
+= render "utils/pagination_links", pager: residents, columns: 4

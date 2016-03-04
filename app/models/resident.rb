@@ -22,7 +22,7 @@ class Resident < ActiveRecord::Base
   end
 
   def self.search(params, path, opt={})
-    matches = by_name
+    matches = by_name.includes(:vehicles).includes(:ownerships).includes(:tenancies)
     if (q = params[:first_names]).present?
       matches = matches.where("first_names ILIKE ?", "%#{q}%")
     end
