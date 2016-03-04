@@ -7,7 +7,7 @@
       %fieldset
         - shared = { form: f, object: parking, col: "md", pad: 3 }
         = render "utils/select_for", shared.merge(param: :vehicle_id, text: t("vehicle.vehicle"), width: 2, menu: vehicle_menu(parking.vehicle_id))
-        = render "utils/select_for", shared.merge(param: :bay_id, text: t("bay.bay"), width: 2, menu: bay_menu(parking.bay_id))
+        = render "utils/select_for", shared.merge(param: :bay, text: t("flat.bay"), width: 2, menu: parking_bay_menu(parking.bay))
         = render "utils/text_field_for", shared.merge(param: :noted_at_string, text: t("parking.noted_at"), width: 4)
 
       .row.bottom_margin

@@ -1,5 +1,8 @@
 en:
   parking:
+    any_bay: Any Vehicle
+    any_vehicle: Any Vehicle
     new: New Parking
     noted_at: Noted
     parkings: Parkings
+    street: Steet

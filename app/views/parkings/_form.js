@@ -1,5 +1,5 @@
 $(function() {
   $('.bay.btn').click(function(e) {
-    $('#parking_bay_id').val($(this).data('bay'));
+    $('#parking_bay').val($(this).data('bay'));
   });
 });

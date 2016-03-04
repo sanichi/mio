@@ -1,6 +1,5 @@
 class ParkingsController < ApplicationController
   authorize_resource
-  before_action :bays_for_buttons, except: [:destroy]
 
   def index
     @parkings = Parking.search(params, parkings_path, remote: true)
@@ -33,10 +32,6 @@ class ParkingsController < ApplicationController
   private
 
   def strong_params
-    params.require(:parking).permit(:vehicle_id, :bay_id, :noted_at_string)
-  end
-
-  def bays_for_buttons
-    @bay = Bay.all.each_with_object({}) { |b, h| h[b.number] = b }
+    params.require(:parking).permit(:vehicle_id, :bay, :noted_at_string)
   end
 end

@@ -4,23 +4,23 @@ class Parking < ActiveRecord::Base
   attr_accessor :noted_at_string
 
   belongs_to :vehicle, required: true
-  belongs_to :bay, required: true
 
   scope :by_date,  -> { order(noted_at: :desc) }
 
   before_validation :canonicalize
 
-  validates :bay_id, :vehicle_id, numericality: { integer_only: true, greater_than: 0 }
+  validates :bay, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
+  validates :vehicle_id, numericality: { integer_only: true, greater_than: 0 }
   validate :noted_at_constraint
 
   def self.search(params, path, opt={})
     matches = by_date
-    matches = matches.includes(:vehicle).includes(:bay)
+    matches = matches.includes(:vehicle)
     if (vid = params[:vehicle].to_i) > 0
       matches = matches.where(vehicle_id: vid)
     end
-    if (bid = params[:bay].to_i) > 0
-      matches = matches.where(bay_id: bid)
+    if params[:bay].present? && (bay = params[:bay].to_i) >= 0
+      matches = matches.where(bay: bay)
     end
     paginate(matches, params, path, opt)
   end

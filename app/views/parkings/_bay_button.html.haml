@@ -3,4 +3,4 @@
 
 %td{class: "text-#{align}", colspan: cols}
   - if bay
-    %button{type: "button", class: "btn btn-xs btn-success bay", "data-bay" => bay.id}= bay.name
+    %button{type: "button", class: "btn btn-xs btn-success bay", "data-bay" => bay}= bay == 0 ? t("parking.street") : bay

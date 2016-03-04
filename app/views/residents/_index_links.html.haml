@@ -1,0 +1,17 @@
+.text-center.top_margin
+  - if focus == :resident && can?(:create, Resident)
+    = link_to t("resident.new"), new_resident_path, class: "btn btn-info"
+  - if focus == :flat && can?(:create, Flat)
+    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
+  - if focus == :vehicle && can?(:create, Vehicle)
+    = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"
+  - if focus == :parking && can?(:create, Parking)
+    = link_to t("parking.new"), new_parking_path, class: "btn btn-info"
+  - if focus != :resident && can?(:read, Resident)
+    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
+  - if focus != :flat && can?(:read, Flat)
+    = link_to t("flat.flats"), flats_path, class: "btn btn-success"
+  - if focus != :vehicle && can?(:read, Vehicle)
+    = link_to t("vehicle.vehicles"), vehicles_path, class: "btn btn-success"
+  - if focus != :parking && can?(:read, Parking)
+    = link_to t("parking.parkings"), parkings_path, class: "btn btn-success"

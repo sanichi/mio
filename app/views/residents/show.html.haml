@@ -18,11 +18,6 @@
           %td
             - @resident.vehicles.each do |vehicle|
               = link_to vehicle.registration, vehicle
-        %tr
-          %th= t("bay.bays")
-          %td
-            - @resident.bays.each do |bay|
-              = link_to bay.name, bay
 
 .text-center
   - if can?(:manage, Resident)

@@ -42,12 +42,4 @@
       %tbody{id: "results"}
         = render "results", flats: @flats
 
-.text-center.top_margin
-  - if can?(:create, Flat)
-    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
-  - if can?(:read, Resident)
-    = link_to t("resident.residents"), residents_path, class: "btn btn-success"
-  - if can?(:read, Bay)
-    = link_to t("bay.bays"), bays_path, class: "btn btn-success"
-  - if can?(:read, Parking)
-    = link_to t("parking.parkings"), parkings_path, class: "btn btn-success"
+= render "residents/index_links", focus: :flat

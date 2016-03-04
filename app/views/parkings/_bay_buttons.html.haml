@@ -2,8 +2,8 @@
   %tbody
     %tr
       - 23.step(13, -1).each do |n|
-        = render "bay_button", bay: bay[n]
+        = render "bay_button", bay: n
     %tr
       - [44, 32, 37, 30, 40, 41, nil, nil, nil].each do |n|
-        = render "bay_button", bay: bay[n]
-      = render "bay_button", bay: bay[0], cols: 2, align: "right"
+        = render "bay_button", bay: n
+      = render "bay_button", bay: 0, cols: 2, align: "right"

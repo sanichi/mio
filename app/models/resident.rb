@@ -8,7 +8,6 @@ class Resident < ActiveRecord::Base
   MIN_FLAT = 1
 
   has_many :vehicles, dependent: :nullify
-  has_many :bays, dependent: :nullify
 
   before_validation :canonicalize
 

@@ -3,7 +3,7 @@
     %td.text-center= parking.noted_at.strftime("%a")
     %td.text-center= parking.noted_at.strftime("%d %b %y")
     %td.text-center= parking.noted_at.strftime("%H:%M")
-    %td.text-center= link_to parking.bay.name, parking.bay
+    %td.text-center= parking.bay
     %td.text-center= link_to parking.vehicle.registration, parking.vehicle
     - if can?(:delete, Parking)
       %td.text-center= link_to t("symbol.cross"), parking, class: "btn btn-default btn-xs", method: :delete, data: { confirm: t("sure") }
