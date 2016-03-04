@@ -3,7 +3,7 @@
     %td.text-center= parking.noted_at.strftime("%a")
     %td.text-center= parking.noted_at.strftime("%d %b %y")
     %td.text-center= parking.noted_at.strftime("%H:%M")
-    %td.text-center= parking.bay
+    %td.text-center= parking.bay == 0 ? t("parking.street") : parking.bay
     %td.text-center= link_to parking.flat.address, parking.flat if parking.flat
     %td.text-center= link_to parking.vehicle.registration, parking.vehicle
     - if can?(:delete, Parking)
