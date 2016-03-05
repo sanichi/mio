@@ -36,6 +36,7 @@ class Flat < ActiveRecord::Base
     when "name"     then by_name
     else                 by_address
     end
+    matches = matches.includes(:owner).includes(:tenant)
     %i/building number block bay/.each do |k|
       if sql = numerical_constraint(params[k], k)
         matches = matches.where(sql)
