@@ -3,7 +3,7 @@ class ParkingsController < ApplicationController
 
   def index
     @parkings = Parking.search(params, parkings_path, remote: true)
-    @extra = can?(:delete, Parking) && @parkings.matches.first&.deletable?
+    @extra = can?(:delete, Parking) && @parkings.matches.select(&:deletable?).any?
   end
 
   def new
