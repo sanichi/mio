@@ -19,7 +19,7 @@ class ParkingsController < ApplicationController
   def create
     @parking = Parking.new(strong_params)
     if @parking.save
-      redirect_to parkings_path
+      redirect_to parkings_path(bay: @parking.bay)
     else
       render action: "new"
     end
