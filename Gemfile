@@ -19,6 +19,7 @@ group :development do
   gem "capistrano-rails"
   gem "capistrano-rails-console"
   gem "capistrano-passenger"
+  gem "airbrussh", :require => false
   gem "quiet_assets"
   gem "wirble"
   gem "awesome_print", require: "ap"
