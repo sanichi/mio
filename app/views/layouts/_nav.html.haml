@@ -44,6 +44,8 @@
             = t("resident.street")
             %b.caret
           %ul.dropdown-menu
+            - if can?(:read, Flat)
+              %li= link_to t("map"), map_flats_path
             - if can?(:read, Resident)
               %li= link_to t("resident.residents"), residents_path
             - if can?(:read, Flat)

@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
-  resources :flats
+  resources :flats do
+    get :map, on: :collection
+  end
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection
