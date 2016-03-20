@@ -6,7 +6,7 @@
       %fieldset
         .form-group
           = label_tag :email, t("email"), class: "control-label col-md-4"
-          .col-md-4= text_field_tag :email, params[:email], class: "form-control"
+          .col-md-4= text_field_tag :email, params[:email], class: "form-control", type: "email"
         .form-group
           = label_tag :password, t("session.password"), class: "control-label col-md-4"
           .col-md-4= text_field_tag :password, params[:password], class: "form-control", type: "password"

@@ -34,7 +34,6 @@ class Vehicle < ActiveRecord::Base
 
   def canonicalize
     description&.squish!
-    description&.sub!(/\A[A-Z]/){ |m| m.downcase }
     registration&.squish!&.upcase!
   end
 end

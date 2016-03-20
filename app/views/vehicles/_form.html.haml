@@ -3,8 +3,8 @@
     = form_for vehicle, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
         - shared = { form: f, object: vehicle, col: "md", pad: 3 }
-        = render "utils/text_field_for", shared.merge(param: :registration, text: t("vehicle.registration"), width: 4)
-        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :registration, text: t("vehicle.registration"), width: 4, autocorrect: "off", autocapitalize: "none")
+        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 4, autocorrect: "off", autocapitalize: "none")
         = render "utils/select_for", shared.merge(param: :resident_id, text: t("owner"), width: 4, menu: vehicle_owner_menu(vehicle))
 
       .row
