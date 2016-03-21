@@ -1,0 +1,4 @@
+%g{transform: "translate(#{x},#{y}) rotate(#{r})"}
+  - ids.each_with_index do |id, i|
+    %use{id: "bay-#{id}", x:  "#{33 * i}", y: "0", "xlink:href" => "#bay"}
+    %text{x: "#{5 + 33 * i}", y: "36", fill: "white", "font-family" => "Verdana", "font-size" => "15px"}= id
