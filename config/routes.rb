@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
 
-  %w[pills aoc].each do |page|
+  %w[aoc pills risle].each do |page|
     get page => "pages##{page}"
   end
 
@@ -20,9 +20,7 @@ Rails.application.routes.draw do
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
-  resources :flats do
-    get :map, on: :collection
-  end
+  resources :flats
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection
