@@ -1,11 +1,5 @@
-%defs
-  %line{id: "v1grid", x1: "0", y1: "0", x2: "0", y2: "1000", stroke: "grey", "stroke-dasharray" => "5 5"}
-  %line{id: "v2grid", x1: "0", y1: "0", x2: "0", y2: "1000", stroke: "grey"}
-  %line{id: "h1grid", x1: "0", y1: "0", x2: "2000", y2: "0", stroke: "grey", "stroke-dasharray" => "5 5"}
-  %line{id: "h2grid", x1: "0", y1: "0", x2: "2000", y2: "0", stroke: "grey"}
-
 - (0..2000).step(100).each do |x|
-  %use{"xlink:href" => "#v#{x % 500 == 0 ? 2 : 1}grid", x: x}
+  %line{x1: x, y1: 0, x2: x, y2: 1000, class: "grid #{x % 500 == 0 ? 'thick' : 'thin'}"}
 
 - (0..1000).step(100).each do |y|
-  %use{"xlink:href" => "#h#{y % 500 == 0 ? 2 : 1}grid", y: y}
+  %line{x1: 0, y1: y, x2: 2000, y2: y, class: "grid #{y % 500 == 0 ? 'thick' : 'thin'}"}
