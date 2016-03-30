@@ -1,7 +1,5 @@
-- rx = 34 * i
-- ry = 0
-- tx = rx + 17
-- ty = 38
+- w, h = 34, 66
 
-%rect{x: "#{rx}", y: "#{ry}", class: "bay", id: "bay-#{id}", width: 34, height: 66}
-%text{x: "#{tx}", y: "#{ty}", class: "bay"}= id
+%g{id: "bay-#{id}", class: "bay", transform: "translate(#{w * i},0)"}
+  %rect{width: w, height: h}
+  %text{x: "#{w/2}", y: "#{h/2+5}"}= id
