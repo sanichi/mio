@@ -1,3 +1,6 @@
+- defined?(bw) || bw = 34
+- defined?(bh) || bh = 66
+
 %g{transform: "translate(#{x},#{y}) rotate(#{r})"}
   - ids.each_with_index do |id, i|
-    = render "pages/risle/bay", id: id, i: i
+    = render "pages/risle/bay", id: id, i: i, bw: bw, bh: bh

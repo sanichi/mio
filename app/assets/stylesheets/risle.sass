@@ -1,8 +1,12 @@
 // Rennie's Isle SVG map (pages/risle).
 
-// Background grid.
+// Background.
+rect.background
+  fill: white
+
+// Grid rid.
 line.grid
-  stroke: #F4A460
+  stroke: #D3D3D3
 line.grid.thin
   stroke-dasharray: 5 5
   stroke-width: 1
@@ -16,15 +20,26 @@ g.bay
     rx: 5
     ry: 5
     fill: #2E8B57
-    stroke: white
+    stroke: #FFFFFF
   text
     fill: #FFFFFF
-    font-family: "Courier New"
-    font-size: 20px
+    font-family: Verdana
+    font-size: 18px
     text-anchor: middle
   &.focus
     rect
       fill: #32CD32
     text
-      fill: black
+      fill: #000000
       font-weight: bold
+
+// Buildings.
+g.building
+  polygon
+    fill: #008B8B
+    stroke: #E0FFFF
+  text
+    fill: #FFFFFF
+    font-family: Verdana
+    font-size: 36px
+    text-anchor: middle
