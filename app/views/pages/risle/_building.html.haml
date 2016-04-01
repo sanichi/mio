@@ -6,9 +6,18 @@
 - defined?(y3) || y3 = 150
 - defined?(x4) || x4 = x1
 - defined?(y4) || y4 = y3
+- defined?(lf) || lf = []
+- defined?(rf) || rf = []
+- flats = risle_flat_positions(lf, rf, x1, y1, x2, y2, x3, y3, x4, y4)
 - tx = (x1 + x2 + x3 + x4) / 4
 - ty = (y1 + y2 + y3 + y4) / 4
+- dt = lf.empty? ? 72 : 0  # special case for split building 9
 
 %g{class: "building", transform: "translate(#{x},#{y}) rotate(#{r})"}
   %polygon{points: "#{x1},#{y1} #{x2},#{y2} #{x3},#{y3} #{x4},#{y4}"}
-  %text{x: tx, y: "#{ty + 16}", transform: "rotate(#{-r},#{tx},#{ty})"}= num
+  - unless rf.empty?  # special case for split building 9
+    %text{x: tx, y: "#{ty + 16}", transform: "translate(#{dt},0) rotate(#{-r},#{tx},#{ty})"}= bnum
+  - flats.each do |fnum, x, y|
+    %g{id: "flat-#{bnum}-#{fnum}", class: "flat", transform: "translate(#{x},#{y})"}
+      %circle{r: 14}
+      %text{transform: "rotate(#{-r}) translate(0,7.5)"}= fnum

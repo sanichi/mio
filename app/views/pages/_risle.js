@@ -1,10 +1,8 @@
 $(function() {
   $('g.bay').hover(
-    function() {
-      $(this).addClass('focus');
-    },
-    function() {
-      $(this).removeClass('focus');
-    }
-  );
+    function() { $(this).toggleClass('focus');
+  });
+  $('g.flat').hover(
+    function() { $(this).toggleClass('focus');
+  });
 });
