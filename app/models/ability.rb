@@ -11,6 +11,6 @@ class Ability
     can :read, [Blog, Favourite, Picture, Partnership, Tapa]
     can :notes, Tapa
     can [:read, :graph], Mass
-    can [:aoc, :pills], Page
+    can [:aoc, :pills, :risle], Page
   end
 end
