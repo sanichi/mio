@@ -18,6 +18,7 @@
   - unless rf.empty?  # special case for split building 9
     %text{x: tx, y: "#{ty + 16}", transform: "translate(#{dt},0) rotate(#{-r},#{tx},#{ty})"}= bnum
   - flats.each do |fnum, x, y|
+    - next if fnum == 0
     %g{id: "flat-#{bnum}-#{fnum}", class: "flat", transform: "translate(#{x},#{y})"}
       %circle{r: 14}
       %text{transform: "rotate(#{-r}) translate(0,7.5)"}= fnum

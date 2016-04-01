@@ -7,7 +7,7 @@
       %title Rennies Isle Map
       %desc Interactive map of Rennies Isle including blocks, flats and parking bays.
       = render "pages/risle/background"
-      = render "pages/risle/grid"
+      = render "pages/risle/grid" if params[:grid]
       = render "pages/risle/bays"
       = render "pages/risle/buildings"
       = render "pages/risle/maindoors"
