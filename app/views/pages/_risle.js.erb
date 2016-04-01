@@ -1,0 +1,21 @@
+var fids = {};  // bay ID to flat ID
+var bids = {};  // flat ID to bay ID
+<% @flats.each do |flat| %>
+bids['flat-<%= flat.building %>-<%= flat.number %>'] = 'bay-<%= flat.bay %>';
+fids['bay-<%= flat.bay %>'] = 'flat-<%= flat.building %>-<%= flat.number %>';
+<% end %>
+
+$(function() {
+  $('g.bay').hover(function() {
+    var bay = $(this);
+    bay.toggleClass('focus');
+    var fid = fids[bay.attr('id')];
+    if (fid) $('#' + fid).toggleClass('focus');
+  });
+  $('g.flat').hover(function() {
+      var flat = $(this);
+      flat.toggleClass('focus');
+      var bid = bids[flat.attr('id')];
+      if (bid) $('#' + bid).toggleClass('focus');
+  });
+});
