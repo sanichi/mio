@@ -11,7 +11,10 @@
 - flats = risle_flat_positions(lf, rf, x1, y1, x2, y2, x3, y3, x4, y4)
 - tx = (x1 + x2 + x3 + x4) / 4
 - ty = (y1 + y2 + y3 + y4) / 4
-- dt = lf.empty? ? 72 : 0  # special case for split building 9
+- dt = case
+  - when lf.empty?   then 72  # special case for split building 9
+  - when rf.sum == 0 then 20  # special case for thin building 10
+  - else 0
 
 %g{class: "building", transform: "translate(#{x},#{y}) rotate(#{r})"}
   %polygon{points: "#{x1},#{y1} #{x2},#{y2} #{x3},#{y3} #{x4},#{y4}"}
