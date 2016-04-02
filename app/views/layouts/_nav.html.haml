@@ -41,7 +41,7 @@
       - if [Resident, Flat, Vehicle, Parking].map{|c| can?(:read, c) }.any? || can?(:risle, Page)
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("resident.street")
+            = t("pages.risle.name")
             %b.caret
           %ul.dropdown-menu
             - if can?(:risle, Page)
