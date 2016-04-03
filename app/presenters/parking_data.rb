@@ -39,7 +39,8 @@ class ParkingData
         if vid
           if i == 3 && vids[i + 1]
             others = vids.size - 3
-            text = remaining_count(others, vids.slice(-others, others).sum, total)
+            parkings = vids.slice(-others, others).map{ |vid| count[vid] }.sum
+            text = remaining_count(others, parkings, total)
           else
             text = normal_count(reg[vid], count[vid], total)
           end
