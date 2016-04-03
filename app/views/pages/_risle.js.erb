@@ -4,9 +4,11 @@ var bids = {};  // flat ID to bay ID
 fids['bay-<%= flat.bay %>'] = 'flat-<%= flat.building %>-<%= flat.number %>';
 bids['flat-<%= flat.building %>-<%= flat.number %>'] = 'bay-<%= flat.bay %>';
 <% end %>
+<% if @pdata.entries > 0 %>
 var text = {};  // bay ID to array of textual parking info
-<% (@pdata || {}).each do |bid, array| %>
+<% @pdata.bay.each do |bid, array| %>
 text['bay-<%= bid %>'] = [<%= array.map{ |t| "'#{t}'" }.join(', ').html_safe %>];
+<% end %>
 <% end %>
 
 function highlight_bft(bay, flat, on) {
@@ -27,9 +29,11 @@ function highlight_bft(bay, flat, on) {
     bay.removeClass('focus');
     flat.removeClass('focus');
   }
+  <% if @pdata.entries > 0 %>
   if (text[bid]) {
-    for (var i=0; i<1; i++) $('#text-' + i).text(on ? text[bid][i] : '');
+    for (var i=0; i<<%= @pdata.entries %>; i++) $('#text-' + i).text(on ? text[bid][i] : '');
   }
+  <% end %>
 }
 
 $(function() {

@@ -3,6 +3,6 @@ class PagesController < ApplicationController
 
   def risle
     @flats = Flat.order(:bay).all
-    @pdata = ParkingData.new.pdata if params[:p]
+    @pdata = ParkingData.new(params[:p])
   end
 end
