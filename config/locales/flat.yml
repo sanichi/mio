@@ -1,7 +1,7 @@
 en:
   flat:
     address: Address
-    bay: Plot
+    bay: Bay
     building: Building
     block: Block
     category: Type
