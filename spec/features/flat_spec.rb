@@ -5,6 +5,7 @@ describe Flat do
   let!(:flat)     { create(:flat) }
   let!(:owner)    { create(:resident) }
   let!(:tenant)   { create(:resident) }
+  let!(:landlord) { create(:resident) }
   let!(:resident) { create(:resident) }
   let(:flat2)     { create(:flat) }
 
@@ -22,8 +23,7 @@ describe Flat do
       select data.bay, from: t(:flat_bay)
       select data.category, from: t(:flat_category)
       select data.name, from: t(:flat_name)
-      select owner.name, from: t(:owner)
-      select tenant.name, from: t(:flat_tenant)
+      select owner.name, from: t(:flat_owner)
       click_button t(:save)
 
       expect(page).to have_title t(:flat_flat)
@@ -38,7 +38,8 @@ describe Flat do
       expect(f.category).to eq data.category
       expect(f.name).to eq data.name
       expect(f.owner_id).to eq owner.id
-      expect(f.tenant_id).to eq tenant.id
+      expect(f.tenant_id).to be_nil
+      expect(f.landlord_id).to be_nil
     end
 
     it "failure" do
@@ -88,12 +89,12 @@ describe Flat do
       click_link flat.address
       click_link t(:edit)
 
-      select resident.name, from: t(:owner)
+      select resident.name, from: t(:flat_owner)
       select resident.name, from: t(:flat_tenant)
       click_button t(:save)
 
       expect(page).to have_title t(:flat_edit)
-      expect(page).to have_css(error, text: "tenant can't be owner")
+      expect(page).to have_css(error, text: "can only have one")
     end
   end
 

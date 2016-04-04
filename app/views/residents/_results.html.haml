@@ -7,6 +7,8 @@
         = link_to flat.address, flat
       - resident.tenancies.each do |flat|
         = link_to flat.address, flat
+      - resident.lordships.each do |flat|
+        = link_to flat.address, flat
     %td
       - resident.vehicles.each do |vehicle|
         = link_to vehicle.registration, vehicle

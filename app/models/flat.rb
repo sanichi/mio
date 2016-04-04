@@ -11,6 +11,7 @@ class Flat < ActiveRecord::Base
 
   belongs_to :owner, class_name: "Resident", foreign_key: "owner_id"
   belongs_to :tenant, class_name: "Resident", foreign_key: "tenant_id"
+  belongs_to :landlord, class_name: "Resident", foreign_key: "landlord_id"
 
   validates :bay, inclusion: { in: BAYS }, uniqueness: true
   validates :block, inclusion: { in: BLOCKS }
@@ -20,7 +21,7 @@ class Flat < ActiveRecord::Base
   validates :category, inclusion: { in: CATEGORIES }
   validates :owner_id, :tenant_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
 
-  validate :tenant_cant_be_owner
+  validate :owner_tenant_landlord
 
   scope :by_address,  -> { order(:building, :number) }
   scope :by_bay,      -> { order(:bay, :building, :number) }
@@ -57,9 +58,9 @@ class Flat < ActiveRecord::Base
 
   private
 
-  def tenant_cant_be_owner
-    if owner_id.present? and tenant_id == owner_id
-      errors.add(:tenant_id, "tenant can't be owner")
+  def owner_tenant_landlord
+    if [owner_id, tenant_id, landlord_id].compact.count > 1
+      errors.add(:tenant_id, "can only have one owner or tenant or landlord")
     end
   end
 end

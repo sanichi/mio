@@ -7,4 +7,5 @@
     %td.text-center= flat.name
     %td.text-center= link_to flat.owner.first_names, flat.owner if flat.owner
     %td.text-center= link_to flat.tenant.first_names, flat.tenant if flat.tenant
-= render "utils/pagination_links", pager: flats, columns: 7
+    %td.text-center= link_to flat.landlord.first_names, flat.landlord if flat.landlord
+= render "utils/pagination_links", pager: flats, columns: 8
