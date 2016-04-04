@@ -1,7 +1,7 @@
 class Vehicle < ActiveRecord::Base
   include Pageable
 
-  MAX_REG = 8
+  MAX_REG = 12
   MAX_DESC = 20
 
   belongs_to :resident
@@ -10,7 +10,7 @@ class Vehicle < ActiveRecord::Base
   before_validation :canonicalize
 
   validates :description, presence: true, length: { maximum: MAX_DESC }
-  validates :registration, presence: true, length: { maximum: MAX_REG }, format: { with: /\A[A-Z0-9]+( [A-Z0-9]+)?\z/ }, uniqueness: true
+  validates :registration, presence: true, length: { maximum: MAX_REG }, format: { with: /\A[A-Z0-9]+( [A-Z0-9]+){0,3}\z/ }, uniqueness: true
   validates :resident_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
 
   scope :by_registration,  -> { order(:registration) }
