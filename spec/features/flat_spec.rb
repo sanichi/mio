@@ -6,7 +6,6 @@ describe Flat do
   let!(:owner)    { create(:resident) }
   let!(:tenant)   { create(:resident) }
   let!(:landlord) { create(:resident) }
-  let!(:resident) { create(:resident) }
   let(:flat2)     { create(:flat) }
 
   before(:each) do
@@ -23,7 +22,8 @@ describe Flat do
       select data.bay, from: t(:flat_bay)
       select data.category, from: t(:flat_category)
       select data.name, from: t(:flat_name)
-      select owner.name, from: t(:flat_owner)
+      select tenant.name, from: t(:flat_tenant)
+      select landlord.name, from: t(:flat_landlord)
       click_button t(:save)
 
       expect(page).to have_title t(:flat_flat)
@@ -37,9 +37,9 @@ describe Flat do
       expect(f.bay).to eq data.bay
       expect(f.category).to eq data.category
       expect(f.name).to eq data.name
-      expect(f.owner_id).to eq owner.id
-      expect(f.tenant_id).to be_nil
-      expect(f.landlord_id).to be_nil
+      expect(f.owner_id).to be_nil
+      expect(f.tenant_id).to eq tenant.id
+      expect(f.landlord_id).to eq landlord.id
     end
 
     it "failure" do
@@ -85,16 +85,28 @@ describe Flat do
       expect(page).to have_css(error, text: "already been taken")
     end
 
-    it "failure (tenant is owner)" do
+    it "failure (owner with tenant)" do
       click_link flat.address
       click_link t(:edit)
 
-      select resident.name, from: t(:flat_owner)
-      select resident.name, from: t(:flat_tenant)
+      select owner.name, from: t(:flat_owner)
+      select tenant.name, from: t(:flat_tenant)
       click_button t(:save)
 
       expect(page).to have_title t(:flat_edit)
-      expect(page).to have_css(error, text: "can only have one")
+      expect(page).to have_css(error, text: "can't have")
+    end
+
+    it "failure (owner with landlord)" do
+      click_link flat.address
+      click_link t(:edit)
+
+      select owner.name, from: t(:flat_owner)
+      select landlord.name, from: t(:flat_landlord)
+      click_button t(:save)
+
+      expect(page).to have_title t(:flat_edit)
+      expect(page).to have_css(error, text: "can't have")
     end
   end
 
