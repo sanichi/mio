@@ -60,7 +60,7 @@ class Flat < ActiveRecord::Base
 
   def owner_tenant_landlord
     if [owner_id, tenant_id, landlord_id].compact.count > 1
-      errors.add(:tenant_id, "can only have one owner or tenant or landlord")
+      errors.add(:owner_id, "can only have one owner or tenant or landlord")
     end
   end
 end
