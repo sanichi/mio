@@ -9,6 +9,6 @@ $(function() {
     $('#bay').val($(this).data('bay')).parents('form').submit();
   });
   $('g.road').click(function(e) {
-    $('#bay').val('0');
+    $('#bay').val('0').parents('form').submit();
   });
 });
