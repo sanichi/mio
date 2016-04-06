@@ -2,7 +2,7 @@
   = render "form.js"
 
 .row
-  .col-md-12
+  .col-xs-12
     = form_for parking, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
         - shared = { form: f, object: parking, col: "md", pad: 3 }
@@ -11,10 +11,10 @@
         = render "utils/text_field_for", shared.merge(param: :noted_at_string, text: t("parking.noted_at"), width: 4)
 
       .row.bottom_margin
-        .col-md-offset-3.col-md-4
-          = render "bay_buttons", bay: @bay
-
-      .row
         .col-md-offset-3.col-md-9
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), parkings_path, class: "btn btn-default"
+
+      .row
+        .col-xs-12
+          = render "bay_map"

@@ -1,6 +1,0 @@
-- defined?(align) || align = "center"
-- defined?(cols)  || cols = 1
-
-%td{class: "text-#{align}", colspan: cols}
-  - if bay
-    %button{type: "button", class: "btn btn-xs btn-success bay", "data-bay" => bay}= bay == 0 ? t("parking.street") : bay
