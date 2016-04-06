@@ -5,9 +5,10 @@ $(function() {
     $('#bay').val('');
     $(this).parents('form').submit();
   });
-  $(function() {
-    $('g.bay').click(function(e) {
-      $('#bay').val($(this).data('bay')).parents('form').submit();
-    });
+  $('g.bay').click(function(e) {
+    $('#bay').val($(this).data('bay')).parents('form').submit();
+  });
+  $('g.road').click(function(e) {
+    $('#bay').val('0');
   });
 });
