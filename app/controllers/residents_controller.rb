@@ -39,6 +39,6 @@ class ResidentsController < ApplicationController
   end
 
   def strong_params
-    params.require(:resident).permit(:address, :first_names, :last_name, :email)
+    params.require(:resident).permit(:address, :agent, :first_names, :last_name, :email)
   end
 end

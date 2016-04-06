@@ -33,5 +33,8 @@
           %td
             - @resident.lordships.each do |flat|
               = link_to flat.address, flat
+        %tr
+          %th= t("resident.agent")
+          %td= @resident.agent
 
 = render "bottom_links", focus: :resident, resident: @resident
