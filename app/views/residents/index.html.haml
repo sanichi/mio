@@ -21,7 +21,9 @@
         %tr
           %th= t("name")
           %th= t("email")
-          %th= t("flat.flats")
+          %th.text-center= t("flat.short.owner")
+          %th.text-center= t("flat.short.tenant")
+          %th.text-center= t("flat.short.landlord")
           %th= t("vehicle.vehicles")
       %tbody{id: "results"}
         = render "results", residents: @residents

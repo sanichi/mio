@@ -2,11 +2,13 @@
   %tr
     %td= link_to resident.name, resident
     %td= resident.email
-    %td
+    %td.text-center
       - resident.ownerships.each do |flat|
         = link_to flat.address, flat
+    %td.text-center
       - resident.tenancies.each do |flat|
         = link_to flat.address, flat
+    %td.text-center
       - resident.lordships.each do |flat|
         = link_to flat.address, flat
     %td

@@ -14,3 +14,7 @@ en:
     number: Number
     owner: Owner-Occupier
     tenant: Tenant
+    short:
+      landlord: LL
+      owner: OO
+      tenant: TN
