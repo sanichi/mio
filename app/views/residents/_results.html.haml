@@ -3,16 +3,20 @@
     %td= link_to resident.name, resident
     %td= resident.email
     %td.text-center
-      - resident.ownerships.each do |flat|
-        = link_to flat.address, flat
+      - resident.ownerships.each_with_index do |flat, i|
+        = succeed(i + 1 < resident.ownerships.size ? "," : "") do
+          = link_to flat.address, flat
     %td.text-center
-      - resident.tenancies.each do |flat|
-        = link_to flat.address, flat
+      - resident.tenancies.each_with_index do |flat, i|
+        = succeed(i + 1 < resident.tenancies.size ? "," : "") do
+          = link_to flat.address, flat
     %td.text-center
-      - resident.lordships.each do |flat|
-        = link_to flat.address, flat
+      - resident.lordships.each_with_index do |flat, i|
+        = succeed(i + 1 < resident.lordships.size ? "," : "") do
+          = link_to flat.address, flat
     %td
-      - resident.vehicles.each do |vehicle|
-        = link_to vehicle.registration, vehicle
+      - resident.vehicles.each_with_index do |vehicle, i|
+        = succeed(i + 1 < resident.vehicles.size ? "," : "") do
+          = link_to vehicle.registration, vehicle
 
-= render "utils/pagination_links", pager: residents, columns: 4
+= render "utils/pagination_links", pager: residents, columns: 6
