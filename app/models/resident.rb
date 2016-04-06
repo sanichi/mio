@@ -1,6 +1,8 @@
 class Resident < ActiveRecord::Base
   include Pageable
 
+  MAX_ADDR = 200
+
   has_many :vehicles, dependent: :nullify
   has_many :ownerships, class_name: "Flat", foreign_key: "owner_id", dependent: :nullify
   has_many :tenancies, class_name: "Flat", foreign_key: "tenant_id", dependent: :nullify
@@ -36,8 +38,10 @@ class Resident < ActiveRecord::Base
   private
 
   def canonicalize
+    address&.squish!
     email&.squish!
     name&.squish!
-    self.email = nil unless email.present?
+    self.email = nil if email.blank?
+    self.address = nil if address.blank?
   end
 end

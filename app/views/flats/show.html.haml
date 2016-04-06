@@ -33,3 +33,10 @@
           %td= link_to @flat.landlord.name, @flat.landlord if @flat.landlord
 
 = render "residents/bottom_links", focus: :flat, flat: @flat
+
+- if @flat.notes.present?
+  %p
+  .panel.panel-default
+    .panel-heading
+      = t("notes")
+    .panel-body= @flat.notes_html

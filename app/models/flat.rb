@@ -1,6 +1,7 @@
 class Flat < ActiveRecord::Base
   include Constrainable
   include Pageable
+  include Remarkable
 
   BAYS = (1..90).to_a
   BLOCKS = (1..23).to_a
@@ -12,6 +13,8 @@ class Flat < ActiveRecord::Base
   belongs_to :owner, class_name: "Resident", foreign_key: "owner_id"
   belongs_to :tenant, class_name: "Resident", foreign_key: "tenant_id"
   belongs_to :landlord, class_name: "Resident", foreign_key: "landlord_id"
+
+  before_validation :canonicalize
 
   validates :bay, inclusion: { in: BAYS }, uniqueness: true
   validates :block, inclusion: { in: BLOCKS }
@@ -56,7 +59,15 @@ class Flat < ActiveRecord::Base
     [building, number].compact.join("/")
   end
 
+  def notes_html
+    to_html(notes)
+  end
+
   private
+
+  def canonicalize
+    self.notes = nil if notes.blank?
+  end
 
   def owner_tenant_landlord
     if owner_id.present? && (tenant_id.present? || landlord_id.present?)

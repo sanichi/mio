@@ -24,6 +24,7 @@ describe Flat do
       select data.name, from: t(:flat_name)
       select tenant.name, from: t(:flat_tenant)
       select landlord.name, from: t(:flat_landlord)
+      fill_in t(:notes), with: data.notes
       click_button t(:save)
 
       expect(page).to have_title t(:flat_flat)
@@ -37,6 +38,7 @@ describe Flat do
       expect(f.bay).to eq data.bay
       expect(f.category).to eq data.category
       expect(f.name).to eq data.name
+      expect(f.notes).to eq data.notes
       expect(f.owner_id).to be_nil
       expect(f.tenant_id).to eq tenant.id
       expect(f.landlord_id).to eq landlord.id

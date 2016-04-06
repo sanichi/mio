@@ -3,15 +3,16 @@
     = form_for flat, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
         - shared = { form: f, object: flat, col: "md", pad: 3, width: 2 }
-        = render "utils/select_for", shared.merge(param: :building, text: t("flat.building"), menu: flat_building_menu(flat))
-        = render "utils/select_for", shared.merge(param: :number, text: t("flat.number"), menu: flat_number_menu(flat))
-        = render "utils/select_for", shared.merge(param: :block, text: t("flat.block"), menu: flat_block_menu(flat))
-        = render "utils/select_for", shared.merge(param: :bay, text: t("flat.bay"), menu: flat_bay_menu(flat))
-        = render "utils/select_for", shared.merge(param: :category, text: t("flat.category"), menu: flat_category_menu(flat))
-        = render "utils/select_for", shared.merge(param: :name, text: t("flat.name"), menu: flat_name_menu(flat))
-        = render "utils/select_for", shared.merge(param: :owner_id, text: t("flat.owner"), menu: flat_owner_menu(flat), width: 4)
-        = render "utils/select_for", shared.merge(param: :tenant_id, text: t("flat.tenant"), menu: flat_tenant_menu(flat), width: 4)
-        = render "utils/select_for", shared.merge(param: :landlord_id, text: t("flat.landlord"), menu: flat_landlord_menu(flat), width: 4)
+        = render "utils/select_for",    shared.merge(param: :building, text: t("flat.building"), menu: flat_building_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :number, text: t("flat.number"), menu: flat_number_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :block, text: t("flat.block"), menu: flat_block_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :bay, text: t("flat.bay"), menu: flat_bay_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :category, text: t("flat.category"), menu: flat_category_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :name, text: t("flat.name"), menu: flat_name_menu(flat))
+        = render "utils/select_for",    shared.merge(param: :owner_id, text: t("flat.owner"), menu: flat_owner_menu(flat), width: 4)
+        = render "utils/select_for",    shared.merge(param: :tenant_id, text: t("flat.tenant"), menu: flat_tenant_menu(flat), width: 4)
+        = render "utils/select_for",    shared.merge(param: :landlord_id, text: t("flat.landlord"), menu: flat_landlord_menu(flat), width: 4)
+        = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
 
       .row
         .col-md-offset-4.col-md-8

@@ -1,5 +1,6 @@
 en:
   resident:
+    address: Address
     edit: Edit Resident
     new: New Resident
     resident: Resident

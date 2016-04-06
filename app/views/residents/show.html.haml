@@ -11,6 +11,9 @@
           %th= t("email")
           %td= @resident.email
         %tr
+          %th= t("resident.address")
+          %td= @resident.address
+        %tr
           %th= t("vehicle.vehicles")
           %td
             - @resident.vehicles.each do |vehicle|

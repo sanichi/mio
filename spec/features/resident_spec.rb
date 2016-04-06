@@ -15,6 +15,7 @@ describe Resident do
       fill_in t(:person_first__names), with: data.first_names
       fill_in t(:person_last__name), with: data.last_name
       fill_in t(:email), with: data.email
+      fill_in t(:resident_address), with: data.address
       click_button t(:save)
 
       expect(page).to have_title t(:resident_resident)
@@ -25,6 +26,7 @@ describe Resident do
       expect(r.first_names).to eq data.first_names
       expect(r.last_name).to eq data.last_name
       expect(r.email).to eq data.email
+      expect(r.address).to eq data.address
     end
 
     it "failure" do
