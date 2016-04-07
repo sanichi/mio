@@ -1,7 +1,7 @@
 module FlatHelper
   def flat_bay_menu(flat)
     opt = Flat::BAYS.map { |b| [b, b] }
-    opt.unshift [t("select"), ""]
+    opt.unshift [t("none"), ""]
     options_for_select(opt, flat.bay)
   end
 

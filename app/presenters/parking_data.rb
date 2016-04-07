@@ -21,7 +21,7 @@ class ParkingData
     reg = Vehicle.pluck(:id, :registration).each_with_object({}) do |(vid, reg), hash|
       hash[vid] = reg
     end
-    fbs = Flat.all.each_with_object({}) do |flat, hash|
+    fbs = Flat.where.not(bay: nil).all.each_with_object({}) do |flat, hash|
       hash[flat.bay] = "#{FLAT} #{flat.address} #{BAY} #{flat.bay}"
     end
     park = Parking.pluck(:bay, :vehicle_id).each_with_object({}) do |(bid, vid), hash|
