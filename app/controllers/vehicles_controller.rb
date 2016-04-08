@@ -6,6 +6,13 @@ class VehiclesController < ApplicationController
     @vehicles = Vehicle.search(params, vehicles_path, remote: true)
   end
 
+  def match
+    @vehicles = Vehicle.match(params[:term])
+    respond_to do |format|
+      format.json { render json: @vehicles }
+    end
+  end
+
   def new
     @vehicle = Vehicle.new
   end

@@ -30,6 +30,13 @@ class Vehicle < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
+  def self.match(reg)
+    return [] if reg.blank?
+    where("registration ILIKE '%#{reg}%'").by_registration.map do |vehicle|
+      { id: vehicle.id, value: vehicle.registration }
+    end
+  end
+
   private
 
   def canonicalize
