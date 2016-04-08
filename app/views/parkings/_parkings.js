@@ -20,7 +20,7 @@ $(function() {
     source: '/vehicles/match.json',
     minLength: 2,
     select: function(event, ui) {
-      $('#vehicle').val(ui.item ? ui.item.id : '');
+      $('#vehicle').val(ui.item ? ui.item.id : '').parents('form').submit();
       setTimeout(function() {
         $('input[name="term"]').val('');
       }, 200);
