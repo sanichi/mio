@@ -1,1 +1,2 @@
-$("#results").html("<%= j render('results', parkings: @parkings, extra: @extra) %>");
+$('#results').html("<%= j render('results', parkings: @parkings, extra: @extra) %>");
+$('a[href^="/parkings/new"]').attr('href','<%= guess_next_parking(@parkings.matches) %>');

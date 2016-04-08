@@ -12,7 +12,7 @@ class ParkingsController < ApplicationController
       @parking.vehicle_id = vid
     end
     if (bid = params[:bay].to_i) > 0
-      @parking.bay_id = bid
+      @parking.bay = bid
     end
   end
 

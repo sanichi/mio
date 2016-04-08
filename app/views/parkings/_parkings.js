@@ -11,4 +11,5 @@ $(function() {
   $('g.road').click(function(e) {
     $('#bay').val('0').parents('form').submit();
   });
+  $('a[href^="/parkings/new"]').attr('href','<%= guess_next_parking(@parkings.matches) %>');
 });
