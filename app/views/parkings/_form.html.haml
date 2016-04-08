@@ -14,6 +14,8 @@
         .col-md-offset-3.col-md-9
           = f.submit t("save"), class: "btn btn-info"
           = link_to t("cancel"), parkings_path, class: "btn btn-default"
+          - if can?(:create, Vehicle)
+            = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"
 
       .row
         .col-xs-12
