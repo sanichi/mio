@@ -6,6 +6,8 @@
 .text-center.top_margin
   = form_tag parkings_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
+      = text_field_tag :term, params[:term], class: "form-control", placeholder: t("vehicle.vehicle"), size: 10
+    .form-group
       = label_tag :vehicle, t("vehicle.vehicle"), class: "sr-only"
       = select_tag :vehicle, vehicle_search_menu(params[:vehicle]), class: "form-control auto-submit"
     .form-group
