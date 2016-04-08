@@ -1,7 +1,7 @@
 $(function() {
   $('#vehicle_id_completer').autocomplete({
     source: '/vehicles/match.json',
-    minLength: 1,
+    minLength: 2,
     select: function(event, ui) {
       $('#parking_vehicle_id').val(ui.item ? ui.item.id : '');
       setTimeout(function() {

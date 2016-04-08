@@ -18,7 +18,7 @@ $(function() {
   // Auto-completer for vehicles.
   $('input[name="term"]').autocomplete({
     source: '/vehicles/match.json',
-    minLength: 1,
+    minLength: 2,
     select: function(event, ui) {
       $('#vehicle').val(ui.item ? ui.item.id : '').parents('form').submit();
       setTimeout(function() {
