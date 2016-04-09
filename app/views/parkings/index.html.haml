@@ -17,12 +17,12 @@
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
+  .col-xs-12
+    = render "bay_map"
+
+.row.top_margin
   .col-xs-12.col-md-8.col-md-offset-2
     %table{id: "results", class: "table table-bordered table-striped"}
       = render "results", parkings: @parkings, extra: @extra
 
 = render "residents/bottom_links", focus: :parking
-
-.row.top_margin
-  .col-xs-12
-    = render "bay_map"
