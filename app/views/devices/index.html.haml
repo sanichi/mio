@@ -1,0 +1,23 @@
+= render "utils/title", key: "device.devices"
+
+.text-center
+  = form_tag devices_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", size: 16
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("device.network_name")
+          %th= t("device.real_name")
+          %th= t("device.manufacturer")
+      %tbody{id: "results"}
+        = render "results", devices: @devices
+
+.text-center.top_margin
+  - if can?(:create, Device)
+    = link_to t("device.new"), new_device_path, class: "btn btn-info"

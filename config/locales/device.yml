@@ -1,0 +1,9 @@
+en:
+  device:
+    devices: Devices
+    edit: Edit Device
+    manufacturer: Manufacturer
+    network: Home Network
+    network_name: Network Name
+    new: New Device
+    real_name: Real Name

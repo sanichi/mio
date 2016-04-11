@@ -55,6 +55,16 @@
             - if can?(:read, Parking)
               %li= link_to t("parking.parkings"), parkings_path
 
+      - if [Device, Interface].map{|c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("device.network")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:risle, Device)
+              %li= link_to t("device.devices"), devices_path
+              %li= link_to t("interface.interfaces"), interfaces_path
+
       - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do

@@ -1,0 +1,32 @@
+= render "utils/title", text: @device.network_name
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("device.network_name")
+          %td= @device.network_name
+        %tr
+          %th= t("device.real_name")
+          %td= @device.real_name
+        %tr
+          %th= t("device.manufacturer")
+          %td= @device.manufacturer
+
+.text-center.top_margin
+  = link_to t("device.devices"), devices_path, class: "btn btn-success"
+  - if can?(:update, @device)
+    = link_to t("edit"), edit_device_path(@device), class: "btn btn-info"
+  - if can?(:delete, @device)
+    = link_to t("delete"), @device, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+  - if can?(:create, Device)
+    = link_to t("device.new"), new_device_path, class: "btn btn-info"
+  - if can?(:create, Interface)
+    = link_to t("interface.new"), new_interface_path, class: "btn btn-info"
+
+- if @device.notes.present?
+  .panel.panel-default.top_margin
+    .panel-heading
+      = t("notes")
+    .panel-body= @device.notes_html

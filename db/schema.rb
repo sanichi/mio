@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406131254) do
+ActiveRecord::Schema.define(version: 20160411104433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(version: 20160406131254) do
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
+
+  create_table "devices", force: :cascade do |t|
+    t.string   "manufacturer", limit: 50
+    t.string   "network_name", limit: 50
+    t.string   "real_name",    limit: 50
+    t.text     "notes"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.decimal  "amount",                 precision: 10, scale: 2
@@ -105,6 +114,14 @@ ActiveRecord::Schema.define(version: 20160406131254) do
     t.datetime "created_at",                                                    null: false
     t.datetime "updated_at",                                                    null: false
     t.integer  "joint",       limit: 2,                           default: 100
+  end
+
+  create_table "interfaces", force: :cascade do |t|
+    t.string   "address",    limit: 17
+    t.integer  "device_id"
+    t.string   "name",       limit: 50
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "links", force: :cascade do |t|
