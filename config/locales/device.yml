@@ -1,5 +1,6 @@
 en:
   device:
+    device: Device
     devices: Devices
     edit: Edit Device
     manufacturer: Manufacturer

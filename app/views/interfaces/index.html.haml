@@ -1,0 +1,22 @@
+= render "utils/title", key: "interface.interfaces"
+
+.text-center
+  = form_tag interfaces_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", size: 16
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12.col-md-6.col-md-offset-3
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("interface.address")
+          %th= t("interface.name")
+      %tbody{id: "results"}
+        = render "results", interfaces: @interfaces
+
+.text-center.top_margin
+  - if can?(:create, Interface)
+    = link_to t("interface.new"), new_interface_path, class: "btn btn-info"

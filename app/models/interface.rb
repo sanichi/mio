@@ -8,9 +8,9 @@ class Interface < ActiveRecord::Base
 
   before_validation :canonicalize
 
-  validates :address, format: { with: /\A[0-9A-F]{2}(:[0-9A-F]{2}){5}\z/ }, length: { is: MAX_NAME }, uniqueness: true
+  validates :address, format: { with: /\A[0-9A-F]{2}(:[0-9A-F]{2}){5}\z/ }
   validates :device_id, numericality: { integer_only: true, greater_than: 0 }
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, length: { maximum: MAX_NAME }
 
   scope :ordered, -> { order(:name) }
 

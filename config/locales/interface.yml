@@ -1,5 +1,8 @@
 en:
   interface:
+    address: Mac Address
     edit: Edit Interface
+    interface: Interface
     interfaces: Interfaces
+    name: Name
     new: New Interface

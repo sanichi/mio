@@ -13,6 +13,10 @@
         %tr
           %th= t("device.manufacturer")
           %td= @device.manufacturer
+        - @device.interfaces.each do |interface|
+          %tr
+            %th= t("interface.interface")
+            %td= link_to interface.name, interface
 
 .text-center.top_margin
   = link_to t("device.devices"), devices_path, class: "btn btn-success"

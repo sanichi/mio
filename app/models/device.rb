@@ -7,7 +7,7 @@ class Device < ActiveRecord::Base
   MAX_NNAM = 50
   MAX_RNAM = 50
 
-  has_many :devices
+  has_many :interfaces
 
   before_validation :canonicalize
 

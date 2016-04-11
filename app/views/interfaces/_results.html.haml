@@ -1,0 +1,5 @@
+- interfaces.matches.each do |interface|
+  %tr
+    %td= link_to interface.name, interface
+    %td= interface.address
+= render "utils/pagination_links", pager: interfaces, columns: 2

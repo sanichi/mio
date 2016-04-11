@@ -1,0 +1,15 @@
+.row
+  .col-md-10
+    = form_for interface, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: interface, col: "md", pad: 3, width: 4}
+        = render "utils/text_field_for", shared.merge(param: :address, text: t("interface.address"))
+        = render "utils/text_field_for", shared.merge(param: :name, text: t("interface.name"))
+        = render "utils/select_for", shared.merge(param: :device_id, text: t("device.device"), width: 4, menu: interface_device_menu(interface))
+
+      .row
+        .col-md-offset-3.col-md-9
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), interface.new_record?? interfaces_path : interface, class: "btn btn-default"
+          - unless interface.new_record?
+            = link_to t("delete"), interface, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

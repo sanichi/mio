@@ -1,0 +1,26 @@
+= render "utils/title", text: @interface.name
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("interface.name")
+          %td= @interface.name
+        %tr
+          %th= t("interface.address")
+          %td= @interface.address
+        %tr
+          %th= t("device.device")
+          %td= link_to @interface.device.network_name, @interface.device
+
+.text-center.top_margin
+  = link_to t("interface.interfaces"), interfaces_path, class: "btn btn-success"
+  - if can?(:update, @interface)
+    = link_to t("edit"), edit_interface_path(@interface), class: "btn btn-info"
+  - if can?(:delete, @interface)
+    = link_to t("delete"), @interface, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+  - if can?(:create, Interface)
+    = link_to t("interface.new"), new_interface_path, class: "btn btn-info"
+  - if can?(:create, Device)
+    = link_to t("interface.new"), new_interface_path, class: "btn btn-info"

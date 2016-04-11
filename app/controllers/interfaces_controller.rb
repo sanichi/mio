@@ -1,9 +1,9 @@
 class InterfacesController < ApplicationController
   authorize_resource
-  before_action :find_interface, only: [:edit, :update, :destroy]
+  before_action :find_interface, only: [:edit, :show, :update, :destroy]
 
   def index
-    @interfaces = Interface.search(params)
+    @interfaces = Interface.search(params, interfaces_path)
   end
 
   def new
@@ -13,7 +13,7 @@ class InterfacesController < ApplicationController
   def create
     @interface = Interface.new(strong_params)
     if @interface.save
-      redirect_to interfaces_path
+      redirect_to @interface
     else
       render "new"
     end
@@ -21,7 +21,7 @@ class InterfacesController < ApplicationController
 
   def update
     if @interface.update(strong_params)
-      redirect_to interfaces_path
+      redirect_to @interface
     else
       render "edit"
     end
