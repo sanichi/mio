@@ -3,6 +3,6 @@ en:
     device: Device
     devices: Devices
     edit: Edit Device
-    network: Home Network
+    network: Network
     name: Name
     new: New Device

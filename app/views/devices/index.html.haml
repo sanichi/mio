@@ -4,7 +4,7 @@
   = form_tag devices_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", size: 16
+      = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("device.device")
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
@@ -19,3 +19,4 @@
 .text-center.top_margin
   - if can?(:create, Device)
     = link_to t("device.new"), new_device_path, class: "btn btn-info"
+  = link_to t("interface.interfaces"), interfaces_path, class: "btn btn-success"

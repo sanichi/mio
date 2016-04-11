@@ -8,7 +8,7 @@
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12.col-md-10.col-md-offset-1
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
@@ -16,9 +16,11 @@
           %th= t("interface.mac_address")
           %th= t("interface.ip_address")
           %th= t("interface.manufacturer")
+          %th= t("device.device")
       %tbody{id: "results"}
         = render "results", interfaces: @interfaces
 
 .text-center.top_margin
   - if can?(:create, Interface)
     = link_to t("interface.new"), new_interface_path, class: "btn btn-info"
+  = link_to t("device.devices"), devices_path, class: "btn btn-success"

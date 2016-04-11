@@ -4,4 +4,5 @@
     %td= interface.mac_address
     %td= interface.ip_address
     %td= interface.manufacturer
-= render "utils/pagination_links", pager: interfaces, columns: 4
+    %td= link_to interface.device.name, interface.device
+= render "utils/pagination_links", pager: interfaces, columns: 5
