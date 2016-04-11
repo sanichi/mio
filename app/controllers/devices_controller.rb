@@ -39,6 +39,6 @@ class DevicesController < ApplicationController
   end
 
   def strong_params
-    params.require(:device).permit(:manufacturer, :network_name, :notes, :real_name)
+    params.require(:device).permit(:name, :notes)
   end
 end

@@ -1,6 +1,4 @@
 - devices.matches.each do |device|
   %tr
-    %td= link_to device.network_name, device
-    %td= device.manufacturer
-    %td= device.real_name
-= render "utils/pagination_links", pager: devices, columns: 3
+    %td= link_to device.name, device
+= render "utils/pagination_links", pager: devices, columns: 1

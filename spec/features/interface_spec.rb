@@ -14,8 +14,10 @@ describe Interface do
     it "success" do
       click_link t(:interface_new)
       fill_in t(:interface_name), with: data.name
-      fill_in t(:interface_address), with: data.address
-      select device.network_name, from: t(:device_device)
+      fill_in t(:interface_mac__address), with: data.mac_address
+      fill_in t(:interface_manufacturer), with: data.manufacturer
+      fill_in t(:interface_ip__address), with: data.ip_address
+      select device.name, from: t(:device_device)
       click_button t(:save)
 
       expect(page).to have_title(data.name)
@@ -24,14 +26,18 @@ describe Interface do
       i = Interface.last
 
       expect(i.name).to eq data.name
-      expect(i.address).to eq data.address
+      expect(i.mac_address).to eq data.mac_address
+      expect(i.ip_address).to eq data.ip_address
+      expect(i.manufacturer).to eq data.manufacturer
       expect(i.device_id).to eq data.device_id
     end
 
     it "failure" do
       click_link t(:interface_new)
       fill_in t(:interface_name), with: data.name
-      fill_in t(:interface_address), with: data.address
+      fill_in t(:interface_mac__address), with: data.mac_address
+      fill_in t(:interface_manufacturer), with: data.manufacturer
+      fill_in t(:interface_ip__address), with: data.ip_address
       click_button t(:save)
 
       expect(page).to have_title t(:interface_new)
@@ -46,7 +52,7 @@ describe Interface do
       click_link t(:edit)
 
       expect(page).to have_title t(:interface_edit)
-      fill_in t(:interface_address), with: data.address
+      fill_in t(:interface_mac__address), with: data.mac_address
       click_button t(:save)
 
       expect(page).to have_title interface.name
@@ -54,7 +60,7 @@ describe Interface do
       expect(Interface.count).to eq 1
       i = Interface.last
 
-      expect(i.address).to eq data.address
+      expect(i.mac_address).to eq data.mac_address
     end
 
     it "failure" do

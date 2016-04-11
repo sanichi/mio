@@ -39,6 +39,6 @@ class InterfacesController < ApplicationController
   end
 
   def strong_params
-    params.require(:interface).permit(:address, :device_id, :name)
+    params.require(:interface).permit(:device_id, :ip_address, :mac_address, :manufacturer, :name)
   end
 end

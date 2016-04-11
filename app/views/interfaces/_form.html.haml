@@ -2,10 +2,12 @@
   .col-md-10
     = form_for interface, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
-        - shared = { form: f, object: interface, col: "md", pad: 3, width: 4}
-        = render "utils/text_field_for", shared.merge(param: :address, text: t("interface.address"))
+        - shared = { form: f, object: interface, col: "md", pad: 3, width: 5}
         = render "utils/text_field_for", shared.merge(param: :name, text: t("interface.name"))
-        = render "utils/select_for", shared.merge(param: :device_id, text: t("device.device"), width: 4, menu: interface_device_menu(interface))
+        = render "utils/text_field_for", shared.merge(param: :mac_address, text: t("interface.mac_address"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :ip_address, text: t("interface.ip_address"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :manufacturer, text: t("interface.manufacturer"))
+        = render "utils/select_for", shared.merge(param: :device_id, text: t("device.device"), menu: interface_device_menu(interface))
 
       .row
         .col-md-offset-3.col-md-9

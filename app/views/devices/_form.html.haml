@@ -3,9 +3,7 @@
     = form_for device, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
         - shared = { form: f, object: device, col: "md", pad: 3, width: 4}
-        = render "utils/text_field_for", shared.merge(param: :network_name, text: t("device.network_name"))
-        = render "utils/text_field_for", shared.merge(param: :real_name, text: t("device.real_name"))
-        = render "utils/text_field_for", shared.merge(param: :manufacturer, text: t("device.manufacturer"))
+        = render "utils/text_field_for", shared.merge(param: :name, text: t("device.name"))
         = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
 
       .row

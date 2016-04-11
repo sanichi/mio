@@ -3,8 +3,6 @@ en:
     device: Device
     devices: Devices
     edit: Edit Device
-    manufacturer: Manufacturer
     network: Home Network
-    network_name: Network Name
+    name: Name
     new: New Device
-    real_name: Real Name

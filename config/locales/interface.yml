@@ -1,8 +1,10 @@
 en:
   interface:
-    address: Mac Address
     edit: Edit Interface
     interface: Interface
     interfaces: Interfaces
+    ip_address: IP Address
+    mac_address: Mac Address
+    manufacturer: Manufacturer
     name: Name
     new: New Interface

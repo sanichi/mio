@@ -8,13 +8,11 @@
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12.col-md-6.col-md-offset-3
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th= t("device.network_name")
-          %th= t("device.real_name")
-          %th= t("device.manufacturer")
+          %th= t("device.name")
       %tbody{id: "results"}
         = render "results", devices: @devices
 
