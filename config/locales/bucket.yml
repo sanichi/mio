@@ -1,0 +1,20 @@
+en:
+  bucket:
+    any_fan: Any Fan
+    bucket: Bucket
+    buckets: Bucket List
+    fans: Fans
+    edit: Edit Bucket Item
+    mark: Mark
+    name: Name
+    new: New Bucket Item
+    sandra: Sandra
+    level:
+      - Not Interested
+      - Pending
+      - Done
+    symbol:
+      level:
+        - ✘
+        - ⏳
+        - ✔︎

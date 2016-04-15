@@ -1,0 +1,28 @@
+= render "utils/title", key: "bucket.buckets"
+
+.text-center
+  = form_tag buckets_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :name, t("name"), class: "sr-only"
+      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 20
+    .form-group
+      = label_tag :fan, t("bucket.fans"), class: "sr-only"
+      = select_tag :fan, bucket_fan_search_menu(params[:fan]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+%p
+
+.row
+  .col-xs-12.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center= t("bucket.name")
+          %th.text-center.col-xs-1= t("bucket.mark")
+          %th.text-center.col-xs-1= t("bucket.sandra")
+      %tbody{id: "results"}
+        = render "results", buckets: @buckets
+
+.text-center
+  - if can?(:create, Bucket)
+    = link_to t("bucket.new"), new_bucket_path, class: "btn btn-info"

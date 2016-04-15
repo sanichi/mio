@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411143804) do
+ActiveRecord::Schema.define(version: 20160415150748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(version: 20160411143804) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "draft",                  default: true
+  end
+
+  create_table "buckets", force: :cascade do |t|
+    t.string   "name",       limit: 50
+    t.text     "notes"
+    t.integer  "mark",       limit: 2,  default: 0
+    t.integer  "sandra",     limit: 2,  default: 0
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "comments", force: :cascade do |t|

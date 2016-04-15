@@ -9,9 +9,11 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
+  resources :buckets
   resources :devices
   resources :expenses, except: [:show]
   resources :favourites, except: [:show]
+  resources :flats
   resources :funds do
     resources :comments, except: [:index, :show]
     resources :links, except: [:index, :show]
@@ -22,7 +24,6 @@ Rails.application.routes.draw do
     get :graph, on: :collection
   end
   resources :interfaces
-  resources :flats
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection
