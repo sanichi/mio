@@ -2,7 +2,7 @@ module BucketsHelper
   def bucket_fan_search_menu(fan)
     fans =
     [
-      [t("bucket.any_fan"), ""],
+      [t("any"), ""],
       [t("bucket.mark"),   "m"],
       [t("bucket.sandra"), "s"],
     ]
