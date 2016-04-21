@@ -11,8 +11,8 @@ $(function() {
   $('g.bay').click(function(e) {
     $('#bay').val($(this).data('bay')).parents('form').submit();
   });
-  // Click on roads.
-  $('g.road').click(function(e) {
+  // Click on streets.
+  $('g.street').click(function(e) {
     $('#bay').val('0').parents('form').submit();
   });
   // Auto-completer for vehicles.
