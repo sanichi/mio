@@ -1,0 +1,17 @@
+%thead
+  %tr
+    - stats.headers.each do |header|
+      %th.text-center= header.html_safe
+%tbody
+  - stats.data.each do |row|
+    %tr
+      - row.each do |stat|
+        - stat = [stat] unless stat.is_a?(Array)
+        %td.text-center
+          - stat.each_with_index do |text, i|
+            - if text.is_a?(Fixnum)
+              - bay = text
+              %span.bay.btn.btn-success.btn-xs{"data-bay" => bay}<
+                = bay
+            - else
+              %span= text

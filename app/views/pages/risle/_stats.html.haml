@@ -1,0 +1,13 @@
+.text-center.top_margin
+  = form_tag risle_stats_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = select_tag :number, pages_risle_number_menu, class: "form-control auto-submit"
+    .form-group
+      = select_tag :stat, pages_risle_stats_menu, class: "form-control auto-submit"
+    .form-group
+      = select_tag :months, pages_risle_months_menu, class: "form-control auto-submit"
+
+.top_margin
+  .col-xs-12.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+    %table{class: "table table-bordered table-striped", id: "results"}
+      = render "pages/risle/stats_results", stats: @stats

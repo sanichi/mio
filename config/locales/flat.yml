@@ -2,6 +2,7 @@ en:
   flat:
     address: Address
     bay: Bay
+    bays: Bays
     building: Building
     block: Block
     category: Type

@@ -3,7 +3,7 @@ class DevicesController < ApplicationController
   before_action :find_device, only: [:show, :edit, :update, :destroy]
 
   def index
-    @devices = Device.search(params, current_user)
+    @devices = Device.search(params, devices_path)
   end
 
   def new
