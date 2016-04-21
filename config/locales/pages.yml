@@ -13,7 +13,7 @@ en:
     risle:
       map: Rennie's Isle Map
       name: Rennie's Isle
-      top: "The top %{count}"
+      top: "Top %{count}"
       stats:
         vmb: vehicles parking on the most number of bays
         vlb: vehicles parking on the least number of bays
