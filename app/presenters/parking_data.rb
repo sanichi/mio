@@ -5,6 +5,7 @@ class ParkingData
   FLAT = I18n.t("flat.flat")
   NOD  = I18n.t("no_data")
   SEP  = I18n.t("symbol.separator")
+  STR  = I18n.t("parking.street")
 
   def initialize(full)
     @full = !!full
@@ -21,16 +22,18 @@ class ParkingData
     reg = Vehicle.pluck(:id, :registration).each_with_object({}) do |(vid, reg), hash|
       hash[vid] = reg
     end
-    fbs = Flat.where.not(bay: nil).all.each_with_object({}) do |flat, hash|
-      hash[flat.bay] = "#{FLAT} #{flat.address} #{BAY} #{flat.bay}"
+    fbs = {}
+    fbs[0] = STR
+    Flat.where.not(bay: nil).order(:bay).each do |flat|
+      fbs[flat.bay] = "#{FLAT} #{flat.address} #{BAY} #{flat.bay}"
     end
-    park = Parking.pluck(:bay, :vehicle_id).each_with_object({}) do |(bid, vid), hash|
-      hash[bid] ||= Hash.new(0)
-      hash[bid][vid] += 1
+    park = Parking.pluck(:bay, :vehicle_id).each_with_object({}) do |(bay, vid), hash|
+      hash[bay] ||= Hash.new(0)
+      hash[bay][vid] += 1
     end
 
     # Transform the parking data into a more useful form.
-    park.each do |bid, count|
+    park.each do |bay, count|
       total = count.values.sum
       vids  = count.keys.sort { |a, b| count[b] <=> count[a] }
       array = []
@@ -49,22 +52,22 @@ class ParkingData
         end
         array.push text
       end
-      park[bid] = array
+      park[bay] = array
     end
 
     # Finally, build and return the output data structure.
-    fbs.each_with_object({}) do |(bid, fb), hash|
+    fbs.each_with_object({}) do |(bay, fb), hash|
       entries = []
       if full
         entries.push fb
-        if park[bid]
-          entries.push *park[bid]
+        if park[bay]
+          entries.push *park[bay]
         else
           entries.push "%s %s" % [SEP, NOD]
           (@entries - 2).times { entries.push '' }
         end
       end
-      hash[bid] = entries
+      hash[bay] = entries
     end
   end
 

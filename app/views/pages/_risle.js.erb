@@ -37,6 +37,15 @@ function highlight_bft(bay, flat, on) {
   <% end %>
 }
 
+<% if @pdata.any? %>
+function highlight_street(on) {
+  var bid = 'bay-0';
+  if (text[bid]) {
+    for (var i=0; i<<%= @pdata.entries %>; i++) $('#text-' + i).text(on ? text[bid][i] : '');
+  }
+}
+<% end %>
+
 $(function() {
   $('g.bay').hover(
     function() {
@@ -52,6 +61,15 @@ $(function() {
       highlight_bft(undefined, $(this), false);
     }
   );
+<% if @pdata.any? %>
+  $('g.street').hover(
+    function() {
+      highlight_street(true);
+    }, function() {
+      highlight_street(false);
+    }
+  );
+<% end %>
   $('#results').on('mouseenter', 'span.bay', function() {
     highlight_bft($('#bay-' + $(this).data('bay')), undefined, true);
   });
