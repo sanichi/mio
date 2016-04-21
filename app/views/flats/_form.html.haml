@@ -17,6 +17,6 @@
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), flats_path, class: "btn btn-default"
+          = link_to t("cancel"), flat.new_record?? flats_path : flat, class: "btn btn-default"
           - unless flat.new_record?
             = link_to t("delete"), flat, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
