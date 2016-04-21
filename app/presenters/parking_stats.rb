@@ -26,13 +26,14 @@ class ParkingStats
       @headers = [I18n.t("flat.bay"), I18n.t("parking.parkings")]
       parkings = parkings.group(:bay).count
       Flat::BAYS.each { |b| parkings[b] = 0 unless parkings.has_key?(b) }
-      @data = bay_count_data(parkings.sort_by{ |bay, count| [count, bay] })
+      @data = bay_count_data(parkings)
     when "blv", "bmv"  # bays with least/most vehicles
       @headers = [I18n.t("flat.bay"), I18n.t("vehicle.vehicles")]
       parkings = parkings.group(:bay, :vehicle_id).count.keys.each_with_object(Hash.new(0)) do |(bay, vid), h|
         h[bay] += 1
       end
-      @data = bay_count_data(parkings.sort_by{ |bay, count| [count, bay] })
+      Flat::BAYS.each { |b| parkings[b] = 0 unless parkings.has_key?(b) }
+      @data = bay_count_data(parkings)
     when "vlb", "vmb"  # vehicles with least/most bays
       reg = Vehicle.pluck(:id, :registration).each_with_object({}){ |(vid, reg), h| h[vid] = reg }
       @headers = [I18n.t("vehicle.vehicles"), I18n.t("flat.bays")]
@@ -40,16 +41,16 @@ class ParkingStats
         h[reg[vid]].push bay
       end
       parkings.values.each { |bays| bays.sort! }
-      @data = vehicle_bays_data(parkings.sort_by{ |reg, bays| [bays.size, reg] })
+      @data = vehicle_bays_data(parkings)
     end
   end
 
   def bay_count_data(stats)
     case @stat
     when "lub", "blv"  # least
-      stats.first(@number)
+      stats.sort{ |a, b| [a[1], a[0]] <=> [b[1], b[0]] }.first(@number)
     else  # most
-      stats.last(@number).reverse
+      stats.sort{ |a, b| [b[1], a[0]] <=> [a[1], b[0]] }.first(@number)
     end.map do |bay, count|
       [bay, count.to_s]
     end
@@ -58,9 +59,9 @@ class ParkingStats
   def vehicle_bays_data(stats)
     case @stat
     when "vlb"  # least
-      stats.first(@number)
+      stats.sort{ |a, b| [a[1].size, a[0]] <=> [b[1].size, b[0]] }.first(@number)
     else  # most
-      stats.last(@number).reverse
+      stats.sort{ |a, b| [b[1].size, a[0]] <=> [a[1].size, b[0]] }.first(@number)
     end
   end
 end

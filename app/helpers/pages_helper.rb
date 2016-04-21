@@ -22,7 +22,7 @@ module PagesHelper
   end
 
   def pages_risle_number_menu
-    options_for_select ParkingStats::NUMBERS.map{ |n| ["The #{n}", n] }
+    options_for_select ParkingStats::NUMBERS.map{ |n| [t("pages.risle.top", count: n), n] }
   end
 
   def pages_risle_stats_menu

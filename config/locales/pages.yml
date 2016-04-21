@@ -13,11 +13,12 @@ en:
     risle:
       map: Rennie's Isle Map
       name: Rennie's Isle
+      top: "The top %{count}"
       stats:
-        bmv: bays with most vehicles
-        blv: bays with least vehicles
         vmb: vehicles with most bays
         vlb: vehicles with least bays
+        bmv: bays with most vehicles
+        blv: bays with least vehicles
         mub: most parked on bays
         lub: least parked on bays
       month:
