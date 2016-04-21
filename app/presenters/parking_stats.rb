@@ -51,7 +51,7 @@ class ParkingStats
     else  # most
       stats.last(@number).reverse
     end.map do |bay, count|
-      [bay_or_street(bay), count.to_s]
+      [bay, count.to_s]
     end
   end
 
@@ -61,12 +61,6 @@ class ParkingStats
       stats.first(@number)
     else  # most
       stats.last(@number).reverse
-    end.map do |reg, bays|
-      [reg, bays.map{ |b| bay_or_street(b) }]
     end
-  end
-
-  def bay_or_street(bay)
-    bay == 0 ? I18n.t("parking.street") : bay
   end
 end

@@ -76,4 +76,10 @@ $(function() {
   $('#results').on('mouseleave', 'span.bay', function() {
     highlight_bft($('#bay-' + $(this).data('bay')), undefined, false);
   });
+  $('#results').on('mouseenter', 'span.street', function() {
+    highlight_street(true);
+  });
+  $('#results').on('mouseleave', 'span.street', function() {
+    highlight_street(false);
+  });
 });

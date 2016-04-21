@@ -11,7 +11,9 @@
           - stat.each_with_index do |text, i|
             - if text.is_a?(Fixnum)
               - bay = text
-              %span.bay.btn.btn-success.btn-xs{"data-bay" => bay}<
-                = bay
+              - if bay == 0
+                %span.street.btn.btn-default.btn-xs= t("parking.street")
+              - else
+                %span.bay.btn.btn-success.btn-xs{"data-bay" => bay}= bay
             - else
               %span= text
