@@ -15,8 +15,8 @@ en:
       name: Rennie's Isle
       top: "Top %{count}"
       stats:
-        vmb: vehicles parking on the most number of bays
-        vlb: vehicles parking on the least number of bays
+        vmb: vehicles parked on the most number of bays
+        vlb: vehicles parked on the least number of bays
         bmv: bays parked on by the most number of vehicles
         blv: bays parked on by the least number of vehicles
         mub: most parked on bays
