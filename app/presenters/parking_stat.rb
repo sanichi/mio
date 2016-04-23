@@ -40,12 +40,11 @@ class ParkingStat
       registration = Vehicle.pluck(:id, :registration).each_with_object({}){ |(vid, reg), h| h[vid] = reg }
       @headers = [I18n.t("vehicle.vehicles"), I18n.t("flat.bays"), I18n.t("parking.parkings")]
       parkings = parkings.group(:bay, :vehicle_id).count.each_with_object({}) do |((bay, vid), count), h|
-        reg = registration[vid]
-        h[reg] ||= [[], 0]
-        h[reg][0].push bay
-        h[reg][1] += count
+        h[vid] ||= [[], 0]
+        h[vid][0].push bay
+        h[vid][1] += count
       end
-      vehicle_bays_data(parkings.map{|reg, (bays, count)| [reg, bays.sort, count]})
+      vehicle_bays_data(parkings.map{|vid, (bays, count)| ["V_#{vid}_#{registration[vid]}", bays.sort, count, vid]})
     end
   end
 
@@ -56,7 +55,7 @@ class ParkingStat
     else  # most
       stats.sort{ |a, b| [b[1], b[2], a[0]] <=> [a[1], a[2], b[0]] }.first(@number)
     end.map do |bay, *count|
-      [bay, *count.map(&:to_s)]
+      ["B_#{bay}", *count]
     end
   end
 
@@ -66,8 +65,8 @@ class ParkingStat
       stats.sort{ |a, b| [a[1].size, a[2], a[0]] <=> [b[1].size, b[2], b[0]] }.first(@number)
     else  # most
       stats.sort{ |a, b| [b[1].size, b[2], a[0]] <=> [a[1].size, a[2], b[0]] }.first(@number)
-    end.map do |reg, bays, count|
-      [reg, bays, count.to_s]
+    end.map do |reg, bays, count, vid|
+      [reg, bays.map{ |b| "B_#{b}" }, "P_#{vid}_#{count}"]
     end
   end
 end
