@@ -1,4 +1,4 @@
-class ParkingStats
+class ParkingStat
   attr_reader :headers, :data
 
   MONTHS = [0, 12, 6, 3, 1]

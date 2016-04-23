@@ -1,9 +1,9 @@
 %thead
   %tr
-    - stats.headers.each do |header|
+    - pstat.headers.each do |header|
       %th.text-center= header.html_safe
 %tbody
-  - stats.data.each do |row|
+  - pstat.data.each do |row|
     %tr
       - row.each do |stat|
         - stat = [stat] unless stat.is_a?(Array)

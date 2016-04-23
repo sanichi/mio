@@ -22,7 +22,7 @@ module PagesHelper
   end
 
   def pages_risle_number_menu
-    options_for_select ParkingStats::NUMBERS.map{ |n| [t("pages.risle.top", count: n), n] }
+    options_for_select ParkingStat::NUMBERS.map{ |n| [t("pages.risle.top", count: n), n] }
   end
 
   def pages_risle_stats_menu
@@ -30,6 +30,6 @@ module PagesHelper
   end
 
   def pages_risle_months_menu
-    options_for_select ParkingStats::MONTHS.map{ |m| [t("pages.risle.month", count: m), m] }
+    options_for_select ParkingStat::MONTHS.map{ |m| [t("pages.risle.month", count: m), m] }
   end
 end
