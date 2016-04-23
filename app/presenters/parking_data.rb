@@ -8,7 +8,7 @@ class ParkingData
   STR  = I18n.t("parking.street")
 
   def initialize(full)
-    @full = !!full
+    @full = full
     @entries = @full ? 5 : 0;  # how many text entries in the value for each bay
     @any = @entries > 0;       # any entries at all?
   end
