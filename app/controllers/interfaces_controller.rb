@@ -3,7 +3,7 @@ class InterfacesController < ApplicationController
   before_action :find_interface, only: [:edit, :show, :update, :destroy]
 
   def index
-    @interfaces = Interface.search(params, interfaces_path)
+    @interfaces = Interface.search(params, interfaces_path, per_page: 20)
   end
 
   def new
