@@ -62,7 +62,7 @@ class ParkingStat
   def vehicle_bays_data(stats)
     case @stat
     when "vlb"  # least
-      stats.sort{ |a, b| [a[1].size, a[2], a[0]] <=> [b[1].size, b[2], b[0]] }.first(@number)
+      stats.sort{ |a, b| [a[1].size, b[2], a[0]] <=> [b[1].size, a[2], b[0]] }.first(@number)
     else  # most
       stats.sort{ |a, b| [b[1].size, b[2], a[0]] <=> [a[1].size, a[2], b[0]] }.first(@number)
     end.map do |reg, bays, count, vid|
