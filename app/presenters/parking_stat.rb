@@ -2,7 +2,7 @@ class ParkingStat
   attr_reader :headers, :data
 
   MONTHS = [0, 12, 6, 3, 1]
-  NUMBERS = [10, 20, 30]
+  NUMBERS = [10, 20, 50]
   STATS = I18n.t("pages.risle.stats").keys.map(&:to_s)
 
   def initialize(any, params={})
