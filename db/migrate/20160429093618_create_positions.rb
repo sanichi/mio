@@ -7,6 +7,7 @@ class CreatePositions < ActiveRecord::Migration
       t.string   :en_passant, limit: 2
       t.integer  :half_move, limit: 2
       t.integer  :move, limit: 2
+      t.string   :name, limit: Position::MAX_NAME
       t.text     :notes
 
       t.timestamps null: false

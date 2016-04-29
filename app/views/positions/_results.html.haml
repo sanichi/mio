@@ -1,0 +1,5 @@
+- positions.matches.each do |position|
+  %tr
+    %td= link_to position.name, position
+    %td.text-center= position.created_at.to_s(:date)
+    %td.text-center= position.updated_at.to_s(:date)

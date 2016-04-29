@@ -1,0 +1,29 @@
+= render "utils/title", key: "position.positions"
+
+.text-center
+  = form_tag positions_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :name, t("name"), class: "sr-only"
+      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 16
+      .form-group
+      = label_tag :notes, t("notes"), class: "sr-only"
+      = text_field_tag :notes, params[:notes], class: "form-control", placeholder: t("notes"), size: 16
+      .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, position_order_search_menu(params[:order]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12.col-md-8.col-md-offset-2
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.text-center.col-xs-8= t("position.name")
+          %th.text-center.col-xs-2= t("created_at")
+          %th.text-center.col-xs-2= t("updated_at")
+      %tbody{id: "results"}
+        = render "results", positions: @positions
+
+.text-center
+  - if can?(:create, Position)
+    = link_to t("position.new"), new_position_path, class: "btn btn-info"

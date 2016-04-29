@@ -226,9 +226,10 @@ ActiveRecord::Schema.define(version: 20160429093618) do
     t.string   "en_passant", limit: 2
     t.integer  "half_move",  limit: 2
     t.integer  "move",       limit: 2
+    t.string   "name",       limit: 255
     t.text     "notes"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "residents", force: :cascade do |t|

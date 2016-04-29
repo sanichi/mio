@@ -1,4 +1,5 @@
 class Position < ActiveRecord::Base
+  include Constrainable
   include Pageable
   include Remarkable
 
@@ -6,6 +7,7 @@ class Position < ActiveRecord::Base
   ACTIVE = /\A[wb]\z/
   CASTLING = /\A(-|K?Q?k?q?)\z/
   EN_PASSANT = /\A(-|[a-h][36])\z/
+  MAX_NAME = 255
 
   before_validation :normalize_attributes, :check_pieces
 
@@ -15,10 +17,23 @@ class Position < ActiveRecord::Base
   validates :en_passant, format: { with: EN_PASSANT }
   validates :half_move, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
   validates :move, numericality: { integer_only: true, greater_than_or_equal_to: 1 }
+  validates :name, length: { maximum: MAX_NAME }, presence: true, uniqueness: true
 
-  def self.search(params)
-    matches = matches.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
-    matches.all
+  scope :by_name, -> { order(:name) }
+  scope :by_created, -> { order(created_at: :desc) }
+  scope :by_updated, -> { order(updated_at: :desc) }
+
+  def self.search(params, path, opt={})
+    sql = nil
+    matches =
+      case params[:order]
+      when "created" then by_created
+      when "updated" then by_updated
+      else by_name
+      end
+    matches = matches.where(sql) if sql = cross_constraint(params[:name], cols: %w{name})
+    matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
+    paginate(matches, params, path, opt)
   end
 
   def fen

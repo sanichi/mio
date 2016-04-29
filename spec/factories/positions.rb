@@ -6,5 +6,6 @@ FactoryGirl.define do
     en_passant "-"
     half_move  0
     move       1
+    name       { Faker::Lorem.words(3).join(" ") }
   end
 end

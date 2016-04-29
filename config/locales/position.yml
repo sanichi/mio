@@ -8,6 +8,7 @@ en:
     fen: FEN
     half_move: Half-Move Clock
     move: Move Number
+    name: Name
     new: New Position
     pieces: Pieces
     position: Position

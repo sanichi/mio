@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    = form_for position, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: position, col: "md", pad: 2, width: 2 }
+        = render "utils/text_field_for", shared.merge(param: :name, text: t("name"), width: 6)
+        = render "utils/text_field_for", shared.merge(param: :pieces, text: t("position.pieces"), width: 6)
+        = render "utils/select_for", shared.merge(param: :active, text: t("position.active"), menu: position_active_menu(position.active))
+        = render "utils/text_field_for", shared.merge(param: :castling, text: t("position.castling"))
+        = render "utils/text_field_for", shared.merge(param: :en_passant, text: t("position.en_passant"))
+        = render "utils/text_field_for", shared.merge(param: :half_move, text: t("position.half_move"))
+        = render "utils/text_field_for", shared.merge(param: :move, text: t("position.move"))
+        = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), position.new_record?? positions_path : position, class: "btn btn-default"
+          - unless position.new_record?
+            = link_to t("delete"), position, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
