@@ -14,13 +14,13 @@
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
           %th.text-center.col-xs-8= t("position.name")
-          %th.text-center.col-xs-2= t("created_at")
-          %th.text-center.col-xs-2= t("updated_at")
+          %th.text-center.col-xs-2= t("created")
+          %th.text-center.col-xs-2= t("updated")
       %tbody{id: "results"}
         = render "results", positions: @positions
 
