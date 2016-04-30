@@ -6,7 +6,7 @@ class Bucket < ActiveRecord::Base
   before_validation :normalize_attributes, :at_least_one_person_interested
 
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
-  validates :mark, :sandra, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than:  I18n.t("bucket.levels").size }
+  validates :mark, :sandra, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than: I18n.t("bucket.levels").size }
 
   scope :by_name, -> { order(:name) }
 
