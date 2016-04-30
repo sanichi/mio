@@ -2,6 +2,7 @@
 %svg{version: "1.1", viewBox: "0 0 #{10 * size} #{8 * size}", class: "board"}
   %title= position.name
   %desc= "FEN: #{position.fen}"
+  = render "positions/svg/defs", size: size
   %g{transform: "translate(#{size},0)"}
     = render "positions/svg/squares", size: size
     = render "positions/svg/pieces", size: size, pieces: position.pieces

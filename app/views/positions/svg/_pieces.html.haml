@@ -2,13 +2,10 @@
 - pieces.split("/").each do |rank|
   - x = 0
   - rank.split("").each do |item|
-    - case item
-      - when /\A[1-8]\z/
-        - x += item.to_i * size
-      - when /\A[KQRBNP]\z/
-        = render "positions/svg/w#{item.downcase}", x: x, y: y
-        - x += size
-      - when /\A[kqrbnp]\z/
-        = render "positions/svg/b#{item}", x: x, y: y
-        - x += size
+    - if item.match(/\A[1-8]\z/)
+      - x += item.to_i * size
+    - else
+      - if item.match(/\A[kqrbnp]\z/i)
+        %use{"xlink:href" => "#piece-#{item}", x: x, y: y}
+      - x += size
   - y += size
