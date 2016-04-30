@@ -1,23 +1,19 @@
-= render "utils/title", text: t("position.position")
+= render "utils/title", text: @position.name, header: true
 
-.row
-  .col-md-offset-3.col-md-6
-    %table{class: "table table-bordered table-striped"}
-      %tbody
-        %tr
-          %th= t("position.name")
-          %td= @position.name
-        %tr
-          %th= t("position.fen")
-          %td= @position.fen
+.row.top_margin
+  .col-xs-12.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
+    = render "positions/svg/board", position: @position
 
-.text-center
-  - if can?(:update, @position)
-    = link_to t("edit"), edit_position_path(@position), class: "btn btn-info"
-  = link_to t("position.positions"), positions_path, class: "btn btn-success"
+.text-center.top_margin
+  %samp.small= @position.fen
 
 - if @position.notes.present?
   .panel.panel-default.top_margin
     .panel-heading
       = t("notes")
     .panel-body= @position.notes_html
+
+.text-center.top_margin
+  - if can?(:update, @position)
+    = link_to t("edit"), edit_position_path(@position), class: "btn btn-info"
+  = link_to t("position.positions"), positions_path, class: "btn btn-success"

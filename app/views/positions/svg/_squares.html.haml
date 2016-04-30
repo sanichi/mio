@@ -1,0 +1,7 @@
+- 8.downto(1) do |r|
+  - c = r.even?
+  - y = (8 - r) * size
+  - 1.upto(8) do |f|
+    - x = (f - 1) * size
+    = render "positions/svg/square", c: c, x: x, y: y
+    - c = !c

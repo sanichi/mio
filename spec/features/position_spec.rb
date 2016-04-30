@@ -22,7 +22,7 @@ describe Position do
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
-      expect(page).to have_title t(:position_position)
+      expect(page).to have_title data.name
 
       expect(Position.count).to eq 2
       p = Position.last
@@ -63,7 +63,7 @@ describe Position do
       fill_in t(:name), with: data.name
       click_button t(:save)
 
-      expect(page).to have_title t(:position_position)
+      expect(page).to have_title data.name
 
       expect(Position.count).to eq 1
       p = Position.last

@@ -1,0 +1,6 @@
+- size = 45
+%svg{version: "1.1", viewBox: "0 0 #{8 * size} #{8 * size}", class: "board"}
+  %title= position.name
+  %desc= "Display position for FEN: #{position.fen}"
+  = render "positions/svg/squares", size: size
+  = render "positions/svg/pieces", size: size, pieces: position.pieces
