@@ -1,0 +1,10 @@
+= render "utils/title", text: @opening.code, header: true
+
+%hr
+%p.text-center= @opening.description
+%hr
+
+.text-center.top_margin
+  - if can?(:update, @opening)
+    = link_to t("edit"), edit_opening_path(@opening), class: "btn btn-info"
+  = link_to t("opening.openings"), openings_path, class: "btn btn-success"

@@ -70,7 +70,7 @@
             - if can?(:read, Fund)
               %li= link_to t("fund.funds"), funds_path
 
-      - if can?(:pills, Page) || can?(:aoc, Page) || [Bucket, Device, Favourite, Interface, Login, Mass, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      - if can?(:pills, Page) || can?(:aoc, Page) || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("other")
@@ -80,6 +80,8 @@
               %li= link_to t("mass.mass"), graph_masses_path
             - if can?(:read, Position)
               %li= link_to t("position.positions"), positions_path
+            - if can?(:read, Opening)
+              %li= link_to t("opening.openings"), openings_path
             - if can?(:read, Tapa)
               %li= link_to t("tapa.tapas"), tapas_path
             - if can?(:aoc, Page)

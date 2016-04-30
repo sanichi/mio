@@ -1,0 +1,5 @@
+- openings.matches.each do |opening|
+  %tr
+    %td.text-center= link_to opening.code, opening
+    %td.small= opening.description
+= render "utils/pagination_links", pager: openings, columns: 2
