@@ -10,10 +10,12 @@ en:
     sandra: Sandra
     level:
       - Not Interested
-      - Pending
+      - Want It!
       - Done
+      - Not Sure
     symbol:
       level:
-        - ✘
-        - ⏳
+        - 🙄
+        - 😛
         - ✔︎
+        - 🤔
