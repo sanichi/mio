@@ -149,4 +149,12 @@ describe Position do
       expect(position.errors.get(:pieces).first).to eq t("position_error_tmwk")
     end
   end
+
+  context "notes" do
+    it "symbol proxies" do
+      position = build(:position, notes: "$14 $15 $16 $17 $18 $19 +/= =/+ +/- -/+")
+      expect(position).to be_valid
+      expect(position.notes).to eq "⩲ ⩱ ± ∓ +- -+ ⩲ ⩱ ± ∓"
+    end
+  end
 end

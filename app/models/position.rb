@@ -11,7 +11,7 @@ class Position < ActiveRecord::Base
 
   belongs_to :opening
 
-  before_validation :normalize_attributes, :check_pieces
+  before_validation :normalize_attributes, :check_pieces, :proxy_symbols
 
   validates :pieces, format: { with: PIECES }, uniqueness: { scope: :active }
   validates :active, format: { with: ACTIVE }
@@ -74,5 +74,15 @@ class Position < ActiveRecord::Base
     err = I18n.t("position.error.pote") unless err || !pieces.match(/\A[^\/]*p/i)
     err = I18n.t("position.error.potf") unless err || !pieces.match(/p[^\/]*\z/i)
     errors.add(:pieces, err) if err
+  end
+
+  def proxy_symbols
+    return if notes.blank?
+    notes.gsub!(/(\+\/=|\$14)/, "⩲")
+    notes.gsub!(/(=\/\+|\$15)/, "⩱")
+    notes.gsub!(/(\+\/-|\$16)/, "±")
+    notes.gsub!(/(-\/\+|\$17)/, "∓")
+    notes.gsub!("$18", "+-")
+    notes.gsub!("$19", "-+")
   end
 end
