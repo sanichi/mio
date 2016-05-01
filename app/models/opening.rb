@@ -16,7 +16,15 @@ class Opening < ActiveRecord::Base
     paginate(matches, params, path, opt)
   end
 
-  def desc(max: 64)
+  def self.match(query)
+    sql = cross_constraint(query, cols: %w{code description})
+    return [] if sql.blank?
+    where(sql).by_code.map do |o|
+      { id: o.id, value: o.desc(54) }
+    end
+  end
+
+  def desc(max=64)
     "#{code} #{description.truncate(max - 4)}"
   end
 end

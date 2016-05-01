@@ -6,6 +6,13 @@ class OpeningsController < ApplicationController
     @openings = Opening.search(params, openings_path, per_page: 20)
   end
 
+  def match
+    @openings = Opening.match(params[:term])
+    respond_to do |format|
+      format.json { render json: @openings }
+    end
+  end
+
   def new
     @opening = Opening.new
   end

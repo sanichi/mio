@@ -28,7 +28,9 @@ Rails.application.routes.draw do
   resources :masses, except: [:show] do
     get :graph, on: :collection
   end
-  resources :openings
+  resources :openings do
+    get :match, on: :collection
+  end
   resources :parkings, only: [:index, :new, :create, :destroy]
   resources :partnerships
   resources :people do
