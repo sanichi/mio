@@ -4,14 +4,10 @@
   .col-xs-12.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
     = render "positions/svg/board", position: @position
 
-.text-center.top_margin
-  %samp.small= @position.fen
-
-- if @position.notes.present?
-  .panel.panel-default.top_margin
-    .panel-heading
-      = t("notes")
-    .panel-body= @position.notes_html
+.panel.panel-default.top_margin
+  .panel-heading
+    = t("notes")
+  .panel-body= @position.notes_html
 
 .text-center.top_margin
   - if can?(:update, @position)

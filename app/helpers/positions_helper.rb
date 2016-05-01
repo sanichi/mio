@@ -9,12 +9,17 @@ module PositionsHelper
     options_for_select(opts, active)
   end
 
+  def position_opening_menu(opening_id)
+    opts = Opening.by_code.map{ |o| [o.desc, o.id] }
+    opts.unshift([t("none"), ""])
+    options_for_select(opts, opening_id)
+  end
+
   def position_order_search_menu(order)
     opts =
     [
       [t("name"), "name"],
-      [t("updated_at"), "updated"],
-      [t("created_at"), "created"],
+      [t("opening.opening"), "opening"],
     ]
     options_for_select(opts, order)
   end

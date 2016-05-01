@@ -9,6 +9,8 @@ class Position < ActiveRecord::Base
   EN_PASSANT = /\A(-|[a-h][36])\z/
   MAX_NAME = 255
 
+  belongs_to :opening
+
   before_validation :normalize_attributes, :check_pieces
 
   validates :pieces, format: { with: PIECES }, uniqueness: { scope: :active }
@@ -22,15 +24,16 @@ class Position < ActiveRecord::Base
   scope :by_name, -> { order(:name) }
   scope :by_created, -> { order(created_at: :desc) }
   scope :by_updated, -> { order(updated_at: :desc) }
+  scope :by_opening, -> { order("openings.code") }
 
   def self.search(params, path, opt={})
     sql = nil
     matches =
       case params[:order]
-      when "created" then by_created
-      when "updated" then by_updated
+      when "opening" then by_opening
       else by_name
       end
+    matches = matches.includes(:opening)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], cols: %w{name})
     matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
     paginate(matches, params, path, opt)
@@ -41,7 +44,10 @@ class Position < ActiveRecord::Base
   end
 
   def notes_html
-    to_html(notes)
+    parts = [notes]
+    parts.push "__ECO__: #{opening.code} #{opening.description}" if opening
+    parts.push "__FEN__: #{fen}"
+    to_html(parts.compact.join("\n\n"))
   end
 
   private

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe Position do
-  let(:data)      { build(:position) }
+  let(:data)      { build(:position, opening: opening) }
   let!(:position) { create(:ending) }
+  let!(:opening)  { create(:opening) }
 
   before(:each) do
     login
@@ -19,6 +20,7 @@ describe Position do
       fill_in t(:position_en__passant), with: data.en_passant
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
+      select data.opening.desc, from: t(:opening_opening)
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -34,6 +36,7 @@ describe Position do
       expect(p.en_passant).to eq data.en_passant
       expect(p.half_move).to eq data.half_move
       expect(p.move).to eq data.move
+      expect(p.opening).to eq data.opening
       expect(p.notes).to eq data.notes
     end
 
@@ -45,6 +48,7 @@ describe Position do
       fill_in t(:position_en__passant), with: data.en_passant
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
+      select data.opening.desc, from: t(:opening_opening)
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -61,6 +65,7 @@ describe Position do
 
       expect(page).to have_title t(:position_edit)
       fill_in t(:name), with: data.name
+      select t(:none), from: t(:opening_opening)
       click_button t(:save)
 
       expect(page).to have_title data.name
@@ -69,6 +74,7 @@ describe Position do
       p = Position.last
 
       expect(p.name).to eq data.name
+      expect(p.opening_id).to be_nil
     end
 
     it "failure" do
