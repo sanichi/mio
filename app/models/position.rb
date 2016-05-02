@@ -78,7 +78,6 @@ class Position < ActiveRecord::Base
   end
 
   def proxy_symbols
-    return if notes.blank? || name.blank?
     [:name, :notes].each do |a|
       if send(a).present?
         send "#{a}=", send(a).gsub(/(\+\/=|\$14)/, "⩲")
