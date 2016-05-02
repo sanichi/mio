@@ -8,6 +8,7 @@ class Position < ActiveRecord::Base
   CASTLING = /\A(-|K?Q?k?q?)\z/
   EN_PASSANT = /\A(-|[a-h][36])\z/
   MAX_NAME = 255
+  SYMBOL = { "K" => "♔", "Q" => "♕", "B" => "♗", "N" => "♘", "R" => "♖" }
 
   belongs_to :opening
 
@@ -77,12 +78,18 @@ class Position < ActiveRecord::Base
   end
 
   def proxy_symbols
-    return if notes.blank?
-    notes.gsub!(/(\+\/=|\$14)/, "⩲")
-    notes.gsub!(/(=\/\+|\$15)/, "⩱")
-    notes.gsub!(/(\+\/-|\$16)/, "±")
-    notes.gsub!(/(-\/\+|\$17)/, "∓")
-    notes.gsub!("$18", "+-")
-    notes.gsub!("$19", "-+")
+    return if notes.blank? || name.blank?
+    [:name, :notes].each do |a|
+      if send(a).present?
+        send "#{a}=", send(a).gsub(/(\+\/=|\$14)/, "⩲")
+        send "#{a}=", send(a).gsub(/(=\/\+|\$15)/, "⩱")
+        send "#{a}=", send(a).gsub(/(\+\/-|\$16)/, "±")
+        send "#{a}=", send(a).gsub(/(-\/\+|\$17)/, "∓")
+        send "#{a}=", send(a).gsub("$18", "+-")
+        send "#{a}=", send(a).gsub("$19", "-+")
+        send "#{a}=", send(a).gsub(/([KQBNR])([a-h1-8])?([a-h])([1-8])/) { "#{SYMBOL[$1]}#{$2}#{$3}#{$4}" }
+        send "#{a}=", send(a).gsub(/([a-h])([a-h])?([18])\(([QBNR])\)/) { "#{$1}#{$2}#{$3}(#{SYMBOL[$4]})" }
+      end
+    end
   end
 end

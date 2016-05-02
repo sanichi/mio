@@ -150,11 +150,17 @@ describe Position do
     end
   end
 
-  context "notes" do
-    it "symbol proxies" do
+  context "symbol proxies" do
+    it "evaluations" do
       position = build(:position, notes: "$14 $15 $16 $17 $18 $19 +/= =/+ +/- -/+")
       expect(position).to be_valid
       expect(position.notes).to eq "⩲ ⩱ ± ∓ +- -+ ⩲ ⩱ ± ∓"
+    end
+
+    it "pieces" do
+      position = build(:position, notes: "Kf2⩲ Qa8 Bg2 N8f6 Rfe1! a8(Q)+ fg8(N)")
+      expect(position).to be_valid
+      expect(position.notes).to eq "♔f2⩲ ♕a8 ♗g2 ♘8f6 ♖fe1! a8(♕)+ fg8(♘)"
     end
   end
 end
