@@ -12,7 +12,7 @@ class Position < ActiveRecord::Base
 
   belongs_to :opening
 
-  before_validation :normalize_attributes, :check_pieces, :proxy_symbols
+  before_validation :split_fen, :normalize_attributes, :check_pieces, :proxy_symbols
 
   validates :pieces, format: { with: PIECES }, uniqueness: { scope: :active }
   validates :active, format: { with: ACTIVE }
@@ -52,6 +52,17 @@ class Position < ActiveRecord::Base
   end
 
   private
+
+  def split_fen
+    if pieces =~ /\A\s*([KQRBNPkqrbnp1-8\/]+)\s+(w|b)\s+(-|[KQkq]+)\s+(-|[a-h]\d)\s+(\d+)\s+(\d+)\s*\z/
+      self.pieces = $1
+      self.active = $2
+      self.castling = $3
+      self.en_passant = $4
+      self.half_move = $5.to_i
+      self.move = $6.to_i
+    end
+  end
 
   def normalize_attributes
     self.pieces = pieces.to_s.split(//).select{ |x| x =~ /\A[KQRBNP1-8\/]\z/i }.join("")

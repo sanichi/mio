@@ -78,6 +78,19 @@ describe Position do
     end
   end
 
+  context "FEN" do
+    it "start position" do
+      position = build(:position, pieces: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", active: "", castling: "", en_passant: "", half_move: "", move: "")
+      expect(position).to be_valid
+      expect(position.pieces).to eq "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+      expect(position.active).to eq "w"
+      expect(position.castling).to eq "KQkq"
+      expect(position.en_passant).to eq "-"
+      expect(position.half_move).to eq 0
+      expect(position.move).to eq 1
+    end
+  end
+
   context "invalid" do
     it "active" do
       ["", "wb"].each do |val|
