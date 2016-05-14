@@ -1,4 +1,5 @@
 import Y15
+import Ports exposing (answer, problem)
 
 -- Model
 
@@ -12,7 +13,6 @@ init =
 
 type Msg
   = Problem (Int, Int, String)
-  | Answer
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -26,12 +26,8 @@ update msg model =
       in
         (newModel, answer newModel)
 
--- Subscriptions and ports
-
-port problem : ((Int, Int, String) -> msg) -> Sub msg
+-- Subscriptions
 
 subscriptions: Model -> Sub Msg
 subscriptions model =
   problem Problem
-
-port answer : String -> Cmd msg
