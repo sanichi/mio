@@ -4,41 +4,34 @@ import Y15
 
 type alias Model = String
 
-init : Model
+init : (Model, Cmd Msg)
 init =
-  "no problem"
+  ("no problem", Cmd.none)
 
 -- Update
 
-type Action
-  = NoOp
-  | Problem (Int, Int, String)
+type Msg
+  = Problem (Int, Int, String)
+  | Answer
 
-update : Action -> Model -> Model
-update action model =
-  case action of
-    NoOp ->
-      model
-
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+  case msg of
     Problem (year, day, input) ->
-      case year of
-        2015 -> Y15.answers day input
-        _ -> "year " ++ (toString year) ++ ": not available yet"
+      let
+        newModel =
+          case year of
+            2015 -> Y15.answers day input
+            _ -> "year " ++ (toString year) ++ ": not available yet"
+      in
+        (newModel, answer newModel)
 
--- Signals
+-- Subscriptions and ports
 
-model : Signal Model
-model =
-  Signal.foldp update init actions
+port problem : ((Int, Int, String) -> msg) -> Sub msg
 
-actions : Signal Action
-actions =
-  Signal.map Problem problem
+subscriptions: Model -> Sub Msg
+subscriptions model =
+  problem Problem
 
--- Ports
-
-port problem : Signal (Int, Int, String)
-
-port answer : Signal Model
-port answer =
-  model
+port answer : String -> Cmd msg

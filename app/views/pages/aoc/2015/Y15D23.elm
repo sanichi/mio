@@ -1,4 +1,4 @@
-module Y15D23 where
+module Y15D23 exposing (..)
 
 import Array exposing (Array)
 import Dict exposing (Dict)

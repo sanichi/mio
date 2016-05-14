@@ -1,4 +1,4 @@
-module Y15D20 where
+module Y15D20 exposing (..)
 
 import Dict
 import Regex

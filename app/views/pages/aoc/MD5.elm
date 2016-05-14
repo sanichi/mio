@@ -1,4 +1,4 @@
-module MD5 where
+module MD5 exposing (..)
 
 import Native.MD5
 

@@ -1,4 +1,4 @@
-module Y15D06 where
+module Y15D06 exposing (..)
 
 import Array exposing (Array)
 import Regex

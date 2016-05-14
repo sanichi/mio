@@ -2,7 +2,7 @@ var elm_app, date;
 
 $(function() {
   // Embed the elm app as a worker.
-  elm_app = Elm.worker(Elm.Main, { problem: [2015, 1, ''] });
+  elm_app = Elm.Main.worker();
   elm_app.ports.answer.subscribe(display_aoc_answer);
 
   // Send a problem to the Elm app every time the menus update.

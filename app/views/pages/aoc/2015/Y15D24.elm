@@ -1,4 +1,4 @@
-module Y15D24 where
+module Y15D24 exposing (..)
 
 import Regex
 import String

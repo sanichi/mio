@@ -1,4 +1,4 @@
-module Y15D11 where
+module Y15D11 exposing (..)
 
 import Char
 import Regex exposing (HowMany(All,AtMost), contains, find, regex)
