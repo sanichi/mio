@@ -1,21 +1,29 @@
 module Remarkable
   class CustomRenderer < Redcarpet::Render::HTML
-    LINK_WITH_TARGET = /\A(.+)\|(\w+)\z/
-
     def link(link, title, alt_text)
-      if link.match LINK_WITH_TARGET
-        '<a href="%s" target="%s">%s</a>' % [$1, $2, alt_text]
+      if lnk_trg_txt = link_with_target(link, alt_text)
+        '<a href="%s" target="%s">%s</a>' % lnk_trg_txt
       else
         '<a href="%s">%s</a>' % [link, alt_text]
       end
     end
 
     def autolink(link, link_type)
-      if link.match LINK_WITH_TARGET
-        '<a href="%s" target="%s">%s</a>' % [$1, $2, $1]
+      if lnk_trg_txt = link_with_target(link)
+        '<a href="%s" target="%s">%s</a>' % lnk_trg_txt
       else
         '<a href="%s">%s</a>' % [link, link]
       end
+    end
+
+    private
+
+    def link_with_target(link, text=nil)
+      return unless link =~ /\A(.+)\|(\w*)\z/
+      link = $1
+      trgt = $2.blank?? "external" : $2
+      text = link if text.blank?
+      [link, trgt, text]
     end
   end
 
