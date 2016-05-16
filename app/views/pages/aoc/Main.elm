@@ -1,5 +1,18 @@
-import Y15
+import Html exposing (Html, text)
+import Html.App as App
 import Ports exposing (answer, problem)
+import Y15
+
+-- Main
+
+main : Program Never
+main =
+  App.program
+    { init = init
+    , view = view
+    , update = update
+    , subscriptions = subscriptions
+    }
 
 -- Model
 
@@ -25,6 +38,12 @@ update msg model =
             _ -> "year " ++ (toString year) ++ ": not available yet"
       in
         (newModel, answer newModel)
+
+-- View
+
+view : Model -> Html Msg
+view model =
+  text model
 
 -- Subscriptions
 
