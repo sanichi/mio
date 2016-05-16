@@ -1,4 +1,4 @@
-module Y15D04 where
+module Y15D04 exposing (..)
 
 import MD5 exposing (md5)
 import Regex

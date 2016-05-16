@@ -1,8 +1,8 @@
-module Util
+module Util exposing
   ( combinations
   , join
   , permutations
-  ) where
+  )
 
 
 join : String -> String -> String

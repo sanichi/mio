@@ -1,4 +1,4 @@
-module Y15D19 where
+module Y15D19 exposing (..)
 
 import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
 import Set exposing (Set)

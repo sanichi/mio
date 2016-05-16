@@ -1,4 +1,4 @@
-module Y15D17 where
+module Y15D17 exposing (..)
 
 import Regex exposing (HowMany(All), find, regex)
 import String

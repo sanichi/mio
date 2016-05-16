@@ -1,4 +1,4 @@
-module Y15D22 where
+module Y15D22 exposing (..)
 
 answers : String -> String
 answers input =

@@ -1,4 +1,4 @@
-module Y15D07 where
+module Y15D07 exposing (..)
 
 import Bitwise
 import Dict exposing (Dict)

@@ -1,4 +1,4 @@
-module Help where
+module Help exposing (..)
 
 import Native.Help
 

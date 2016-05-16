@@ -1,44 +1,52 @@
+import Html exposing (Html, text)
+import Html.App as App
+import Ports exposing (answer, problem)
 import Y15
+
+-- Main
+
+main : Program Never
+main =
+  App.program
+    { init = init
+    , view = view
+    , update = update
+    , subscriptions = subscriptions
+    }
 
 -- Model
 
 type alias Model = String
 
-init : Model
+init : (Model, Cmd Msg)
 init =
-  "no problem"
+  ("no problem", Cmd.none)
 
 -- Update
 
-type Action
-  = NoOp
-  | Problem (Int, Int, String)
+type Msg
+  = Problem (Int, Int, String)
 
-update : Action -> Model -> Model
-update action model =
-  case action of
-    NoOp ->
-      model
-
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+  case msg of
     Problem (year, day, input) ->
-      case year of
-        2015 -> Y15.answers day input
-        _ -> "year " ++ (toString year) ++ ": not available yet"
+      let
+        newModel =
+          case year of
+            2015 -> Y15.answers day input
+            _ -> "year " ++ (toString year) ++ ": not available yet"
+      in
+        (newModel, answer newModel)
 
--- Signals
+-- View
 
-model : Signal Model
-model =
-  Signal.foldp update init actions
+view : Model -> Html Msg
+view model =
+  text model
 
-actions : Signal Action
-actions =
-  Signal.map Problem problem
+-- Subscriptions
 
--- Ports
-
-port problem : Signal (Int, Int, String)
-
-port answer : Signal Model
-port answer =
-  model
+subscriptions: Model -> Sub Msg
+subscriptions model =
+  problem Problem

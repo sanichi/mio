@@ -1,4 +1,4 @@
-module Y15D12 where
+module Y15D12 exposing (..)
 
 import Help exposing (no_red)
 import Regex
