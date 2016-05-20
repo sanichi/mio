@@ -3,12 +3,13 @@ class PagesController < ApplicationController
 
   def risle
     @flats = Flat.where.not(bay: nil).order(:bay).all
-    extra = !!params[:p] || can?(:view, Parking)
-    @pdata = ParkingData.new(extra)
-    @pstat = ParkingStat.new(extra)
+    if params[:p] || can?(:view, Parking)
+      @pdata = ParkingData.new
+      @pstat = ParkingStat.new
+    end
   end
 
   def risle_stats
-    @pstat = ParkingStat.new(true, params)
+    @pstat = ParkingStat.new(params)
   end
 end

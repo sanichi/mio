@@ -5,16 +5,11 @@ class ParkingStat
   NUMBERS = [10, 20, 50]
   STATS = I18n.t("pages.risle.stats").keys.map(&:to_s)
 
-  def initialize(any, params={})
-    @any = any
+  def initialize(params={})
     @stat = STATS.include?(params[:stat]) ? params[:stat] : STATS.first
     @number = NUMBERS.include?(params[:number].to_i) ? params[:number].to_i : NUMBERS.first
     @months = MONTHS.include?(params[:months].to_i) ? params[:months].to_i : MONTHS.first
     @data = get_data
-  end
-
-  def any?
-    @any
   end
 
   private

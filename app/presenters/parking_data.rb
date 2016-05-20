@@ -1,5 +1,5 @@
 class ParkingData
-  attr_reader :entries, :full
+  attr_reader :entries
 
   BAY  = I18n.t("flat.bay")
   FLAT = I18n.t("flat.flat")
@@ -7,16 +7,12 @@ class ParkingData
   SEP  = I18n.t("symbol.separator")
   STR  = I18n.t("parking.street")
 
-  def initialize(full)
-    @full = full
-    @entries = @full ? 5 : 0;  # how many text entries in the value for each bay
-    @any = @entries > 0;       # any entries at all?
+  def initialize
+    # Set the number of lines of info per bay.
+    @entries = 5
   end
 
-  def any?
-    @any
-  end
-
+  # Return a hash from bay numbers to arrays (max length 5) of vehicle parking data.
   def bay
     # Get raw data from the DB.
     reg = Vehicle.pluck(:id, :registration).each_with_object({}) do |(vid, reg), hash|
@@ -58,14 +54,12 @@ class ParkingData
     # Finally, build and return the output data structure.
     fbs.each_with_object({}) do |(bay, fb), hash|
       entries = []
-      if full
-        entries.push fb
-        if park[bay]
-          entries.push *park[bay]
-        else
-          entries.push "%s %s" % [SEP, NOD]
-          (@entries - 2).times { entries.push '' }
-        end
+      entries.push fb
+      if park[bay]
+        entries.push *park[bay]
+      else
+        entries.push "%s %s" % [SEP, NOD]
+        (@entries - 2).times { entries.push '' }
       end
       hash[bay] = entries
     end
