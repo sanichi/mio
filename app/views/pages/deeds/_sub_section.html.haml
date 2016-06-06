@@ -1,0 +1,9 @@
+- defined?(number) || number = nil
+- defined?(title)  || title  = nil
+
+- if number
+  %a{name: "D#{entry}_#{number}"}
+  .h4= "#{entry}.#{number} #{title}"
+- else
+  %a{name: "D#{entry}"}
+  .h4= "Entry #{entry}"

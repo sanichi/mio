@@ -38,7 +38,7 @@
             %li= link_to t("todo.elm.app"), elm_todos_path
             %li= link_to t("todo.rails"), todos_path
 
-      - if [Resident, Flat, Vehicle, Parking].map{|c| can?(:read, c) }.any? || can?(:risle, Page)
+      - if [Resident, Flat, Vehicle, Parking].map{ |c| can?(:read, c) }.any? || [:risle, :deeds].map{ |a| can?(a, Page) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("pages.risle.name")
@@ -54,6 +54,8 @@
               %li= link_to t("vehicle.vehicles"), vehicles_path
             - if can?(:read, Parking)
               %li= link_to t("parking.parkings"), parkings_path
+            - if can?(:deeds, Page)
+              %li= link_to t("flat.deeds"), deeds_path
 
       - if [Position, Opening].map{|c| can?(:read, c) }.any?
         %li.dropdown
