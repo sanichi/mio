@@ -1,0 +1,9 @@
+- defined?(number) || number = nil
+- defined?(title)  || title  = nil
+
+%li
+  - if number
+    = "#{entry}.#{number}"
+    %a{href: "#D#{entry}_#{number}"}= title || "Entry #{entry}"
+  - else
+    %a{href: "#D#{entry}"}= "Entry #{entry}"
