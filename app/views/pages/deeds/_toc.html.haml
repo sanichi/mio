@@ -1,7 +1,7 @@
 %hr
 
 %p
-  Thes table of contents is not part of the deeds. It was added when photocopies
+  This table of contents is not part of the deeds. It was added when photocopies
   of the deeds were transcribed into digital format for these web pages.
 
 %ul
@@ -22,40 +22,42 @@
     D.
     %a{href: "#D"} BURDENS SECTION
     %ul
-      - toc = "pages/deeds/toc_entry"
-      = render toc, entry: 1
-      = render toc, entry: 1, number: 1,  title: "DEFINITIONS"
-      = render toc, entry: 1, number: 2,  title: "THE SHARED ACCESS ROAD"
-      = render toc, entry: 1, number: 3,  title: "CONDITIONS APPLICABLE TO THE BANK SITE"
-      = render toc, entry: 1, number: 4,  title: "CONDITIONS APPLICABLE TO THE RENNIE'S LOCK SITE"
-      = render toc, entry: 1, number: 5,  title: "THE MUTUAL WALL"
-      = render toc, entry: 1, number: 6,  title: "CONDITIONS APPLICABLE TO WALKWAYS AND COMBINED WALKWAY AND CYCLE ROUTE"
-      = render toc, entry: 1, number: 7,  title: "CONDITIONS APPLICABLE TO LANDSCAPING AREAS"
-      = render toc, entry: 1, number: 8,  title: "RECIPROCAL RIGHTS IN RESPECT OF RENNIE'S LOCK SITE. THE BANK SITE AND REMAINING DOCK ESTATE"
-      = render toc, entry: 1, number: 9,  title: "RIGHTS GRANTED OVER THE MAIN ACCESS ROADS"
-      = render toc, entry: 1, number: 10, title: "MAINTENANCE OF THE MAIN ACCESS ROADS"
-      = render toc, entry: 1, number: 11, title: "MAINTENANCE OF COMMON SERVICE MEDIA"
-      = render toc, entry: 1, number: 12, title: "ACKNOWLEDGEMENT THAT BURDEN OF SERVITUDE RIGHTS MAY BE INCREASED"
-      = render toc, entry: 1, number: 13, title: "JUS QUAESITUM TERTIO"
-      = render toc, entry: 1, number: 14, title: "ARBITRATION"
-      = render toc, entry: 1, number: 15, title: "IRRITANCY AND DECLARATION"
-      = render toc, entry: 2
-      = render toc, entry: 3
-      = render toc, entry: 3, number: 1,  title: "DEFINITIONS"
-      = render toc, entry: 3, number: 2,  title: "OWNERSHIP OF COMMON PARTS OF THE BLOCKS AND COMMON AMENITY GROUND"
-      = render toc, entry: 3, number: 3,  title: "MAINTENANCE OF COMMON PARTS OF THE BLOCKS"
-      = render toc, entry: 3, number: 4,  title: "MAINTENANCE OF FLATS"
-      = render toc, entry: 3, number: 5,  title: "MAINTENANCE OF COMMON AMENITY GROUND AND ACCESS ROUTE"
-      = render toc, entry: 3, number: 6,  title: "ALTERATIONS ETC."
-      = render toc, entry: 3, number: 7,  title: "COLOUR SCHEME"
-      = render toc, entry: 3, number: 8,  title: "PROPRIETORS' MEETINGS"
-      = render toc, entry: 3, number: 9,  title: "UNKNOWN"
-      = render toc, entry: 3, number: 10, title: "USE AND PROHIBITIONS"
-      = render toc, entry: 3, number: 11, title: "INSURANCE"
-      = render toc, entry: 3, number: 12, title: "RESERVED RIGHTS"
-      = render toc, entry: 3, number: 13, title: "ACKNOWLEDGEMENT"
-      = render toc, entry: 3, number: 14, title: "EXPENSES"
-      = render toc, entry: 3, number: 15, title: "ARBITRATION"
-      = render toc, entry: 3, number: 16, title: "IRRITANCY AND DECLARATION"
+      - toce, tocc = %w/entry clause/.map{ |k| "pages/deeds/toc_#{k}" }
+      = render toce, entry: 1
+      %ul
+        = render tocc, entry: 1, number: 1,  title: "DEFINITIONS"
+        = render tocc, entry: 1, number: 2,  title: "THE SHARED ACCESS ROAD"
+        = render tocc, entry: 1, number: 3,  title: "CONDITIONS APPLICABLE TO THE BANK SITE"
+        = render tocc, entry: 1, number: 4,  title: "CONDITIONS APPLICABLE TO THE RENNIE'S LOCK SITE"
+        = render tocc, entry: 1, number: 5,  title: "THE MUTUAL WALL"
+        = render tocc, entry: 1, number: 6,  title: "CONDITIONS APPLICABLE TO WALKWAYS AND COMBINED WALKWAY AND CYCLE ROUTE"
+        = render tocc, entry: 1, number: 7,  title: "CONDITIONS APPLICABLE TO LANDSCAPING AREAS"
+        = render tocc, entry: 1, number: 8,  title: "RECIPROCAL RIGHTS IN RESPECT OF RENNIE'S LOCK SITE. THE BANK SITE AND REMAINING DOCK ESTATE"
+        = render tocc, entry: 1, number: 9,  title: "RIGHTS GRANTED OVER THE MAIN ACCESS ROADS"
+        = render tocc, entry: 1, number: 10, title: "MAINTENANCE OF THE MAIN ACCESS ROADS"
+        = render tocc, entry: 1, number: 11, title: "MAINTENANCE OF COMMON SERVICE MEDIA"
+        = render tocc, entry: 1, number: 12, title: "ACKNOWLEDGEMENT THAT BURDEN OF SERVITUDE RIGHTS MAY BE INCREASED"
+        = render tocc, entry: 1, number: 13, title: "JUS QUAESITUM TERTIO"
+        = render tocc, entry: 1, number: 14, title: "ARBITRATION"
+        = render tocc, entry: 1, number: 15, title: "IRRITANCY AND DECLARATION"
+      = render toce, entry: 2
+      = render toce, entry: 3
+      %ul
+        = render tocc, entry: 3, number: 1,  title: "DEFINITIONS"
+        = render tocc, entry: 3, number: 2,  title: "OWNERSHIP OF COMMON PARTS OF THE BLOCKS AND COMMON AMENITY GROUND"
+        = render tocc, entry: 3, number: 3,  title: "MAINTENANCE OF COMMON PARTS OF THE BLOCKS"
+        = render tocc, entry: 3, number: 4,  title: "MAINTENANCE OF FLATS"
+        = render tocc, entry: 3, number: 5,  title: "MAINTENANCE OF COMMON AMENITY GROUND AND ACCESS ROUTE"
+        = render tocc, entry: 3, number: 6,  title: "ALTERATIONS ETC."
+        = render tocc, entry: 3, number: 7,  title: "COLOUR SCHEME"
+        = render tocc, entry: 3, number: 8,  title: "PROPRIETORS' MEETINGS"
+        = render tocc, entry: 3, number: 9,  title: "UNKNOWN"
+        = render tocc, entry: 3, number: 10, title: "USE AND PROHIBITIONS"
+        = render tocc, entry: 3, number: 11, title: "INSURANCE"
+        = render tocc, entry: 3, number: 12, title: "RESERVED RIGHTS"
+        = render tocc, entry: 3, number: 13, title: "ACKNOWLEDGEMENT"
+        = render tocc, entry: 3, number: 14, title: "EXPENSES"
+        = render tocc, entry: 3, number: 15, title: "ARBITRATION"
+        = render tocc, entry: 3, number: 16, title: "IRRITANCY AND DECLARATION"
   %li
     %a{href: "#notes"} Notes
