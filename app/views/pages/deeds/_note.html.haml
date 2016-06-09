@@ -1,0 +1,5 @@
+%p
+  %a{name: "note#{number}"}
+  %b= "[#{number}]"
+  = content
+  = %Q{(<a href="#note_ref#{number}">entry #{entry}, #{clause =~ /\A\d+(\.\d+)?\z/ ? '' : 'sub-'}clause #{clause}</a>).}.html_safe
