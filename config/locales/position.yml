@@ -3,6 +3,7 @@ en:
     active: To Play
     black: Black
     castling: Castling Availability
+    done: Complete
     edit: Edit Position
     en_passant: En Passant Square
     fen: FEN

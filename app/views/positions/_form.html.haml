@@ -14,6 +14,7 @@
         = render "utils/text_field_for", shared.merge(param: :half_move, text: t("position.half_move"))
         = render "utils/text_field_for", shared.merge(param: :move, text: t("position.move"))
         = render "utils/select_completer_for", shared.merge(param: :opening_id, text: t("opening.opening"), menu: position_opening_menu(position.opening_id), width: 5)
+        = render "utils/check_box_for", shared.merge(param: :done, text: t("position.done"), width: 1)
         = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
       .row
         .col-md-offset-4.col-md-8

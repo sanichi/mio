@@ -7,6 +7,7 @@
 .panel.panel-default.top_margin
   .panel-heading
     = t("notes")
+    .pull-right= @position.done ? t("symbol.tick") : t("symbol.cross")
   .panel-body= @position.notes_html
 
 .text-center.top_margin

@@ -18,8 +18,9 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center.col-xs-7= t("position.name")
+          %th.text-center.col-xs-10= t("position.name")
           %th.text-center.col-xs-1= t("opening.code")
+          %th.text-center.col-xs-1
       %tbody{id: "results"}
         = render "results", positions: @positions
 

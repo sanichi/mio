@@ -3,6 +3,7 @@ FactoryGirl.define do
     pieces     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
     active     "w"
     castling   "KQkq"
+    done       { [true, false].sample }
     en_passant "-"
     half_move  0
     move       1
