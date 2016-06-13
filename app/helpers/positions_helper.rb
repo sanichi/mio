@@ -15,6 +15,16 @@ module PositionsHelper
     options_for_select(opts, opening_id)
   end
 
+  def position_done_search_menu(done)
+    opts =
+    [
+      [t("any"), ""],
+      [t("symbol.tick"), "true"],
+      [t("symbol.cross"), "false"],
+    ]
+    options_for_select(opts)
+  end
+
   def position_order_search_menu(order)
     opts =
     [

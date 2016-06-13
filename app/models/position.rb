@@ -28,13 +28,12 @@ class Position < ActiveRecord::Base
   scope :by_opening, -> { order("openings.code") }
 
   def self.search(params, path, opt={})
-    sql = nil
-    matches =
-      case params[:order]
-      when "opening" then by_opening
-      else by_name
-      end
+    matches = params[:order] == "opening" ? by_opening : by_name
+    if params[:done] == "true" || params[:done] == "false"
+      matches = matches.where(done: params[:done] == "true")
+    end
     matches = matches.includes(:opening)
+    sql = nil
     matches = matches.where(sql) if sql = cross_constraint(params[:name], cols: %w{name})
     matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
     paginate(matches, params, path, opt)

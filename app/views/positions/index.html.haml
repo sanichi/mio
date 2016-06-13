@@ -1,5 +1,8 @@
 = render "utils/title", key: "position.positions"
 
+= content_for :javascript do
+  = render "positions.js"
+
 .text-center
   = form_tag positions_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
@@ -11,7 +14,11 @@
       .form-group
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, position_order_search_menu(params[:order]), class: "form-control auto-submit"
+      .form-group
+      = label_tag :done, t("position.done"), class: "sr-only"
+      = select_tag :done, position_done_search_menu(params[:done]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
+    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
   .col-xs-12.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8
