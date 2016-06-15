@@ -98,6 +98,8 @@ class Position < ActiveRecord::Base
         send "#{a}=", send(a).gsub("$19", "-+")
         send "#{a}=", send(a).gsub(/([KQBNR])([a-h1-8])?([a-h])([1-8])/) { "#{SYMBOL[$1]}#{$2}#{$3}#{$4}" }
         send "#{a}=", send(a).gsub(/([a-h])([a-h])?([18])\(([QBNR])\)/) { "#{$1}#{$2}#{$3}(#{SYMBOL[$4]})" }
+        send "#{a}=", send(a).gsub(/\s+vs\.\s+/, " - ")
+        send "#{a}=", send(a).gsub(/1\/2\s*-\s*1\/2/, "½-½")
       end
     end
   end
