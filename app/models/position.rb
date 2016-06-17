@@ -27,10 +27,8 @@ class Position < ActiveRecord::Base
 
   def self.search(params, path, opt={})
     matches = includes(:opening)
-    if %w/opening name/.include?(params[:order])
-      matches = params[:order] == "opening" ? matches.by_opening : matches.by_name
-    end
-    if params[:done] == "true" || params[:done] == "false"
+    matches = params[:order] == "opening" ? matches.by_opening : matches.by_name
+    if %w/true false/.include?(params[:done])
       matches = matches.where(done: params[:done] == "true")
     end
     sql = nil
