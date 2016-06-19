@@ -1,30 +1,37 @@
-import Html
+import Html exposing (Html)
 import Html.App exposing (beginnerProgram)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Model exposing (Model, init)
+import XY
 
-
+main : Program Never
 main =
-  beginnerProgram { model = 0, view = view, update = update }
+  beginnerProgram { model = init, view = view, update = update }
 
 
+view : Model -> Html msg
 view model =
-  svg
-    [ id "futoshiki", version "1.1", viewBox "0 0 1000 1000" ]
-    [ Svg.title [] [ text "Futoshiki" ]
-    , desc [] [ text "Interactive Futoshiki solver" ]
-    , rect [ width "100%", height "100%", rx "5", ry "5", class "background" ] []
-    ]
-    -- %desc Interactive map of Rennies Isle including blocks, flats and parking bays.
-    -- %rect{width: "100%", height: "100%", class: "background"}
+  let
+    attributes = [ id "futoshiki", version "1.1", viewBox XY.viewBox ]
+    common =
+      [ Svg.title [] [ text "Futoshiki" ]
+      , desc [] [ text "Interactive Futoshiki solver" ]
+      , rect [ width "100%", height "100%", rx "5", ry "5", class "background" ] []
+      ]
+    elements = common ++ Model.render model
+  in
+    svg attributes elements
 
 
 type Msg = Increment | Decrement
 
+
+update : Msg -> Model -> Model
 update msg model =
   case msg of
     Increment ->
-      model + 1
+      model
 
     Decrement ->
-      model - 1
+      model

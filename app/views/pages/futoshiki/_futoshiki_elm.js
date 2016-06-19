@@ -7114,59 +7114,142 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
+var _user$project$XY$ij = F2(
+	function (dim, index) {
+		var j = (index / dim) | 0;
+		var i = A2(_elm_lang$core$Basics_ops['%'], index, dim);
+		return {ctor: '_Tuple2', _0: i, _1: j};
+	});
+var _user$project$XY$cell_padding = 0.4;
+var _user$project$XY$size = 1000;
+var _user$project$XY$cell_size = function (dim) {
+	return _elm_lang$core$Basics$round(
+		_elm_lang$core$Basics$toFloat(_user$project$XY$size) / (_elm_lang$core$Basics$toFloat(dim) * (1 + (2 * _user$project$XY$cell_padding))));
+};
+var _user$project$XY$cell_xy = F2(
+	function (dim, index) {
+		var csize = _elm_lang$core$Basics$toFloat(
+			_user$project$XY$cell_size(dim));
+		var _p0 = A2(_user$project$XY$ij, dim, index);
+		var i = _p0._0;
+		var j = _p0._1;
+		var x = _elm_lang$core$Basics$round(
+			csize * (_user$project$XY$cell_padding + (_elm_lang$core$Basics$toFloat(i) * (1.0 + (2.0 * _user$project$XY$cell_padding)))));
+		var y = _elm_lang$core$Basics$round(
+			csize * (_user$project$XY$cell_padding + (_elm_lang$core$Basics$toFloat(j) * (1.0 + (2.0 * _user$project$XY$cell_padding)))));
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _user$project$XY$viewBox = A2(
+	_elm_lang$core$Basics_ops['++'],
+	'0 0 ',
+	A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(_user$project$XY$size),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' ',
+			_elm_lang$core$Basics$toString(_user$project$XY$size))));
+
+var _user$project$Model$render_cell = F2(
+	function (index, cell) {
+		var d = _elm_lang$core$List$length(cell);
+		var s = _elm_lang$core$Basics$toString(
+			_user$project$XY$cell_size(d));
+		var xy = A2(_user$project$XY$cell_xy, d, index);
+		var i = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(xy));
+		var j = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(xy));
+		return A2(
+			_elm_lang$svg$Svg$rect,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg_Attributes$x(i),
+					_elm_lang$svg$Svg_Attributes$y(j),
+					_elm_lang$svg$Svg_Attributes$width(s),
+					_elm_lang$svg$Svg_Attributes$height(s),
+					_elm_lang$svg$Svg_Attributes$class('cell')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _user$project$Model$render = function (model) {
+	return A2(_elm_lang$core$List$indexedMap, _user$project$Model$render_cell, model.cells);
+};
+var _user$project$Model$init_cell = function (dim) {
+	return A2(_elm_lang$core$List$repeat, dim, true);
+};
+var _user$project$Model$init = function () {
+	var d = 5;
+	return {
+		dim: d,
+		cells: A2(
+			_elm_lang$core$List$repeat,
+			d * d,
+			_user$project$Model$init_cell(d))
+	};
+}();
+var _user$project$Model$Model = F2(
+	function (a, b) {
+		return {dim: a, cells: b};
+	});
+
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		if (_p0.ctor === 'Increment') {
-			return model + 1;
+			return model;
 		} else {
-			return model - 1;
+			return model;
 		}
 	});
 var _user$project$Main$view = function (model) {
-	return A2(
-		_elm_lang$svg$Svg$svg,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$svg$Svg_Attributes$id('futoshiki'),
-				_elm_lang$svg$Svg_Attributes$version('1.1'),
-				_elm_lang$svg$Svg_Attributes$viewBox('0 0 1000 1000')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$svg$Svg$title,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$svg$Svg$text('Futoshiki')
-					])),
-				A2(
-				_elm_lang$svg$Svg$desc,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$svg$Svg$text('Interactive Futoshiki solver')
-					])),
-				A2(
-				_elm_lang$svg$Svg$rect,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$svg$Svg_Attributes$width('100%'),
-						_elm_lang$svg$Svg_Attributes$height('100%'),
-						_elm_lang$svg$Svg_Attributes$rx('5'),
-						_elm_lang$svg$Svg_Attributes$ry('5'),
-						_elm_lang$svg$Svg_Attributes$class('background')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[]))
-			]));
+	var common = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$svg$Svg$title,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg$text('Futoshiki')
+				])),
+			A2(
+			_elm_lang$svg$Svg$desc,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg$text('Interactive Futoshiki solver')
+				])),
+			A2(
+			_elm_lang$svg$Svg$rect,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg_Attributes$width('100%'),
+					_elm_lang$svg$Svg_Attributes$height('100%'),
+					_elm_lang$svg$Svg_Attributes$rx('5'),
+					_elm_lang$svg$Svg_Attributes$ry('5'),
+					_elm_lang$svg$Svg_Attributes$class('background')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]))
+		]);
+	var elements = A2(
+		_elm_lang$core$Basics_ops['++'],
+		common,
+		_user$project$Model$render(model));
+	var attributes = _elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$svg$Svg_Attributes$id('futoshiki'),
+			_elm_lang$svg$Svg_Attributes$version('1.1'),
+			_elm_lang$svg$Svg_Attributes$viewBox(_user$project$XY$viewBox)
+		]);
+	return A2(_elm_lang$svg$Svg$svg, attributes, elements);
 };
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$beginnerProgram(
-		{model: 0, view: _user$project$Main$view, update: _user$project$Main$update})
+		{model: _user$project$Model$init, view: _user$project$Main$view, update: _user$project$Main$update})
 };
 var _user$project$Main$Decrement = {ctor: 'Decrement'};
 var _user$project$Main$Increment = {ctor: 'Increment'};
