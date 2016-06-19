@@ -71,4 +71,11 @@ namespace :elm do
       compile_and_minify "aoc_elm"
     end
   end
+
+  desc "make and minify the Elm JS file for Futoshiki"
+  task :futoshiki do
+    Dir.chdir("app/views/pages/futoshiki") do
+      compile_and_minify "futoshiki_elm"
+    end
+  end
 end

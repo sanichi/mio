@@ -1,83 +1,84 @@
 // Rennie's Isle SVG map (pages/risle).
+#risle
 
-// Background.
-rect.background
-  fill: #F4F4F4
-  stroke: #2F4F4F
+  // Background.
+  rect.background
+    fill: #F4F4F4
+    stroke: #2F4F4F
 
-// Grid rid.
-line.grid
-  stroke: #D3D3D3
-line.grid.thin
-  stroke-dasharray: 5 5
-  stroke-width: 1
-line.grid.thick
-  stroke-dasharray: 10 10
-  stroke-width: 2
+  // Grid rid.
+  line.grid
+    stroke: #D3D3D3
+  line.grid.thin
+    stroke-dasharray: 5 5
+    stroke-width: 1
+  line.grid.thick
+    stroke-dasharray: 10 10
+    stroke-width: 2
 
-// Parking bays.
-g.bay
-  rect
-    rx: 5
-    ry: 5
-    fill: #18BC9C
-    stroke: #FFFFFF
-  text
-    fill: #FFFFFF
-    font-family: Verdana
-    font-size: 18px
-    text-anchor: middle
-  &.focus
+  // Parking bays.
+  g.bay
     rect
-      fill: #FFFFFF
-      stroke: #000000
+      rx: 5
+      ry: 5
+      fill: #18BC9C
+      stroke: #FFFFFF
     text
-      fill: #000000
-
-// Buildings.
-g.building
-  polygon
-    fill: #5F9EA0
-    stroke: #E0FFFF
-  text
-    fill: #FFFFFF
-    font-family: Verdana
-    font-size: 36px
-    text-anchor: middle
-
-// Flats.
-g.flat
-  text
-    fill: #FFFFFF
-    font-family: Verdana
-    font-size: 20px
-    text-anchor: middle
-  circle
-    fill: #008B8B
-    stroke: #FFFFFF
-  &.focus
-    circle
       fill: #FFFFFF
-      stroke: #000000
+      font-family: Verdana
+      font-size: 18px
+      text-anchor: middle
+    &.focus
+      rect
+        fill: #FFFFFF
+        stroke: #000000
+      text
+        fill: #000000
+
+  // Buildings.
+  g.building
+    polygon
+      fill: #5F9EA0
+      stroke: #E0FFFF
     text
-      fill: #000000
-
-// Streets.
-g.street
-  path
-    fill: #95A5A6
-    stroke: #808080
-
-// Binhuts.
-g.binhut
-  rect
-    fill: #DEB887
-    stroke: #BC8F8F
-
-// Text.
-g.text
-  text
-    font-family: Verdana
-    font-size: 30px
-    &#text-0
+      fill: #FFFFFF
+      font-family: Verdana
       font-size: 36px
+      text-anchor: middle
+
+  // Flats.
+  g.flat
+    text
+      fill: #FFFFFF
+      font-family: Verdana
+      font-size: 20px
+      text-anchor: middle
+    circle
+      fill: #008B8B
+      stroke: #FFFFFF
+    &.focus
+      circle
+        fill: #FFFFFF
+        stroke: #000000
+      text
+        fill: #000000
+
+  // Streets.
+  g.street
+    path
+      fill: #95A5A6
+      stroke: #808080
+
+  // Binhuts.
+  g.binhut
+    rect
+      fill: #DEB887
+      stroke: #BC8F8F
+
+  // Text.
+  g.text
+    text
+      font-family: Verdana
+      font-size: 30px
+      &#text-0
+        font-size: 36px
