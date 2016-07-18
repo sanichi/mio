@@ -14,6 +14,7 @@ gem "whenever", require: false
 gem "paperclip", "~> 4.2"
 gem "rack-mini-profiler", require: false
 gem "chronic", "~> 0.10"
+gem "libv8", "3.16.14.11" # not .14 because we have to wait for patch for clang 7.3.0
 
 group :development do
   gem "capistrano-rails"
