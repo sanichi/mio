@@ -123,43 +123,43 @@ describe Position do
     it "bad count" do
       position = build(:position, pieces: start.sub("8", "7"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_badc")
+      expect(position.errors[:pieces].first).to eq t("position_error_badc")
     end
 
     it "no black king" do
       position = build(:position, pieces: start.sub("k", "q"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_nobk")
+      expect(position.errors[:pieces].first).to eq t("position_error_nobk")
     end
 
     it "no white king" do
       position = build(:position, pieces: start.sub("K", "1"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_nowk")
+      expect(position.errors[:pieces].first).to eq t("position_error_nowk")
     end
 
     it "pawn on the eighth rank" do
       position = build(:position, pieces: start.sub("r", "p"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_pote")
+      expect(position.errors[:pieces].first).to eq t("position_error_pote")
     end
 
     it "pawn on the first rank" do
       position = build(:position, pieces: start.sub("N", "P"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_potf")
+      expect(position.errors[:pieces].first).to eq t("position_error_potf")
     end
 
     it "too many black kings" do
       position = build(:position, pieces: start.sub("r", "k"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_tmbk")
+      expect(position.errors[:pieces].first).to eq t("position_error_tmbk")
     end
 
     it "too many white kings" do
       position = build(:position, pieces: start.sub("8/P", "7K/P"))
       expect(position).to_not be_valid
-      expect(position.errors.get(:pieces).first).to eq t("position_error_tmwk")
+      expect(position.errors[:pieces].first).to eq t("position_error_tmwk")
     end
   end
 

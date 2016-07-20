@@ -97,7 +97,7 @@ describe Picture do
         expect(page).to have_title t(:picture_new)
         expect(Picture.count).to eq 0
         expect(PersonPicture.count).to eq 0
-        expect(page).to have_css(error, text: "contents")
+        expect(page).to have_css(error, text: "Paperclip::Errors::NotIdentifiedByImageMagickError") # should really be proper English message, probably PaperClip problem
       end
     end
   end

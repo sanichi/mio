@@ -84,7 +84,7 @@ module Pageable
     def merge_params(extra)
       params = @params.merge(extra)
       params[:page] ||= @page
-      params.to_query
+      params.to_unsafe_h.to_query
     end
   end
 end
