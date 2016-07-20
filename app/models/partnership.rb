@@ -1,4 +1,4 @@
-class Partnership < ActiveRecord::Base
+class Partnership < ApplicationRecord
   include Constrainable
   include Pageable
 

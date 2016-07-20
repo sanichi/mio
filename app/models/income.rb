@@ -1,4 +1,4 @@
-class Income < ActiveRecord::Base
+class Income < ApplicationRecord
   MAX_DESC = 60
   MIN_YEAR = 2014
   MAX_YEAR = 2023

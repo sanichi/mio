@@ -1,4 +1,4 @@
-class Link < ActiveRecord::Base
+class Link < ApplicationRecord
   MAX_URL = 256
   MAX_TEXT = 50
   MAX_TARGET = 20

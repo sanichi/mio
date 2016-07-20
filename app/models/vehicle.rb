@@ -1,4 +1,4 @@
-class Vehicle < ActiveRecord::Base
+class Vehicle < ApplicationRecord
   include Pageable
 
   MAX_REG = 12

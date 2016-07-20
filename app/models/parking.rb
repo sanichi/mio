@@ -1,4 +1,4 @@
-class Parking < ActiveRecord::Base
+class Parking < ApplicationRecord
   include Pageable
 
   attr_accessor :noted_at_string

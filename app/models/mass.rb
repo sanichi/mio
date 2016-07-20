@@ -1,4 +1,4 @@
-class Mass < ActiveRecord::Base
+class Mass < ApplicationRecord
   include Pageable
 
   MIN_KG, MAX_KG = 60, 120

@@ -1,4 +1,4 @@
-class Favourite < ActiveRecord::Base
+class Favourite < ApplicationRecord
   include Constrainable
 
   MAX_LINK = 100

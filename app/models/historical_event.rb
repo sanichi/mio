@@ -1,4 +1,4 @@
-class HistoricalEvent < ActiveRecord::Base
+class HistoricalEvent < ApplicationRecord
   MAX_DESC = 50
   MIN_YR = 1700
 

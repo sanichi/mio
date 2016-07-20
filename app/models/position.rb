@@ -1,4 +1,4 @@
-class Position < ActiveRecord::Base
+class Position < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable

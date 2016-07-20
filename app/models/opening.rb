@@ -1,4 +1,4 @@
-class Opening < ActiveRecord::Base
+class Opening < ApplicationRecord
   include Constrainable
   include Pageable
 

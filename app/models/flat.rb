@@ -1,4 +1,4 @@
-class Flat < ActiveRecord::Base
+class Flat < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable

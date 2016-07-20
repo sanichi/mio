@@ -1,4 +1,4 @@
-class Interface < ActiveRecord::Base
+class Interface < ApplicationRecord
   include Constrainable
   include Pageable
 

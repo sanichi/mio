@@ -1,4 +1,4 @@
-class Bucket < ActiveRecord::Base
+class Bucket < ApplicationRecord
   include Remarkable
 
   MAX_NAME = 50

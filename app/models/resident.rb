@@ -1,4 +1,4 @@
-class Resident < ActiveRecord::Base
+class Resident < ApplicationRecord
   include Pageable
 
   MAX_ADDR = 200

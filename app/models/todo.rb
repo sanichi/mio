@@ -1,4 +1,4 @@
-class Todo < ActiveRecord::Base
+class Todo < ApplicationRecord
   MAX_DESC = 60
   PRIORITIES = [0, 1, 2, 3, 4]
 

@@ -1,6 +1,6 @@
 require 'csv'
 
-class Transaction < ActiveRecord::Base
+class Transaction < ApplicationRecord
   include Pageable
 
   MAX_STRING = 255

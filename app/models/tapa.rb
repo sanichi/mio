@@ -1,4 +1,4 @@
-class Tapa < ActiveRecord::Base
+class Tapa < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable

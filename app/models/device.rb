@@ -1,4 +1,4 @@
-class Device < ActiveRecord::Base
+class Device < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable

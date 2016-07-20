@@ -1,4 +1,4 @@
-class Login < ActiveRecord::Base
+class Login < ApplicationRecord
   include Pageable
 
   MAX_IP = 39

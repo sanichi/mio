@@ -1,4 +1,4 @@
-class Expense < ActiveRecord::Base
+class Expense < ApplicationRecord
   MAX_DESC = 60
   CATEGORIES = %w/house mark sandra/
   PERIODS = %w/week month year/

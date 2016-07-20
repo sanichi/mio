@@ -1,4 +1,4 @@
-class Return < ActiveRecord::Base
+class Return < ApplicationRecord
   MIN_YEAR = 2000
   MAX_PERCENT = 1000.0
   MIN_PERCENT = -MAX_PERCENT

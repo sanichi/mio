@@ -1,4 +1,4 @@
-class Fund < ActiveRecord::Base
+class Fund < ApplicationRecord
   include Constrainable
   include Pageable
   serialize :stars, Array
