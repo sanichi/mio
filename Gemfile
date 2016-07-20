@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "4.2.6"
+gem "rails", "5.0.0"
 gem "pg"
 gem "haml-rails"
 gem "sass-rails", "~> 5.0"
@@ -21,7 +21,6 @@ group :development do
   gem "capistrano-rails-console"
   gem "capistrano-passenger"
   gem "airbrussh", :require => false
-  gem "quiet_assets"
   gem "wirble"
   gem "awesome_print", require: "ap"
 end
