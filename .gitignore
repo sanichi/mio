@@ -6,10 +6,13 @@
 
 /log
 /tmp
+!/log/.keep
+!/tmp/.keep
 /config/database.yml
 /config/secrets.yml
 /public/assets/
 /public/system/
 .DS_Store
 .byebug_history
+.bundle
 elm-stuff/

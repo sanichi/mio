@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
-gem "rails", "5.0.0"
+gem "rails", "~> 5.0.0"
+gem "puma", "~> 3.0"
 gem "pg"
 gem "haml-rails"
 gem "sass-rails", "~> 5.0"
@@ -21,7 +22,6 @@ group :development do
   gem "capistrano-rails-console"
   gem "capistrano-passenger"
   gem "airbrussh", :require => false
-  gem "wirble"
   gem "awesome_print", require: "ap"
 end
 
@@ -33,5 +33,5 @@ group :development, :test do
   gem "launchy"
   gem "faker"
   gem "database_cleaner"
-  gem "byebug"
+  gem "byebug", platform: :mri
 end
