@@ -1,0 +1,17 @@
+.row
+  .col-md-12
+    = form_for tax, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: tax, col: "md", pad: 4, width: 2 }
+        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
+        = render "utils/select_for", shared.merge(param: :year_number, text: t("tax.year"), menu: tax_year_menu(tax.year_number), width: 3)
+        = render "utils/text_field_for", shared.merge(param: :income, text: t("tax.income"))
+        = render "utils/text_field_for", shared.merge(param: :paid, text: t("tax.paid"))
+        = render "utils/text_field_for", shared.merge(param: :free, text: t("tax.free"))
+        = render "utils/text_field_for", shared.merge(param: :times, text: t("tax.times"), width: 1)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), taxes_path(year_number: tax.year_number), class: "btn btn-default"
+          - unless tax.new_record?
+            = link_to t("delete"), tax, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

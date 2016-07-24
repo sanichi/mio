@@ -1,0 +1,7 @@
+- taxes.each do |tax|
+  %tr
+    %td= link_to tax.description, tax
+    %td.text-center= tax.income
+    %td.text-center= tax.paid
+    %td.text-center= tax.free
+    %td.text-center= tax.times

@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   resources :tapas, except: [:show] do
     get :notes, on: :member
   end
+  resources :taxes
   resources :todos, except: [:show] do
     get :toggle, on: :member
     get :elm, on: :collection

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160612083647) do
+ActiveRecord::Schema.define(version: 20160724071609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,9 +41,8 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.string   "commentable_type"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
   end
-
-  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
   create_table "devices", force: :cascade do |t|
     t.string   "name",       limit: 50
@@ -141,9 +139,8 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.string   "linkable_type"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
+    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id", using: :btree
   end
-
-  add_index "links", ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id", using: :btree
 
   create_table "logins", force: :cascade do |t|
     t.string   "email",      limit: 75
@@ -173,9 +170,8 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.datetime "updated_at",           null: false
     t.datetime "noted_at"
     t.integer  "bay",        limit: 2
+    t.index ["vehicle_id"], name: "index_parkings_on_vehicle_id", using: :btree
   end
-
-  add_index "parkings", ["vehicle_id"], name: "index_parkings_on_vehicle_id", using: :btree
 
   create_table "partnerships", force: :cascade do |t|
     t.integer  "divorce",       limit: 2
@@ -209,10 +205,9 @@ ActiveRecord::Schema.define(version: 20160612083647) do
   create_table "people_pictures", id: false, force: :cascade do |t|
     t.integer "person_id",  null: false
     t.integer "picture_id", null: false
+    t.index ["person_id"], name: "index_people_pictures_on_person_id", using: :btree
+    t.index ["picture_id"], name: "index_people_pictures_on_picture_id", using: :btree
   end
-
-  add_index "people_pictures", ["person_id"], name: "index_people_pictures_on_person_id", using: :btree
-  add_index "people_pictures", ["picture_id"], name: "index_people_pictures_on_picture_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.string   "image_file_name"
@@ -258,9 +253,8 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.string   "returnable_type"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id", using: :btree
   end
-
-  add_index "returns", ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id", using: :btree
 
   create_table "tapas", force: :cascade do |t|
     t.string   "title",      limit: 50
@@ -271,6 +265,17 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.integer  "post_id"
     t.text     "notes"
     t.boolean  "star",                   default: false
+  end
+
+  create_table "taxes", force: :cascade do |t|
+    t.string   "description", limit: 100
+    t.integer  "free",        limit: 2
+    t.integer  "income",      limit: 2
+    t.integer  "paid",        limit: 2
+    t.integer  "times",       limit: 2,   default: 1
+    t.integer  "year_number", limit: 2
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "todos", force: :cascade do |t|
@@ -293,10 +298,9 @@ ActiveRecord::Schema.define(version: 20160612083647) do
     t.integer  "upload_id"
     t.decimal  "value",                 precision: 10, scale: 2
     t.string   "account",     limit: 3
+    t.index ["signature"], name: "index_transactions_on_signature", unique: true, using: :btree
+    t.index ["upload_id"], name: "index_transactions_on_upload_id", using: :btree
   end
-
-  add_index "transactions", ["signature"], name: "index_transactions_on_signature", unique: true, using: :btree
-  add_index "transactions", ["upload_id"], name: "index_transactions_on_upload_id", using: :btree
 
   create_table "uploads", force: :cascade do |t|
     t.text     "content"

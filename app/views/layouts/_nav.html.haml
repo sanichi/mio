@@ -68,20 +68,22 @@
             - if can?(:read, Opening)
               %li= link_to t("opening.openings"), openings_path
 
-      - if [Transaction, Expense, Income, Fund].map{|c| can?(:read, c) }.any?
+      - if [Income, Tax, Fund, Transaction, Expense].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("money")
             %b.caret
           %ul.dropdown-menu
+            - if can?(:read, Income)
+              %li= link_to t("income.incomes"), graph_incomes_path
+            - if can?(:read, Tax)
+              %li= link_to t("tax.taxes"), taxes_path
+            - if can?(:read, Fund)
+              %li= link_to t("fund.funds"), funds_path
             - if can?(:read, Transaction)
               %li= link_to t("transaction.transactions"), summary_transactions_path
             - if can?(:read, Expense)
               %li= link_to t("expense.expenses"), expenses_path
-            - if can?(:read, Income)
-              %li= link_to t("income.incomes"), graph_incomes_path
-            - if can?(:read, Fund)
-              %li= link_to t("fund.funds"), funds_path
 
       - if [:aoc, :futoshiki, :pills].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
