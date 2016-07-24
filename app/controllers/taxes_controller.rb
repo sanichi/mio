@@ -14,7 +14,7 @@ class TaxesController < ApplicationController
   def create
     @tax = Tax.new(strong_params)
     if @tax.save
-      redirect_to @tax
+      redirect_to taxes_path(year_number: @tax.year_number)
     else
       render "new"
     end
@@ -22,7 +22,7 @@ class TaxesController < ApplicationController
 
   def update
     if @tax.update(strong_params)
-      redirect_to @tax
+      redirect_to taxes_path(year_number: @tax.year_number)
     else
       render "edit"
     end

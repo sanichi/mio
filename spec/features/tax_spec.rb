@@ -21,7 +21,7 @@ describe Tax do
         select data.tax_year, from: t(:tax_year)
         click_button t(:save)
 
-        expect(page).to have_title data.description
+        expect(page).to have_title t(:tax_taxes)
 
         expect(Tax.count).to eq 2
         t = Tax.last
@@ -65,7 +65,7 @@ describe Tax do
         fill_in t(:description), with: data.description
         click_button t(:save)
 
-        expect(page).to have_title data.description
+        expect(page).to have_title t(:tax_taxes)
 
         expect(Tax.count).to eq 1
         t = Tax.last
