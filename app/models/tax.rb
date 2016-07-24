@@ -1,6 +1,6 @@
 class Tax < ApplicationRecord
-  ANNUAL_ALLOWANCE = Hash.new(1100)
-  ANNUAL_ALLOWANCE[0] = 933
+  ANNUAL_ALLOWANCE = Hash.new(11000)
+  ANNUAL_ALLOWANCE[0] = 9330
   MAX_DESC = 100
   START_YEAR = 2016
   TAX_RATE = Hash.new(20)
