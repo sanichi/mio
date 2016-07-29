@@ -5,13 +5,14 @@ class Tapa < ApplicationRecord
 
   MAX_KEYWORDS = 100
   MAX_TITLE = 50
-  POST_URL = "https://rubytapas.dpdcart.com/subscriber/post?id=%d"
+  POST_URL = "http://www.rubytapas.com/"
+  MAX_POST_ID = 150
 
   before_validation :canonicalize
 
   validates :keywords, length: { maximum: MAX_KEYWORDS }, allow_nil: true
   validates :number, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
-  validates :post_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
+  validates :post_id, format: { with: /\A20\d\d\/\d\d\/\d\d\/episode-\d+-[^\/\s]+\/\z/ }, length: { maximum: MAX_POST_ID }, uniqueness: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
   scope :by_number,  -> { order(:number) }
@@ -32,7 +33,7 @@ class Tapa < ApplicationRecord
   end
 
   def post_url
-    POST_URL % post_id.to_i
+    POST_URL + post_id
   end
 
   def notes_html
@@ -43,6 +44,11 @@ class Tapa < ApplicationRecord
 
   def canonicalize
     title&.squish!
+    if post_id.present?
+      post_id.strip!
+      post_id.sub!(POST_URL, "")
+      self.post_id = post_id + "/" unless post_id.match(/\/\z/)
+    end
     keywords&.squish!
     keywords&.sub!(/\A\s*,/, "")
     keywords&.sub!(/,\s*\z/, "")
