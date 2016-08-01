@@ -7120,6 +7120,7 @@ var _user$project$XY$ij = F2(
 		var i = A2(_elm_lang$core$Basics_ops['%'], index, dim);
 		return {ctor: '_Tuple2', _0: i, _1: j};
 	});
+var _user$project$XY$bg_radius = 30;
 var _user$project$XY$cell_padding = 0.4;
 var _user$project$XY$size = 1000;
 var _user$project$XY$cell_size = function (dim) {
@@ -7139,39 +7140,102 @@ var _user$project$XY$cell_xy = F2(
 			csize * (_user$project$XY$cell_padding + (_elm_lang$core$Basics$toFloat(j) * (1.0 + (2.0 * _user$project$XY$cell_padding)))));
 		return {ctor: '_Tuple2', _0: x, _1: y};
 	});
-var _user$project$XY$viewBox = A2(
-	_elm_lang$core$Basics_ops['++'],
-	'0 0 ',
-	A2(
+var _user$project$XY$viewBox = function () {
+	var s = _elm_lang$core$Basics$toString(_user$project$XY$size);
+	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(_user$project$XY$size),
+		'0 0 ',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			' ',
-			_elm_lang$core$Basics$toString(_user$project$XY$size))));
+			s,
+			A2(_elm_lang$core$Basics_ops['++'], ' ', s)));
+}();
 
+var _user$project$Model$render_number = F3(
+	function (i, xy, b) {
+		return A2(
+			_elm_lang$svg$Svg$text$,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg_Attributes$x(
+					_elm_lang$core$Basics$fst(xy)),
+					_elm_lang$svg$Svg_Attributes$y(
+					_elm_lang$core$Basics$snd(xy)),
+					_elm_lang$svg$Svg_Attributes$textAnchor('middle'),
+					_elm_lang$svg$Svg_Attributes$alignmentBaseline('middle'),
+					_elm_lang$svg$Svg_Attributes$fontSize('25')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg$text(
+					_elm_lang$core$Basics$toString(i))
+				]));
+	});
+var _user$project$Model$render_numbers = F2(
+	function (d, cell) {
+		var _p0 = cell;
+		if (_p0.ctor === '::') {
+			var y = _elm_lang$core$Basics$toString(
+				_elm_lang$core$Basics$round(
+					_elm_lang$core$Basics$toFloat(
+						_user$project$XY$cell_size(d)) / 2.0));
+			var w = _elm_lang$core$Basics$toFloat(
+				_user$project$XY$cell_size(d)) / _elm_lang$core$Basics$toFloat(d);
+			var i = (d - _elm_lang$core$List$length(cell)) + 1;
+			var x = _elm_lang$core$Basics$toString(
+				_elm_lang$core$Basics$round(
+					(_elm_lang$core$Basics$toFloat(i) - 0.5) * w));
+			return A2(
+				_elm_lang$core$List_ops['::'],
+				A3(
+					_user$project$Model$render_number,
+					i,
+					{ctor: '_Tuple2', _0: x, _1: y},
+					_p0._0),
+				A2(_user$project$Model$render_numbers, d, _p0._1));
+		} else {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		}
+	});
 var _user$project$Model$render_cell = F2(
 	function (index, cell) {
 		var d = _elm_lang$core$List$length(cell);
 		var s = _elm_lang$core$Basics$toString(
 			_user$project$XY$cell_size(d));
-		var xy = A2(_user$project$XY$cell_xy, d, index);
-		var i = _elm_lang$core$Basics$toString(
-			_elm_lang$core$Basics$fst(xy));
-		var j = _elm_lang$core$Basics$toString(
-			_elm_lang$core$Basics$snd(xy));
-		return A2(
+		var boundary = A2(
 			_elm_lang$svg$Svg$rect,
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$svg$Svg_Attributes$x(i),
-					_elm_lang$svg$Svg_Attributes$y(j),
 					_elm_lang$svg$Svg_Attributes$width(s),
 					_elm_lang$svg$Svg_Attributes$height(s),
 					_elm_lang$svg$Svg_Attributes$class('cell')
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[]));
+		var xy = A2(_user$project$XY$cell_xy, d, index);
+		var i = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(xy));
+		var j = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(xy));
+		var t = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'translate(',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				i,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					',',
+					A2(_elm_lang$core$Basics_ops['++'], j, ')'))));
+		var numbers = A2(_user$project$Model$render_numbers, d, cell);
+		return A2(
+			_elm_lang$svg$Svg$g,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg_Attributes$transform(t)
+				]),
+			A2(_elm_lang$core$List_ops['::'], boundary, numbers));
 	});
 var _user$project$Model$render = function (model) {
 	return A2(_elm_lang$core$List$indexedMap, _user$project$Model$render_cell, model.cells);
@@ -7204,6 +7268,7 @@ var _user$project$Main$update = F2(
 		}
 	});
 var _user$project$Main$view = function (model) {
+	var r = _elm_lang$core$Basics$toString(_user$project$XY$bg_radius);
 	var common = _elm_lang$core$Native_List.fromArray(
 		[
 			A2(
@@ -7228,8 +7293,8 @@ var _user$project$Main$view = function (model) {
 				[
 					_elm_lang$svg$Svg_Attributes$width('100%'),
 					_elm_lang$svg$Svg_Attributes$height('100%'),
-					_elm_lang$svg$Svg_Attributes$rx('5'),
-					_elm_lang$svg$Svg_Attributes$ry('5'),
+					_elm_lang$svg$Svg_Attributes$rx(r),
+					_elm_lang$svg$Svg_Attributes$ry(r),
 					_elm_lang$svg$Svg_Attributes$class('background')
 				]),
 			_elm_lang$core$Native_List.fromArray(
