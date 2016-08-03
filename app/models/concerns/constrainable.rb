@@ -11,7 +11,7 @@ module Constrainable
         max = ($2.to_f).round(digits)
         min, max = max, min if max < min
         min == max ? "#{column} = #{format % min}" : "#{column} >= #{format % min} AND #{column} <= #{format % max}"
-      when /\A[^\d><=.]*(>|<|>=|<=)[^\d><=.]*(\d+(?:\.\d+)?)[^\d><=.]*\z/
+      when /\A[^\d><=.]*(=|>|<|>=|<=)[^\d><=.]*(\d+(?:\.\d+)?)[^\d><=.]*\z/
         rel = $1
         val = ($2.to_f).round(digits)
         "#{column} #{rel} #{format % val}"

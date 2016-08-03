@@ -32,6 +32,8 @@ describe Constrainable do
       expect(Fund.numerical_constraint("2", :srri, digits: 1)).to eq "srri = 2.0"
       expect(Fund.numerical_constraint("1.061", :fee, digits: 2)).to eq "fee = 1.06"
       expect(Fund.numerical_constraint("  0.45 ", :fee, digits: 3)).to eq "fee = 0.450"
+      expect(Fund.numerical_constraint("=3", :fee)).to eq "fee = 3"
+      expect(Fund.numerical_constraint(" = 7.2 ", :fee, digits: 3)).to eq "fee = 7.200"
     end
   end
 
