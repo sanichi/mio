@@ -47,6 +47,7 @@ class Tapa < ApplicationRecord
     if post_id.present?
       post_id.strip!
       post_id.sub!(POST_URL, "")
+      post_id.sub!(/\A\/+/, "")
       self.post_id = post_id + "/" unless post_id.match(/\/\z/)
     end
     keywords&.squish!
