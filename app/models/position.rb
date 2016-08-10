@@ -41,8 +41,8 @@ class Position < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def reviewed_today=(bool)
-    self.last_reviewed = Date.today if bool
+  def reviewed_today=(input)
+    self.last_reviewed = Date.today if input && input != "0"
   end
 
   def reviewed_today

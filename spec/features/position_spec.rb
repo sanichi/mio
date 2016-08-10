@@ -60,24 +60,41 @@ describe Position do
   end
 
   context "edit" do
-    it "success" do
-      click_link position.name
-      click_link t(:edit)
+    context "success" do
+      it "name and opening" do
+        click_link position.name
+        click_link t(:edit)
 
-      expect(page).to have_title t(:position_edit)
-      fill_in t(:name), with: data.name
-      select t(:none), from: t(:opening_opening)
-      check t(:position_reviewed__today)
-      click_button t(:save)
+        expect(page).to have_title t(:position_edit)
+        fill_in t(:name), with: data.name
+        select t(:none), from: t(:opening_opening)
+        click_button t(:save)
 
-      expect(page).to have_title data.name
+        expect(page).to have_title data.name
 
-      expect(Position.count).to eq 1
-      p = Position.last
+        expect(Position.count).to eq 1
+        p = Position.last
 
-      expect(p.name).to eq data.name
-      expect(p.opening_id).to be_nil
-      expect(p.last_reviewed).to eq Date.today
+        expect(p.name).to eq data.name
+        expect(p.opening_id).to be_nil
+        expect(p.last_reviewed).to be_nil
+      end
+
+      it "last_reviewed" do
+        click_link position.name
+        click_link t(:edit)
+
+        expect(page).to have_title t(:position_edit)
+        check t(:position_reviewed__today)
+        click_button t(:save)
+
+        expect(page).to have_title position.name
+
+        expect(Position.count).to eq 1
+        p = Position.last
+
+        expect(p.last_reviewed).to eq Date.today
+      end
     end
 
     it "failure" do
