@@ -14,9 +14,6 @@
       .form-group
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, position_order_search_menu(params[:order]), class: "form-control auto-submit"
-      .form-group
-      = label_tag :done, t("position.done"), class: "sr-only"
-      = select_tag :done, position_done_search_menu(params[:done]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 

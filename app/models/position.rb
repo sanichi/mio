@@ -24,17 +24,35 @@ class Position < ApplicationRecord
 
   scope :by_name, -> { order(:name) }
   scope :by_opening, -> { order("openings.code") }
+  scope :by_last_reviewed_desc, -> { order("last_reviewed DESC NULLS LAST") }
+  scope :by_last_reviewed_asc, -> { order("last_reviewed ASC NULLS FIRST") }
 
   def self.search(params, path, opt={})
     matches = includes(:opening)
-    matches = params[:order] == "opening" ? matches.by_opening : matches.by_name
-    if %w/true false/.include?(params[:done])
-      matches = matches.where(done: params[:done] == "true")
+    matches = case params[:order]
+      when "opening"       then matches.by_opening
+      when "reviewed_asc"  then matches.by_last_reviewed_asc
+      when "reviewed_desc" then matches.by_last_reviewed_desc
+                           else matches.by_name
     end
     sql = nil
     matches = matches.where(sql) if sql = cross_constraint(params[:name], cols: %w{name})
     matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
     paginate(matches, params, path, opt)
+  end
+
+  def reviewed_today=(bool)
+    self.last_reviewed = Date.today if bool
+  end
+
+  def reviewed_today
+    last_reviewed == Date.today
+  end
+
+  def last_reviewed_in_days
+    return I18n.t("symbol.cross") if last_reviewed.blank?
+    return I18n.t("symbol.tick")  if last_reviewed >= Date.today
+    (Date.today - last_reviewed).to_i
   end
 
   def fen

@@ -21,7 +21,6 @@ describe Position do
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
       select data.opening.desc, from: t(:opening_opening)
-      check t(:position_done) if data.done
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -36,9 +35,9 @@ describe Position do
       expect(p.castling).to eq data.castling
       expect(p.en_passant).to eq data.en_passant
       expect(p.half_move).to eq data.half_move
+      expect(p.last_reviewed).to be_nil
       expect(p.move).to eq data.move
       expect(p.opening).to eq data.opening
-      expect(p.done).to eq data.done
       expect(p.notes).to eq data.notes
     end
 
@@ -51,7 +50,6 @@ describe Position do
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
       select data.opening.desc, from: t(:opening_opening)
-      check t(:position_done) if data.done
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -69,6 +67,7 @@ describe Position do
       expect(page).to have_title t(:position_edit)
       fill_in t(:name), with: data.name
       select t(:none), from: t(:opening_opening)
+      check t(:position_reviewed__today)
       click_button t(:save)
 
       expect(page).to have_title data.name
@@ -78,6 +77,7 @@ describe Position do
 
       expect(p.name).to eq data.name
       expect(p.opening_id).to be_nil
+      expect(p.last_reviewed).to eq Date.today
     end
 
     it "failure" do

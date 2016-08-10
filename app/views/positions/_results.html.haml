@@ -2,5 +2,5 @@
   %tr
     %td= link_to position.name, position
     %td.text-center= position.opening.code if position.opening
-    %td.text-center= position.done ? t("symbol.tick") : t("symbol.cross")
+    %td.text-center= position.last_reviewed_in_days
 = render "utils/pagination_links", pager: positions, columns: 3

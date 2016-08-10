@@ -3,17 +3,18 @@ en:
     active: To Play
     black: Black
     castling: Castling Availability
-    done: Done
     edit: Edit Position
     en_passant: En Passant Square
     fen: FEN
     half_move: Half-Move Clock
+    last_reviewed: Last Reviewed
     move: Move Number
     name: Name
     new: New Position
     pieces: Pieces
     position: Position
     positions: Positions
+    reviewed_today: Reviewed Today
     white: White
     error:
       badc: bad count

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803162548) do
+ActiveRecord::Schema.define(version: 20160810102141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -222,18 +222,18 @@ ActiveRecord::Schema.define(version: 20160803162548) do
   end
 
   create_table "positions", force: :cascade do |t|
-    t.string   "pieces",     limit: 71
-    t.string   "active",     limit: 1
-    t.string   "castling",   limit: 4
-    t.string   "en_passant", limit: 2
-    t.integer  "half_move",  limit: 2
-    t.integer  "move",       limit: 2
-    t.string   "name",       limit: 255
+    t.string   "pieces",        limit: 71
+    t.string   "active",        limit: 1
+    t.string   "castling",      limit: 4
+    t.string   "en_passant",    limit: 2
+    t.integer  "half_move",     limit: 2
+    t.integer  "move",          limit: 2
+    t.string   "name",          limit: 255
     t.text     "notes"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "opening_id", limit: 2
-    t.boolean  "done",                   default: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "opening_id",    limit: 2
+    t.date     "last_reviewed"
   end
 
   create_table "residents", force: :cascade do |t|

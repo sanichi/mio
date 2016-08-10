@@ -67,9 +67,11 @@ en:
     sign_out: Sign out
   symbol:
     cross: ✘
+    down: ↓
     next: →
     note: 📝
     prev: ←
     separator: ●
     star: ⭐️
     tick: ✔
+    up: ↑

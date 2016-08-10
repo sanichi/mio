@@ -15,21 +15,13 @@ module PositionsHelper
     options_for_select(opts, opening_id)
   end
 
-  def position_done_search_menu(done)
-    opts =
-    [
-      [t("any"), ""],
-      [t("symbol.tick"), "true"],
-      [t("symbol.cross"), "false"],
-    ]
-    options_for_select(opts)
-  end
-
   def position_order_search_menu(order)
     opts =
     [
       [t("name"), "name"],
       [t("opening.opening"), "opening"],
+      ["#{t('position.last_reviewed')} #{t('symbol.up')}", "reviewed_asc"],
+      ["#{t('position.last_reviewed')} #{t('symbol.down')}", "reviewed_desc"],
     ]
     options_for_select(opts, order)
   end
