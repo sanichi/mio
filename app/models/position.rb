@@ -51,8 +51,8 @@ class Position < ApplicationRecord
 
   def last_reviewed_in_days
     return I18n.t("symbol.cross") if last_reviewed.blank?
-    return I18n.t("symbol.tick")  if last_reviewed >= Date.today
-    (Date.today - last_reviewed).to_i
+    return "0"                    if last_reviewed >= Date.today
+    (Date.today - last_reviewed).to_i.to_s
   end
 
   def fen
