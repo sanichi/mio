@@ -127,7 +127,7 @@ describe Fund do
     let(:data2) { build(:comment) }
     let(:data3) { build(:comment) }
 
-    it "add, add another, t(:edit), t(:delete), t(:delete) all" do
+    it "add, add another, edit, delete, delete all" do
       visit fund_path(fund)
       click_link t(:comment_new)
       expect(page).to have_title t(:comment_new)
@@ -192,7 +192,7 @@ describe Fund do
     let(:data2) { build(:return, year: data.year - 1) }
     let(:data3) { build(:return, year: data.year - 2, percent: 2 * data.percent) }
 
-    it "add, add another, t(:edit), t(:delete), t(:delete) all" do
+    it "add, add another, edit, delete, delete all" do
       visit fund_path(fund)
       click_link t(:return_new)
       expect(page).to have_title t(:return_new)

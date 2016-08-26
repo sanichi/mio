@@ -21,7 +21,7 @@ describe Income do
       expect(year_00.annual(joint: false)).to eq 20000.0
     end
 
-    it "default (t(:income_joint))" do
+    it "default" do
       expect(year_25.annual).to eq year_25.annual(joint: true)
       expect(mon_100.annual).to eq mon_100.annual(joint: true)
       expect(week_50.annual).to eq week_50.annual(joint: true)
