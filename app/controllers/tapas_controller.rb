@@ -47,6 +47,6 @@ class TapasController < ApplicationController
   end
 
   def top_of_index
-    url_for controller: "tapas", action: "index", number: ">=#{@tapa.number}", only_path: true
+    url_for controller: "tapas", action: "index", number: "<=#{@tapa.number}", only_path: true
   end
 end

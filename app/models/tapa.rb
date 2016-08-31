@@ -15,7 +15,7 @@ class Tapa < ApplicationRecord
   validates :post_id, format: { with: /\A20\d\d\/\d\d\/\d\d\/episode-\d+-[^\/\s]+\/\z/ }, length: { maximum: MAX_POST_ID }, uniqueness: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
-  scope :by_number,  -> { order(:number) }
+  scope :by_number,  -> { order(number: :desc) }
 
   def self.search(params, path, opt={})
     matches = by_number
