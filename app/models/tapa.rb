@@ -5,7 +5,7 @@ class Tapa < ApplicationRecord
 
   MAX_KEYWORDS = 100
   MAX_TITLE = 50
-  POST_URL = "http://www.rubytapas.com/"
+  URL = "https://www.rubytapas.com/"
   MAX_POST_ID = 150
 
   before_validation :canonicalize
@@ -33,7 +33,7 @@ class Tapa < ApplicationRecord
   end
 
   def post_url
-    POST_URL + post_id
+    URL + post_id
   end
 
   def notes_html
@@ -46,7 +46,7 @@ class Tapa < ApplicationRecord
     title&.squish!
     if post_id.present?
       post_id.strip!
-      post_id.sub!(POST_URL, "")
+      post_id.sub!(URL, "")
       post_id.sub!(/\A\/+/, "")
       self.post_id = post_id + "/" unless post_id.match(/\/\z/)
     end
