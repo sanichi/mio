@@ -11,6 +11,7 @@ en:
     move: Move Number
     name: Name
     new: New Position
+    opening_365: 365 Params
     pieces: Pieces
     position: Position
     positions: Positions

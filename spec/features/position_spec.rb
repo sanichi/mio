@@ -21,6 +21,7 @@ describe Position do
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
       select data.opening.desc, from: t(:opening_opening)
+      fill_in t(:position_opening__365), with: data.opening_365
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 
@@ -38,6 +39,7 @@ describe Position do
       expect(p.last_reviewed).to be_nil
       expect(p.move).to eq data.move
       expect(p.opening).to eq data.opening
+      expect(p.opening_365).to eq data.opening_365
       expect(p.notes).to eq data.notes
     end
 
@@ -50,6 +52,7 @@ describe Position do
       fill_in t(:position_half__move), with: data.half_move
       fill_in t(:position_move), with: data.move
       select data.opening.desc, from: t(:opening_opening)
+      fill_in t(:position_opening__365), with: data.opening_365
       fill_in t(:notes), with: data.notes
       click_button t(:save)
 

@@ -39,6 +39,6 @@ class PositionsController < ApplicationController
   end
 
   def strong_params
-    params.require(:position).permit(:active, :castling, :en_passant, :half_move, :move, :name, :notes, :opening_id, :pieces, :reviewed_today)
+    params.require(:position).permit(:active, :castling, :en_passant, :half_move, :move, :name, :notes, :opening_id, :opening_365, :pieces, :reviewed_today)
   end
 end

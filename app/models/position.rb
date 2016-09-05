@@ -8,6 +8,8 @@ class Position < ApplicationRecord
   CASTLING = /\A(-|K?Q?k?q?)\z/
   EN_PASSANT = /\A(-|[a-h][36])\z/
   MAX_NAME = 255
+  MAX_OPENING_365 = 255
+  OPENING_365_URL = "http://www.365chess.com/opening.php"
   SYMBOL = { "K" => "♔", "Q" => "♕", "B" => "♗", "N" => "♘", "R" => "♖" }
 
   belongs_to :opening
@@ -21,6 +23,7 @@ class Position < ApplicationRecord
   validates :half_move, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
   validates :move, numericality: { integer_only: true, greater_than_or_equal_to: 1 }
   validates :name, length: { maximum: MAX_NAME }, presence: true, uniqueness: true
+  validates :opening_365, length: { maximum: MAX_OPENING_365 }, format: { with: /\A(\S+=\S*)+\z/ }, uniqueness: true, allow_nil: true
 
   scope :by_name, -> { order(:name) }
   scope :by_opening, -> { order("openings.code") }
@@ -62,8 +65,13 @@ class Position < ApplicationRecord
   def notes_html
     parts = [notes]
     parts.push "__ECO__: #{opening.code} #{opening.description}" if opening
-    parts.push "__FEN__: #{fen}"
+    parts.push "__FEN__: #{opening_365 ? "[#{fen}](#{opening_365_url}|opening_365)" : fen}"
     to_html(parts.compact.join("\n\n"))
+  end
+
+  def opening_365_url
+    return nil unless opening_365
+    "#{OPENING_365_URL}#{opening_365}"
   end
 
   private
@@ -89,6 +97,11 @@ class Position < ApplicationRecord
     self.half_move = 0 if half_move.blank?
     self.move = 1 if move.blank? || move == 0
     self.notes = nil unless notes.present?
+    if opening_365.present?
+      opening_365.sub!(OPENING_365_URL, "")
+    else
+      self.opening_365 = nil
+    end
   end
 
   def check_pieces
