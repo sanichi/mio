@@ -9,7 +9,7 @@ class Position < ApplicationRecord
   EN_PASSANT = /\A(-|[a-h][36])\z/
   MAX_NAME = 255
   MAX_OPENING_365 = 255
-  OPENING_365_URL = "http://www.365chess.com/opening.php"
+  OPENING_365_URL = "http://www.365chess.com/opening.php?"
   SYMBOL = { "K" => "♔", "Q" => "♕", "B" => "♗", "N" => "♘", "R" => "♖" }
 
   belongs_to :opening
@@ -23,7 +23,7 @@ class Position < ApplicationRecord
   validates :half_move, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
   validates :move, numericality: { integer_only: true, greater_than_or_equal_to: 1 }
   validates :name, length: { maximum: MAX_NAME }, presence: true, uniqueness: true
-  validates :opening_365, length: { maximum: MAX_OPENING_365 }, format: { with: /\A(\S+=\S*)+\z/ }, uniqueness: true, allow_nil: true
+  validates :opening_365, length: { maximum: MAX_OPENING_365 }, format: { with: /\A([^\s?=]+=[^\s?=]*)+\z/ }, uniqueness: true, allow_nil: true
 
   scope :by_name, -> { order(:name) }
   scope :by_opening, -> { order("openings.code") }
