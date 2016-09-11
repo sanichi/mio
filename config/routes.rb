@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
 
-  %w[aoc deeds futoshiki pills risle risle_stats].each do |page|
+  %w[aoc deeds futoshiki pills play risle risle_stats].each do |page|
     get page => "pages##{page}"
   end
 

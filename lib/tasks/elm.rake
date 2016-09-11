@@ -24,8 +24,8 @@ namespace :elm do
   end
 
   def compile_and_minify(name)
-    js = "_#{name}.js"
-    min = "../_#{name}.min.js"
+    js = "_#{name}_elm.js"
+    min = "../_#{name}_elm.min.js"
     if system("elm-make Main.elm --output #{js}")
       File.open(min, "w") do |file|
         file.write(Uglifier.compile(File.read(js)))
@@ -47,35 +47,35 @@ namespace :elm do
   task todos: :environment do
     Dir.chdir("app/views/todos/elm") do
       generate %w/Misc/, todos_stuff
-      compile_and_minify "todos_elm"
+      compile_and_minify "todos"
     end
   end
 
   desc "make and minify the Elm JS file for Blue PiLL"
   task :pills do
     Dir.chdir("app/views/pages/pills") do
-      compile_and_minify "pills_elm"
+      compile_and_minify "pills"
     end
   end
 
   desc "make and minify the Elm JS file for Family Tree"
   task :tree do
     Dir.chdir("app/views/people/tree") do
-      compile_and_minify "tree_elm"
+      compile_and_minify "tree"
     end
   end
 
   desc "make and minify the Elm JS file for AOC"
   task :aoc do
     Dir.chdir("app/views/pages/aoc") do
-      compile_and_minify "aoc_elm"
+      compile_and_minify "aoc"
     end
   end
 
-  desc "make and minify the Elm JS file for Futoshiki"
-  task :futoshiki do
-    Dir.chdir("app/views/pages/futoshiki") do
-      compile_and_minify "futoshiki_elm"
+  desc "make and minify the Elm JS file for Play"
+  task :play do
+    Dir.chdir("app/views/pages/play") do
+      compile_and_minify "play"
     end
   end
 end
