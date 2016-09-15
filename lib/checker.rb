@@ -11,13 +11,13 @@ class Checker
     xpath = "//div[@class='f-Info-cardItem']/h3[@class='f-Info-subTitle' and contains(.,'#{text}')]"
 
     begin
-      rs = HTTP.timeout(write: 1, connect: 1, read: 1).get("http://nyc2016.fide.com/")
+      uri = URI("http://nyc2016.fide.com/")
+      rsp = Net::HTTP.get_response(uri)
 
-      raise "bad status code (#{r.code})" unless rs.code == 200
-      raise "bad content type (#{rs.content_type.mime_type})" unless rs.content_type.mime_type == "text/html"
-      raise "bad charset (#{rs.content_type.charset})" unless rs.content_type.charset.downcase == "utf-8"
+      raise "bad status code (#{rsp.code})" unless rsp.code == "200"
+      raise "bad content type (#{rsp.content_type})" unless rsp.content_type == "text/html"
 
-      count = Oga.parse_html(rs.to_s).xpath(xpath).size
+      count = Oga.parse_html(rsp.body).xpath(xpath).size
 
       message =
         case count
