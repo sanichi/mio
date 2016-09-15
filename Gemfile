@@ -16,6 +16,8 @@ gem "paperclip", "~> 5.0"
 gem "rack-mini-profiler", require: false
 gem "chronic", "~> 0.10"
 gem "libv8", "3.16.14.15"
+gem "http", "~> 2.0"
+gem "oga", "~> 2.5"
 
 group :development do
   gem "capistrano-rails"

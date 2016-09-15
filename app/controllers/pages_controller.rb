@@ -12,4 +12,10 @@ class PagesController < ApplicationController
   def risle_stats
     @pstat = ParkingStat.new(params)
   end
+
+  def check
+    respond_to do |format|
+      format.json { render json: Checker.check }
+    end
+  end
 end
