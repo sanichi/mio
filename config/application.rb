@@ -21,6 +21,6 @@ module SniMioApp
     # -- all .rb files in that directory are automatically loaded.
 
     # Include /lib in the autoload path.
-    config.autoload_paths << "#{Rails.root}/lib"
+    # config.autoload_paths << "#{Rails.root}/lib"
   end
 end
