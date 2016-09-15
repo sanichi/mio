@@ -15,7 +15,7 @@ class PagesController < ApplicationController
 
   def check
     respond_to do |format|
-      format.json { render json: Checker.check }
+      format.json { render json: ::Checker.check }
     end
   end
 end
