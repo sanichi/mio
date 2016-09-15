@@ -1,6 +1,3 @@
-require "http"
-require "oga"
-
 class Checker
   def self.check
     ok, message = check_nyc2016
