@@ -8895,7 +8895,7 @@ var _user$project$Main$update = F2(
 var _user$project$Main$CheckRequest = {ctor: 'CheckRequest'};
 var _user$project$Main$viewChecker = function (model) {
 	return A2(
-		_elm_lang$html$Html$p,
+		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
@@ -8921,16 +8921,25 @@ var _user$project$Main$viewCounter = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('row')
-			]),
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-success btn-lg')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_user$project$Counter$text(model.counter))
+					])),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('col-xs-4 text-center')
+						_elm_lang$html$Html_Attributes$class('pull-right')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -8938,47 +8947,26 @@ var _user$project$Main$viewCounter = function (model) {
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('btn btn-danger btn-sm'),
+								_elm_lang$html$Html_Attributes$class('btn btn-danger btn-xs'),
 								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterIncrement)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text('+')
-							]))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('col-xs-4 text-center')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
+							])),
+						A2(
+						_elm_lang$html$Html$span,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(' ')
+							])),
 						A2(
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('btn btn-success btn-lg')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(
-								_user$project$Counter$text(model.counter))
-							]))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('col-xs-4 text-center')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('btn btn-warning btn-sm'),
+								_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs'),
 								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterReset)
 							]),
 						_elm_lang$core$Native_List.fromArray(

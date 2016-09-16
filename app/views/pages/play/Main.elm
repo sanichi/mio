@@ -43,16 +43,19 @@ view model =
 
 viewCounter : Model -> Html Msg
 viewCounter model =
-    div [ class "row" ]
-        [ div [ class "col-xs-4 text-center" ] [ button [ class "btn btn-danger btn-sm", onClick CounterIncrement ] [ text "+" ] ]
-        , div [ class "col-xs-4 text-center" ] [ button [ class "btn btn-success btn-lg" ] [ text (Counter.text model.counter) ] ]
-        , div [ class "col-xs-4 text-center" ] [ button [ class "btn btn-warning btn-sm", onClick CounterReset ] [ text "↩︎" ] ]
+    div []
+        [ button [ class "btn btn-success btn-lg" ] [ text (Counter.text model.counter) ]
+        , div [ class "pull-right" ]
+            [ button [ class "btn btn-danger btn-xs", onClick CounterIncrement ] [ text "+" ]
+            , span [] [ text " " ]
+            , button [ class "btn btn-warning btn-xs", onClick CounterReset ] [ text "↩︎" ]
+            ]
         ]
 
 
 viewChecker : Model -> Html Msg
 viewChecker model =
-    p []
+    div []
         [ text (Checker.text model.checker)
         , button [ class "btn btn-warning btn-xs pull-right", onClick CheckRequest ] [ text "↩︎" ]
         ]
