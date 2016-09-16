@@ -8704,49 +8704,55 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _user$project$Checker$updateHistory = F2(
+	function (message, history) {
+		var update = function (count) {
+			var _p0 = count;
+			if (_p0.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Just(1);
+			} else {
+				return _elm_lang$core$Maybe$Just(_p0._0 + 1);
+			}
+		};
+		return A3(_elm_lang$core$Dict$update, message, update, history);
+	});
+var _user$project$Checker$succeed = F3(
+	function (checker, ok, message) {
+		var nextMessage = ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+		return _elm_lang$core$Native_Utils.update(
+			checker,
+			{
+				lastMessage: nextMessage,
+				history: A2(_user$project$Checker$updateHistory, nextMessage, checker.history)
+			});
+	});
 var _user$project$Checker$fail = F2(
 	function (checker, err) {
 		var details = function () {
-			var _p0 = err;
-			switch (_p0.ctor) {
+			var _p1 = err;
+			switch (_p1.ctor) {
 				case 'Timeout':
 					return 'timeout';
 				case 'NetworkError':
 					return 'network';
 				case 'UnexpectedPayload':
-					return A2(_elm_lang$core$Basics_ops['++'], '(payload) ', _p0._0);
+					return A2(_elm_lang$core$Basics_ops['++'], '(payload) ', _p1._0);
 				default:
 					return A2(
 						_elm_lang$core$Basics_ops['++'],
 						'(bad response ',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(_p0._0),
-							A2(_elm_lang$core$Basics_ops['++'], ') ', _p0._1)));
+							_elm_lang$core$Basics$toString(_p1._0),
+							A2(_elm_lang$core$Basics_ops['++'], ') ', _p1._1)));
 			}
 		}();
-		return _elm_lang$core$Native_Utils.update(
-			checker,
-			{
-				lastMessage: A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details)
-			});
-	});
-var _user$project$Checker$succeed = F3(
-	function (checker, ok, message) {
-		var updateHistory = function (count) {
-			var _p1 = count;
-			if (_p1.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Just(1);
-			} else {
-				return _elm_lang$core$Maybe$Just(_p1._0 + 1);
-			}
-		};
-		var nextMessage = ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+		var nextMessage = A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details);
 		return _elm_lang$core$Native_Utils.update(
 			checker,
 			{
 				lastMessage: nextMessage,
-				history: A3(_elm_lang$core$Dict$update, nextMessage, updateHistory, checker.history)
+				history: A2(_user$project$Checker$updateHistory, nextMessage, checker.history)
 			});
 	});
 var _user$project$Checker$decoder = A3(

@@ -6,9 +6,13 @@ import Json.Decode as Json exposing ((:=))
 import Task exposing (Task)
 
 
+type alias History =
+    Dict String Int
+
+
 type alias Model =
     { lastMessage : String
-    , history : Dict String Int
+    , history : History
     }
 
 
@@ -45,6 +49,20 @@ decoder =
         ("message" := Json.string)
 
 
+updateHistory : String -> History -> History
+updateHistory message history =
+    let
+        update count =
+            case count of
+                Nothing ->
+                    Just 1
+
+                Just n ->
+                    Just (n + 1)
+    in
+        Dict.update message update history
+
+
 succeed : Model -> Bool -> String -> Model
 succeed checker ok message =
     let
@@ -53,18 +71,10 @@ succeed checker ok message =
                 message
             else
                 "Ruby request error: " ++ message
-
-        updateHistory count =
-            case count of
-                Nothing ->
-                    Just 1
-
-                Just n ->
-                    Just (n + 1)
     in
         { checker
             | lastMessage = nextMessage
-            , history = Dict.update nextMessage updateHistory checker.history
+            , history = updateHistory nextMessage checker.history
         }
 
 
@@ -84,5 +94,11 @@ fail checker err =
 
                 BadResponse int str ->
                     "(bad response " ++ (toString int) ++ ") " ++ str
+
+        nextMessage =
+            "Elm request error: " ++ details
     in
-        { checker | lastMessage = "Elm request error: " ++ details }
+        { checker
+            | lastMessage = nextMessage
+            , history = updateHistory nextMessage checker.history
+        }
