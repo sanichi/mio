@@ -13,7 +13,7 @@ import Checker
 main : Program Never
 main =
     program
-        { init = ( init, Cmd.none )
+        { init = ( init, checkRequest )
         , view = view
         , update = update
         , subscriptions = (\model -> Sub.none)
@@ -74,6 +74,11 @@ type Msg
     | CheckSucceed ( Bool, String )
 
 
+checkRequest : Cmd Msg
+checkRequest =
+    Task.perform CheckFail CheckSucceed Checker.check
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -84,7 +89,7 @@ update msg model =
             ( { model | counter = Counter.init }, Cmd.none )
 
         CheckRequest ->
-            ( model, Task.perform CheckFail CheckSucceed Checker.check )
+            ( model, checkRequest )
 
         CheckFail err ->
             ( { model | checker = (Checker.fail model.checker err) }, Cmd.none )

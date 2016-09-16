@@ -8839,6 +8839,7 @@ var _user$project$Main$CheckSucceed = function (a) {
 var _user$project$Main$CheckFail = function (a) {
 	return {ctor: 'CheckFail', _0: a};
 };
+var _user$project$Main$checkRequest = A3(_elm_lang$core$Task$perform, _user$project$Main$CheckFail, _user$project$Main$CheckSucceed, _user$project$Checker$check);
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -8862,11 +8863,7 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'CheckRequest':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: A3(_elm_lang$core$Task$perform, _user$project$Main$CheckFail, _user$project$Main$CheckSucceed, _user$project$Checker$check)
-				};
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$checkRequest};
 			case 'CheckFail':
 				return {
 					ctor: '_Tuple2',
@@ -9005,7 +9002,7 @@ var _user$project$Main$view = function (model) {
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
-			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _elm_lang$core$Platform_Cmd$none},
+			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _user$project$Main$checkRequest},
 			view: _user$project$Main$view,
 			update: _user$project$Main$update,
 			subscriptions: function (model) {
