@@ -4,6 +4,8 @@ import Html exposing (..)
 import Html.App exposing (program)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Http
+import Task
 import Checker
 
 
@@ -26,7 +28,7 @@ type alias Model =
 init : Model
 init =
     { counter = 0
-    , checker = Checker.message
+    , checker = "No check yet"
     }
 
 
@@ -51,7 +53,7 @@ view_checker : Model -> Html Msg
 view_checker model =
     p []
         [ text model.checker
-        , button [ class "btn btn-warning btn-xs pull-right" ] [ text "↩︎" ]
+        , button [ class "btn btn-warning btn-xs pull-right", onClick Check ] [ text "↩︎" ]
         ]
 
 
@@ -66,6 +68,9 @@ panel title body =
 type Msg
     = Increment
     | Reset
+    | Check
+    | CheckFail Http.Error
+    | CheckSucceed ( Bool, String )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,3 +81,12 @@ update msg model =
 
         Reset ->
             ( { model | counter = 0 }, Cmd.none )
+
+        Check ->
+            ( model, Task.perform CheckFail CheckSucceed Checker.check )
+
+        CheckFail err ->
+            ( { model | checker = (Checker.error err) }, Cmd.none )
+
+        CheckSucceed ( ok, message ) ->
+            ( { model | checker = (Checker.format ok message) }, Cmd.none )

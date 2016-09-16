@@ -8704,49 +8704,42 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _user$project$Checker$error = function (err) {
+	var details = function () {
+		var _p0 = err;
+		switch (_p0.ctor) {
+			case 'Timeout':
+				return 'timeout';
+			case 'NetworkError':
+				return 'network';
+			case 'UnexpectedPayload':
+				return A2(_elm_lang$core$Basics_ops['++'], '(payload) ', _p0._0);
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'(bad response ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(_p0._0),
+						A2(_elm_lang$core$Basics_ops['++'], ') ', _p0._1)));
+		}
+	}();
+	return A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details);
+};
+var _user$project$Checker$format = F2(
+	function (ok, message) {
+		return ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+	});
 var _user$project$Checker$decoder = A3(
 	_elm_lang$core$Json_Decode$object2,
 	F2(
 		function (v0, v1) {
 			return {ctor: '_Tuple2', _0: v0, _1: v1};
 		}),
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'status', _elm_lang$core$Json_Decode$bool),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'ok', _elm_lang$core$Json_Decode$bool),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'message', _elm_lang$core$Json_Decode$string));
-var _user$project$Checker$message = function () {
-	var result = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$Checker$decoder, '{ \"status\" : true, \"message\" : \"Still no tickets\" }');
-	var _p0 = result;
-	if (_p0.ctor === 'Ok') {
-		if (_p0._0._0 === true) {
-			return _p0._0._1;
-		} else {
-			return A2(_elm_lang$core$Basics_ops['++'], 'Check error: ', _p0._0._1);
-		}
-	} else {
-		return A2(_elm_lang$core$Basics_ops['++'], 'Elm error: ', _p0._0);
-	}
-}();
+var _user$project$Checker$check = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
 
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'Increment') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{counter: model.counter + 1}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{counter: 0}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		}
-	});
 var _user$project$Main$panel = F2(
 	function (title, body) {
 		return A2(
@@ -8786,6 +8779,66 @@ var _user$project$Main$panel = F2(
 						[body]))
 				]));
 	});
+var _user$project$Main$init = {counter: 0, checker: 'No check yet'};
+var _user$project$Main$Model = F2(
+	function (a, b) {
+		return {counter: a, checker: b};
+	});
+var _user$project$Main$CheckSucceed = function (a) {
+	return {ctor: 'CheckSucceed', _0: a};
+};
+var _user$project$Main$CheckFail = function (a) {
+	return {ctor: 'CheckFail', _0: a};
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Increment':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{counter: model.counter + 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Reset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{counter: 0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Check':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A3(_elm_lang$core$Task$perform, _user$project$Main$CheckFail, _user$project$Main$CheckSucceed, _user$project$Checker$check)
+				};
+			case 'CheckFail':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							checker: _user$project$Checker$error(_p0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							checker: A2(_user$project$Checker$format, _p0._0._0, _p0._0._1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _user$project$Main$Check = {ctor: 'Check'};
 var _user$project$Main$view_checker = function (model) {
 	return A2(
 		_elm_lang$html$Html$p,
@@ -8798,7 +8851,8 @@ var _user$project$Main$view_checker = function (model) {
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right')
+						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$Check)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -8806,11 +8860,6 @@ var _user$project$Main$view_checker = function (model) {
 					]))
 			]));
 };
-var _user$project$Main$init = {counter: 0, checker: _user$project$Checker$message};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {counter: a, checker: b};
-	});
 var _user$project$Main$Reset = {ctor: 'Reset'};
 var _user$project$Main$Increment = {ctor: 'Increment'};
 var _user$project$Main$view_counter = function (model) {
