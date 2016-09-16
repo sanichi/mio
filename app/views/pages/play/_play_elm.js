@@ -8728,7 +8728,7 @@ var _user$project$Checker$fail = F2(
 		return _elm_lang$core$Native_Utils.update(
 			checker,
 			{
-				last_message: A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details)
+				lastMessage: A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details)
 			});
 	});
 var _user$project$Checker$succeed = F3(
@@ -8741,12 +8741,12 @@ var _user$project$Checker$succeed = F3(
 				return _elm_lang$core$Maybe$Just(_p1._0 + 1);
 			}
 		};
-		var next_message = ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+		var nextMessage = ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
 		return _elm_lang$core$Native_Utils.update(
 			checker,
 			{
-				last_message: next_message,
-				history: A3(_elm_lang$core$Dict$update, next_message, updateHistory, checker.history)
+				lastMessage: nextMessage,
+				history: A3(_elm_lang$core$Dict$update, nextMessage, updateHistory, checker.history)
 			});
 	});
 var _user$project$Checker$decoder = A3(
@@ -8760,7 +8760,7 @@ var _user$project$Checker$decoder = A3(
 var _user$project$Checker$check = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
 var _user$project$Checker$text = function (checker) {
 	var count = function () {
-		var _p2 = A2(_elm_lang$core$Dict$get, checker.last_message, checker.history);
+		var _p2 = A2(_elm_lang$core$Dict$get, checker.lastMessage, checker.history);
 		if (_p2.ctor === 'Nothing') {
 			return '';
 		} else {
@@ -8773,12 +8773,12 @@ var _user$project$Checker$text = function (checker) {
 					')'));
 		}
 	}();
-	return A2(_elm_lang$core$Basics_ops['++'], checker.last_message, count);
+	return A2(_elm_lang$core$Basics_ops['++'], checker.lastMessage, count);
 };
-var _user$project$Checker$init = {last_message: 'No checks yet', history: _elm_lang$core$Dict$empty};
+var _user$project$Checker$init = {lastMessage: 'No checks yet', history: _elm_lang$core$Dict$empty};
 var _user$project$Checker$Model = F2(
 	function (a, b) {
-		return {last_message: a, history: b};
+		return {lastMessage: a, history: b};
 	});
 
 var _user$project$Counter$text = function (counter) {
@@ -8890,7 +8890,7 @@ var _user$project$Main$update = F2(
 		}
 	});
 var _user$project$Main$CheckRequest = {ctor: 'CheckRequest'};
-var _user$project$Main$view_checker = function (model) {
+var _user$project$Main$viewChecker = function (model) {
 	return A2(
 		_elm_lang$html$Html$p,
 		_elm_lang$core$Native_List.fromArray(
@@ -8914,7 +8914,7 @@ var _user$project$Main$view_checker = function (model) {
 };
 var _user$project$Main$CounterReset = {ctor: 'CounterReset'};
 var _user$project$Main$CounterIncrement = {ctor: 'CounterIncrement'};
-var _user$project$Main$view_counter = function (model) {
+var _user$project$Main$viewCounter = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8995,11 +8995,11 @@ var _user$project$Main$view = function (model) {
 				A2(
 				_user$project$Main$panel,
 				'Counter',
-				_user$project$Main$view_counter(model)),
+				_user$project$Main$viewCounter(model)),
 				A2(
 				_user$project$Main$panel,
 				'Checker',
-				_user$project$Main$view_checker(model))
+				_user$project$Main$viewChecker(model))
 			]));
 };
 var _user$project$Main$main = {

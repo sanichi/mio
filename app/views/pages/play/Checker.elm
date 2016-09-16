@@ -7,14 +7,14 @@ import Task exposing (Task)
 
 
 type alias Model =
-    { last_message : String
+    { lastMessage : String
     , history : Dict String Int
     }
 
 
 init : Model
 init =
-    { last_message = "No checks yet"
+    { lastMessage = "No checks yet"
     , history = Dict.empty
     }
 
@@ -23,14 +23,14 @@ text : Model -> String
 text checker =
     let
         count =
-            case Dict.get checker.last_message checker.history of
+            case Dict.get checker.lastMessage checker.history of
                 Nothing ->
                     ""
 
                 Just n ->
                     " (" ++ (toString n) ++ ")"
     in
-        checker.last_message ++ count
+        checker.lastMessage ++ count
 
 
 check : Task Http.Error ( Bool, String )
@@ -48,7 +48,7 @@ decoder =
 succeed : Model -> Bool -> String -> Model
 succeed checker ok message =
     let
-        next_message =
+        nextMessage =
             if ok then
                 message
             else
@@ -63,8 +63,8 @@ succeed checker ok message =
                     Just (n + 1)
     in
         { checker
-            | last_message = next_message
-            , history = Dict.update next_message updateHistory checker.history
+            | lastMessage = nextMessage
+            , history = Dict.update nextMessage updateHistory checker.history
         }
 
 
@@ -85,4 +85,4 @@ fail checker err =
                 BadResponse int str ->
                     "(bad response " ++ (toString int) ++ ") " ++ str
     in
-        { checker | last_message = "Elm request error: " ++ details }
+        { checker | lastMessage = "Elm request error: " ++ details }

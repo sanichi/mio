@@ -36,13 +36,13 @@ init =
 view : Model -> Html Msg
 view model =
     div []
-        [ panel "Counter" (view_counter model)
-        , panel "Checker" (view_checker model)
+        [ panel "Counter" (viewCounter model)
+        , panel "Checker" (viewChecker model)
         ]
 
 
-view_counter : Model -> Html Msg
-view_counter model =
+viewCounter : Model -> Html Msg
+viewCounter model =
     div [ class "row" ]
         [ div [ class "col-xs-4 text-center" ] [ button [ class "btn btn-danger btn-sm", onClick CounterIncrement ] [ text "+" ] ]
         , div [ class "col-xs-4 text-center" ] [ button [ class "btn btn-success btn-lg" ] [ text (Counter.text model.counter) ] ]
@@ -50,8 +50,8 @@ view_counter model =
         ]
 
 
-view_checker : Model -> Html Msg
-view_checker model =
+viewChecker : Model -> Html Msg
+viewChecker model =
     p []
         [ text (Checker.text model.checker)
         , button [ class "btn btn-warning btn-xs pull-right", onClick CheckRequest ] [ text "↩︎" ]
