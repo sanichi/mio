@@ -8739,6 +8739,18 @@ var _user$project$Checker$decoder = A3(
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'ok', _elm_lang$core$Json_Decode$bool),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'message', _elm_lang$core$Json_Decode$string));
 var _user$project$Checker$check = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
+var _user$project$Checker$text = function (checker) {
+	return checker;
+};
+var _user$project$Checker$init = 'No checks yet';
+
+var _user$project$Counter$text = function (counter) {
+	return _elm_lang$core$Basics$toString(counter);
+};
+var _user$project$Counter$increment = function (counter) {
+	return counter + 1;
+};
+var _user$project$Counter$init = 0;
 
 var _user$project$Main$panel = F2(
 	function (title, body) {
@@ -8779,7 +8791,7 @@ var _user$project$Main$panel = F2(
 						[body]))
 				]));
 	});
-var _user$project$Main$init = {counter: 0, checker: 'No check yet'};
+var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init};
 var _user$project$Main$Model = F2(
 	function (a, b) {
 		return {counter: a, checker: b};
@@ -8794,23 +8806,25 @@ var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'Increment':
+			case 'CounterIncrement':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{counter: model.counter + 1}),
+						{
+							counter: _user$project$Counter$increment(model.counter)
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'Reset':
+			case 'CounterReset':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{counter: 0}),
+						{counter: _user$project$Counter$init}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'Check':
+			case 'CheckRequest':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
@@ -8838,7 +8852,7 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
-var _user$project$Main$Check = {ctor: 'Check'};
+var _user$project$Main$CheckRequest = {ctor: 'CheckRequest'};
 var _user$project$Main$view_checker = function (model) {
 	return A2(
 		_elm_lang$html$Html$p,
@@ -8846,13 +8860,14 @@ var _user$project$Main$view_checker = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(model.checker),
+				_elm_lang$html$Html$text(
+				_user$project$Checker$text(model.checker)),
 				A2(
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
-						_elm_lang$html$Html_Events$onClick(_user$project$Main$Check)
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$CheckRequest)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -8860,8 +8875,8 @@ var _user$project$Main$view_checker = function (model) {
 					]))
 			]));
 };
-var _user$project$Main$Reset = {ctor: 'Reset'};
-var _user$project$Main$Increment = {ctor: 'Increment'};
+var _user$project$Main$CounterReset = {ctor: 'CounterReset'};
+var _user$project$Main$CounterIncrement = {ctor: 'CounterIncrement'};
 var _user$project$Main$view_counter = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8884,7 +8899,7 @@ var _user$project$Main$view_counter = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$class('btn btn-danger btn-sm'),
-								_elm_lang$html$Html_Events$onClick(_user$project$Main$Increment)
+								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterIncrement)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
@@ -8908,7 +8923,7 @@ var _user$project$Main$view_counter = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(model.counter))
+								_user$project$Counter$text(model.counter))
 							]))
 					])),
 				A2(
@@ -8924,7 +8939,7 @@ var _user$project$Main$view_counter = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$class('btn btn-warning btn-sm'),
-								_elm_lang$html$Html_Events$onClick(_user$project$Main$Reset)
+								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterReset)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[

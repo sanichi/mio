@@ -1,8 +1,22 @@
-module Checker exposing (check, format, error)
+module Checker exposing (Model, check, error, format, init, text)
 
 import Http exposing (Error(..))
 import Json.Decode as Json exposing ((:=))
 import Task exposing (Task)
+
+
+type alias Model =
+    String
+
+
+init : Model
+init =
+    "No checks yet"
+
+
+text : Model -> String
+text checker =
+    checker
 
 
 check : Task Http.Error ( Bool, String )
