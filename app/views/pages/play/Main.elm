@@ -87,7 +87,7 @@ update msg model =
             ( model, Task.perform CheckFail CheckSucceed Checker.check )
 
         CheckFail err ->
-            ( { model | checker = (Checker.error err) }, Cmd.none )
+            ( { model | checker = (Checker.fail model.checker err) }, Cmd.none )
 
         CheckSucceed ( ok, message ) ->
-            ( { model | checker = (Checker.format ok message) }, Cmd.none )
+            ( { model | checker = (Checker.succeed model.checker ok message) }, Cmd.none )

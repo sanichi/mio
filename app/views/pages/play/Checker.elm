@@ -1,22 +1,36 @@
-module Checker exposing (Model, check, error, format, init, text)
+module Checker exposing (Model, check, fail, init, succeed, text)
 
+import Dict exposing (Dict)
 import Http exposing (Error(..))
 import Json.Decode as Json exposing ((:=))
 import Task exposing (Task)
 
 
 type alias Model =
-    String
+    { last_message : String
+    , history : Dict String Int
+    }
 
 
 init : Model
 init =
-    "No checks yet"
+    { last_message = "No checks yet"
+    , history = Dict.empty
+    }
 
 
 text : Model -> String
 text checker =
-    checker
+    let
+        count =
+            case Dict.get checker.last_message checker.history of
+                Nothing ->
+                    ""
+
+                Just n ->
+                    " (" ++ (toString n) ++ ")"
+    in
+        checker.last_message ++ count
 
 
 check : Task Http.Error ( Bool, String )
@@ -31,16 +45,31 @@ decoder =
         ("message" := Json.string)
 
 
-format : Bool -> String -> String
-format ok message =
-    if ok then
-        message
-    else
-        "Ruby request error: " ++ message
+succeed : Model -> Bool -> String -> Model
+succeed checker ok message =
+    let
+        next_message =
+            if ok then
+                message
+            else
+                "Ruby request error: " ++ message
+
+        updateHistory count =
+            case count of
+                Nothing ->
+                    Just 1
+
+                Just n ->
+                    Just (n + 1)
+    in
+        { checker
+            | last_message = next_message
+            , history = Dict.update next_message updateHistory checker.history
+        }
 
 
-error : Http.Error -> String
-error err =
+fail : Model -> Http.Error -> Model
+fail checker err =
     let
         details =
             case err of
@@ -56,4 +85,4 @@ error err =
                 BadResponse int str ->
                     "(bad response " ++ (toString int) ++ ") " ++ str
     in
-        "Elm request error: " ++ details
+        { checker | last_message = "Elm request error: " ++ details }

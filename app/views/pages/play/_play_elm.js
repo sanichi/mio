@@ -8704,31 +8704,50 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
-var _user$project$Checker$error = function (err) {
-	var details = function () {
-		var _p0 = err;
-		switch (_p0.ctor) {
-			case 'Timeout':
-				return 'timeout';
-			case 'NetworkError':
-				return 'network';
-			case 'UnexpectedPayload':
-				return A2(_elm_lang$core$Basics_ops['++'], '(payload) ', _p0._0);
-			default:
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'(bad response ',
-					A2(
+var _user$project$Checker$fail = F2(
+	function (checker, err) {
+		var details = function () {
+			var _p0 = err;
+			switch (_p0.ctor) {
+				case 'Timeout':
+					return 'timeout';
+				case 'NetworkError':
+					return 'network';
+				case 'UnexpectedPayload':
+					return A2(_elm_lang$core$Basics_ops['++'], '(payload) ', _p0._0);
+				default:
+					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p0._0),
-						A2(_elm_lang$core$Basics_ops['++'], ') ', _p0._1)));
-		}
-	}();
-	return A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details);
-};
-var _user$project$Checker$format = F2(
-	function (ok, message) {
-		return ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+						'(bad response ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(_p0._0),
+							A2(_elm_lang$core$Basics_ops['++'], ') ', _p0._1)));
+			}
+		}();
+		return _elm_lang$core$Native_Utils.update(
+			checker,
+			{
+				last_message: A2(_elm_lang$core$Basics_ops['++'], 'Elm request error: ', details)
+			});
+	});
+var _user$project$Checker$succeed = F3(
+	function (checker, ok, message) {
+		var updateHistory = function (count) {
+			var _p1 = count;
+			if (_p1.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Just(1);
+			} else {
+				return _elm_lang$core$Maybe$Just(_p1._0 + 1);
+			}
+		};
+		var next_message = ok ? message : A2(_elm_lang$core$Basics_ops['++'], 'Ruby request error: ', message);
+		return _elm_lang$core$Native_Utils.update(
+			checker,
+			{
+				last_message: next_message,
+				history: A3(_elm_lang$core$Dict$update, next_message, updateHistory, checker.history)
+			});
 	});
 var _user$project$Checker$decoder = A3(
 	_elm_lang$core$Json_Decode$object2,
@@ -8740,9 +8759,27 @@ var _user$project$Checker$decoder = A3(
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'message', _elm_lang$core$Json_Decode$string));
 var _user$project$Checker$check = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
 var _user$project$Checker$text = function (checker) {
-	return checker;
+	var count = function () {
+		var _p2 = A2(_elm_lang$core$Dict$get, checker.last_message, checker.history);
+		if (_p2.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				' (',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p2._0),
+					')'));
+		}
+	}();
+	return A2(_elm_lang$core$Basics_ops['++'], checker.last_message, count);
 };
-var _user$project$Checker$init = 'No checks yet';
+var _user$project$Checker$init = {last_message: 'No checks yet', history: _elm_lang$core$Dict$empty};
+var _user$project$Checker$Model = F2(
+	function (a, b) {
+		return {last_message: a, history: b};
+	});
 
 var _user$project$Counter$text = function (counter) {
 	return _elm_lang$core$Basics$toString(counter);
@@ -8836,7 +8873,7 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							checker: _user$project$Checker$error(_p0._0)
+							checker: A2(_user$project$Checker$fail, model.checker, _p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8846,7 +8883,7 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							checker: A2(_user$project$Checker$format, _p0._0._0, _p0._0._1)
+							checker: A3(_user$project$Checker$succeed, model.checker, _p0._0._0, _p0._0._1)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
