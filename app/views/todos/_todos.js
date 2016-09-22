@@ -1,1 +1,3 @@
-Elm.embed(Elm.Main, $('#elm').get(0));
+$(function() {
+  Elm.Main.embed(document.getElementById("elm"));
+});

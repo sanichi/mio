@@ -1,29 +1,18 @@
-module Todos where
+module Todos exposing (Todos, get)
 
 import Html exposing (Html, table, tbody)
 import Html.Attributes exposing (class)
 import Http
 import Json.Decode as Decode
-import Misc exposing (indexAndCreateUrl)
 import Task exposing (Task)
-import Todo exposing (Todo, decodeTodo, todoCompare)
+import Misc exposing (indexAndCreateUrl)
+import Todo exposing (Todo)
 
-type alias Todos = List Todo
-type alias TodosResult = Result Http.Error Todos
 
--- VIEW
+type alias Todos =
+    List Todo
 
-view : Int -> Int -> Todos -> Html
-view lastUpdated toDelete todos =
-  let
-    rows = List.map (Todo.view lastUpdated toDelete) <| List.sortWith todoCompare todos
-  in
-    table
-      [ class "table table-bordered table-striped" ]
-      [ tbody [ ] rows ]
 
--- OTHER
-
-getTodos : Task Http.Error TodosResult
-getTodos =
-  Task.toResult <| Http.get (Decode.list decodeTodo) indexAndCreateUrl
+get : Task Http.Error Todos
+get =
+    Http.get (Decode.list Todo.decode) indexAndCreateUrl

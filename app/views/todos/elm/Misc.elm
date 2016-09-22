@@ -1,4 +1,4 @@
-module Misc where
+module Misc exposing (..)
 
 import Dict exposing (Dict)
 
