@@ -85,7 +85,7 @@
             - if can?(:read, Expense)
               %li= link_to t("expense.expenses"), expenses_path
 
-      - if [:aoc, :pills, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("other")
@@ -107,8 +107,6 @@
               %li= link_to t("device.devices"), devices_path
             - if can?(:read, Interface)
               %li= link_to t("interface.interfaces"), interfaces_path
-            - if can?(:pills, Page)
-              %li= link_to t("pages.pills"), pills_path
             - if can?(:read, User)
               %li= link_to t("user.users"), users_path
             - if can?(:read, Login)

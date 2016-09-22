@@ -51,13 +51,6 @@ namespace :elm do
     end
   end
 
-  desc "make and minify the Elm JS file for Blue PiLL"
-  task :pills do
-    Dir.chdir("app/views/pages/pills") do
-      compile_and_minify "pills"
-    end
-  end
-
   desc "make and minify the Elm JS file for Family Tree"
   task :tree do
     Dir.chdir("app/views/people/tree") do
