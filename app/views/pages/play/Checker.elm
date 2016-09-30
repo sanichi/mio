@@ -1,9 +1,13 @@
-module Checker exposing (Model, check, fail, init, succeed, text)
+module Checker exposing (Model, check, fail, init, succeed, view)
 
 import Dict exposing (Dict)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Http exposing (Error(..))
 import Json.Decode as Json exposing ((:=))
 import Task exposing (Task)
+import Messages exposing (Msg(..))
 
 
 type alias History =
@@ -23,8 +27,8 @@ init =
     }
 
 
-text : Model -> String
-text checker =
+toText : Model -> String
+toText checker =
     let
         count =
             case Dict.get checker.lastMessage checker.history of
@@ -37,8 +41,21 @@ text checker =
         checker.lastMessage ++ count
 
 
-check : Task Http.Error ( Bool, String )
+view : Model -> Html Msg
+view checker =
+    div []
+        [ text (toText checker)
+        , button [ class "btn btn-warning btn-xs pull-right", onClick CheckRequest ] [ text "↩︎" ]
+        ]
+
+
+check : Cmd Msg
 check =
+    Task.perform CheckFail CheckSucceed checkTask
+
+
+checkTask : Task Http.Error ( Bool, String )
+checkTask =
     Http.get decoder "/check.json"
 
 

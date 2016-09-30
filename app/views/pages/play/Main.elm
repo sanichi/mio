@@ -3,21 +3,30 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.App exposing (program)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
-import Http
-import Task
+
+
+-- local modules
+
+import Messages exposing (Msg(..))
 import Counter
 import Checker
+
+
+-- main program
 
 
 main : Program Never
 main =
     program
-        { init = ( init, checkRequest )
+        { init = ( init, Checker.check )
         , view = view
         , update = update
         , subscriptions = (\model -> Sub.none)
         }
+
+
+
+-- model
 
 
 type alias Model =
@@ -33,31 +42,15 @@ init =
     }
 
 
+
+-- view
+
+
 view : Model -> Html Msg
 view model =
     div []
-        [ panel "Counter" (viewCounter model)
-        , panel "Checker" (viewChecker model)
-        ]
-
-
-viewCounter : Model -> Html Msg
-viewCounter model =
-    div []
-        [ button [ class "btn btn-success btn-lg" ] [ text (Counter.text model.counter) ]
-        , div [ class "pull-right" ]
-            [ button [ class "btn btn-danger btn-xs", onClick CounterIncrement ] [ text "+" ]
-            , span [] [ text " " ]
-            , button [ class "btn btn-warning btn-xs", onClick CounterReset ] [ text "↩︎" ]
-            ]
-        ]
-
-
-viewChecker : Model -> Html Msg
-viewChecker model =
-    div []
-        [ text (Checker.text model.checker)
-        , button [ class "btn btn-warning btn-xs pull-right", onClick CheckRequest ] [ text "↩︎" ]
+        [ panel "Counter" (Counter.view model.counter)
+        , panel "Checker" (Checker.view model.checker)
         ]
 
 
@@ -69,17 +62,8 @@ panel title body =
         ]
 
 
-type Msg
-    = CounterIncrement
-    | CounterReset
-    | CheckRequest
-    | CheckFail Http.Error
-    | CheckSucceed ( Bool, String )
 
-
-checkRequest : Cmd Msg
-checkRequest =
-    Task.perform CheckFail CheckSucceed Checker.check
+-- update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -92,7 +76,7 @@ update msg model =
             ( { model | counter = Counter.init }, Cmd.none )
 
         CheckRequest ->
-            ( model, checkRequest )
+            ( model, Checker.check )
 
         CheckFail err ->
             ( { model | checker = (Checker.fail model.checker err) }, Cmd.none )

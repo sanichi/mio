@@ -8704,6 +8704,16 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _user$project$Messages$CheckSucceed = function (a) {
+	return {ctor: 'CheckSucceed', _0: a};
+};
+var _user$project$Messages$CheckFail = function (a) {
+	return {ctor: 'CheckFail', _0: a};
+};
+var _user$project$Messages$CheckRequest = {ctor: 'CheckRequest'};
+var _user$project$Messages$CounterReset = {ctor: 'CounterReset'};
+var _user$project$Messages$CounterIncrement = {ctor: 'CounterIncrement'};
+
 var _user$project$Checker$updateHistory = F2(
 	function (message, history) {
 		var update = function (count) {
@@ -8763,8 +8773,9 @@ var _user$project$Checker$decoder = A3(
 		}),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'ok', _elm_lang$core$Json_Decode$bool),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'message', _elm_lang$core$Json_Decode$string));
-var _user$project$Checker$check = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
-var _user$project$Checker$text = function (checker) {
+var _user$project$Checker$checkTask = A2(_evancz$elm_http$Http$get, _user$project$Checker$decoder, '/check.json');
+var _user$project$Checker$check = A3(_elm_lang$core$Task$perform, _user$project$Messages$CheckFail, _user$project$Messages$CheckSucceed, _user$project$Checker$checkTask);
+var _user$project$Checker$toText = function (checker) {
 	var count = function () {
 		var _p2 = A2(_elm_lang$core$Dict$get, checker.lastMessage, checker.history);
 		if (_p2.ctor === 'Nothing') {
@@ -8781,20 +8792,144 @@ var _user$project$Checker$text = function (checker) {
 	}();
 	return A2(_elm_lang$core$Basics_ops['++'], checker.lastMessage, count);
 };
+var _user$project$Checker$view = function (checker) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				_user$project$Checker$toText(checker)),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
+						_elm_lang$html$Html_Events$onClick(_user$project$Messages$CheckRequest)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('↩︎')
+					]))
+			]));
+};
 var _user$project$Checker$init = {lastMessage: 'No checks yet', history: _elm_lang$core$Dict$empty};
 var _user$project$Checker$Model = F2(
 	function (a, b) {
 		return {lastMessage: a, history: b};
 	});
 
-var _user$project$Counter$text = function (counter) {
-	return _elm_lang$core$Basics$toString(counter);
+var _user$project$Counter$view = function (counter) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-success btn-lg')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(counter))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pull-right')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('btn btn-danger btn-xs'),
+								_elm_lang$html$Html_Events$onClick(_user$project$Messages$CounterIncrement)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('+')
+							])),
+						A2(
+						_elm_lang$html$Html$span,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(' ')
+							])),
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs'),
+								_elm_lang$html$Html_Events$onClick(_user$project$Messages$CounterReset)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('↩︎')
+							]))
+					]))
+			]));
 };
 var _user$project$Counter$increment = function (counter) {
 	return counter + 1;
 };
 var _user$project$Counter$init = 0;
 
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'CounterIncrement':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							counter: _user$project$Counter$increment(model.counter)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'CounterReset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{counter: _user$project$Counter$init}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'CheckRequest':
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Checker$check};
+			case 'CheckFail':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							checker: A2(_user$project$Checker$fail, model.checker, _p0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							checker: A3(_user$project$Checker$succeed, model.checker, _p0._0._0, _p0._0._1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
 var _user$project$Main$panel = F2(
 	function (title, body) {
 		return A2(
@@ -8834,148 +8969,6 @@ var _user$project$Main$panel = F2(
 						[body]))
 				]));
 	});
-var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {counter: a, checker: b};
-	});
-var _user$project$Main$CheckSucceed = function (a) {
-	return {ctor: 'CheckSucceed', _0: a};
-};
-var _user$project$Main$CheckFail = function (a) {
-	return {ctor: 'CheckFail', _0: a};
-};
-var _user$project$Main$checkRequest = A3(_elm_lang$core$Task$perform, _user$project$Main$CheckFail, _user$project$Main$CheckSucceed, _user$project$Checker$check);
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'CounterIncrement':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							counter: _user$project$Counter$increment(model.counter)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'CounterReset':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{counter: _user$project$Counter$init}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'CheckRequest':
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$checkRequest};
-			case 'CheckFail':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							checker: A2(_user$project$Checker$fail, model.checker, _p0._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							checker: A3(_user$project$Checker$succeed, model.checker, _p0._0._0, _p0._0._1)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-		}
-	});
-var _user$project$Main$CheckRequest = {ctor: 'CheckRequest'};
-var _user$project$Main$viewChecker = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(
-				_user$project$Checker$text(model.checker)),
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
-						_elm_lang$html$Html_Events$onClick(_user$project$Main$CheckRequest)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('↩︎')
-					]))
-			]));
-};
-var _user$project$Main$CounterReset = {ctor: 'CounterReset'};
-var _user$project$Main$CounterIncrement = {ctor: 'CounterIncrement'};
-var _user$project$Main$viewCounter = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('btn btn-success btn-lg')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_user$project$Counter$text(model.counter))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('pull-right')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('btn btn-danger btn-xs'),
-								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterIncrement)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('+')
-							])),
-						A2(
-						_elm_lang$html$Html$span,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(' ')
-							])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs'),
-								_elm_lang$html$Html_Events$onClick(_user$project$Main$CounterReset)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('↩︎')
-							]))
-					]))
-			]));
-};
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8986,17 +8979,18 @@ var _user$project$Main$view = function (model) {
 				A2(
 				_user$project$Main$panel,
 				'Counter',
-				_user$project$Main$viewCounter(model)),
+				_user$project$Counter$view(model.counter)),
 				A2(
 				_user$project$Main$panel,
 				'Checker',
-				_user$project$Main$viewChecker(model))
+				_user$project$Checker$view(model.checker))
 			]));
 };
+var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init};
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
-			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _user$project$Main$checkRequest},
+			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _user$project$Checker$check},
 			view: _user$project$Main$view,
 			update: _user$project$Main$update,
 			subscriptions: function (model) {
@@ -9004,6 +8998,10 @@ var _user$project$Main$main = {
 			}
 		})
 };
+var _user$project$Main$Model = F2(
+	function (a, b) {
+		return {counter: a, checker: b};
+	});
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
