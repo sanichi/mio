@@ -8704,6 +8704,10 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _user$project$Messages$RandomResponse = function (a) {
+	return {ctor: 'RandomResponse', _0: a};
+};
+var _user$project$Messages$RandomRequest = {ctor: 'RandomRequest'};
 var _user$project$Messages$CheckSucceed = function (a) {
 	return {ctor: 'CheckSucceed', _0: a};
 };
@@ -8884,6 +8888,49 @@ var _user$project$Counter$increment = function (counter) {
 };
 var _user$project$Counter$init = 0;
 
+var _user$project$Randoms$view = function (rand) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-success btn-lg')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(rand))
+					])),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
+						_elm_lang$html$Html_Events$onClick(_user$project$Messages$RandomRequest)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('↩︎')
+					]))
+			]));
+};
+var _user$project$Randoms$reset = function (rand) {
+	return rand;
+};
+var _user$project$Randoms$init = 0;
+
+var _user$project$Ports$random_request = _elm_lang$core$Native_Platform.outgoingPort(
+	'random_request',
+	function (v) {
+		return null;
+	});
+var _user$project$Ports$random_response = _elm_lang$core$Native_Platform.incomingPort('random_response', _elm_lang$core$Json_Decode$int);
+
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -8918,13 +8965,30 @@ var _user$project$Main$update = F2(
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'CheckSucceed':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
 							checker: A3(_user$project$Checker$succeed, model.checker, _p0._0._0, _p0._0._1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'RandomRequest':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Ports$random_request(
+						{ctor: '_Tuple0'})
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							randoms: _user$project$Randoms$reset(_p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8983,24 +9047,33 @@ var _user$project$Main$view = function (model) {
 				A2(
 				_user$project$Main$panel,
 				'Checker',
-				_user$project$Checker$view(model.checker))
+				_user$project$Checker$view(model.checker)),
+				A2(
+				_user$project$Main$panel,
+				'Random',
+				_user$project$Randoms$view(model.randoms))
 			]));
 };
-var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init};
+var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init, randoms: _user$project$Randoms$init};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$batch(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Ports$random_response(_user$project$Messages$RandomResponse)
+			]));
+};
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
 			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _user$project$Checker$check},
 			view: _user$project$Main$view,
 			update: _user$project$Main$update,
-			subscriptions: function (model) {
-				return _elm_lang$core$Platform_Sub$none;
-			}
+			subscriptions: _user$project$Main$subscriptions
 		})
 };
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {counter: a, checker: b};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {counter: a, checker: b, randoms: c};
 	});
 
 var Elm = {};

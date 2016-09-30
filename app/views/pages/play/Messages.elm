@@ -9,3 +9,5 @@ type Msg
     | CheckRequest
     | CheckFail Http.Error
     | CheckSucceed ( Bool, String )
+    | RandomRequest
+    | RandomResponse Int

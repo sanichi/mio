@@ -10,6 +10,8 @@ import Html.Attributes exposing (..)
 import Messages exposing (Msg(..))
 import Counter
 import Checker
+import Randoms
+import Ports
 
 
 -- main program
@@ -21,8 +23,14 @@ main =
         { init = ( init, Checker.check )
         , view = view
         , update = update
-        , subscriptions = (\model -> Sub.none)
+        , subscriptions = subscriptions
         }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [ Ports.random_response RandomResponse ]
 
 
 
@@ -32,6 +40,7 @@ main =
 type alias Model =
     { counter : Counter.Model
     , checker : Checker.Model
+    , randoms : Randoms.Model
     }
 
 
@@ -39,6 +48,7 @@ init : Model
 init =
     { counter = Counter.init
     , checker = Checker.init
+    , randoms = Randoms.init
     }
 
 
@@ -51,6 +61,7 @@ view model =
     div []
         [ panel "Counter" (Counter.view model.counter)
         , panel "Checker" (Checker.view model.checker)
+        , panel "Random" (Randoms.view model.randoms)
         ]
 
 
@@ -83,3 +94,9 @@ update msg model =
 
         CheckSucceed ( ok, message ) ->
             ( { model | checker = (Checker.succeed model.checker ok message) }, Cmd.none )
+
+        RandomRequest ->
+            ( model, Ports.random_request () )
+
+        RandomResponse num ->
+            ( { model | randoms = Randoms.reset num }, Cmd.none )
