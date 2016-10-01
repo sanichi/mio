@@ -11,7 +11,6 @@ import Messages exposing (Msg(..))
 import Counter
 import Checker
 import Randoms
-import Ports
 
 
 -- main program
@@ -20,17 +19,25 @@ import Ports
 main : Program Never
 main =
     program
-        { init = ( init, Checker.check )
+        { init = ( initModel, initTasks )
         , view = view
         , update = update
         , subscriptions = subscriptions
         }
 
 
+initTasks : Cmd Msg
+initTasks =
+    Cmd.batch
+        [ Checker.check
+        , Randoms.request
+        ]
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Ports.random_response RandomResponse ]
+        [ Randoms.respond ]
 
 
 
@@ -44,8 +51,8 @@ type alias Model =
     }
 
 
-init : Model
-init =
+initModel : Model
+initModel =
     { counter = Counter.init
     , checker = Checker.init
     , randoms = Randoms.init
@@ -61,7 +68,7 @@ view model =
     div []
         [ panel "Counter" (Counter.view model.counter)
         , panel "Checker" (Checker.view model.checker)
-        , panel "Random" (Randoms.view model.randoms)
+        , panel "Randoms" (Randoms.view model.randoms)
         ]
 
 
@@ -96,7 +103,7 @@ update msg model =
             ( { model | checker = (Checker.succeed model.checker ok message) }, Cmd.none )
 
         RandomRequest ->
-            ( model, Ports.random_request () )
+            ( model, Randoms.request )
 
         RandomResponse num ->
             ( { model | randoms = Randoms.reset num }, Cmd.none )

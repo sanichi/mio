@@ -8888,6 +8888,16 @@ var _user$project$Counter$increment = function (counter) {
 };
 var _user$project$Counter$init = 0;
 
+var _user$project$Ports$random_request = _elm_lang$core$Native_Platform.outgoingPort(
+	'random_request',
+	function (v) {
+		return null;
+	});
+var _user$project$Ports$random_response = _elm_lang$core$Native_Platform.incomingPort('random_response', _elm_lang$core$Json_Decode$int);
+
+var _user$project$Randoms$respond = _user$project$Ports$random_response(_user$project$Messages$RandomResponse);
+var _user$project$Randoms$request = _user$project$Ports$random_request(
+	{ctor: '_Tuple0'});
 var _user$project$Randoms$view = function (rand) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8923,13 +8933,6 @@ var _user$project$Randoms$reset = function (rand) {
 	return rand;
 };
 var _user$project$Randoms$init = 0;
-
-var _user$project$Ports$random_request = _elm_lang$core$Native_Platform.outgoingPort(
-	'random_request',
-	function (v) {
-		return null;
-	});
-var _user$project$Ports$random_response = _elm_lang$core$Native_Platform.incomingPort('random_response', _elm_lang$core$Json_Decode$int);
 
 var _user$project$Main$update = F2(
 	function (msg, model) {
@@ -8976,12 +8979,7 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'RandomRequest':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Ports$random_request(
-						{ctor: '_Tuple0'})
-				};
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Randoms$request};
 			default:
 				return {
 					ctor: '_Tuple2',
@@ -9050,22 +9048,23 @@ var _user$project$Main$view = function (model) {
 				_user$project$Checker$view(model.checker)),
 				A2(
 				_user$project$Main$panel,
-				'Random',
+				'Randoms',
 				_user$project$Randoms$view(model.randoms))
 			]));
 };
-var _user$project$Main$init = {counter: _user$project$Counter$init, checker: _user$project$Checker$init, randoms: _user$project$Randoms$init};
+var _user$project$Main$initModel = {counter: _user$project$Counter$init, checker: _user$project$Checker$init, randoms: _user$project$Randoms$init};
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$batch(
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$Ports$random_response(_user$project$Messages$RandomResponse)
-			]));
+			[_user$project$Randoms$respond]));
 };
+var _user$project$Main$initTasks = _elm_lang$core$Platform_Cmd$batch(
+	_elm_lang$core$Native_List.fromArray(
+		[_user$project$Checker$check, _user$project$Randoms$request]));
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
-			init: {ctor: '_Tuple2', _0: _user$project$Main$init, _1: _user$project$Checker$check},
+			init: {ctor: '_Tuple2', _0: _user$project$Main$initModel, _1: _user$project$Main$initTasks},
 			view: _user$project$Main$view,
 			update: _user$project$Main$update,
 			subscriptions: _user$project$Main$subscriptions

@@ -1,9 +1,10 @@
-module Randoms exposing (Model, init, reset, view)
+module Randoms exposing (Model, init, request, reset, respond, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Messages exposing (Msg(..))
+import Ports
 
 
 type alias Model =
@@ -26,3 +27,13 @@ view rand =
         [ button [ class "btn btn-success btn-lg" ] [ text (toString rand) ]
         , button [ class "btn btn-warning btn-xs pull-right", onClick RandomRequest ] [ text "↩︎" ]
         ]
+
+
+request : Cmd Msg
+request =
+    Ports.random_request ()
+
+
+respond : Sub Msg
+respond =
+    Ports.random_response RandomResponse
