@@ -53,7 +53,7 @@ namespace :elm do
 
   desc "make and minify the Elm JS file for Family Tree"
   task :tree do
-    Dir.chdir("app/views/people/tree") do
+    Dir.chdir("app/views/people/elm") do
       compile_and_minify "tree"
     end
   end
