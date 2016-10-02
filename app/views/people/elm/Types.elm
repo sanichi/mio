@@ -5,9 +5,10 @@ import Config
 
 
 type alias Model =
-    { width : Int
-    , height : Int
-    , focus : Focus
+    { focus : Focus
+    , family : Int
+    , picture : Int
+    , shift : Int
     }
 
 
@@ -44,32 +45,14 @@ type alias Focus =
 
 
 type alias Flags =
-    { focus : Focus }
+    { focus : Focus
+    }
 
 
 initModel : Flags -> Model
 initModel flags =
-    { width = Config.initialWidth
-    , height = Config.initialHeight
-    , focus = flags.focus
+    { focus = flags.focus
+    , family = 0
+    , picture = 0
+    , shift = 0
     }
-
-
-picturePath : Int -> Person -> String
-picturePath picture person =
-    let
-        total =
-            Array.length person.pictures
-
-        index =
-            if total < 1 then
-                0
-            else
-                picture % total
-    in
-        Array.get index person.pictures |> Maybe.withDefault defaultPicturePath
-
-
-defaultPicturePath : String
-defaultPicturePath =
-    "/images/blank_woman.png"
