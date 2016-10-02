@@ -1,6 +1,5 @@
 module Config exposing (..)
 
-import Color exposing (Color)
 import String
 
 
