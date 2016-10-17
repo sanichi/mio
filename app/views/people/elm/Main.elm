@@ -8,9 +8,11 @@ import Svg.Attributes exposing (..)
 
 -- local modules
 
-import Types exposing (Model, Flags, Focus, initModel)
-import Messages exposing (Msg(..))
 import Config
+import Messages exposing (Msg(..))
+import Ports
+import Tree
+import Types exposing (Model, Flags, Focus, initModel)
 
 
 -- main program
@@ -33,7 +35,7 @@ initTasks =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Ports.refocus Refocus
 
 
 
@@ -42,12 +44,14 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    Html.div []
-        [ svg
-            [ id "family-tree", version "1.1", viewBox Config.viewBox ]
-            [ rect [ class "background", width (toString Config.width), height (toString Config.height) ] [] ]
-        , Html.div [] [ Html.text (toString model) ]
-        ]
+    let
+        background =
+            rect [ class "background", width (toString Config.width), height (toString Config.height) ] []
+
+        tree =
+            Tree.tree model
+    in
+        svg [ id "family-tree", version "1.1", viewBox Config.viewBox ] (background :: tree)
 
 
 
@@ -59,3 +63,9 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        Refocus focus ->
+            ( { model | focus = focus }, Cmd.none )
+
+        PersonId id ->
+            ( model, Ports.personId id )

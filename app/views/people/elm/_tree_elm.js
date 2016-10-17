@@ -7792,14 +7792,59 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
+var _elm_lang$svg$Svg_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$svg$Svg_Events$simpleOn = F2(
+	function (name, msg) {
+		return A2(
+			_elm_lang$svg$Svg_Events$on,
+			name,
+			_elm_lang$core$Json_Decode$succeed(msg));
+	});
+var _elm_lang$svg$Svg_Events$onBegin = _elm_lang$svg$Svg_Events$simpleOn('begin');
+var _elm_lang$svg$Svg_Events$onEnd = _elm_lang$svg$Svg_Events$simpleOn('end');
+var _elm_lang$svg$Svg_Events$onRepeat = _elm_lang$svg$Svg_Events$simpleOn('repeat');
+var _elm_lang$svg$Svg_Events$onAbort = _elm_lang$svg$Svg_Events$simpleOn('abort');
+var _elm_lang$svg$Svg_Events$onError = _elm_lang$svg$Svg_Events$simpleOn('error');
+var _elm_lang$svg$Svg_Events$onResize = _elm_lang$svg$Svg_Events$simpleOn('resize');
+var _elm_lang$svg$Svg_Events$onScroll = _elm_lang$svg$Svg_Events$simpleOn('scroll');
+var _elm_lang$svg$Svg_Events$onLoad = _elm_lang$svg$Svg_Events$simpleOn('load');
+var _elm_lang$svg$Svg_Events$onUnload = _elm_lang$svg$Svg_Events$simpleOn('unload');
+var _elm_lang$svg$Svg_Events$onZoom = _elm_lang$svg$Svg_Events$simpleOn('zoom');
+var _elm_lang$svg$Svg_Events$onActivate = _elm_lang$svg$Svg_Events$simpleOn('activate');
+var _elm_lang$svg$Svg_Events$onClick = _elm_lang$svg$Svg_Events$simpleOn('click');
+var _elm_lang$svg$Svg_Events$onFocusIn = _elm_lang$svg$Svg_Events$simpleOn('focusin');
+var _elm_lang$svg$Svg_Events$onFocusOut = _elm_lang$svg$Svg_Events$simpleOn('focusout');
+var _elm_lang$svg$Svg_Events$onMouseDown = _elm_lang$svg$Svg_Events$simpleOn('mousedown');
+var _elm_lang$svg$Svg_Events$onMouseMove = _elm_lang$svg$Svg_Events$simpleOn('mousemove');
+var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mouseout');
+var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
+var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
+
+var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
+var _user$project$Config$pictureSize = 100;
 var _user$project$Config$changePictures = 4;
 var _user$project$Config$width = 1000;
-var _user$project$Config$thumbSize = 100;
-var _user$project$Config$padding = {x: 4, y: 4};
-var _user$project$Config$margin = {x: 18, y: 18};
+var _user$project$Config$smallFontWidth = 7;
+var _user$project$Config$smallTextWidth = function (text) {
+	return _elm_lang$core$String$length(text) * _user$project$Config$smallFontWidth;
+};
+var _user$project$Config$smallFontHeight = 12;
+var _user$project$Config$padding = 4;
+var _user$project$Config$margin = 18;
+var _user$project$Config$fontWidth = 10;
+var _user$project$Config$textWidth = function (text) {
+	return A2(
+		_elm_lang$core$Basics$max,
+		70,
+		_elm_lang$core$String$length(text) * _user$project$Config$fontWidth);
+};
+var _user$project$Config$fontHeight = 16;
 var _user$project$Config$deltaShift = 200;
 var _user$project$Config$boxHeight = 50;
-var _user$project$Config$levelHeight = (_user$project$Config$boxHeight + _user$project$Config$thumbSize) + _user$project$Config$margin.y;
+var _user$project$Config$levelHeight = (_user$project$Config$boxHeight + _user$project$Config$pictureSize) + (3 * _user$project$Config$margin);
+var _user$project$Config$centerY = function (level) {
+	return ((((_user$project$Config$levelHeight * ((2 * level) - 1)) - _user$project$Config$pictureSize) - _user$project$Config$margin) / 2) | 0;
+};
 var _user$project$Config$height = 3 * _user$project$Config$levelHeight;
 var _user$project$Config$border = 1;
 var _user$project$Config$adjustY = 0.5 * _elm_lang$core$Basics$toFloat(_user$project$Config$levelHeight - _user$project$Config$boxHeight);
@@ -7836,56 +7881,566 @@ var _user$project$Types$Flags = function (a) {
 	return {focus: a};
 };
 
+var _user$project$Messages$PersonId = function (a) {
+	return {ctor: 'PersonId', _0: a};
+};
+var _user$project$Messages$Refocus = function (a) {
+	return {ctor: 'Refocus', _0: a};
+};
 var _user$project$Messages$NoOp = {ctor: 'NoOp'};
+
+var _user$project$Ports$refocus = _elm_lang$core$Native_Platform.incomingPort(
+	'refocus',
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		A2(
+			_elm_lang$core$Json_Decode_ops[':='],
+			'person',
+			A2(
+				_elm_lang$core$Json_Decode$andThen,
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+				function (id) {
+					return A2(
+						_elm_lang$core$Json_Decode$andThen,
+						A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+						function (name) {
+							return A2(
+								_elm_lang$core$Json_Decode$andThen,
+								A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+								function (years) {
+									return A2(
+										_elm_lang$core$Json_Decode$andThen,
+										A2(
+											_elm_lang$core$Json_Decode_ops[':='],
+											'pictures',
+											_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+										function (pictures) {
+											return _elm_lang$core$Json_Decode$succeed(
+												{id: id, name: name, years: years, pictures: pictures});
+										});
+								});
+						});
+				})),
+		function (person) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				A2(
+					_elm_lang$core$Json_Decode_ops[':='],
+					'father',
+					A2(
+						_elm_lang$core$Json_Decode$andThen,
+						A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+						function (id) {
+							return A2(
+								_elm_lang$core$Json_Decode$andThen,
+								A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+								function (name) {
+									return A2(
+										_elm_lang$core$Json_Decode$andThen,
+										A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+										function (years) {
+											return A2(
+												_elm_lang$core$Json_Decode$andThen,
+												A2(
+													_elm_lang$core$Json_Decode_ops[':='],
+													'pictures',
+													_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+												function (pictures) {
+													return _elm_lang$core$Json_Decode$succeed(
+														{id: id, name: name, years: years, pictures: pictures});
+												});
+										});
+								});
+						})),
+				function (father) {
+					return A2(
+						_elm_lang$core$Json_Decode$andThen,
+						A2(
+							_elm_lang$core$Json_Decode_ops[':='],
+							'mother',
+							A2(
+								_elm_lang$core$Json_Decode$andThen,
+								A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+								function (id) {
+									return A2(
+										_elm_lang$core$Json_Decode$andThen,
+										A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+										function (name) {
+											return A2(
+												_elm_lang$core$Json_Decode$andThen,
+												A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+												function (years) {
+													return A2(
+														_elm_lang$core$Json_Decode$andThen,
+														A2(
+															_elm_lang$core$Json_Decode_ops[':='],
+															'pictures',
+															_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+														function (pictures) {
+															return _elm_lang$core$Json_Decode$succeed(
+																{id: id, name: name, years: years, pictures: pictures});
+														});
+												});
+										});
+								})),
+						function (mother) {
+							return A2(
+								_elm_lang$core$Json_Decode$andThen,
+								A2(
+									_elm_lang$core$Json_Decode_ops[':='],
+									'families',
+									_elm_lang$core$Json_Decode$array(
+										A2(
+											_elm_lang$core$Json_Decode$andThen,
+											A2(
+												_elm_lang$core$Json_Decode_ops[':='],
+												'partner',
+												A2(
+													_elm_lang$core$Json_Decode$andThen,
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+													function (id) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+															function (name) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+																	function (years) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(
+																				_elm_lang$core$Json_Decode_ops[':='],
+																				'pictures',
+																				_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+																			function (pictures) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{id: id, name: name, years: years, pictures: pictures});
+																			});
+																	});
+															});
+													})),
+											function (partner) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													A2(
+														_elm_lang$core$Json_Decode_ops[':='],
+														'children',
+														_elm_lang$core$Json_Decode$array(
+															A2(
+																_elm_lang$core$Json_Decode$andThen,
+																A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+																function (id) {
+																	return A2(
+																		_elm_lang$core$Json_Decode$andThen,
+																		A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+																		function (name) {
+																			return A2(
+																				_elm_lang$core$Json_Decode$andThen,
+																				A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+																				function (years) {
+																					return A2(
+																						_elm_lang$core$Json_Decode$andThen,
+																						A2(
+																							_elm_lang$core$Json_Decode_ops[':='],
+																							'pictures',
+																							_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+																						function (pictures) {
+																							return _elm_lang$core$Json_Decode$succeed(
+																								{id: id, name: name, years: years, pictures: pictures});
+																						});
+																				});
+																		});
+																}))),
+													function (children) {
+														return _elm_lang$core$Json_Decode$succeed(
+															{partner: partner, children: children});
+													});
+											}))),
+								function (families) {
+									return A2(
+										_elm_lang$core$Json_Decode$andThen,
+										A2(
+											_elm_lang$core$Json_Decode_ops[':='],
+											'younger_siblings',
+											_elm_lang$core$Json_Decode$array(
+												A2(
+													_elm_lang$core$Json_Decode$andThen,
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+													function (id) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+															function (name) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+																	function (years) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(
+																				_elm_lang$core$Json_Decode_ops[':='],
+																				'pictures',
+																				_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+																			function (pictures) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{id: id, name: name, years: years, pictures: pictures});
+																			});
+																	});
+															});
+													}))),
+										function (younger_siblings) {
+											return A2(
+												_elm_lang$core$Json_Decode$andThen,
+												A2(
+													_elm_lang$core$Json_Decode_ops[':='],
+													'older_siblings',
+													_elm_lang$core$Json_Decode$array(
+														A2(
+															_elm_lang$core$Json_Decode$andThen,
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
+															function (id) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+																	function (name) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'years', _elm_lang$core$Json_Decode$string),
+																			function (years) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					A2(
+																						_elm_lang$core$Json_Decode_ops[':='],
+																						'pictures',
+																						_elm_lang$core$Json_Decode$array(_elm_lang$core$Json_Decode$string)),
+																					function (pictures) {
+																						return _elm_lang$core$Json_Decode$succeed(
+																							{id: id, name: name, years: years, pictures: pictures});
+																					});
+																			});
+																	});
+															}))),
+												function (older_siblings) {
+													return _elm_lang$core$Json_Decode$succeed(
+														{person: person, father: father, mother: mother, families: families, younger_siblings: younger_siblings, older_siblings: older_siblings});
+												});
+										});
+								});
+						});
+				});
+		}));
+var _user$project$Ports$personId = _elm_lang$core$Native_Platform.outgoingPort(
+	'personId',
+	function (v) {
+		return v;
+	});
+
+var _user$project$Tree$currentPicturePath = F2(
+	function (person, picture) {
+		var total = _elm_lang$core$Array$length(person.pictures);
+		var index = (_elm_lang$core$Native_Utils.cmp(total, 1) < 0) ? 0 : A2(_elm_lang$core$Basics_ops['%'], picture, total);
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			_user$project$Config$missingPicturePath,
+			A2(_elm_lang$core$Array$get, index, person.pictures));
+	});
+var _user$project$Tree$textAttrs = F4(
+	function (c, i, j, l) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$class(c),
+				_elm_lang$svg$Svg_Attributes$x(
+				_elm_lang$core$Basics$toString(i)),
+				_elm_lang$svg$Svg_Attributes$y(
+				_elm_lang$core$Basics$toString(j)),
+				_elm_lang$svg$Svg_Attributes$textLength(
+				_elm_lang$core$Basics$toString(l))
+			]);
+	});
+var _user$project$Tree$rectAttrs = F5(
+	function (c, i, j, w, h) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$class(c),
+				_elm_lang$svg$Svg_Attributes$x(
+				_elm_lang$core$Basics$toString(i)),
+				_elm_lang$svg$Svg_Attributes$y(
+				_elm_lang$core$Basics$toString(j)),
+				_elm_lang$svg$Svg_Attributes$width(
+				_elm_lang$core$Basics$toString(w)),
+				_elm_lang$svg$Svg_Attributes$height(
+				_elm_lang$core$Basics$toString(h))
+			]);
+	});
+var _user$project$Tree$imageAttrs = F6(
+	function (l, i, j, w, h, id) {
+		var handler = (_elm_lang$core$Native_Utils.cmp(id, 0) > 0) ? _elm_lang$svg$Svg_Events$onClick(
+			_user$project$Messages$PersonId(id)) : _elm_lang$svg$Svg_Events$onClick(_user$project$Messages$NoOp);
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$xlinkHref(l),
+				_elm_lang$svg$Svg_Attributes$x(
+				_elm_lang$core$Basics$toString(i)),
+				_elm_lang$svg$Svg_Attributes$y(
+				_elm_lang$core$Basics$toString(j)),
+				_elm_lang$svg$Svg_Attributes$width(
+				_elm_lang$core$Basics$toString(w)),
+				_elm_lang$svg$Svg_Attributes$height(
+				_elm_lang$core$Basics$toString(h)),
+				handler
+			]);
+	});
+var _user$project$Tree$linkT = F3(
+	function (left, right, below) {
+		var by2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(below.top.inner));
+		var bx2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(below.top.inner));
+		var by1 = _elm_lang$core$Basics$toString(
+			((_elm_lang$core$Basics$snd(left.right.outer) + _elm_lang$core$Basics$snd(right.left.outer)) / 2) | 0);
+		var bx1 = _elm_lang$core$Basics$toString(
+			((_elm_lang$core$Basics$fst(left.right.outer) + _elm_lang$core$Basics$fst(right.left.outer)) / 2) | 0);
+		var ay2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(right.left.inner));
+		var ax2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(right.left.inner));
+		var ay1 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(left.right.inner));
+		var ax1 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(left.right.inner));
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$svg$Svg$line,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg_Attributes$x1(ax1),
+						_elm_lang$svg$Svg_Attributes$y1(ay1),
+						_elm_lang$svg$Svg_Attributes$x2(ax2),
+						_elm_lang$svg$Svg_Attributes$y2(ay2)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$svg$Svg$line,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg_Attributes$x1(bx2),
+						_elm_lang$svg$Svg_Attributes$y1(by1),
+						_elm_lang$svg$Svg_Attributes$x2(bx2),
+						_elm_lang$svg$Svg_Attributes$y2(by2)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]);
+	});
+var _user$project$Tree$shiftPoint = F2(
+	function (deltaX, point) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$fst(point) + deltaX,
+			_1: _elm_lang$core$Basics$snd(point)
+		};
+	});
+var _user$project$Tree$shiftHandle = F2(
+	function (deltaX, handle) {
+		return {
+			inner: A2(_user$project$Tree$shiftPoint, deltaX, handle.inner),
+			outer: A2(_user$project$Tree$shiftPoint, deltaX, handle.outer)
+		};
+	});
+var _user$project$Tree$shiftBox = F2(
+	function (centerX, bx) {
+		var currentX = ((_elm_lang$core$Basics$fst(bx.left.inner) + _elm_lang$core$Basics$fst(bx.right.inner)) / 2) | 0;
+		var deltaX = currentX - centerX;
+		var transformX = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'translate(',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(deltaX),
+				',0)'));
+		return {
+			svgs: _elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$svg$Svg$g,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$svg$Svg_Attributes$transform(transformX)
+						]),
+					bx.svgs)
+				]),
+			top: A2(_user$project$Tree$shiftHandle, deltaX, bx.top),
+			left: A2(_user$project$Tree$shiftHandle, deltaX, bx.left),
+			right: A2(_user$project$Tree$shiftHandle, deltaX, bx.right)
+		};
+	});
+var _user$project$Tree$box = F4(
+	function (person, pictureIndex, centerX, level) {
+		var topX = centerX;
+		var pictureHeight = _user$project$Config$pictureSize;
+		var pictureWidth = _user$project$Config$pictureSize;
+		var pictureX = centerX - ((pictureWidth / 2) | 0);
+		var picture = A2(_user$project$Tree$currentPicturePath, person, pictureIndex);
+		var yearsX = centerX;
+		var years = person.years;
+		var yearsWidth = _user$project$Config$smallTextWidth(years);
+		var nameX = centerX;
+		var name = person.name;
+		var nameWidth = _user$project$Config$textWidth(name);
+		var maxWidth = A2(_elm_lang$core$Basics$max, nameWidth, yearsWidth);
+		var boxWidth = maxWidth + (2 * _user$project$Config$padding);
+		var boxX = centerX - ((boxWidth / 2) | 0);
+		var centerY = _user$project$Config$centerY(level);
+		var nameY = centerY - ((_user$project$Config$fontHeight / 3) | 0);
+		var yearsY = centerY + _user$project$Config$fontHeight;
+		var boxY = centerY - ((_user$project$Config$boxHeight / 2) | 0);
+		var top = {
+			inner: {ctor: '_Tuple2', _0: topX, _1: boxY},
+			outer: {ctor: '_Tuple2', _0: topX, _1: boxY - _user$project$Config$margin}
+		};
+		var leftRightY = boxY + ((_user$project$Config$boxHeight / 2) | 0);
+		var left = {
+			inner: {ctor: '_Tuple2', _0: boxX, _1: leftRightY},
+			outer: {
+				ctor: '_Tuple2',
+				_0: A2(_elm_lang$core$Basics$min, boxX, pictureX) - _user$project$Config$margin,
+				_1: leftRightY
+			}
+		};
+		var right = {
+			inner: {ctor: '_Tuple2', _0: boxX + boxWidth, _1: leftRightY},
+			outer: {
+				ctor: '_Tuple2',
+				_0: A2(_elm_lang$core$Basics$max, boxX + boxWidth, pictureX + pictureWidth) + _user$project$Config$margin,
+				_1: leftRightY
+			}
+		};
+		var pictureY = (centerY + _user$project$Config$margin) + ((_user$project$Config$boxHeight / 2) | 0);
+		var svgs = _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$svg$Svg$rect,
+				A5(_user$project$Tree$rectAttrs, 'box', boxX, boxY, boxWidth, _user$project$Config$boxHeight),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$svg$Svg$text$,
+				A4(_user$project$Tree$textAttrs, 'medium', nameX, nameY, nameWidth),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg$text(name)
+					])),
+				A2(
+				_elm_lang$svg$Svg$text$,
+				A4(_user$project$Tree$textAttrs, 'small', yearsX, yearsY, yearsWidth),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg$text(years)
+					])),
+				A2(
+				_elm_lang$svg$Svg$image,
+				A6(_user$project$Tree$imageAttrs, picture, pictureX, pictureY, pictureWidth, pictureHeight, person.id),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]);
+		return {svgs: svgs, top: top, left: left, right: right};
+	});
+var _user$project$Tree$parentBoxes = F5(
+	function (focusBox, father, mother, picture, center) {
+		var motherBox = A4(_user$project$Tree$box, mother, picture, center, 1);
+		var rightMotherBox = A2(
+			_user$project$Tree$shiftBox,
+			_elm_lang$core$Basics$fst(motherBox.left.outer),
+			motherBox);
+		var fatherBox = A4(_user$project$Tree$box, father, picture, center, 1);
+		var leftFatherBox = A2(
+			_user$project$Tree$shiftBox,
+			_elm_lang$core$Basics$fst(fatherBox.right.outer),
+			fatherBox);
+		var parentLinks = A3(_user$project$Tree$linkT, leftFatherBox, rightMotherBox, focusBox);
+		return {ctor: '_Tuple3', _0: leftFatherBox, _1: rightMotherBox, _2: parentLinks};
+	});
+var _user$project$Tree$tree = function (model) {
+	var center = (_user$project$Config$width / 2) | 0;
+	var focus = model.focus;
+	var focusBox = A4(_user$project$Tree$box, focus.person, model.picture, center, 2);
+	var _p0 = A5(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture, center);
+	var fatherBox = _p0._0;
+	var motherBox = _p0._1;
+	var parentLinks = _p0._2;
+	var boxSvgs = _elm_lang$core$List$concat(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.svgs;
+			},
+			_elm_lang$core$Native_List.fromArray(
+				[focusBox, fatherBox, motherBox])));
+	var linkSvgs = _elm_lang$core$List$concat(
+		_elm_lang$core$Native_List.fromArray(
+			[parentLinks]));
+	return A2(_elm_lang$core$Basics_ops['++'], boxSvgs, linkSvgs);
+};
+var _user$project$Tree$Handle = F2(
+	function (a, b) {
+		return {inner: a, outer: b};
+	});
+var _user$project$Tree$Box = F4(
+	function (a, b, c, d) {
+		return {svgs: a, top: b, left: c, right: d};
+	});
 
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		switch (_p0.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Refocus':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{focus: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Ports$personId(_p0._0)
+				};
+		}
 	});
 var _user$project$Main$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+	var tree = _user$project$Tree$tree(model);
+	var background = A2(
+		_elm_lang$svg$Svg$rect,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$svg$Svg$svg,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$svg$Svg_Attributes$id('family-tree'),
-						_elm_lang$svg$Svg_Attributes$version('1.1'),
-						_elm_lang$svg$Svg_Attributes$viewBox(_user$project$Config$viewBox)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$svg$Svg$rect,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$svg$Svg_Attributes$class('background'),
-								_elm_lang$svg$Svg_Attributes$width(
-								_elm_lang$core$Basics$toString(_user$project$Config$width)),
-								_elm_lang$svg$Svg_Attributes$height(
-								_elm_lang$core$Basics$toString(_user$project$Config$height))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[]))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model))
-					]))
-			]));
+				_elm_lang$svg$Svg_Attributes$class('background'),
+				_elm_lang$svg$Svg_Attributes$width(
+				_elm_lang$core$Basics$toString(_user$project$Config$width)),
+				_elm_lang$svg$Svg_Attributes$height(
+				_elm_lang$core$Basics$toString(_user$project$Config$height))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+	return A2(
+		_elm_lang$svg$Svg$svg,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$id('family-tree'),
+				_elm_lang$svg$Svg_Attributes$version('1.1'),
+				_elm_lang$svg$Svg_Attributes$viewBox(_user$project$Config$viewBox)
+			]),
+		A2(_elm_lang$core$List_ops['::'], background, tree));
 };
 var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
+	return _user$project$Ports$refocus(_user$project$Messages$Refocus);
 };
 var _user$project$Main$initTasks = _elm_lang$core$Platform_Cmd$none;
 var _user$project$Main$main = {

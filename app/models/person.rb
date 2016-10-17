@@ -143,7 +143,7 @@ class Person < ApplicationRecord
       h[:older_siblings] = siblings(full: true, older: true).map(&:tree_hash)
     else
       h[:id] = id
-      h[:name] = name(full: false, with_known_as: true).gsub(/ /, "&nbsp;")
+      h[:name] = name(full: false, with_known_as: true)
       h[:years] = years(plus: true)
       h[:pictures] = portrait_paths
     end
@@ -250,7 +250,7 @@ class Person < ApplicationRecord
     h = Hash.new
     h[:id] = 0
     h[:name] = "?"
-    h[:years] = "&nbsp;"
+    h[:years] = ""
     h[:pictures] = Array(dummy_portrait_path(gender))
     h
   end

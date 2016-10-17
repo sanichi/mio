@@ -30,9 +30,24 @@ boxHeight =
     50
 
 
+centerY : Int -> Int
+centerY level =
+    (levelHeight * (2 * level - 1) - pictureSize - margin) // 2
+
+
 deltaShift : Int
 deltaShift =
     200
+
+
+fontHeight : Int
+fontHeight =
+    16
+
+
+fontWidth : Int
+fontWidth =
+    10
 
 
 height : Int
@@ -42,22 +57,37 @@ height =
 
 levelHeight : Int
 levelHeight =
-    boxHeight + thumbSize + margin.y
+    boxHeight + pictureSize + 3 * margin
 
 
-margin : { x : Int, y : Int }
+margin : Int
 margin =
-    { x = 18, y = 18 }
+    18
 
 
-padding : { x : Int, y : Int }
+padding : Int
 padding =
-    { x = 4, y = 4 }
+    4
 
 
-thumbSize : Int
-thumbSize =
-    100
+smallFontHeight : Int
+smallFontHeight =
+    12
+
+
+smallFontWidth : Int
+smallFontWidth =
+    7
+
+
+smallTextWidth : String -> Int
+smallTextWidth text =
+    String.length text * smallFontWidth
+
+
+textWidth : String -> Int
+textWidth text =
+    String.length text * fontWidth |> Basics.max 70
 
 
 width : Int
@@ -108,8 +138,19 @@ width =
 --         | color = Color.white
 --     }
 -- time
+-- pictures
 
 
 changePictures : Float
 changePictures =
     4
+
+
+pictureSize : Int
+pictureSize =
+    100
+
+
+missingPicturePath : String
+missingPicturePath =
+    "/images/blank_woman.png"
