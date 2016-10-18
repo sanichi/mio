@@ -6,7 +6,10 @@
     fill: #B0E0E6
     stroke: #2F4F4F
 
-  // Box.
+  // Two types of box.
+  rect.focus
+    fill: #18BC9C
+    stroke: black
   rect.box
     fill: white
     stroke: black
@@ -15,10 +18,18 @@
   line
     stroke: black
 
-  // Two types of text.
+  // Two sizes of text.
   text
-    font-family: Courier, monospace
+    font-family: "Courier New", Courier, monospace
     font-size: 16px
     text-anchor: middle
     &.small
       font-size: 12px
+
+  // Two colours of text.
+  text.focus
+    fill: white
+    stroke: white
+  text.box
+    fill: black
+    stroke: black

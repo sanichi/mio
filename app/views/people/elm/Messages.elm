@@ -5,6 +5,6 @@ import Types exposing (Focus)
 
 type Msg
     = NoOp
-    | GotFocus Focus
     | GetFocus Int
+    | GotFocus Focus
     | DisplayPerson Int

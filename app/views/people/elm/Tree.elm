@@ -47,7 +47,7 @@ tree model =
             box focus.person model.picture center 2 True
 
         ( fatherBox, motherBox, parentLinks ) =
-            parentBoxes focusBox focus.father focus.mother model.picture center
+            parentBoxes focusBox focus.father focus.mother model.picture
 
         boxSvgs =
             List.map .svgs [ focusBox, fatherBox, motherBox ] |> List.concat
@@ -68,6 +68,12 @@ box person pictureIndex centerX level focus =
         centerY =
             Config.centerY level
 
+        boxClass =
+            if focus then
+                "focus"
+            else
+                "box"
+
         name =
             person.name
 
@@ -80,6 +86,9 @@ box person pictureIndex centerX level focus =
         nameY =
             centerY - Config.fontHeight // 3
 
+        nameClass =
+            "medium " ++ boxClass
+
         years =
             person.years
 
@@ -91,6 +100,9 @@ box person pictureIndex centerX level focus =
 
         yearsY =
             centerY + Config.fontHeight
+
+        yearsClass =
+            "small " ++ boxClass
 
         maxWidth =
             Basics.max nameWidth yearsWidth
@@ -147,9 +159,9 @@ box person pictureIndex centerX level focus =
             { inner = ( boxX + boxWidth, leftRightY ), outer = ( Basics.max (boxX + boxWidth) (pictureX + pictureWidth) + Config.margin, leftRightY ) }
 
         svgs =
-            [ rect (rectAttrs "box" boxX boxY boxWidth Config.boxHeight handler) []
-            , text' (textAttrs "medium" nameX nameY nameWidth) [ text name ]
-            , text' (textAttrs "small" yearsX yearsY yearsWidth) [ text years ]
+            [ rect (rectAttrs boxClass boxX boxY boxWidth Config.boxHeight handler) []
+            , text' (textAttrs nameClass nameX nameY nameWidth) [ text name ]
+            , text' (textAttrs yearsClass yearsX yearsY yearsWidth) [ text years ]
             , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
             ]
     in
@@ -179,9 +191,12 @@ shiftBox centerX bx =
         }
 
 
-parentBoxes : Box -> Person -> Person -> Int -> Int -> ( Box, Box, List (Svg Msg) )
-parentBoxes focusBox father mother picture center =
+parentBoxes : Box -> Person -> Person -> Int -> ( Box, Box, List (Svg Msg) )
+parentBoxes focusBox father mother picture =
     let
+        center =
+            fst focusBox.top.inner
+
         fatherBox =
             box father picture center 1 False
 

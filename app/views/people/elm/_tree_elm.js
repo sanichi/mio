@@ -7884,11 +7884,11 @@ var _user$project$Types$Flags = function (a) {
 var _user$project$Messages$DisplayPerson = function (a) {
 	return {ctor: 'DisplayPerson', _0: a};
 };
-var _user$project$Messages$GetFocus = function (a) {
-	return {ctor: 'GetFocus', _0: a};
-};
 var _user$project$Messages$GotFocus = function (a) {
 	return {ctor: 'GotFocus', _0: a};
+};
+var _user$project$Messages$GetFocus = function (a) {
+	return {ctor: 'GetFocus', _0: a};
 };
 var _user$project$Messages$NoOp = {ctor: 'NoOp'};
 
@@ -8302,6 +8302,9 @@ var _user$project$Tree$box = F5(
 		var maxWidth = A2(_elm_lang$core$Basics$max, nameWidth, yearsWidth);
 		var boxWidth = maxWidth + (2 * _user$project$Config$padding);
 		var boxX = centerX - ((boxWidth / 2) | 0);
+		var boxClass = focus ? 'focus' : 'box';
+		var nameClass = A2(_elm_lang$core$Basics_ops['++'], 'medium ', boxClass);
+		var yearsClass = A2(_elm_lang$core$Basics_ops['++'], 'small ', boxClass);
 		var centerY = _user$project$Config$centerY(level);
 		var nameY = centerY - ((_user$project$Config$fontHeight / 3) | 0);
 		var yearsY = centerY + _user$project$Config$fontHeight;
@@ -8332,19 +8335,19 @@ var _user$project$Tree$box = F5(
 			[
 				A2(
 				_elm_lang$svg$Svg$rect,
-				A6(_user$project$Tree$rectAttrs, 'box', boxX, boxY, boxWidth, _user$project$Config$boxHeight, handler),
+				A6(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, boxWidth, _user$project$Config$boxHeight, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(
 				_elm_lang$svg$Svg$text$,
-				A4(_user$project$Tree$textAttrs, 'medium', nameX, nameY, nameWidth),
+				A4(_user$project$Tree$textAttrs, nameClass, nameX, nameY, nameWidth),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$svg$Svg$text(name)
 					])),
 				A2(
 				_elm_lang$svg$Svg$text$,
-				A4(_user$project$Tree$textAttrs, 'small', yearsX, yearsY, yearsWidth),
+				A4(_user$project$Tree$textAttrs, yearsClass, yearsX, yearsY, yearsWidth),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$svg$Svg$text(years)
@@ -8357,18 +8360,19 @@ var _user$project$Tree$box = F5(
 			]);
 		return {svgs: svgs, top: top, left: left, right: right};
 	});
-var _user$project$Tree$parentBoxes = F5(
-	function (focusBox, father, mother, picture, center) {
-		var motherBox = A5(_user$project$Tree$box, mother, picture, center, 1, false);
-		var rightMotherBox = A2(
-			_user$project$Tree$shiftBox,
-			_elm_lang$core$Basics$fst(motherBox.left.outer),
-			motherBox);
+var _user$project$Tree$parentBoxes = F4(
+	function (focusBox, father, mother, picture) {
+		var center = _elm_lang$core$Basics$fst(focusBox.top.inner);
 		var fatherBox = A5(_user$project$Tree$box, father, picture, center, 1, false);
 		var leftFatherBox = A2(
 			_user$project$Tree$shiftBox,
 			_elm_lang$core$Basics$fst(fatherBox.right.outer),
 			fatherBox);
+		var motherBox = A5(_user$project$Tree$box, mother, picture, center, 1, false);
+		var rightMotherBox = A2(
+			_user$project$Tree$shiftBox,
+			_elm_lang$core$Basics$fst(motherBox.left.outer),
+			motherBox);
 		var parentLinks = A3(_user$project$Tree$linkT, leftFatherBox, rightMotherBox, focusBox);
 		return {ctor: '_Tuple3', _0: leftFatherBox, _1: rightMotherBox, _2: parentLinks};
 	});
@@ -8376,7 +8380,7 @@ var _user$project$Tree$tree = function (model) {
 	var center = (_user$project$Config$width / 2) | 0;
 	var focus = model.focus;
 	var focusBox = A5(_user$project$Tree$box, focus.person, model.picture, center, 2, true);
-	var _p0 = A5(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture, center);
+	var _p0 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
 	var fatherBox = _p0._0;
 	var motherBox = _p0._1;
 	var parentLinks = _p0._2;
