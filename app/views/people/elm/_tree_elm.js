@@ -7881,16 +7881,24 @@ var _user$project$Types$Flags = function (a) {
 	return {focus: a};
 };
 
-var _user$project$Messages$PersonId = function (a) {
-	return {ctor: 'PersonId', _0: a};
+var _user$project$Messages$DisplayPerson = function (a) {
+	return {ctor: 'DisplayPerson', _0: a};
 };
-var _user$project$Messages$Refocus = function (a) {
-	return {ctor: 'Refocus', _0: a};
+var _user$project$Messages$GetFocus = function (a) {
+	return {ctor: 'GetFocus', _0: a};
+};
+var _user$project$Messages$GotFocus = function (a) {
+	return {ctor: 'GotFocus', _0: a};
 };
 var _user$project$Messages$NoOp = {ctor: 'NoOp'};
 
-var _user$project$Ports$refocus = _elm_lang$core$Native_Platform.incomingPort(
-	'refocus',
+var _user$project$Ports$getFocus = _elm_lang$core$Native_Platform.outgoingPort(
+	'getFocus',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$gotFocus = _elm_lang$core$Native_Platform.incomingPort(
+	'gotFocus',
 	A2(
 		_elm_lang$core$Json_Decode$andThen,
 		A2(
@@ -8130,8 +8138,8 @@ var _user$project$Ports$refocus = _elm_lang$core$Native_Platform.incomingPort(
 						});
 				});
 		}));
-var _user$project$Ports$personId = _elm_lang$core$Native_Platform.outgoingPort(
-	'personId',
+var _user$project$Ports$displayPerson = _elm_lang$core$Native_Platform.outgoingPort(
+	'displayPerson',
 	function (v) {
 		return v;
 	});
@@ -8158,8 +8166,8 @@ var _user$project$Tree$textAttrs = F4(
 				_elm_lang$core$Basics$toString(l))
 			]);
 	});
-var _user$project$Tree$rectAttrs = F5(
-	function (c, i, j, w, h) {
+var _user$project$Tree$rectAttrs = F6(
+	function (c, i, j, w, h, handler) {
 		return _elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$svg$Svg_Attributes$class(c),
@@ -8170,13 +8178,12 @@ var _user$project$Tree$rectAttrs = F5(
 				_elm_lang$svg$Svg_Attributes$width(
 				_elm_lang$core$Basics$toString(w)),
 				_elm_lang$svg$Svg_Attributes$height(
-				_elm_lang$core$Basics$toString(h))
+				_elm_lang$core$Basics$toString(h)),
+				handler
 			]);
 	});
 var _user$project$Tree$imageAttrs = F6(
-	function (l, i, j, w, h, id) {
-		var handler = (_elm_lang$core$Native_Utils.cmp(id, 0) > 0) ? _elm_lang$svg$Svg_Events$onClick(
-			_user$project$Messages$PersonId(id)) : _elm_lang$svg$Svg_Events$onClick(_user$project$Messages$NoOp);
+	function (l, i, j, w, h, handler) {
 		return _elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$svg$Svg_Attributes$xlinkHref(l),
@@ -8277,9 +8284,11 @@ var _user$project$Tree$shiftBox = F2(
 			right: A2(_user$project$Tree$shiftHandle, deltaX, bx.right)
 		};
 	});
-var _user$project$Tree$box = F4(
-	function (person, pictureIndex, centerX, level) {
+var _user$project$Tree$box = F5(
+	function (person, pictureIndex, centerX, level, focus) {
 		var topX = centerX;
+		var msg = (_elm_lang$core$Native_Utils.cmp(person.id, 0) > 0) ? (focus ? _user$project$Messages$DisplayPerson(person.id) : _user$project$Messages$GetFocus(person.id)) : _user$project$Messages$NoOp;
+		var handler = _elm_lang$svg$Svg_Events$onClick(msg);
 		var pictureHeight = _user$project$Config$pictureSize;
 		var pictureWidth = _user$project$Config$pictureSize;
 		var pictureX = centerX - ((pictureWidth / 2) | 0);
@@ -8323,7 +8332,7 @@ var _user$project$Tree$box = F4(
 			[
 				A2(
 				_elm_lang$svg$Svg$rect,
-				A5(_user$project$Tree$rectAttrs, 'box', boxX, boxY, boxWidth, _user$project$Config$boxHeight),
+				A6(_user$project$Tree$rectAttrs, 'box', boxX, boxY, boxWidth, _user$project$Config$boxHeight, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(
@@ -8342,7 +8351,7 @@ var _user$project$Tree$box = F4(
 					])),
 				A2(
 				_elm_lang$svg$Svg$image,
-				A6(_user$project$Tree$imageAttrs, picture, pictureX, pictureY, pictureWidth, pictureHeight, person.id),
+				A6(_user$project$Tree$imageAttrs, picture, pictureX, pictureY, pictureWidth, pictureHeight, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[]))
 			]);
@@ -8350,12 +8359,12 @@ var _user$project$Tree$box = F4(
 	});
 var _user$project$Tree$parentBoxes = F5(
 	function (focusBox, father, mother, picture, center) {
-		var motherBox = A4(_user$project$Tree$box, mother, picture, center, 1);
+		var motherBox = A5(_user$project$Tree$box, mother, picture, center, 1, false);
 		var rightMotherBox = A2(
 			_user$project$Tree$shiftBox,
 			_elm_lang$core$Basics$fst(motherBox.left.outer),
 			motherBox);
-		var fatherBox = A4(_user$project$Tree$box, father, picture, center, 1);
+		var fatherBox = A5(_user$project$Tree$box, father, picture, center, 1, false);
 		var leftFatherBox = A2(
 			_user$project$Tree$shiftBox,
 			_elm_lang$core$Basics$fst(fatherBox.right.outer),
@@ -8366,7 +8375,7 @@ var _user$project$Tree$parentBoxes = F5(
 var _user$project$Tree$tree = function (model) {
 	var center = (_user$project$Config$width / 2) | 0;
 	var focus = model.focus;
-	var focusBox = A4(_user$project$Tree$box, focus.person, model.picture, center, 2);
+	var focusBox = A5(_user$project$Tree$box, focus.person, model.picture, center, 2, true);
 	var _p0 = A5(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture, center);
 	var fatherBox = _p0._0;
 	var motherBox = _p0._1;
@@ -8399,7 +8408,7 @@ var _user$project$Main$update = F2(
 		switch (_p0.ctor) {
 			case 'NoOp':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'Refocus':
+			case 'GotFocus':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -8407,11 +8416,17 @@ var _user$project$Main$update = F2(
 						{focus: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			case 'GetFocus':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Ports$getFocus(_p0._0)
+				};
 			default:
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: _user$project$Ports$personId(_p0._0)
+					_1: _user$project$Ports$displayPerson(_p0._0)
 				};
 		}
 	});
@@ -8440,7 +8455,7 @@ var _user$project$Main$view = function (model) {
 		A2(_elm_lang$core$List_ops['::'], background, tree));
 };
 var _user$project$Main$subscriptions = function (model) {
-	return _user$project$Ports$refocus(_user$project$Messages$Refocus);
+	return _user$project$Ports$gotFocus(_user$project$Messages$GotFocus);
 };
 var _user$project$Main$initTasks = _elm_lang$core$Platform_Cmd$none;
 var _user$project$Main$main = {

@@ -3,7 +3,10 @@ port module Ports exposing (..)
 import Types exposing (Focus)
 
 
-port refocus : (Focus -> msg) -> Sub msg
+port getFocus : Int -> Cmd msg
 
 
-port personId : Int -> Cmd msg
+port gotFocus : (Focus -> msg) -> Sub msg
+
+
+port displayPerson : Int -> Cmd msg

@@ -44,7 +44,7 @@ tree model =
             Config.width // 2
 
         focusBox =
-            box focus.person model.picture center 2
+            box focus.person model.picture center 2 True
 
         ( fatherBox, motherBox, parentLinks ) =
             parentBoxes focusBox focus.father focus.mother model.picture center
@@ -62,8 +62,8 @@ tree model =
 -- boxes
 
 
-box : Person -> Int -> Int -> Int -> Box
-box person pictureIndex centerX level =
+box : Person -> Int -> Int -> Int -> Bool -> Box
+box person pictureIndex centerX level focus =
     let
         centerY =
             Config.centerY level
@@ -119,6 +119,18 @@ box person pictureIndex centerX level =
         pictureY =
             centerY + Config.margin + Config.boxHeight // 2
 
+        msg =
+            if person.id > 0 then
+                if focus then
+                    DisplayPerson person.id
+                else
+                    GetFocus person.id
+            else
+                NoOp
+
+        handler =
+            onClick (msg)
+
         topX =
             centerX
 
@@ -135,10 +147,10 @@ box person pictureIndex centerX level =
             { inner = ( boxX + boxWidth, leftRightY ), outer = ( Basics.max (boxX + boxWidth) (pictureX + pictureWidth) + Config.margin, leftRightY ) }
 
         svgs =
-            [ rect (rectAttrs "box" boxX boxY boxWidth Config.boxHeight) []
+            [ rect (rectAttrs "box" boxX boxY boxWidth Config.boxHeight handler) []
             , text' (textAttrs "medium" nameX nameY nameWidth) [ text name ]
             , text' (textAttrs "small" yearsX yearsY yearsWidth) [ text years ]
-            , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight person.id) []
+            , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
             ]
     in
         { svgs = svgs
@@ -171,10 +183,10 @@ parentBoxes : Box -> Person -> Person -> Int -> Int -> ( Box, Box, List (Svg Msg
 parentBoxes focusBox father mother picture center =
     let
         fatherBox =
-            box father picture center 1
+            box father picture center 1 False
 
         motherBox =
-            box mother picture center 1
+            box mother picture center 1 False
 
         leftFatherBox =
             shiftBox (fst fatherBox.right.outer) fatherBox
@@ -242,21 +254,14 @@ linkT left right below =
 -- attributes for SVG primitives
 
 
-imageAttrs : String -> Int -> Int -> Int -> Int -> Int -> List (Svg.Attribute Msg)
-imageAttrs l i j w h id =
-    let
-        handler =
-            if id > 0 then
-                onClick (PersonId id)
-            else
-                onClick NoOp
-    in
-        [ xlinkHref l, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
+imageAttrs : String -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
+imageAttrs l i j w h handler =
+    [ xlinkHref l, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
 
 
-rectAttrs : String -> Int -> Int -> Int -> Int -> List (Svg.Attribute Msg)
-rectAttrs c i j w h =
-    [ class c, x (toString i), y (toString j), width (toString w), height (toString h) ]
+rectAttrs : String -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
+rectAttrs c i j w h handler =
+    [ class c, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
 
 
 textAttrs : String -> Int -> Int -> Int -> List (Svg.Attribute Msg)

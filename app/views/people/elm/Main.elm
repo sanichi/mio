@@ -35,7 +35,7 @@ initTasks =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Ports.refocus Refocus
+    Ports.gotFocus GotFocus
 
 
 
@@ -64,8 +64,11 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Refocus focus ->
+        GotFocus focus ->
             ( { model | focus = focus }, Cmd.none )
 
-        PersonId id ->
-            ( model, Ports.personId id )
+        GetFocus id ->
+            ( model, Ports.getFocus id )
+
+        DisplayPerson id ->
+            ( model, Ports.displayPerson id )
