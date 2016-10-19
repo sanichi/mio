@@ -139,8 +139,8 @@ class Person < ApplicationRecord
       h[:father] = father.try(:tree_hash) || dummy_person(true)
       h[:mother] = mother.try(:tree_hash) || dummy_person(false)
       h[:families] = tree_families
-      h[:younger_siblings] = siblings(full: true, younger: true).map(&:tree_hash)
-      h[:older_siblings] = siblings(full: true, older: true).map(&:tree_hash)
+      h[:youngerSiblings] = siblings(full: true, younger: true).map(&:tree_hash)
+      h[:olderSiblings] = siblings(full: true, older: true).map(&:tree_hash)
     else
       h[:id] = id
       h[:name] = name(full: false, with_known_as: true)

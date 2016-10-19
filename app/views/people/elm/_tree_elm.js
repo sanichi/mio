@@ -7875,7 +7875,7 @@ var _user$project$Types$Family = F2(
 	});
 var _user$project$Types$Focus = F6(
 	function (a, b, c, d, e, f) {
-		return {person: a, father: b, mother: c, families: d, younger_siblings: e, older_siblings: f};
+		return {person: a, father: b, mother: c, families: d, youngerSiblings: e, olderSiblings: f};
 	});
 var _user$project$Types$Flags = function (a) {
 	return {focus: a};
@@ -8070,7 +8070,7 @@ var _user$project$Ports$gotFocus = _elm_lang$core$Native_Platform.incomingPort(
 										_elm_lang$core$Json_Decode$andThen,
 										A2(
 											_elm_lang$core$Json_Decode_ops[':='],
-											'younger_siblings',
+											'youngerSiblings',
 											_elm_lang$core$Json_Decode$array(
 												A2(
 													_elm_lang$core$Json_Decode$andThen,
@@ -8097,12 +8097,12 @@ var _user$project$Ports$gotFocus = _elm_lang$core$Native_Platform.incomingPort(
 																	});
 															});
 													}))),
-										function (younger_siblings) {
+										function (youngerSiblings) {
 											return A2(
 												_elm_lang$core$Json_Decode$andThen,
 												A2(
 													_elm_lang$core$Json_Decode_ops[':='],
-													'older_siblings',
+													'olderSiblings',
 													_elm_lang$core$Json_Decode$array(
 														A2(
 															_elm_lang$core$Json_Decode$andThen,
@@ -8129,9 +8129,9 @@ var _user$project$Ports$gotFocus = _elm_lang$core$Native_Platform.incomingPort(
 																			});
 																	});
 															}))),
-												function (older_siblings) {
+												function (olderSiblings) {
 													return _elm_lang$core$Json_Decode$succeed(
-														{person: person, father: father, mother: mother, families: families, younger_siblings: younger_siblings, older_siblings: older_siblings});
+														{person: person, father: father, mother: mother, families: families, youngerSiblings: youngerSiblings, olderSiblings: olderSiblings});
 												});
 										});
 								});
@@ -8534,13 +8534,13 @@ var _user$project$Tree$tree = function (model) {
 	var fatherBox = _p5._0;
 	var motherBox = _p5._1;
 	var parentLinks = _p5._2;
-	var _p6 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.older_siblings, model.picture, _elm_lang$core$Maybe$Nothing);
+	var _p6 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
 	var osBoxes = _p6._0;
 	var osLinks = _p6._1;
 	var _p7 = A4(
 		_user$project$Tree$siblingBoxes,
 		focusBox,
-		focus.younger_siblings,
+		focus.youngerSiblings,
 		model.picture,
 		_elm_lang$core$Maybe$Just(0));
 	var ysBoxes = _p7._0;
@@ -8788,7 +8788,7 @@ var _user$project$Main$main = {
 										_elm_lang$core$Json_Decode$andThen,
 										A2(
 											_elm_lang$core$Json_Decode_ops[':='],
-											'older_siblings',
+											'olderSiblings',
 											_elm_lang$core$Json_Decode$array(
 												A2(
 													_elm_lang$core$Json_Decode$andThen,
@@ -8815,7 +8815,7 @@ var _user$project$Main$main = {
 																	});
 															});
 													}))),
-										function (older_siblings) {
+										function (olderSiblings) {
 											return A2(
 												_elm_lang$core$Json_Decode$andThen,
 												A2(
@@ -8851,7 +8851,7 @@ var _user$project$Main$main = {
 														_elm_lang$core$Json_Decode$andThen,
 														A2(
 															_elm_lang$core$Json_Decode_ops[':='],
-															'younger_siblings',
+															'youngerSiblings',
 															_elm_lang$core$Json_Decode$array(
 																A2(
 																	_elm_lang$core$Json_Decode$andThen,
@@ -8878,9 +8878,9 @@ var _user$project$Main$main = {
 																					});
 																			});
 																	}))),
-														function (younger_siblings) {
+														function (youngerSiblings) {
 															return _elm_lang$core$Json_Decode$succeed(
-																{families: families, father: father, mother: mother, older_siblings: older_siblings, person: person, younger_siblings: younger_siblings});
+																{families: families, father: father, mother: mother, olderSiblings: olderSiblings, person: person, youngerSiblings: youngerSiblings});
 														});
 												});
 										});

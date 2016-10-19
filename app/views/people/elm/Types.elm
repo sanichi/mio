@@ -39,8 +39,8 @@ type alias Focus =
     , father : Person
     , mother : Person
     , families : Families
-    , younger_siblings : People
-    , older_siblings : People
+    , youngerSiblings : People
+    , olderSiblings : People
     }
 
 

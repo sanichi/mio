@@ -54,10 +54,10 @@ tree model =
             parentBoxes focusBox focus.father focus.mother model.picture
 
         ( osBoxes, osLinks ) =
-            siblingBoxes focusBox focus.older_siblings model.picture Nothing
+            siblingBoxes focusBox focus.olderSiblings model.picture Nothing
 
         ( ysBoxes, ysLinks ) =
-            siblingBoxes focusBox focus.younger_siblings model.picture (Just 0)
+            siblingBoxes focusBox focus.youngerSiblings model.picture (Just 0)
 
         allBoxes =
             [ focusBox, fatherBox, motherBox ] ++ List.concat [ osBoxes, ysBoxes ]
