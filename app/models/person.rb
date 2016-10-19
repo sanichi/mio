@@ -30,7 +30,7 @@ class Person < ApplicationRecord
 
   scope :by_last_name,  -> { order(:last_name, :first_names, :born) }
   scope :by_first_name, -> { order(:first_names, :last_name, :born) }
-  scope :by_born, -> { order(:born, :last_name, :first_names) }
+  scope :by_born,       -> { order(:born, :last_name, :first_names) }
   scope :by_known_as,   -> { order(:known_as, :last_name, :born) }
 
   def name(full: true, reversed: false, with_known_as: true, with_years: false, with_married_name: false)

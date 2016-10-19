@@ -1,6 +1,6 @@
-module Tree exposing (..)
+module Tree exposing (tree)
 
-import Array
+import Array exposing (Array)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
@@ -10,7 +10,7 @@ import Svg.Events exposing (..)
 
 import Config
 import Messages exposing (Msg(..))
-import Types exposing (Model, Focus, Person)
+import Types exposing (Model, Focus, People, Person)
 
 
 -- local types
@@ -34,6 +34,10 @@ type alias Box =
     }
 
 
+
+-- the only exported function
+
+
 tree : Model -> List (Svg Msg)
 tree model =
     let
@@ -49,11 +53,20 @@ tree model =
         ( fatherBox, motherBox, parentLinks ) =
             parentBoxes focusBox focus.father focus.mother model.picture
 
+        ( osBoxes, osLinks ) =
+            siblingBoxes focusBox focus.older_siblings model.picture Nothing
+
+        ( ysBoxes, ysLinks ) =
+            siblingBoxes focusBox focus.younger_siblings model.picture (Just 0)
+
+        allBoxes =
+            [ focusBox, fatherBox, motherBox ] ++ List.concat [ osBoxes, ysBoxes ]
+
         boxSvgs =
-            List.map .svgs [ focusBox, fatherBox, motherBox ] |> List.concat
+            List.map .svgs allBoxes |> List.concat
 
         linkSvgs =
-            List.concat [ parentLinks ]
+            List.concat [ parentLinks, osLinks, ysLinks ]
     in
         boxSvgs ++ linkSvgs
 
@@ -173,14 +186,8 @@ box person pictureIndex centerX level focus =
 
 
 shiftBox : Int -> Box -> Box
-shiftBox centerX bx =
+shiftBox deltaX bx =
     let
-        currentX =
-            (fst bx.left.inner + fst bx.right.inner) // 2
-
-        deltaX =
-            currentX - centerX
-
         transformX =
             "translate(" ++ toString deltaX ++ ",0)"
     in
@@ -195,7 +202,7 @@ parentBoxes : Box -> Person -> Person -> Int -> ( Box, Box, List (Svg Msg) )
 parentBoxes focusBox father mother picture =
     let
         center =
-            fst focusBox.top.inner
+            middleBox focusBox
 
         fatherBox =
             box father picture center 1 False
@@ -204,10 +211,10 @@ parentBoxes focusBox father mother picture =
             box mother picture center 1 False
 
         leftFatherBox =
-            shiftBox (fst fatherBox.right.outer) fatherBox
+            shiftBox (center - fst fatherBox.right.outer) fatherBox
 
         rightMotherBox =
-            shiftBox (fst motherBox.left.outer) motherBox
+            shiftBox (center - fst motherBox.left.outer) motherBox
 
         parentLinks =
             linkT leftFatherBox rightMotherBox focusBox
@@ -215,54 +222,61 @@ parentBoxes focusBox father mother picture =
         ( leftFatherBox, rightMotherBox, parentLinks )
 
 
-
--- points and handles
-
-
-shiftHandle : Int -> Handle -> Handle
-shiftHandle deltaX handle =
-    { inner = shiftPoint deltaX handle.inner, outer = shiftPoint deltaX handle.outer }
-
-
-shiftPoint : Int -> Point -> Point
-shiftPoint deltaX point =
-    ( fst point + deltaX, snd point )
-
-
-
--- lines linking boxes
-
-
-linkT : Box -> Box -> Box -> List (Svg Msg)
-linkT left right below =
+siblingBoxes : Box -> People -> Int -> Maybe Int -> ( List Box, List (Svg Msg) )
+siblingBoxes focusBox people picture shift =
     let
-        ax1 =
-            left.right.inner |> fst |> toString
+        center =
+            middleBox focusBox
 
-        ay1 =
-            left.right.inner |> snd |> toString
+        focusHalfWidth =
+            boxWidth focusBox // 2
 
-        ax2 =
-            right.left.inner |> fst |> toString
+        boxes =
+            Array.map (\p -> box p picture center 2 False) people
 
-        ay2 =
-            right.left.inner |> snd |> toString
+        widths =
+            Array.map boxWidth boxes
 
-        bx1 =
-            ((fst left.right.outer) + (fst right.left.outer)) // 2 |> toString
+        len =
+            Array.length widths
 
-        by1 =
-            ((snd left.right.outer) + (snd right.left.outer)) // 2 |> toString
+        widthsToShifts i w =
+            case shift of
+                Nothing ->
+                    Array.slice i len widths
+                        |> Array.toList
+                        |> List.sum
+                        |> (+) focusHalfWidth
+                        |> (-) (w // 2)
 
-        bx2 =
-            below.top.inner |> fst |> toString
+                Just s ->
+                    Array.slice 0 (i + 1) widths
+                        |> Array.toList
+                        |> List.sum
+                        |> (+) focusHalfWidth
+                        |> \x -> x - w // 2
 
-        by2 =
-            below.top.inner |> snd |> toString
+        shifts =
+            Array.indexedMap widthsToShifts widths
+
+        shiftedBoxes =
+            Array.indexedMap (\i b -> shiftBox (getWithDefault i 0 shifts) b) boxes |> Array.toList
+
+        verticalLinks =
+            List.map .top shiftedBoxes |> List.map handleToLink
+
+        furthestBox =
+            case shift of
+                Nothing ->
+                    List.head shiftedBoxes
+
+                Just s ->
+                    List.reverse shiftedBoxes |> List.head
+
+        horizontalLinks =
+            linkH focusBox furthestBox
     in
-        [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
-        , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
-        ]
+        ( shiftedBoxes, verticalLinks ++ horizontalLinks )
 
 
 
@@ -285,7 +299,71 @@ textAttrs c i j l =
 
 
 
--- various utilities
+-- lines linking boxes
+
+
+linkT : Box -> Box -> Box -> List (Svg Msg)
+linkT left right below =
+    let
+        ax1 =
+            fst left.right.inner |> toString
+
+        ay1 =
+            snd left.right.inner |> toString
+
+        ax2 =
+            fst right.left.inner |> toString
+
+        ay2 =
+            snd right.left.inner |> toString
+
+        bx1 =
+            (fst left.right.outer + fst right.left.outer) // 2 |> toString
+
+        by1 =
+            (snd left.right.outer + snd right.left.outer) // 2 |> toString
+
+        bx2 =
+            fst below.top.inner |> toString
+
+        by2 =
+            snd below.top.inner |> toString
+    in
+        [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
+        , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
+        ]
+
+
+linkH : Box -> Maybe Box -> List (Svg Msg)
+linkH bx1 mbx2 =
+    case mbx2 of
+        Nothing ->
+            []
+
+        Just bx2 ->
+            let
+                i1 =
+                    fst bx1.top.outer |> toString
+
+                j1 =
+                    snd bx1.top.outer |> toString
+
+                i2 =
+                    fst bx2.top.outer |> toString
+
+                j2 =
+                    snd bx2.top.outer |> toString
+            in
+                [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
+
+
+
+-- various other utilities
+
+
+boxWidth : Box -> Int
+boxWidth bx =
+    fst bx.right.outer - fst bx.left.outer
 
 
 currentPicturePath : Person -> Int -> String
@@ -301,3 +379,50 @@ currentPicturePath person picture =
                 picture % total
     in
         Array.get index person.pictures |> Maybe.withDefault Config.missingPicturePath
+
+
+getWithDefault : Int -> a -> Array a -> a
+getWithDefault index default array =
+    let
+        notsure =
+            Array.get index array
+    in
+        case notsure of
+            Just value ->
+                value
+
+            Nothing ->
+                default
+
+
+handleToLink : Handle -> Svg Msg
+handleToLink handle =
+    let
+        i1 =
+            fst handle.inner |> toString
+
+        j1 =
+            snd handle.inner |> toString
+
+        i2 =
+            fst handle.outer |> toString
+
+        j2 =
+            snd handle.outer |> toString
+    in
+        line [ x1 i1, y1 j1, x2 i2, y2 j2 ] []
+
+
+middleBox : Box -> Int
+middleBox bx =
+    fst bx.top.inner
+
+
+shiftHandle : Int -> Handle -> Handle
+shiftHandle deltaX handle =
+    { inner = shiftPoint deltaX handle.inner, outer = shiftPoint deltaX handle.outer }
+
+
+shiftPoint : Int -> Point -> Point
+shiftPoint deltaX point =
+    ( fst point + deltaX, snd point )

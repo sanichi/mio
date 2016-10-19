@@ -42,12 +42,12 @@ deltaShift =
 
 fontHeight : Int
 fontHeight =
-    16
+    14
 
 
 fontWidth : Int
 fontWidth =
-    10
+    8
 
 
 height : Int
@@ -67,17 +67,17 @@ margin =
 
 padding : Int
 padding =
-    4
+    6
 
 
 smallFontHeight : Int
 smallFontHeight =
-    12
+    10
 
 
 smallFontWidth : Int
 smallFontWidth =
-    7
+    6
 
 
 smallTextWidth : String -> Int

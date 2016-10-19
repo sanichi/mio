@@ -64,11 +64,11 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        GotFocus focus ->
-            ( { model | focus = focus }, Cmd.none )
-
         GetFocus id ->
             ( model, Ports.getFocus id )
+
+        GotFocus focus ->
+            ( { model | focus = focus }, Cmd.none )
 
         DisplayPerson id ->
             ( model, Ports.displayPerson id )
