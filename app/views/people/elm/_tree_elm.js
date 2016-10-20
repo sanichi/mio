@@ -8661,6 +8661,76 @@ var _user$project$Tree$currentPicturePath = F2(
 var _user$project$Tree$boxWidth = function (bx) {
 	return _elm_lang$core$Basics$fst(bx.right.outer) - _elm_lang$core$Basics$fst(bx.left.outer);
 };
+var _user$project$Tree$linkO = F2(
+	function (boxes, point) {
+		var b2 = _elm_lang$core$List$head(
+			_elm_lang$core$List$reverse(boxes));
+		var b1 = _elm_lang$core$List$head(boxes);
+		var vertical = function () {
+			var _p1 = b1;
+			if (_p1.ctor === 'Just') {
+				var j2 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$snd(_p1._0.top.outer));
+				var i2 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$fst(point));
+				var j1 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$snd(point));
+				var i1 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$fst(point));
+				return _elm_lang$core$Maybe$Just(
+					A2(
+						_elm_lang$svg$Svg$line,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$svg$Svg_Attributes$x1(i1),
+								_elm_lang$svg$Svg_Attributes$y1(j1),
+								_elm_lang$svg$Svg_Attributes$x2(i2),
+								_elm_lang$svg$Svg_Attributes$y2(j2)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])));
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		}();
+		var horizontal = function () {
+			var _p2 = {ctor: '_Tuple2', _0: b1, _1: b2};
+			if (((_p2.ctor === '_Tuple2') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === 'Just')) {
+				var _p4 = _p2._1._0;
+				var _p3 = _p2._0._0;
+				var j2 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$snd(_p4.top.outer));
+				var i2 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$fst(_p4.top.outer));
+				var j1 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$snd(_p3.top.outer));
+				var i1 = _elm_lang$core$Basics$toString(
+					_elm_lang$core$Basics$fst(_p3.top.outer));
+				return _elm_lang$core$Maybe$Just(
+					A2(
+						_elm_lang$svg$Svg$line,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$svg$Svg_Attributes$x1(i1),
+								_elm_lang$svg$Svg_Attributes$y1(j1),
+								_elm_lang$svg$Svg_Attributes$x2(i2),
+								_elm_lang$svg$Svg_Attributes$y2(j2)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])));
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		}();
+		var _p5 = {ctor: '_Tuple2', _0: vertical, _1: horizontal};
+		if (((_p5.ctor === '_Tuple2') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === 'Just')) {
+			return _elm_lang$core$Native_List.fromArray(
+				[_p5._0._0, _p5._1._0]);
+		} else {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		}
+	});
 var _user$project$Tree$linkM = F2(
 	function (bx1, bx2) {
 		var j2 = _elm_lang$core$Basics$toString(
@@ -8688,16 +8758,16 @@ var _user$project$Tree$linkM = F2(
 	});
 var _user$project$Tree$linkH = F2(
 	function (bx1, mbx2) {
-		var _p1 = mbx2;
-		if (_p1.ctor === 'Nothing') {
+		var _p6 = mbx2;
+		if (_p6.ctor === 'Nothing') {
 			return _elm_lang$core$Native_List.fromArray(
 				[]);
 		} else {
-			var _p2 = _p1._0;
+			var _p7 = _p6._0;
 			var j2 = _elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$snd(_p2.top.outer));
+				_elm_lang$core$Basics$snd(_p7.top.outer));
 			var i2 = _elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$fst(_p2.top.outer));
+				_elm_lang$core$Basics$fst(_p7.top.outer));
 			var j1 = _elm_lang$core$Basics$toString(
 				_elm_lang$core$Basics$snd(bx1.top.outer));
 			var i1 = _elm_lang$core$Basics$toString(
@@ -9001,8 +9071,8 @@ var _user$project$Tree$siblingBoxes = F4(
 		var len = _elm_lang$core$Array$length(widths);
 		var widthsToShifts = F2(
 			function (i, w) {
-				var _p3 = shift;
-				if (_p3.ctor === 'Nothing') {
+				var _p8 = shift;
+				if (_p8.ctor === 'Nothing') {
 					return A2(
 						F2(
 							function (x, y) {
@@ -9027,7 +9097,7 @@ var _user$project$Tree$siblingBoxes = F4(
 								function (x, y) {
 									return x + y;
 								}),
-							_p3._0,
+							_p8._0,
 							_elm_lang$core$List$sum(
 								_elm_lang$core$Array$toList(
 									A3(_elm_lang$core$Array$slice, 0, i + 1, widths)))));
@@ -9055,8 +9125,8 @@ var _user$project$Tree$siblingBoxes = F4(
 				},
 				shiftedBoxes));
 		var furthestBox = function () {
-			var _p4 = shift;
-			if (_p4.ctor === 'Nothing') {
+			var _p9 = shift;
+			if (_p9.ctor === 'Nothing') {
 				return _elm_lang$core$List$head(shiftedBoxes);
 			} else {
 				return _elm_lang$core$List$head(
@@ -9073,106 +9143,204 @@ var _user$project$Tree$siblingBoxes = F4(
 var _user$project$Tree$partnerBoxes = F4(
 	function (focusBox, families, index, picture) {
 		var item = A2(_elm_lang$core$Array$get, index, families);
-		var _p5 = item;
-		if (_p5.ctor === 'Nothing') {
+		var _p10 = item;
+		if (_p10.ctor === 'Nothing') {
 			return {
-				ctor: '_Tuple3',
+				ctor: '_Tuple4',
 				_0: _elm_lang$core$Native_List.fromArray(
 					[]),
 				_1: _elm_lang$core$Native_List.fromArray(
 					[]),
-				_2: _elm_lang$core$Maybe$Nothing
+				_2: _elm_lang$core$Maybe$Nothing,
+				_3: {ctor: '_Tuple2', _0: 0, _1: 0}
 			};
 		} else {
-			var partner = _p5._0.partner;
+			var partner = _p10._0.partner;
 			var halfFocusWidth = (_user$project$Tree$boxWidth(focusBox) / 2) | 0;
 			var center = _user$project$Tree$middleBox(focusBox);
 			var partnerBox = A5(_user$project$Tree$box, partner, picture, center, 2, false);
 			var partnerWidth = _user$project$Tree$boxWidth(partnerBox);
 			var switchBox = A3(_user$project$Tree$switcherBox, families, index, center);
 			var switchWidth = function () {
-				var _p6 = switchBox;
-				if (_p6.ctor === 'Nothing') {
+				var _p11 = switchBox;
+				if (_p11.ctor === 'Nothing') {
 					return 0;
 				} else {
-					return _user$project$Tree$boxWidth(_p6._0);
+					return _user$project$Tree$boxWidth(_p11._0);
 				}
 			}();
 			var partnerShift = (halfFocusWidth + switchWidth) + ((partnerWidth / 2) | 0);
 			var shiftedPartnerBox = A2(_user$project$Tree$shiftBox, partnerShift, partnerBox);
 			var siblingShift = (halfFocusWidth + switchWidth) + partnerWidth;
 			var switchShift = function () {
-				var _p7 = switchBox;
-				if (_p7.ctor === 'Nothing') {
+				var _p12 = switchBox;
+				if (_p12.ctor === 'Nothing') {
 					return 0;
 				} else {
 					return halfFocusWidth + ((switchWidth / 2) | 0);
 				}
 			}();
 			var shiftedSwitchBox = function () {
-				var _p8 = switchBox;
-				if (_p8.ctor === 'Nothing') {
+				var _p13 = switchBox;
+				if (_p13.ctor === 'Nothing') {
 					return _elm_lang$core$Maybe$Nothing;
 				} else {
 					return _elm_lang$core$Maybe$Just(
-						A2(_user$project$Tree$shiftBox, switchShift, _p8._0));
+						A2(_user$project$Tree$shiftBox, switchShift, _p13._0));
 				}
 			}();
 			var boxes = function () {
-				var _p9 = shiftedSwitchBox;
-				if (_p9.ctor === 'Nothing') {
+				var _p14 = shiftedSwitchBox;
+				if (_p14.ctor === 'Nothing') {
 					return _elm_lang$core$Native_List.fromArray(
 						[shiftedPartnerBox]);
 				} else {
 					return _elm_lang$core$Native_List.fromArray(
-						[_p9._0, shiftedPartnerBox]);
+						[_p14._0, shiftedPartnerBox]);
 				}
 			}();
 			var links = function () {
-				var _p10 = shiftedSwitchBox;
-				if (_p10.ctor === 'Nothing') {
+				var _p15 = shiftedSwitchBox;
+				if (_p15.ctor === 'Nothing') {
 					return A2(_user$project$Tree$linkM, focusBox, shiftedPartnerBox);
 				} else {
-					var _p11 = _p10._0;
+					var _p16 = _p15._0;
 					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						A2(_user$project$Tree$linkM, focusBox, _p11),
-						A2(_user$project$Tree$linkM, _p11, shiftedPartnerBox));
+						A2(_user$project$Tree$linkM, focusBox, _p16),
+						A2(_user$project$Tree$linkM, _p16, shiftedPartnerBox));
+				}
+			}();
+			var parentPoint = function () {
+				var _p17 = shiftedSwitchBox;
+				if (_p17.ctor === 'Nothing') {
+					return focusBox.right.outer;
+				} else {
+					var _p18 = _p17._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Basics$fst(_p18.top.inner),
+						_1: _elm_lang$core$Basics$snd(_p18.top.inner) + _user$project$Config$switchBoxHeight
+					};
 				}
 			}();
 			return {
-				ctor: '_Tuple3',
+				ctor: '_Tuple4',
 				_0: boxes,
 				_1: links,
-				_2: _elm_lang$core$Maybe$Just(siblingShift)
+				_2: _elm_lang$core$Maybe$Just(siblingShift),
+				_3: parentPoint
 			};
+		}
+	});
+var _user$project$Tree$childrenBoxes = F5(
+	function (focusBox, families, index, picture, parentPoint) {
+		var item = A2(_elm_lang$core$Array$get, index, families);
+		var _p19 = item;
+		if (_p19.ctor === 'Nothing') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_List.fromArray(
+					[]),
+				_1: _elm_lang$core$Native_List.fromArray(
+					[])
+			};
+		} else {
+			var people = _p19._0.children;
+			if (_elm_lang$core$Array$isEmpty(people)) {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_List.fromArray(
+						[]),
+					_1: _elm_lang$core$Native_List.fromArray(
+						[])
+				};
+			} else {
+				var center = _elm_lang$core$Basics$fst(parentPoint);
+				var boxes = A2(
+					_elm_lang$core$Array$map,
+					function (p) {
+						return A5(_user$project$Tree$box, p, picture, center, 3, false);
+					},
+					people);
+				var widths = A2(_elm_lang$core$Array$map, _user$project$Tree$boxWidth, boxes);
+				var len = _elm_lang$core$Array$length(widths);
+				var halfWidth = (_elm_lang$core$List$sum(
+					_elm_lang$core$Array$toList(widths)) / 2) | 0;
+				var widthsToShifts = F2(
+					function (i, w) {
+						return function (s) {
+							return s + halfWidth;
+						}(
+							A2(
+								F2(
+									function (x, y) {
+										return x - y;
+									}),
+								(w / 2) | 0,
+								_elm_lang$core$List$sum(
+									_elm_lang$core$Array$toList(
+										A3(_elm_lang$core$Array$slice, i, len, widths)))));
+					});
+				var shifts = A2(_elm_lang$core$Array$indexedMap, widthsToShifts, widths);
+				var shiftedBoxes = _elm_lang$core$Array$toList(
+					A2(
+						_elm_lang$core$Array$indexedMap,
+						F2(
+							function (i, b) {
+								return A2(
+									_user$project$Tree$shiftBox,
+									A3(_user$project$Tree$getWithDefault, i, 0, shifts),
+									b);
+							}),
+						boxes));
+				var verticalLinks = A2(
+					_elm_lang$core$List$map,
+					_user$project$Tree$handleToLink,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.top;
+						},
+						shiftedBoxes));
+				var otherLinks = A2(_user$project$Tree$linkO, shiftedBoxes, parentPoint);
+				return {
+					ctor: '_Tuple2',
+					_0: shiftedBoxes,
+					_1: A2(_elm_lang$core$Basics_ops['++'], verticalLinks, otherLinks)
+				};
+			}
 		}
 	});
 var _user$project$Tree$tree = function (model) {
 	var center = (_user$project$Config$width / 2) | 0;
 	var focus = model.focus;
 	var focusBox = A5(_user$project$Tree$box, focus.person, model.picture, center, 2, true);
-	var _p12 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
-	var fatherBox = _p12._0;
-	var motherBox = _p12._1;
-	var parentLinks = _p12._2;
-	var _p13 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
-	var oSibBoxes = _p13._0;
-	var oSibLinks = _p13._1;
-	var _p14 = A4(_user$project$Tree$partnerBoxes, focusBox, focus.families, model.family, model.picture);
-	var partBoxes = _p14._0;
-	var partLinks = _p14._1;
-	var shiftRight = _p14._2;
-	var _p15 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
-	var ySibBoxes = _p15._0;
-	var ySibLinks = _p15._1;
+	var _p20 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
+	var fatherBox = _p20._0;
+	var motherBox = _p20._1;
+	var parentLinks = _p20._2;
+	var _p21 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
+	var oSibBoxes = _p21._0;
+	var oSibLinks = _p21._1;
+	var _p22 = A4(_user$project$Tree$partnerBoxes, focusBox, focus.families, model.family, model.picture);
+	var partBoxes = _p22._0;
+	var partLinks = _p22._1;
+	var shiftRight = _p22._2;
+	var parentPoint = _p22._3;
+	var _p23 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
+	var ySibBoxes = _p23._0;
+	var ySibLinks = _p23._1;
+	var _p24 = A5(_user$project$Tree$childrenBoxes, focusBox, focus.families, model.family, model.picture, parentPoint);
+	var childBoxes = _p24._0;
+	var childLinks = _p24._1;
 	var allBoxes = A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[focusBox, fatherBox, motherBox]),
 		_elm_lang$core$List$concat(
 			_elm_lang$core$Native_List.fromArray(
-				[oSibBoxes, ySibBoxes, partBoxes])));
+				[oSibBoxes, ySibBoxes, partBoxes, childBoxes])));
 	var boxSvgs = _elm_lang$core$List$concat(
 		A2(
 			_elm_lang$core$List$map,
@@ -9182,7 +9350,7 @@ var _user$project$Tree$tree = function (model) {
 			allBoxes));
 	var linkSvgs = _elm_lang$core$List$concat(
 		_elm_lang$core$Native_List.fromArray(
-			[parentLinks, oSibLinks, ySibLinks, partLinks]));
+			[parentLinks, oSibLinks, ySibLinks, partLinks, childLinks]));
 	return A2(_elm_lang$core$Basics_ops['++'], boxSvgs, linkSvgs);
 };
 var _user$project$Tree$Handle = F2(

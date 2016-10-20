@@ -56,20 +56,23 @@ tree model =
         ( oSibBoxes, oSibLinks ) =
             siblingBoxes focusBox focus.olderSiblings model.picture Nothing
 
-        ( partBoxes, partLinks, shiftRight ) =
+        ( partBoxes, partLinks, shiftRight, parentPoint ) =
             partnerBoxes focusBox focus.families model.family model.picture
 
         ( ySibBoxes, ySibLinks ) =
             siblingBoxes focusBox focus.youngerSiblings model.picture shiftRight
 
+        ( childBoxes, childLinks ) =
+            childrenBoxes focusBox focus.families model.family model.picture parentPoint
+
         allBoxes =
-            [ focusBox, fatherBox, motherBox ] ++ List.concat [ oSibBoxes, ySibBoxes, partBoxes ]
+            [ focusBox, fatherBox, motherBox ] ++ List.concat [ oSibBoxes, ySibBoxes, partBoxes, childBoxes ]
 
         boxSvgs =
             List.map .svgs allBoxes |> List.concat
 
         linkSvgs =
-            List.concat [ parentLinks, oSibLinks, ySibLinks, partLinks ]
+            List.concat [ parentLinks, oSibLinks, ySibLinks, partLinks, childLinks ]
     in
         boxSvgs ++ linkSvgs
 
@@ -361,7 +364,7 @@ siblingBoxes focusBox people picture shift =
         ( shiftedBoxes, verticalLinks ++ horizontalLinks )
 
 
-partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Maybe Int )
+partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Maybe Int, Point )
 partnerBoxes focusBox families index picture =
     let
         item =
@@ -369,7 +372,7 @@ partnerBoxes focusBox families index picture =
     in
         case item of
             Nothing ->
-                ( [], [], Nothing )
+                ( [], [], Nothing, ( 0, 0 ) )
 
             Just family ->
                 let
@@ -439,11 +442,88 @@ partnerBoxes focusBox families index picture =
 
                             Just bx ->
                                 linkM focusBox bx ++ linkM bx shiftedPartnerBox
+
+                    parentPoint =
+                        case shiftedSwitchBox of
+                            Nothing ->
+                                focusBox.right.outer
+
+                            Just bx ->
+                                ( fst bx.top.inner, snd bx.top.inner + Config.switchBoxHeight )
                 in
-                    ( boxes, links, Just siblingShift )
+                    ( boxes, links, Just siblingShift, parentPoint )
+
+
+childrenBoxes : Box -> Families -> Int -> Int -> Point -> ( List Box, List (Svg Msg) )
+childrenBoxes focusBox families index picture parentPoint =
+    let
+        item =
+            Array.get index families
+    in
+        case item of
+            Nothing ->
+                ( [], [] )
+
+            Just family ->
+                let
+                    people =
+                        family.children
+                in
+                    if Array.isEmpty people then
+                        ( [], [] )
+                    else
+                        let
+                            center =
+                                fst parentPoint
+
+                            boxes =
+                                Array.map (\p -> box p picture center 3 False) people
+
+                            widths =
+                                Array.map boxWidth boxes
+
+                            len =
+                                Array.length widths
+
+                            halfWidth =
+                                (Array.toList widths |> List.sum) // 2
+
+                            widthsToShifts i w =
+                                Array.slice i len widths
+                                    |> Array.toList
+                                    |> List.sum
+                                    |> (-) (w // 2)
+                                    |> \s -> s + halfWidth
+
+                            shifts =
+                                Array.indexedMap widthsToShifts widths
+
+                            shiftedBoxes =
+                                Array.indexedMap (\i b -> shiftBox (getWithDefault i 0 shifts) b) boxes |> Array.toList
+
+                            verticalLinks =
+                                List.map .top shiftedBoxes |> List.map handleToLink
+
+                            otherLinks =
+                                linkO shiftedBoxes parentPoint
+                        in
+                            ( shiftedBoxes, verticalLinks ++ otherLinks )
 
 
 
+--
+-- furthestBox =
+--     case shift of
+--         Nothing ->
+--             List.head shiftedBoxes
+--
+--         Just s ->
+--             List.reverse shiftedBoxes |> List.head
+--
+-- horizontalLinks =
+--     linkH focusBox furthestBox
+--                 in
+--                     ( [], [] )
 -- attributes for SVG primitives
 
 
@@ -537,6 +617,65 @@ linkM bx1 bx2 =
             snd bx2.left.inner |> toString
     in
         [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
+
+
+linkO : List Box -> Point -> List (Svg Msg)
+linkO boxes point =
+    let
+        b1 =
+            List.head boxes
+
+        b2 =
+            List.reverse boxes |> List.head
+
+        vertical =
+            case b1 of
+                Just bx ->
+                    let
+                        i1 =
+                            fst point |> toString
+
+                        j1 =
+                            snd point |> toString
+
+                        i2 =
+                            fst point |> toString
+
+                        j2 =
+                            snd bx.top.outer |> toString
+                    in
+                        Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
+
+                _ ->
+                    Nothing
+
+        horizontal =
+            case ( b1, b2 ) of
+                ( Just bx1, Just bx2 ) ->
+                    let
+                        i1 =
+                            fst bx1.top.outer |> toString
+
+                        j1 =
+                            snd bx1.top.outer |> toString
+
+                        i2 =
+                            fst bx2.top.outer |> toString
+
+                        j2 =
+                            snd bx2.top.outer |> toString
+                    in
+                        Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
+
+                _ ->
+                    Nothing
+    in
+        case ( vertical, horizontal ) of
+            ( Just v, Just h ) ->
+                [ v, h ]
+
+            _ ->
+                []
 
 
 
