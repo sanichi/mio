@@ -141,8 +141,8 @@ width =
 -- pictures
 
 
-changePictures : Float
-changePictures =
+changePicture : Float
+changePicture =
     4
 
 

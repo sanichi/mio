@@ -1,6 +1,7 @@
 module Messages exposing (..)
 
 import Types exposing (Focus)
+import Time exposing (Time)
 
 
 type Msg
@@ -8,3 +9,4 @@ type Msg
     | GetFocus Int
     | GotFocus Focus
     | DisplayPerson Int
+    | Tick Time

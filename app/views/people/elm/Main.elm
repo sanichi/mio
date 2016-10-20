@@ -2,8 +2,10 @@ module Main exposing (..)
 
 import Html exposing (Html)
 import Html.App exposing (programWithFlags)
+import Platform.Sub
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Time
 
 
 -- local modules
@@ -35,7 +37,10 @@ initTasks =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Ports.gotFocus GotFocus
+    Platform.Sub.batch
+        [ Ports.gotFocus GotFocus
+        , Time.every (Config.changePicture * Time.second) Tick
+        ]
 
 
 
@@ -72,3 +77,6 @@ update msg model =
 
         DisplayPerson id ->
             ( model, Ports.displayPerson id )
+
+        Tick _ ->
+            ( { model | picture = model.picture + 1 }, Cmd.none )
