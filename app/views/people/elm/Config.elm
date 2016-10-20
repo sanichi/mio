@@ -8,6 +8,11 @@ boxHeight =
     50
 
 
+boxRadius : Int
+boxRadius =
+    0
+
+
 centerY : Int -> Int
 centerY level =
     (levelHeight * (2 * level - 1) - pictureSize - margin) // 2
@@ -71,6 +76,11 @@ smallTextWidth text =
 switchBoxHeight : Int
 switchBoxHeight =
     30
+
+
+switchBoxRadius : Int
+switchBoxRadius =
+    8
 
 
 textWidth : String -> Int -> Int

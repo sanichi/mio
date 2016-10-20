@@ -8271,6 +8271,7 @@ var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mous
 
 var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
 var _user$project$Config$width = 1000;
+var _user$project$Config$switchBoxRadius = 8;
 var _user$project$Config$switchBoxHeight = 30;
 var _user$project$Config$smallFontWidth = 6;
 var _user$project$Config$smallTextWidth = function (text) {
@@ -8290,6 +8291,7 @@ var _user$project$Config$textWidth = F2(
 	});
 var _user$project$Config$fontHeight = 14;
 var _user$project$Config$changePicture = 4;
+var _user$project$Config$boxRadius = 0;
 var _user$project$Config$boxHeight = 50;
 var _user$project$Config$levelHeight = (_user$project$Config$boxHeight + _user$project$Config$pictureSize) + (3 * _user$project$Config$margin);
 var _user$project$Config$centerY = function (level) {
@@ -8774,8 +8776,8 @@ var _user$project$Tree$textAttrs = F5(
 				handler
 			]);
 	});
-var _user$project$Tree$rectAttrs = F6(
-	function (c, i, j, w, h, handler) {
+var _user$project$Tree$rectAttrs = F7(
+	function (c, i, j, r, w, h, handler) {
 		return _elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$svg$Svg_Attributes$class(c),
@@ -8783,6 +8785,10 @@ var _user$project$Tree$rectAttrs = F6(
 				_elm_lang$core$Basics$toString(i)),
 				_elm_lang$svg$Svg_Attributes$y(
 				_elm_lang$core$Basics$toString(j)),
+				_elm_lang$svg$Svg_Attributes$rx(
+				_elm_lang$core$Basics$toString(r)),
+				_elm_lang$svg$Svg_Attributes$ry(
+				_elm_lang$core$Basics$toString(r)),
 				_elm_lang$svg$Svg_Attributes$width(
 				_elm_lang$core$Basics$toString(w)),
 				_elm_lang$svg$Svg_Attributes$height(
@@ -8874,7 +8880,7 @@ var _user$project$Tree$switcherBox = F3(
 				[
 					A2(
 					_elm_lang$svg$Svg$rect,
-					A6(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, boxWidth, _user$project$Config$switchBoxHeight, handler),
+					A7(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, _user$project$Config$switchBoxRadius, boxWidth, _user$project$Config$switchBoxHeight, handler),
 					_elm_lang$core$Native_List.fromArray(
 						[])),
 					A2(
@@ -8940,7 +8946,7 @@ var _user$project$Tree$box = F5(
 			[
 				A2(
 				_elm_lang$svg$Svg$rect,
-				A6(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, boxWidth, _user$project$Config$boxHeight, handler),
+				A7(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, _user$project$Config$boxRadius, boxWidth, _user$project$Config$boxHeight, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(

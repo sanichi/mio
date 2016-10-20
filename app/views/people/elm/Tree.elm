@@ -175,7 +175,7 @@ box person pictureIndex centerX level focus =
             { inner = ( boxX + boxWidth, leftRightY ), outer = ( Basics.max (boxX + boxWidth) (pictureX + pictureWidth) + Config.margin, leftRightY ) }
 
         svgs =
-            [ rect (rectAttrs boxClass boxX boxY boxWidth Config.boxHeight handler) []
+            [ rect (rectAttrs boxClass boxX boxY Config.boxRadius boxWidth Config.boxHeight handler) []
             , text' (textAttrs nameClass nameX nameY nameWidth handler) [ text name ]
             , text' (textAttrs yearsClass yearsX yearsY yearsWidth handler) [ text years ]
             , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
@@ -253,7 +253,7 @@ switcherBox families index centerX =
                     { inner = ( boxX + boxWidth, leftRightY ), outer = ( boxX + boxWidth + Config.margin, leftRightY ) }
 
                 svgs =
-                    [ rect (rectAttrs boxClass boxX boxY boxWidth Config.switchBoxHeight handler) []
+                    [ rect (rectAttrs boxClass boxX boxY Config.switchBoxRadius boxWidth Config.switchBoxHeight handler) []
                     , text' (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
                     ]
 
@@ -452,9 +452,9 @@ imageAttrs l i j w h handler =
     [ xlinkHref l, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
 
 
-rectAttrs : String -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
-rectAttrs c i j w h handler =
-    [ class c, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
+rectAttrs : String -> Int -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
+rectAttrs c i j r w h handler =
+    [ class c, x (toString i), y (toString j), rx (toString r), ry (toString r), width (toString w), height (toString h), handler ]
 
 
 textAttrs : String -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
