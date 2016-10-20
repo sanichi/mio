@@ -8273,6 +8273,7 @@ var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
 var _user$project$Config$pictureSize = 100;
 var _user$project$Config$changePicture = 4;
 var _user$project$Config$width = 1000;
+var _user$project$Config$switchBoxHeight = 30;
 var _user$project$Config$smallFontWidth = 6;
 var _user$project$Config$smallTextWidth = function (text) {
 	return _elm_lang$core$String$length(text) * _user$project$Config$smallFontWidth;
@@ -8281,12 +8282,13 @@ var _user$project$Config$smallFontHeight = 10;
 var _user$project$Config$padding = 6;
 var _user$project$Config$margin = 18;
 var _user$project$Config$fontWidth = 8;
-var _user$project$Config$textWidth = function (text) {
-	return A2(
-		_elm_lang$core$Basics$max,
-		70,
-		_elm_lang$core$String$length(text) * _user$project$Config$fontWidth);
-};
+var _user$project$Config$textWidth = F2(
+	function (text, minLen) {
+		return A2(
+			_elm_lang$core$Basics$max,
+			minLen,
+			_elm_lang$core$String$length(text) * _user$project$Config$fontWidth);
+	});
 var _user$project$Config$fontHeight = 14;
 var _user$project$Config$deltaShift = 200;
 var _user$project$Config$boxHeight = 50;
@@ -8330,6 +8332,9 @@ var _user$project$Types$Flags = function (a) {
 	return {focus: a};
 };
 
+var _user$project$Messages$SwitchFamily = function (a) {
+	return {ctor: 'SwitchFamily', _0: a};
+};
 var _user$project$Messages$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
 };
@@ -8657,6 +8662,31 @@ var _user$project$Tree$currentPicturePath = F2(
 var _user$project$Tree$boxWidth = function (bx) {
 	return _elm_lang$core$Basics$fst(bx.right.outer) - _elm_lang$core$Basics$fst(bx.left.outer);
 };
+var _user$project$Tree$linkM = F2(
+	function (bx1, bx2) {
+		var j2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(bx2.left.inner));
+		var i2 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(bx2.left.inner));
+		var j1 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$snd(bx1.right.inner));
+		var i1 = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$fst(bx1.right.inner));
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$svg$Svg$line,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg_Attributes$x1(i1),
+						_elm_lang$svg$Svg_Attributes$y1(j1),
+						_elm_lang$svg$Svg_Attributes$x2(i2),
+						_elm_lang$svg$Svg_Attributes$y2(j2)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]);
+	});
 var _user$project$Tree$linkH = F2(
 	function (bx1, mbx2) {
 		var _p1 = mbx2;
@@ -8733,8 +8763,8 @@ var _user$project$Tree$linkT = F3(
 					[]))
 			]);
 	});
-var _user$project$Tree$textAttrs = F4(
-	function (c, i, j, l) {
+var _user$project$Tree$textAttrs = F5(
+	function (c, i, j, l, handler) {
 		return _elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$svg$Svg_Attributes$class(c),
@@ -8743,7 +8773,8 @@ var _user$project$Tree$textAttrs = F4(
 				_elm_lang$svg$Svg_Attributes$y(
 				_elm_lang$core$Basics$toString(j)),
 				_elm_lang$svg$Svg_Attributes$textLength(
-				_elm_lang$core$Basics$toString(l))
+				_elm_lang$core$Basics$toString(l)),
+				handler
 			]);
 	});
 var _user$project$Tree$rectAttrs = F6(
@@ -8803,6 +8834,64 @@ var _user$project$Tree$shiftBox = F2(
 			right: A2(_user$project$Tree$shiftHandle, deltaX, bx.right)
 		};
 	});
+var _user$project$Tree$switcherBox = F3(
+	function (families, index, centerX) {
+		var len = _elm_lang$core$Array$length(families);
+		if (_elm_lang$core$Native_Utils.cmp(len, 2) < 0) {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			var topX = centerX;
+			var nextIndex = (_elm_lang$core$Native_Utils.cmp(index + 1, len) > -1) ? 0 : (index + 1);
+			var handler = _elm_lang$svg$Svg_Events$onClick(
+				_user$project$Messages$SwitchFamily(nextIndex));
+			var labelX = centerX;
+			var label = A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(index + 1),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' of ',
+					_elm_lang$core$Basics$toString(len)));
+			var labelWidth = A2(_user$project$Config$textWidth, label, 40);
+			var boxWidth = labelWidth + (2 * _user$project$Config$padding);
+			var boxX = centerX - ((boxWidth / 2) | 0);
+			var boxClass = 'box';
+			var labelClass = A2(_elm_lang$core$Basics_ops['++'], 'medium ', boxClass);
+			var centerY = _user$project$Config$centerY(2);
+			var labelY = centerY + ((_user$project$Config$fontHeight / 3) | 0);
+			var boxY = centerY - ((_user$project$Config$switchBoxHeight / 2) | 0);
+			var top = {
+				inner: {ctor: '_Tuple2', _0: topX, _1: boxY},
+				outer: {ctor: '_Tuple2', _0: topX, _1: boxY - _user$project$Config$margin}
+			};
+			var leftRightY = boxY + ((_user$project$Config$switchBoxHeight / 2) | 0);
+			var left = {
+				inner: {ctor: '_Tuple2', _0: boxX, _1: leftRightY},
+				outer: {ctor: '_Tuple2', _0: boxX - _user$project$Config$margin, _1: leftRightY}
+			};
+			var right = {
+				inner: {ctor: '_Tuple2', _0: boxX + boxWidth, _1: leftRightY},
+				outer: {ctor: '_Tuple2', _0: (boxX + boxWidth) + _user$project$Config$margin, _1: leftRightY}
+			};
+			var svgs = _elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$svg$Svg$rect,
+					A6(_user$project$Tree$rectAttrs, boxClass, boxX, boxY, boxWidth, _user$project$Config$switchBoxHeight, handler),
+					_elm_lang$core$Native_List.fromArray(
+						[])),
+					A2(
+					_elm_lang$svg$Svg$text$,
+					A5(_user$project$Tree$textAttrs, labelClass, labelX, labelY, labelWidth, handler),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$svg$Svg$text(label)
+						]))
+				]);
+			var bx = {svgs: svgs, top: top, left: left, right: right};
+			return _elm_lang$core$Maybe$Just(bx);
+		}
+	});
 var _user$project$Tree$box = F5(
 	function (person, pictureIndex, centerX, level, focus) {
 		var topX = centerX;
@@ -8817,7 +8906,7 @@ var _user$project$Tree$box = F5(
 		var yearsWidth = _user$project$Config$smallTextWidth(years);
 		var nameX = centerX;
 		var name = person.name;
-		var nameWidth = _user$project$Config$textWidth(name);
+		var nameWidth = A2(_user$project$Config$textWidth, name, 70);
 		var maxWidth = A2(_elm_lang$core$Basics$max, nameWidth, yearsWidth);
 		var boxWidth = maxWidth + (2 * _user$project$Config$padding);
 		var boxX = centerX - ((boxWidth / 2) | 0);
@@ -8859,14 +8948,14 @@ var _user$project$Tree$box = F5(
 					[])),
 				A2(
 				_elm_lang$svg$Svg$text$,
-				A4(_user$project$Tree$textAttrs, nameClass, nameX, nameY, nameWidth),
+				A5(_user$project$Tree$textAttrs, nameClass, nameX, nameY, nameWidth, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$svg$Svg$text(name)
 					])),
 				A2(
 				_elm_lang$svg$Svg$text$,
-				A4(_user$project$Tree$textAttrs, yearsClass, yearsX, yearsY, yearsWidth),
+				A5(_user$project$Tree$textAttrs, yearsClass, yearsX, yearsY, yearsWidth, handler),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$svg$Svg$text(years)
@@ -8935,7 +9024,7 @@ var _user$project$Tree$siblingBoxes = F4(
 								function (x, y) {
 									return x + y;
 								}),
-							focusHalfWidth,
+							_p3._0,
 							_elm_lang$core$List$sum(
 								_elm_lang$core$Array$toList(
 									A3(_elm_lang$core$Array$slice, 0, i + 1, widths)))));
@@ -8978,32 +9067,109 @@ var _user$project$Tree$siblingBoxes = F4(
 			_1: A2(_elm_lang$core$Basics_ops['++'], verticalLinks, horizontalLinks)
 		};
 	});
+var _user$project$Tree$partnerBoxes = F4(
+	function (focusBox, families, index, picture) {
+		var item = A2(_elm_lang$core$Array$get, index, families);
+		var _p5 = item;
+		if (_p5.ctor === 'Nothing') {
+			return {
+				ctor: '_Tuple3',
+				_0: _elm_lang$core$Native_List.fromArray(
+					[]),
+				_1: _elm_lang$core$Native_List.fromArray(
+					[]),
+				_2: _elm_lang$core$Maybe$Nothing
+			};
+		} else {
+			var partner = _p5._0.partner;
+			var halfFocusWidth = (_user$project$Tree$boxWidth(focusBox) / 2) | 0;
+			var center = _user$project$Tree$middleBox(focusBox);
+			var partnerBox = A5(_user$project$Tree$box, partner, picture, center, 2, false);
+			var partnerWidth = _user$project$Tree$boxWidth(partnerBox);
+			var switchBox = A3(_user$project$Tree$switcherBox, families, index, center);
+			var switchWidth = function () {
+				var _p6 = switchBox;
+				if (_p6.ctor === 'Nothing') {
+					return 0;
+				} else {
+					return _user$project$Tree$boxWidth(_p6._0);
+				}
+			}();
+			var partnerShift = (halfFocusWidth + switchWidth) + ((partnerWidth / 2) | 0);
+			var shiftedPartnerBox = A2(_user$project$Tree$shiftBox, partnerShift, partnerBox);
+			var siblingShift = (halfFocusWidth + switchWidth) + partnerWidth;
+			var switchShift = function () {
+				var _p7 = switchBox;
+				if (_p7.ctor === 'Nothing') {
+					return 0;
+				} else {
+					return halfFocusWidth + ((switchWidth / 2) | 0);
+				}
+			}();
+			var shiftedSwitchBox = function () {
+				var _p8 = switchBox;
+				if (_p8.ctor === 'Nothing') {
+					return _elm_lang$core$Maybe$Nothing;
+				} else {
+					return _elm_lang$core$Maybe$Just(
+						A2(_user$project$Tree$shiftBox, switchShift, _p8._0));
+				}
+			}();
+			var boxes = function () {
+				var _p9 = shiftedSwitchBox;
+				if (_p9.ctor === 'Nothing') {
+					return _elm_lang$core$Native_List.fromArray(
+						[shiftedPartnerBox]);
+				} else {
+					return _elm_lang$core$Native_List.fromArray(
+						[_p9._0, shiftedPartnerBox]);
+				}
+			}();
+			var links = function () {
+				var _p10 = shiftedSwitchBox;
+				if (_p10.ctor === 'Nothing') {
+					return A2(_user$project$Tree$linkM, focusBox, shiftedPartnerBox);
+				} else {
+					var _p11 = _p10._0;
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						A2(_user$project$Tree$linkM, focusBox, _p11),
+						A2(_user$project$Tree$linkM, _p11, shiftedPartnerBox));
+				}
+			}();
+			return {
+				ctor: '_Tuple3',
+				_0: boxes,
+				_1: links,
+				_2: _elm_lang$core$Maybe$Just(siblingShift)
+			};
+		}
+	});
 var _user$project$Tree$tree = function (model) {
 	var center = (_user$project$Config$width / 2) | 0;
 	var focus = model.focus;
 	var focusBox = A5(_user$project$Tree$box, focus.person, model.picture, center, 2, true);
-	var _p5 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
-	var fatherBox = _p5._0;
-	var motherBox = _p5._1;
-	var parentLinks = _p5._2;
-	var _p6 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
-	var osBoxes = _p6._0;
-	var osLinks = _p6._1;
-	var _p7 = A4(
-		_user$project$Tree$siblingBoxes,
-		focusBox,
-		focus.youngerSiblings,
-		model.picture,
-		_elm_lang$core$Maybe$Just(0));
-	var ysBoxes = _p7._0;
-	var ysLinks = _p7._1;
+	var _p12 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
+	var fatherBox = _p12._0;
+	var motherBox = _p12._1;
+	var parentLinks = _p12._2;
+	var _p13 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
+	var oSibBoxes = _p13._0;
+	var oSibLinks = _p13._1;
+	var _p14 = A4(_user$project$Tree$partnerBoxes, focusBox, focus.families, model.family, model.picture);
+	var partBoxes = _p14._0;
+	var partLinks = _p14._1;
+	var shiftRight = _p14._2;
+	var _p15 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
+	var ySibBoxes = _p15._0;
+	var ySibLinks = _p15._1;
 	var allBoxes = A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[focusBox, fatherBox, motherBox]),
 		_elm_lang$core$List$concat(
 			_elm_lang$core$Native_List.fromArray(
-				[osBoxes, ysBoxes])));
+				[oSibBoxes, ySibBoxes, partBoxes])));
 	var boxSvgs = _elm_lang$core$List$concat(
 		A2(
 			_elm_lang$core$List$map,
@@ -9013,7 +9179,7 @@ var _user$project$Tree$tree = function (model) {
 			allBoxes));
 	var linkSvgs = _elm_lang$core$List$concat(
 		_elm_lang$core$Native_List.fromArray(
-			[parentLinks, osLinks, ysLinks]));
+			[parentLinks, oSibLinks, ySibLinks, partLinks]));
 	return A2(_elm_lang$core$Basics_ops['++'], boxSvgs, linkSvgs);
 };
 var _user$project$Tree$Handle = F2(
@@ -9051,12 +9217,20 @@ var _user$project$Main$update = F2(
 					_0: model,
 					_1: _user$project$Ports$displayPerson(_p0._0)
 				};
-			default:
+			case 'Tick':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{picture: model.picture + 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{family: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}

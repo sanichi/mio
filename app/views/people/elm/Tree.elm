@@ -10,7 +10,7 @@ import Svg.Events exposing (..)
 
 import Config
 import Messages exposing (Msg(..))
-import Types exposing (Model, Focus, People, Person)
+import Types exposing (..)
 
 
 -- local types
@@ -53,20 +53,23 @@ tree model =
         ( fatherBox, motherBox, parentLinks ) =
             parentBoxes focusBox focus.father focus.mother model.picture
 
-        ( osBoxes, osLinks ) =
+        ( oSibBoxes, oSibLinks ) =
             siblingBoxes focusBox focus.olderSiblings model.picture Nothing
 
-        ( ysBoxes, ysLinks ) =
-            siblingBoxes focusBox focus.youngerSiblings model.picture (Just 0)
+        ( partBoxes, partLinks, shiftRight ) =
+            partnerBoxes focusBox focus.families model.family model.picture
+
+        ( ySibBoxes, ySibLinks ) =
+            siblingBoxes focusBox focus.youngerSiblings model.picture shiftRight
 
         allBoxes =
-            [ focusBox, fatherBox, motherBox ] ++ List.concat [ osBoxes, ysBoxes ]
+            [ focusBox, fatherBox, motherBox ] ++ List.concat [ oSibBoxes, ySibBoxes, partBoxes ]
 
         boxSvgs =
             List.map .svgs allBoxes |> List.concat
 
         linkSvgs =
-            List.concat [ parentLinks, osLinks, ysLinks ]
+            List.concat [ parentLinks, oSibLinks, ySibLinks, partLinks ]
     in
         boxSvgs ++ linkSvgs
 
@@ -91,7 +94,7 @@ box person pictureIndex centerX level focus =
             person.name
 
         nameWidth =
-            Config.textWidth name
+            Config.textWidth name 70
 
         nameX =
             centerX
@@ -154,7 +157,7 @@ box person pictureIndex centerX level focus =
                 NoOp
 
         handler =
-            onClick (msg)
+            onClick msg
 
         topX =
             centerX
@@ -173,8 +176,8 @@ box person pictureIndex centerX level focus =
 
         svgs =
             [ rect (rectAttrs boxClass boxX boxY boxWidth Config.boxHeight handler) []
-            , text' (textAttrs nameClass nameX nameY nameWidth) [ text name ]
-            , text' (textAttrs yearsClass yearsX yearsY yearsWidth) [ text years ]
+            , text' (textAttrs nameClass nameX nameY nameWidth handler) [ text name ]
+            , text' (textAttrs yearsClass yearsX yearsY yearsWidth handler) [ text years ]
             , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
             ]
     in
@@ -183,6 +186,85 @@ box person pictureIndex centerX level focus =
         , left = left
         , right = right
         }
+
+
+switcherBox : Families -> Int -> Int -> Maybe Box
+switcherBox families index centerX =
+    let
+        len =
+            Array.length families
+    in
+        if len < 2 then
+            Nothing
+        else
+            let
+                centerY =
+                    Config.centerY 2
+
+                boxClass =
+                    "box"
+
+                label =
+                    toString (index + 1) ++ " of " ++ toString len
+
+                labelWidth =
+                    Config.textWidth label 40
+
+                labelX =
+                    centerX
+
+                labelY =
+                    centerY + Config.fontHeight // 3
+
+                labelClass =
+                    "medium " ++ boxClass
+
+                boxWidth =
+                    labelWidth + 2 * Config.padding
+
+                boxX =
+                    centerX - boxWidth // 2
+
+                boxY =
+                    centerY - Config.switchBoxHeight // 2
+
+                nextIndex =
+                    if index + 1 >= len then
+                        0
+                    else
+                        index + 1
+
+                handler =
+                    SwitchFamily nextIndex |> onClick
+
+                topX =
+                    centerX
+
+                top =
+                    { inner = ( topX, boxY ), outer = ( topX, boxY - Config.margin ) }
+
+                leftRightY =
+                    boxY + Config.switchBoxHeight // 2
+
+                left =
+                    { inner = ( boxX, leftRightY ), outer = ( boxX - Config.margin, leftRightY ) }
+
+                right =
+                    { inner = ( boxX + boxWidth, leftRightY ), outer = ( boxX + boxWidth + Config.margin, leftRightY ) }
+
+                svgs =
+                    [ rect (rectAttrs boxClass boxX boxY boxWidth Config.switchBoxHeight handler) []
+                    , text' (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
+                    ]
+
+                bx =
+                    { svgs = svgs
+                    , top = top
+                    , left = left
+                    , right = right
+                    }
+            in
+                Just bx
 
 
 shiftBox : Int -> Box -> Box
@@ -253,7 +335,7 @@ siblingBoxes focusBox people picture shift =
                     Array.slice 0 (i + 1) widths
                         |> Array.toList
                         |> List.sum
-                        |> (+) focusHalfWidth
+                        |> (+) s
                         |> \x -> x - w // 2
 
         shifts =
@@ -279,6 +361,88 @@ siblingBoxes focusBox people picture shift =
         ( shiftedBoxes, verticalLinks ++ horizontalLinks )
 
 
+partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Maybe Int )
+partnerBoxes focusBox families index picture =
+    let
+        item =
+            Array.get index families
+    in
+        case item of
+            Nothing ->
+                ( [], [], Nothing )
+
+            Just family ->
+                let
+                    center =
+                        middleBox focusBox
+
+                    halfFocusWidth =
+                        boxWidth focusBox // 2
+
+                    partner =
+                        family.partner
+
+                    partnerBox =
+                        box partner picture center 2 False
+
+                    partnerWidth =
+                        boxWidth partnerBox
+
+                    switchBox =
+                        switcherBox families index center
+
+                    switchWidth =
+                        case switchBox of
+                            Nothing ->
+                                0
+
+                            Just bx ->
+                                boxWidth bx
+
+                    switchShift =
+                        case switchBox of
+                            Nothing ->
+                                0
+
+                            Just bx ->
+                                halfFocusWidth + switchWidth // 2
+
+                    shiftedSwitchBox =
+                        case switchBox of
+                            Nothing ->
+                                Nothing
+
+                            Just bx ->
+                                Just (shiftBox switchShift bx)
+
+                    partnerShift =
+                        halfFocusWidth + switchWidth + partnerWidth // 2
+
+                    shiftedPartnerBox =
+                        shiftBox partnerShift partnerBox
+
+                    siblingShift =
+                        halfFocusWidth + switchWidth + partnerWidth
+
+                    boxes =
+                        case shiftedSwitchBox of
+                            Nothing ->
+                                [ shiftedPartnerBox ]
+
+                            Just bx ->
+                                [ bx, shiftedPartnerBox ]
+
+                    links =
+                        case shiftedSwitchBox of
+                            Nothing ->
+                                linkM focusBox shiftedPartnerBox
+
+                            Just bx ->
+                                linkM focusBox bx ++ linkM bx shiftedPartnerBox
+                in
+                    ( boxes, links, Just siblingShift )
+
+
 
 -- attributes for SVG primitives
 
@@ -293,9 +457,9 @@ rectAttrs c i j w h handler =
     [ class c, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
 
 
-textAttrs : String -> Int -> Int -> Int -> List (Svg.Attribute Msg)
-textAttrs c i j l =
-    [ class c, x (toString i), y (toString j), textLength (toString l) ]
+textAttrs : String -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
+textAttrs c i j l handler =
+    [ class c, x (toString i), y (toString j), textLength (toString l), handler ]
 
 
 
@@ -355,6 +519,24 @@ linkH bx1 mbx2 =
                     snd bx2.top.outer |> toString
             in
                 [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
+
+
+linkM : Box -> Box -> List (Svg Msg)
+linkM bx1 bx2 =
+    let
+        i1 =
+            fst bx1.right.inner |> toString
+
+        j1 =
+            snd bx1.right.inner |> toString
+
+        i2 =
+            fst bx2.left.inner |> toString
+
+        j2 =
+            snd bx2.left.inner |> toString
+    in
+        [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
 
 
 

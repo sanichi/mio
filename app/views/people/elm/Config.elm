@@ -85,9 +85,14 @@ smallTextWidth text =
     String.length text * smallFontWidth
 
 
-textWidth : String -> Int
-textWidth text =
-    String.length text * fontWidth |> Basics.max 70
+switchBoxHeight : Int
+switchBoxHeight =
+    30
+
+
+textWidth : String -> Int -> Int
+textWidth text minLen =
+    String.length text * fontWidth |> Basics.max minLen
 
 
 width : Int

@@ -10,3 +10,4 @@ type Msg
     | GotFocus Focus
     | DisplayPerson Int
     | Tick Time
+    | SwitchFamily Int

@@ -80,3 +80,6 @@ update msg model =
 
         Tick _ ->
             ( { model | picture = model.picture + 1 }, Cmd.none )
+
+        SwitchFamily index ->
+            ( { model | family = index }, Cmd.none )
