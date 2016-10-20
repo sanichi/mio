@@ -8270,8 +8270,6 @@ var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mo
 var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
 var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
-var _user$project$Config$pictureSize = 100;
-var _user$project$Config$changePicture = 4;
 var _user$project$Config$width = 1000;
 var _user$project$Config$switchBoxHeight = 30;
 var _user$project$Config$smallFontWidth = 6;
@@ -8279,6 +8277,7 @@ var _user$project$Config$smallTextWidth = function (text) {
 	return _elm_lang$core$String$length(text) * _user$project$Config$smallFontWidth;
 };
 var _user$project$Config$smallFontHeight = 10;
+var _user$project$Config$pictureSize = 100;
 var _user$project$Config$padding = 6;
 var _user$project$Config$margin = 18;
 var _user$project$Config$fontWidth = 8;
@@ -8290,15 +8289,13 @@ var _user$project$Config$textWidth = F2(
 			_elm_lang$core$String$length(text) * _user$project$Config$fontWidth);
 	});
 var _user$project$Config$fontHeight = 14;
-var _user$project$Config$deltaShift = 200;
+var _user$project$Config$changePicture = 4;
 var _user$project$Config$boxHeight = 50;
 var _user$project$Config$levelHeight = (_user$project$Config$boxHeight + _user$project$Config$pictureSize) + (3 * _user$project$Config$margin);
 var _user$project$Config$centerY = function (level) {
 	return ((((_user$project$Config$levelHeight * ((2 * level) - 1)) - _user$project$Config$pictureSize) - _user$project$Config$margin) / 2) | 0;
 };
 var _user$project$Config$height = 3 * _user$project$Config$levelHeight;
-var _user$project$Config$border = 1;
-var _user$project$Config$adjustY = 0.5 * _elm_lang$core$Basics$toFloat(_user$project$Config$levelHeight - _user$project$Config$boxHeight);
 var _user$project$Config$viewBox = A2(
 	_elm_lang$core$String$join,
 	' ',
