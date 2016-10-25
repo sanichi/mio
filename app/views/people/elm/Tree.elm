@@ -45,7 +45,7 @@ tree model =
             model.focus
 
         center =
-            Config.width // 2
+            Config.defaultCenter + model.shift
 
         focusBox =
             box focus.person model.picture center 2 True
@@ -73,8 +73,11 @@ tree model =
 
         linkSvgs =
             List.concat [ parentLinks, oSibLinks, ySibLinks, partLinks, childLinks ]
+
+        pointerSvgs =
+            pointers allBoxes
     in
-        boxSvgs ++ linkSvgs
+        boxSvgs ++ linkSvgs ++ pointerSvgs
 
 
 
@@ -511,19 +514,6 @@ childrenBoxes focusBox families index picture parentPoint =
 
 
 
---
--- furthestBox =
---     case shift of
---         Nothing ->
---             List.head shiftedBoxes
---
---         Just s ->
---             List.reverse shiftedBoxes |> List.head
---
--- horizontalLinks =
---     linkH focusBox furthestBox
---                 in
---                     ( [], [] )
 -- attributes for SVG primitives
 
 
@@ -540,6 +530,11 @@ rectAttrs c i j r w h handler =
 textAttrs : String -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
 textAttrs c i j l handler =
     [ class c, x (toString i), y (toString j), textLength (toString l), handler ]
+
+
+pointerAttrs : String -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
+pointerAttrs c i j handler =
+    [ class c, x (toString i), y (toString j), handler ]
 
 
 
@@ -737,6 +732,55 @@ handleToLink handle =
 middleBox : Box -> Int
 middleBox bx =
     fst bx.top.inner
+
+
+pointers : List Box -> List (Svg Msg)
+pointers boxes =
+    let
+        leftMost =
+            List.map (\b -> fst b.left.outer) boxes |> List.minimum |> Maybe.withDefault 0
+
+        rightMost =
+            List.map (\b -> fst b.right.outer) boxes |> List.maximum |> Maybe.withDefault Config.width
+
+        leftPointer =
+            let
+                i =
+                    Config.pointerFontWidth
+
+                j =
+                    Config.pointerFontHeight
+
+                h =
+                    onClick ShiftLeft
+            in
+                text' (pointerAttrs "pointer" i j h) [ text "☜" ]
+
+        rightPointer =
+            let
+                i =
+                    Config.width - Config.pointerFontWidth
+
+                j =
+                    Config.pointerFontHeight
+
+                h =
+                    onClick ShiftRight
+            in
+                text' (pointerAttrs "pointer" i j h) [ text "☞" ]
+    in
+        case ( leftMost < 0, rightMost > Config.width ) of
+            ( True, True ) ->
+                [ leftPointer, rightPointer ]
+
+            ( True, False ) ->
+                [ leftPointer ]
+
+            ( False, True ) ->
+                [ rightPointer ]
+
+            ( False, False ) ->
+                []
 
 
 shiftHandle : Int -> Handle -> Handle

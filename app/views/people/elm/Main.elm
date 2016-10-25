@@ -73,13 +73,19 @@ update msg model =
             ( model, Ports.getFocus id )
 
         GotFocus focus ->
-            ( { model | focus = focus }, Cmd.none )
+            ( { model | focus = focus, shift = 0 }, Cmd.none )
 
         DisplayPerson id ->
             ( model, Ports.displayPerson id )
 
         Tick _ ->
             ( { model | picture = model.picture + 1 }, Cmd.none )
+
+        ShiftLeft ->
+            ( { model | shift = model.shift + Config.deltaShift }, Cmd.none )
+
+        ShiftRight ->
+            ( { model | shift = model.shift - Config.deltaShift }, Cmd.none )
 
         SwitchFamily index ->
             ( { model | family = index }, Cmd.none )

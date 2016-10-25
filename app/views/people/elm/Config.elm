@@ -23,6 +23,16 @@ changePicture =
     4
 
 
+defaultCenter : Int
+defaultCenter =
+    width // 2 - 100
+
+
+deltaShift : Int
+deltaShift =
+    100
+
+
 fontHeight : Int
 fontHeight =
     14
@@ -30,12 +40,27 @@ fontHeight =
 
 fontWidth : Int
 fontWidth =
-    8
+    fontWidthToHeight fontHeight
+
+
+fontWidthToHeight : Int -> Int
+fontWidthToHeight width =
+    width * 6 // 10
 
 
 height : Int
 height =
     3 * levelHeight
+
+
+pointerFontHeight : Int
+pointerFontHeight =
+    30
+
+
+pointerFontWidth : Int
+pointerFontWidth =
+    fontWidthToHeight pointerFontHeight
 
 
 levelHeight : Int
@@ -46,6 +71,11 @@ levelHeight =
 margin : Int
 margin =
     18
+
+
+missingPicturePath : String
+missingPicturePath =
+    "/images/blank_woman.png"
 
 
 padding : Int
@@ -65,7 +95,7 @@ smallFontHeight =
 
 smallFontWidth : Int
 smallFontWidth =
-    6
+    fontWidthToHeight smallFontHeight
 
 
 smallTextWidth : String -> Int
@@ -96,8 +126,3 @@ viewBox =
 width : Int
 width =
     1000
-
-
-missingPicturePath : String
-missingPicturePath =
-    "/images/blank_woman.png"

@@ -8269,19 +8269,25 @@ var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mou
 var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
 var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
-var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
 var _user$project$Config$width = 1000;
 var _user$project$Config$switchBoxRadius = 8;
 var _user$project$Config$switchBoxHeight = 30;
-var _user$project$Config$smallFontWidth = 6;
-var _user$project$Config$smallTextWidth = function (text) {
-	return _elm_lang$core$String$length(text) * _user$project$Config$smallFontWidth;
-};
 var _user$project$Config$smallFontHeight = 10;
 var _user$project$Config$pictureSize = 100;
 var _user$project$Config$padding = 6;
+var _user$project$Config$missingPicturePath = '/images/blank_woman.png';
 var _user$project$Config$margin = 18;
-var _user$project$Config$fontWidth = 8;
+var _user$project$Config$pointerFontHeight = 30;
+var _user$project$Config$fontWidthToHeight = function (width) {
+	return ((width * 6) / 10) | 0;
+};
+var _user$project$Config$pointerFontWidth = _user$project$Config$fontWidthToHeight(_user$project$Config$pointerFontHeight);
+var _user$project$Config$smallFontWidth = _user$project$Config$fontWidthToHeight(_user$project$Config$smallFontHeight);
+var _user$project$Config$smallTextWidth = function (text) {
+	return _elm_lang$core$String$length(text) * _user$project$Config$smallFontWidth;
+};
+var _user$project$Config$fontHeight = 14;
+var _user$project$Config$fontWidth = _user$project$Config$fontWidthToHeight(_user$project$Config$fontHeight);
 var _user$project$Config$textWidth = F2(
 	function (text, minLen) {
 		return A2(
@@ -8289,7 +8295,8 @@ var _user$project$Config$textWidth = F2(
 			minLen,
 			_elm_lang$core$String$length(text) * _user$project$Config$fontWidth);
 	});
-var _user$project$Config$fontHeight = 14;
+var _user$project$Config$deltaShift = 100;
+var _user$project$Config$defaultCenter = ((_user$project$Config$width / 2) | 0) - 100;
 var _user$project$Config$changePicture = 4;
 var _user$project$Config$boxRadius = 0;
 var _user$project$Config$boxHeight = 50;
@@ -8331,12 +8338,14 @@ var _user$project$Types$Flags = function (a) {
 	return {focus: a};
 };
 
-var _user$project$Messages$SwitchFamily = function (a) {
-	return {ctor: 'SwitchFamily', _0: a};
-};
 var _user$project$Messages$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
 };
+var _user$project$Messages$SwitchFamily = function (a) {
+	return {ctor: 'SwitchFamily', _0: a};
+};
+var _user$project$Messages$ShiftRight = {ctor: 'ShiftRight'};
+var _user$project$Messages$ShiftLeft = {ctor: 'ShiftLeft'};
 var _user$project$Messages$DisplayPerson = function (a) {
 	return {ctor: 'DisplayPerson', _0: a};
 };
@@ -8832,6 +8841,86 @@ var _user$project$Tree$linkT = F3(
 					[]))
 			]);
 	});
+var _user$project$Tree$pointerAttrs = F4(
+	function (c, i, j, handler) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$class(c),
+				_elm_lang$svg$Svg_Attributes$x(
+				_elm_lang$core$Basics$toString(i)),
+				_elm_lang$svg$Svg_Attributes$y(
+				_elm_lang$core$Basics$toString(j)),
+				handler
+			]);
+	});
+var _user$project$Tree$pointers = function (boxes) {
+	var rightPointer = function () {
+		var h = _elm_lang$svg$Svg_Events$onClick(_user$project$Messages$ShiftRight);
+		var j = _user$project$Config$pointerFontHeight;
+		var i = _user$project$Config$width - _user$project$Config$pointerFontWidth;
+		return A2(
+			_elm_lang$svg$Svg$text$,
+			A4(_user$project$Tree$pointerAttrs, 'pointer', i, j, h),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg$text('☞')
+				]));
+	}();
+	var leftPointer = function () {
+		var h = _elm_lang$svg$Svg_Events$onClick(_user$project$Messages$ShiftLeft);
+		var j = _user$project$Config$pointerFontHeight;
+		var i = _user$project$Config$pointerFontWidth;
+		return A2(
+			_elm_lang$svg$Svg$text$,
+			A4(_user$project$Tree$pointerAttrs, 'pointer', i, j, h),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg$text('☜')
+				]));
+	}();
+	var rightMost = A2(
+		_elm_lang$core$Maybe$withDefault,
+		_user$project$Config$width,
+		_elm_lang$core$List$maximum(
+			A2(
+				_elm_lang$core$List$map,
+				function (b) {
+					return _elm_lang$core$Basics$fst(b.right.outer);
+				},
+				boxes)));
+	var leftMost = A2(
+		_elm_lang$core$Maybe$withDefault,
+		0,
+		_elm_lang$core$List$minimum(
+			A2(
+				_elm_lang$core$List$map,
+				function (b) {
+					return _elm_lang$core$Basics$fst(b.left.outer);
+				},
+				boxes)));
+	var _p8 = {
+		ctor: '_Tuple2',
+		_0: _elm_lang$core$Native_Utils.cmp(leftMost, 0) < 0,
+		_1: _elm_lang$core$Native_Utils.cmp(rightMost, _user$project$Config$width) > 0
+	};
+	if (_p8._0 === true) {
+		if (_p8._1 === true) {
+			return _elm_lang$core$Native_List.fromArray(
+				[leftPointer, rightPointer]);
+		} else {
+			return _elm_lang$core$Native_List.fromArray(
+				[leftPointer]);
+		}
+	} else {
+		if (_p8._1 === true) {
+			return _elm_lang$core$Native_List.fromArray(
+				[rightPointer]);
+		} else {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		}
+	}
+};
 var _user$project$Tree$textAttrs = F5(
 	function (c, i, j, l, handler) {
 		return _elm_lang$core$Native_List.fromArray(
@@ -9071,8 +9160,8 @@ var _user$project$Tree$siblingBoxes = F4(
 		var len = _elm_lang$core$Array$length(widths);
 		var widthsToShifts = F2(
 			function (i, w) {
-				var _p8 = shift;
-				if (_p8.ctor === 'Nothing') {
+				var _p9 = shift;
+				if (_p9.ctor === 'Nothing') {
 					return A2(
 						F2(
 							function (x, y) {
@@ -9097,7 +9186,7 @@ var _user$project$Tree$siblingBoxes = F4(
 								function (x, y) {
 									return x + y;
 								}),
-							_p8._0,
+							_p9._0,
 							_elm_lang$core$List$sum(
 								_elm_lang$core$Array$toList(
 									A3(_elm_lang$core$Array$slice, 0, i + 1, widths)))));
@@ -9125,8 +9214,8 @@ var _user$project$Tree$siblingBoxes = F4(
 				},
 				shiftedBoxes));
 		var furthestBox = function () {
-			var _p9 = shift;
-			if (_p9.ctor === 'Nothing') {
+			var _p10 = shift;
+			if (_p10.ctor === 'Nothing') {
 				return _elm_lang$core$List$head(shiftedBoxes);
 			} else {
 				return _elm_lang$core$List$head(
@@ -9143,8 +9232,8 @@ var _user$project$Tree$siblingBoxes = F4(
 var _user$project$Tree$partnerBoxes = F4(
 	function (focusBox, families, index, picture) {
 		var item = A2(_elm_lang$core$Array$get, index, families);
-		var _p10 = item;
-		if (_p10.ctor === 'Nothing') {
+		var _p11 = item;
+		if (_p11.ctor === 'Nothing') {
 			return {
 				ctor: '_Tuple4',
 				_0: _elm_lang$core$Native_List.fromArray(
@@ -9155,72 +9244,72 @@ var _user$project$Tree$partnerBoxes = F4(
 				_3: {ctor: '_Tuple2', _0: 0, _1: 0}
 			};
 		} else {
-			var partner = _p10._0.partner;
+			var partner = _p11._0.partner;
 			var halfFocusWidth = (_user$project$Tree$boxWidth(focusBox) / 2) | 0;
 			var center = _user$project$Tree$middleBox(focusBox);
 			var partnerBox = A5(_user$project$Tree$box, partner, picture, center, 2, false);
 			var partnerWidth = _user$project$Tree$boxWidth(partnerBox);
 			var switchBox = A3(_user$project$Tree$switcherBox, families, index, center);
 			var switchWidth = function () {
-				var _p11 = switchBox;
-				if (_p11.ctor === 'Nothing') {
+				var _p12 = switchBox;
+				if (_p12.ctor === 'Nothing') {
 					return 0;
 				} else {
-					return _user$project$Tree$boxWidth(_p11._0);
+					return _user$project$Tree$boxWidth(_p12._0);
 				}
 			}();
 			var partnerShift = (halfFocusWidth + switchWidth) + ((partnerWidth / 2) | 0);
 			var shiftedPartnerBox = A2(_user$project$Tree$shiftBox, partnerShift, partnerBox);
 			var siblingShift = (halfFocusWidth + switchWidth) + partnerWidth;
 			var switchShift = function () {
-				var _p12 = switchBox;
-				if (_p12.ctor === 'Nothing') {
+				var _p13 = switchBox;
+				if (_p13.ctor === 'Nothing') {
 					return 0;
 				} else {
 					return halfFocusWidth + ((switchWidth / 2) | 0);
 				}
 			}();
 			var shiftedSwitchBox = function () {
-				var _p13 = switchBox;
-				if (_p13.ctor === 'Nothing') {
+				var _p14 = switchBox;
+				if (_p14.ctor === 'Nothing') {
 					return _elm_lang$core$Maybe$Nothing;
 				} else {
 					return _elm_lang$core$Maybe$Just(
-						A2(_user$project$Tree$shiftBox, switchShift, _p13._0));
+						A2(_user$project$Tree$shiftBox, switchShift, _p14._0));
 				}
 			}();
 			var boxes = function () {
-				var _p14 = shiftedSwitchBox;
-				if (_p14.ctor === 'Nothing') {
+				var _p15 = shiftedSwitchBox;
+				if (_p15.ctor === 'Nothing') {
 					return _elm_lang$core$Native_List.fromArray(
 						[shiftedPartnerBox]);
 				} else {
 					return _elm_lang$core$Native_List.fromArray(
-						[_p14._0, shiftedPartnerBox]);
+						[_p15._0, shiftedPartnerBox]);
 				}
 			}();
 			var links = function () {
-				var _p15 = shiftedSwitchBox;
-				if (_p15.ctor === 'Nothing') {
+				var _p16 = shiftedSwitchBox;
+				if (_p16.ctor === 'Nothing') {
 					return A2(_user$project$Tree$linkM, focusBox, shiftedPartnerBox);
 				} else {
-					var _p16 = _p15._0;
+					var _p17 = _p16._0;
 					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						A2(_user$project$Tree$linkM, focusBox, _p16),
-						A2(_user$project$Tree$linkM, _p16, shiftedPartnerBox));
+						A2(_user$project$Tree$linkM, focusBox, _p17),
+						A2(_user$project$Tree$linkM, _p17, shiftedPartnerBox));
 				}
 			}();
 			var parentPoint = function () {
-				var _p17 = shiftedSwitchBox;
-				if (_p17.ctor === 'Nothing') {
+				var _p18 = shiftedSwitchBox;
+				if (_p18.ctor === 'Nothing') {
 					return focusBox.right.outer;
 				} else {
-					var _p18 = _p17._0;
+					var _p19 = _p18._0;
 					return {
 						ctor: '_Tuple2',
-						_0: _elm_lang$core$Basics$fst(_p18.top.inner),
-						_1: _elm_lang$core$Basics$snd(_p18.top.inner) + _user$project$Config$switchBoxHeight
+						_0: _elm_lang$core$Basics$fst(_p19.top.inner),
+						_1: _elm_lang$core$Basics$snd(_p19.top.inner) + _user$project$Config$switchBoxHeight
 					};
 				}
 			}();
@@ -9236,8 +9325,8 @@ var _user$project$Tree$partnerBoxes = F4(
 var _user$project$Tree$childrenBoxes = F5(
 	function (focusBox, families, index, picture, parentPoint) {
 		var item = A2(_elm_lang$core$Array$get, index, families);
-		var _p19 = item;
-		if (_p19.ctor === 'Nothing') {
+		var _p20 = item;
+		if (_p20.ctor === 'Nothing') {
 			return {
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_List.fromArray(
@@ -9246,7 +9335,7 @@ var _user$project$Tree$childrenBoxes = F5(
 					[])
 			};
 		} else {
-			var people = _p19._0.children;
+			var people = _p20._0.children;
 			if (_elm_lang$core$Array$isEmpty(people)) {
 				return {
 					ctor: '_Tuple2',
@@ -9313,27 +9402,27 @@ var _user$project$Tree$childrenBoxes = F5(
 		}
 	});
 var _user$project$Tree$tree = function (model) {
-	var center = (_user$project$Config$width / 2) | 0;
+	var center = _user$project$Config$defaultCenter + model.shift;
 	var focus = model.focus;
 	var focusBox = A5(_user$project$Tree$box, focus.person, model.picture, center, 2, true);
-	var _p20 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
-	var fatherBox = _p20._0;
-	var motherBox = _p20._1;
-	var parentLinks = _p20._2;
-	var _p21 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
-	var oSibBoxes = _p21._0;
-	var oSibLinks = _p21._1;
-	var _p22 = A4(_user$project$Tree$partnerBoxes, focusBox, focus.families, model.family, model.picture);
-	var partBoxes = _p22._0;
-	var partLinks = _p22._1;
-	var shiftRight = _p22._2;
-	var parentPoint = _p22._3;
-	var _p23 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
-	var ySibBoxes = _p23._0;
-	var ySibLinks = _p23._1;
-	var _p24 = A5(_user$project$Tree$childrenBoxes, focusBox, focus.families, model.family, model.picture, parentPoint);
-	var childBoxes = _p24._0;
-	var childLinks = _p24._1;
+	var _p21 = A4(_user$project$Tree$parentBoxes, focusBox, focus.father, focus.mother, model.picture);
+	var fatherBox = _p21._0;
+	var motherBox = _p21._1;
+	var parentLinks = _p21._2;
+	var _p22 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.olderSiblings, model.picture, _elm_lang$core$Maybe$Nothing);
+	var oSibBoxes = _p22._0;
+	var oSibLinks = _p22._1;
+	var _p23 = A4(_user$project$Tree$partnerBoxes, focusBox, focus.families, model.family, model.picture);
+	var partBoxes = _p23._0;
+	var partLinks = _p23._1;
+	var shiftRight = _p23._2;
+	var parentPoint = _p23._3;
+	var _p24 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
+	var ySibBoxes = _p24._0;
+	var ySibLinks = _p24._1;
+	var _p25 = A5(_user$project$Tree$childrenBoxes, focusBox, focus.families, model.family, model.picture, parentPoint);
+	var childBoxes = _p25._0;
+	var childLinks = _p25._1;
 	var allBoxes = A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -9348,10 +9437,14 @@ var _user$project$Tree$tree = function (model) {
 				return _.svgs;
 			},
 			allBoxes));
+	var pointerSvgs = _user$project$Tree$pointers(allBoxes);
 	var linkSvgs = _elm_lang$core$List$concat(
 		_elm_lang$core$Native_List.fromArray(
 			[parentLinks, oSibLinks, ySibLinks, partLinks, childLinks]));
-	return A2(_elm_lang$core$Basics_ops['++'], boxSvgs, linkSvgs);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		boxSvgs,
+		A2(_elm_lang$core$Basics_ops['++'], linkSvgs, pointerSvgs));
 };
 var _user$project$Tree$Handle = F2(
 	function (a, b) {
@@ -9379,7 +9472,7 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{focus: _p0._0}),
+						{focus: _p0._0, shift: 0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'DisplayPerson':
@@ -9394,6 +9487,22 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{picture: model.picture + 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ShiftLeft':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{shift: model.shift + _user$project$Config$deltaShift}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ShiftRight':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{shift: model.shift - _user$project$Config$deltaShift}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:

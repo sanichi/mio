@@ -18,17 +18,16 @@
   line
     stroke: black
 
-  // Two sizes of text.
+  // Text.
   text
     font-family: "Courier New", Courier, monospace
     font-size: 14px
     font-weight: bold
     text-anchor: middle
+    fill: black
+    &.focus
+      fill: white
+    &.pointer
+      font-size: 30px
     &.small
       font-size: 10px
-
-  // Two colours of text.
-  text.focus
-    fill: white
-  text.box
-    fill: black

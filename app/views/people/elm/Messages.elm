@@ -9,5 +9,7 @@ type Msg
     | GetFocus Int
     | GotFocus Focus
     | DisplayPerson Int
-    | Tick Time
+    | ShiftLeft
+    | ShiftRight
     | SwitchFamily Int
+    | Tick Time
