@@ -9187,9 +9187,15 @@ var _user$project$Tree$siblingBoxes = F4(
 									return x + y;
 								}),
 							_p9._0,
-							_elm_lang$core$List$sum(
-								_elm_lang$core$Array$toList(
-									A3(_elm_lang$core$Array$slice, 0, i + 1, widths)))));
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								focusHalfWidth,
+								_elm_lang$core$List$sum(
+									_elm_lang$core$Array$toList(
+										A3(_elm_lang$core$Array$slice, 0, i + 1, widths))))));
 				}
 			});
 		var shifts = A2(_elm_lang$core$Array$indexedMap, widthsToShifts, widths);
@@ -9240,7 +9246,7 @@ var _user$project$Tree$partnerBoxes = F4(
 					[]),
 				_1: _elm_lang$core$Native_List.fromArray(
 					[]),
-				_2: _elm_lang$core$Maybe$Nothing,
+				_2: 0,
 				_3: {ctor: '_Tuple2', _0: 0, _1: 0}
 			};
 		} else {
@@ -9260,7 +9266,7 @@ var _user$project$Tree$partnerBoxes = F4(
 			}();
 			var partnerShift = (halfFocusWidth + switchWidth) + ((partnerWidth / 2) | 0);
 			var shiftedPartnerBox = A2(_user$project$Tree$shiftBox, partnerShift, partnerBox);
-			var siblingShift = (halfFocusWidth + switchWidth) + partnerWidth;
+			var siblingShift = switchWidth + partnerWidth;
 			var switchShift = function () {
 				var _p13 = switchBox;
 				if (_p13.ctor === 'Nothing') {
@@ -9313,13 +9319,7 @@ var _user$project$Tree$partnerBoxes = F4(
 					};
 				}
 			}();
-			return {
-				ctor: '_Tuple4',
-				_0: boxes,
-				_1: links,
-				_2: _elm_lang$core$Maybe$Just(siblingShift),
-				_3: parentPoint
-			};
+			return {ctor: '_Tuple4', _0: boxes, _1: links, _2: siblingShift, _3: parentPoint};
 		}
 	});
 var _user$project$Tree$childrenBoxes = F5(
@@ -9417,7 +9417,12 @@ var _user$project$Tree$tree = function (model) {
 	var partLinks = _p23._1;
 	var shiftRight = _p23._2;
 	var parentPoint = _p23._3;
-	var _p24 = A4(_user$project$Tree$siblingBoxes, focusBox, focus.youngerSiblings, model.picture, shiftRight);
+	var _p24 = A4(
+		_user$project$Tree$siblingBoxes,
+		focusBox,
+		focus.youngerSiblings,
+		model.picture,
+		_elm_lang$core$Maybe$Just(shiftRight));
 	var ySibBoxes = _p24._0;
 	var ySibLinks = _p24._1;
 	var _p25 = A5(_user$project$Tree$childrenBoxes, focusBox, focus.families, model.family, model.picture, parentPoint);

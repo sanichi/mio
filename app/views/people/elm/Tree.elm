@@ -60,7 +60,7 @@ tree model =
             partnerBoxes focusBox focus.families model.family model.picture
 
         ( ySibBoxes, ySibLinks ) =
-            siblingBoxes focusBox focus.youngerSiblings model.picture shiftRight
+            siblingBoxes focusBox focus.youngerSiblings model.picture (Just shiftRight)
 
         ( childBoxes, childLinks ) =
             childrenBoxes focusBox focus.families model.family model.picture parentPoint
@@ -341,6 +341,7 @@ siblingBoxes focusBox people picture shift =
                     Array.slice 0 (i + 1) widths
                         |> Array.toList
                         |> List.sum
+                        |> (+) focusHalfWidth
                         |> (+) s
                         |> \x -> x - w // 2
 
@@ -367,7 +368,7 @@ siblingBoxes focusBox people picture shift =
         ( shiftedBoxes, verticalLinks ++ horizontalLinks )
 
 
-partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Maybe Int, Point )
+partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Int, Point )
 partnerBoxes focusBox families index picture =
     let
         item =
@@ -375,7 +376,7 @@ partnerBoxes focusBox families index picture =
     in
         case item of
             Nothing ->
-                ( [], [], Nothing, ( 0, 0 ) )
+                ( [], [], 0, ( 0, 0 ) )
 
             Just family ->
                 let
@@ -428,7 +429,7 @@ partnerBoxes focusBox families index picture =
                         shiftBox partnerShift partnerBox
 
                     siblingShift =
-                        halfFocusWidth + switchWidth + partnerWidth
+                        switchWidth + partnerWidth
 
                     boxes =
                         case shiftedSwitchBox of
@@ -454,7 +455,7 @@ partnerBoxes focusBox families index picture =
                             Just bx ->
                                 ( fst bx.top.inner, snd bx.top.inner + Config.switchBoxHeight )
                 in
-                    ( boxes, links, Just siblingShift, parentPoint )
+                    ( boxes, links, siblingShift, parentPoint )
 
 
 childrenBoxes : Box -> Families -> Int -> Int -> Point -> ( List Box, List (Svg Msg) )
