@@ -52,6 +52,7 @@ Rails.application.routes.draw do
     get :elm, on: :collection
   end
   resources :transactions, only: [:index, :show] { get :summary, on: :collection }
+  resources :trades
   resources :uploads, except: [:edit, :update]
   resources :users
   resources :vehicles do
