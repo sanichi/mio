@@ -11,8 +11,8 @@ class Trade < ApplicationRecord
   validate  :date_constraints
 
   scope :by_stock, -> { order(:stock) }
-  scope :by_profit_desc, -> { order("units * (sell_price - buy_price)") }
-  scope :by_profit_asc, -> { order("units * (buy_price - sell_price)") }
+  scope :by_profit_desc, -> { order("units * (buy_price - sell_price)") }
+  scope :by_profit_asc, -> { order("units * (sell_price - buy_price)") }
 
   def self.search(params, path, opt={})
     matches =
