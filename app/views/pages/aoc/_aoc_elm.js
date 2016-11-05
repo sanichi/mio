@@ -8149,6 +8149,12 @@ var _user$project$Y15D03$Model = F4(
 		return {visited: a, santas: b, turn: c, err: d};
 	});
 
+var _user$project$Y15D04$answers = function (input) {
+	var a2 = 'no MD5';
+	var a1 = 'no MD5';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
 var _user$project$Y15D05$twipsRgx = _elm_lang$core$Regex$regex('(.).\\1');
 var _user$project$Y15D05$pairsRgx = _elm_lang$core$Regex$regex('(..).*\\1');
 var _user$project$Y15D05$badieRgx = _elm_lang$core$Regex$regex('(:?ab|cd|pq|xy)');
@@ -9086,6 +9092,32 @@ var _user$project$Y15D11$answers = function (input) {
 	var p0 = _user$project$Y15D11$parse(input);
 	var p1 = _user$project$Y15D11$next(p0);
 	var p2 = _user$project$Y15D11$next(p1);
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D12$count = function (json) {
+	return _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Result$withDefault(0),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$String$toInt,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('-?[1-9]\\d*'),
+							json))))));
+};
+var _user$project$Y15D12$answers = function (input) {
+	var p2 = 'no \'no_red\'';
+	var p1 = _user$project$Y15D12$count(input);
 	return A2(_user$project$Util$join, p1, p2);
 };
 
@@ -10981,6 +11013,8 @@ var _user$project$Y15$answers = F2(
 				return _user$project$Y15D02$answers(input);
 			case 3:
 				return _user$project$Y15D03$answers(input);
+			case 4:
+				return _user$project$Y15D04$answers(input);
 			case 5:
 				return _user$project$Y15D05$answers(input);
 			case 6:
@@ -10995,6 +11029,8 @@ var _user$project$Y15$answers = F2(
 				return _user$project$Y15D10$answers(input);
 			case 11:
 				return _user$project$Y15D11$answers(input);
+			case 12:
+				return _user$project$Y15D12$answers(input);
 			case 13:
 				return _user$project$Y15D13$answers(input);
 			case 14:
@@ -11028,7 +11064,220 @@ var _user$project$Y15$answers = F2(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Basics$toString(day),
-						': not upgarded for 0.17 yet'));
+						': not available'));
+		}
+	});
+
+var _user$project$Y16D01$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D02$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D03$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D04$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D05$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D06$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D07$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D08$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D09$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D10$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D11$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D12$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D13$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D14$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D15$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D16$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D17$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D18$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D19$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D20$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D21$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D22$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D23$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D24$answers = function (input) {
+	var a2 = '.';
+	var a1 = '.';
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D25$answer = function (input) {
+	return '.';
+};
+
+var _user$project$Y16$answers = F2(
+	function (day, input) {
+		var _p0 = day;
+		switch (_p0) {
+			case 1:
+				return _user$project$Y16D01$answers(input);
+			case 2:
+				return _user$project$Y16D02$answers(input);
+			case 3:
+				return _user$project$Y16D03$answers(input);
+			case 4:
+				return _user$project$Y16D04$answers(input);
+			case 5:
+				return _user$project$Y16D05$answers(input);
+			case 6:
+				return _user$project$Y16D06$answers(input);
+			case 7:
+				return _user$project$Y16D07$answers(input);
+			case 8:
+				return _user$project$Y16D08$answers(input);
+			case 9:
+				return _user$project$Y16D09$answers(input);
+			case 10:
+				return _user$project$Y16D10$answers(input);
+			case 11:
+				return _user$project$Y16D11$answers(input);
+			case 12:
+				return _user$project$Y16D12$answers(input);
+			case 13:
+				return _user$project$Y16D13$answers(input);
+			case 14:
+				return _user$project$Y16D14$answers(input);
+			case 15:
+				return _user$project$Y16D15$answers(input);
+			case 16:
+				return _user$project$Y16D16$answers(input);
+			case 17:
+				return _user$project$Y16D17$answers(input);
+			case 18:
+				return _user$project$Y16D18$answers(input);
+			case 19:
+				return _user$project$Y16D19$answers(input);
+			case 20:
+				return _user$project$Y16D20$answers(input);
+			case 21:
+				return _user$project$Y16D21$answers(input);
+			case 22:
+				return _user$project$Y16D22$answers(input);
+			case 23:
+				return _user$project$Y16D23$answers(input);
+			case 24:
+				return _user$project$Y16D24$answers(input);
+			case 25:
+				return _user$project$Y16D25$answer(input);
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'year 2016, day ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						': not available'));
 		}
 	});
 
@@ -11038,19 +11287,24 @@ var _user$project$Main$view = function (model) {
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		var _p2 = _p0._0._0;
+		var _p4 = _p0._0._0;
+		var _p3 = _p0._0._2;
+		var _p2 = _p0._0._1;
 		var newModel = function () {
-			var _p1 = _p2;
-			if (_p1 === 2015) {
-				return A2(_user$project$Y15$answers, _p0._0._1, _p0._0._2);
-			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'year ',
-					A2(
+			var _p1 = _p4;
+			switch (_p1) {
+				case 2015:
+					return A2(_user$project$Y15$answers, _p2, _p3);
+				case 2016:
+					return A2(_user$project$Y16$answers, _p2, _p3);
+				default:
+					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p2),
-						': not available yet'));
+						'year ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(_p4),
+							': not available yet'));
 			}
 		}();
 		return {

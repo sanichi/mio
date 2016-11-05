@@ -12,7 +12,7 @@
         .col-xs-4.col-sm-3.col-md-2
           %select{class: "form-control input-sm", size: "1", id: "year"}
             %option{value: ""}= t("select")
-            - (2015..2015).each do |year|
+            - (2015..2016).each do |year|
               %option{value: "#{year}", selected: year == 2015}= year
       .form-group
         %label.control-label.col-xs-2= t("pages.aoc.day")
@@ -22,8 +22,8 @@
             - (1..25).each do |day|
               %option{value: "#{day}"}
                 = day
-                = day == 22 ? "✘" : "✔︎"  # all done except one
-                = "🕰" if [4, 6, 10, 11, 13, 15, 17, 18, 20, 24].include? day # slow
+                -# = (year == 2015 && day == 22) || year == 2016 ? "✘" : "✔︎"  # all done except one
+                -# = "🕰" if year == 2015 && [4, 6, 10, 11, 13, 15, 17, 18, 20, 24].include?(day) # slow
       .form-group
         %label.control-label.col-xs-2= t("pages.aoc.answer")
         .col-xs-5
