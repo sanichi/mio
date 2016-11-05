@@ -9116,7 +9116,7 @@ var _user$project$Y15D12$count = function (json) {
 							json))))));
 };
 var _user$project$Y15D12$answers = function (input) {
-	var p2 = 'no \'no_red\'';
+	var p2 = 'no red filter';
 	var p1 = _user$project$Y15D12$count(input);
 	return A2(_user$project$Util$join, p1, p2);
 };

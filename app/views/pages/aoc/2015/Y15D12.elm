@@ -12,7 +12,7 @@ answers input =
             count input
 
         p2 =
-            "no 'no_red'"
+            "no red filter"
     in
         join p1 p2
 
