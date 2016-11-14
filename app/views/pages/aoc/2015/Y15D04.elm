@@ -1,40 +1,41 @@
 module Y15D04 exposing (..)
 
 import String
+import Regex
+import MD5
 import Util exposing (join)
 
 
 answers : String -> String
 answers input =
     let
+        key =
+            parse input
+
         a1 =
-            "no MD5"
+            find 1 "00000" key
 
         a2 =
-            "no MD5"
+            find a1 "000000" key
     in
-        join a1 a2
+        join (toString a1) (toString a2)
 
 
+parse : String -> String
+parse input =
+    Regex.find (Regex.AtMost 1) (Regex.regex "[a-z]+") input
+        |> List.map .match
+        |> List.head
+        |> Maybe.withDefault "no secret key found"
 
--- parse : String -> String
--- parse input =
---   Regex.find (Regex.AtMost 1) (Regex.regex "[a-z]+") input
---     |> List.map .match
---     |> List.head
---     |> Maybe.withDefault "no secret key found"
---
---
--- find : String -> String -> String
--- find start key =
---   recurse 1 start key
---
---
--- recurse : Int -> String -> String -> String
--- recurse step start key =
---   let
---     hash = md5 (key ++ (toString step))
---   in
---     if String.startsWith start hash
---       then toString step
---       else recurse (step + 1) start key
+
+find : Int -> String -> String -> Int
+find step start key =
+    let
+        hash =
+            MD5.hex (key ++ (toString step))
+    in
+        if String.startsWith start hash then
+            step
+        else
+            find (step + 1) start key

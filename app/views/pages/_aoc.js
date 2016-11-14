@@ -6,26 +6,24 @@ $(function() {
   elm_app.ports.answer.subscribe(display_aoc_answer);
 
   // Send a problem to the Elm app every time the menus update.
-  $('#year').change(function() {
-    solve_aoc_problem($(this).val(), $('#day').val());
-  });
-  $('#day').change(function() {
-    solve_aoc_problem($('#year').val(), $(this).val());
+  $('#year-day').change(function() {
+    solve_aoc_problem($(this).val());
   });
 });
 
-// Check both a year and a day are selected and if so, get the input
+// Check a year/day combination has been selected and, if so, get the input
 // for the problem and send it, along with year and day, to the Elm app.
-function solve_aoc_problem(y, d) {
-  var year = parseInt(y, 10);
-  var day  = parseInt(d, 10);
-  $('#answer').val('');
-  $('#input').val('');
-  $('#code').hide();
-  $('#loading').hide();
-  if (!isNaN(day) && !isNaN(year))
+function solve_aoc_problem(yd) {
+  var m = yd.match(/^(\d{4})-(\d{1,2})$/);
+  if (m)
   {
+    var year = parseInt(m[1], 10);
+    var day  = parseInt(m[2], 10);
     var file = '/aoc/' + year + '/' + day + '.txt';
+    $('#answer').val('');
+    $('#input').val('');
+    $('#code').hide();
+    $('#loading').hide();
     $.ajax({url: file}).done(function(text) {
       $('#input').val(text);
       $('#loading').show();
