@@ -1,7 +1,5 @@
 module Main exposing (..)
 
-import Html exposing (Html, text)
-import Html.App as App
 import Ports exposing (answer, problem)
 import Y15
 import Y16
@@ -10,11 +8,10 @@ import Y16
 -- Main
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Platform.program
         { init = init
-        , view = view
         , update = update
         , subscriptions = subscriptions
         }
@@ -58,15 +55,6 @@ update msg model =
                             "year " ++ (toString year) ++ ": not available yet"
             in
                 ( newModel, answer newModel )
-
-
-
--- View
-
-
-view : Model -> Html Msg
-view model =
-    text model
 
 
 
