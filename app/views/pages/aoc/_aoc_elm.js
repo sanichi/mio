@@ -12972,8 +12972,26 @@ var _user$project$Y16D01$answers = function (input) {
 		_elm_lang$core$Basics$toString(a2));
 };
 
+var _user$project$Y16D02$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('([RLUD]+)'),
+			input));
+};
 var _user$project$Y16D02$answers = function (input) {
-	return _user$project$Util$todo;
+	var a2 = 0;
+	var instructions = _user$project$Y16D02$parse(input);
+	var a1 = _elm_lang$core$List$length(instructions);
+	return A2(
+		_user$project$Util$join,
+		_elm_lang$core$Basics$toString(a1),
+		_elm_lang$core$Basics$toString(a2));
 };
 
 var _user$project$Y16D03$answers = function (input) {
