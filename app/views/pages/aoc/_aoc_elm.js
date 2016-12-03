@@ -10437,7 +10437,7 @@ var _user$project$Y15D12$count = function (json) {
 							json))))));
 };
 var _user$project$Y15D12$answers = function (input) {
-	var p2 = 'no red filter';
+	var p2 = 'couldn\'t do the second part in Elm';
 	var p1 = _user$project$Y15D12$count(input);
 	return A2(_user$project$Util$join, p1, p2);
 };
@@ -12295,7 +12295,7 @@ var _user$project$Y15D21$answers = function (input) {
 };
 
 var _user$project$Y15D22$answers = function (input) {
-	return 'not implemented';
+	return 'couldn\'t do this one at all in Elm';
 };
 
 var _user$project$Y15D23$initModel = {instructions: _elm_lang$core$Array$empty, registers: _elm_lang$core$Dict$empty, i: 0};

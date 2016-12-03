@@ -11,7 +11,7 @@ answers input =
             count input
 
         p2 =
-            "no red filter"
+            "couldn't do the second part in Elm"
     in
         Util.join p1 p2
 
