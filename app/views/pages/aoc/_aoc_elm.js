@@ -12752,6 +12752,7 @@ var _user$project$Y16D01$Model = F2(
 	function (a, b) {
 		return {d: a, p: b};
 	});
+var _user$project$Y16D01$None = {ctor: 'None'};
 var _user$project$Y16D01$Right = {ctor: 'Right'};
 var _user$project$Y16D01$Left = {ctor: 'Left'};
 var _user$project$Y16D01$parse = function (input) {
@@ -12792,82 +12793,115 @@ var _user$project$Y16D01$update = F2(
 		var p = model.p;
 		var d = model.d;
 		var _p1 = step.r;
-		if (_p1.ctor === 'Right') {
-			var _p2 = d;
-			switch (_p2.ctor) {
-				case 'North':
-					return {
-						d: _user$project$Y16D01$East,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{x: p.x + step.n})
-					};
-				case 'East':
-					return {
-						d: _user$project$Y16D01$South,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{y: p.y - step.n})
-					};
-				case 'South':
-					return {
-						d: _user$project$Y16D01$West,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{x: p.x - step.n})
-					};
-				default:
-					return {
-						d: _user$project$Y16D01$North,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{y: p.y + step.n})
-					};
-			}
-		} else {
-			var _p3 = model.d;
-			switch (_p3.ctor) {
-				case 'North':
-					return {
-						d: _user$project$Y16D01$West,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{x: p.x - step.n})
-					};
-				case 'East':
-					return {
-						d: _user$project$Y16D01$North,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{y: p.y + step.n})
-					};
-				case 'South':
-					return {
-						d: _user$project$Y16D01$East,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{x: p.x + step.n})
-					};
-				default:
-					return {
-						d: _user$project$Y16D01$South,
-						p: _elm_lang$core$Native_Utils.update(
-							p,
-							{y: p.y - step.n})
-					};
-			}
+		switch (_p1.ctor) {
+			case 'Right':
+				var _p2 = d;
+				switch (_p2.ctor) {
+					case 'North':
+						return {
+							d: _user$project$Y16D01$East,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n})
+						};
+					case 'East':
+						return {
+							d: _user$project$Y16D01$South,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n})
+						};
+					case 'South':
+						return {
+							d: _user$project$Y16D01$West,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n})
+						};
+					default:
+						return {
+							d: _user$project$Y16D01$North,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n})
+						};
+				}
+			case 'Left':
+				var _p3 = model.d;
+				switch (_p3.ctor) {
+					case 'North':
+						return {
+							d: _user$project$Y16D01$West,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n})
+						};
+					case 'East':
+						return {
+							d: _user$project$Y16D01$North,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n})
+						};
+					case 'South':
+						return {
+							d: _user$project$Y16D01$East,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n})
+						};
+					default:
+						return {
+							d: _user$project$Y16D01$South,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n})
+						};
+				}
+			default:
+				var _p4 = model.d;
+				switch (_p4.ctor) {
+					case 'North':
+						return {
+							d: _user$project$Y16D01$North,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n})
+						};
+					case 'East':
+						return {
+							d: _user$project$Y16D01$East,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n})
+						};
+					case 'South':
+						return {
+							d: _user$project$Y16D01$South,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n})
+						};
+					default:
+						return {
+							d: _user$project$Y16D01$West,
+							p: _elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n})
+						};
+				}
 		}
 	});
 var _user$project$Y16D01$updates = F2(
 	function (steps, model) {
 		updates:
 		while (true) {
-			var _p4 = steps;
-			if (_p4.ctor === '::') {
-				var _v5 = _p4._1,
-					_v6 = A2(_user$project$Y16D01$update, _p4._0, model);
-				steps = _v5;
-				model = _v6;
+			var _p5 = steps;
+			if (_p5.ctor === '::') {
+				var _v6 = _p5._1,
+					_v7 = A2(_user$project$Y16D01$update, _p5._0, model);
+				steps = _v6;
+				model = _v7;
 				continue updates;
 			} else {
 				return model;
@@ -12878,41 +12912,41 @@ var _user$project$Y16D01$revisits = F3(
 	function (steps, visits, model) {
 		revisits:
 		while (true) {
-			var _p5 = steps;
-			if (_p5.ctor === '::') {
-				var _p7 = _p5._0;
-				var _p6 = _p5._1;
+			var _p6 = steps;
+			if (_p6.ctor === '::') {
+				var _p8 = _p6._0;
+				var _p7 = _p6._1;
 				var newModel = A2(
 					_user$project$Y16D01$update,
 					_elm_lang$core$Native_Utils.update(
-						_p7,
+						_p8,
 						{n: 1}),
 					model);
 				if (A2(_elm_lang$core$List$member, newModel.p, visits)) {
 					return newModel;
 				} else {
 					var newVisits = {ctor: '::', _0: newModel.p, _1: visits};
-					if (_elm_lang$core$Native_Utils.cmp(_p7.n, 1) < 1) {
-						var _v8 = _p6,
-							_v9 = newVisits,
-							_v10 = newModel;
-						steps = _v8;
-						visits = _v9;
-						model = _v10;
+					if (_elm_lang$core$Native_Utils.cmp(_p8.n, 1) < 1) {
+						var _v9 = _p7,
+							_v10 = newVisits,
+							_v11 = newModel;
+						steps = _v9;
+						visits = _v10;
+						model = _v11;
 						continue revisits;
 					} else {
-						var _v11 = {
+						var _v12 = {
 							ctor: '::',
 							_0: _elm_lang$core$Native_Utils.update(
-								_p7,
-								{n: _p7.n - 1}),
-							_1: _p6
+								_p8,
+								{r: _user$project$Y16D01$None, n: _p8.n - 1}),
+							_1: _p7
 						},
-							_v12 = newVisits,
-							_v13 = newModel;
-						steps = _v11;
-						visits = _v12;
-						model = _v13;
+							_v13 = newVisits,
+							_v14 = newModel;
+						steps = _v12;
+						visits = _v13;
+						model = _v14;
 						continue revisits;
 					}
 				}

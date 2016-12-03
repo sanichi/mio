@@ -22,6 +22,7 @@ answers input =
 type Rotation
     = Left
     | Right
+    | None
 
 
 type Direction
@@ -117,6 +118,28 @@ update step model =
                         , p = { p | y = p.y - step.n }
                         }
 
+            None ->
+                case model.d of
+                    North ->
+                        { d = North
+                        , p = { p | y = p.y + step.n }
+                        }
+
+                    East ->
+                        { d = East
+                        , p = { p | x = p.x + step.n }
+                        }
+
+                    South ->
+                        { d = South
+                        , p = { p | y = p.y - step.n }
+                        }
+
+                    West ->
+                        { d = West
+                        , p = { p | x = p.x - step.n }
+                        }
+
 
 updates : List Step -> Model -> Model
 updates steps model =
@@ -146,7 +169,7 @@ revisits steps visits model =
                         if step.n <= 1 then
                             revisits rest newVisits newModel
                         else
-                            revisits ({ step | n = step.n - 1 } :: rest) newVisits newModel
+                            revisits ({ step | r = None, n = step.n - 1 } :: rest) newVisits newModel
 
         [] ->
             model
