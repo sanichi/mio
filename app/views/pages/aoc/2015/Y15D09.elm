@@ -1,4 +1,4 @@
-module Y15D09 exposing (..)
+module Y15D09 exposing (answers)
 
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)

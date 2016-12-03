@@ -1,4 +1,4 @@
-module Y15D04 exposing (..)
+module Y15D04 exposing (answers)
 
 import Regex
 import MD5

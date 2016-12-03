@@ -1,4 +1,4 @@
-module Y15D16 exposing (..)
+module Y15D16 exposing (answers)
 
 import Dict exposing (Dict)
 import Regex

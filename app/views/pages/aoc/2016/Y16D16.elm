@@ -1,4 +1,4 @@
-module Y16D16 exposing (..)
+module Y16D16 exposing (answers)
 
 import Util exposing (join)
 

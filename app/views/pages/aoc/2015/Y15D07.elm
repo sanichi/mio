@@ -1,4 +1,4 @@
-module Y15D07 exposing (..)
+module Y15D07 exposing (answers)
 
 import Bitwise
 import Dict exposing (Dict)

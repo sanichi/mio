@@ -1,4 +1,4 @@
-module Y15D18 exposing (..)
+module Y15D18 exposing (answers)
 
 import Array exposing (Array)
 import Regex exposing (HowMany(All), find, regex)

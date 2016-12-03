@@ -1,4 +1,4 @@
-module Y15D24 exposing (..)
+module Y15D24 exposing (answers)
 
 import Regex
 import Util exposing (combinations, join)

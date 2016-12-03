@@ -1,4 +1,4 @@
-module Y15D22 exposing (..)
+module Y15D22 exposing (answers)
 
 
 answers : String -> String

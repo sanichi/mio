@@ -1,4 +1,4 @@
-module Y15D06 exposing (..)
+module Y15D06 exposing (answers)
 
 import Array exposing (Array)
 import Regex

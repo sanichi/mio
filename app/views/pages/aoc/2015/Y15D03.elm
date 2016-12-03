@@ -1,4 +1,4 @@
-module Y15D03 exposing (..)
+module Y15D03 exposing (answers)
 
 import Array exposing (Array)
 import Dict exposing (Dict)

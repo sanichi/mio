@@ -1,4 +1,4 @@
-module Y15D17 exposing (..)
+module Y15D17 exposing (answers)
 
 import Regex exposing (HowMany(All), find, regex)
 import Tuple exposing (first, second)
