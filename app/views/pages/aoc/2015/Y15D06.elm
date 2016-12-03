@@ -2,7 +2,6 @@ module Y15D06 exposing (..)
 
 import Array exposing (Array)
 import Regex
-import String
 import Tuple exposing (first, second)
 import Util exposing (join)
 

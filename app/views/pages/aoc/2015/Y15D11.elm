@@ -2,7 +2,6 @@ module Y15D11 exposing (..)
 
 import Char
 import Regex exposing (HowMany(All, AtMost), contains, find, regex)
-import String
 import Util exposing (join)
 
 

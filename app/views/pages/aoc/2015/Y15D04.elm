@@ -1,6 +1,5 @@
 module Y15D04 exposing (..)
 
-import String
 import Regex
 import MD5
 import Util exposing (join)

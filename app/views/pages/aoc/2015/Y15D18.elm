@@ -2,7 +2,6 @@ module Y15D18 exposing (..)
 
 import Array exposing (Array)
 import Regex exposing (HowMany(All), find, regex)
-import String
 import Util exposing (join)
 
 

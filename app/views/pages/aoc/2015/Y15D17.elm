@@ -1,7 +1,6 @@
 module Y15D17 exposing (..)
 
 import Regex exposing (HowMany(All), find, regex)
-import String
 import Tuple exposing (first, second)
 import Util exposing (combinations, join)
 

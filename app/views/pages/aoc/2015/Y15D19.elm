@@ -2,8 +2,6 @@ module Y15D19 exposing (..)
 
 import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
 import Set exposing (Set)
-import String
-import Tuple exposing (first, second)
 import Util exposing (join)
 
 
@@ -111,10 +109,10 @@ iterateRules model =
         rule :: rules ->
             let
                 from =
-                    first rule
+                    Tuple.first rule
 
                 to =
-                    second rule
+                    Tuple.second rule
 
                 matches =
                     find All (regex from) model.molecule

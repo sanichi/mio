@@ -1,6 +1,5 @@
 module Y16D02 exposing (..)
 
-import String
 import Util exposing (join)
 
 

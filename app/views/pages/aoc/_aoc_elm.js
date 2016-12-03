@@ -12736,10 +12736,205 @@ var _user$project$Y15$answers = F2(
 		}
 	});
 
+var _user$project$Y16D01$blocks = function (model) {
+	return _elm_lang$core$Basics$abs(model.p.x) + _elm_lang$core$Basics$abs(model.p.y);
+};
+var _user$project$Y16D01$origin = {x: 0, y: 0};
+var _user$project$Y16D01$Step = F2(
+	function (a, b) {
+		return {r: a, n: b};
+	});
+var _user$project$Y16D01$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _user$project$Y16D01$Model = F2(
+	function (a, b) {
+		return {d: a, p: b};
+	});
+var _user$project$Y16D01$Right = {ctor: 'Right'};
+var _user$project$Y16D01$Left = {ctor: 'Left'};
+var _user$project$Y16D01$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (m) {
+			var _p0 = m;
+			if (((((_p0.ctor === '::') && (_p0._0.ctor === 'Just')) && (_p0._1.ctor === '::')) && (_p0._1._0.ctor === 'Just')) && (_p0._1._1.ctor === '[]')) {
+				var n = A2(
+					_elm_lang$core$Maybe$withDefault,
+					1,
+					_elm_lang$core$Result$toMaybe(
+						_elm_lang$core$String$toInt(_p0._1._0._0)));
+				var r = _elm_lang$core$Native_Utils.eq(_p0._0._0, 'R') ? _user$project$Y16D01$Right : _user$project$Y16D01$Left;
+				return {r: r, n: n};
+			} else {
+				return {r: _user$project$Y16D01$Right, n: 1};
+			}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([RL])([1-9][0-9]*)'),
+				input)));
+};
+var _user$project$Y16D01$West = {ctor: 'West'};
+var _user$project$Y16D01$South = {ctor: 'South'};
+var _user$project$Y16D01$East = {ctor: 'East'};
+var _user$project$Y16D01$North = {ctor: 'North'};
+var _user$project$Y16D01$init = {d: _user$project$Y16D01$North, p: _user$project$Y16D01$origin};
+var _user$project$Y16D01$update = F2(
+	function (step, model) {
+		var p = model.p;
+		var d = model.d;
+		var _p1 = step.r;
+		if (_p1.ctor === 'Right') {
+			var _p2 = d;
+			switch (_p2.ctor) {
+				case 'North':
+					return {
+						d: _user$project$Y16D01$East,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{x: p.x + step.n})
+					};
+				case 'East':
+					return {
+						d: _user$project$Y16D01$South,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{y: p.y - step.n})
+					};
+				case 'South':
+					return {
+						d: _user$project$Y16D01$West,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{x: p.x - step.n})
+					};
+				default:
+					return {
+						d: _user$project$Y16D01$North,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{y: p.y + step.n})
+					};
+			}
+		} else {
+			var _p3 = model.d;
+			switch (_p3.ctor) {
+				case 'North':
+					return {
+						d: _user$project$Y16D01$West,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{x: p.x - step.n})
+					};
+				case 'East':
+					return {
+						d: _user$project$Y16D01$North,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{y: p.y + step.n})
+					};
+				case 'South':
+					return {
+						d: _user$project$Y16D01$East,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{x: p.x + step.n})
+					};
+				default:
+					return {
+						d: _user$project$Y16D01$South,
+						p: _elm_lang$core$Native_Utils.update(
+							p,
+							{y: p.y - step.n})
+					};
+			}
+		}
+	});
+var _user$project$Y16D01$updates = F2(
+	function (steps, model) {
+		updates:
+		while (true) {
+			var _p4 = steps;
+			if (_p4.ctor === '::') {
+				var _v5 = _p4._1,
+					_v6 = A2(_user$project$Y16D01$update, _p4._0, model);
+				steps = _v5;
+				model = _v6;
+				continue updates;
+			} else {
+				return model;
+			}
+		}
+	});
+var _user$project$Y16D01$revisits = F3(
+	function (steps, visits, model) {
+		revisits:
+		while (true) {
+			var _p5 = steps;
+			if (_p5.ctor === '::') {
+				var _p7 = _p5._0;
+				var _p6 = _p5._1;
+				var newModel = A2(
+					_user$project$Y16D01$update,
+					_elm_lang$core$Native_Utils.update(
+						_p7,
+						{n: 1}),
+					model);
+				if (A2(_elm_lang$core$List$member, newModel.p, visits)) {
+					return newModel;
+				} else {
+					var newVisits = {ctor: '::', _0: newModel.p, _1: visits};
+					if (_elm_lang$core$Native_Utils.cmp(_p7.n, 1) < 1) {
+						var _v8 = _p6,
+							_v9 = newVisits,
+							_v10 = newModel;
+						steps = _v8;
+						visits = _v9;
+						model = _v10;
+						continue revisits;
+					} else {
+						var _v11 = {
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.update(
+								_p7,
+								{n: _p7.n - 1}),
+							_1: _p6
+						},
+							_v12 = newVisits,
+							_v13 = newModel;
+						steps = _v11;
+						visits = _v12;
+						model = _v13;
+						continue revisits;
+					}
+				}
+			} else {
+				return model;
+			}
+		}
+	});
 var _user$project$Y16D01$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	var steps = _user$project$Y16D01$parse(input);
+	var a1 = _user$project$Y16D01$blocks(
+		A2(_user$project$Y16D01$updates, steps, _user$project$Y16D01$init));
+	var a2 = _user$project$Y16D01$blocks(
+		A3(
+			_user$project$Y16D01$revisits,
+			steps,
+			{ctor: '[]'},
+			_user$project$Y16D01$init));
+	return A2(
+		_user$project$Util$join,
+		_elm_lang$core$Basics$toString(a1),
+		_elm_lang$core$Basics$toString(a2));
 };
 
 var _user$project$Y16D02$answers = function (input) {

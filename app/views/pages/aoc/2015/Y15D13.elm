@@ -3,7 +3,6 @@ module Y15D13 exposing (..)
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)
 import Set exposing (Set)
-import String
 import Util exposing (join, permutations)
 
 

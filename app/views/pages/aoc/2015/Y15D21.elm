@@ -2,7 +2,6 @@ module Y15D21 exposing (..)
 
 import Array exposing (Array)
 import Regex
-import String
 import Util exposing (join)
 
 

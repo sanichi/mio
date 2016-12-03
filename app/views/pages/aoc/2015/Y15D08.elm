@@ -1,7 +1,6 @@
 module Y15D08 exposing (..)
 
 import Regex exposing (HowMany(All), replace, regex)
-import String
 import Util exposing (join)
 
 

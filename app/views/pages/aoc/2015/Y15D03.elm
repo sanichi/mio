@@ -2,7 +2,6 @@ module Y15D03 exposing (..)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import String
 import Util exposing (join)
 
 

@@ -1,7 +1,6 @@
 module Y15D02 exposing (..)
 
 import Regex
-import String
 import Util exposing (join)
 
 

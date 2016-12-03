@@ -2,7 +2,6 @@ module Y15D20 exposing (..)
 
 import Dict
 import Regex
-import String
 import Util exposing (join)
 
 
