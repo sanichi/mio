@@ -2,7 +2,7 @@ module Y15D21 exposing (answers)
 
 import Array exposing (Array)
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         p2 =
             search boss highest 0 initIndex |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 search : Fighter -> (Bool -> Int -> Int -> Bool) -> Int -> Maybe Index -> Int

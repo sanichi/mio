@@ -3,12 +3,18 @@ module Util
         ( combinations
         , join
         , permutations
+        , todo
         )
 
 
 join : String -> String -> String
 join p1 p2 =
     p1 ++ " | " ++ p2
+
+
+todo : String
+todo =
+    "TODO"
 
 
 combinations : Int -> List a -> List (List a)

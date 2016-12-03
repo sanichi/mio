@@ -1,7 +1,7 @@
 module Y15D15 exposing (answers)
 
 import Regex exposing (HowMany(AtMost), find, regex)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -19,7 +19,7 @@ answers input =
         p2 =
             highScore model (Just 500) 0 cookie |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 highScore : Model -> Maybe Int -> Int -> Cookie -> Int

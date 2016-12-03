@@ -1,7 +1,7 @@
 module Y15D05 exposing (answers)
 
 import Regex exposing (HowMany(All), Regex, find, regex)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -16,7 +16,7 @@ answers input =
         p2 =
             countNice nice2 strings
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 countNice : (String -> Bool) -> List String -> String

@@ -2,7 +2,7 @@ module Y15D11 exposing (answers)
 
 import Char
 import Regex exposing (HowMany(All, AtMost), contains, find, regex)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         p2 =
             next p1
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 parse : String -> String

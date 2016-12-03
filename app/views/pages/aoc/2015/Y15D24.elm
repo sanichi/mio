@@ -1,7 +1,7 @@
 module Y15D24 exposing (answers)
 
 import Regex
-import Util exposing (combinations, join)
+import Util
 
 
 answers : String -> String
@@ -16,7 +16,7 @@ answers input =
         p2 =
             bestQe 4 weights |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 bestQe : Int -> Weights -> Int
@@ -38,7 +38,7 @@ searchLength qe length maxLen weight weights =
     else
         let
             combos =
-                combinations length weights
+                Util.combinations length weights
 
             qe_ =
                 searchCombo qe weight combos

@@ -1,7 +1,7 @@
 module Y16D01 exposing (answers)
 
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -16,7 +16,7 @@ answers input =
         a2 =
             revisits steps [] init |> blocks
     in
-        join (toString a1) (toString a2)
+        Util.join (toString a1) (toString a2)
 
 
 type Rotation

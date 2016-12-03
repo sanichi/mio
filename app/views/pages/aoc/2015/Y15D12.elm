@@ -1,7 +1,7 @@
 module Y15D12 exposing (answers)
 
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -13,7 +13,7 @@ answers input =
         p2 =
             "no red filter"
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 count : String -> String

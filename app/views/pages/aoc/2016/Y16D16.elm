@@ -1,15 +1,8 @@
 module Y16D16 exposing (answers)
 
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
 answers input =
-    let
-        a1 =
-            "."
-
-        a2 =
-            "."
-    in
-        join a1 a2
+    Util.todo

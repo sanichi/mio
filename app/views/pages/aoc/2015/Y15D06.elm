@@ -3,7 +3,7 @@ module Y15D06 exposing (answers)
 import Array exposing (Array)
 import Regex
 import Tuple exposing (first, second)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -28,7 +28,7 @@ answers input =
                 |> List.sum
                 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 parse : String -> List Instruction

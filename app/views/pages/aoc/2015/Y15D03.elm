@@ -2,7 +2,7 @@ module Y15D03 exposing (answers)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -14,7 +14,7 @@ answers input =
         p2 =
             christmas 2 input
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 christmas : Int -> String -> String

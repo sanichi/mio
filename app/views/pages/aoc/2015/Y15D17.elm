@@ -2,7 +2,7 @@ module Y15D17 exposing (answers)
 
 import Regex exposing (HowMany(All), find, regex)
 import Tuple exposing (first, second)
-import Util exposing (combinations, join)
+import Util
 
 
 answers : String -> String
@@ -20,7 +20,7 @@ answers input =
         p2 =
             second number |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 combos : Int -> Int -> Model -> ( Int, Int )
@@ -30,7 +30,7 @@ combos n total model =
     else
         let
             p =
-                combinations n model
+                Util.combinations n model
                     |> List.filter (\c -> List.sum c == total)
                     |> List.length
 

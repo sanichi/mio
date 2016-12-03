@@ -2,7 +2,7 @@ module Y15D20 exposing (answers)
 
 import Dict
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         p2 =
             house2 goal 1 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 house1 : Int -> Int -> Int

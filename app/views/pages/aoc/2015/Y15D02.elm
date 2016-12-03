@@ -1,7 +1,7 @@
 module Y15D02 exposing (answers)
 
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -13,7 +13,7 @@ answers input =
         p2 =
             sumInput ribbon input |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 sumInput : (Int -> Int -> Int -> Int) -> String -> Int

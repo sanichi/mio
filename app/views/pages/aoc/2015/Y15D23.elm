@@ -3,7 +3,7 @@ module Y15D23 exposing (answers)
 import Array exposing (Array)
 import Dict exposing (Dict)
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -21,7 +21,7 @@ answers input =
         p2 =
             run model2 |> get "b" |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 run : Model -> Model

@@ -2,7 +2,7 @@ module Y15D09 exposing (answers)
 
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)
-import Util exposing (join, permutations)
+import Util
 
 
 answers : String -> String
@@ -20,7 +20,7 @@ answers input =
         p2 =
             List.maximum extremes |> Maybe.withDefault 0 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 extreme : Model -> List Int
@@ -29,7 +29,7 @@ extreme model =
         f ( c1, c2 ) =
             Dict.get (key c1 c2) model.distances |> Maybe.withDefault 0
     in
-        permutations model.cities
+        Util.permutations model.cities
             |> List.map (\perm -> pairs perm)
             |> List.map (\p -> List.map f p |> List.sum)
 

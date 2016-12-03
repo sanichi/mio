@@ -2,7 +2,7 @@ module Y15D19 exposing (answers)
 
 import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
 import Set exposing (Set)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         p2 =
             askalski model
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 type alias Model =

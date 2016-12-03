@@ -2,7 +2,7 @@ module Y15D07 exposing (answers)
 
 import Bitwise
 import Dict exposing (Dict)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -23,7 +23,7 @@ answers input =
         p2 =
             getVal "a" circuit2 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 reduce : Wire -> Circuit -> Circuit

@@ -1,7 +1,7 @@
 module Y15D08 exposing (answers)
 
 import Regex exposing (HowMany(All), replace, regex)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -16,7 +16,7 @@ answers input =
         p2 =
             (escLength strings) - (chrLength strings) |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 parseInput : String -> List String

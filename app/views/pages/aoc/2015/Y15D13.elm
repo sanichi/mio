@@ -3,7 +3,7 @@ module Y15D13 exposing (answers)
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)
 import Set exposing (Set)
-import Util exposing (join, permutations)
+import Util
 
 
 answers : String -> String
@@ -27,7 +27,7 @@ answers input =
         p2 =
             List.maximum a2 |> Maybe.withDefault 0 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 happinesses : Model -> List Int
@@ -36,7 +36,7 @@ happinesses model =
         f ( p1, p2 ) =
             pairValue p1 p2 model.happiness
     in
-        permutations (Set.toList model.people)
+        Util.permutations (Set.toList model.people)
             |> List.map (\perm -> pairup perm)
             |> List.map (\pairs -> List.map f pairs |> List.sum)
 

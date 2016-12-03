@@ -2,7 +2,7 @@ module Y15D18 exposing (answers)
 
 import Array exposing (Array)
 import Regex exposing (HowMany(All), find, regex)
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -26,7 +26,7 @@ answers input =
         p2 =
             count m2 |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 steps : Int -> Model -> Model

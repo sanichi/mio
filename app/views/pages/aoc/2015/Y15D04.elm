@@ -2,7 +2,7 @@ module Y15D04 exposing (answers)
 
 import Regex
 import MD5
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         a2 =
             find a1 "000000" key
     in
-        join (toString a1) (toString a2)
+        Util.join (toString a1) (toString a2)
 
 
 parse : String -> String

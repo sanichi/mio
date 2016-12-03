@@ -9113,6 +9113,7 @@ var _user$project$Util$combo = F2(
 			}
 		}
 	});
+var _user$project$Util$todo = 'TODO';
 var _user$project$Util$join = F2(
 	function (p1, p2) {
 		return A2(
@@ -12972,145 +12973,99 @@ var _user$project$Y16D01$answers = function (input) {
 };
 
 var _user$project$Y16D02$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D03$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D04$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D05$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D06$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D07$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D08$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D09$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D10$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D11$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D12$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D13$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D14$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D15$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D16$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D17$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D18$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D19$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D20$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D21$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D22$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D23$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D24$answers = function (input) {
-	var a2 = '.';
-	var a1 = '.';
-	return A2(_user$project$Util$join, a1, a2);
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16D25$answer = function (input) {
-	return '.';
+	return _user$project$Util$todo;
 };
 
 var _user$project$Y16$answers = F2(

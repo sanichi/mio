@@ -1,7 +1,7 @@
 module Y15D14 exposing (answers)
 
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -19,7 +19,7 @@ answers input =
         p2 =
             bestScore time model
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 maxDistance : Int -> Model -> String

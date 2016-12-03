@@ -1,6 +1,6 @@
 module Y15D01 exposing (answers)
 
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -12,7 +12,7 @@ answers input =
         p2 =
             position 0 0 input |> toString
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 count : Int -> String -> Int

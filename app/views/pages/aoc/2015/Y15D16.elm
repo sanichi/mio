@@ -2,7 +2,7 @@ module Y15D16 exposing (answers)
 
 import Dict exposing (Dict)
 import Regex
-import Util exposing (join)
+import Util
 
 
 answers : String -> String
@@ -17,7 +17,7 @@ answers input =
         p2 =
             sue match2 model
     in
-        join p1 p2
+        Util.join p1 p2
 
 
 sue : (String -> Int -> Bool -> Bool) -> Model -> String
