@@ -12958,18 +12958,17 @@ var _user$project$Y16D01$revisits = F3(
 	});
 var _user$project$Y16D01$answers = function (input) {
 	var steps = _user$project$Y16D01$parse(input);
-	var a1 = _user$project$Y16D01$blocks(
-		A2(_user$project$Y16D01$updates, steps, _user$project$Y16D01$init));
-	var a2 = _user$project$Y16D01$blocks(
-		A3(
-			_user$project$Y16D01$revisits,
-			steps,
-			{ctor: '[]'},
-			_user$project$Y16D01$init));
-	return A2(
-		_user$project$Util$join,
-		_elm_lang$core$Basics$toString(a1),
-		_elm_lang$core$Basics$toString(a2));
+	var a1 = _elm_lang$core$Basics$toString(
+		_user$project$Y16D01$blocks(
+			A2(_user$project$Y16D01$updates, steps, _user$project$Y16D01$init)));
+	var a2 = _elm_lang$core$Basics$toString(
+		_user$project$Y16D01$blocks(
+			A3(
+				_user$project$Y16D01$revisits,
+				steps,
+				{ctor: '[]'},
+				_user$project$Y16D01$init)));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D02$parse = function (input) {
@@ -13311,8 +13310,121 @@ var _user$project$Y16D02$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D03$convertToInt = function (item) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		0,
+		_elm_lang$core$Result$toMaybe(
+			_elm_lang$core$String$toInt(
+				A2(_elm_lang$core$Maybe$withDefault, '0', item))));
+};
+var _user$project$Y16D03$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$List$map(_user$project$Y16D03$convertToInt),
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(\\d+) +(\\d+) +(\\d+)'),
+				input)));
+};
+var _user$project$Y16D03$rearrange = F4(
+	function (a1, a2, a3, horizontals) {
+		rearrange:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$List$length(a1),
+				3) > -1) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: a1,
+						_1: {
+							ctor: '::',
+							_0: a2,
+							_1: {
+								ctor: '::',
+								_0: a3,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					A4(
+						_user$project$Y16D03$rearrange,
+						{ctor: '[]'},
+						{ctor: '[]'},
+						{ctor: '[]'},
+						horizontals));
+			} else {
+				var _p0 = horizontals;
+				if (_p0.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if ((((_p0._0.ctor === '::') && (_p0._0._1.ctor === '::')) && (_p0._0._1._1.ctor === '::')) && (_p0._0._1._1._1.ctor === '[]')) {
+						var b3 = {ctor: '::', _0: _p0._0._1._1._0, _1: a3};
+						var b2 = {ctor: '::', _0: _p0._0._1._0, _1: a2};
+						var b1 = {ctor: '::', _0: _p0._0._0, _1: a1};
+						var _v1 = b1,
+							_v2 = b2,
+							_v3 = b3,
+							_v4 = _p0._1;
+						a1 = _v1;
+						a2 = _v2;
+						a3 = _v3;
+						horizontals = _v4;
+						continue rearrange;
+					} else {
+						var _v5 = a1,
+							_v6 = a2,
+							_v7 = a3,
+							_v8 = _p0._1;
+						a1 = _v5;
+						a2 = _v6;
+						a3 = _v7;
+						horizontals = _v8;
+						continue rearrange;
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y16D03$ok = function (triangle) {
+	var _p1 = triangle;
+	if ((((_p1.ctor === '::') && (_p1._1.ctor === '::')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._1.ctor === '[]')) {
+		return (_elm_lang$core$Native_Utils.cmp(_p1._0 + _p1._1._0, _p1._1._1._0) > 0) ? 1 : 0;
+	} else {
+		return 0;
+	}
+};
+var _user$project$Y16D03$count = function (triangles) {
+	var _p2 = triangles;
+	if (_p2.ctor === '[]') {
+		return 0;
+	} else {
+		return _user$project$Y16D03$ok(_p2._0) + _user$project$Y16D03$count(_p2._1);
+	}
+};
 var _user$project$Y16D03$answers = function (input) {
-	return _user$project$Util$todo;
+	var horizontals = _user$project$Y16D03$parse(input);
+	var verticals = A4(
+		_user$project$Y16D03$rearrange,
+		{ctor: '[]'},
+		{ctor: '[]'},
+		{ctor: '[]'},
+		horizontals);
+	var a2 = _elm_lang$core$Basics$toString(
+		_user$project$Y16D03$count(
+			A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, verticals)));
+	var a1 = _elm_lang$core$Basics$toString(
+		_user$project$Y16D03$count(
+			A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, horizontals)));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D04$answers = function (input) {

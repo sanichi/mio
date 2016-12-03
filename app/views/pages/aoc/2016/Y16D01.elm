@@ -11,12 +11,12 @@ answers input =
             parse input
 
         a1 =
-            updates steps init |> blocks
+            updates steps init |> blocks |> toString
 
         a2 =
-            revisits steps [] init |> blocks
+            revisits steps [] init |> blocks |> toString
     in
-        Util.join (toString a1) (toString a2)
+        Util.join a1 a2
 
 
 type Rotation
