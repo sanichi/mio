@@ -12763,10 +12763,9 @@ var _user$project$Y16D01$parse = function (input) {
 			var _p0 = m;
 			if (((((_p0.ctor === '::') && (_p0._0.ctor === 'Just')) && (_p0._1.ctor === '::')) && (_p0._1._0.ctor === 'Just')) && (_p0._1._1.ctor === '[]')) {
 				var n = A2(
-					_elm_lang$core$Maybe$withDefault,
+					_elm_lang$core$Result$withDefault,
 					1,
-					_elm_lang$core$Result$toMaybe(
-						_elm_lang$core$String$toInt(_p0._1._0._0)));
+					_elm_lang$core$String$toInt(_p0._1._0._0));
 				var r = _elm_lang$core$Native_Utils.eq(_p0._0._0, 'R') ? _user$project$Y16D01$Right : _user$project$Y16D01$Left;
 				return {r: r, n: n};
 			} else {
@@ -13312,11 +13311,10 @@ var _user$project$Y16D02$answers = function (input) {
 
 var _user$project$Y16D03$convertToInt = function (item) {
 	return A2(
-		_elm_lang$core$Maybe$withDefault,
+		_elm_lang$core$Result$withDefault,
 		0,
-		_elm_lang$core$Result$toMaybe(
-			_elm_lang$core$String$toInt(
-				A2(_elm_lang$core$Maybe$withDefault, '0', item))));
+		_elm_lang$core$String$toInt(
+			A2(_elm_lang$core$Maybe$withDefault, '0', item)));
 };
 var _user$project$Y16D03$parse = function (input) {
 	return A2(
@@ -13427,9 +13425,165 @@ var _user$project$Y16D03$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
-var _user$project$Y16D04$answers = function (input) {
-	return _user$project$Util$todo;
+var _user$project$Y16D04$potentialRoom = function (room) {
+	var _p0 = room;
+	if (_p0.ctor === 'Just') {
+		var _p1 = _p0._0;
+		return (_elm_lang$core$Native_Utils.cmp(_p1.sector, 0) > 0) ? _elm_lang$core$Maybe$Just(_p1) : _elm_lang$core$Maybe$Nothing;
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
 };
+var _user$project$Y16D04$convertToMaybeRoom = function (matches) {
+	var _p2 = matches;
+	if (((((((_p2.ctor === '::') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === '::')) && (_p2._1._0.ctor === 'Just')) && (_p2._1._1.ctor === '::')) && (_p2._1._1._0.ctor === 'Just')) && (_p2._1._1._1.ctor === '[]')) {
+		return _elm_lang$core$Maybe$Just(
+			{
+				name: _p2._0._0,
+				sector: A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p2._1._0._0)),
+				checksum: _p2._1._1._0._0
+			});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Y16D04$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_user$project$Y16D04$potentialRoom,
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D04$convertToMaybeRoom,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]'),
+					input))));
+};
+var _user$project$Y16D04$decrypt = F3(
+	function (shift, accum, string) {
+		decrypt:
+		while (true) {
+			var _p3 = _elm_lang$core$String$uncons(string);
+			if (_p3.ctor === 'Just') {
+				var _p4 = _p3._0._0;
+				var newChar = _elm_lang$core$Native_Utils.eq(
+					_p4,
+					_elm_lang$core$Native_Utils.chr('-')) ? _elm_lang$core$Native_Utils.chr(' ') : _elm_lang$core$Char$fromCode(
+					97 + A2(
+						_elm_lang$core$Basics_ops['%'],
+						(_elm_lang$core$Char$toCode(_p4) + shift) - 97,
+						26));
+				var newAccum = A2(_elm_lang$core$String$cons, newChar, accum);
+				var _v3 = shift,
+					_v4 = newAccum,
+					_v5 = _p3._0._1;
+				shift = _v3;
+				accum = _v4;
+				string = _v5;
+				continue decrypt;
+			} else {
+				return _elm_lang$core$String$reverse(accum);
+			}
+		}
+	});
+var _user$project$Y16D04$northPole = function (room) {
+	var name = A3(_user$project$Y16D04$decrypt, room.sector, '', room.name);
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('northpole object'),
+		name);
+};
+var _user$project$Y16D04$insert = function (count) {
+	var _p5 = count;
+	if (_p5.ctor === 'Just') {
+		return _elm_lang$core$Maybe$Just(_p5._0 + 1);
+	} else {
+		return _elm_lang$core$Maybe$Just(1);
+	}
+};
+var _user$project$Y16D04$statCompare = F2(
+	function (_p7, _p6) {
+		var _p8 = _p7;
+		var _p11 = _p8._1;
+		var _p9 = _p6;
+		var _p10 = _p9._1;
+		return _elm_lang$core$Native_Utils.eq(_p11, _p10) ? A2(_elm_lang$core$Basics$compare, _p8._0, _p9._0) : A2(_elm_lang$core$Basics$compare, _p10, _p11);
+	});
+var _user$project$Y16D04$stats = F2(
+	function (name, dict) {
+		stats:
+		while (true) {
+			var _p12 = _elm_lang$core$String$uncons(name);
+			if (_p12.ctor === 'Just') {
+				var _p13 = _p12._0._0;
+				var newDict = _elm_lang$core$Native_Utils.eq(
+					_p13,
+					_elm_lang$core$Native_Utils.chr('-')) ? dict : A3(_elm_lang$core$Dict$update, _p13, _user$project$Y16D04$insert, dict);
+				var _v10 = _p12._0._1,
+					_v11 = newDict;
+				name = _v10;
+				dict = _v11;
+				continue stats;
+			} else {
+				return dict;
+			}
+		}
+	});
+var _user$project$Y16D04$checksum = function (room) {
+	var dict = A2(_user$project$Y16D04$stats, room.name, _elm_lang$core$Dict$empty);
+	var list = A2(
+		_elm_lang$core$List$take,
+		5,
+		A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Y16D04$statCompare,
+			_elm_lang$core$Dict$toList(dict)));
+	return A2(
+		_elm_lang$core$String$join,
+		'',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$fromChar,
+			A2(_elm_lang$core$List$map, _elm_lang$core$Tuple$first, list)));
+};
+var _user$project$Y16D04$realRoom = function (room) {
+	return _elm_lang$core$Native_Utils.eq(
+		room.checksum,
+		_user$project$Y16D04$checksum(room));
+};
+var _user$project$Y16D04$answers = function (input) {
+	var rooms = _user$project$Y16D04$parse(input);
+	var a1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.sector;
+				},
+				A2(_elm_lang$core$List$filter, _user$project$Y16D04$realRoom, rooms))));
+	var a2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.sector;
+				},
+				A2(_elm_lang$core$List$filter, _user$project$Y16D04$northPole, rooms))));
+	return A2(_user$project$Util$join, a1, a2);
+};
+var _user$project$Y16D04$Room = F3(
+	function (a, b, c) {
+		return {name: a, sector: b, checksum: c};
+	});
 
 var _user$project$Y16D05$answers = function (input) {
 	return _user$project$Util$todo;

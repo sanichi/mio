@@ -196,7 +196,7 @@ parse input =
                                     Left
 
                             n =
-                                String.toInt n_ |> Result.toMaybe |> Maybe.withDefault 1
+                                String.toInt n_ |> Result.withDefault 1
                         in
                             { r = r, n = n }
 

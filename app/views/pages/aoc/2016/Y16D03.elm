@@ -82,5 +82,4 @@ convertToInt : Maybe String -> Int
 convertToInt item =
     Maybe.withDefault "0" item
         |> String.toInt
-        |> Result.toMaybe
-        |> Maybe.withDefault 0
+        |> Result.withDefault 0
