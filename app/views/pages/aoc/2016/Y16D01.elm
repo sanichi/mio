@@ -46,9 +46,7 @@ type alias Position =
 
 origin : Position
 origin =
-    { x = 0
-    , y = 0
-    }
+    Position 0 0
 
 
 type alias Model =
@@ -59,9 +57,7 @@ type alias Model =
 
 init : Model
 init =
-    { d = North
-    , p = origin
-    }
+    Model North origin
 
 
 update : Step -> Model -> Model
@@ -77,68 +73,44 @@ update step model =
             Right ->
                 case d of
                     North ->
-                        { d = East
-                        , p = { p | x = p.x + step.n }
-                        }
+                        Model East { p | x = p.x + step.n }
 
                     East ->
-                        { d = South
-                        , p = { p | y = p.y - step.n }
-                        }
+                        Model South { p | y = p.y - step.n }
 
                     South ->
-                        { d = West
-                        , p = { p | x = p.x - step.n }
-                        }
+                        Model West { p | x = p.x - step.n }
 
                     West ->
-                        { d = North
-                        , p = { p | y = p.y + step.n }
-                        }
+                        Model North { p | y = p.y + step.n }
 
             Left ->
                 case model.d of
                     North ->
-                        { d = West
-                        , p = { p | x = p.x - step.n }
-                        }
+                        Model West { p | x = p.x - step.n }
 
                     East ->
-                        { d = North
-                        , p = { p | y = p.y + step.n }
-                        }
+                        Model North { p | y = p.y + step.n }
 
                     South ->
-                        { d = East
-                        , p = { p | x = p.x + step.n }
-                        }
+                        Model East { p | x = p.x + step.n }
 
                     West ->
-                        { d = South
-                        , p = { p | y = p.y - step.n }
-                        }
+                        Model South { p | y = p.y - step.n }
 
             None ->
                 case model.d of
                     North ->
-                        { d = North
-                        , p = { p | y = p.y + step.n }
-                        }
+                        Model North { p | y = p.y + step.n }
 
                     East ->
-                        { d = East
-                        , p = { p | x = p.x + step.n }
-                        }
+                        Model East { p | x = p.x + step.n }
 
                     South ->
-                        { d = South
-                        , p = { p | y = p.y - step.n }
-                        }
+                        Model South { p | y = p.y - step.n }
 
                     West ->
-                        { d = West
-                        , p = { p | x = p.x - step.n }
-                        }
+                        Model West { p | x = p.x - step.n }
 
 
 updates : List Step -> Model -> Model
@@ -169,7 +141,7 @@ revisits steps visits model =
                         if step.n <= 1 then
                             revisits rest newVisits newModel
                         else
-                            revisits ({ step | r = None, n = step.n - 1 } :: rest) newVisits newModel
+                            revisits (Step None (step.n - 1) :: rest) newVisits newModel
 
         [] ->
             model
@@ -198,8 +170,8 @@ parse input =
                             n =
                                 String.toInt n_ |> Result.withDefault 1
                         in
-                            { r = r, n = n }
+                            Step r n
 
                     _ ->
-                        { r = Right, n = 1 }
+                        Step Right 1
             )

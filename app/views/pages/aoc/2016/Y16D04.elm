@@ -125,11 +125,7 @@ convertToMaybeRoom : List (Maybe String) -> Maybe Room
 convertToMaybeRoom matches =
     case matches of
         [ Just name, Just sector, Just checksum ] ->
-            Just
-                { name = name
-                , sector = String.toInt sector |> Result.withDefault 0
-                , checksum = checksum
-                }
+            Room name (String.toInt sector |> Result.withDefault 0) checksum |> Just
 
         _ ->
             Nothing

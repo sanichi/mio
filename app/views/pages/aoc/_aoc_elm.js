@@ -12740,7 +12740,6 @@ var _user$project$Y15$answers = F2(
 var _user$project$Y16D01$blocks = function (model) {
 	return _elm_lang$core$Basics$abs(model.p.x) + _elm_lang$core$Basics$abs(model.p.y);
 };
-var _user$project$Y16D01$origin = {x: 0, y: 0};
 var _user$project$Y16D01$Step = F2(
 	function (a, b) {
 		return {r: a, n: b};
@@ -12749,6 +12748,7 @@ var _user$project$Y16D01$Position = F2(
 	function (a, b) {
 		return {x: a, y: b};
 	});
+var _user$project$Y16D01$origin = A2(_user$project$Y16D01$Position, 0, 0);
 var _user$project$Y16D01$Model = F2(
 	function (a, b) {
 		return {d: a, p: b};
@@ -12767,9 +12767,9 @@ var _user$project$Y16D01$parse = function (input) {
 					1,
 					_elm_lang$core$String$toInt(_p0._1._0._0));
 				var r = _elm_lang$core$Native_Utils.eq(_p0._0._0, 'R') ? _user$project$Y16D01$Right : _user$project$Y16D01$Left;
-				return {r: r, n: n};
+				return A2(_user$project$Y16D01$Step, r, n);
 			} else {
-				return {r: _user$project$Y16D01$Right, n: 1};
+				return A2(_user$project$Y16D01$Step, _user$project$Y16D01$Right, 1);
 			}
 		},
 		A2(
@@ -12787,7 +12787,7 @@ var _user$project$Y16D01$West = {ctor: 'West'};
 var _user$project$Y16D01$South = {ctor: 'South'};
 var _user$project$Y16D01$East = {ctor: 'East'};
 var _user$project$Y16D01$North = {ctor: 'North'};
-var _user$project$Y16D01$init = {d: _user$project$Y16D01$North, p: _user$project$Y16D01$origin};
+var _user$project$Y16D01$init = A2(_user$project$Y16D01$Model, _user$project$Y16D01$North, _user$project$Y16D01$origin);
 var _user$project$Y16D01$update = F2(
 	function (step, model) {
 		var p = model.p;
@@ -12798,97 +12798,97 @@ var _user$project$Y16D01$update = F2(
 				var _p2 = d;
 				switch (_p2.ctor) {
 					case 'North':
-						return {
-							d: _user$project$Y16D01$East,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x + step.n})
-						};
+								{x: p.x + step.n}));
 					case 'East':
-						return {
-							d: _user$project$Y16D01$South,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y - step.n})
-						};
+								{y: p.y - step.n}));
 					case 'South':
-						return {
-							d: _user$project$Y16D01$West,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x - step.n})
-						};
+								{x: p.x - step.n}));
 					default:
-						return {
-							d: _user$project$Y16D01$North,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y + step.n})
-						};
+								{y: p.y + step.n}));
 				}
 			case 'Left':
 				var _p3 = model.d;
 				switch (_p3.ctor) {
 					case 'North':
-						return {
-							d: _user$project$Y16D01$West,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x - step.n})
-						};
+								{x: p.x - step.n}));
 					case 'East':
-						return {
-							d: _user$project$Y16D01$North,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y + step.n})
-						};
+								{y: p.y + step.n}));
 					case 'South':
-						return {
-							d: _user$project$Y16D01$East,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x + step.n})
-						};
+								{x: p.x + step.n}));
 					default:
-						return {
-							d: _user$project$Y16D01$South,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y - step.n})
-						};
+								{y: p.y - step.n}));
 				}
 			default:
 				var _p4 = model.d;
 				switch (_p4.ctor) {
 					case 'North':
-						return {
-							d: _user$project$Y16D01$North,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y + step.n})
-						};
+								{y: p.y + step.n}));
 					case 'East':
-						return {
-							d: _user$project$Y16D01$East,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x + step.n})
-						};
+								{x: p.x + step.n}));
 					case 'South':
-						return {
-							d: _user$project$Y16D01$South,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{y: p.y - step.n})
-						};
+								{y: p.y - step.n}));
 					default:
-						return {
-							d: _user$project$Y16D01$West,
-							p: _elm_lang$core$Native_Utils.update(
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
 								p,
-								{x: p.x - step.n})
-						};
+								{x: p.x - step.n}));
 				}
 		}
 	});
@@ -12937,9 +12937,7 @@ var _user$project$Y16D01$revisits = F3(
 					} else {
 						var _v12 = {
 							ctor: '::',
-							_0: _elm_lang$core$Native_Utils.update(
-								_p8,
-								{r: _user$project$Y16D01$None, n: _p8.n - 1}),
+							_0: A2(_user$project$Y16D01$Step, _user$project$Y16D01$None, _p8.n - 1),
 							_1: _p7
 						},
 							_v13 = newVisits,
@@ -13434,61 +13432,27 @@ var _user$project$Y16D04$potentialRoom = function (room) {
 		return _elm_lang$core$Maybe$Nothing;
 	}
 };
-var _user$project$Y16D04$convertToMaybeRoom = function (matches) {
-	var _p2 = matches;
-	if (((((((_p2.ctor === '::') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === '::')) && (_p2._1._0.ctor === 'Just')) && (_p2._1._1.ctor === '::')) && (_p2._1._1._0.ctor === 'Just')) && (_p2._1._1._1.ctor === '[]')) {
-		return _elm_lang$core$Maybe$Just(
-			{
-				name: _p2._0._0,
-				sector: A2(
-					_elm_lang$core$Result$withDefault,
-					0,
-					_elm_lang$core$String$toInt(_p2._1._0._0)),
-				checksum: _p2._1._1._0._0
-			});
-	} else {
-		return _elm_lang$core$Maybe$Nothing;
-	}
-};
-var _user$project$Y16D04$parse = function (input) {
-	return A2(
-		_elm_lang$core$List$filterMap,
-		_user$project$Y16D04$potentialRoom,
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$Y16D04$convertToMaybeRoom,
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.submatches;
-				},
-				A3(
-					_elm_lang$core$Regex$find,
-					_elm_lang$core$Regex$All,
-					_elm_lang$core$Regex$regex('([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]'),
-					input))));
-};
 var _user$project$Y16D04$decrypt = F3(
 	function (shift, accum, string) {
 		decrypt:
 		while (true) {
-			var _p3 = _elm_lang$core$String$uncons(string);
-			if (_p3.ctor === 'Just') {
-				var _p4 = _p3._0._0;
+			var _p2 = _elm_lang$core$String$uncons(string);
+			if (_p2.ctor === 'Just') {
+				var _p3 = _p2._0._0;
 				var newChar = _elm_lang$core$Native_Utils.eq(
-					_p4,
+					_p3,
 					_elm_lang$core$Native_Utils.chr('-')) ? _elm_lang$core$Native_Utils.chr(' ') : _elm_lang$core$Char$fromCode(
 					97 + A2(
 						_elm_lang$core$Basics_ops['%'],
-						(_elm_lang$core$Char$toCode(_p4) + shift) - 97,
+						(_elm_lang$core$Char$toCode(_p3) + shift) - 97,
 						26));
 				var newAccum = A2(_elm_lang$core$String$cons, newChar, accum);
-				var _v3 = shift,
-					_v4 = newAccum,
-					_v5 = _p3._0._1;
-				shift = _v3;
-				accum = _v4;
-				string = _v5;
+				var _v2 = shift,
+					_v3 = newAccum,
+					_v4 = _p2._0._1;
+				shift = _v2;
+				accum = _v3;
+				string = _v4;
 				continue decrypt;
 			} else {
 				return _elm_lang$core$String$reverse(accum);
@@ -13503,35 +13467,35 @@ var _user$project$Y16D04$northPole = function (room) {
 		name);
 };
 var _user$project$Y16D04$insert = function (count) {
-	var _p5 = count;
-	if (_p5.ctor === 'Just') {
-		return _elm_lang$core$Maybe$Just(_p5._0 + 1);
+	var _p4 = count;
+	if (_p4.ctor === 'Just') {
+		return _elm_lang$core$Maybe$Just(_p4._0 + 1);
 	} else {
 		return _elm_lang$core$Maybe$Just(1);
 	}
 };
 var _user$project$Y16D04$statCompare = F2(
-	function (_p7, _p6) {
-		var _p8 = _p7;
-		var _p11 = _p8._1;
-		var _p9 = _p6;
-		var _p10 = _p9._1;
-		return _elm_lang$core$Native_Utils.eq(_p11, _p10) ? A2(_elm_lang$core$Basics$compare, _p8._0, _p9._0) : A2(_elm_lang$core$Basics$compare, _p10, _p11);
+	function (_p6, _p5) {
+		var _p7 = _p6;
+		var _p10 = _p7._1;
+		var _p8 = _p5;
+		var _p9 = _p8._1;
+		return _elm_lang$core$Native_Utils.eq(_p10, _p9) ? A2(_elm_lang$core$Basics$compare, _p7._0, _p8._0) : A2(_elm_lang$core$Basics$compare, _p9, _p10);
 	});
 var _user$project$Y16D04$stats = F2(
 	function (name, dict) {
 		stats:
 		while (true) {
-			var _p12 = _elm_lang$core$String$uncons(name);
-			if (_p12.ctor === 'Just') {
-				var _p13 = _p12._0._0;
+			var _p11 = _elm_lang$core$String$uncons(name);
+			if (_p11.ctor === 'Just') {
+				var _p12 = _p11._0._0;
 				var newDict = _elm_lang$core$Native_Utils.eq(
-					_p13,
-					_elm_lang$core$Native_Utils.chr('-')) ? dict : A3(_elm_lang$core$Dict$update, _p13, _user$project$Y16D04$insert, dict);
-				var _v10 = _p12._0._1,
-					_v11 = newDict;
-				name = _v10;
-				dict = _v11;
+					_p12,
+					_elm_lang$core$Native_Utils.chr('-')) ? dict : A3(_elm_lang$core$Dict$update, _p12, _user$project$Y16D04$insert, dict);
+				var _v9 = _p11._0._1,
+					_v10 = newDict;
+				name = _v9;
+				dict = _v10;
 				continue stats;
 			} else {
 				return dict;
@@ -13560,6 +13524,44 @@ var _user$project$Y16D04$realRoom = function (room) {
 		room.checksum,
 		_user$project$Y16D04$checksum(room));
 };
+var _user$project$Y16D04$Room = F3(
+	function (a, b, c) {
+		return {name: a, sector: b, checksum: c};
+	});
+var _user$project$Y16D04$convertToMaybeRoom = function (matches) {
+	var _p13 = matches;
+	if (((((((_p13.ctor === '::') && (_p13._0.ctor === 'Just')) && (_p13._1.ctor === '::')) && (_p13._1._0.ctor === 'Just')) && (_p13._1._1.ctor === '::')) && (_p13._1._1._0.ctor === 'Just')) && (_p13._1._1._1.ctor === '[]')) {
+		return _elm_lang$core$Maybe$Just(
+			A3(
+				_user$project$Y16D04$Room,
+				_p13._0._0,
+				A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p13._1._0._0)),
+				_p13._1._1._0._0));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Y16D04$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_user$project$Y16D04$potentialRoom,
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D04$convertToMaybeRoom,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]'),
+					input))));
+};
 var _user$project$Y16D04$answers = function (input) {
 	var rooms = _user$project$Y16D04$parse(input);
 	var a1 = _elm_lang$core$Basics$toString(
@@ -13580,10 +13582,6 @@ var _user$project$Y16D04$answers = function (input) {
 				A2(_elm_lang$core$List$filter, _user$project$Y16D04$northPole, rooms))));
 	return A2(_user$project$Util$join, a1, a2);
 };
-var _user$project$Y16D04$Room = F3(
-	function (a, b, c) {
-		return {name: a, sector: b, checksum: c};
-	});
 
 var _user$project$Y16D05$answers = function (input) {
 	return _user$project$Util$todo;
