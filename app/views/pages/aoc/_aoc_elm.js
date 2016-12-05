@@ -6325,7 +6325,7 @@ function mapProperty(func, property)
 	return on(
 		property.realKey,
 		property.value.options,
-		A2(_elm_lang$core$Json$map, func, property.value.decoder)
+		A2(_elm_lang$core$Json_Decode$map, func, property.value.decoder)
 	);
 }
 
@@ -7924,6 +7924,7 @@ return {
 };
 
 }();
+
 var _elm_lang$virtual_dom$VirtualDom$programWithFlags = function (impl) {
 	return A2(_elm_lang$virtual_dom$Native_VirtualDom.programWithFlags, _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags, impl);
 };
@@ -13583,8 +13584,146 @@ var _user$project$Y16D04$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D05$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'error',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[a-z]+'),
+					input))));
+};
+var _user$project$Y16D05$zeros = '00000';
+var _user$project$Y16D05$zLen = _elm_lang$core$String$length(_user$project$Y16D05$zeros);
+var _user$project$Y16D05$password1 = F3(
+	function (doorId, index, accum) {
+		password1:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$String$length(accum),
+				8) > -1) {
+				return _elm_lang$core$String$reverse(accum);
+			} else {
+				var newIndex = index + 1;
+				var digest = _sanichi$elm_md5$MD5$hex(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						doorId,
+						_elm_lang$core$Basics$toString(index)));
+				var newAccum = function () {
+					if (A2(_elm_lang$core$String$startsWith, _user$project$Y16D05$zeros, digest)) {
+						var _p0 = _elm_lang$core$String$uncons(
+							A2(_elm_lang$core$String$dropLeft, _user$project$Y16D05$zLen, digest));
+						if (_p0.ctor === 'Just') {
+							return A2(_elm_lang$core$String$cons, _p0._0._0, accum);
+						} else {
+							return A2(
+								_elm_lang$core$String$cons,
+								_elm_lang$core$Native_Utils.chr('-'),
+								accum);
+						}
+					} else {
+						return accum;
+					}
+				}();
+				var _v1 = doorId,
+					_v2 = newIndex,
+					_v3 = newAccum;
+				doorId = _v1;
+				index = _v2;
+				accum = _v3;
+				continue password1;
+			}
+		}
+	});
+var _user$project$Y16D05$password2 = F3(
+	function (doorId, index, accum) {
+		password2:
+		while (true) {
+			if (!A2(
+				_elm_lang$core$List$member,
+				_elm_lang$core$Maybe$Nothing,
+				_elm_lang$core$Array$toList(accum))) {
+				return A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$Maybe$withDefault('-'),
+						_elm_lang$core$Array$toList(accum)));
+			} else {
+				var newIndex = index + 1;
+				var digest = _sanichi$elm_md5$MD5$hex(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						doorId,
+						_elm_lang$core$Basics$toString(index)));
+				var newAccum = function () {
+					if (A2(_elm_lang$core$String$startsWith, _user$project$Y16D05$zeros, digest)) {
+						var rest = A2(_elm_lang$core$String$dropLeft, _user$project$Y16D05$zLen, digest);
+						var $char = function () {
+							var _p1 = _elm_lang$core$String$uncons(rest);
+							if (_p1.ctor === 'Just') {
+								return _p1._0._0;
+							} else {
+								return _elm_lang$core$Native_Utils.chr('-');
+							}
+						}();
+						var index = A2(
+							_elm_lang$core$Result$withDefault,
+							-1,
+							_elm_lang$core$String$toInt(
+								_elm_lang$core$String$fromChar($char)));
+						if ((_elm_lang$core$Native_Utils.cmp(index, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(index, 8) < 0)) {
+							var _p2 = A2(_elm_lang$core$Array$get, index, accum);
+							if ((_p2.ctor === 'Just') && (_p2._0.ctor === 'Nothing')) {
+								var item = function () {
+									var _p3 = _elm_lang$core$String$uncons(
+										A2(_elm_lang$core$String$dropLeft, 1, rest));
+									if (_p3.ctor === 'Just') {
+										return _elm_lang$core$Maybe$Just(
+											_elm_lang$core$String$fromChar(_p3._0._0));
+									} else {
+										return _elm_lang$core$Maybe$Just('-');
+									}
+								}();
+								return A3(_elm_lang$core$Array$set, index, item, accum);
+							} else {
+								return accum;
+							}
+						} else {
+							return accum;
+						}
+					} else {
+						return accum;
+					}
+				}();
+				var _v7 = doorId,
+					_v8 = newIndex,
+					_v9 = newAccum;
+				doorId = _v7;
+				index = _v8;
+				accum = _v9;
+				continue password2;
+			}
+		}
+	});
 var _user$project$Y16D05$answers = function (input) {
-	return _user$project$Util$todo;
+	var doorId = _user$project$Y16D05$parse(input);
+	var a1 = A3(_user$project$Y16D05$password1, doorId, 0, '');
+	var a2 = A3(
+		_user$project$Y16D05$password2,
+		doorId,
+		0,
+		A2(_elm_lang$core$Array$repeat, 8, _elm_lang$core$Maybe$Nothing));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D06$answers = function (input) {
