@@ -13726,8 +13726,134 @@ var _user$project$Y16D05$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D06$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[a-z]+'),
+			input));
+};
+var _user$project$Y16D06$addToDicts = F3(
+	function (message, index, dicts) {
+		addToDicts:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.eq(message, '')) {
+				return dicts;
+			} else {
+				var maybeDict = A2(_elm_lang$core$Array$get, index, dicts);
+				var _p0 = A2(
+					_elm_lang$core$Maybe$withDefault,
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.chr('-'),
+						_1: ''
+					},
+					_elm_lang$core$String$uncons(message));
+				var $char = _p0._0;
+				var rest = _p0._1;
+				var newDicts = function () {
+					var _p1 = maybeDict;
+					if (_p1.ctor === 'Nothing') {
+						return dicts;
+					} else {
+						var _p3 = _p1._0;
+						var newDict = function () {
+							var _p2 = A2(_elm_lang$core$Dict$get, $char, _p3);
+							if (_p2.ctor === 'Nothing') {
+								return A3(_elm_lang$core$Dict$insert, $char, 1, _p3);
+							} else {
+								return A3(_elm_lang$core$Dict$insert, $char, _p2._0 + 1, _p3);
+							}
+						}();
+						return A3(_elm_lang$core$Array$set, index, newDict, dicts);
+					}
+				}();
+				var _v2 = rest,
+					_v3 = index + 1,
+					_v4 = newDicts;
+				message = _v2;
+				index = _v3;
+				dicts = _v4;
+				continue addToDicts;
+			}
+		}
+	});
+var _user$project$Y16D06$choose = F2(
+	function (frequency, sortedList) {
+		var _p4 = frequency;
+		if (_p4.ctor === 'Most') {
+			return _elm_lang$core$List$reverse(sortedList);
+		} else {
+			return sortedList;
+		}
+	});
+var _user$project$Y16D06$pick = F2(
+	function (frequency, dict) {
+		return _elm_lang$core$String$fromChar(
+			_elm_lang$core$Tuple$first(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.chr('-'),
+						_1: 0
+					},
+					_elm_lang$core$List$head(
+						A2(
+							_user$project$Y16D06$choose,
+							frequency,
+							A2(
+								_elm_lang$core$List$sortBy,
+								_elm_lang$core$Tuple$second,
+								_elm_lang$core$Dict$toList(dict)))))));
+	});
+var _user$project$Y16D06$decrypt_ = F3(
+	function (messages, frequency, dicts) {
+		decrypt_:
+		while (true) {
+			var _p5 = messages;
+			if (_p5.ctor === '[]') {
+				return A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$Y16D06$pick(frequency),
+						_elm_lang$core$Array$toList(dicts)));
+			} else {
+				var newDicts = A3(_user$project$Y16D06$addToDicts, _p5._0, 0, dicts);
+				var _v7 = _p5._1,
+					_v8 = frequency,
+					_v9 = newDicts;
+				messages = _v7;
+				frequency = _v8;
+				dicts = _v9;
+				continue decrypt_;
+			}
+		}
+	});
+var _user$project$Y16D06$decrypt = F2(
+	function (messages, frequency) {
+		var width = _elm_lang$core$String$length(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				'',
+				_elm_lang$core$List$head(messages)));
+		var dicts = A2(_elm_lang$core$Array$repeat, width, _elm_lang$core$Dict$empty);
+		return A3(_user$project$Y16D06$decrypt_, messages, frequency, dicts);
+	});
+var _user$project$Y16D06$Least = {ctor: 'Least'};
+var _user$project$Y16D06$Most = {ctor: 'Most'};
 var _user$project$Y16D06$answers = function (input) {
-	return _user$project$Util$todo;
+	var messages = _user$project$Y16D06$parse(input);
+	var a1 = A2(_user$project$Y16D06$decrypt, messages, _user$project$Y16D06$Most);
+	var a2 = A2(_user$project$Y16D06$decrypt, messages, _user$project$Y16D06$Least);
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D07$answers = function (input) {
