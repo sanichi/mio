@@ -3,22 +3,22 @@ var elm_app, date;
 $(function() {
   // Embed the elm app as a worker.
   elm_app = Elm.Main.worker();
-  elm_app.ports.answers.subscribe(display_aoc_answers);
+  elm_app.ports.answers.subscribe(display_solution);
 
-  // Send a problem to the Elm app every time the menus update.
+  // Send a problem to the Elm app every time the menu updates.
   $('#year-day').change(function() {
-    solve_aoc_problem($(this).val());
+    solve_problem($(this).val());
   });
 });
 
 // Check a year/day combination has been selected and, if so, get the input
 // for the problem and send it, along with year and day, to the Elm app.
-function solve_aoc_problem(yd) {
-  var m = yd.match(/^(\d{4})-(\d{1,2})$/);
-  if (m)
+function solve_problem(year_day) {
+  var match = year_day.match(/^(\d{4})-(\d{1,2})$/);
+  if (match)
   {
-    var year = parseInt(m[1], 10);
-    var day  = parseInt(m[2], 10);
+    var year = parseInt(match[1], 10);
+    var day  = parseInt(match[2], 10);
     var file = '/aoc/' + year + '/' + day + '.txt';
     $('#answers').val('');
     $('#input').val('');
@@ -38,7 +38,7 @@ function solve_aoc_problem(yd) {
 }
 
 // When the Elm app sends back a solution, display it.
-function display_aoc_answers(answers) {
+function display_solution(answers) {
   $('#answers').val(answers + seconds(date));
   $('#loading').hide();
 }
