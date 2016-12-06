@@ -9017,8 +9017,8 @@ var _user$project$Ports$problem = _elm_lang$core$Native_Platform.incomingPort(
 				A2(_elm_lang$core$Json_Decode$index, 1, _elm_lang$core$Json_Decode$int));
 		},
 		A2(_elm_lang$core$Json_Decode$index, 0, _elm_lang$core$Json_Decode$int)));
-var _user$project$Ports$answer = _elm_lang$core$Native_Platform.outgoingPort(
-	'answer',
+var _user$project$Ports$answers = _elm_lang$core$Native_Platform.outgoingPort(
+	'answers',
 	function (v) {
 		return v;
 	});
@@ -14023,7 +14023,7 @@ var _user$project$Main$update = F2(
 		return {
 			ctor: '_Tuple2',
 			_0: newModel,
-			_1: _user$project$Ports$answer(newModel)
+			_1: _user$project$Ports$answers(newModel)
 		};
 	});
 var _user$project$Main$init = {ctor: '_Tuple2', _0: 'no problem', _1: _elm_lang$core$Platform_Cmd$none};

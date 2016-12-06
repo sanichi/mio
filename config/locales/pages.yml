@@ -2,7 +2,7 @@ en:
   pages:
     play: Elm Play
     aoc:
-      answer: Answer
+      answers: Answers
       code: Elm code
       day: Day
       input: Input

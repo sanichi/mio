@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Ports exposing (answer, problem)
+import Ports exposing (answers, problem)
 import Y15
 import Y16
 import Html
@@ -55,7 +55,7 @@ update msg model =
                         _ ->
                             "year " ++ (toString year) ++ ": not available yet"
             in
-                ( newModel, answer newModel )
+                ( newModel, answers newModel )
 
 
 

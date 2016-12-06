@@ -3,7 +3,7 @@ var elm_app, date;
 $(function() {
   // Embed the elm app as a worker.
   elm_app = Elm.Main.worker();
-  elm_app.ports.answer.subscribe(display_aoc_answer);
+  elm_app.ports.answers.subscribe(display_aoc_answers);
 
   // Send a problem to the Elm app every time the menus update.
   $('#year-day').change(function() {
@@ -20,7 +20,7 @@ function solve_aoc_problem(yd) {
     var year = parseInt(m[1], 10);
     var day  = parseInt(m[2], 10);
     var file = '/aoc/' + year + '/' + day + '.txt';
-    $('#answer').val('');
+    $('#answers').val('');
     $('#input').val('');
     $('#code').hide();
     $('#loading').hide();
@@ -38,8 +38,8 @@ function solve_aoc_problem(yd) {
 }
 
 // When the Elm app sends back a solution, display it.
-function display_aoc_answer(output) {
-  $('#answer').val(output + seconds(date));
+function display_aoc_answers(answers) {
+  $('#answers').val(answers + seconds(date));
   $('#loading').hide();
 }
 
