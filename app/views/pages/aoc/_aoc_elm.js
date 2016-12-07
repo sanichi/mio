@@ -13856,8 +13856,168 @@ var _user$project$Y16D06$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D07$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[a-z\\[\\]]+'),
+			input));
+};
+var _user$project$Y16D07$fragments = F2(
+	function (pattern, address) {
+		return A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Maybe$withDefault(''),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$withDefault(_elm_lang$core$Maybe$Nothing),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$List$head,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.submatches;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex(pattern),
+							address)))));
+	});
+var _user$project$Y16D07$abababa = function (aba) {
+	var _p0 = function () {
+		var _p1 = _elm_lang$core$String$uncons(aba);
+		if (_p1.ctor === 'Just') {
+			return _p1._0;
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.chr('-'),
+				_1: '-'
+			};
+		}
+	}();
+	var char1 = _p0._0;
+	var rest = _p0._1;
+	var char2 = function () {
+		var _p2 = _elm_lang$core$String$uncons(rest);
+		if (_p2.ctor === 'Just') {
+			return _p2._0._0;
+		} else {
+			return _elm_lang$core$Native_Utils.chr('-');
+		}
+	}();
+	return A2(
+		_elm_lang$core$String$join,
+		'',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$fromChar,
+			{
+				ctor: '::',
+				_0: char2,
+				_1: {
+					ctor: '::',
+					_0: char1,
+					_1: {
+						ctor: '::',
+						_0: char2,
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
+};
+var _user$project$Y16D07$aba = function (fragment) {
+	return A2(
+		_elm_lang$core$List$filter,
+		function (s) {
+			return !A2(
+				_elm_lang$core$Regex$contains,
+				_elm_lang$core$Regex$regex('^(.)\\1$'),
+				s);
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(.).(?=\\1)'),
+				fragment)));
+};
+var _user$project$Y16D07$abba = function (fragment) {
+	var abbas = A2(
+		_elm_lang$core$List$filter,
+		function (s) {
+			return !A2(
+				_elm_lang$core$Regex$contains,
+				_elm_lang$core$Regex$regex('^(.)\\1\\1\\1$'),
+				s);
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(.)(.)\\2\\1'),
+				fragment)));
+	return _elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$List$length(abbas),
+		0) > 0;
+};
+var _user$project$Y16D07$ssl = function (address) {
+	var abas = _elm_lang$core$List$concat(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D07$aba,
+			A2(_user$project$Y16D07$fragments, '(?:^|\\])([a-z]+)(?:\\[|$)', address)));
+	if (_elm_lang$core$List$isEmpty(abas)) {
+		return false;
+	} else {
+		var interiors = A2(_user$project$Y16D07$fragments, '\\[([a-z]+)\\]', address);
+		var babs = A2(_elm_lang$core$List$map, _user$project$Y16D07$abababa, abas);
+		var hasBab = function (fragment) {
+			return A2(
+				_elm_lang$core$List$any,
+				function (b) {
+					return A2(_elm_lang$core$String$contains, b, fragment);
+				},
+				babs);
+		};
+		return A2(_elm_lang$core$List$any, hasBab, interiors);
+	}
+};
+var _user$project$Y16D07$tls = function (address) {
+	var interiors = A2(
+		_elm_lang$core$List$any,
+		_user$project$Y16D07$abba,
+		A2(_user$project$Y16D07$fragments, '\\[([a-z]+)\\]', address));
+	var exteriors = A2(
+		_elm_lang$core$List$any,
+		_user$project$Y16D07$abba,
+		A2(_user$project$Y16D07$fragments, '(?:^|\\])([a-z]+)(?:\\[|$)', address));
+	return exteriors && (!interiors);
+};
 var _user$project$Y16D07$answers = function (input) {
-	return _user$project$Util$todo;
+	var addresses = _user$project$Y16D07$parse(input);
+	var a1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$length(
+			A2(_elm_lang$core$List$filter, _user$project$Y16D07$tls, addresses)));
+	var a2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$length(
+			A2(_elm_lang$core$List$filter, _user$project$Y16D07$ssl, addresses)));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D08$answers = function (input) {

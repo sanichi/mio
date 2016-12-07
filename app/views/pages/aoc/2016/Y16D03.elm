@@ -73,7 +73,7 @@ rearrange a1 a2 a3 horizontals =
 
 parse : String -> List (List Int)
 parse input =
-    Regex.find (Regex.All) (Regex.regex "(\\d+) +(\\d+) +(\\d+)") input
+    Regex.find Regex.All (Regex.regex "(\\d+) +(\\d+) +(\\d+)") input
         |> List.map .submatches
         |> List.map (List.map convertToInt)
 

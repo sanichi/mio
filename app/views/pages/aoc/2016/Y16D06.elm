@@ -114,4 +114,4 @@ addToDicts message index dicts =
 
 parse : String -> List String
 parse input =
-    Regex.find (Regex.All) (Regex.regex "[a-z]+") input |> List.map .match
+    Regex.find Regex.All (Regex.regex "[a-z]+") input |> List.map .match

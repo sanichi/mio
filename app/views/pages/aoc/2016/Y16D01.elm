@@ -154,7 +154,7 @@ blocks model =
 
 parse : String -> List Step
 parse input =
-    Regex.find (Regex.All) (Regex.regex "([RL])([1-9][0-9]*)") input
+    Regex.find Regex.All (Regex.regex "([RL])([1-9][0-9]*)") input
         |> List.map .submatches
         |> List.map
             (\m ->

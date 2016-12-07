@@ -115,7 +115,7 @@ northPole room =
 
 parse : String -> List Room
 parse input =
-    Regex.find (Regex.All) (Regex.regex "([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]") input
+    Regex.find Regex.All (Regex.regex "([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]") input
         |> List.map .submatches
         |> List.map convertToMaybeRoom
         |> List.filterMap potentialRoom

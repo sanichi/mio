@@ -353,5 +353,5 @@ init =
 
 parse : String -> List String
 parse input =
-    Regex.find (Regex.All) (Regex.regex "([RLUD]+)") input
+    Regex.find Regex.All (Regex.regex "([RLUD]+)") input
         |> List.map .match
