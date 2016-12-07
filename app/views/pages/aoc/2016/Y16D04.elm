@@ -39,9 +39,9 @@ checksum room =
                 |> List.sortWith statCompare
                 |> List.take 5
     in
-        List.map Tuple.first list
-            |> List.map String.fromChar
-            |> String.join ""
+        list
+            |> List.map Tuple.first
+            |> String.fromList
 
 
 realRoom : Room -> Bool

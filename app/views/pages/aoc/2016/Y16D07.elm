@@ -1,6 +1,6 @@
 module Y16D07 exposing (answers)
 
-import Regex
+import Regex exposing (Regex)
 import Util
 
 
@@ -28,15 +28,25 @@ answers input =
 tls : String -> Bool
 tls address =
     let
+        hasAbba fragment =
+            let
+                abbas =
+                    fragment
+                        |> Regex.find Regex.All (Regex.regex "(.)(.)\\2\\1")
+                        |> List.map .match
+                        |> List.filter (\s -> not (Regex.contains (Regex.regex "^(.)\\1\\1\\1$") s))
+            in
+                List.length abbas > 0
+
         exteriors =
             address
-                |> fragments "(?:^|\\])([a-z]+)(?:\\[|$)"
-                |> List.any abba
+                |> fragments matchExterior
+                |> List.any hasAbba
 
         interiors =
             address
-                |> fragments "\\[([a-z]+)\\]"
-                |> List.any abba
+                |> fragments matchInterior
+                |> List.any hasAbba
     in
         exteriors && not interiors
 
@@ -44,80 +54,62 @@ tls address =
 ssl : String -> Bool
 ssl address =
     let
+        abaList fragment =
+            fragment
+                |> String.toList
+                |> List.scanl (\a b -> a :: List.take 2 b) []
+                |> List.map String.fromList
+                |> List.filter (\a -> String.length a == 3)
+                |> List.filter (\a -> Regex.contains (Regex.regex "^(.).\\1$") a)
+                |> List.filter (\a -> not (Regex.contains (Regex.regex "^(.)\\1\\1$") a))
+
         abas =
             address
-                |> fragments "(?:^|\\])([a-z]+)(?:\\[|$)"
-                |> List.map aba
+                |> fragments matchExterior
+                |> List.map abaList
                 |> List.concat
     in
         if List.isEmpty abas then
             False
         else
             let
-                babs =
-                    List.map abababa abas
+                abaToBab aba =
+                    case String.toList aba of
+                        [ a, b, _ ] ->
+                            String.fromList [ b, a, b ]
 
-                interiors =
-                    fragments "\\[([a-z]+)\\]" address
+                        _ ->
+                            "---"
+
+                babs =
+                    List.map abaToBab abas
 
                 hasBab fragment =
                     List.any (\b -> String.contains b fragment) babs
             in
-                List.any hasBab interiors
+                address
+                    |> fragments matchInterior
+                    |> List.any hasBab
 
 
-abba : String -> Bool
-abba fragment =
-    let
-        abbas =
-            fragment
-                |> Regex.find Regex.All (Regex.regex "(.)(.)\\2\\1")
-                |> List.map .match
-                |> List.filter (\s -> not (Regex.contains (Regex.regex "^(.)\\1\\1\\1$") s))
-    in
-        List.length abbas > 0
-
-
-aba : String -> List String
-aba fragment =
-    fragment
-        |> Regex.find Regex.All (Regex.regex "(.).(?=\\1)")
-        |> List.map .match
-        |> List.filter (\s -> not (Regex.contains (Regex.regex "^(.)\\1$") s))
-
-
-abababa : String -> String
-abababa aba =
-    let
-        ( char1, rest ) =
-            case String.uncons aba of
-                Just pair ->
-                    pair
-
-                Nothing ->
-                    ( '-', "-" )
-
-        char2 =
-            case String.uncons rest of
-                Just ( c, _ ) ->
-                    c
-
-                Nothing ->
-                    '-'
-    in
-        [ char2, char1, char2 ]
-            |> List.map String.fromChar
-            |> String.join ""
-
-
-fragments : String -> String -> List String
-fragments pattern address =
+fragments : Regex -> String -> List String
+fragments matcher address =
     address
-        |> Regex.find Regex.All (Regex.regex pattern)
+        |> Regex.find Regex.All matcher
         |> List.map .submatches
         |> List.map List.head
         |> List.map (Maybe.withDefault Nothing)
         |> List.map (Maybe.withDefault "")
+
+
+matchExterior : Regex
+matchExterior =
+    Regex.regex "(?:^|\\])([a-z]+)(?:\\[|$)"
+
+
+matchInterior : Regex
+matchInterior =
+    Regex.regex "\\[([a-z]+)\\]"
 
 
 parse : String -> List String

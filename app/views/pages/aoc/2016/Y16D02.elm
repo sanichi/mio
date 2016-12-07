@@ -11,14 +11,14 @@ answers input =
             parse input
 
         a1 =
-            translate init [] move1 instructions
-                |> List.map String.fromChar
-                |> String.join ""
+            instructions
+                |> translate init [] move1
+                |> String.fromList
 
         a2 =
-            translate init [] move2 instructions
-                |> List.map String.fromChar
-                |> String.join ""
+            instructions
+                |> translate init [] move2
+                |> String.fromList
     in
         Util.join a1 a2
 
