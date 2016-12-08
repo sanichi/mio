@@ -15,9 +15,7 @@ answers input =
             decode instructions initialScreen
 
         a1 =
-            screen
-                |> countPixels
-                |> toString
+            count screen
 
         a2 =
             display screen
@@ -130,8 +128,8 @@ flipRow screen y =
         |> Array.map (Maybe.withDefault False)
 
 
-countPixels : Screen -> Int
-countPixels screen =
+count : Screen -> String
+count screen =
     let
         count row =
             row
@@ -143,6 +141,7 @@ countPixels screen =
             |> Array.toList
             |> List.map count
             |> List.sum
+            |> toString
 
 
 display : Screen -> String

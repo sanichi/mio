@@ -14025,7 +14025,7 @@ var _user$project$Y16D08$display = function (screen) {
 			rowToString,
 			_elm_lang$core$Array$toList(screen)));
 };
-var _user$project$Y16D08$countPixels = function (screen) {
+var _user$project$Y16D08$count = function (screen) {
 	var count = function (row) {
 		return _elm_lang$core$List$length(
 			A2(
@@ -14033,11 +14033,12 @@ var _user$project$Y16D08$countPixels = function (screen) {
 				_elm_lang$core$Basics$identity,
 				_elm_lang$core$Array$toList(row)));
 	};
-	return _elm_lang$core$List$sum(
-		A2(
-			_elm_lang$core$List$map,
-			count,
-			_elm_lang$core$Array$toList(screen)));
+	return _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				count,
+				_elm_lang$core$Array$toList(screen))));
 };
 var _user$project$Y16D08$flipRow = F2(
 	function (screen, y) {
@@ -14214,8 +14215,7 @@ var _user$project$Y16D08$parse = function (input) {
 var _user$project$Y16D08$answers = function (input) {
 	var instructions = _user$project$Y16D08$parse(input);
 	var screen = A2(_user$project$Y16D08$decode, instructions, _user$project$Y16D08$initialScreen);
-	var a1 = _elm_lang$core$Basics$toString(
-		_user$project$Y16D08$countPixels(screen));
+	var a1 = _user$project$Y16D08$count(screen);
 	var a2 = _user$project$Y16D08$display(screen);
 	return A2(_user$project$Util$join, a1, a2);
 };
