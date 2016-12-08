@@ -14004,8 +14004,82 @@ var _user$project$Y16D07$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D08$Invalid = {ctor: 'Invalid'};
+var _user$project$Y16D08$Col = F2(
+	function (a, b) {
+		return {ctor: 'Col', _0: a, _1: b};
+	});
+var _user$project$Y16D08$Row = F2(
+	function (a, b) {
+		return {ctor: 'Row', _0: a, _1: b};
+	});
+var _user$project$Y16D08$Rect = F2(
+	function (a, b) {
+		return {ctor: 'Rect', _0: a, _1: b};
+	});
+var _user$project$Y16D08$parseInstruction = function (submatches) {
+	var _p0 = function () {
+		var _p1 = submatches;
+		if (((((((_p1.ctor === '::') && (_p1._0.ctor === 'Just')) && (_p1._1.ctor === '::')) && (_p1._1._0.ctor === 'Just')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Just')) && (_p1._1._1._1.ctor === '[]')) {
+			return {
+				ctor: '_Tuple3',
+				_0: _p1._0._0,
+				_1: A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p1._1._0._0)),
+				_2: A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p1._1._1._0._0))
+			};
+		} else {
+			return {ctor: '_Tuple3', _0: '', _1: 0, _2: 0};
+		}
+	}();
+	var string = _p0._0;
+	var x = _p0._1;
+	var y = _p0._2;
+	var _p2 = string;
+	switch (_p2) {
+		case 'rect ':
+			return A2(_user$project$Y16D08$Rect, x, y);
+		case 'rotate row y=':
+			return A2(_user$project$Y16D08$Row, x, y);
+		case 'rotate column x=':
+			return A2(_user$project$Y16D08$Col, x, y);
+		default:
+			return _user$project$Y16D08$Invalid;
+	}
+};
+var _user$project$Y16D08$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y16D08$parseInstruction,
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(rect |rotate (?:row y|column x)=)(\\d+)(?:x| by )(\\d+)'),
+				input)));
+};
 var _user$project$Y16D08$answers = function (input) {
-	return _user$project$Util$todo;
+	var instructions = _user$project$Y16D08$parse(input);
+	var a1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$length(instructions));
+	var a2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filter,
+				function (i) {
+					return _elm_lang$core$Native_Utils.eq(i, _user$project$Y16D08$Invalid);
+				},
+				instructions)));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D09$answers = function (input) {
