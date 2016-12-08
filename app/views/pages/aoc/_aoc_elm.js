@@ -14004,6 +14004,133 @@ var _user$project$Y16D07$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D08$initialScreen = A2(
+	_elm_lang$core$Array$repeat,
+	6,
+	A2(_elm_lang$core$Array$repeat, 50, false));
+var _user$project$Y16D08$countPixels = function (screen) {
+	var count = function (row) {
+		return _elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filter,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$Array$toList(row)));
+	};
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			count,
+			_elm_lang$core$Array$toList(screen)));
+};
+var _user$project$Y16D08$flipRow = F2(
+	function (screen, y) {
+		return A2(
+			_elm_lang$core$Array$map,
+			_elm_lang$core$Maybe$withDefault(false),
+			A2(
+				_elm_lang$core$Array$map,
+				_elm_lang$core$Array$get(y),
+				screen));
+	});
+var _user$project$Y16D08$flipScreen = function (screen) {
+	var newRowLen = _elm_lang$core$Array$length(
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			_elm_lang$core$Array$empty,
+			A2(_elm_lang$core$Array$get, 0, screen)));
+	return _elm_lang$core$Array$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D08$flipRow(screen),
+			A2(_elm_lang$core$List$range, 0, newRowLen - 1)));
+};
+var _user$project$Y16D08$rotateRow = F3(
+	function (y, r, screen) {
+		var oldRow = _elm_lang$core$Array$toList(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				_elm_lang$core$Array$empty,
+				A2(_elm_lang$core$Array$get, y, screen)));
+		var len = _elm_lang$core$List$length(oldRow);
+		var x = A2(_elm_lang$core$Basics_ops['%'], r, len);
+		var newRight = A2(_elm_lang$core$List$take, len - x, oldRow);
+		var newLeft = A2(_elm_lang$core$List$drop, len - x, oldRow);
+		var newRow = _elm_lang$core$Array$fromList(
+			A2(_elm_lang$core$Basics_ops['++'], newLeft, newRight));
+		return A3(_elm_lang$core$Array$set, y, newRow, screen);
+	});
+var _user$project$Y16D08$rotateCol = F3(
+	function (x, r, screen) {
+		return _user$project$Y16D08$flipScreen(
+			A3(
+				_user$project$Y16D08$rotateRow,
+				x,
+				r,
+				_user$project$Y16D08$flipScreen(screen)));
+	});
+var _user$project$Y16D08$rect = F3(
+	function (x, y, screen) {
+		rect:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(y, 0) < 1) {
+				return screen;
+			} else {
+				var newRow = _elm_lang$core$Array$fromList(
+					A2(
+						F2(
+							function (x, y) {
+								return A2(_elm_lang$core$Basics_ops['++'], x, y);
+							}),
+						A2(_elm_lang$core$List$repeat, x, true),
+						A2(
+							_elm_lang$core$List$drop,
+							x,
+							_elm_lang$core$Array$toList(
+								A2(
+									_elm_lang$core$Maybe$withDefault,
+									_elm_lang$core$Array$empty,
+									A2(_elm_lang$core$Array$get, y - 1, screen))))));
+				var newScreen = A3(_elm_lang$core$Array$set, y - 1, newRow, screen);
+				var _v0 = x,
+					_v1 = y - 1,
+					_v2 = newScreen;
+				x = _v0;
+				y = _v1;
+				screen = _v2;
+				continue rect;
+			}
+		}
+	});
+var _user$project$Y16D08$step = F2(
+	function (instruction, screen) {
+		var _p0 = instruction;
+		switch (_p0.ctor) {
+			case 'Rect':
+				return A3(_user$project$Y16D08$rect, _p0._0, _p0._1, screen);
+			case 'Row':
+				return A3(_user$project$Y16D08$rotateRow, _p0._0, _p0._1, screen);
+			case 'Col':
+				return A3(_user$project$Y16D08$rotateCol, _p0._0, _p0._1, screen);
+			default:
+				return screen;
+		}
+	});
+var _user$project$Y16D08$decypher = F2(
+	function (instructions, screen) {
+		decypher:
+		while (true) {
+			var _p1 = instructions;
+			if (_p1.ctor === '[]') {
+				return screen;
+			} else {
+				var _v5 = _p1._1,
+					_v6 = A2(_user$project$Y16D08$step, _p1._0, screen);
+				instructions = _v5;
+				screen = _v6;
+				continue decypher;
+			}
+		}
+	});
 var _user$project$Y16D08$Invalid = {ctor: 'Invalid'};
 var _user$project$Y16D08$Col = F2(
 	function (a, b) {
@@ -14018,36 +14145,36 @@ var _user$project$Y16D08$Rect = F2(
 		return {ctor: 'Rect', _0: a, _1: b};
 	});
 var _user$project$Y16D08$parseInstruction = function (submatches) {
-	var _p0 = function () {
-		var _p1 = submatches;
-		if (((((((_p1.ctor === '::') && (_p1._0.ctor === 'Just')) && (_p1._1.ctor === '::')) && (_p1._1._0.ctor === 'Just')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Just')) && (_p1._1._1._1.ctor === '[]')) {
+	var _p2 = function () {
+		var _p3 = submatches;
+		if (((((((_p3.ctor === '::') && (_p3._0.ctor === 'Just')) && (_p3._1.ctor === '::')) && (_p3._1._0.ctor === 'Just')) && (_p3._1._1.ctor === '::')) && (_p3._1._1._0.ctor === 'Just')) && (_p3._1._1._1.ctor === '[]')) {
 			return {
 				ctor: '_Tuple3',
-				_0: _p1._0._0,
+				_0: _p3._0._0,
 				_1: A2(
 					_elm_lang$core$Result$withDefault,
 					0,
-					_elm_lang$core$String$toInt(_p1._1._0._0)),
+					_elm_lang$core$String$toInt(_p3._1._0._0)),
 				_2: A2(
 					_elm_lang$core$Result$withDefault,
 					0,
-					_elm_lang$core$String$toInt(_p1._1._1._0._0))
+					_elm_lang$core$String$toInt(_p3._1._1._0._0))
 			};
 		} else {
 			return {ctor: '_Tuple3', _0: '', _1: 0, _2: 0};
 		}
 	}();
-	var string = _p0._0;
-	var x = _p0._1;
-	var y = _p0._2;
-	var _p2 = string;
-	switch (_p2) {
+	var string = _p2._0;
+	var i = _p2._1;
+	var j = _p2._2;
+	var _p4 = string;
+	switch (_p4) {
 		case 'rect ':
-			return A2(_user$project$Y16D08$Rect, x, y);
+			return A2(_user$project$Y16D08$Rect, i, j);
 		case 'rotate row y=':
-			return A2(_user$project$Y16D08$Row, x, y);
+			return A2(_user$project$Y16D08$Row, i, j);
 		case 'rotate column x=':
-			return A2(_user$project$Y16D08$Col, x, y);
+			return A2(_user$project$Y16D08$Col, i, j);
 		default:
 			return _user$project$Y16D08$Invalid;
 	}
@@ -14068,17 +14195,12 @@ var _user$project$Y16D08$parse = function (input) {
 				input)));
 };
 var _user$project$Y16D08$answers = function (input) {
+	var a2 = _elm_lang$core$Basics$toString(
+		_user$project$Y16D08$countPixels(_user$project$Y16D08$initialScreen));
 	var instructions = _user$project$Y16D08$parse(input);
 	var a1 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$List$length(instructions));
-	var a2 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$List$length(
-			A2(
-				_elm_lang$core$List$filter,
-				function (i) {
-					return _elm_lang$core$Native_Utils.eq(i, _user$project$Y16D08$Invalid);
-				},
-				instructions)));
+		_user$project$Y16D08$countPixels(
+			A2(_user$project$Y16D08$decypher, instructions, _user$project$Y16D08$initialScreen)));
 	return A2(_user$project$Util$join, a1, a2);
 };
 
