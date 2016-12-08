@@ -11,22 +11,22 @@ answers input =
         instructions =
             parse input
 
+        screen =
+            decode instructions initialScreen
+
         a1 =
-            initialScreen
-                |> decypher instructions
+            screen
                 |> countPixels
                 |> toString
 
         a2 =
-            initialScreen
-                |> countPixels
-                |> toString
+            display screen
     in
         Util.join a1 a2
 
 
-decypher : List Instruction -> Screen -> Screen
-decypher instructions screen =
+decode : List Instruction -> Screen -> Screen
+decode instructions screen =
     case instructions of
         [] ->
             screen
@@ -34,7 +34,7 @@ decypher instructions screen =
         instruction :: rest ->
             screen
                 |> step instruction
-                |> decypher rest
+                |> decode rest
 
 
 step : Instruction -> Screen -> Screen
@@ -145,6 +145,27 @@ countPixels screen =
             |> List.sum
 
 
+display : Screen -> String
+display screen =
+    let
+        boolToString bool =
+            if bool then
+                "#"
+            else
+                "."
+
+        rowToString row =
+            row
+                |> Array.map boolToString
+                |> Array.toList
+                |> String.concat
+    in
+        screen
+            |> Array.toList
+            |> List.map rowToString
+            |> String.join "|"
+
+
 type alias Screen =
     Array (Array Bool)
 
@@ -192,3 +213,12 @@ parseInstruction submatches =
 
             _ ->
                 Invalid
+
+
+
+-- .##..####.#....####.#.....##..#...#####..##...###.
+-- #..#.#....#....#....#....#..#.#...##....#..#.#....
+-- #....###..#....###..#....#..#..#.#.###..#....#....
+-- #....#....#....#....#....#..#...#..#....#.....##..
+-- #..#.#....#....#....#....#..#...#..#....#..#....#.
+-- .##..#....####.####.####..##....#..#.....##..###..

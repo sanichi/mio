@@ -14008,6 +14008,23 @@ var _user$project$Y16D08$initialScreen = A2(
 	_elm_lang$core$Array$repeat,
 	6,
 	A2(_elm_lang$core$Array$repeat, 50, false));
+var _user$project$Y16D08$display = function (screen) {
+	var boolToString = function (bool) {
+		return bool ? '#' : '.';
+	};
+	var rowToString = function (row) {
+		return _elm_lang$core$String$concat(
+			_elm_lang$core$Array$toList(
+				A2(_elm_lang$core$Array$map, boolToString, row)));
+	};
+	return A2(
+		_elm_lang$core$String$join,
+		'|',
+		A2(
+			_elm_lang$core$List$map,
+			rowToString,
+			_elm_lang$core$Array$toList(screen)));
+};
 var _user$project$Y16D08$countPixels = function (screen) {
 	var count = function (row) {
 		return _elm_lang$core$List$length(
@@ -14115,9 +14132,9 @@ var _user$project$Y16D08$step = F2(
 				return screen;
 		}
 	});
-var _user$project$Y16D08$decypher = F2(
+var _user$project$Y16D08$decode = F2(
 	function (instructions, screen) {
-		decypher:
+		decode:
 		while (true) {
 			var _p1 = instructions;
 			if (_p1.ctor === '[]') {
@@ -14127,7 +14144,7 @@ var _user$project$Y16D08$decypher = F2(
 					_v6 = A2(_user$project$Y16D08$step, _p1._0, screen);
 				instructions = _v5;
 				screen = _v6;
-				continue decypher;
+				continue decode;
 			}
 		}
 	});
@@ -14195,12 +14212,11 @@ var _user$project$Y16D08$parse = function (input) {
 				input)));
 };
 var _user$project$Y16D08$answers = function (input) {
-	var a2 = _elm_lang$core$Basics$toString(
-		_user$project$Y16D08$countPixels(_user$project$Y16D08$initialScreen));
 	var instructions = _user$project$Y16D08$parse(input);
+	var screen = A2(_user$project$Y16D08$decode, instructions, _user$project$Y16D08$initialScreen);
 	var a1 = _elm_lang$core$Basics$toString(
-		_user$project$Y16D08$countPixels(
-			A2(_user$project$Y16D08$decypher, instructions, _user$project$Y16D08$initialScreen)));
+		_user$project$Y16D08$countPixels(screen));
+	var a2 = _user$project$Y16D08$display(screen);
 	return A2(_user$project$Util$join, a1, a2);
 };
 
