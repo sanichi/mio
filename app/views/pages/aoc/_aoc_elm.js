@@ -14236,8 +14236,8 @@ var _user$project$Y16D09$toInt = function (string) {
 		0,
 		_elm_lang$core$String$toInt(string));
 };
-var _user$project$Y16D09$decompress = function (file) {
-	var matches = _elm_lang$core$List$head(
+var _user$project$Y16D09$matches = function (string) {
+	var m = _elm_lang$core$List$head(
 		A2(
 			_elm_lang$core$List$map,
 			function (_) {
@@ -14247,36 +14247,61 @@ var _user$project$Y16D09$decompress = function (file) {
 				_elm_lang$core$Regex$find,
 				_elm_lang$core$Regex$AtMost(1),
 				_elm_lang$core$Regex$regex('^([A-Z]*)\\((\\d+)x(\\d+)\\)(.+)$'),
-				file)));
-	var _p1 = function () {
-		var _p2 = matches;
-		if ((((((((((_p2.ctor === 'Just') && (_p2._0.ctor === '::')) && (_p2._0._0.ctor === 'Just')) && (_p2._0._1.ctor === '::')) && (_p2._0._1._0.ctor === 'Just')) && (_p2._0._1._1.ctor === '::')) && (_p2._0._1._1._0.ctor === 'Just')) && (_p2._0._1._1._1.ctor === '::')) && (_p2._0._1._1._1._0.ctor === 'Just')) && (_p2._0._1._1._1._1.ctor === '[]')) {
-			return {
-				ctor: '_Tuple4',
-				_0: _p2._0._0._0,
-				_1: _user$project$Y16D09$toInt(_p2._0._1._0._0),
-				_2: _user$project$Y16D09$toInt(_p2._0._1._1._0._0),
-				_3: _p2._0._1._1._1._0._0
-			};
-		} else {
-			return {ctor: '_Tuple4', _0: '', _1: 0, _2: 0, _3: ''};
-		}
-	}();
-	var caps = _p1._0;
-	var len = _p1._1;
-	var num = _p1._2;
-	var rest = _p1._3;
-	return _elm_lang$core$Native_Utils.eq(rest, '') ? file : A2(
-		_elm_lang$core$Basics_ops['++'],
-		caps,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
+				string)));
+	var _p1 = m;
+	if ((((((((((_p1.ctor === 'Just') && (_p1._0.ctor === '::')) && (_p1._0._0.ctor === 'Just')) && (_p1._0._1.ctor === '::')) && (_p1._0._1._0.ctor === 'Just')) && (_p1._0._1._1.ctor === '::')) && (_p1._0._1._1._0.ctor === 'Just')) && (_p1._0._1._1._1.ctor === '::')) && (_p1._0._1._1._1._0.ctor === 'Just')) && (_p1._0._1._1._1._1.ctor === '[]')) {
+		return {
+			ctor: '_Tuple4',
+			_0: _p1._0._0._0,
+			_1: _user$project$Y16D09$toInt(_p1._0._1._0._0),
+			_2: _user$project$Y16D09$toInt(_p1._0._1._1._0._0),
+			_3: _p1._0._1._1._1._0._0
+		};
+	} else {
+		return {ctor: '_Tuple4', _0: '', _1: 0, _2: 0, _3: ''};
+	}
+};
+var _user$project$Y16D09$decompressedLength = function (string) {
+	var _p2 = _user$project$Y16D09$matches(string);
+	var caps = _p2._0;
+	var len = _p2._1;
+	var num = _p2._2;
+	var rest = _p2._3;
+	if (_elm_lang$core$Native_Utils.eq(rest, '')) {
+		return _elm_lang$core$String$length(string);
+	} else {
+		var p3 = _user$project$Y16D09$decompressedLength(
+			A2(_elm_lang$core$String$dropLeft, len, rest));
+		var p2 = _user$project$Y16D09$decompressedLength(
 			A2(
 				_elm_lang$core$String$repeat,
 				num,
-				A2(_elm_lang$core$String$left, len, rest)),
-			_user$project$Y16D09$decompress(
-				A2(_elm_lang$core$String$dropLeft, len, rest))));
+				A2(_elm_lang$core$String$left, len, rest)));
+		var p1 = _elm_lang$core$String$length(caps);
+		return (p1 + p2) + p3;
+	}
+};
+var _user$project$Y16D09$decompress = function (string) {
+	var _p3 = _user$project$Y16D09$matches(string);
+	var caps = _p3._0;
+	var len = _p3._1;
+	var num = _p3._2;
+	var rest = _p3._3;
+	if (_elm_lang$core$Native_Utils.eq(rest, '')) {
+		return string;
+	} else {
+		var p3 = _user$project$Y16D09$decompress(
+			A2(_elm_lang$core$String$dropLeft, len, rest));
+		var p2 = A2(
+			_elm_lang$core$String$repeat,
+			num,
+			A2(_elm_lang$core$String$left, len, rest));
+		var p1 = caps;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			p1,
+			A2(_elm_lang$core$Basics_ops['++'], p2, p3));
+	}
 };
 var _user$project$Y16D09$answers = function (input) {
 	var file = _user$project$Y16D09$parse(input);
@@ -14284,8 +14309,7 @@ var _user$project$Y16D09$answers = function (input) {
 		_elm_lang$core$String$length(
 			_user$project$Y16D09$decompress(file)));
 	var a2 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$String$length(
-			_user$project$Y16D09$decompress(file)));
+		_user$project$Y16D09$decompressedLength(file));
 	return A2(_user$project$Util$join, a1, a2);
 };
 
