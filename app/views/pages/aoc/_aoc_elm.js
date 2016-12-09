@@ -14220,8 +14220,73 @@ var _user$project$Y16D08$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
+var _user$project$Y16D09$parse = function (input) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\s'),
+		function (_p0) {
+			return '';
+		},
+		input);
+};
+var _user$project$Y16D09$toInt = function (string) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(string));
+};
+var _user$project$Y16D09$decompress = function (file) {
+	var matches = _elm_lang$core$List$head(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^([A-Z]*)\\((\\d+)x(\\d+)\\)(.+)$'),
+				file)));
+	var _p1 = function () {
+		var _p2 = matches;
+		if ((((((((((_p2.ctor === 'Just') && (_p2._0.ctor === '::')) && (_p2._0._0.ctor === 'Just')) && (_p2._0._1.ctor === '::')) && (_p2._0._1._0.ctor === 'Just')) && (_p2._0._1._1.ctor === '::')) && (_p2._0._1._1._0.ctor === 'Just')) && (_p2._0._1._1._1.ctor === '::')) && (_p2._0._1._1._1._0.ctor === 'Just')) && (_p2._0._1._1._1._1.ctor === '[]')) {
+			return {
+				ctor: '_Tuple4',
+				_0: _p2._0._0._0,
+				_1: _user$project$Y16D09$toInt(_p2._0._1._0._0),
+				_2: _user$project$Y16D09$toInt(_p2._0._1._1._0._0),
+				_3: _p2._0._1._1._1._0._0
+			};
+		} else {
+			return {ctor: '_Tuple4', _0: '', _1: 0, _2: 0, _3: ''};
+		}
+	}();
+	var caps = _p1._0;
+	var len = _p1._1;
+	var num = _p1._2;
+	var rest = _p1._3;
+	return _elm_lang$core$Native_Utils.eq(rest, '') ? file : A2(
+		_elm_lang$core$Basics_ops['++'],
+		caps,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$String$repeat,
+				num,
+				A2(_elm_lang$core$String$left, len, rest)),
+			_user$project$Y16D09$decompress(
+				A2(_elm_lang$core$String$dropLeft, len, rest))));
+};
 var _user$project$Y16D09$answers = function (input) {
-	return _user$project$Util$todo;
+	var file = _user$project$Y16D09$parse(input);
+	var a1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$String$length(
+			_user$project$Y16D09$decompress(file)));
+	var a2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$String$length(
+			_user$project$Y16D09$decompress(file)));
+	return A2(_user$project$Util$join, a1, a2);
 };
 
 var _user$project$Y16D10$answers = function (input) {
