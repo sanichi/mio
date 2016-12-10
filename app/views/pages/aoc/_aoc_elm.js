@@ -14313,368 +14313,223 @@ var _user$project$Y16D09$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
-var _user$project$Y16D10$toInt = function (string) {
-	return _elm_lang$core$Result$toMaybe(
-		_elm_lang$core$String$toInt(string));
+var _user$project$Y16D10$toInt = function (s) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(s));
 };
-var _user$project$Y16D10$newVal = F2(
-	function (val, bot) {
-		var _p0 = {ctor: '_Tuple2', _0: bot.lowVal, _1: bot.highVal};
-		if (_p0._0.ctor === 'Nothing') {
-			if (_p0._1.ctor === 'Nothing') {
-				return _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						lowVal: _elm_lang$core$Maybe$Just(val)
-					});
-			} else {
-				var _p2 = _p0._1._0;
-				return (_elm_lang$core$Native_Utils.cmp(val, _p2) < 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						lowVal: _elm_lang$core$Maybe$Just(val)
-					}) : ((_elm_lang$core$Native_Utils.cmp(val, _p2) > 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						lowVal: _elm_lang$core$Maybe$Just(_p2),
-						highVal: _elm_lang$core$Maybe$Just(val)
-					}) : bot);
-			}
-		} else {
-			if (_p0._1.ctor === 'Nothing') {
-				var _p1 = _p0._0._0;
-				return (_elm_lang$core$Native_Utils.cmp(val, _p1) > 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						highVal: _elm_lang$core$Maybe$Just(val)
-					}) : ((_elm_lang$core$Native_Utils.cmp(val, _p1) < 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						lowVal: _elm_lang$core$Maybe$Just(val),
-						highVal: _elm_lang$core$Maybe$Just(_p1)
-					}) : bot);
-			} else {
-				return (_elm_lang$core$Native_Utils.cmp(val, _p0._0._0) < 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						lowVal: _elm_lang$core$Maybe$Just(val)
-					}) : ((_elm_lang$core$Native_Utils.cmp(val, _p0._1._0) > 0) ? _elm_lang$core$Native_Utils.update(
-					bot,
-					{
-						highVal: _elm_lang$core$Maybe$Just(val)
-					}) : bot);
-			}
-		}
-	});
-var _user$project$Y16D10$active = function (bot) {
-	var _p3 = {ctor: '_Tuple3', _0: bot.lowVal, _1: bot.highVal, _2: bot.instruction};
-	if ((((_p3.ctor === '_Tuple3') && (_p3._0.ctor === 'Just')) && (_p3._1.ctor === 'Just')) && (_p3._2.ctor === 'Just')) {
-		return true;
-	} else {
-		return false;
-	}
-};
-var _user$project$Y16D10$Bot = F4(
-	function (a, b, c, d) {
-		return {id: a, lowVal: b, highVal: c, instruction: d};
-	});
-var _user$project$Y16D10$init = {
-	bots: A3(
-		_elm_lang$core$Dict$insert,
-		2,
-		A4(
-			_user$project$Y16D10$Bot,
-			2,
-			_elm_lang$core$Maybe$Just(2),
-			_elm_lang$core$Maybe$Just(5),
-			_elm_lang$core$Maybe$Nothing),
-		A3(
-			_elm_lang$core$Dict$insert,
-			1,
-			A4(
-				_user$project$Y16D10$Bot,
-				1,
-				_elm_lang$core$Maybe$Just(3),
-				_elm_lang$core$Maybe$Nothing,
-				_elm_lang$core$Maybe$Nothing),
-			_elm_lang$core$Dict$empty)),
-	outputs: _elm_lang$core$Dict$empty,
-	instructions: _elm_lang$core$Dict$empty,
-	error: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Y16D10$Output = F2(
-	function (a, b) {
-		return {id: a, values: b};
-	});
-var _user$project$Y16D10$step = F2(
-	function (bot, model) {
-		var _p4 = {ctor: '_Tuple3', _0: bot.lowVal, _1: bot.highVal, _2: bot.instruction};
-		if (((((_p4.ctor === '_Tuple3') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === 'Just')) && (_p4._2.ctor === 'Just')) && (_p4._2._0.ctor === '_Tuple2')) {
-			var _p11 = _p4._0._0;
-			var newBot = _elm_lang$core$Native_Utils.update(
-				bot,
-				{lowVal: _elm_lang$core$Maybe$Nothing, highVal: _elm_lang$core$Maybe$Nothing});
-			var newModel = _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					bots: A3(_elm_lang$core$Dict$insert, bot.id, newBot, model.bots)
-				});
-			var newLowModel = function () {
-				var _p5 = _p4._2._0._0;
-				if (_p5.ctor === 'BotTarget') {
-					var _p7 = _p5._0;
-					var lowBot = A2(_elm_lang$core$Dict$get, _p7, model.bots);
-					var _p6 = lowBot;
-					if (_p6.ctor === 'Nothing') {
-						return _elm_lang$core$Native_Utils.update(
-							newModel,
-							{
-								error: _elm_lang$core$Maybe$Just(
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										'can\'t find bot ',
-										_elm_lang$core$Basics$toString(_p7)))
-							});
-					} else {
-						var newExistingBot = A2(_user$project$Y16D10$newVal, _p11, _p6._0);
-						return _elm_lang$core$Native_Utils.update(
-							newModel,
-							{
-								bots: A3(_elm_lang$core$Dict$insert, _p7, newExistingBot, newModel.bots)
-							});
-					}
-				} else {
-					var _p10 = _p5._0;
-					var lowOutput = A2(_elm_lang$core$Dict$get, _p10, model.outputs);
-					var newOutput = function () {
-						var _p8 = lowOutput;
-						if (_p8.ctor === 'Nothing') {
-							return A2(
-								_user$project$Y16D10$Output,
-								_p10,
-								{
-									ctor: '::',
-									_0: _p11,
-									_1: {ctor: '[]'}
-								});
-						} else {
-							var _p9 = _p8._0;
-							return _elm_lang$core$Native_Utils.update(
-								_p9,
-								{
-									values: {ctor: '::', _0: _p11, _1: _p9.values}
-								});
-						}
-					}();
-					return _elm_lang$core$Native_Utils.update(
-						newModel,
-						{
-							outputs: A3(_elm_lang$core$Dict$insert, _p10, newOutput, newModel.outputs)
-						});
-				}
-			}();
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					error: _elm_lang$core$Maybe$Just('xxx')
-				});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					error: _elm_lang$core$Maybe$Just(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'can\'t step bot',
-							_elm_lang$core$Basics$toString(bot)))
-				});
-		}
-	});
-var _user$project$Y16D10$lookfor = F3(
-	function (low, high, model) {
-		lookfor:
-		while (true) {
-			var activeBots = _elm_lang$core$Dict$values(
-				A2(
-					_elm_lang$core$Dict$filter,
-					F2(
-						function (_p12, bot) {
-							return _user$project$Y16D10$active(bot);
-						}),
-					model.bots));
-			var _p13 = activeBots;
-			if ((_p13.ctor === '::') && (_p13._1.ctor === '[]')) {
-				var _p16 = _p13._0;
-				var _p14 = {ctor: '_Tuple2', _0: _p16.lowVal, _1: _p16.highVal};
-				if (((_p14.ctor === '_Tuple2') && (_p14._0.ctor === 'Just')) && (_p14._1.ctor === 'Just')) {
-					return _elm_lang$core$Basics$toString(_p16.id);
-				} else {
-					var newModel = A2(_user$project$Y16D10$step, _p16, model);
-					var _p15 = newModel.error;
-					if (_p15.ctor === 'Nothing') {
-						var _v9 = low,
-							_v10 = high,
-							_v11 = newModel;
-						low = _v9;
-						high = _v10;
-						model = _v11;
-						continue lookfor;
-					} else {
-						return _p15._0;
-					}
-				}
-			} else {
-				return 'no single active bot';
-			}
-		}
-	});
-var _user$project$Y16D10$Model = F4(
-	function (a, b, c, d) {
-		return {bots: a, outputs: b, instructions: c, error: d};
-	});
-var _user$project$Y16D10$OutputTarget = function (a) {
-	return {ctor: 'OutputTarget', _0: a};
-};
-var _user$project$Y16D10$BotTarget = function (a) {
-	return {ctor: 'BotTarget', _0: a};
-};
-var _user$project$Y16D10$targetConstructor = function (s) {
-	return _elm_lang$core$Native_Utils.eq(s, 'bot') ? _user$project$Y16D10$BotTarget : _user$project$Y16D10$OutputTarget;
-};
-var _user$project$Y16D10$process = F2(
-	function (model, matches) {
-		process:
-		while (true) {
-			var _p17 = matches;
-			if (_p17.ctor === '[]') {
-				return model;
-			} else {
-				var newModel = function () {
-					var _p18 = _p17._0;
-					_v13_2:
-					do {
-						if (_p18.ctor === '::') {
-							if (_p18._0.ctor === 'Just') {
-								if (((((((((((((((_p18._1.ctor === '::') && (_p18._1._0.ctor === 'Just')) && (_p18._1._1.ctor === '::')) && (_p18._1._1._0.ctor === 'Just')) && (_p18._1._1._1.ctor === '::')) && (_p18._1._1._1._0.ctor === 'Just')) && (_p18._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._0.ctor === 'Just')) && (_p18._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1._1._1._1._1._1.ctor === '[]')) {
-									var highTarget = _user$project$Y16D10$targetConstructor(_p18._1._1._1._0._0);
-									var lowTarget = _user$project$Y16D10$targetConstructor(_p18._1._0._0);
-									var high = _user$project$Y16D10$toInt(_p18._1._1._1._1._0._0);
-									var low = _user$project$Y16D10$toInt(_p18._1._1._0._0);
-									var id = _user$project$Y16D10$toInt(_p18._0._0);
-									var _p19 = {
-										ctor: '::',
-										_0: id,
-										_1: {
-											ctor: '::',
-											_0: low,
-											_1: {
-												ctor: '::',
-												_0: high,
-												_1: {ctor: '[]'}
-											}
-										}
-									};
-									if (((((((_p19.ctor === '::') && (_p19._0.ctor === 'Just')) && (_p19._1.ctor === '::')) && (_p19._1._0.ctor === 'Just')) && (_p19._1._1.ctor === '::')) && (_p19._1._1._0.ctor === 'Just')) && (_p19._1._1._1.ctor === '[]')) {
-										var _p21 = _p19._0._0;
-										var oldBot = A2(_elm_lang$core$Dict$get, _p21, model.bots);
-										var instruction = _elm_lang$core$Maybe$Just(
-											{
-												ctor: '_Tuple2',
-												_0: lowTarget(_p19._1._0._0),
-												_1: highTarget(_p19._1._1._0._0)
-											});
-										var newBot = function () {
-											var _p20 = oldBot;
-											if (_p20.ctor === 'Nothing') {
-												return A4(_user$project$Y16D10$Bot, _p21, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, instruction);
-											} else {
-												return _elm_lang$core$Native_Utils.update(
-													_p20._0,
-													{instruction: instruction});
-											}
-										}();
-										return _elm_lang$core$Native_Utils.update(
-											model,
-											{
-												bots: A3(_elm_lang$core$Dict$insert, _p21, newBot, model.bots)
-											});
-									} else {
-										return model;
-									}
-								} else {
-									break _v13_2;
-								}
-							} else {
-								if (((((((((((((((_p18._1.ctor === '::') && (_p18._1._0.ctor === 'Nothing')) && (_p18._1._1.ctor === '::')) && (_p18._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1.ctor === '::')) && (_p18._1._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._0.ctor === 'Nothing')) && (_p18._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._0.ctor === 'Just')) && (_p18._1._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._1._0.ctor === 'Just')) && (_p18._1._1._1._1._1._1._1.ctor === '::')) && (_p18._1._1._1._1._1._1._1._0.ctor === 'Just')) && (_p18._1._1._1._1._1._1._1._1.ctor === '[]')) {
-									var target = _user$project$Y16D10$targetConstructor(_p18._1._1._1._1._1._1._0._0);
-									var value = _user$project$Y16D10$toInt(_p18._1._1._1._1._1._0._0);
-									var id = _user$project$Y16D10$toInt(_p18._1._1._1._1._1._1._1._0._0);
-									var _p22 = {
-										ctor: '::',
-										_0: id,
-										_1: {
-											ctor: '::',
-											_0: value,
-											_1: {ctor: '[]'}
-										}
-									};
-									if (((((_p22.ctor === '::') && (_p22._0.ctor === 'Just')) && (_p22._1.ctor === '::')) && (_p22._1._0.ctor === 'Just')) && (_p22._1._1.ctor === '[]')) {
-										return _elm_lang$core$Native_Utils.update(
-											model,
-											{
-												instructions: A3(
-													_elm_lang$core$Dict$insert,
-													_p22._1._0._0,
-													target(_p22._0._0),
-													model.instructions)
-											});
-									} else {
-										return model;
-									}
-								} else {
-									break _v13_2;
-								}
-							}
-						} else {
-							break _v13_2;
-						}
-					} while(false);
-					return model;
-				}();
-				var _v17 = newModel,
-					_v18 = _p17._1;
-				model = _v17;
-				matches = _v18;
-				continue process;
-			}
-		}
-	});
 var _user$project$Y16D10$parse = function (input) {
-	var specific = 'value (\\d+) goes to (bot|output) (\\d+)';
-	var highLow = 'bot (\\d+) gives low to (bot|output) (\\d+) and high to (bot|output) (\\d+)';
+	var specific = 'value (\\d+) goes to ((?:bot|output) \\d+)';
+	var highLow = '(bot \\d+) gives low to ((?:bot|output) \\d+) and high to ((?:bot|output) \\d+)';
 	var pattern = A2(
 		_elm_lang$core$Basics_ops['++'],
 		highLow,
 		A2(_elm_lang$core$Basics_ops['++'], '|', specific));
 	return A2(
-		_user$project$Y16D10$process,
-		_user$project$Y16D10$init,
-		A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.submatches;
-			},
-			A3(
-				_elm_lang$core$Regex$find,
-				_elm_lang$core$Regex$All,
-				_elm_lang$core$Regex$regex(pattern),
-				input)));
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.submatches;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(pattern),
+			input));
 };
+var _user$project$Y16D10$process = F2(
+	function (matches, state) {
+		process:
+		while (true) {
+			var _p0 = matches;
+			if (_p0.ctor === '[]') {
+				return state;
+			} else {
+				var _p8 = _p0._1;
+				var _p7 = _p0._0;
+				var _p1 = _p7;
+				_v1_2:
+				do {
+					if (_p1.ctor === '::') {
+						if (_p1._0.ctor === 'Just') {
+							if (((((((((_p1._1.ctor === '::') && (_p1._1._0.ctor === 'Just')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Just')) && (_p1._1._1._1.ctor === '::')) && (_p1._1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1._1.ctor === '::')) && (_p1._1._1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1._1._1.ctor === '[]')) {
+								var _p5 = _p1._1._0._0;
+								var _p4 = _p1._1._1._0._0;
+								var chips = A2(
+									_elm_lang$core$Maybe$withDefault,
+									{ctor: '[]'},
+									A2(_elm_lang$core$Dict$get, _p1._0._0, state));
+								var newState = function () {
+									var _p2 = chips;
+									if (((_p2.ctor === '::') && (_p2._1.ctor === '::')) && (_p2._1._1.ctor === '[]')) {
+										var highChips = A2(
+											_elm_lang$core$Maybe$withDefault,
+											{ctor: '[]'},
+											A2(_elm_lang$core$Dict$get, _p4, state));
+										var lowChips = A2(
+											_elm_lang$core$Maybe$withDefault,
+											{ctor: '[]'},
+											A2(_elm_lang$core$Dict$get, _p5, state));
+										return A3(
+											_elm_lang$core$Dict$insert,
+											_p4,
+											_elm_lang$core$List$sort(
+												{ctor: '::', _0: _p2._1._0, _1: highChips}),
+											A3(
+												_elm_lang$core$Dict$insert,
+												_p5,
+												_elm_lang$core$List$sort(
+													{ctor: '::', _0: _p2._0, _1: lowChips}),
+												state));
+									} else {
+										return state;
+									}
+								}();
+								var newMatches = function () {
+									var _p3 = chips;
+									if (((_p3.ctor === '::') && (_p3._1.ctor === '::')) && (_p3._1._1.ctor === '[]')) {
+										return _p8;
+									} else {
+										return _elm_lang$core$List$reverse(
+											A2(
+												F2(
+													function (x, y) {
+														return {ctor: '::', _0: x, _1: y};
+													}),
+												_p7,
+												_elm_lang$core$List$reverse(_p8)));
+									}
+								}();
+								var _v4 = newMatches,
+									_v5 = newState;
+								matches = _v4;
+								state = _v5;
+								continue process;
+							} else {
+								break _v1_2;
+							}
+						} else {
+							if (((((((((_p1._1.ctor === '::') && (_p1._1._0.ctor === 'Nothing')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1.ctor === '::')) && (_p1._1._1._1._0.ctor === 'Just')) && (_p1._1._1._1._1.ctor === '::')) && (_p1._1._1._1._1._0.ctor === 'Just')) && (_p1._1._1._1._1._1.ctor === '[]')) {
+								var _p6 = _p1._1._1._1._1._0._0;
+								var chips = A2(
+									_elm_lang$core$Maybe$withDefault,
+									{ctor: '[]'},
+									A2(_elm_lang$core$Dict$get, _p6, state));
+								var newChips = _elm_lang$core$List$sort(
+									function (i) {
+										return {ctor: '::', _0: i, _1: chips};
+									}(
+										_user$project$Y16D10$toInt(_p1._1._1._1._0._0)));
+								var newState = A3(_elm_lang$core$Dict$insert, _p6, newChips, state);
+								var _v6 = _p8,
+									_v7 = newState;
+								matches = _v6;
+								state = _v7;
+								continue process;
+							} else {
+								break _v1_2;
+							}
+						}
+					} else {
+						break _v1_2;
+					}
+				} while(false);
+				var _v8 = _p8,
+					_v9 = state;
+				matches = _v8;
+				state = _v9;
+				continue process;
+			}
+		}
+	});
+var _user$project$Y16D10$init = _elm_lang$core$Dict$empty;
+var _user$project$Y16D10$multiply = F3(
+	function (num, state, ids) {
+		multiply:
+		while (true) {
+			var _p9 = ids;
+			if (_p9.ctor === '[]') {
+				return num;
+			} else {
+				var output = A2(
+					F2(
+						function (x, y) {
+							return A2(_elm_lang$core$Basics_ops['++'], x, y);
+						}),
+					'output ',
+					_elm_lang$core$Basics$toString(_p9._0));
+				var chips = A2(
+					_elm_lang$core$Maybe$withDefault,
+					{ctor: '[]'},
+					A2(_elm_lang$core$Dict$get, output, state));
+				var newNum = A2(
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					num,
+					_elm_lang$core$List$product(chips));
+				var _v11 = newNum,
+					_v12 = state,
+					_v13 = _p9._1;
+				num = _v11;
+				state = _v12;
+				ids = _v13;
+				continue multiply;
+			}
+		}
+	});
+var _user$project$Y16D10$lookfor = F2(
+	function (match, idLists) {
+		lookfor:
+		while (true) {
+			var _p10 = idLists;
+			if (_p10.ctor === '[]') {
+				return 'none';
+			} else {
+				var _p11 = _p10._0._0;
+				if (_elm_lang$core$Native_Utils.eq(
+					A2(
+						_elm_lang$core$String$join,
+						'-',
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p10._0._1)),
+					match) && A2(_elm_lang$core$String$startsWith, 'bot ', _p11)) {
+					return _p11;
+				} else {
+					var _v15 = match,
+						_v16 = _p10._1;
+					match = _v15;
+					idLists = _v16;
+					continue lookfor;
+				}
+			}
+		}
+	});
 var _user$project$Y16D10$answers = function (input) {
-	var model = _user$project$Y16D10$parse(input);
-	var a1 = A3(_user$project$Y16D10$lookfor, 17, 61, model);
+	var matches = _user$project$Y16D10$parse(input);
+	var state = A2(_user$project$Y16D10$process, matches, _user$project$Y16D10$init);
+	var a1 = A2(
+		_user$project$Y16D10$lookfor,
+		'17-61',
+		_elm_lang$core$Dict$toList(state));
 	var a2 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$Dict$size(model.instructions));
+		A3(
+			_user$project$Y16D10$multiply,
+			1,
+			state,
+			{
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 1,
+					_1: {
+						ctor: '::',
+						_0: 2,
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
 	return A2(_user$project$Util$join, a1, a2);
 };
 
