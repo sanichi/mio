@@ -14313,12 +14313,6 @@ var _user$project$Y16D09$answers = function (input) {
 	return A2(_user$project$Util$join, a1, a2);
 };
 
-var _user$project$Y16D10$toInt = function (s) {
-	return A2(
-		_elm_lang$core$Result$withDefault,
-		0,
-		_elm_lang$core$String$toInt(s));
-};
 var _user$project$Y16D10$parse = function (input) {
 	var specific = 'value (\\d+) goes to ((?:bot|output) \\d+)';
 	var highLow = '(bot \\d+) gives low to ((?:bot|output) \\d+) and high to ((?:bot|output) \\d+)';
@@ -14419,7 +14413,10 @@ var _user$project$Y16D10$process = F2(
 									function (i) {
 										return {ctor: '::', _0: i, _1: chips};
 									}(
-										_user$project$Y16D10$toInt(_p1._1._1._1._0._0)));
+										A2(
+											_elm_lang$core$Result$withDefault,
+											0,
+											_elm_lang$core$String$toInt(_p1._1._1._1._0._0))));
 								var newState = A3(_elm_lang$core$Dict$insert, _p6, newChips, state);
 								var _v6 = _p8,
 									_v7 = newState;

@@ -138,7 +138,8 @@ process matches state =
 
                         newChips =
                             value
-                                |> toInt
+                                |> String.toInt
+                                |> Result.withDefault 0
                                 |> (\i -> i :: chips)
                                 |> List.sort
 
@@ -167,8 +168,3 @@ parse input =
         input
             |> Regex.find Regex.All (Regex.regex pattern)
             |> List.map .submatches
-
-
-toInt : String -> Int
-toInt s =
-    String.toInt s |> Result.withDefault 0
