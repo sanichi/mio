@@ -65,6 +65,13 @@ namespace :elm do
     end
   end
 
+  desc "make and minify the Elm JS file for AOC version 2"
+  task :aoc2 do
+    Dir.chdir("app/views/pages/aoc2") do
+      compile_and_minify "aoc2"
+    end
+  end
+
   desc "make and minify the Elm JS file for Play"
   task :play do
     Dir.chdir("app/views/pages/play") do
