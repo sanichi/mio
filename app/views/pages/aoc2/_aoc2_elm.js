@@ -8256,12 +8256,24 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _user$project$Ports$newData = _elm_lang$core$Native_Platform.incomingPort('newData', _elm_lang$core$Json_Decode$string);
+var _user$project$Ports$getData = _elm_lang$core$Native_Platform.outgoingPort(
+	'getData',
+	function (v) {
+		return [v._0, v._1];
+	});
+
 var _user$project$Main$toInt = function (str) {
 	return A2(
 		_elm_lang$core$Result$withDefault,
 		0,
 		_elm_lang$core$String$toInt(str));
 };
+var _user$project$Main$getData = F2(
+	function (year, day) {
+		return _user$project$Ports$getData(
+			{ctor: '_Tuple2', _0: year, _1: day});
+	});
 var _user$project$Main$viewOption = F3(
 	function (prefix, sel, opt) {
 		var val = _elm_lang$core$Basics$toString(opt);
@@ -8287,48 +8299,8 @@ var _user$project$Main$viewOption = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'SelectYear') {
-			var _p3 = _p0._0;
-			var year_ = _elm_lang$core$List$head(
-				A2(
-					_elm_lang$core$List$filter,
-					function (y) {
-						return _elm_lang$core$Native_Utils.eq(y.year, _p3);
-					},
-					model.years));
-			var selectedYear = function () {
-				var _p1 = year_;
-				if (_p1.ctor === 'Just') {
-					return _p3;
-				} else {
-					return model.selectedYear;
-				}
-			}();
-			var selectedDay = function () {
-				var _p2 = year_;
-				if (_p2.ctor === 'Just') {
-					return A2(
-						_elm_lang$core$Maybe$withDefault,
-						0,
-						_elm_lang$core$List$head(_p2._0.days));
-				} else {
-					return model.selectedDay;
-				}
-			}();
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{selectedYear: selectedYear, selectedDay: selectedDay}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
+var _user$project$Main$defaultDay = 1;
+var _user$project$Main$defaultYear = 2015;
 var _user$project$Main$initialModel = {
 	years: {
 		ctor: '::',
@@ -8340,23 +8312,106 @@ var _user$project$Main$initialModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 3, 11)
+				days: A2(_elm_lang$core$List$range, 1, 12)
 			},
 			_1: {ctor: '[]'}
 		}
 	},
-	selectedYear: 2016,
-	selectedDay: 11
+	year: _user$project$Main$defaultYear,
+	day: _user$project$Main$defaultDay,
+	data: ''
 };
-var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: _user$project$Main$initialModel,
+	_1: A2(_user$project$Main$getData, _user$project$Main$initialModel.year, _user$project$Main$initialModel.day)
+};
+var _user$project$Main$newProblem = F3(
+	function (year, day, model) {
+		var year_ = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (y) {
+					return _elm_lang$core$Native_Utils.eq(y.year, year);
+				},
+				model.years));
+		var newYear = function () {
+			var _p0 = year_;
+			if (_p0.ctor === 'Just') {
+				return _p0._0.year;
+			} else {
+				return _user$project$Main$defaultYear;
+			}
+		}();
+		var newDay = function () {
+			var _p1 = year_;
+			if (_p1.ctor === 'Just') {
+				var _p2 = _p1._0;
+				return A2(_elm_lang$core$List$member, day, _p2.days) ? day : A2(
+					_elm_lang$core$Maybe$withDefault,
+					_user$project$Main$defaultDay,
+					_elm_lang$core$List$head(_p2.days));
+			} else {
+				return _user$project$Main$defaultDay;
+			}
+		}();
+		return {ctor: '_Tuple2', _0: newYear, _1: newDay};
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p3 = msg;
+		switch (_p3.ctor) {
+			case 'SelectYear':
+				var _p4 = A3(_user$project$Main$newProblem, _p3._0, model.day, model);
+				var newYear = _p4._0;
+				var newDay = _p4._1;
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{year: newYear, day: newDay}),
+					{
+						ctor: '::',
+						_0: A2(_user$project$Main$getData, newYear, newDay),
+						_1: {ctor: '[]'}
+					});
+			case 'SelectDay':
+				var _p5 = A3(_user$project$Main$newProblem, model.year, _p3._0, model);
+				var newYear = _p5._0;
+				var newDay = _p5._1;
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{year: newYear, day: newDay}),
+					{
+						ctor: '::',
+						_0: A2(_user$project$Main$getData, newYear, newDay),
+						_1: {ctor: '[]'}
+					});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{data: _p3._0}),
+					{ctor: '[]'});
+		}
+	});
 var _user$project$Main$Year = F2(
 	function (a, b) {
 		return {year: a, days: b};
 	});
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {years: a, selectedYear: b, selectedDay: c};
+var _user$project$Main$Model = F4(
+	function (a, b, c, d) {
+		return {years: a, year: b, day: c, data: d};
 	});
+var _user$project$Main$NewData = function (a) {
+	return {ctor: 'NewData', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _user$project$Ports$newData(_user$project$Main$NewData);
+};
 var _user$project$Main$SelectDay = function (a) {
 	return {ctor: 'SelectDay', _0: a};
 };
@@ -8365,18 +8420,18 @@ var _user$project$Main$SelectYear = function (a) {
 };
 var _user$project$Main$view = function (model) {
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p4) {
+		function (_p6) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p4));
+				_user$project$Main$toInt(_p6));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p5) {
+		function (_p7) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p5));
+				_user$project$Main$toInt(_p7));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
-		A2(_user$project$Main$viewOption, 'Day', model.selectedDay),
+		A2(_user$project$Main$viewOption, 'Day', model.day),
 		A2(
 			_elm_lang$core$Maybe$withDefault,
 			{ctor: '[]'},
@@ -8389,12 +8444,12 @@ var _user$project$Main$view = function (model) {
 					A2(
 						_elm_lang$core$List$filter,
 						function (y) {
-							return _elm_lang$core$Native_Utils.eq(y.year, model.selectedYear);
+							return _elm_lang$core$Native_Utils.eq(y.year, model.year);
 						},
 						model.years)))));
 	var yearOptions = A2(
 		_elm_lang$core$List$map,
-		A2(_user$project$Main$viewOption, 'Year', model.selectedYear),
+		A2(_user$project$Main$viewOption, 'Year', model.year),
 		A2(
 			_elm_lang$core$List$map,
 			function (_) {
@@ -8403,41 +8458,37 @@ var _user$project$Main$view = function (model) {
 			model.years));
 	return A2(
 		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('row'),
-			_1: {ctor: '[]'}
-		},
+		{ctor: '[]'},
 		{
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+					_0: _elm_lang$html$Html_Attributes$class('row'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$form,
+						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('form-horizontal'),
-							_1: {
-								ctor: '::',
-								_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'form'),
-								_1: {ctor: '[]'}
-							}
+							_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$div,
+								_elm_lang$html$Html$form,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
+									_0: _elm_lang$html$Html_Attributes$class('form-horizontal'),
+									_1: {
+										ctor: '::',
+										_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'form'),
+										_1: {ctor: '[]'}
+									}
 								},
 								{
 									ctor: '::',
@@ -8445,46 +8496,16 @@ var _user$project$Main$view = function (model) {
 										_elm_lang$html$Html$div,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('col-xs-1 col-sm-2 col-md-3'),
+											_0: _elm_lang$html$Html_Attributes$class('form-group'),
 											_1: {ctor: '[]'}
 										},
-										{ctor: '[]'}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('col-xs-4 col-sm-3 col-md-2'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$select,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('form-control input-sm'),
-														_1: {
-															ctor: '::',
-															_0: A2(_elm_lang$html$Html_Attributes$attribute, 'size', '1'),
-															_1: {
-																ctor: '::',
-																_0: onYearChange,
-																_1: {ctor: '[]'}
-															}
-														}
-													},
-													yearOptions),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
+										{
 											ctor: '::',
 											_0: A2(
 												_elm_lang$html$Html$div,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('col-xs-2 col-sm-2 col-md-2'),
+													_0: _elm_lang$html$Html_Attributes$class('col-xs-1 col-sm-2 col-md-3'),
 													_1: {ctor: '[]'}
 												},
 												{ctor: '[]'}),
@@ -8509,33 +8530,109 @@ var _user$project$Main$view = function (model) {
 																	_0: A2(_elm_lang$html$Html_Attributes$attribute, 'size', '1'),
 																	_1: {
 																		ctor: '::',
-																		_0: onDayChange,
+																		_0: onYearChange,
 																		_1: {ctor: '[]'}
 																	}
 																}
 															},
-															dayOptions),
+															yearOptions),
 														_1: {ctor: '[]'}
 													}),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('col-xs-2 col-sm-2 col-md-2'),
+															_1: {ctor: '[]'}
+														},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$div,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('col-xs-4 col-sm-3 col-md-2'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$select,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('form-control input-sm'),
+																		_1: {
+																			ctor: '::',
+																			_0: A2(_elm_lang$html$Html_Attributes$attribute, 'size', '1'),
+																			_1: {
+																				ctor: '::',
+																				_0: onDayChange,
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	},
+																	dayOptions),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
 											}
-										}
-									}
+										}),
+									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
 				}),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$hr,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('row'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$pre,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(model.data),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
 		});
 };
 var _user$project$Main$main = _elm_lang$html$Html$program(
-	{
-		init: _user$project$Main$init,
-		update: _user$project$Main$update,
-		view: _user$project$Main$view,
-		subscriptions: _elm_lang$core$Basics$always(_elm_lang$core$Platform_Sub$none)
-	})();
+	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})();
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
