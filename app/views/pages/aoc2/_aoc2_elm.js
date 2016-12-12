@@ -2669,6 +2669,28 @@ var _elm_lang$core$Array$repeat = F2(
 	});
 var _elm_lang$core$Array$Array = {ctor: 'Array'};
 
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
+	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
+	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
+var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
+var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
 //import Native.Utils //
 
 var _elm_lang$core$Native_Char = function() {
@@ -5726,6 +5748,126 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
 var _elm_lang$core$Tuple$mapSecond = F2(
 	function (func, _p0) {
 		var _p1 = _p0;
@@ -5752,6 +5894,154 @@ var _elm_lang$core$Tuple$first = function (_p6) {
 	var _p7 = _p6;
 	return _p7._0;
 };
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$core$Set$foldr = F3(
+	function (f, b, _p0) {
+		var _p1 = _p0;
+		return A3(
+			_elm_lang$core$Dict$foldr,
+			F3(
+				function (k, _p2, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p1._0);
+	});
+var _elm_lang$core$Set$foldl = F3(
+	function (f, b, _p3) {
+		var _p4 = _p3;
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, _p5, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p4._0);
+	});
+var _elm_lang$core$Set$toList = function (_p6) {
+	var _p7 = _p6;
+	return _elm_lang$core$Dict$keys(_p7._0);
+};
+var _elm_lang$core$Set$size = function (_p8) {
+	var _p9 = _p8;
+	return _elm_lang$core$Dict$size(_p9._0);
+};
+var _elm_lang$core$Set$member = F2(
+	function (k, _p10) {
+		var _p11 = _p10;
+		return A2(_elm_lang$core$Dict$member, k, _p11._0);
+	});
+var _elm_lang$core$Set$isEmpty = function (_p12) {
+	var _p13 = _p12;
+	return _elm_lang$core$Dict$isEmpty(_p13._0);
+};
+var _elm_lang$core$Set$Set_elm_builtin = function (a) {
+	return {ctor: 'Set_elm_builtin', _0: a};
+};
+var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
+var _elm_lang$core$Set$singleton = function (k) {
+	return _elm_lang$core$Set$Set_elm_builtin(
+		A2(
+			_elm_lang$core$Dict$singleton,
+			k,
+			{ctor: '_Tuple0'}));
+};
+var _elm_lang$core$Set$insert = F2(
+	function (k, _p14) {
+		var _p15 = _p14;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A3(
+				_elm_lang$core$Dict$insert,
+				k,
+				{ctor: '_Tuple0'},
+				_p15._0));
+	});
+var _elm_lang$core$Set$fromList = function (xs) {
+	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
+};
+var _elm_lang$core$Set$map = F2(
+	function (f, s) {
+		return _elm_lang$core$Set$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				f,
+				_elm_lang$core$Set$toList(s)));
+	});
+var _elm_lang$core$Set$remove = F2(
+	function (k, _p16) {
+		var _p17 = _p16;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$remove, k, _p17._0));
+	});
+var _elm_lang$core$Set$union = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
+	});
+var _elm_lang$core$Set$intersect = F2(
+	function (_p23, _p22) {
+		var _p24 = _p23;
+		var _p25 = _p22;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
+	});
+var _elm_lang$core$Set$diff = F2(
+	function (_p27, _p26) {
+		var _p28 = _p27;
+		var _p29 = _p26;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
+	});
+var _elm_lang$core$Set$filter = F2(
+	function (p, _p30) {
+		var _p31 = _p30;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(
+				_elm_lang$core$Dict$filter,
+				F2(
+					function (k, _p32) {
+						return p(k);
+					}),
+				_p31._0));
+	});
+var _elm_lang$core$Set$partition = F2(
+	function (p, _p33) {
+		var _p34 = _p33;
+		var _p35 = A2(
+			_elm_lang$core$Dict$partition,
+			F2(
+				function (k, _p36) {
+					return p(k);
+				}),
+			_p34._0);
+		var p1 = _p35._0;
+		var p2 = _p35._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
+			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
+		};
+	});
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -8256,11 +8546,6782 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _sanichi$elm_md5$MD5$g = F3(
+	function (x, y, z) {
+		return (x & z) | (y & (~z));
+	});
+var _sanichi$elm_md5$MD5$f = F3(
+	function (x, y, z) {
+		return (x & y) | ((~x) & z);
+	});
+var _sanichi$elm_md5$MD5$iget = F2(
+	function (index, array) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Array$get, index, array));
+	});
+var _sanichi$elm_md5$MD5$ixor = F2(
+	function (x, y) {
+		return x ^ y;
+	});
+var _sanichi$elm_md5$MD5$h = F3(
+	function (x, y, z) {
+		return A2(
+			_sanichi$elm_md5$MD5$ixor,
+			z,
+			A2(_sanichi$elm_md5$MD5$ixor, x, y));
+	});
+var _sanichi$elm_md5$MD5$i = F3(
+	function (x, y, z) {
+		return A2(_sanichi$elm_md5$MD5$ixor, y, x | (~z));
+	});
+var _sanichi$elm_md5$MD5$addUnsigned = F2(
+	function (x, y) {
+		var result = (x & 1073741823) + (y & 1073741823);
+		var y4 = y & 1073741824;
+		var x4 = x & 1073741824;
+		var y8 = y & 2147483648;
+		var x8 = x & 2147483648;
+		return (_elm_lang$core$Native_Utils.cmp(x4 & y4, 0) > 0) ? A2(
+			_sanichi$elm_md5$MD5$ixor,
+			y8,
+			A2(
+				_sanichi$elm_md5$MD5$ixor,
+				x8,
+				A2(_sanichi$elm_md5$MD5$ixor, result, 2147483648))) : ((_elm_lang$core$Native_Utils.cmp(x4 | y4, 0) > 0) ? ((_elm_lang$core$Native_Utils.cmp(result & 1073741824, 0) > 0) ? A2(
+			_sanichi$elm_md5$MD5$ixor,
+			y8,
+			A2(
+				_sanichi$elm_md5$MD5$ixor,
+				x8,
+				A2(_sanichi$elm_md5$MD5$ixor, result, 3221225472))) : A2(
+			_sanichi$elm_md5$MD5$ixor,
+			y8,
+			A2(
+				_sanichi$elm_md5$MD5$ixor,
+				x8,
+				A2(_sanichi$elm_md5$MD5$ixor, result, 1073741824)))) : A2(
+			_sanichi$elm_md5$MD5$ixor,
+			y8,
+			A2(_sanichi$elm_md5$MD5$ixor, result, x8)));
+	});
+var _sanichi$elm_md5$MD5$rotateLeft = F2(
+	function (input, bits) {
+		return (input << bits) | (input >>> (32 - bits));
+	});
+var _sanichi$elm_md5$MD5$ff = F7(
+	function (a, b, c, d, x, s, ac) {
+		var z = A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			a,
+			A2(
+				_sanichi$elm_md5$MD5$addUnsigned,
+				A2(
+					_sanichi$elm_md5$MD5$addUnsigned,
+					A3(_sanichi$elm_md5$MD5$f, b, c, d),
+					x),
+				ac));
+		return A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			A2(_sanichi$elm_md5$MD5$rotateLeft, z, s),
+			b);
+	});
+var _sanichi$elm_md5$MD5$gg = F7(
+	function (a, b, c, d, x, s, ac) {
+		var z = A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			a,
+			A2(
+				_sanichi$elm_md5$MD5$addUnsigned,
+				A2(
+					_sanichi$elm_md5$MD5$addUnsigned,
+					A3(_sanichi$elm_md5$MD5$g, b, c, d),
+					x),
+				ac));
+		return A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			A2(_sanichi$elm_md5$MD5$rotateLeft, z, s),
+			b);
+	});
+var _sanichi$elm_md5$MD5$hh = F7(
+	function (a, b, c, d, x, s, ac) {
+		var z = A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			a,
+			A2(
+				_sanichi$elm_md5$MD5$addUnsigned,
+				A2(
+					_sanichi$elm_md5$MD5$addUnsigned,
+					A3(_sanichi$elm_md5$MD5$h, b, c, d),
+					x),
+				ac));
+		return A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			A2(_sanichi$elm_md5$MD5$rotateLeft, z, s),
+			b);
+	});
+var _sanichi$elm_md5$MD5$ii = F7(
+	function (a, b, c, d, x, s, ac) {
+		var z = A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			a,
+			A2(
+				_sanichi$elm_md5$MD5$addUnsigned,
+				A2(
+					_sanichi$elm_md5$MD5$addUnsigned,
+					A3(_sanichi$elm_md5$MD5$i, b, c, d),
+					x),
+				ac));
+		return A2(
+			_sanichi$elm_md5$MD5$addUnsigned,
+			A2(_sanichi$elm_md5$MD5$rotateLeft, z, s),
+			b);
+	});
+var _sanichi$elm_md5$MD5$hexFromInt = function (i) {
+	return (_elm_lang$core$Native_Utils.cmp(i, 10) < 0) ? _elm_lang$core$Char$fromCode(
+		i + _elm_lang$core$Char$toCode(
+			_elm_lang$core$Native_Utils.chr('0'))) : _elm_lang$core$Char$fromCode(
+		(i - 10) + _elm_lang$core$Char$toCode(
+			_elm_lang$core$Native_Utils.chr('a')));
+};
+var _sanichi$elm_md5$MD5$toHex = function (i) {
+	return (_elm_lang$core$Native_Utils.cmp(i, 16) < 0) ? _elm_lang$core$String$fromChar(
+		_sanichi$elm_md5$MD5$hexFromInt(i)) : A2(
+		_elm_lang$core$Basics_ops['++'],
+		_sanichi$elm_md5$MD5$toHex((i / 16) | 0),
+		_elm_lang$core$String$fromChar(
+			_sanichi$elm_md5$MD5$hexFromInt(
+				A2(_elm_lang$core$Basics_ops['%'], i, 16))));
+};
+var _sanichi$elm_md5$MD5$wordToHex_ = F3(
+	function (input, index, output) {
+		wordToHex_:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(index, 3) > 0) {
+				return output;
+			} else {
+				var $byte = (input >>> (index * 8)) & 255;
+				var tmp2 = _sanichi$elm_md5$MD5$toHex($byte);
+				var tmp1 = _elm_lang$core$Native_Utils.eq(
+					_elm_lang$core$String$length(tmp2),
+					1) ? '0' : '';
+				var _v0 = input,
+					_v1 = index + 1,
+					_v2 = A2(
+					_elm_lang$core$Basics_ops['++'],
+					output,
+					A2(_elm_lang$core$Basics_ops['++'], tmp1, tmp2));
+				input = _v0;
+				index = _v1;
+				output = _v2;
+				continue wordToHex_;
+			}
+		}
+	});
+var _sanichi$elm_md5$MD5$wordToHex = function (input) {
+	return A3(_sanichi$elm_md5$MD5$wordToHex_, input, 0, '');
+};
+var _sanichi$elm_md5$MD5$utf8Encode_ = F2(
+	function (input, output) {
+		utf8Encode_:
+		while (true) {
+			var split = _elm_lang$core$String$uncons(input);
+			var _p0 = split;
+			if (_p0.ctor === 'Nothing') {
+				return output;
+			} else {
+				var _p1 = _p0._0._0;
+				var c = _elm_lang$core$Char$toCode(_p1);
+				var newOutput = (_elm_lang$core$Native_Utils.cmp(c, 128) < 0) ? A2(
+					_elm_lang$core$Basics_ops['++'],
+					output,
+					_elm_lang$core$String$fromChar(_p1)) : ((_elm_lang$core$Native_Utils.cmp(c, 2048) < 0) ? A2(
+					_elm_lang$core$Basics_ops['++'],
+					output,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$String$fromChar(
+							_elm_lang$core$Char$fromCode((c >> 6) | 192)),
+						_elm_lang$core$String$fromChar(
+							_elm_lang$core$Char$fromCode((c & 63) | 128)))) : A2(
+					_elm_lang$core$Basics_ops['++'],
+					output,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$String$fromChar(
+							_elm_lang$core$Char$fromCode((c >> 12) | 224)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$String$fromChar(
+								_elm_lang$core$Char$fromCode(((c >> 6) & 63) | 128)),
+							_elm_lang$core$String$fromChar(
+								_elm_lang$core$Char$fromCode((c & 63) | 128))))));
+				var _v4 = _p0._0._1,
+					_v5 = newOutput;
+				input = _v4;
+				output = _v5;
+				continue utf8Encode_;
+			}
+		}
+	});
+var _sanichi$elm_md5$MD5$utf8Encode = function (string) {
+	return A2(_sanichi$elm_md5$MD5$utf8Encode_, string, '');
+};
+var _sanichi$elm_md5$MD5$convertToWordArray_ = F4(
+	function (input, byteCount, messageLength, words) {
+		convertToWordArray_:
+		while (true) {
+			var bytePosition = 8 * A2(_elm_lang$core$Basics_ops['%'], byteCount, 4);
+			var wordCount = ((byteCount - A2(_elm_lang$core$Basics_ops['%'], byteCount, 4)) / 4) | 0;
+			var oldWord = A2(_sanichi$elm_md5$MD5$iget, wordCount, words);
+			if (_elm_lang$core$Native_Utils.cmp(byteCount, messageLength) < 0) {
+				var str = A3(_elm_lang$core$String$slice, byteCount, byteCount + 1, input);
+				var split = _elm_lang$core$String$uncons(str);
+				var code = function () {
+					var _p2 = split;
+					if (_p2.ctor === 'Nothing') {
+						return 0;
+					} else {
+						return _elm_lang$core$Char$toCode(_p2._0._0) << bytePosition;
+					}
+				}();
+				var newWord = oldWord | code;
+				var newWords = A3(_elm_lang$core$Array$set, wordCount, newWord, words);
+				var _v7 = input,
+					_v8 = byteCount + 1,
+					_v9 = messageLength,
+					_v10 = newWords;
+				input = _v7;
+				byteCount = _v8;
+				messageLength = _v9;
+				words = _v10;
+				continue convertToWordArray_;
+			} else {
+				var code = 128 << bytePosition;
+				var newWord = oldWord | code;
+				var tmp1 = A3(_elm_lang$core$Array$set, wordCount, newWord, words);
+				var numberOfWords = _elm_lang$core$Array$length(words);
+				var tmp2 = A3(_elm_lang$core$Array$set, numberOfWords - 2, messageLength << 3, tmp1);
+				return A3(_elm_lang$core$Array$set, numberOfWords - 1, messageLength >>> 29, tmp2);
+			}
+		}
+	});
+var _sanichi$elm_md5$MD5$convertToWordArray = function (input) {
+	var messageLength = _elm_lang$core$String$length(input);
+	var tmp1 = messageLength + 8;
+	var tmp2 = ((tmp1 - A2(_elm_lang$core$Basics_ops['%'], tmp1, 64)) / 64) | 0;
+	var numberOfWords = 16 * (tmp2 + 1);
+	var words = A2(_elm_lang$core$Array$repeat, numberOfWords, 0);
+	return A4(_sanichi$elm_md5$MD5$convertToWordArray_, input, 0, messageLength, words);
+};
+var _sanichi$elm_md5$MD5$hex_ = F3(
+	function (x, k, _p3) {
+		hex_:
+		while (true) {
+			var _p4 = _p3;
+			var _p8 = _p4._3;
+			var _p7 = _p4._2;
+			var _p6 = _p4._1;
+			var _p5 = _p4._0;
+			if (_elm_lang$core$Native_Utils.cmp(
+				k,
+				_elm_lang$core$Array$length(x)) > -1) {
+				return {ctor: '_Tuple4', _0: _p5, _1: _p6, _2: _p7, _3: _p8};
+			} else {
+				var d00 = _p8;
+				var c00 = _p7;
+				var b00 = _p6;
+				var a00 = _p5;
+				var s44 = 21;
+				var s43 = 15;
+				var s42 = 10;
+				var s41 = 6;
+				var s34 = 23;
+				var s33 = 16;
+				var s32 = 11;
+				var s31 = 4;
+				var s24 = 20;
+				var s23 = 14;
+				var s22 = 9;
+				var s21 = 5;
+				var s14 = 22;
+				var s13 = 17;
+				var s12 = 12;
+				var s11 = 7;
+				var a01 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					a00,
+					b00,
+					c00,
+					d00,
+					A2(_sanichi$elm_md5$MD5$iget, k + 0, x),
+					s11,
+					3614090360);
+				var d01 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					d00,
+					a01,
+					b00,
+					c00,
+					A2(_sanichi$elm_md5$MD5$iget, k + 1, x),
+					s12,
+					3905402710);
+				var c01 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					c00,
+					d01,
+					a01,
+					b00,
+					A2(_sanichi$elm_md5$MD5$iget, k + 2, x),
+					s13,
+					606105819);
+				var b01 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					b00,
+					c01,
+					d01,
+					a01,
+					A2(_sanichi$elm_md5$MD5$iget, k + 3, x),
+					s14,
+					3250441966);
+				var a02 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					a01,
+					b01,
+					c01,
+					d01,
+					A2(_sanichi$elm_md5$MD5$iget, k + 4, x),
+					s11,
+					4118548399);
+				var d02 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					d01,
+					a02,
+					b01,
+					c01,
+					A2(_sanichi$elm_md5$MD5$iget, k + 5, x),
+					s12,
+					1200080426);
+				var c02 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					c01,
+					d02,
+					a02,
+					b01,
+					A2(_sanichi$elm_md5$MD5$iget, k + 6, x),
+					s13,
+					2821735955);
+				var b02 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					b01,
+					c02,
+					d02,
+					a02,
+					A2(_sanichi$elm_md5$MD5$iget, k + 7, x),
+					s14,
+					4249261313);
+				var a03 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					a02,
+					b02,
+					c02,
+					d02,
+					A2(_sanichi$elm_md5$MD5$iget, k + 8, x),
+					s11,
+					1770035416);
+				var d03 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					d02,
+					a03,
+					b02,
+					c02,
+					A2(_sanichi$elm_md5$MD5$iget, k + 9, x),
+					s12,
+					2336552879);
+				var c03 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					c02,
+					d03,
+					a03,
+					b02,
+					A2(_sanichi$elm_md5$MD5$iget, k + 10, x),
+					s13,
+					4294925233);
+				var b03 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					b02,
+					c03,
+					d03,
+					a03,
+					A2(_sanichi$elm_md5$MD5$iget, k + 11, x),
+					s14,
+					2304563134);
+				var a04 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					a03,
+					b03,
+					c03,
+					d03,
+					A2(_sanichi$elm_md5$MD5$iget, k + 12, x),
+					s11,
+					1804603682);
+				var d04 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					d03,
+					a04,
+					b03,
+					c03,
+					A2(_sanichi$elm_md5$MD5$iget, k + 13, x),
+					s12,
+					4254626195);
+				var c04 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					c03,
+					d04,
+					a04,
+					b03,
+					A2(_sanichi$elm_md5$MD5$iget, k + 14, x),
+					s13,
+					2792965006);
+				var b04 = A7(
+					_sanichi$elm_md5$MD5$ff,
+					b03,
+					c04,
+					d04,
+					a04,
+					A2(_sanichi$elm_md5$MD5$iget, k + 15, x),
+					s14,
+					1236535329);
+				var a05 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					a04,
+					b04,
+					c04,
+					d04,
+					A2(_sanichi$elm_md5$MD5$iget, k + 1, x),
+					s21,
+					4129170786);
+				var d05 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					d04,
+					a05,
+					b04,
+					c04,
+					A2(_sanichi$elm_md5$MD5$iget, k + 6, x),
+					s22,
+					3225465664);
+				var c05 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					c04,
+					d05,
+					a05,
+					b04,
+					A2(_sanichi$elm_md5$MD5$iget, k + 11, x),
+					s23,
+					643717713);
+				var b05 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					b04,
+					c05,
+					d05,
+					a05,
+					A2(_sanichi$elm_md5$MD5$iget, k + 0, x),
+					s24,
+					3921069994);
+				var a06 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					a05,
+					b05,
+					c05,
+					d05,
+					A2(_sanichi$elm_md5$MD5$iget, k + 5, x),
+					s21,
+					3593408605);
+				var d06 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					d05,
+					a06,
+					b05,
+					c05,
+					A2(_sanichi$elm_md5$MD5$iget, k + 10, x),
+					s22,
+					38016083);
+				var c06 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					c05,
+					d06,
+					a06,
+					b05,
+					A2(_sanichi$elm_md5$MD5$iget, k + 15, x),
+					s23,
+					3634488961);
+				var b06 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					b05,
+					c06,
+					d06,
+					a06,
+					A2(_sanichi$elm_md5$MD5$iget, k + 4, x),
+					s24,
+					3889429448);
+				var a07 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					a06,
+					b06,
+					c06,
+					d06,
+					A2(_sanichi$elm_md5$MD5$iget, k + 9, x),
+					s21,
+					568446438);
+				var d07 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					d06,
+					a07,
+					b06,
+					c06,
+					A2(_sanichi$elm_md5$MD5$iget, k + 14, x),
+					s22,
+					3275163606);
+				var c07 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					c06,
+					d07,
+					a07,
+					b06,
+					A2(_sanichi$elm_md5$MD5$iget, k + 3, x),
+					s23,
+					4107603335);
+				var b07 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					b06,
+					c07,
+					d07,
+					a07,
+					A2(_sanichi$elm_md5$MD5$iget, k + 8, x),
+					s24,
+					1163531501);
+				var a08 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					a07,
+					b07,
+					c07,
+					d07,
+					A2(_sanichi$elm_md5$MD5$iget, k + 13, x),
+					s21,
+					2850285829);
+				var d08 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					d07,
+					a08,
+					b07,
+					c07,
+					A2(_sanichi$elm_md5$MD5$iget, k + 2, x),
+					s22,
+					4243563512);
+				var c08 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					c07,
+					d08,
+					a08,
+					b07,
+					A2(_sanichi$elm_md5$MD5$iget, k + 7, x),
+					s23,
+					1735328473);
+				var b08 = A7(
+					_sanichi$elm_md5$MD5$gg,
+					b07,
+					c08,
+					d08,
+					a08,
+					A2(_sanichi$elm_md5$MD5$iget, k + 12, x),
+					s24,
+					2368359562);
+				var a09 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					a08,
+					b08,
+					c08,
+					d08,
+					A2(_sanichi$elm_md5$MD5$iget, k + 5, x),
+					s31,
+					4294588738);
+				var d09 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					d08,
+					a09,
+					b08,
+					c08,
+					A2(_sanichi$elm_md5$MD5$iget, k + 8, x),
+					s32,
+					2272392833);
+				var c09 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					c08,
+					d09,
+					a09,
+					b08,
+					A2(_sanichi$elm_md5$MD5$iget, k + 11, x),
+					s33,
+					1839030562);
+				var b09 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					b08,
+					c09,
+					d09,
+					a09,
+					A2(_sanichi$elm_md5$MD5$iget, k + 14, x),
+					s34,
+					4259657740);
+				var a10 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					a09,
+					b09,
+					c09,
+					d09,
+					A2(_sanichi$elm_md5$MD5$iget, k + 1, x),
+					s31,
+					2763975236);
+				var d10 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					d09,
+					a10,
+					b09,
+					c09,
+					A2(_sanichi$elm_md5$MD5$iget, k + 4, x),
+					s32,
+					1272893353);
+				var c10 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					c09,
+					d10,
+					a10,
+					b09,
+					A2(_sanichi$elm_md5$MD5$iget, k + 7, x),
+					s33,
+					4139469664);
+				var b10 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					b09,
+					c10,
+					d10,
+					a10,
+					A2(_sanichi$elm_md5$MD5$iget, k + 10, x),
+					s34,
+					3200236656);
+				var a11 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					a10,
+					b10,
+					c10,
+					d10,
+					A2(_sanichi$elm_md5$MD5$iget, k + 13, x),
+					s31,
+					681279174);
+				var d11 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					d10,
+					a11,
+					b10,
+					c10,
+					A2(_sanichi$elm_md5$MD5$iget, k + 0, x),
+					s32,
+					3936430074);
+				var c11 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					c10,
+					d11,
+					a11,
+					b10,
+					A2(_sanichi$elm_md5$MD5$iget, k + 3, x),
+					s33,
+					3572445317);
+				var b11 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					b10,
+					c11,
+					d11,
+					a11,
+					A2(_sanichi$elm_md5$MD5$iget, k + 6, x),
+					s34,
+					76029189);
+				var a12 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					a11,
+					b11,
+					c11,
+					d11,
+					A2(_sanichi$elm_md5$MD5$iget, k + 9, x),
+					s31,
+					3654602809);
+				var d12 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					d11,
+					a12,
+					b11,
+					c11,
+					A2(_sanichi$elm_md5$MD5$iget, k + 12, x),
+					s32,
+					3873151461);
+				var c12 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					c11,
+					d12,
+					a12,
+					b11,
+					A2(_sanichi$elm_md5$MD5$iget, k + 15, x),
+					s33,
+					530742520);
+				var b12 = A7(
+					_sanichi$elm_md5$MD5$hh,
+					b11,
+					c12,
+					d12,
+					a12,
+					A2(_sanichi$elm_md5$MD5$iget, k + 2, x),
+					s34,
+					3299628645);
+				var a13 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					a12,
+					b12,
+					c12,
+					d12,
+					A2(_sanichi$elm_md5$MD5$iget, k + 0, x),
+					s41,
+					4096336452);
+				var d13 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					d12,
+					a13,
+					b12,
+					c12,
+					A2(_sanichi$elm_md5$MD5$iget, k + 7, x),
+					s42,
+					1126891415);
+				var c13 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					c12,
+					d13,
+					a13,
+					b12,
+					A2(_sanichi$elm_md5$MD5$iget, k + 14, x),
+					s43,
+					2878612391);
+				var b13 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					b12,
+					c13,
+					d13,
+					a13,
+					A2(_sanichi$elm_md5$MD5$iget, k + 5, x),
+					s44,
+					4237533241);
+				var a14 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					a13,
+					b13,
+					c13,
+					d13,
+					A2(_sanichi$elm_md5$MD5$iget, k + 12, x),
+					s41,
+					1700485571);
+				var d14 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					d13,
+					a14,
+					b13,
+					c13,
+					A2(_sanichi$elm_md5$MD5$iget, k + 3, x),
+					s42,
+					2399980690);
+				var c14 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					c13,
+					d14,
+					a14,
+					b13,
+					A2(_sanichi$elm_md5$MD5$iget, k + 10, x),
+					s43,
+					4293915773);
+				var b14 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					b13,
+					c14,
+					d14,
+					a14,
+					A2(_sanichi$elm_md5$MD5$iget, k + 1, x),
+					s44,
+					2240044497);
+				var a15 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					a14,
+					b14,
+					c14,
+					d14,
+					A2(_sanichi$elm_md5$MD5$iget, k + 8, x),
+					s41,
+					1873313359);
+				var d15 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					d14,
+					a15,
+					b14,
+					c14,
+					A2(_sanichi$elm_md5$MD5$iget, k + 15, x),
+					s42,
+					4264355552);
+				var c15 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					c14,
+					d15,
+					a15,
+					b14,
+					A2(_sanichi$elm_md5$MD5$iget, k + 6, x),
+					s43,
+					2734768916);
+				var b15 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					b14,
+					c15,
+					d15,
+					a15,
+					A2(_sanichi$elm_md5$MD5$iget, k + 13, x),
+					s44,
+					1309151649);
+				var a16 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					a15,
+					b15,
+					c15,
+					d15,
+					A2(_sanichi$elm_md5$MD5$iget, k + 4, x),
+					s41,
+					4149444226);
+				var d16 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					d15,
+					a16,
+					b15,
+					c15,
+					A2(_sanichi$elm_md5$MD5$iget, k + 11, x),
+					s42,
+					3174756917);
+				var d17 = A2(_sanichi$elm_md5$MD5$addUnsigned, d00, d16);
+				var c16 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					c15,
+					d16,
+					a16,
+					b15,
+					A2(_sanichi$elm_md5$MD5$iget, k + 2, x),
+					s43,
+					718787259);
+				var c17 = A2(_sanichi$elm_md5$MD5$addUnsigned, c00, c16);
+				var b16 = A7(
+					_sanichi$elm_md5$MD5$ii,
+					b15,
+					c16,
+					d16,
+					a16,
+					A2(_sanichi$elm_md5$MD5$iget, k + 9, x),
+					s44,
+					3951481745);
+				var b17 = A2(_sanichi$elm_md5$MD5$addUnsigned, b00, b16);
+				var a17 = A2(_sanichi$elm_md5$MD5$addUnsigned, a00, a16);
+				var _v12 = x,
+					_v13 = k + 16,
+					_v14 = {ctor: '_Tuple4', _0: a17, _1: b17, _2: c17, _3: d17};
+				x = _v12;
+				k = _v13;
+				_p3 = _v14;
+				continue hex_;
+			}
+		}
+	});
+var _sanichi$elm_md5$MD5$hex = function (string) {
+	var x = _sanichi$elm_md5$MD5$convertToWordArray(
+		_sanichi$elm_md5$MD5$utf8Encode(string));
+	var _p9 = A3(
+		_sanichi$elm_md5$MD5$hex_,
+		x,
+		0,
+		{ctor: '_Tuple4', _0: 1732584193, _1: 4023233417, _2: 2562383102, _3: 271733878});
+	var a = _p9._0;
+	var b = _p9._1;
+	var c = _p9._2;
+	var d = _p9._3;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_sanichi$elm_md5$MD5$wordToHex(a),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_sanichi$elm_md5$MD5$wordToHex(b),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_sanichi$elm_md5$MD5$wordToHex(c),
+				_sanichi$elm_md5$MD5$wordToHex(d))));
+};
+
 var _user$project$Ports$newData = _elm_lang$core$Native_Platform.incomingPort('newData', _elm_lang$core$Json_Decode$string);
 var _user$project$Ports$getData = _elm_lang$core$Native_Platform.outgoingPort(
 	'getData',
 	function (v) {
 		return [v._0, v._1];
+	});
+
+var _user$project$Y15D01$position = F3(
+	function (floor, step, instructions) {
+		position:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(floor, 0) < 0) {
+				return step;
+			} else {
+				var next = _elm_lang$core$String$uncons(instructions);
+				var _p0 = next;
+				_v0_2:
+				do {
+					if ((_p0.ctor === 'Just') && (_p0._0.ctor === '_Tuple2')) {
+						switch (_p0._0._0.valueOf()) {
+							case '(':
+								var _v1 = floor + 1,
+									_v2 = step + 1,
+									_v3 = _p0._0._1;
+								floor = _v1;
+								step = _v2;
+								instructions = _v3;
+								continue position;
+							case ')':
+								var _v4 = floor - 1,
+									_v5 = step + 1,
+									_v6 = _p0._0._1;
+								floor = _v4;
+								step = _v5;
+								instructions = _v6;
+								continue position;
+							default:
+								break _v0_2;
+						}
+					} else {
+						break _v0_2;
+					}
+				} while(false);
+				return step;
+			}
+		}
+	});
+var _user$project$Y15D01$count = F2(
+	function (floor, instructions) {
+		count:
+		while (true) {
+			var next = _elm_lang$core$String$uncons(instructions);
+			var _p1 = next;
+			_v7_2:
+			do {
+				if ((_p1.ctor === 'Just') && (_p1._0.ctor === '_Tuple2')) {
+					switch (_p1._0._0.valueOf()) {
+						case '(':
+							var _v8 = floor + 1,
+								_v9 = _p1._0._1;
+							floor = _v8;
+							instructions = _v9;
+							continue count;
+						case ')':
+							var _v10 = floor - 1,
+								_v11 = _p1._0._1;
+							floor = _v10;
+							instructions = _v11;
+							continue count;
+						default:
+							break _v7_2;
+					}
+				} else {
+					break _v7_2;
+				}
+			} while(false);
+			return floor;
+		}
+	});
+var _user$project$Y15D01$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(_user$project$Y15D01$count, 0, input)) : _elm_lang$core$Basics$toString(
+			A3(_user$project$Y15D01$position, 0, 0, input));
+	});
+
+var _user$project$Y15D02$ribbon = F3(
+	function (l, w, h) {
+		var volume = (l * w) * h;
+		var perimeters = {
+			ctor: '::',
+			_0: l + w,
+			_1: {
+				ctor: '::',
+				_0: w + h,
+				_1: {
+					ctor: '::',
+					_0: h + l,
+					_1: {ctor: '[]'}
+				}
+			}
+		};
+		var perimeter = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(perimeters));
+		return (2 * perimeter) + volume;
+	});
+var _user$project$Y15D02$wrapping = F3(
+	function (l, w, h) {
+		var sides = {
+			ctor: '::',
+			_0: l * w,
+			_1: {
+				ctor: '::',
+				_0: w * h,
+				_1: {
+					ctor: '::',
+					_0: h * l,
+					_1: {ctor: '[]'}
+				}
+			}
+		};
+		var paper = 2 * _elm_lang$core$List$sum(sides);
+		var slack = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(sides));
+		return paper + slack;
+	});
+var _user$project$Y15D02$sumLine = F3(
+	function (counter, line, count) {
+		var dimensions = A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Result$withDefault(0),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$String$toInt,
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.match;
+					},
+					A3(
+						_elm_lang$core$Regex$find,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('[1-9]\\d*'),
+						line))));
+		var extra = function () {
+			var _p0 = dimensions;
+			if ((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '[]')) {
+				return A3(counter, _p0._0, _p0._1._0, _p0._1._1._0);
+			} else {
+				return 0;
+			}
+		}();
+		return count + extra;
+	});
+var _user$project$Y15D02$sumInput = F2(
+	function (counter, input) {
+		var lines = A3(
+			_elm_lang$core$Regex$split,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('\n'),
+			input);
+		return A3(
+			_elm_lang$core$List$foldl,
+			_user$project$Y15D02$sumLine(counter),
+			0,
+			lines);
+	});
+var _user$project$Y15D02$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(_user$project$Y15D02$sumInput, _user$project$Y15D02$wrapping, input)) : _elm_lang$core$Basics$toString(
+			A2(_user$project$Y15D02$sumInput, _user$project$Y15D02$ribbon, input));
+	});
+
+var _user$project$Y15D03$visit = F3(
+	function (x, y, visited) {
+		var key = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(x),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'|',
+				_elm_lang$core$Basics$toString(y)));
+		return A3(_elm_lang$core$Dict$insert, key, true, visited);
+	});
+var _user$project$Y15D03$errorSanta = function (err) {
+	return {
+		stop: true,
+		x: 0,
+		y: 0,
+		err: _elm_lang$core$Maybe$Just(err)
+	};
+};
+var _user$project$Y15D03$updateSanta = F2(
+	function ($char, santa) {
+		var _p0 = $char;
+		switch (_p0.valueOf()) {
+			case '>':
+				return _elm_lang$core$Native_Utils.update(
+					santa,
+					{x: santa.x + 1});
+			case '<':
+				return _elm_lang$core$Native_Utils.update(
+					santa,
+					{x: santa.x - 1});
+			case '^':
+				return _elm_lang$core$Native_Utils.update(
+					santa,
+					{y: santa.y + 1});
+			case 'v':
+				return _elm_lang$core$Native_Utils.update(
+					santa,
+					{y: santa.y - 1});
+			case '\n':
+				return _elm_lang$core$Native_Utils.update(
+					santa,
+					{stop: true});
+			default:
+				return _user$project$Y15D03$errorSanta(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'illegal instruction [',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString($char),
+							']')));
+		}
+	});
+var _user$project$Y15D03$deliver = F2(
+	function (model, instructions) {
+		deliver:
+		while (true) {
+			if (_elm_lang$core$String$isEmpty(instructions)) {
+				return model;
+			} else {
+				var index = A2(
+					_elm_lang$core$Basics$rem,
+					model.turn,
+					_elm_lang$core$Array$length(model.santas));
+				var santa = A2(
+					_elm_lang$core$Maybe$withDefault,
+					_user$project$Y15D03$errorSanta(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'illegal index [',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(index),
+								']'))),
+					A2(_elm_lang$core$Array$get, index, model.santas));
+				var next = _elm_lang$core$String$uncons(instructions);
+				var _p1 = function () {
+					var _p2 = next;
+					if ((_p2.ctor === 'Just') && (_p2._0.ctor === '_Tuple2')) {
+						return {ctor: '_Tuple2', _0: _p2._0._0, _1: _p2._0._1};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.chr('*'),
+							_1: ''
+						};
+					}
+				}();
+				var $char = _p1._0;
+				var remaining = _p1._1;
+				var santa_ = A2(_user$project$Y15D03$updateSanta, $char, santa);
+				if (santa_.stop) {
+					return _elm_lang$core$Native_Utils.update(
+						model,
+						{err: santa.err});
+				} else {
+					var model_ = _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							visited: A3(_user$project$Y15D03$visit, santa_.x, santa_.y, model.visited),
+							turn: model.turn + 1,
+							santas: A3(_elm_lang$core$Array$set, index, santa_, model.santas)
+						});
+					var _v2 = model_,
+						_v3 = remaining;
+					model = _v2;
+					instructions = _v3;
+					continue deliver;
+				}
+			}
+		}
+	});
+var _user$project$Y15D03$initSanta = {stop: false, x: 0, y: 0, err: _elm_lang$core$Maybe$Nothing};
+var _user$project$Y15D03$initModel = function (n) {
+	return {
+		visited: A3(_user$project$Y15D03$visit, 0, 0, _elm_lang$core$Dict$empty),
+		santas: A2(_elm_lang$core$Array$repeat, n, _user$project$Y15D03$initSanta),
+		turn: 0,
+		err: _elm_lang$core$Maybe$Nothing
+	};
+};
+var _user$project$Y15D03$christmas = F2(
+	function (n, input) {
+		var model = A2(
+			_user$project$Y15D03$deliver,
+			_user$project$Y15D03$initModel(n),
+			input);
+		var _p3 = model.err;
+		if (_p3.ctor === 'Just') {
+			return _p3._0;
+		} else {
+			return _elm_lang$core$Basics$toString(
+				_elm_lang$core$List$length(
+					_elm_lang$core$Dict$keys(model.visited)));
+		}
+	});
+var _user$project$Y15D03$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y15D03$christmas, 1, input) : A2(_user$project$Y15D03$christmas, 2, input);
+	});
+var _user$project$Y15D03$Santa = F4(
+	function (a, b, c, d) {
+		return {stop: a, x: b, y: c, err: d};
+	});
+var _user$project$Y15D03$Model = F4(
+	function (a, b, c, d) {
+		return {visited: a, santas: b, turn: c, err: d};
+	});
+
+var _user$project$Y15D04$find = F3(
+	function (step, start, key) {
+		find:
+		while (true) {
+			var hash = _sanichi$elm_md5$MD5$hex(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					key,
+					_elm_lang$core$Basics$toString(step)));
+			if (A2(_elm_lang$core$String$startsWith, start, hash)) {
+				return step;
+			} else {
+				var _v0 = step + 1,
+					_v1 = start,
+					_v2 = key;
+				step = _v0;
+				start = _v1;
+				key = _v2;
+				continue find;
+			}
+		}
+	});
+var _user$project$Y15D04$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'no secret key found',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[a-z]+'),
+					input))));
+};
+var _user$project$Y15D04$answer = F2(
+	function (part, input) {
+		var key = _user$project$Y15D04$parse(input);
+		var a1 = A3(_user$project$Y15D04$find, 1, '00000', key);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(a1) : _elm_lang$core$Basics$toString(
+			A3(_user$project$Y15D04$find, a1, '000000', key));
+	});
+
+var _user$project$Y15D05$twipsRgx = _elm_lang$core$Regex$regex('(.).\\1');
+var _user$project$Y15D05$pairsRgx = _elm_lang$core$Regex$regex('(..).*\\1');
+var _user$project$Y15D05$badieRgx = _elm_lang$core$Regex$regex('(:?ab|cd|pq|xy)');
+var _user$project$Y15D05$dubleRgx = _elm_lang$core$Regex$regex('(.)\\1');
+var _user$project$Y15D05$vowelRgx = _elm_lang$core$Regex$regex('[aeiou]');
+var _user$project$Y15D05$stringRgx = _elm_lang$core$Regex$regex('[a-z]{10,}');
+var _user$project$Y15D05$count = F2(
+	function (rgx, string) {
+		return _elm_lang$core$List$length(
+			A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, rgx, string));
+	});
+var _user$project$Y15D05$nice2 = function (string) {
+	var twips = A2(_user$project$Y15D05$count, _user$project$Y15D05$twipsRgx, string);
+	var pairs = A2(_user$project$Y15D05$count, _user$project$Y15D05$pairsRgx, string);
+	return (_elm_lang$core$Native_Utils.cmp(pairs, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(twips, 0) > 0);
+};
+var _user$project$Y15D05$nice1 = function (string) {
+	var badies = A2(_user$project$Y15D05$count, _user$project$Y15D05$badieRgx, string);
+	var dubles = A2(_user$project$Y15D05$count, _user$project$Y15D05$dubleRgx, string);
+	var vowels = A2(_user$project$Y15D05$count, _user$project$Y15D05$vowelRgx, string);
+	return (_elm_lang$core$Native_Utils.cmp(vowels, 3) > -1) && ((_elm_lang$core$Native_Utils.cmp(dubles, 0) > 0) && _elm_lang$core$Native_Utils.eq(badies, 0));
+};
+var _user$project$Y15D05$countNice = F2(
+	function (nice, strings) {
+		return _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$length(
+				A2(_elm_lang$core$List$filter, nice, strings)));
+	});
+var _user$project$Y15D05$answer = F2(
+	function (part, input) {
+		var strings = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y15D05$stringRgx, input));
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y15D05$countNice, _user$project$Y15D05$nice1, strings) : A2(_user$project$Y15D05$countNice, _user$project$Y15D05$nice2, strings);
+	});
+
+var _user$project$Y15D06$initModel = {
+	ctor: '_Tuple2',
+	_0: A2(_elm_lang$core$Array$repeat, 1000000, 0),
+	_1: A2(_elm_lang$core$Array$repeat, 1000000, 0)
+};
+var _user$project$Y15D06$index = function (instruction) {
+	var y = _elm_lang$core$Tuple$second(instruction.from);
+	var x = _elm_lang$core$Tuple$first(instruction.from);
+	return x + (1000 * y);
+};
+var _user$project$Y15D06$updateCell = F2(
+	function (instruction, lights) {
+		var l2 = _elm_lang$core$Tuple$second(lights);
+		var l1 = _elm_lang$core$Tuple$first(lights);
+		var k = _user$project$Y15D06$index(instruction);
+		var v1 = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Array$get, k, l1));
+		var v1_ = function () {
+			var _p0 = instruction.action;
+			switch (_p0.ctor) {
+				case 'Toggle':
+					return _elm_lang$core$Native_Utils.eq(v1, 1) ? 0 : 1;
+				case 'On':
+					return 1;
+				default:
+					return 0;
+			}
+		}();
+		var v2 = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Array$get, k, l2));
+		var v2_ = function () {
+			var _p1 = instruction.action;
+			switch (_p1.ctor) {
+				case 'Toggle':
+					return v2 + 2;
+				case 'On':
+					return v2 + 1;
+				default:
+					return _elm_lang$core$Native_Utils.eq(v2, 0) ? 0 : (v2 - 1);
+			}
+		}();
+		return {
+			ctor: '_Tuple2',
+			_0: A3(_elm_lang$core$Array$set, k, v1_, l1),
+			_1: A3(_elm_lang$core$Array$set, k, v2_, l2)
+		};
+	});
+var _user$project$Y15D06$updateCol = F2(
+	function (instruction, lights) {
+		updateCol:
+		while (true) {
+			var ty = _elm_lang$core$Tuple$second(instruction.to);
+			var fy = _elm_lang$core$Tuple$second(instruction.from);
+			var lights_ = A2(_user$project$Y15D06$updateCell, instruction, lights);
+			if (_elm_lang$core$Native_Utils.eq(fy, ty)) {
+				return lights_;
+			} else {
+				var tx = _elm_lang$core$Tuple$first(instruction.to);
+				var fx = _elm_lang$core$Tuple$first(instruction.from);
+				var instruction_ = _elm_lang$core$Native_Utils.update(
+					instruction,
+					{
+						from: {ctor: '_Tuple2', _0: fx, _1: fy + 1},
+						to: {ctor: '_Tuple2', _0: tx, _1: ty}
+					});
+				var _v2 = instruction_,
+					_v3 = lights_;
+				instruction = _v2;
+				lights = _v3;
+				continue updateCol;
+			}
+		}
+	});
+var _user$project$Y15D06$updateRow = F2(
+	function (instruction, lights) {
+		updateRow:
+		while (true) {
+			var tx = _elm_lang$core$Tuple$first(instruction.to);
+			var fx = _elm_lang$core$Tuple$first(instruction.from);
+			var lights_ = A2(_user$project$Y15D06$updateCol, instruction, lights);
+			if (_elm_lang$core$Native_Utils.eq(fx, tx)) {
+				return lights_;
+			} else {
+				var ty = _elm_lang$core$Tuple$second(instruction.to);
+				var fy = _elm_lang$core$Tuple$second(instruction.from);
+				var instruction_ = _elm_lang$core$Native_Utils.update(
+					instruction,
+					{
+						from: {ctor: '_Tuple2', _0: fx + 1, _1: fy},
+						to: {ctor: '_Tuple2', _0: tx, _1: ty}
+					});
+				var _v4 = instruction_,
+					_v5 = lights_;
+				instruction = _v4;
+				lights = _v5;
+				continue updateRow;
+			}
+		}
+	});
+var _user$project$Y15D06$process = F2(
+	function (instructions, lights) {
+		process:
+		while (true) {
+			var _p2 = instructions;
+			if (_p2.ctor === '[]') {
+				return lights;
+			} else {
+				var lights_ = A2(_user$project$Y15D06$updateRow, _p2._0, lights);
+				var _v7 = _p2._1,
+					_v8 = lights_;
+				instructions = _v7;
+				lights = _v8;
+				continue process;
+			}
+		}
+	});
+var _user$project$Y15D06$Instruction = F3(
+	function (a, b, c) {
+		return {action: a, from: b, to: c};
+	});
+var _user$project$Y15D06$Off = {ctor: 'Off'};
+var _user$project$Y15D06$On = {ctor: 'On'};
+var _user$project$Y15D06$Toggle = {ctor: 'Toggle'};
+var _user$project$Y15D06$badInstruction = {
+	action: _user$project$Y15D06$Toggle,
+	from: {ctor: '_Tuple2', _0: 1, _1: 1},
+	to: {ctor: '_Tuple2', _0: 0, _1: 0}
+};
+var _user$project$Y15D06$parseInstruction = function (submatches) {
+	var _p3 = submatches;
+	if (((((((((((_p3.ctor === '::') && (_p3._0.ctor === 'Just')) && (_p3._1.ctor === '::')) && (_p3._1._0.ctor === 'Just')) && (_p3._1._1.ctor === '::')) && (_p3._1._1._0.ctor === 'Just')) && (_p3._1._1._1.ctor === '::')) && (_p3._1._1._1._0.ctor === 'Just')) && (_p3._1._1._1._1.ctor === '::')) && (_p3._1._1._1._1._0.ctor === 'Just')) && (_p3._1._1._1._1._1.ctor === '[]')) {
+		var ty_ = _elm_lang$core$String$toInt(_p3._1._1._1._1._0._0);
+		var tx_ = _elm_lang$core$String$toInt(_p3._1._1._1._0._0);
+		var fy_ = _elm_lang$core$String$toInt(_p3._1._1._0._0);
+		var fx_ = _elm_lang$core$String$toInt(_p3._1._0._0);
+		var a_ = function () {
+			var _p4 = _p3._0._0;
+			switch (_p4) {
+				case 'toggle':
+					return _elm_lang$core$Maybe$Just(_user$project$Y15D06$Toggle);
+				case 'turn on':
+					return _elm_lang$core$Maybe$Just(_user$project$Y15D06$On);
+				case 'turn off':
+					return _elm_lang$core$Maybe$Just(_user$project$Y15D06$Off);
+				default:
+					return _elm_lang$core$Maybe$Nothing;
+			}
+		}();
+		var _p5 = {ctor: '_Tuple5', _0: a_, _1: fx_, _2: fy_, _3: tx_, _4: ty_};
+		if ((((((_p5.ctor === '_Tuple5') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === 'Ok')) && (_p5._2.ctor === 'Ok')) && (_p5._3.ctor === 'Ok')) && (_p5._4.ctor === 'Ok')) {
+			var _p9 = _p5._4._0;
+			var _p8 = _p5._3._0;
+			var _p7 = _p5._2._0;
+			var _p6 = _p5._1._0;
+			return ((_elm_lang$core$Native_Utils.cmp(_p6, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(_p7, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(_p6, _p8) < 1) && ((_elm_lang$core$Native_Utils.cmp(_p7, _p9) < 1) && ((_elm_lang$core$Native_Utils.cmp(_p8, 1000) < 0) && (_elm_lang$core$Native_Utils.cmp(_p9, 1000) < 0)))))) ? {
+				action: _p5._0._0,
+				from: {ctor: '_Tuple2', _0: _p6, _1: _p7},
+				to: {ctor: '_Tuple2', _0: _p8, _1: _p9}
+			} : _user$project$Y15D06$badInstruction;
+		} else {
+			return _user$project$Y15D06$badInstruction;
+		}
+	} else {
+		return _user$project$Y15D06$badInstruction;
+	}
+};
+var _user$project$Y15D06$parse = function (input) {
+	var rgx = _elm_lang$core$Regex$regex('(toggle|turn (?:on|off)) (\\d+),(\\d+) through (\\d+),(\\d+)');
+	return A2(
+		_elm_lang$core$List$filter,
+		function (i) {
+			return !_elm_lang$core$Native_Utils.eq(i, _user$project$Y15D06$badInstruction);
+		},
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y15D06$parseInstruction,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, rgx, input))));
+};
+var _user$project$Y15D06$answer = F2(
+	function (part, input) {
+		var instructions = _user$project$Y15D06$parse(input);
+		var model = A2(_user$project$Y15D06$process, instructions, _user$project$Y15D06$initModel);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$length(
+				A2(
+					_elm_lang$core$List$filter,
+					function (l) {
+						return _elm_lang$core$Native_Utils.eq(l, 1);
+					},
+					_elm_lang$core$Array$toList(
+						_elm_lang$core$Tuple$first(model))))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$sum(
+				_elm_lang$core$Array$toList(
+					_elm_lang$core$Tuple$second(model))));
+	});
+
+var _user$project$Util$select = function (xs) {
+	var _p0 = xs;
+	if (_p0.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p4 = _p0._1;
+		var _p3 = _p0._0;
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _p3, _1: _p4},
+			_1: A2(
+				_elm_lang$core$List$map,
+				function (_p1) {
+					var _p2 = _p1;
+					return {
+						ctor: '_Tuple2',
+						_0: _p2._0,
+						_1: {ctor: '::', _0: _p3, _1: _p2._1}
+					};
+				},
+				_user$project$Util$select(_p4))
+		};
+	}
+};
+var _user$project$Util$permutations = function (xs) {
+	var _p5 = xs;
+	if (_p5.ctor === '[]') {
+		return {
+			ctor: '::',
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
+		};
+	} else {
+		var f = function (_p6) {
+			var _p7 = _p6;
+			return A2(
+				_elm_lang$core$List$map,
+				F2(
+					function (x, y) {
+						return {ctor: '::', _0: x, _1: y};
+					})(_p7._0),
+				_user$project$Util$permutations(_p7._1));
+		};
+		return A2(
+			_elm_lang$core$List$concatMap,
+			f,
+			_user$project$Util$select(_p5));
+	}
+};
+var _user$project$Util$combinations = F2(
+	function (n, list) {
+		return ((_elm_lang$core$Native_Utils.cmp(n, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
+			n,
+			_elm_lang$core$List$length(list)) > 0)) ? {ctor: '[]'} : A2(_user$project$Util$combo, n, list);
+	});
+var _user$project$Util$combo = F2(
+	function (n, list) {
+		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+			return {
+				ctor: '::',
+				_0: {ctor: '[]'},
+				_1: {ctor: '[]'}
+			};
+		} else {
+			if (_elm_lang$core$Native_Utils.eq(
+				n,
+				_elm_lang$core$List$length(list))) {
+				return {
+					ctor: '::',
+					_0: list,
+					_1: {ctor: '[]'}
+				};
+			} else {
+				var _p8 = list;
+				if (_p8.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					var _p9 = _p8._1;
+					var c2 = A2(_user$project$Util$combinations, n, _p9);
+					var c1 = A2(
+						_elm_lang$core$List$map,
+						F2(
+							function (x, y) {
+								return {ctor: '::', _0: x, _1: y};
+							})(_p8._0),
+						A2(_user$project$Util$combinations, n - 1, _p9));
+					return A2(_elm_lang$core$Basics_ops['++'], c1, c2);
+				}
+			}
+		}
+	});
+var _user$project$Util$join = F2(
+	function (p1, p2) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			p1,
+			A2(_elm_lang$core$Basics_ops['++'], ' | ', p2));
+	});
+
+var _user$project$Y15D07$maxValue = 65535;
+var _user$project$Y15D07$parseInt = function (i) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(i));
+};
+var _user$project$Y15D07$getVal = F2(
+	function (wire, circuit) {
+		var val = A2(_elm_lang$core$Dict$get, wire, circuit);
+		var _p0 = val;
+		if (_p0.ctor === 'Nothing') {
+			return 0;
+		} else {
+			var _p1 = _p0._0;
+			if (_p1.ctor === 'NoOp') {
+				return _p1._0;
+			} else {
+				return 0;
+			}
+		}
+	});
+var _user$project$Y15D07$Not = function (a) {
+	return {ctor: 'Not', _0: a};
+};
+var _user$project$Y15D07$Rshift = F2(
+	function (a, b) {
+		return {ctor: 'Rshift', _0: a, _1: b};
+	});
+var _user$project$Y15D07$Lshift = F2(
+	function (a, b) {
+		return {ctor: 'Lshift', _0: a, _1: b};
+	});
+var _user$project$Y15D07$Or = F2(
+	function (a, b) {
+		return {ctor: 'Or', _0: a, _1: b};
+	});
+var _user$project$Y15D07$And = F2(
+	function (a, b) {
+		return {ctor: 'And', _0: a, _1: b};
+	});
+var _user$project$Y15D07$Pass = function (a) {
+	return {ctor: 'Pass', _0: a};
+};
+var _user$project$Y15D07$NoOp = function (a) {
+	return {ctor: 'NoOp', _0: a};
+};
+var _user$project$Y15D07$reduce = F2(
+	function (wire, circuit) {
+		var val = A2(_elm_lang$core$Dict$get, wire, circuit);
+		var _p2 = val;
+		if (_p2.ctor === 'Nothing') {
+			return A3(
+				_elm_lang$core$Dict$insert,
+				wire,
+				_user$project$Y15D07$NoOp(0),
+				circuit);
+		} else {
+			var _p3 = function () {
+				var _p4 = _p2._0;
+				switch (_p4.ctor) {
+					case 'NoOp':
+						return {ctor: '_Tuple3', _0: _p4._0, _1: circuit, _2: false};
+					case 'Pass':
+						var _p5 = A2(_user$project$Y15D07$reduce1, _p4._0, circuit);
+						var i = _p5._0;
+						var c = _p5._1;
+						return {ctor: '_Tuple3', _0: i, _1: c, _2: true};
+					case 'And':
+						var _p6 = A3(_user$project$Y15D07$reduce2, _p4._0, _p4._1, circuit);
+						var i = _p6._0;
+						var j = _p6._1;
+						var c = _p6._2;
+						return {ctor: '_Tuple3', _0: i & j, _1: c, _2: true};
+					case 'Or':
+						var _p7 = A3(_user$project$Y15D07$reduce2, _p4._0, _p4._1, circuit);
+						var i = _p7._0;
+						var j = _p7._1;
+						var c = _p7._2;
+						return {ctor: '_Tuple3', _0: i | j, _1: c, _2: true};
+					case 'Lshift':
+						var _p8 = A2(_user$project$Y15D07$reduce1, _p4._0, circuit);
+						var j = _p8._0;
+						var c = _p8._1;
+						var k = j << _p4._1;
+						return {ctor: '_Tuple3', _0: k, _1: c, _2: true};
+					case 'Rshift':
+						var _p9 = A2(_user$project$Y15D07$reduce1, _p4._0, circuit);
+						var j = _p9._0;
+						var c = _p9._1;
+						return {ctor: '_Tuple3', _0: j >> _p4._1, _1: c, _2: true};
+					default:
+						var _p10 = A2(_user$project$Y15D07$reduce1, _p4._0, circuit);
+						var i = _p10._0;
+						var c = _p10._1;
+						var j = ~i;
+						var k = (_elm_lang$core$Native_Utils.cmp(j, 0) < 0) ? ((_user$project$Y15D07$maxValue + j) + 1) : j;
+						return {ctor: '_Tuple3', _0: k, _1: c, _2: true};
+				}
+			}();
+			var k = _p3._0;
+			var circuit_ = _p3._1;
+			var insert = _p3._2;
+			return insert ? A3(
+				_elm_lang$core$Dict$insert,
+				wire,
+				_user$project$Y15D07$NoOp(k),
+				circuit_) : circuit_;
+		}
+	});
+var _user$project$Y15D07$reduce1 = F2(
+	function (w, circuit) {
+		var i = _elm_lang$core$String$toInt(w);
+		var _p11 = i;
+		if (_p11.ctor === 'Ok') {
+			return {ctor: '_Tuple2', _0: _p11._0, _1: circuit};
+		} else {
+			var circuit_ = A2(_user$project$Y15D07$reduce, w, circuit);
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_user$project$Y15D07$getVal, w, circuit_),
+				_1: circuit_
+			};
+		}
+	});
+var _user$project$Y15D07$reduce2 = F3(
+	function (w1, w2, circuit) {
+		var i2 = _elm_lang$core$String$toInt(w2);
+		var i1 = _elm_lang$core$String$toInt(w1);
+		var _p12 = {ctor: '_Tuple2', _0: i1, _1: i2};
+		if (_p12._0.ctor === 'Ok') {
+			if (_p12._1.ctor === 'Ok') {
+				return {ctor: '_Tuple3', _0: _p12._0._0, _1: _p12._1._0, _2: circuit};
+			} else {
+				var circuit_ = A2(_user$project$Y15D07$reduce, w2, circuit);
+				return {
+					ctor: '_Tuple3',
+					_0: _p12._0._0,
+					_1: A2(_user$project$Y15D07$getVal, w2, circuit_),
+					_2: circuit_
+				};
+			}
+		} else {
+			if (_p12._1.ctor === 'Ok') {
+				var circuit_ = A2(_user$project$Y15D07$reduce, w1, circuit);
+				return {
+					ctor: '_Tuple3',
+					_0: A2(_user$project$Y15D07$getVal, w1, circuit_),
+					_1: _p12._1._0,
+					_2: circuit_
+				};
+			} else {
+				var circuit_ = A2(_user$project$Y15D07$reduce, w1, circuit);
+				var circuit__ = A2(_user$project$Y15D07$reduce, w2, circuit_);
+				return {
+					ctor: '_Tuple3',
+					_0: A2(_user$project$Y15D07$getVal, w1, circuit_),
+					_1: A2(_user$project$Y15D07$getVal, w2, circuit__),
+					_2: circuit__
+				};
+			}
+		}
+	});
+var _user$project$Y15D07$parseConnection = function (connection) {
+	var words = A2(_elm_lang$core$String$split, ' ', connection);
+	var _p13 = words;
+	_v6_6:
+	do {
+		if (((_p13.ctor === '::') && (_p13._1.ctor === '::')) && (_p13._1._1.ctor === '::')) {
+			if (_p13._1._1._1.ctor === '[]') {
+				if (_p13._1._0 === '->') {
+					return {
+						ctor: '_Tuple2',
+						_0: _p13._1._1._0,
+						_1: _user$project$Y15D07$Pass(_p13._0)
+					};
+				} else {
+					break _v6_6;
+				}
+			} else {
+				if (_p13._1._1._1._1.ctor === '::') {
+					if ((_p13._1._1._1._0 === '->') && (_p13._1._1._1._1._1.ctor === '[]')) {
+						switch (_p13._1._0) {
+							case 'AND':
+								return {
+									ctor: '_Tuple2',
+									_0: _p13._1._1._1._1._0,
+									_1: A2(_user$project$Y15D07$And, _p13._0, _p13._1._1._0)
+								};
+							case 'OR':
+								return {
+									ctor: '_Tuple2',
+									_0: _p13._1._1._1._1._0,
+									_1: A2(_user$project$Y15D07$Or, _p13._0, _p13._1._1._0)
+								};
+							case 'LSHIFT':
+								return {
+									ctor: '_Tuple2',
+									_0: _p13._1._1._1._1._0,
+									_1: A2(
+										_user$project$Y15D07$Lshift,
+										_p13._0,
+										_user$project$Y15D07$parseInt(_p13._1._1._0))
+								};
+							case 'RSHIFT':
+								return {
+									ctor: '_Tuple2',
+									_0: _p13._1._1._1._1._0,
+									_1: A2(
+										_user$project$Y15D07$Rshift,
+										_p13._0,
+										_user$project$Y15D07$parseInt(_p13._1._1._0))
+								};
+							default:
+								break _v6_6;
+						}
+					} else {
+						break _v6_6;
+					}
+				} else {
+					if ((_p13._0 === 'NOT') && (_p13._1._1._0 === '->')) {
+						return {
+							ctor: '_Tuple2',
+							_0: _p13._1._1._1._0,
+							_1: _user$project$Y15D07$Not(_p13._1._0)
+						};
+					} else {
+						break _v6_6;
+					}
+				}
+			}
+		} else {
+			break _v6_6;
+		}
+	} while(false);
+	return {
+		ctor: '_Tuple2',
+		_0: connection,
+		_1: _user$project$Y15D07$NoOp(0)
+	};
+};
+var _user$project$Y15D07$parseLines = F2(
+	function (lines, circuit) {
+		parseLines:
+		while (true) {
+			var _p14 = lines;
+			if (_p14.ctor === '[]') {
+				return circuit;
+			} else {
+				var _p16 = _p14._1;
+				var _p15 = _user$project$Y15D07$parseConnection(_p14._0);
+				var wire = _p15._0;
+				var action = _p15._1;
+				var circuit_ = A3(_elm_lang$core$Dict$insert, wire, action, circuit);
+				if (_elm_lang$core$Native_Utils.eq(wire, '') && _elm_lang$core$Native_Utils.eq(
+					action,
+					_user$project$Y15D07$NoOp(0))) {
+					var _v8 = _p16,
+						_v9 = circuit;
+					lines = _v8;
+					circuit = _v9;
+					continue parseLines;
+				} else {
+					var _v10 = _p16,
+						_v11 = circuit_;
+					lines = _v10;
+					circuit = _v11;
+					continue parseLines;
+				}
+			}
+		}
+	});
+var _user$project$Y15D07$parseInput = function (input) {
+	return A2(
+		_user$project$Y15D07$parseLines,
+		A2(_elm_lang$core$String$split, '\n', input),
+		_elm_lang$core$Dict$empty);
+};
+var _user$project$Y15D07$answer = F2(
+	function (part, input) {
+		var circuit = _user$project$Y15D07$parseInput(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D07$getVal,
+				'a',
+				A2(_user$project$Y15D07$reduce, 'a', circuit))) : _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D07$getVal,
+				'a',
+				A2(
+					_user$project$Y15D07$reduce,
+					'a',
+					A3(
+						_elm_lang$core$Dict$insert,
+						'b',
+						_user$project$Y15D07$NoOp(3176),
+						circuit))));
+	});
+
+var _user$project$Y15D08$escape = function (line) {
+	var r1 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\\\'),
+		function (_p0) {
+			return '\\\\';
+		},
+		line);
+	var r2 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\"'),
+		function (_p1) {
+			return '\\\"';
+		},
+		r1);
+	var r3 = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'\"',
+		A2(_elm_lang$core$Basics_ops['++'], r2, '\"'));
+	return r3;
+};
+var _user$project$Y15D08$unescape = function (line) {
+	var r1 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('(^\"|\"$)'),
+		function (_p2) {
+			return '';
+		},
+		line);
+	var r2 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\\\\"'),
+		function (_p3) {
+			return '_';
+		},
+		r1);
+	var r3 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\\\\\\\'),
+		function (_p4) {
+			return '.';
+		},
+		r2);
+	var r4 = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\\\x[0-9a-f]{2}'),
+		function (_p5) {
+			return '-';
+		},
+		r3);
+	return r4;
+};
+var _user$project$Y15D08$escLength = function (lines) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$length,
+			A2(_elm_lang$core$List$map, _user$project$Y15D08$escape, lines)));
+};
+var _user$project$Y15D08$memLength = function (lines) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$length,
+			A2(_elm_lang$core$List$map, _user$project$Y15D08$unescape, lines)));
+};
+var _user$project$Y15D08$chrLength = function (lines) {
+	return _elm_lang$core$List$sum(
+		A2(_elm_lang$core$List$map, _elm_lang$core$String$length, lines));
+};
+var _user$project$Y15D08$parseInput = function (input) {
+	return A2(
+		_elm_lang$core$List$filter,
+		function (l) {
+			return !_elm_lang$core$Native_Utils.eq(l, '');
+		},
+		A2(_elm_lang$core$String$split, '\n', input));
+};
+var _user$project$Y15D08$answer = F2(
+	function (part, input) {
+		var strings = _user$project$Y15D08$parseInput(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y15D08$chrLength(strings) - _user$project$Y15D08$memLength(strings)) : _elm_lang$core$Basics$toString(
+			_user$project$Y15D08$escLength(strings) - _user$project$Y15D08$chrLength(strings));
+	});
+
+var _user$project$Y15D09$initModel = {
+	distances: _elm_lang$core$Dict$empty,
+	cities: {ctor: '[]'}
+};
+var _user$project$Y15D09$key = F2(
+	function (c1, c2) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			c1,
+			A2(_elm_lang$core$Basics_ops['++'], '|', c2));
+	});
+var _user$project$Y15D09$pairs = function (list) {
+	var _p0 = list;
+	if (_p0.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		if (_p0._1.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			var _p1 = _p0._1._0;
+			return {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: _p0._0, _1: _p1},
+				_1: _user$project$Y15D09$pairs(
+					{ctor: '::', _0: _p1, _1: _p0._1._1})
+			};
+		}
+	}
+};
+var _user$project$Y15D09$parseLine = F2(
+	function (line, model) {
+		var matches = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^(\\w+) to (\\w+) = (\\d+)$'),
+				line));
+		var _p2 = matches;
+		if (((((((((_p2.ctor === '::') && (_p2._0.ctor === '::')) && (_p2._0._0.ctor === 'Just')) && (_p2._0._1.ctor === '::')) && (_p2._0._1._0.ctor === 'Just')) && (_p2._0._1._1.ctor === '::')) && (_p2._0._1._1._0.ctor === 'Just')) && (_p2._0._1._1._1.ctor === '[]')) && (_p2._1.ctor === '[]')) {
+			var _p4 = _p2._0._1._0._0;
+			var _p3 = _p2._0._0._0;
+			var cities_ = A2(_elm_lang$core$List$member, _p3, model.cities) ? model.cities : {ctor: '::', _0: _p3, _1: model.cities};
+			var cities = A2(_elm_lang$core$List$member, _p4, cities_) ? cities_ : {ctor: '::', _0: _p4, _1: cities_};
+			var di = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(_p2._0._1._1._0._0));
+			var distances = A3(
+				_elm_lang$core$Dict$insert,
+				A2(_user$project$Y15D09$key, _p4, _p3),
+				di,
+				A3(
+					_elm_lang$core$Dict$insert,
+					A2(_user$project$Y15D09$key, _p3, _p4),
+					di,
+					model.distances));
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{distances: distances, cities: cities});
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D09$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D09$parseLine,
+		_user$project$Y15D09$initModel,
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D09$extreme = function (model) {
+	var f = function (_p5) {
+		var _p6 = _p5;
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(
+				_elm_lang$core$Dict$get,
+				A2(_user$project$Y15D09$key, _p6._0, _p6._1),
+				model.distances));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		function (p) {
+			return _elm_lang$core$List$sum(
+				A2(_elm_lang$core$List$map, f, p));
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (perm) {
+				return _user$project$Y15D09$pairs(perm);
+			},
+			_user$project$Util$permutations(model.cities)));
+};
+var _user$project$Y15D09$answer = F2(
+	function (part, input) {
+		var model = _user$project$Y15D09$parseInput(input);
+		var extremes = _user$project$Y15D09$extreme(model);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$minimum(extremes))) : _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(extremes)));
+	});
+var _user$project$Y15D09$Model = F2(
+	function (a, b) {
+		return {distances: a, cities: b};
+	});
+
+var _user$project$Y15D10$mapper = function (match) {
+	var $char = A2(_elm_lang$core$String$left, 1, match.match);
+	var length = _elm_lang$core$Basics$toString(
+		_elm_lang$core$String$length(match.match));
+	return A2(_elm_lang$core$Basics_ops['++'], length, $char);
+};
+var _user$project$Y15D10$conway = F2(
+	function (count, digits) {
+		conway:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(count, 0) < 1) {
+				return digits;
+			} else {
+				var digits_ = A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('(\\d)\\1*'),
+					_user$project$Y15D10$mapper,
+					digits);
+				var _v0 = count - 1,
+					_v1 = digits_;
+				count = _v0;
+				digits = _v1;
+				continue conway;
+			}
+		}
+	});
+var _user$project$Y15D10$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'no digits found',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('\\d+'),
+					input))));
+};
+var _user$project$Y15D10$answers = function (input) {
+	var digits = _user$project$Y15D10$parse(input);
+	var digits_ = A2(_user$project$Y15D10$conway, 40, digits);
+	var p1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$String$length(digits_));
+	var digits__ = A2(_user$project$Y15D10$conway, 10, digits_);
+	var p2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$String$length(digits__));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D11$has_enough_pairs = function (p) {
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('(.)\\1.*(.)(?!\\1)\\2'),
+		p);
+};
+var _user$project$Y15D11$has_a_straight = function (p) {
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('(abc|bcd|cde|def|efg|fgh|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)'),
+		p);
+};
+var _user$project$Y15D11$is_not_confusing = function (p) {
+	return !A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('[iol]'),
+		p);
+};
+var _user$project$Y15D11$increment = function (p) {
+	var parts = _elm_lang$core$List$head(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^([a-z]*)([a-y])(z*)$'),
+				p)));
+	var _p0 = parts;
+	if ((((((((_p0.ctor === 'Just') && (_p0._0.ctor === '::')) && (_p0._0._0.ctor === 'Just')) && (_p0._0._1.ctor === '::')) && (_p0._0._1._0.ctor === 'Just')) && (_p0._0._1._1.ctor === '::')) && (_p0._0._1._1._0.ctor === 'Just')) && (_p0._0._1._1._1.ctor === '[]')) {
+		var c1 = A2(
+			_elm_lang$core$String$repeat,
+			_elm_lang$core$String$length(_p0._0._1._1._0._0),
+			'a');
+		var b1 = _elm_lang$core$String$uncons(_p0._0._1._0._0);
+		var b2 = function () {
+			var _p1 = b1;
+			if ((_p1.ctor === 'Just') && (_p1._0.ctor === '_Tuple2')) {
+				return _elm_lang$core$String$fromChar(
+					_elm_lang$core$Char$fromCode(
+						A2(
+							F2(
+								function (x, y) {
+									return x + y;
+								}),
+							1,
+							_elm_lang$core$Char$toCode(_p1._0._0))));
+			} else {
+				return '';
+			}
+		}();
+		return A2(
+			_elm_lang$core$Regex$contains,
+			_elm_lang$core$Regex$regex('^[b-z]$'),
+			b2) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			_p0._0._0._0,
+			A2(_elm_lang$core$Basics_ops['++'], b2, c1)) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			'invalid (',
+			A2(_elm_lang$core$Basics_ops['++'], p, ')'));
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'invalid (',
+			A2(_elm_lang$core$Basics_ops['++'], p, ')'));
+	}
+};
+var _user$project$Y15D11$next = function (q) {
+	next:
+	while (true) {
+		var p = _user$project$Y15D11$increment(q);
+		if (A2(_elm_lang$core$String$startsWith, 'invalid', p)) {
+			return p;
+		} else {
+			if (_user$project$Y15D11$is_not_confusing(p) && (_user$project$Y15D11$has_a_straight(p) && _user$project$Y15D11$has_enough_pairs(p))) {
+				return p;
+			} else {
+				var _v2 = p;
+				q = _v2;
+				continue next;
+			}
+		}
+	}
+};
+var _user$project$Y15D11$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'no password found',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[a-z]{8}'),
+					input))));
+};
+var _user$project$Y15D11$answers = function (input) {
+	var p0 = _user$project$Y15D11$parse(input);
+	var p1 = _user$project$Y15D11$next(p0);
+	var p2 = _user$project$Y15D11$next(p1);
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D12$count = function (json) {
+	return _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Result$withDefault(0),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$String$toInt,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('-?[1-9]\\d*'),
+							json))))));
+};
+var _user$project$Y15D12$answers = function (input) {
+	var p2 = 'couldn\'t do the second part in Elm';
+	var p1 = _user$project$Y15D12$count(input);
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D13$initModel = {happiness: _elm_lang$core$Dict$empty, people: _elm_lang$core$Set$empty};
+var _user$project$Y15D13$outer = function (list) {
+	var last = _elm_lang$core$List$head(
+		_elm_lang$core$List$reverse(list));
+	var first = _elm_lang$core$List$head(list);
+	var _p0 = {ctor: '_Tuple2', _0: first, _1: last};
+	if (((_p0.ctor === '_Tuple2') && (_p0._0.ctor === 'Just')) && (_p0._1.ctor === 'Just')) {
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: _p0._1._0, _1: _p0._0._0});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Y15D13$inner = function (list) {
+	var _p1 = list;
+	if ((_p1.ctor === '::') && (_p1._1.ctor === '::')) {
+		var _p2 = _p1._1._0;
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _p1._0, _1: _p2},
+			_1: _user$project$Y15D13$inner(
+				{ctor: '::', _0: _p2, _1: _p1._1._1})
+		};
+	} else {
+		return {ctor: '[]'};
+	}
+};
+var _user$project$Y15D13$pairup = function (list) {
+	var pair = _user$project$Y15D13$outer(list);
+	var pairs = _user$project$Y15D13$inner(list);
+	var _p3 = pair;
+	if ((_p3.ctor === 'Just') && (_p3._0.ctor === '_Tuple2')) {
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _p3._0._0, _1: _p3._0._1},
+			_1: pairs
+		};
+	} else {
+		return pairs;
+	}
+};
+var _user$project$Y15D13$key = F2(
+	function (p1, p2) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			p1,
+			A2(_elm_lang$core$Basics_ops['++'], '|', p2));
+	});
+var _user$project$Y15D13$parseLine = F2(
+	function (line, model) {
+		var matches = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^(\\w+) would (gain|lose) (\\d+) happiness units by sitting next to (\\w+)\\.$'),
+				line));
+		var _p4 = matches;
+		if (((((((((((_p4.ctor === '::') && (_p4._0.ctor === '::')) && (_p4._0._0.ctor === 'Just')) && (_p4._0._1.ctor === '::')) && (_p4._0._1._0.ctor === 'Just')) && (_p4._0._1._1.ctor === '::')) && (_p4._0._1._1._0.ctor === 'Just')) && (_p4._0._1._1._1.ctor === '::')) && (_p4._0._1._1._1._0.ctor === 'Just')) && (_p4._0._1._1._1._1.ctor === '[]')) && (_p4._1.ctor === '[]')) {
+			var _p6 = _p4._0._1._1._1._0._0;
+			var _p5 = _p4._0._0._0;
+			var p = A2(
+				_elm_lang$core$Set$insert,
+				_p6,
+				A2(_elm_lang$core$Set$insert, _p5, model.people));
+			var j = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(_p4._0._1._1._0._0));
+			var k = _elm_lang$core$Native_Utils.eq(_p4._0._1._0._0, 'gain') ? j : (0 - j);
+			var h = A3(
+				_elm_lang$core$Dict$insert,
+				A2(_user$project$Y15D13$key, _p5, _p6),
+				k,
+				model.happiness);
+			return {happiness: h, people: p};
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D13$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D13$parseLine,
+		_user$project$Y15D13$initModel,
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D13$addMe = function (model) {
+	var h0 = model.happiness;
+	var a = _elm_lang$core$Set$toList(model.people);
+	var me = 'Me';
+	var p = A2(_elm_lang$core$Set$insert, me, model.people);
+	var h1 = A3(
+		_elm_lang$core$List$foldl,
+		F2(
+			function (p, h) {
+				return A3(
+					_elm_lang$core$Dict$insert,
+					A2(_user$project$Y15D13$key, me, p),
+					0,
+					h);
+			}),
+		h0,
+		a);
+	var h2 = A3(
+		_elm_lang$core$List$foldl,
+		F2(
+			function (p, h) {
+				return A3(
+					_elm_lang$core$Dict$insert,
+					A2(_user$project$Y15D13$key, p, me),
+					0,
+					h);
+			}),
+		h1,
+		a);
+	return {happiness: h2, people: p};
+};
+var _user$project$Y15D13$pairValue = F3(
+	function (p1, p2, h) {
+		var v2 = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(
+				_elm_lang$core$Dict$get,
+				A2(_user$project$Y15D13$key, p2, p1),
+				h));
+		var v1 = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(
+				_elm_lang$core$Dict$get,
+				A2(_user$project$Y15D13$key, p1, p2),
+				h));
+		return v1 + v2;
+	});
+var _user$project$Y15D13$happinesses = function (model) {
+	var f = function (_p7) {
+		var _p8 = _p7;
+		return A3(_user$project$Y15D13$pairValue, _p8._0, _p8._1, model.happiness);
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		function (pairs) {
+			return _elm_lang$core$List$sum(
+				A2(_elm_lang$core$List$map, f, pairs));
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (perm) {
+				return _user$project$Y15D13$pairup(perm);
+			},
+			_user$project$Util$permutations(
+				_elm_lang$core$Set$toList(model.people))));
+};
+var _user$project$Y15D13$answers = function (input) {
+	var m1 = _user$project$Y15D13$parseInput(input);
+	var a1 = _user$project$Y15D13$happinesses(m1);
+	var p1 = _elm_lang$core$Basics$toString(
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(a1)));
+	var m2 = _user$project$Y15D13$addMe(m1);
+	var a2 = _user$project$Y15D13$happinesses(m2);
+	var p2 = _elm_lang$core$Basics$toString(
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(a2)));
+	return A2(_user$project$Util$join, p1, p2);
+};
+var _user$project$Y15D13$Model = F2(
+	function (a, b) {
+		return {happiness: a, people: b};
+	});
+
+var _user$project$Y15D14$parseLine = F2(
+	function (line, model) {
+		var matches = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^(\\w+) can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds\\.$'),
+				line));
+		var _p0 = matches;
+		if (((((((((((_p0.ctor === '::') && (_p0._0.ctor === '::')) && (_p0._0._0.ctor === 'Just')) && (_p0._0._1.ctor === '::')) && (_p0._0._1._0.ctor === 'Just')) && (_p0._0._1._1.ctor === '::')) && (_p0._0._1._1._0.ctor === 'Just')) && (_p0._0._1._1._1.ctor === '::')) && (_p0._0._1._1._1._0.ctor === 'Just')) && (_p0._0._1._1._1._1.ctor === '[]')) && (_p0._1.ctor === '[]')) {
+			var r2 = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(_p0._0._1._1._1._0._0));
+			var t2 = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(_p0._0._1._1._0._0));
+			var s2 = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(_p0._0._1._0._0));
+			var reindeer = {name: _p0._0._0._0, speed: s2, time: t2, rest: r2, km: 0, score: 0};
+			return {ctor: '::', _0: reindeer, _1: model};
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D14$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D14$parseLine,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D14$distance = F2(
+	function (t, r) {
+		var cyc = r.time + r.rest;
+		var tmp = A2(_elm_lang$core$Basics$rem, t, cyc);
+		var rdr = (_elm_lang$core$Native_Utils.cmp(tmp, r.time) > 0) ? r.time : tmp;
+		return ((((t / cyc) | 0) * r.time) + rdr) * r.speed;
+	});
+var _user$project$Y15D14$score = F3(
+	function (t, time, model) {
+		score:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(t, time) > -1) {
+				return model;
+			} else {
+				var t_ = t + 1;
+				var model1 = A2(
+					_elm_lang$core$List$map,
+					function (r) {
+						return _elm_lang$core$Native_Utils.update(
+							r,
+							{
+								km: A2(_user$project$Y15D14$distance, t_, r)
+							});
+					},
+					model);
+				var maxDst = A2(
+					_elm_lang$core$Maybe$withDefault,
+					0,
+					_elm_lang$core$List$maximum(
+						A2(
+							_elm_lang$core$List$map,
+							function (_) {
+								return _.km;
+							},
+							model1)));
+				var model2 = A2(
+					_elm_lang$core$List$map,
+					function (r) {
+						return _elm_lang$core$Native_Utils.update(
+							r,
+							{
+								score: r.score + (_elm_lang$core$Native_Utils.eq(r.km, maxDst) ? 1 : 0)
+							});
+					},
+					model1);
+				var _v1 = t_,
+					_v2 = time,
+					_v3 = model2;
+				t = _v1;
+				time = _v2;
+				model = _v3;
+				continue score;
+			}
+		}
+	});
+var _user$project$Y15D14$bestScore = F2(
+	function (time, model) {
+		return _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.score;
+						},
+						A3(_user$project$Y15D14$score, 0, time, model)))));
+	});
+var _user$project$Y15D14$maxDistance = F2(
+	function (time, model) {
+		return _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$Y15D14$distance(time),
+						model))));
+	});
+var _user$project$Y15D14$answers = function (input) {
+	var time = 2503;
+	var model = _user$project$Y15D14$parseInput(input);
+	var p1 = A2(_user$project$Y15D14$maxDistance, time, model);
+	var p2 = A2(_user$project$Y15D14$bestScore, time, model);
+	return A2(_user$project$Util$join, p1, p2);
+};
+var _user$project$Y15D14$Reindeer = F6(
+	function (a, b, c, d, e, f) {
+		return {name: a, speed: b, time: c, rest: d, km: e, score: f};
+	});
+
+var _user$project$Y15D15$initCookie = F2(
+	function (model, total) {
+		var size = _elm_lang$core$List$length(model);
+		var first = (total - size) + 1;
+		var ones = A2(_elm_lang$core$List$repeat, size - 1, 1);
+		return {ctor: '::', _0: first, _1: ones};
+	});
+var _user$project$Y15D15$parseInt = function (s) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(s));
+};
+var _user$project$Y15D15$score = F3(
+	function (m, calories, cookie) {
+		var excluded = function () {
+			var _p0 = calories;
+			if (_p0.ctor === 'Just') {
+				return !_elm_lang$core$Native_Utils.eq(
+					_p0._0,
+					_elm_lang$core$List$sum(
+						A3(
+							_elm_lang$core$List$map2,
+							F2(
+								function (x, y) {
+									return x * y;
+								}),
+							A2(
+								_elm_lang$core$List$map,
+								function (_) {
+									return _.calories;
+								},
+								m),
+							cookie)));
+			} else {
+				return false;
+			}
+		}();
+		if (excluded) {
+			return 0;
+		} else {
+			var tx = _elm_lang$core$List$sum(
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.texture;
+						},
+						m),
+					cookie));
+			var fl = _elm_lang$core$List$sum(
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.flavor;
+						},
+						m),
+					cookie));
+			var du = _elm_lang$core$List$sum(
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.durability;
+						},
+						m),
+					cookie));
+			var cp = _elm_lang$core$List$sum(
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.capacity;
+						},
+						m),
+					cookie));
+			return _elm_lang$core$List$product(
+				A2(
+					_elm_lang$core$List$map,
+					function (s) {
+						return (_elm_lang$core$Native_Utils.cmp(s, 0) < 0) ? 0 : s;
+					},
+					{
+						ctor: '::',
+						_0: cp,
+						_1: {
+							ctor: '::',
+							_0: du,
+							_1: {
+								ctor: '::',
+								_0: fl,
+								_1: {
+									ctor: '::',
+									_0: tx,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}));
+		}
+	});
+var _user$project$Y15D15$increment = function (l) {
+	var _p1 = l;
+	if (_p1.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return {ctor: '::', _0: _p1._0 + 1, _1: _p1._1};
+	}
+};
+var _user$project$Y15D15$rollover = function (l) {
+	rollover:
+	while (true) {
+		var _p2 = l;
+		if (_p2.ctor === '[]') {
+			return {
+				ctor: '_Tuple2',
+				_0: 0,
+				_1: {ctor: '[]'}
+			};
+		} else {
+			if (_p2._0 === 1) {
+				var _v3 = _p2._1;
+				l = _v3;
+				continue rollover;
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: _p2._0 - 1,
+					_1: _user$project$Y15D15$increment(_p2._1)
+				};
+			}
+		}
+	}
+};
+var _user$project$Y15D15$next = function (c) {
+	var _p3 = c;
+	if (_p3.ctor === '[]') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		if (_p3._0 === 1) {
+			var _p4 = _user$project$Y15D15$rollover(_p3._1);
+			var n = _p4._0;
+			var l = _p4._1;
+			if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var ones = A2(
+					_elm_lang$core$List$repeat,
+					(_elm_lang$core$List$length(c) - _elm_lang$core$List$length(l)) - 1,
+					1);
+				return _elm_lang$core$Maybe$Just(
+					{
+						ctor: '::',
+						_0: n,
+						_1: A2(_elm_lang$core$Basics_ops['++'], ones, l)
+					});
+			}
+		} else {
+			return _elm_lang$core$Maybe$Just(
+				{
+					ctor: '::',
+					_0: _p3._0 - 1,
+					_1: _user$project$Y15D15$increment(_p3._1)
+				});
+		}
+	}
+};
+var _user$project$Y15D15$highScore = F4(
+	function (model, calories, oldHigh, oldCookie) {
+		highScore:
+		while (true) {
+			var newCookie = _user$project$Y15D15$next(oldCookie);
+			var newHigh = A2(
+				_elm_lang$core$Maybe$withDefault,
+				oldHigh,
+				_elm_lang$core$List$maximum(
+					{
+						ctor: '::',
+						_0: A3(_user$project$Y15D15$score, model, calories, oldCookie),
+						_1: {
+							ctor: '::',
+							_0: oldHigh,
+							_1: {ctor: '[]'}
+						}
+					}));
+			var _p5 = newCookie;
+			if (_p5.ctor === 'Just') {
+				var _v6 = model,
+					_v7 = calories,
+					_v8 = newHigh,
+					_v9 = _p5._0;
+				model = _v6;
+				calories = _v7;
+				oldHigh = _v8;
+				oldCookie = _v9;
+				continue highScore;
+			} else {
+				return newHigh;
+			}
+		}
+	});
+var _user$project$Y15D15$Ingredient = F6(
+	function (a, b, c, d, e, f) {
+		return {name: a, capacity: b, durability: c, flavor: d, texture: e, calories: f};
+	});
+var _user$project$Y15D15$parseLine = F2(
+	function (line, model) {
+		var rgx = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'^(\\w+): ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'capacity (-?\\d+), ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'durability (-?\\d+), ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'flavor (-?\\d+), ',
+						A2(_elm_lang$core$Basics_ops['++'], 'texture (-?\\d+), ', 'calories (-?\\d+)$')))));
+		var matches = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex(rgx),
+				line));
+		var _p6 = matches;
+		if (((((((((((((((_p6.ctor === '::') && (_p6._0.ctor === '::')) && (_p6._0._0.ctor === 'Just')) && (_p6._0._1.ctor === '::')) && (_p6._0._1._0.ctor === 'Just')) && (_p6._0._1._1.ctor === '::')) && (_p6._0._1._1._0.ctor === 'Just')) && (_p6._0._1._1._1.ctor === '::')) && (_p6._0._1._1._1._0.ctor === 'Just')) && (_p6._0._1._1._1._1.ctor === '::')) && (_p6._0._1._1._1._1._0.ctor === 'Just')) && (_p6._0._1._1._1._1._1.ctor === '::')) && (_p6._0._1._1._1._1._1._0.ctor === 'Just')) && (_p6._0._1._1._1._1._1._1.ctor === '[]')) && (_p6._1.ctor === '[]')) {
+			var cl2 = _user$project$Y15D15$parseInt(_p6._0._1._1._1._1._1._0._0);
+			var tx2 = _user$project$Y15D15$parseInt(_p6._0._1._1._1._1._0._0);
+			var fl2 = _user$project$Y15D15$parseInt(_p6._0._1._1._1._0._0);
+			var du2 = _user$project$Y15D15$parseInt(_p6._0._1._1._0._0);
+			var cp2 = _user$project$Y15D15$parseInt(_p6._0._1._0._0);
+			return {
+				ctor: '::',
+				_0: A6(_user$project$Y15D15$Ingredient, _p6._0._0._0, cp2, du2, fl2, tx2, cl2),
+				_1: model
+			};
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D15$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D15$parseLine,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D15$answers = function (input) {
+	var model = _user$project$Y15D15$parseInput(input);
+	var cookie = A2(_user$project$Y15D15$initCookie, model, 100);
+	var p1 = _elm_lang$core$Basics$toString(
+		A4(_user$project$Y15D15$highScore, model, _elm_lang$core$Maybe$Nothing, 0, cookie));
+	var p2 = _elm_lang$core$Basics$toString(
+		A4(
+			_user$project$Y15D15$highScore,
+			model,
+			_elm_lang$core$Maybe$Just(500),
+			0,
+			cookie));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D16$parseInt = function (s) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(s));
+};
+var _user$project$Y15D16$match2 = F3(
+	function (prop, val, prevProp) {
+		if (!prevProp) {
+			return false;
+		} else {
+			var _p0 = prop;
+			switch (_p0) {
+				case 'akitas':
+					return _elm_lang$core$Native_Utils.eq(val, 0);
+				case 'cars':
+					return _elm_lang$core$Native_Utils.eq(val, 2);
+				case 'cats':
+					return _elm_lang$core$Native_Utils.cmp(val, 7) > 0;
+				case 'children':
+					return _elm_lang$core$Native_Utils.eq(val, 3);
+				case 'goldfish':
+					return _elm_lang$core$Native_Utils.cmp(val, 5) < 0;
+				case 'perfumes':
+					return _elm_lang$core$Native_Utils.eq(val, 1);
+				case 'pomeranians':
+					return _elm_lang$core$Native_Utils.cmp(val, 3) < 0;
+				case 'samoyeds':
+					return _elm_lang$core$Native_Utils.eq(val, 2);
+				case 'trees':
+					return _elm_lang$core$Native_Utils.cmp(val, 3) > 0;
+				case 'vizslas':
+					return _elm_lang$core$Native_Utils.eq(val, 0);
+				default:
+					return false;
+			}
+		}
+	});
+var _user$project$Y15D16$match1 = F3(
+	function (prop, val, prevProp) {
+		if (!prevProp) {
+			return false;
+		} else {
+			var _p1 = prop;
+			switch (_p1) {
+				case 'akitas':
+					return _elm_lang$core$Native_Utils.eq(val, 0);
+				case 'cars':
+					return _elm_lang$core$Native_Utils.eq(val, 2);
+				case 'cats':
+					return _elm_lang$core$Native_Utils.eq(val, 7);
+				case 'children':
+					return _elm_lang$core$Native_Utils.eq(val, 3);
+				case 'goldfish':
+					return _elm_lang$core$Native_Utils.eq(val, 5);
+				case 'perfumes':
+					return _elm_lang$core$Native_Utils.eq(val, 1);
+				case 'pomeranians':
+					return _elm_lang$core$Native_Utils.eq(val, 3);
+				case 'samoyeds':
+					return _elm_lang$core$Native_Utils.eq(val, 2);
+				case 'trees':
+					return _elm_lang$core$Native_Utils.eq(val, 3);
+				case 'vizslas':
+					return _elm_lang$core$Native_Utils.eq(val, 0);
+				default:
+					return false;
+			}
+		}
+	});
+var _user$project$Y15D16$sue = F2(
+	function (hit, model) {
+		var sues = A2(
+			_elm_lang$core$List$filter,
+			function (s) {
+				return A3(_elm_lang$core$Dict$foldl, hit, true, s.props);
+			},
+			model);
+		var _p2 = _elm_lang$core$List$length(sues);
+		switch (_p2) {
+			case 0:
+				return 'none';
+			case 1:
+				return _elm_lang$core$Basics$toString(
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						0,
+						_elm_lang$core$List$head(
+							A2(
+								_elm_lang$core$List$map,
+								function (_) {
+									return _.number;
+								},
+								sues))));
+			default:
+				return 'too many';
+		}
+	});
+var _user$project$Y15D16$Sue = F2(
+	function (a, b) {
+		return {number: a, props: b};
+	});
+var _user$project$Y15D16$parseLine = F2(
+	function (line, model) {
+		var cs = '(akitas|cars|cats|children|goldfish|perfumes|pomeranians|samoyeds|trees|vizslas): (\\d+)';
+		var rx = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'Sue ([1-9]\\d*): ',
+			A2(
+				_elm_lang$core$String$join,
+				', ',
+				A2(_elm_lang$core$List$repeat, 3, cs)));
+		var ms = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex(rx),
+				line));
+		var _p3 = ms;
+		if (((((((((((((((((_p3.ctor === '::') && (_p3._0.ctor === '::')) && (_p3._0._0.ctor === 'Just')) && (_p3._0._1.ctor === '::')) && (_p3._0._1._0.ctor === 'Just')) && (_p3._0._1._1.ctor === '::')) && (_p3._0._1._1._0.ctor === 'Just')) && (_p3._0._1._1._1.ctor === '::')) && (_p3._0._1._1._1._0.ctor === 'Just')) && (_p3._0._1._1._1._1.ctor === '::')) && (_p3._0._1._1._1._1._0.ctor === 'Just')) && (_p3._0._1._1._1._1._1.ctor === '::')) && (_p3._0._1._1._1._1._1._0.ctor === 'Just')) && (_p3._0._1._1._1._1._1._1.ctor === '::')) && (_p3._0._1._1._1._1._1._1._0.ctor === 'Just')) && (_p3._0._1._1._1._1._1._1._1.ctor === '[]')) && (_p3._1.ctor === '[]')) {
+			var d = A3(
+				_elm_lang$core$Dict$insert,
+				_p3._0._1._1._1._1._1._0._0,
+				_user$project$Y15D16$parseInt(_p3._0._1._1._1._1._1._1._0._0),
+				A3(
+					_elm_lang$core$Dict$insert,
+					_p3._0._1._1._1._0._0,
+					_user$project$Y15D16$parseInt(_p3._0._1._1._1._1._0._0),
+					A3(
+						_elm_lang$core$Dict$insert,
+						_p3._0._1._0._0,
+						_user$project$Y15D16$parseInt(_p3._0._1._1._0._0),
+						_elm_lang$core$Dict$empty)));
+			var i = _user$project$Y15D16$parseInt(_p3._0._0._0);
+			return {
+				ctor: '::',
+				_0: A2(_user$project$Y15D16$Sue, i, d),
+				_1: model
+			};
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D16$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D16$parseLine,
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D16$answers = function (input) {
+	var model = _user$project$Y15D16$parseInput(input);
+	var p1 = A2(_user$project$Y15D16$sue, _user$project$Y15D16$match1, model);
+	var p2 = A2(_user$project$Y15D16$sue, _user$project$Y15D16$match2, model);
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D17$parseInput = function (input) {
+	return A2(
+		_elm_lang$core$List$filter,
+		function (i) {
+			return _elm_lang$core$Native_Utils.cmp(i, 0) > 0;
+		},
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Result$withDefault(0),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$String$toInt,
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.match;
+					},
+					A3(
+						_elm_lang$core$Regex$find,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('[1-9]\\d*'),
+						input)))));
+};
+var _user$project$Y15D17$combos = F3(
+	function (n, total, model) {
+		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+			return {ctor: '_Tuple2', _0: 0, _1: 0};
+		} else {
+			var _p0 = A3(_user$project$Y15D17$combos, n - 1, total, model);
+			var q = _p0._0;
+			var r = _p0._1;
+			var p = _elm_lang$core$List$length(
+				A2(
+					_elm_lang$core$List$filter,
+					function (c) {
+						return _elm_lang$core$Native_Utils.eq(
+							_elm_lang$core$List$sum(c),
+							total);
+					},
+					A2(_user$project$Util$combinations, n, model)));
+			return {
+				ctor: '_Tuple2',
+				_0: p + q,
+				_1: _elm_lang$core$Native_Utils.eq(r, 0) ? p : r
+			};
+		}
+	});
+var _user$project$Y15D17$answers = function (input) {
+	var model = _user$project$Y15D17$parseInput(input);
+	var number = A3(
+		_user$project$Y15D17$combos,
+		_elm_lang$core$List$length(model),
+		150,
+		model);
+	var p1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Tuple$first(number));
+	var p2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Tuple$second(number));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D18$initModel = {lights: _elm_lang$core$Array$empty, size: 0, maxIndex: 0, stuck: false};
+var _user$project$Y15D18$debug = function (model) {
+	var chars = A2(
+		_elm_lang$core$String$join,
+		'',
+		A2(
+			_elm_lang$core$List$map,
+			function (b) {
+				return b ? '#' : '.';
+			},
+			_elm_lang$core$Array$toList(model.lights)));
+	var lines = A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'.{',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(model.size),
+						'}'))),
+			chars));
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A2(_elm_lang$core$String$join, '\n', lines),
+		'\n');
+};
+var _user$project$Y15D18$count = function (model) {
+	return _elm_lang$core$List$length(
+		A2(
+			_elm_lang$core$List$filter,
+			_elm_lang$core$Basics$identity,
+			_elm_lang$core$Array$toList(model.lights)));
+};
+var _user$project$Y15D18$outside = F2(
+	function (model, _p0) {
+		var _p1 = _p0;
+		var _p3 = _p1._0;
+		var _p2 = _p1._1;
+		return (_elm_lang$core$Native_Utils.cmp(_p3, model.maxIndex) > 0) || ((_elm_lang$core$Native_Utils.cmp(_p3, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(_p2, model.maxIndex) > 0) || (_elm_lang$core$Native_Utils.cmp(_p2, 0) < 0)));
+	});
+var _user$project$Y15D18$next = F2(
+	function (model, _p4) {
+		var _p5 = _p4;
+		var _p7 = _p5._0;
+		var _p6 = _p5._1;
+		return (_elm_lang$core$Native_Utils.cmp(_p6, model.maxIndex) > -1) ? {ctor: '_Tuple2', _0: _p7 + 1, _1: 0} : {ctor: '_Tuple2', _0: _p7, _1: _p6 + 1};
+	});
+var _user$project$Y15D18$corner = F2(
+	function (model, _p8) {
+		var _p9 = _p8;
+		var _p11 = _p9._0;
+		var _p10 = _p9._1;
+		return (_elm_lang$core$Native_Utils.eq(_p11, 0) || _elm_lang$core$Native_Utils.eq(_p11, model.maxIndex)) && (_elm_lang$core$Native_Utils.eq(_p10, 0) || _elm_lang$core$Native_Utils.eq(_p10, model.maxIndex));
+	});
+var _user$project$Y15D18$index = F2(
+	function (model, _p12) {
+		var _p13 = _p12;
+		return (_p13._0 * model.size) + _p13._1;
+	});
+var _user$project$Y15D18$stick = function (model) {
+	var a = A3(
+		_elm_lang$core$Array$set,
+		A2(
+			_user$project$Y15D18$index,
+			model,
+			{ctor: '_Tuple2', _0: model.maxIndex, _1: model.maxIndex}),
+		true,
+		A3(
+			_elm_lang$core$Array$set,
+			A2(
+				_user$project$Y15D18$index,
+				model,
+				{ctor: '_Tuple2', _0: model.maxIndex, _1: 0}),
+			true,
+			A3(
+				_elm_lang$core$Array$set,
+				A2(
+					_user$project$Y15D18$index,
+					model,
+					{ctor: '_Tuple2', _0: 0, _1: model.maxIndex}),
+				true,
+				A3(
+					_elm_lang$core$Array$set,
+					A2(
+						_user$project$Y15D18$index,
+						model,
+						{ctor: '_Tuple2', _0: 0, _1: 0}),
+					true,
+					model.lights))));
+	return _elm_lang$core$Native_Utils.update(
+		model,
+		{lights: a, stuck: true});
+};
+var _user$project$Y15D18$query = F2(
+	function (model, cell) {
+		return A2(_user$project$Y15D18$outside, model, cell) ? false : A2(
+			_elm_lang$core$Maybe$withDefault,
+			false,
+			A2(
+				_elm_lang$core$Array$get,
+				A2(_user$project$Y15D18$index, model, cell),
+				model.lights));
+	});
+var _user$project$Y15D18$neighbours = F2(
+	function (model, _p14) {
+		var _p15 = _p14;
+		var ds = {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: -1, _1: -1},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 0, _1: -1},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 1, _1: -1},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: -1, _1: 0},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 1, _1: 0},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: -1, _1: 1},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 0, _1: 1},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 1, _1: 1},
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		};
+		return _elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filter,
+				_elm_lang$core$Basics$identity,
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Y15D18$query(model),
+					A2(
+						_elm_lang$core$List$map,
+						function (_p16) {
+							var _p17 = _p16;
+							return {ctor: '_Tuple2', _0: _p15._0 + _p17._0, _1: _p15._1 + _p17._1};
+						},
+						ds))));
+	});
+var _user$project$Y15D18$newVal = F2(
+	function (model, cell) {
+		if (model.stuck && A2(_user$project$Y15D18$corner, model, cell)) {
+			return true;
+		} else {
+			var n = A2(_user$project$Y15D18$neighbours, model, cell);
+			return A2(_user$project$Y15D18$query, model, cell) ? (_elm_lang$core$Native_Utils.eq(n, 2) || _elm_lang$core$Native_Utils.eq(n, 3)) : _elm_lang$core$Native_Utils.eq(n, 3);
+		}
+	});
+var _user$project$Y15D18$sweep = F3(
+	function (oldModel, model, cell) {
+		sweep:
+		while (true) {
+			if (A2(_user$project$Y15D18$outside, model, cell)) {
+				return model;
+			} else {
+				var v = A2(_user$project$Y15D18$newVal, oldModel, cell);
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						lights: A3(
+							_elm_lang$core$Array$set,
+							A2(_user$project$Y15D18$index, model, cell),
+							v,
+							model.lights)
+					});
+				var nextCell = A2(_user$project$Y15D18$next, model_, cell);
+				var _v6 = oldModel,
+					_v7 = model_,
+					_v8 = nextCell;
+				oldModel = _v6;
+				model = _v7;
+				cell = _v8;
+				continue sweep;
+			}
+		}
+	});
+var _user$project$Y15D18$step = function (model) {
+	var oldModel = model;
+	var start = {ctor: '_Tuple2', _0: 0, _1: 0};
+	return A3(_user$project$Y15D18$sweep, oldModel, model, start);
+};
+var _user$project$Y15D18$steps = F2(
+	function (n, model) {
+		steps:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(n, 0) < 1) {
+				return model;
+			} else {
+				var _v9 = n - 1,
+					_v10 = _user$project$Y15D18$step(model);
+				n = _v9;
+				model = _v10;
+				continue steps;
+			}
+		}
+	});
+var _user$project$Y15D18$Model = F4(
+	function (a, b, c, d) {
+		return {lights: a, size: b, maxIndex: c, stuck: d};
+	});
+var _user$project$Y15D18$parseInput = function (input) {
+	var a = A3(
+		_elm_lang$core$List$foldl,
+		_elm_lang$core$Array$push,
+		_elm_lang$core$Array$empty,
+		A2(
+			_elm_lang$core$List$map,
+			function (s) {
+				return _elm_lang$core$Native_Utils.eq(s, '#');
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('[#.]'),
+					input))));
+	var s = _elm_lang$core$Basics$ceiling(
+		_elm_lang$core$Basics$sqrt(
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Array$length(a))));
+	var m = s - 1;
+	return A4(_user$project$Y15D18$Model, a, s, m, false);
+};
+var _user$project$Y15D18$answers = function (input) {
+	var nm = 100;
+	var model = _user$project$Y15D18$parseInput(input);
+	var m1 = A2(_user$project$Y15D18$steps, nm, model);
+	var p1 = _elm_lang$core$Basics$toString(
+		_user$project$Y15D18$count(m1));
+	var m2 = A2(
+		_user$project$Y15D18$steps,
+		nm,
+		_user$project$Y15D18$stick(model));
+	var p2 = _elm_lang$core$Basics$toString(
+		_user$project$Y15D18$count(m2));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D19$comaRgx = _elm_lang$core$Regex$regex('Y');
+var _user$project$Y15D19$bracRgx = _elm_lang$core$Regex$regex('(Ar|Rn)');
+var _user$project$Y15D19$atomRgx = _elm_lang$core$Regex$regex('[A-Z][a-z]?');
+var _user$project$Y15D19$moleRgx = _elm_lang$core$Regex$regex('((?:[A-Z][a-z]?){10,})');
+var _user$project$Y15D19$ruleRgx = _elm_lang$core$Regex$regex('(e|[A-Z][a-z]?) => ((?:[A-Z][a-z]?)+)');
+var _user$project$Y15D19$count = F2(
+	function (rgx, model) {
+		return _elm_lang$core$List$length(
+			A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, rgx, model.molecule));
+	});
+var _user$project$Y15D19$addToReplacements = F5(
+	function (matches, from, to, molecule, replacements) {
+		addToReplacements:
+		while (true) {
+			var _p0 = matches;
+			if (_p0.ctor === '[]') {
+				return replacements;
+			} else {
+				var _p1 = _p0._0;
+				var right = A3(
+					_elm_lang$core$String$slice,
+					_p1.index + _elm_lang$core$String$length(from),
+					-1,
+					molecule);
+				var left = A3(_elm_lang$core$String$slice, 0, _p1.index, molecule);
+				var replacement = A2(
+					_elm_lang$core$Basics_ops['++'],
+					left,
+					A2(_elm_lang$core$Basics_ops['++'], to, right));
+				var replacements_ = A2(_elm_lang$core$Set$insert, replacement, replacements);
+				var _v1 = _p0._1,
+					_v2 = from,
+					_v3 = to,
+					_v4 = molecule,
+					_v5 = replacements_;
+				matches = _v1;
+				from = _v2;
+				to = _v3;
+				molecule = _v4;
+				replacements = _v5;
+				continue addToReplacements;
+			}
+		}
+	});
+var _user$project$Y15D19$iterateRules = function (model) {
+	iterateRules:
+	while (true) {
+		var _p2 = model.rules;
+		if (_p2.ctor === '[]') {
+			return model;
+		} else {
+			var _p3 = _p2._0;
+			var to = _elm_lang$core$Tuple$second(_p3);
+			var from = _elm_lang$core$Tuple$first(_p3);
+			var matches = A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex(from),
+				model.molecule);
+			var replacements_ = A5(_user$project$Y15D19$addToReplacements, matches, from, to, model.molecule, model.replacements);
+			var model_ = {rules: _p2._1, molecule: model.molecule, replacements: replacements_};
+			var _v7 = model_;
+			model = _v7;
+			continue iterateRules;
+		}
+	}
+};
+var _user$project$Y15D19$extractMolecule = function (submatches) {
+	var _p4 = submatches;
+	if (_p4.ctor === 'Nothing') {
+		return '';
+	} else {
+		var _p5 = _p4._0;
+		if (((_p5.ctor === '::') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === '[]')) {
+			return _p5._0._0;
+		} else {
+			return '';
+		}
+	}
+};
+var _user$project$Y15D19$extractRule = function (submatches) {
+	var _p6 = submatches;
+	if (((((_p6.ctor === '::') && (_p6._0.ctor === 'Just')) && (_p6._1.ctor === '::')) && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '[]')) {
+		return {ctor: '_Tuple2', _0: _p6._0._0, _1: _p6._1._0._0};
+	} else {
+		return {ctor: '_Tuple2', _0: '', _1: ''};
+	}
+};
+var _user$project$Y15D19$parse = function (input) {
+	var molecule = _user$project$Y15D19$extractMolecule(
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y15D19$moleRgx, input))));
+	var rules = A2(
+		_elm_lang$core$List$map,
+		_user$project$Y15D19$extractRule,
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y15D19$ruleRgx, input)));
+	return {rules: rules, molecule: molecule, replacements: _elm_lang$core$Set$empty};
+};
+var _user$project$Y15D19$askalski = function (model) {
+	var comas = A2(_user$project$Y15D19$count, _user$project$Y15D19$comaRgx, model);
+	var bracs = A2(_user$project$Y15D19$count, _user$project$Y15D19$bracRgx, model);
+	var atoms = A2(_user$project$Y15D19$count, _user$project$Y15D19$atomRgx, model);
+	return _elm_lang$core$Basics$toString(((atoms - bracs) - (2 * comas)) - 1);
+};
+var _user$project$Y15D19$molecules = function (model) {
+	var model_ = _user$project$Y15D19$iterateRules(model);
+	return _elm_lang$core$Basics$toString(
+		_elm_lang$core$Set$size(model_.replacements));
+};
+var _user$project$Y15D19$answers = function (input) {
+	var model = _user$project$Y15D19$parse(input);
+	var p1 = _user$project$Y15D19$molecules(model);
+	var p2 = _user$project$Y15D19$askalski(model);
+	return A2(_user$project$Util$join, p1, p2);
+};
+var _user$project$Y15D19$Model = F3(
+	function (a, b, c) {
+		return {rules: a, molecule: b, replacements: c};
+	});
+
+var _user$project$Y15D20$parseInput = function (input) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				'0',
+				_elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_lang$core$Regex$regex('\\d+'),
+							input))))));
+};
+var _user$project$Y15D20$fac = F4(
+	function (n, i, l, fs) {
+		if (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$toFloat(i),
+			l) > 0) {
+			return fs;
+		} else {
+			var fs1 = function () {
+				if (!_elm_lang$core$Native_Utils.eq(
+					A2(_elm_lang$core$Basics$rem, n, i),
+					0)) {
+					return fs;
+				} else {
+					var j = (n / i) | 0;
+					var fs2 = {ctor: '::', _0: i, _1: fs};
+					return _elm_lang$core$Native_Utils.eq(j, i) ? fs2 : {ctor: '::', _0: j, _1: fs2};
+				}
+			}();
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				fs1,
+				A4(_user$project$Y15D20$fac, n, i + 1, l, fs));
+		}
+	});
+var _user$project$Y15D20$factors = function (n) {
+	return A4(
+		_user$project$Y15D20$fac,
+		n,
+		1,
+		_elm_lang$core$Basics$sqrt(
+			_elm_lang$core$Basics$toFloat(n)),
+		{ctor: '[]'});
+};
+var _user$project$Y15D20$house2 = F2(
+	function (goal, house) {
+		house2:
+		while (true) {
+			var presents = _elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					F2(
+						function (x, y) {
+							return x * y;
+						})(11),
+					A2(
+						_elm_lang$core$List$filter,
+						function (elf) {
+							return _elm_lang$core$Native_Utils.cmp((house / elf) | 0, 50) < 1;
+						},
+						_user$project$Y15D20$factors(house))));
+			if (_elm_lang$core$Native_Utils.cmp(presents, goal) > -1) {
+				return house;
+			} else {
+				var _v0 = goal,
+					_v1 = house + 1;
+				goal = _v0;
+				house = _v1;
+				continue house2;
+			}
+		}
+	});
+var _user$project$Y15D20$house1 = F2(
+	function (goal, house) {
+		house1:
+		while (true) {
+			var presents = _elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					F2(
+						function (x, y) {
+							return x * y;
+						})(10),
+					_user$project$Y15D20$factors(house)));
+			if (_elm_lang$core$Native_Utils.cmp(presents, goal) > -1) {
+				return house;
+			} else {
+				var _v2 = goal,
+					_v3 = house + 1;
+				goal = _v2;
+				house = _v3;
+				continue house1;
+			}
+		}
+	});
+var _user$project$Y15D20$answers = function (input) {
+	var goal = _user$project$Y15D20$parseInput(input);
+	var p1 = _elm_lang$core$Basics$toString(
+		A2(_user$project$Y15D20$house1, goal, 1));
+	var p2 = _elm_lang$core$Basics$toString(
+		A2(_user$project$Y15D20$house2, goal, 1));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D21$rings = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {
+						ctor: '::',
+						_0: 0,
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: 25,
+					_1: {
+						ctor: '::',
+						_0: 1,
+						_1: {
+							ctor: '::',
+							_0: 0,
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: 50,
+						_1: {
+							ctor: '::',
+							_0: 2,
+							_1: {
+								ctor: '::',
+								_0: 0,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: 100,
+							_1: {
+								ctor: '::',
+								_0: 3,
+								_1: {
+									ctor: '::',
+									_0: 0,
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '::',
+								_0: 20,
+								_1: {
+									ctor: '::',
+									_0: 0,
+									_1: {
+										ctor: '::',
+										_0: 1,
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '::',
+									_0: 40,
+									_1: {
+										ctor: '::',
+										_0: 0,
+										_1: {
+											ctor: '::',
+											_0: 2,
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '::',
+										_0: 80,
+										_1: {
+											ctor: '::',
+											_0: 0,
+											_1: {
+												ctor: '::',
+												_0: 3,
+												_1: {ctor: '[]'}
+											}
+										}
+									},
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y15D21$armors = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: 13,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {
+						ctor: '::',
+						_0: 1,
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: 31,
+					_1: {
+						ctor: '::',
+						_0: 0,
+						_1: {
+							ctor: '::',
+							_0: 2,
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: 53,
+						_1: {
+							ctor: '::',
+							_0: 0,
+							_1: {
+								ctor: '::',
+								_0: 3,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: 75,
+							_1: {
+								ctor: '::',
+								_0: 0,
+								_1: {
+									ctor: '::',
+									_0: 4,
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '::',
+								_0: 102,
+								_1: {
+									ctor: '::',
+									_0: 0,
+									_1: {
+										ctor: '::',
+										_0: 5,
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y15D21$weapons = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '::',
+			_0: 8,
+			_1: {
+				ctor: '::',
+				_0: 4,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: 10,
+				_1: {
+					ctor: '::',
+					_0: 5,
+					_1: {
+						ctor: '::',
+						_0: 0,
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: 25,
+					_1: {
+						ctor: '::',
+						_0: 6,
+						_1: {
+							ctor: '::',
+							_0: 0,
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: 40,
+						_1: {
+							ctor: '::',
+							_0: 7,
+							_1: {
+								ctor: '::',
+								_0: 0,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: 74,
+							_1: {
+								ctor: '::',
+								_0: 8,
+								_1: {
+									ctor: '::',
+									_0: 0,
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y15D21$winner = F2(
+	function (attacker, defender) {
+		winner:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(attacker.hitp, 0) < 1) {
+				return defender.player;
+			} else {
+				var damage = attacker.damage - defender.armor;
+				var hitp = defender.hitp - ((_elm_lang$core$Native_Utils.cmp(damage, 1) < 0) ? 1 : damage);
+				var damaged = _elm_lang$core$Native_Utils.update(
+					defender,
+					{hitp: hitp});
+				var _v0 = damaged,
+					_v1 = attacker;
+				attacker = _v0;
+				defender = _v1;
+				continue winner;
+			}
+		}
+	});
+var _user$project$Y15D21$nextIndex = function (i) {
+	return (_elm_lang$core$Native_Utils.cmp(i.r2, 7) < 0) ? _elm_lang$core$Maybe$Just(
+		_elm_lang$core$Native_Utils.update(
+			i,
+			{r2: i.r2 + 1})) : ((_elm_lang$core$Native_Utils.cmp(i.r1, 6) < 0) ? _elm_lang$core$Maybe$Just(
+		_elm_lang$core$Native_Utils.update(
+			i,
+			{r1: i.r1 + 1, r2: i.r1 + 2})) : ((_elm_lang$core$Native_Utils.cmp(i.a, 5) < 0) ? _elm_lang$core$Maybe$Just(
+		_elm_lang$core$Native_Utils.update(
+			i,
+			{a: i.a + 1, r1: 0, r2: 1})) : ((_elm_lang$core$Native_Utils.cmp(i.w, 4) < 0) ? _elm_lang$core$Maybe$Just(
+		_elm_lang$core$Native_Utils.update(
+			i,
+			{w: i.w + 1, a: 0, r1: 0, r2: 1})) : _elm_lang$core$Maybe$Nothing)));
+};
+var _user$project$Y15D21$highest = F3(
+	function (pwin, pcost, best) {
+		return (!pwin) && (_elm_lang$core$Native_Utils.cmp(pcost, best) > 0);
+	});
+var _user$project$Y15D21$lowest = F3(
+	function (pwin, pcost, best) {
+		return pwin && (_elm_lang$core$Native_Utils.eq(best, 0) || (_elm_lang$core$Native_Utils.cmp(pcost, best) < 0));
+	});
+var _user$project$Y15D21$Fighter = F5(
+	function (a, b, c, d, e) {
+		return {hitp: a, damage: b, armor: c, cost: d, player: e};
+	});
+var _user$project$Y15D21$fighterFromIndex = function (i) {
+	var ring2 = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(_elm_lang$core$Array$get, i.r2, _user$project$Y15D21$rings));
+	var ring1 = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(_elm_lang$core$Array$get, i.r1, _user$project$Y15D21$rings));
+	var armor = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(_elm_lang$core$Array$get, i.a, _user$project$Y15D21$armors));
+	var weapon = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(_elm_lang$core$Array$get, i.w, _user$project$Y15D21$weapons));
+	var totals = A5(
+		_elm_lang$core$List$map4,
+		F4(
+			function (w, a, r1, r2) {
+				return ((w + a) + r1) + r2;
+			}),
+		weapon,
+		armor,
+		ring1,
+		ring2);
+	var _p0 = totals;
+	if ((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '[]')) {
+		return A5(_user$project$Y15D21$Fighter, 100, _p0._1._0, _p0._1._1._0, _p0._0, true);
+	} else {
+		return A5(_user$project$Y15D21$Fighter, 0, 0, 0, 0, true);
+	}
+};
+var _user$project$Y15D21$search = F4(
+	function (boss, candidate, best, index) {
+		search:
+		while (true) {
+			var _p1 = index;
+			if (_p1.ctor === 'Nothing') {
+				return best;
+			} else {
+				var _p2 = _p1._0;
+				var player = _user$project$Y15D21$fighterFromIndex(_p2);
+				var nextBest = A3(
+					candidate,
+					A2(_user$project$Y15D21$winner, player, boss),
+					player.cost,
+					best) ? player.cost : best;
+				var _v4 = boss,
+					_v5 = candidate,
+					_v6 = nextBest,
+					_v7 = _user$project$Y15D21$nextIndex(_p2);
+				boss = _v4;
+				candidate = _v5;
+				best = _v6;
+				index = _v7;
+				continue search;
+			}
+		}
+	});
+var _user$project$Y15D21$parseInput = function (input) {
+	var ns = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$String$toInt,
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('\\d+'),
+				input)));
+	var _p3 = ns;
+	if (((((((_p3.ctor === '::') && (_p3._0.ctor === 'Ok')) && (_p3._1.ctor === '::')) && (_p3._1._0.ctor === 'Ok')) && (_p3._1._1.ctor === '::')) && (_p3._1._1._0.ctor === 'Ok')) && (_p3._1._1._1.ctor === '[]')) {
+		return A5(_user$project$Y15D21$Fighter, _p3._0._0, _p3._1._0._0, _p3._1._1._0._0, 0, false);
+	} else {
+		return A5(_user$project$Y15D21$Fighter, 0, 0, 0, 0, false);
+	}
+};
+var _user$project$Y15D21$Index = F4(
+	function (a, b, c, d) {
+		return {w: a, a: b, r1: c, r2: d};
+	});
+var _user$project$Y15D21$initIndex = _elm_lang$core$Maybe$Just(
+	A4(_user$project$Y15D21$Index, 0, 0, 0, 1));
+var _user$project$Y15D21$answers = function (input) {
+	var boss = _user$project$Y15D21$parseInput(input);
+	var p1 = _elm_lang$core$Basics$toString(
+		A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$lowest, 0, _user$project$Y15D21$initIndex));
+	var p2 = _elm_lang$core$Basics$toString(
+		A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$highest, 0, _user$project$Y15D21$initIndex));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D22$answers = function (input) {
+	return 'couldn\'t do this one at all in Elm';
+};
+
+var _user$project$Y15D23$initModel = {instructions: _elm_lang$core$Array$empty, registers: _elm_lang$core$Dict$empty, i: 0};
+var _user$project$Y15D23$get = F2(
+	function (reg, model) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Dict$get, reg, model.registers));
+	});
+var _user$project$Y15D23$update = F3(
+	function (name, f, model) {
+		var value = f(
+			A2(_user$project$Y15D23$get, name, model));
+		return A3(_elm_lang$core$Dict$insert, name, value, model.registers);
+	});
+var _user$project$Y15D23$run = function (model) {
+	run:
+	while (true) {
+		var instruction = A2(_elm_lang$core$Array$get, model.i, model.instructions);
+		var _p0 = instruction;
+		if (_p0.ctor === 'Nothing') {
+			return model;
+		} else {
+			var model_ = function () {
+				var _p1 = _p0._0;
+				switch (_p1.ctor) {
+					case 'Inc':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								registers: A3(
+									_user$project$Y15D23$update,
+									_p1._0,
+									function (v) {
+										return v + 1;
+									},
+									model),
+								i: model.i + 1
+							});
+					case 'Hlf':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								registers: A3(
+									_user$project$Y15D23$update,
+									_p1._0,
+									function (v) {
+										return (v / 2) | 0;
+									},
+									model),
+								i: model.i + 1
+							});
+					case 'Tpl':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								registers: A3(
+									_user$project$Y15D23$update,
+									_p1._0,
+									function (v) {
+										return v * 3;
+									},
+									model),
+								i: model.i + 1
+							});
+					case 'Jmp':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{i: model.i + _p1._0});
+					case 'Jie':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								i: model.i + (_elm_lang$core$Native_Utils.eq(
+									A2(
+										_elm_lang$core$Basics$rem,
+										A2(_user$project$Y15D23$get, _p1._0, model),
+										2),
+									0) ? _p1._1 : 1)
+							});
+					case 'Jio':
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								i: model.i + (_elm_lang$core$Native_Utils.eq(
+									A2(_user$project$Y15D23$get, _p1._0, model),
+									1) ? _p1._1 : 1)
+							});
+					default:
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{i: model.i + 1});
+				}
+			}();
+			var _v2 = model_;
+			model = _v2;
+			continue run;
+		}
+	}
+};
+var _user$project$Y15D23$Model = F3(
+	function (a, b, c) {
+		return {instructions: a, registers: b, i: c};
+	});
+var _user$project$Y15D23$Jio = F2(
+	function (a, b) {
+		return {ctor: 'Jio', _0: a, _1: b};
+	});
+var _user$project$Y15D23$Jie = F2(
+	function (a, b) {
+		return {ctor: 'Jie', _0: a, _1: b};
+	});
+var _user$project$Y15D23$Jmp = function (a) {
+	return {ctor: 'Jmp', _0: a};
+};
+var _user$project$Y15D23$Tpl = function (a) {
+	return {ctor: 'Tpl', _0: a};
+};
+var _user$project$Y15D23$Hlf = function (a) {
+	return {ctor: 'Hlf', _0: a};
+};
+var _user$project$Y15D23$Inc = function (a) {
+	return {ctor: 'Inc', _0: a};
+};
+var _user$project$Y15D23$NoOp = {ctor: 'NoOp'};
+var _user$project$Y15D23$parseLine = F2(
+	function (line, model) {
+		var rx = '^([a-z]{3})\\s+(a|b)?,?\\s*\\+?(-?\\d*)?';
+		var sm = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex(rx),
+				line));
+		var _p2 = sm;
+		if ((((((_p2.ctor === '::') && (_p2._0.ctor === '::')) && (_p2._0._1.ctor === '::')) && (_p2._0._1._1.ctor === '::')) && (_p2._0._1._1._1.ctor === '[]')) && (_p2._1.ctor === '[]')) {
+			var j = A2(
+				_elm_lang$core$Result$withDefault,
+				0,
+				_elm_lang$core$String$toInt(
+					A2(_elm_lang$core$Maybe$withDefault, '', _p2._0._1._1._0)));
+			var r = A2(_elm_lang$core$Maybe$withDefault, '', _p2._0._1._0);
+			var n = A2(_elm_lang$core$Maybe$withDefault, '', _p2._0._0);
+			var i = function () {
+				var _p3 = n;
+				switch (_p3) {
+					case 'inc':
+						return _user$project$Y15D23$Inc(r);
+					case 'hlf':
+						return _user$project$Y15D23$Hlf(r);
+					case 'tpl':
+						return _user$project$Y15D23$Tpl(r);
+					case 'jmp':
+						return _user$project$Y15D23$Jmp(j);
+					case 'jie':
+						return A2(_user$project$Y15D23$Jie, r, j);
+					case 'jio':
+						return A2(_user$project$Y15D23$Jio, r, j);
+					default:
+						return _user$project$Y15D23$NoOp;
+				}
+			}();
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					instructions: A2(_elm_lang$core$Array$push, i, model.instructions)
+				});
+		} else {
+			return model;
+		}
+	});
+var _user$project$Y15D23$parseInput = function (input) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		_user$project$Y15D23$parseLine,
+		_user$project$Y15D23$initModel,
+		A2(
+			_elm_lang$core$List$filter,
+			function (l) {
+				return !_elm_lang$core$Native_Utils.eq(l, '');
+			},
+			A2(_elm_lang$core$String$split, '\n', input)));
+};
+var _user$project$Y15D23$answers = function (input) {
+	var model1 = _user$project$Y15D23$parseInput(input);
+	var model2 = _elm_lang$core$Native_Utils.update(
+		model1,
+		{
+			registers: A3(_elm_lang$core$Dict$insert, 'a', 1, model1.registers)
+		});
+	var p2 = _elm_lang$core$Basics$toString(
+		A2(
+			_user$project$Y15D23$get,
+			'b',
+			_user$project$Y15D23$run(model2)));
+	var p1 = _elm_lang$core$Basics$toString(
+		A2(
+			_user$project$Y15D23$get,
+			'b',
+			_user$project$Y15D23$run(model1)));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D24$parseInput = function (input) {
+	return A2(
+		_elm_lang$core$List$filter,
+		function (w) {
+			return !_elm_lang$core$Native_Utils.eq(w, 0);
+		},
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Result$withDefault(0),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$String$toInt,
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.match;
+					},
+					A3(
+						_elm_lang$core$Regex$find,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('\\d+'),
+						input)))));
+};
+var _user$project$Y15D24$searchCombo = F3(
+	function (qe, weight, combos) {
+		searchCombo:
+		while (true) {
+			var _p0 = combos;
+			if (_p0.ctor === '[]') {
+				return qe;
+			} else {
+				var _p1 = _p0._0;
+				var qe_ = function () {
+					if (!_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$List$sum(_p1),
+						weight)) {
+						return qe;
+					} else {
+						var qe__ = _elm_lang$core$List$product(_p1);
+						return (_elm_lang$core$Native_Utils.eq(qe, 0) || (_elm_lang$core$Native_Utils.cmp(qe__, qe) < 0)) ? qe__ : qe;
+					}
+				}();
+				var _v1 = qe_,
+					_v2 = weight,
+					_v3 = _p0._1;
+				qe = _v1;
+				weight = _v2;
+				combos = _v3;
+				continue searchCombo;
+			}
+		}
+	});
+var _user$project$Y15D24$searchLength = F5(
+	function (qe, length, maxLen, weight, weights) {
+		searchLength:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(length, maxLen) > 0) {
+				return qe;
+			} else {
+				var combos = A2(_user$project$Util$combinations, length, weights);
+				var qe_ = A3(_user$project$Y15D24$searchCombo, qe, weight, combos);
+				if (_elm_lang$core$Native_Utils.cmp(qe_, 0) > 0) {
+					return qe_;
+				} else {
+					var _v4 = qe,
+						_v5 = length + 1,
+						_v6 = maxLen,
+						_v7 = weight,
+						_v8 = weights;
+					qe = _v4;
+					length = _v5;
+					maxLen = _v6;
+					weight = _v7;
+					weights = _v8;
+					continue searchLength;
+				}
+			}
+		}
+	});
+var _user$project$Y15D24$bestQe = F2(
+	function (groups, weights) {
+		var maxLen = (_elm_lang$core$List$length(weights) - groups) + 1;
+		var weight = (_elm_lang$core$List$sum(weights) / groups) | 0;
+		return A5(_user$project$Y15D24$searchLength, 0, 1, maxLen, weight, weights);
+	});
+var _user$project$Y15D24$answers = function (input) {
+	var weights = _user$project$Y15D24$parseInput(input);
+	var p1 = _elm_lang$core$Basics$toString(
+		A2(_user$project$Y15D24$bestQe, 3, weights));
+	var p2 = _elm_lang$core$Basics$toString(
+		A2(_user$project$Y15D24$bestQe, 4, weights));
+	return A2(_user$project$Util$join, p1, p2);
+};
+
+var _user$project$Y15D25$start = {code: 20151125, row: 1, col: 1};
+var _user$project$Y15D25$search = F2(
+	function (_p0, model) {
+		search:
+		while (true) {
+			var _p1 = _p0;
+			var _p4 = _p1._0;
+			var _p3 = _p1._1;
+			if (_elm_lang$core$Native_Utils.eq(_p4, model.row) && _elm_lang$core$Native_Utils.eq(_p3, model.col)) {
+				return model;
+			} else {
+				var code_ = A2(_elm_lang$core$Basics_ops['%'], model.code * 252533, 33554393);
+				var _p2 = (_elm_lang$core$Native_Utils.cmp(model.row, 1) > 0) ? {ctor: '_Tuple2', _0: model.row - 1, _1: model.col + 1} : {ctor: '_Tuple2', _0: model.col + 1, _1: 1};
+				var row_ = _p2._0;
+				var col_ = _p2._1;
+				var _v1 = {ctor: '_Tuple2', _0: _p4, _1: _p3},
+					_v2 = {code: code_, row: row_, col: col_};
+				_p0 = _v1;
+				model = _v2;
+				continue search;
+			}
+		}
+	});
+var _user$project$Y15D25$parse = function (input) {
+	var numbers = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$String$toInt,
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Maybe$withDefault('1'),
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Maybe$Just('1'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just('1'),
+						_1: {ctor: '[]'}
+					}
+				},
+				_elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.submatches;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_lang$core$Regex$regex('code at row (\\d+), column (\\d+)'),
+							input))))));
+	var _p5 = function () {
+		var _p6 = numbers;
+		if (((((_p6.ctor === '::') && (_p6._0.ctor === 'Ok')) && (_p6._1.ctor === '::')) && (_p6._1._0.ctor === 'Ok')) && (_p6._1._1.ctor === '[]')) {
+			return {ctor: '_Tuple2', _0: _p6._0._0, _1: _p6._1._0._0};
+		} else {
+			return {ctor: '_Tuple2', _0: 1, _1: 1};
+		}
+	}();
+	var row = _p5._0;
+	var col = _p5._1;
+	return {ctor: '_Tuple2', _0: row, _1: col};
+};
+var _user$project$Y15D25$answer = function (input) {
+	var target = _user$project$Y15D25$parse(input);
+	var model = A2(_user$project$Y15D25$search, target, _user$project$Y15D25$start);
+	return _elm_lang$core$Basics$toString(model.code);
+};
+var _user$project$Y15D25$Model = F3(
+	function (a, b, c) {
+		return {code: a, row: b, col: c};
+	});
+
+var _user$project$Y15$answer = F3(
+	function (day, part, input) {
+		var _p0 = day;
+		switch (_p0) {
+			case 1:
+				return A2(_user$project$Y15D01$answer, part, input);
+			case 2:
+				return A2(_user$project$Y15D02$answer, part, input);
+			case 3:
+				return A2(_user$project$Y15D03$answer, part, input);
+			case 4:
+				return A2(_user$project$Y15D04$answer, part, input);
+			case 5:
+				return A2(_user$project$Y15D05$answer, part, input);
+			case 6:
+				return A2(_user$project$Y15D06$answer, part, input);
+			case 7:
+				return A2(_user$project$Y15D07$answer, part, input);
+			case 8:
+				return A2(_user$project$Y15D08$answer, part, input);
+			case 9:
+				return A2(_user$project$Y15D09$answer, part, input);
+			case 10:
+				return _user$project$Y15D10$answers(input);
+			case 11:
+				return _user$project$Y15D11$answers(input);
+			case 12:
+				return _user$project$Y15D12$answers(input);
+			case 13:
+				return _user$project$Y15D13$answers(input);
+			case 14:
+				return _user$project$Y15D14$answers(input);
+			case 15:
+				return _user$project$Y15D15$answers(input);
+			case 16:
+				return _user$project$Y15D16$answers(input);
+			case 17:
+				return _user$project$Y15D17$answers(input);
+			case 18:
+				return _user$project$Y15D18$answers(input);
+			case 19:
+				return _user$project$Y15D19$answers(input);
+			case 20:
+				return _user$project$Y15D20$answers(input);
+			case 21:
+				return _user$project$Y15D21$answers(input);
+			case 22:
+				return _user$project$Y15D22$answers(input);
+			case 23:
+				return _user$project$Y15D23$answers(input);
+			case 24:
+				return _user$project$Y15D24$answers(input);
+			case 25:
+				return _user$project$Y15D25$answer(input);
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'year 2015, day ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						': not available'));
+		}
+	});
+
+var _user$project$Y16D01$blocks = function (model) {
+	return _elm_lang$core$Basics$abs(model.p.x) + _elm_lang$core$Basics$abs(model.p.y);
+};
+var _user$project$Y16D01$Step = F2(
+	function (a, b) {
+		return {r: a, n: b};
+	});
+var _user$project$Y16D01$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _user$project$Y16D01$origin = A2(_user$project$Y16D01$Position, 0, 0);
+var _user$project$Y16D01$Model = F2(
+	function (a, b) {
+		return {d: a, p: b};
+	});
+var _user$project$Y16D01$None = {ctor: 'None'};
+var _user$project$Y16D01$Right = {ctor: 'Right'};
+var _user$project$Y16D01$Left = {ctor: 'Left'};
+var _user$project$Y16D01$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (m) {
+			var _p0 = m;
+			if (((((_p0.ctor === '::') && (_p0._0.ctor === 'Just')) && (_p0._1.ctor === '::')) && (_p0._1._0.ctor === 'Just')) && (_p0._1._1.ctor === '[]')) {
+				var n = A2(
+					_elm_lang$core$Result$withDefault,
+					1,
+					_elm_lang$core$String$toInt(_p0._1._0._0));
+				var r = _elm_lang$core$Native_Utils.eq(_p0._0._0, 'R') ? _user$project$Y16D01$Right : _user$project$Y16D01$Left;
+				return A2(_user$project$Y16D01$Step, r, n);
+			} else {
+				return A2(_user$project$Y16D01$Step, _user$project$Y16D01$Right, 1);
+			}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([RL])([1-9][0-9]*)'),
+				input)));
+};
+var _user$project$Y16D01$West = {ctor: 'West'};
+var _user$project$Y16D01$South = {ctor: 'South'};
+var _user$project$Y16D01$East = {ctor: 'East'};
+var _user$project$Y16D01$North = {ctor: 'North'};
+var _user$project$Y16D01$init = A2(_user$project$Y16D01$Model, _user$project$Y16D01$North, _user$project$Y16D01$origin);
+var _user$project$Y16D01$update = F2(
+	function (step, model) {
+		var p = model.p;
+		var d = model.d;
+		var _p1 = step.r;
+		switch (_p1.ctor) {
+			case 'Right':
+				var _p2 = d;
+				switch (_p2.ctor) {
+					case 'North':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n}));
+					case 'East':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n}));
+					case 'South':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n}));
+					default:
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n}));
+				}
+			case 'Left':
+				var _p3 = model.d;
+				switch (_p3.ctor) {
+					case 'North':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n}));
+					case 'East':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n}));
+					case 'South':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n}));
+					default:
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n}));
+				}
+			default:
+				var _p4 = model.d;
+				switch (_p4.ctor) {
+					case 'North':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$North,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y + step.n}));
+					case 'East':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$East,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x + step.n}));
+					case 'South':
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$South,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{y: p.y - step.n}));
+					default:
+						return A2(
+							_user$project$Y16D01$Model,
+							_user$project$Y16D01$West,
+							_elm_lang$core$Native_Utils.update(
+								p,
+								{x: p.x - step.n}));
+				}
+		}
+	});
+var _user$project$Y16D01$updates = F2(
+	function (steps, model) {
+		updates:
+		while (true) {
+			var _p5 = steps;
+			if (_p5.ctor === '::') {
+				var _v6 = _p5._1,
+					_v7 = A2(_user$project$Y16D01$update, _p5._0, model);
+				steps = _v6;
+				model = _v7;
+				continue updates;
+			} else {
+				return model;
+			}
+		}
+	});
+var _user$project$Y16D01$revisits = F3(
+	function (steps, visits, model) {
+		revisits:
+		while (true) {
+			var _p6 = steps;
+			if (_p6.ctor === '::') {
+				var _p8 = _p6._0;
+				var _p7 = _p6._1;
+				var newModel = A2(
+					_user$project$Y16D01$update,
+					_elm_lang$core$Native_Utils.update(
+						_p8,
+						{n: 1}),
+					model);
+				if (A2(_elm_lang$core$List$member, newModel.p, visits)) {
+					return newModel;
+				} else {
+					var newVisits = {ctor: '::', _0: newModel.p, _1: visits};
+					if (_elm_lang$core$Native_Utils.cmp(_p8.n, 1) < 1) {
+						var _v9 = _p7,
+							_v10 = newVisits,
+							_v11 = newModel;
+						steps = _v9;
+						visits = _v10;
+						model = _v11;
+						continue revisits;
+					} else {
+						var _v12 = {
+							ctor: '::',
+							_0: A2(_user$project$Y16D01$Step, _user$project$Y16D01$None, _p8.n - 1),
+							_1: _p7
+						},
+							_v13 = newVisits,
+							_v14 = newModel;
+						steps = _v12;
+						visits = _v13;
+						model = _v14;
+						continue revisits;
+					}
+				}
+			} else {
+				return model;
+			}
+		}
+	});
+var _user$project$Y16D01$answer = F2(
+	function (part, input) {
+		var steps = _user$project$Y16D01$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y16D01$blocks(
+				A2(_user$project$Y16D01$updates, steps, _user$project$Y16D01$init))) : _elm_lang$core$Basics$toString(
+			_user$project$Y16D01$blocks(
+				A3(
+					_user$project$Y16D01$revisits,
+					steps,
+					{ctor: '[]'},
+					_user$project$Y16D01$init)));
+	});
+
+var _user$project$Y16D02$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('([RLUD]+)'),
+			input));
+};
+var _user$project$Y16D02$init = _elm_lang$core$Native_Utils.chr('5');
+var _user$project$Y16D02$move2 = F2(
+	function (current, letter) {
+		var _p0 = current;
+		switch (_p0.valueOf()) {
+			case '1':
+				var _p1 = letter;
+				if (_p1.valueOf() === 'D') {
+					return _elm_lang$core$Native_Utils.chr('3');
+				} else {
+					return current;
+				}
+			case '2':
+				var _p2 = letter;
+				switch (_p2.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('3');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('6');
+					default:
+						return current;
+				}
+			case '3':
+				var _p3 = letter;
+				switch (_p3.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('4');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('2');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('1');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('7');
+					default:
+						return current;
+				}
+			case '4':
+				var _p4 = letter;
+				switch (_p4.valueOf()) {
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('3');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('8');
+					default:
+						return current;
+				}
+			case '5':
+				var _p5 = letter;
+				if (_p5.valueOf() === 'R') {
+					return _elm_lang$core$Native_Utils.chr('6');
+				} else {
+					return current;
+				}
+			case '6':
+				var _p6 = letter;
+				switch (_p6.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('7');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('5');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('2');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('A');
+					default:
+						return current;
+				}
+			case '7':
+				var _p7 = letter;
+				switch (_p7.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('8');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('6');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('3');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('B');
+					default:
+						return current;
+				}
+			case '8':
+				var _p8 = letter;
+				switch (_p8.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('9');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('7');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('4');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('C');
+					default:
+						return current;
+				}
+			case '9':
+				var _p9 = letter;
+				if (_p9.valueOf() === 'L') {
+					return _elm_lang$core$Native_Utils.chr('8');
+				} else {
+					return current;
+				}
+			case 'A':
+				var _p10 = letter;
+				switch (_p10.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('B');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('6');
+					default:
+						return current;
+				}
+			case 'B':
+				var _p11 = letter;
+				switch (_p11.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('C');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('A');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('7');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('D');
+					default:
+						return current;
+				}
+			case 'C':
+				var _p12 = letter;
+				switch (_p12.valueOf()) {
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('B');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('8');
+					default:
+						return current;
+				}
+			case 'D':
+				var _p13 = letter;
+				if (_p13.valueOf() === 'U') {
+					return _elm_lang$core$Native_Utils.chr('B');
+				} else {
+					return current;
+				}
+			default:
+				return current;
+		}
+	});
+var _user$project$Y16D02$move1 = F2(
+	function (current, letter) {
+		var _p14 = current;
+		switch (_p14.valueOf()) {
+			case '1':
+				var _p15 = letter;
+				switch (_p15.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('2');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('4');
+					default:
+						return current;
+				}
+			case '2':
+				var _p16 = letter;
+				switch (_p16.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('3');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('1');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('5');
+					default:
+						return current;
+				}
+			case '3':
+				var _p17 = letter;
+				switch (_p17.valueOf()) {
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('2');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('6');
+					default:
+						return current;
+				}
+			case '4':
+				var _p18 = letter;
+				switch (_p18.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('5');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('1');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('7');
+					default:
+						return current;
+				}
+			case '5':
+				var _p19 = letter;
+				switch (_p19.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('6');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('4');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('2');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('8');
+					default:
+						return current;
+				}
+			case '6':
+				var _p20 = letter;
+				switch (_p20.valueOf()) {
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('5');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('3');
+					case 'D':
+						return _elm_lang$core$Native_Utils.chr('9');
+					default:
+						return current;
+				}
+			case '7':
+				var _p21 = letter;
+				switch (_p21.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('8');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('4');
+					default:
+						return current;
+				}
+			case '8':
+				var _p22 = letter;
+				switch (_p22.valueOf()) {
+					case 'R':
+						return _elm_lang$core$Native_Utils.chr('9');
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('7');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('5');
+					default:
+						return current;
+				}
+			case '9':
+				var _p23 = letter;
+				switch (_p23.valueOf()) {
+					case 'L':
+						return _elm_lang$core$Native_Utils.chr('8');
+					case 'U':
+						return _elm_lang$core$Native_Utils.chr('6');
+					default:
+						return current;
+				}
+			default:
+				return current;
+		}
+	});
+var _user$project$Y16D02$follow = F3(
+	function (current, mover, instruction) {
+		follow:
+		while (true) {
+			var _p24 = _elm_lang$core$String$uncons(instruction);
+			if (_p24.ctor === 'Just') {
+				var button = A2(mover, current, _p24._0._0);
+				var _v25 = button,
+					_v26 = mover,
+					_v27 = _p24._0._1;
+				current = _v25;
+				mover = _v26;
+				instruction = _v27;
+				continue follow;
+			} else {
+				return current;
+			}
+		}
+	});
+var _user$project$Y16D02$translate = F4(
+	function (current, buttons, mover, instructions) {
+		translate:
+		while (true) {
+			var _p25 = instructions;
+			if (_p25.ctor === '::') {
+				var button = A3(_user$project$Y16D02$follow, current, mover, _p25._0);
+				var newButtons = {ctor: '::', _0: button, _1: buttons};
+				var _v29 = button,
+					_v30 = newButtons,
+					_v31 = mover,
+					_v32 = _p25._1;
+				current = _v29;
+				buttons = _v30;
+				mover = _v31;
+				instructions = _v32;
+				continue translate;
+			} else {
+				return _elm_lang$core$List$reverse(buttons);
+			}
+		}
+	});
+var _user$project$Y16D02$answer = F2(
+	function (part, input) {
+		var instructions = _user$project$Y16D02$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$String$fromList(
+			A4(
+				_user$project$Y16D02$translate,
+				_user$project$Y16D02$init,
+				{ctor: '[]'},
+				_user$project$Y16D02$move1,
+				instructions)) : _elm_lang$core$String$fromList(
+			A4(
+				_user$project$Y16D02$translate,
+				_user$project$Y16D02$init,
+				{ctor: '[]'},
+				_user$project$Y16D02$move2,
+				instructions));
+	});
+
+var _user$project$Y16D03$convertToInt = function (item) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(
+			A2(_elm_lang$core$Maybe$withDefault, '0', item)));
+};
+var _user$project$Y16D03$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$List$map(_user$project$Y16D03$convertToInt),
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(\\d+) +(\\d+) +(\\d+)'),
+				input)));
+};
+var _user$project$Y16D03$rearrange = F4(
+	function (a1, a2, a3, horizontals) {
+		rearrange:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$List$length(a1),
+				3) > -1) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: a1,
+						_1: {
+							ctor: '::',
+							_0: a2,
+							_1: {
+								ctor: '::',
+								_0: a3,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					A4(
+						_user$project$Y16D03$rearrange,
+						{ctor: '[]'},
+						{ctor: '[]'},
+						{ctor: '[]'},
+						horizontals));
+			} else {
+				var _p0 = horizontals;
+				if (_p0.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if ((((_p0._0.ctor === '::') && (_p0._0._1.ctor === '::')) && (_p0._0._1._1.ctor === '::')) && (_p0._0._1._1._1.ctor === '[]')) {
+						var b3 = {ctor: '::', _0: _p0._0._1._1._0, _1: a3};
+						var b2 = {ctor: '::', _0: _p0._0._1._0, _1: a2};
+						var b1 = {ctor: '::', _0: _p0._0._0, _1: a1};
+						var _v1 = b1,
+							_v2 = b2,
+							_v3 = b3,
+							_v4 = _p0._1;
+						a1 = _v1;
+						a2 = _v2;
+						a3 = _v3;
+						horizontals = _v4;
+						continue rearrange;
+					} else {
+						var _v5 = a1,
+							_v6 = a2,
+							_v7 = a3,
+							_v8 = _p0._1;
+						a1 = _v5;
+						a2 = _v6;
+						a3 = _v7;
+						horizontals = _v8;
+						continue rearrange;
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y16D03$ok = function (triangle) {
+	var _p1 = triangle;
+	if ((((_p1.ctor === '::') && (_p1._1.ctor === '::')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._1.ctor === '[]')) {
+		return (_elm_lang$core$Native_Utils.cmp(_p1._0 + _p1._1._0, _p1._1._1._0) > 0) ? 1 : 0;
+	} else {
+		return 0;
+	}
+};
+var _user$project$Y16D03$count = function (triangles) {
+	var _p2 = triangles;
+	if (_p2.ctor === '[]') {
+		return 0;
+	} else {
+		return _user$project$Y16D03$ok(_p2._0) + _user$project$Y16D03$count(_p2._1);
+	}
+};
+var _user$project$Y16D03$answer = F2(
+	function (part, input) {
+		var horizontals = _user$project$Y16D03$parse(input);
+		var verticals = A4(
+			_user$project$Y16D03$rearrange,
+			{ctor: '[]'},
+			{ctor: '[]'},
+			{ctor: '[]'},
+			horizontals);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y16D03$count(
+				A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, horizontals))) : _elm_lang$core$Basics$toString(
+			_user$project$Y16D03$count(
+				A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, verticals)));
+	});
+
+var _user$project$Y16D04$potentialRoom = function (room) {
+	var _p0 = room;
+	if (_p0.ctor === 'Just') {
+		var _p1 = _p0._0;
+		return (_elm_lang$core$Native_Utils.cmp(_p1.sector, 0) > 0) ? _elm_lang$core$Maybe$Just(_p1) : _elm_lang$core$Maybe$Nothing;
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Y16D04$decrypt = F3(
+	function (shift, accum, string) {
+		decrypt:
+		while (true) {
+			var _p2 = _elm_lang$core$String$uncons(string);
+			if (_p2.ctor === 'Just') {
+				var _p3 = _p2._0._0;
+				var newChar = _elm_lang$core$Native_Utils.eq(
+					_p3,
+					_elm_lang$core$Native_Utils.chr('-')) ? _elm_lang$core$Native_Utils.chr(' ') : _elm_lang$core$Char$fromCode(
+					97 + A2(
+						_elm_lang$core$Basics_ops['%'],
+						(_elm_lang$core$Char$toCode(_p3) + shift) - 97,
+						26));
+				var newAccum = A2(_elm_lang$core$String$cons, newChar, accum);
+				var _v2 = shift,
+					_v3 = newAccum,
+					_v4 = _p2._0._1;
+				shift = _v2;
+				accum = _v3;
+				string = _v4;
+				continue decrypt;
+			} else {
+				return _elm_lang$core$String$reverse(accum);
+			}
+		}
+	});
+var _user$project$Y16D04$northPole = function (room) {
+	var name = A3(_user$project$Y16D04$decrypt, room.sector, '', room.name);
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('northpole object'),
+		name);
+};
+var _user$project$Y16D04$insert = function (count) {
+	var _p4 = count;
+	if (_p4.ctor === 'Just') {
+		return _elm_lang$core$Maybe$Just(_p4._0 + 1);
+	} else {
+		return _elm_lang$core$Maybe$Just(1);
+	}
+};
+var _user$project$Y16D04$statCompare = F2(
+	function (_p6, _p5) {
+		var _p7 = _p6;
+		var _p10 = _p7._1;
+		var _p8 = _p5;
+		var _p9 = _p8._1;
+		return _elm_lang$core$Native_Utils.eq(_p10, _p9) ? A2(_elm_lang$core$Basics$compare, _p7._0, _p8._0) : A2(_elm_lang$core$Basics$compare, _p9, _p10);
+	});
+var _user$project$Y16D04$stats = F2(
+	function (name, dict) {
+		stats:
+		while (true) {
+			var _p11 = _elm_lang$core$String$uncons(name);
+			if (_p11.ctor === 'Just') {
+				var _p12 = _p11._0._0;
+				var newDict = _elm_lang$core$Native_Utils.eq(
+					_p12,
+					_elm_lang$core$Native_Utils.chr('-')) ? dict : A3(_elm_lang$core$Dict$update, _p12, _user$project$Y16D04$insert, dict);
+				var _v9 = _p11._0._1,
+					_v10 = newDict;
+				name = _v9;
+				dict = _v10;
+				continue stats;
+			} else {
+				return dict;
+			}
+		}
+	});
+var _user$project$Y16D04$checksum = function (room) {
+	var dict = A2(_user$project$Y16D04$stats, room.name, _elm_lang$core$Dict$empty);
+	var list = A2(
+		_elm_lang$core$List$take,
+		5,
+		A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Y16D04$statCompare,
+			_elm_lang$core$Dict$toList(dict)));
+	return _elm_lang$core$String$fromList(
+		A2(_elm_lang$core$List$map, _elm_lang$core$Tuple$first, list));
+};
+var _user$project$Y16D04$realRoom = function (room) {
+	return _elm_lang$core$Native_Utils.eq(
+		room.checksum,
+		_user$project$Y16D04$checksum(room));
+};
+var _user$project$Y16D04$Room = F3(
+	function (a, b, c) {
+		return {name: a, sector: b, checksum: c};
+	});
+var _user$project$Y16D04$convertToMaybeRoom = function (matches) {
+	var _p13 = matches;
+	if (((((((_p13.ctor === '::') && (_p13._0.ctor === 'Just')) && (_p13._1.ctor === '::')) && (_p13._1._0.ctor === 'Just')) && (_p13._1._1.ctor === '::')) && (_p13._1._1._0.ctor === 'Just')) && (_p13._1._1._1.ctor === '[]')) {
+		return _elm_lang$core$Maybe$Just(
+			A3(
+				_user$project$Y16D04$Room,
+				_p13._0._0,
+				A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p13._1._0._0)),
+				_p13._1._1._0._0));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _user$project$Y16D04$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_user$project$Y16D04$potentialRoom,
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D04$convertToMaybeRoom,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('([-a-z]+)-([1-9]\\d*)\\[([a-z]{5})\\]'),
+					input))));
+};
+var _user$project$Y16D04$answer = F2(
+	function (part, input) {
+		var rooms = _user$project$Y16D04$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.sector;
+					},
+					A2(_elm_lang$core$List$filter, _user$project$Y16D04$realRoom, rooms)))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.sector;
+					},
+					A2(_elm_lang$core$List$filter, _user$project$Y16D04$northPole, rooms))));
+	});
+
+var _user$project$Y16D05$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'error',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[a-z]+'),
+					input))));
+};
+var _user$project$Y16D05$zeros = '00000';
+var _user$project$Y16D05$zLen = _elm_lang$core$String$length(_user$project$Y16D05$zeros);
+var _user$project$Y16D05$password2 = F3(
+	function (doorId, index, accum) {
+		password2:
+		while (true) {
+			if (!A2(
+				_elm_lang$core$List$member,
+				_elm_lang$core$Maybe$Nothing,
+				_elm_lang$core$Array$toList(accum))) {
+				return A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$Maybe$withDefault('-'),
+						_elm_lang$core$Array$toList(accum)));
+			} else {
+				var newIndex = index + 1;
+				var digest = _sanichi$elm_md5$MD5$hex(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						doorId,
+						_elm_lang$core$Basics$toString(index)));
+				var newAccum = function () {
+					if (A2(_elm_lang$core$String$startsWith, _user$project$Y16D05$zeros, digest)) {
+						var rest = A2(_elm_lang$core$String$dropLeft, _user$project$Y16D05$zLen, digest);
+						var $char = function () {
+							var _p0 = _elm_lang$core$String$uncons(rest);
+							if (_p0.ctor === 'Just') {
+								return _p0._0._0;
+							} else {
+								return _elm_lang$core$Native_Utils.chr('-');
+							}
+						}();
+						var index = A2(
+							_elm_lang$core$Result$withDefault,
+							-1,
+							_elm_lang$core$String$toInt(
+								_elm_lang$core$String$fromChar($char)));
+						if ((_elm_lang$core$Native_Utils.cmp(index, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(index, 8) < 0)) {
+							var _p1 = A2(_elm_lang$core$Array$get, index, accum);
+							if ((_p1.ctor === 'Just') && (_p1._0.ctor === 'Nothing')) {
+								var item = function () {
+									var _p2 = _elm_lang$core$String$uncons(
+										A2(_elm_lang$core$String$dropLeft, 1, rest));
+									if (_p2.ctor === 'Just') {
+										return _elm_lang$core$Maybe$Just(
+											_elm_lang$core$String$fromChar(_p2._0._0));
+									} else {
+										return _elm_lang$core$Maybe$Just('-');
+									}
+								}();
+								return A3(_elm_lang$core$Array$set, index, item, accum);
+							} else {
+								return accum;
+							}
+						} else {
+							return accum;
+						}
+					} else {
+						return accum;
+					}
+				}();
+				var _v3 = doorId,
+					_v4 = newIndex,
+					_v5 = newAccum;
+				doorId = _v3;
+				index = _v4;
+				accum = _v5;
+				continue password2;
+			}
+		}
+	});
+var _user$project$Y16D05$password1 = F3(
+	function (doorId, index, accum) {
+		password1:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$String$length(accum),
+				8) > -1) {
+				return _elm_lang$core$String$reverse(accum);
+			} else {
+				var newIndex = index + 1;
+				var digest = _sanichi$elm_md5$MD5$hex(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						doorId,
+						_elm_lang$core$Basics$toString(index)));
+				var newAccum = function () {
+					if (A2(_elm_lang$core$String$startsWith, _user$project$Y16D05$zeros, digest)) {
+						var _p3 = _elm_lang$core$String$uncons(
+							A2(_elm_lang$core$String$dropLeft, _user$project$Y16D05$zLen, digest));
+						if (_p3.ctor === 'Just') {
+							return A2(_elm_lang$core$String$cons, _p3._0._0, accum);
+						} else {
+							return A2(
+								_elm_lang$core$String$cons,
+								_elm_lang$core$Native_Utils.chr('-'),
+								accum);
+						}
+					} else {
+						return accum;
+					}
+				}();
+				var _v7 = doorId,
+					_v8 = newIndex,
+					_v9 = newAccum;
+				doorId = _v7;
+				index = _v8;
+				accum = _v9;
+				continue password1;
+			}
+		}
+	});
+var _user$project$Y16D05$answer = F2(
+	function (part, input) {
+		var doorId = _user$project$Y16D05$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A3(_user$project$Y16D05$password1, doorId, 0, '') : A3(
+			_user$project$Y16D05$password2,
+			doorId,
+			0,
+			A2(_elm_lang$core$Array$repeat, 8, _elm_lang$core$Maybe$Nothing));
+	});
+
+var _user$project$Y16D06$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[a-z]+'),
+			input));
+};
+var _user$project$Y16D06$addToDicts = F3(
+	function (message, index, dicts) {
+		addToDicts:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.eq(message, '')) {
+				return dicts;
+			} else {
+				var maybeDict = A2(_elm_lang$core$Array$get, index, dicts);
+				var _p0 = A2(
+					_elm_lang$core$Maybe$withDefault,
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.chr('-'),
+						_1: ''
+					},
+					_elm_lang$core$String$uncons(message));
+				var $char = _p0._0;
+				var rest = _p0._1;
+				var newDicts = function () {
+					var _p1 = maybeDict;
+					if (_p1.ctor === 'Nothing') {
+						return dicts;
+					} else {
+						var _p3 = _p1._0;
+						var newDict = function () {
+							var _p2 = A2(_elm_lang$core$Dict$get, $char, _p3);
+							if (_p2.ctor === 'Nothing') {
+								return A3(_elm_lang$core$Dict$insert, $char, 1, _p3);
+							} else {
+								return A3(_elm_lang$core$Dict$insert, $char, _p2._0 + 1, _p3);
+							}
+						}();
+						return A3(_elm_lang$core$Array$set, index, newDict, dicts);
+					}
+				}();
+				var _v2 = rest,
+					_v3 = index + 1,
+					_v4 = newDicts;
+				message = _v2;
+				index = _v3;
+				dicts = _v4;
+				continue addToDicts;
+			}
+		}
+	});
+var _user$project$Y16D06$choose = F2(
+	function (frequency, sortedList) {
+		var _p4 = frequency;
+		if (_p4.ctor === 'Most') {
+			return _elm_lang$core$List$reverse(sortedList);
+		} else {
+			return sortedList;
+		}
+	});
+var _user$project$Y16D06$pick = F2(
+	function (frequency, dict) {
+		return _elm_lang$core$String$fromChar(
+			_elm_lang$core$Tuple$first(
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.chr('-'),
+						_1: 0
+					},
+					_elm_lang$core$List$head(
+						A2(
+							_user$project$Y16D06$choose,
+							frequency,
+							A2(
+								_elm_lang$core$List$sortBy,
+								_elm_lang$core$Tuple$second,
+								_elm_lang$core$Dict$toList(dict)))))));
+	});
+var _user$project$Y16D06$decrypt_ = F3(
+	function (messages, frequency, dicts) {
+		decrypt_:
+		while (true) {
+			var _p5 = messages;
+			if (_p5.ctor === '[]') {
+				return A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$Y16D06$pick(frequency),
+						_elm_lang$core$Array$toList(dicts)));
+			} else {
+				var newDicts = A3(_user$project$Y16D06$addToDicts, _p5._0, 0, dicts);
+				var _v7 = _p5._1,
+					_v8 = frequency,
+					_v9 = newDicts;
+				messages = _v7;
+				frequency = _v8;
+				dicts = _v9;
+				continue decrypt_;
+			}
+		}
+	});
+var _user$project$Y16D06$decrypt = F2(
+	function (messages, frequency) {
+		var width = _elm_lang$core$String$length(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				'',
+				_elm_lang$core$List$head(messages)));
+		var dicts = A2(_elm_lang$core$Array$repeat, width, _elm_lang$core$Dict$empty);
+		return A3(_user$project$Y16D06$decrypt_, messages, frequency, dicts);
+	});
+var _user$project$Y16D06$Least = {ctor: 'Least'};
+var _user$project$Y16D06$Most = {ctor: 'Most'};
+var _user$project$Y16D06$answer = F2(
+	function (part, input) {
+		var messages = _user$project$Y16D06$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y16D06$decrypt, messages, _user$project$Y16D06$Most) : A2(_user$project$Y16D06$decrypt, messages, _user$project$Y16D06$Least);
+	});
+
+var _user$project$Y16D07$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.match;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[a-z\\[\\]]+'),
+			input));
+};
+var _user$project$Y16D07$matchInterior = _elm_lang$core$Regex$regex('\\[([a-z]+)\\]');
+var _user$project$Y16D07$matchExterior = _elm_lang$core$Regex$regex('(?:^|\\])([a-z]+)(?:\\[|$)');
+var _user$project$Y16D07$fragments = F2(
+	function (matcher, address) {
+		return A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Maybe$withDefault(''),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$withDefault(_elm_lang$core$Maybe$Nothing),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$List$head,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.submatches;
+						},
+						A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, matcher, address)))));
+	});
+var _user$project$Y16D07$ssl = function (address) {
+	var abaList = function (fragment) {
+		return A2(
+			_elm_lang$core$List$filter,
+			function (a) {
+				return !A2(
+					_elm_lang$core$Regex$contains,
+					_elm_lang$core$Regex$regex('^(.)\\1\\1$'),
+					a);
+			},
+			A2(
+				_elm_lang$core$List$filter,
+				function (a) {
+					return A2(
+						_elm_lang$core$Regex$contains,
+						_elm_lang$core$Regex$regex('^(.).\\1$'),
+						a);
+				},
+				A2(
+					_elm_lang$core$List$filter,
+					function (a) {
+						return _elm_lang$core$Native_Utils.eq(
+							_elm_lang$core$String$length(a),
+							3);
+					},
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$String$fromList,
+						A3(
+							_elm_lang$core$List$scanl,
+							F2(
+								function (a, b) {
+									return {
+										ctor: '::',
+										_0: a,
+										_1: A2(_elm_lang$core$List$take, 2, b)
+									};
+								}),
+							{ctor: '[]'},
+							_elm_lang$core$String$toList(fragment))))));
+	};
+	var abas = _elm_lang$core$List$concat(
+		A2(
+			_elm_lang$core$List$map,
+			abaList,
+			A2(_user$project$Y16D07$fragments, _user$project$Y16D07$matchExterior, address)));
+	if (_elm_lang$core$List$isEmpty(abas)) {
+		return false;
+	} else {
+		var abaToBab = function (aba) {
+			var _p0 = _elm_lang$core$String$toList(aba);
+			if ((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '[]')) {
+				var _p1 = _p0._1._0;
+				return _elm_lang$core$String$fromList(
+					{
+						ctor: '::',
+						_0: _p1,
+						_1: {
+							ctor: '::',
+							_0: _p0._0,
+							_1: {
+								ctor: '::',
+								_0: _p1,
+								_1: {ctor: '[]'}
+							}
+						}
+					});
+			} else {
+				return '---';
+			}
+		};
+		var babs = A2(_elm_lang$core$List$map, abaToBab, abas);
+		var hasBab = function (fragment) {
+			return A2(
+				_elm_lang$core$List$any,
+				function (b) {
+					return A2(_elm_lang$core$String$contains, b, fragment);
+				},
+				babs);
+		};
+		return A2(
+			_elm_lang$core$List$any,
+			hasBab,
+			A2(_user$project$Y16D07$fragments, _user$project$Y16D07$matchInterior, address));
+	}
+};
+var _user$project$Y16D07$tls = function (address) {
+	var hasAbba = function (fragment) {
+		var abbas = A2(
+			_elm_lang$core$List$filter,
+			function (s) {
+				return !A2(
+					_elm_lang$core$Regex$contains,
+					_elm_lang$core$Regex$regex('^(.)\\1\\1\\1$'),
+					s);
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('(.)(.)\\2\\1'),
+					fragment)));
+		return _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$List$length(abbas),
+			0) > 0;
+	};
+	var exteriors = A2(
+		_elm_lang$core$List$any,
+		hasAbba,
+		A2(_user$project$Y16D07$fragments, _user$project$Y16D07$matchExterior, address));
+	var interiors = A2(
+		_elm_lang$core$List$any,
+		hasAbba,
+		A2(_user$project$Y16D07$fragments, _user$project$Y16D07$matchInterior, address));
+	return exteriors && (!interiors);
+};
+var _user$project$Y16D07$answer = F2(
+	function (part, input) {
+		var addresses = _user$project$Y16D07$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$length(
+				A2(_elm_lang$core$List$filter, _user$project$Y16D07$tls, addresses))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$length(
+				A2(_elm_lang$core$List$filter, _user$project$Y16D07$ssl, addresses)));
+	});
+
+var _user$project$Y16D08$initialScreen = A2(
+	_elm_lang$core$Array$repeat,
+	6,
+	A2(_elm_lang$core$Array$repeat, 50, false));
+var _user$project$Y16D08$display = function (screen) {
+	var boolToString = function (bool) {
+		return bool ? '#' : '.';
+	};
+	var rowToString = function (row) {
+		return _elm_lang$core$String$concat(
+			_elm_lang$core$Array$toList(
+				A2(_elm_lang$core$Array$map, boolToString, row)));
+	};
+	return A2(
+		_elm_lang$core$String$join,
+		'|',
+		A2(
+			_elm_lang$core$List$map,
+			rowToString,
+			_elm_lang$core$Array$toList(screen)));
+};
+var _user$project$Y16D08$count = function (screen) {
+	var count = function (row) {
+		return _elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filter,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$Array$toList(row)));
+	};
+	return _elm_lang$core$Basics$toString(
+		_elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				count,
+				_elm_lang$core$Array$toList(screen))));
+};
+var _user$project$Y16D08$flipRow = F2(
+	function (screen, y) {
+		return A2(
+			_elm_lang$core$Array$map,
+			_elm_lang$core$Maybe$withDefault(false),
+			A2(
+				_elm_lang$core$Array$map,
+				_elm_lang$core$Array$get(y),
+				screen));
+	});
+var _user$project$Y16D08$flipScreen = function (screen) {
+	var newRowLen = _elm_lang$core$Array$length(
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			_elm_lang$core$Array$empty,
+			A2(_elm_lang$core$Array$get, 0, screen)));
+	return _elm_lang$core$Array$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D08$flipRow(screen),
+			A2(_elm_lang$core$List$range, 0, newRowLen - 1)));
+};
+var _user$project$Y16D08$rotateRow = F3(
+	function (y, r, screen) {
+		var oldRow = _elm_lang$core$Array$toList(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				_elm_lang$core$Array$empty,
+				A2(_elm_lang$core$Array$get, y, screen)));
+		var len = _elm_lang$core$List$length(oldRow);
+		var x = A2(_elm_lang$core$Basics_ops['%'], r, len);
+		var newRight = A2(_elm_lang$core$List$take, len - x, oldRow);
+		var newLeft = A2(_elm_lang$core$List$drop, len - x, oldRow);
+		var newRow = _elm_lang$core$Array$fromList(
+			A2(_elm_lang$core$Basics_ops['++'], newLeft, newRight));
+		return A3(_elm_lang$core$Array$set, y, newRow, screen);
+	});
+var _user$project$Y16D08$rotateCol = F3(
+	function (x, r, screen) {
+		return _user$project$Y16D08$flipScreen(
+			A3(
+				_user$project$Y16D08$rotateRow,
+				x,
+				r,
+				_user$project$Y16D08$flipScreen(screen)));
+	});
+var _user$project$Y16D08$rect = F3(
+	function (x, y, screen) {
+		rect:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(y, 0) < 1) {
+				return screen;
+			} else {
+				var newRow = _elm_lang$core$Array$fromList(
+					A2(
+						F2(
+							function (x, y) {
+								return A2(_elm_lang$core$Basics_ops['++'], x, y);
+							}),
+						A2(_elm_lang$core$List$repeat, x, true),
+						A2(
+							_elm_lang$core$List$drop,
+							x,
+							_elm_lang$core$Array$toList(
+								A2(
+									_elm_lang$core$Maybe$withDefault,
+									_elm_lang$core$Array$empty,
+									A2(_elm_lang$core$Array$get, y - 1, screen))))));
+				var newScreen = A3(_elm_lang$core$Array$set, y - 1, newRow, screen);
+				var _v0 = x,
+					_v1 = y - 1,
+					_v2 = newScreen;
+				x = _v0;
+				y = _v1;
+				screen = _v2;
+				continue rect;
+			}
+		}
+	});
+var _user$project$Y16D08$step = F2(
+	function (instruction, screen) {
+		var _p0 = instruction;
+		switch (_p0.ctor) {
+			case 'Rect':
+				return A3(_user$project$Y16D08$rect, _p0._0, _p0._1, screen);
+			case 'Row':
+				return A3(_user$project$Y16D08$rotateRow, _p0._0, _p0._1, screen);
+			case 'Col':
+				return A3(_user$project$Y16D08$rotateCol, _p0._0, _p0._1, screen);
+			default:
+				return screen;
+		}
+	});
+var _user$project$Y16D08$decode = F2(
+	function (instructions, screen) {
+		decode:
+		while (true) {
+			var _p1 = instructions;
+			if (_p1.ctor === '[]') {
+				return screen;
+			} else {
+				var _v5 = _p1._1,
+					_v6 = A2(_user$project$Y16D08$step, _p1._0, screen);
+				instructions = _v5;
+				screen = _v6;
+				continue decode;
+			}
+		}
+	});
+var _user$project$Y16D08$Invalid = {ctor: 'Invalid'};
+var _user$project$Y16D08$Col = F2(
+	function (a, b) {
+		return {ctor: 'Col', _0: a, _1: b};
+	});
+var _user$project$Y16D08$Row = F2(
+	function (a, b) {
+		return {ctor: 'Row', _0: a, _1: b};
+	});
+var _user$project$Y16D08$Rect = F2(
+	function (a, b) {
+		return {ctor: 'Rect', _0: a, _1: b};
+	});
+var _user$project$Y16D08$parseInstruction = function (submatches) {
+	var _p2 = function () {
+		var _p3 = submatches;
+		if (((((((_p3.ctor === '::') && (_p3._0.ctor === 'Just')) && (_p3._1.ctor === '::')) && (_p3._1._0.ctor === 'Just')) && (_p3._1._1.ctor === '::')) && (_p3._1._1._0.ctor === 'Just')) && (_p3._1._1._1.ctor === '[]')) {
+			return {
+				ctor: '_Tuple3',
+				_0: _p3._0._0,
+				_1: A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p3._1._0._0)),
+				_2: A2(
+					_elm_lang$core$Result$withDefault,
+					0,
+					_elm_lang$core$String$toInt(_p3._1._1._0._0))
+			};
+		} else {
+			return {ctor: '_Tuple3', _0: '', _1: 0, _2: 0};
+		}
+	}();
+	var string = _p2._0;
+	var i = _p2._1;
+	var j = _p2._2;
+	var _p4 = string;
+	switch (_p4) {
+		case 'rect ':
+			return A2(_user$project$Y16D08$Rect, i, j);
+		case 'rotate row y=':
+			return A2(_user$project$Y16D08$Row, i, j);
+		case 'rotate column x=':
+			return A2(_user$project$Y16D08$Col, i, j);
+		default:
+			return _user$project$Y16D08$Invalid;
+	}
+};
+var _user$project$Y16D08$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y16D08$parseInstruction,
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('(rect |rotate (?:row y|column x)=)(\\d+)(?:x| by )(\\d+)'),
+				input)));
+};
+var _user$project$Y16D08$answer = F2(
+	function (part, input) {
+		var instructions = _user$project$Y16D08$parse(input);
+		var screen = A2(_user$project$Y16D08$decode, instructions, _user$project$Y16D08$initialScreen);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y16D08$count(screen) : _user$project$Y16D08$display(screen);
+	});
+
+var _user$project$Y16D09$parse = function (input) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\s'),
+		function (_p0) {
+			return '';
+		},
+		input);
+};
+var _user$project$Y16D09$toInt = function (string) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(string));
+};
+var _user$project$Y16D09$matches = function (string) {
+	var m = _elm_lang$core$List$head(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.submatches;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex('^([A-Z]*)\\((\\d+)x(\\d+)\\)(.+)$'),
+				string)));
+	var _p1 = m;
+	if ((((((((((_p1.ctor === 'Just') && (_p1._0.ctor === '::')) && (_p1._0._0.ctor === 'Just')) && (_p1._0._1.ctor === '::')) && (_p1._0._1._0.ctor === 'Just')) && (_p1._0._1._1.ctor === '::')) && (_p1._0._1._1._0.ctor === 'Just')) && (_p1._0._1._1._1.ctor === '::')) && (_p1._0._1._1._1._0.ctor === 'Just')) && (_p1._0._1._1._1._1.ctor === '[]')) {
+		return {
+			ctor: '_Tuple4',
+			_0: _p1._0._0._0,
+			_1: _user$project$Y16D09$toInt(_p1._0._1._0._0),
+			_2: _user$project$Y16D09$toInt(_p1._0._1._1._0._0),
+			_3: _p1._0._1._1._1._0._0
+		};
+	} else {
+		return {ctor: '_Tuple4', _0: '', _1: 0, _2: 0, _3: ''};
+	}
+};
+var _user$project$Y16D09$decompressedLength = function (string) {
+	var _p2 = _user$project$Y16D09$matches(string);
+	var caps = _p2._0;
+	var len = _p2._1;
+	var num = _p2._2;
+	var rest = _p2._3;
+	if (_elm_lang$core$Native_Utils.eq(rest, '')) {
+		return _elm_lang$core$String$length(string);
+	} else {
+		var p3 = _user$project$Y16D09$decompressedLength(
+			A2(_elm_lang$core$String$dropLeft, len, rest));
+		var p2 = _user$project$Y16D09$decompressedLength(
+			A2(
+				_elm_lang$core$String$repeat,
+				num,
+				A2(_elm_lang$core$String$left, len, rest)));
+		var p1 = _elm_lang$core$String$length(caps);
+		return (p1 + p2) + p3;
+	}
+};
+var _user$project$Y16D09$decompress = function (string) {
+	var _p3 = _user$project$Y16D09$matches(string);
+	var caps = _p3._0;
+	var len = _p3._1;
+	var num = _p3._2;
+	var rest = _p3._3;
+	if (_elm_lang$core$Native_Utils.eq(rest, '')) {
+		return string;
+	} else {
+		var p3 = _user$project$Y16D09$decompress(
+			A2(_elm_lang$core$String$dropLeft, len, rest));
+		var p2 = A2(
+			_elm_lang$core$String$repeat,
+			num,
+			A2(_elm_lang$core$String$left, len, rest));
+		var p1 = caps;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			p1,
+			A2(_elm_lang$core$Basics_ops['++'], p2, p3));
+	}
+};
+var _user$project$Y16D09$answer = F2(
+	function (part, input) {
+		var file = _user$project$Y16D09$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$String$length(
+				_user$project$Y16D09$decompress(file))) : _elm_lang$core$Basics$toString(
+			_user$project$Y16D09$decompressedLength(file));
+	});
+
+var _user$project$Y16D10$parse = function (input) {
+	var specific = 'value (\\d+) goes to ((?:bot|output) \\d+)';
+	var highLow = '(bot \\d+) gives low to ((?:bot|output) \\d+) and high to ((?:bot|output) \\d+)';
+	var pattern = A2(
+		_elm_lang$core$Basics_ops['++'],
+		highLow,
+		A2(_elm_lang$core$Basics_ops['++'], '|', specific));
+	return A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.submatches;
+		},
+		A3(
+			_elm_lang$core$Regex$find,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(pattern),
+			input));
+};
+var _user$project$Y16D10$process = F2(
+	function (matches, state) {
+		process:
+		while (true) {
+			var _p0 = matches;
+			if (_p0.ctor === '[]') {
+				return state;
+			} else {
+				var _p8 = _p0._1;
+				var _p7 = _p0._0;
+				var _p1 = _p7;
+				_v1_2:
+				do {
+					if (_p1.ctor === '::') {
+						if (_p1._0.ctor === 'Just') {
+							if (((((((((_p1._1.ctor === '::') && (_p1._1._0.ctor === 'Just')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Just')) && (_p1._1._1._1.ctor === '::')) && (_p1._1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1._1.ctor === '::')) && (_p1._1._1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1._1._1.ctor === '[]')) {
+								var _p5 = _p1._1._0._0;
+								var _p4 = _p1._1._1._0._0;
+								var chips = A2(
+									_elm_lang$core$Maybe$withDefault,
+									{ctor: '[]'},
+									A2(_elm_lang$core$Dict$get, _p1._0._0, state));
+								var newState = function () {
+									var _p2 = chips;
+									if (((_p2.ctor === '::') && (_p2._1.ctor === '::')) && (_p2._1._1.ctor === '[]')) {
+										var highChips = A2(
+											_elm_lang$core$Maybe$withDefault,
+											{ctor: '[]'},
+											A2(_elm_lang$core$Dict$get, _p4, state));
+										var lowChips = A2(
+											_elm_lang$core$Maybe$withDefault,
+											{ctor: '[]'},
+											A2(_elm_lang$core$Dict$get, _p5, state));
+										return A3(
+											_elm_lang$core$Dict$insert,
+											_p4,
+											_elm_lang$core$List$sort(
+												{ctor: '::', _0: _p2._1._0, _1: highChips}),
+											A3(
+												_elm_lang$core$Dict$insert,
+												_p5,
+												_elm_lang$core$List$sort(
+													{ctor: '::', _0: _p2._0, _1: lowChips}),
+												state));
+									} else {
+										return state;
+									}
+								}();
+								var newMatches = function () {
+									var _p3 = chips;
+									if (((_p3.ctor === '::') && (_p3._1.ctor === '::')) && (_p3._1._1.ctor === '[]')) {
+										return _p8;
+									} else {
+										return _elm_lang$core$List$reverse(
+											A2(
+												F2(
+													function (x, y) {
+														return {ctor: '::', _0: x, _1: y};
+													}),
+												_p7,
+												_elm_lang$core$List$reverse(_p8)));
+									}
+								}();
+								var _v4 = newMatches,
+									_v5 = newState;
+								matches = _v4;
+								state = _v5;
+								continue process;
+							} else {
+								break _v1_2;
+							}
+						} else {
+							if (((((((((_p1._1.ctor === '::') && (_p1._1._0.ctor === 'Nothing')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._0.ctor === 'Nothing')) && (_p1._1._1._1.ctor === '::')) && (_p1._1._1._1._0.ctor === 'Just')) && (_p1._1._1._1._1.ctor === '::')) && (_p1._1._1._1._1._0.ctor === 'Just')) && (_p1._1._1._1._1._1.ctor === '[]')) {
+								var _p6 = _p1._1._1._1._1._0._0;
+								var chips = A2(
+									_elm_lang$core$Maybe$withDefault,
+									{ctor: '[]'},
+									A2(_elm_lang$core$Dict$get, _p6, state));
+								var newChips = _elm_lang$core$List$sort(
+									function (i) {
+										return {ctor: '::', _0: i, _1: chips};
+									}(
+										A2(
+											_elm_lang$core$Result$withDefault,
+											0,
+											_elm_lang$core$String$toInt(_p1._1._1._1._0._0))));
+								var newState = A3(_elm_lang$core$Dict$insert, _p6, newChips, state);
+								var _v6 = _p8,
+									_v7 = newState;
+								matches = _v6;
+								state = _v7;
+								continue process;
+							} else {
+								break _v1_2;
+							}
+						}
+					} else {
+						break _v1_2;
+					}
+				} while(false);
+				var _v8 = _p8,
+					_v9 = state;
+				matches = _v8;
+				state = _v9;
+				continue process;
+			}
+		}
+	});
+var _user$project$Y16D10$init = _elm_lang$core$Dict$empty;
+var _user$project$Y16D10$multiply = F3(
+	function (num, state, ids) {
+		multiply:
+		while (true) {
+			var _p9 = ids;
+			if (_p9.ctor === '[]') {
+				return num;
+			} else {
+				var output = A2(
+					F2(
+						function (x, y) {
+							return A2(_elm_lang$core$Basics_ops['++'], x, y);
+						}),
+					'output ',
+					_elm_lang$core$Basics$toString(_p9._0));
+				var chips = A2(
+					_elm_lang$core$Maybe$withDefault,
+					{ctor: '[]'},
+					A2(_elm_lang$core$Dict$get, output, state));
+				var newNum = A2(
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					num,
+					_elm_lang$core$List$product(chips));
+				var _v11 = newNum,
+					_v12 = state,
+					_v13 = _p9._1;
+				num = _v11;
+				state = _v12;
+				ids = _v13;
+				continue multiply;
+			}
+		}
+	});
+var _user$project$Y16D10$lookfor = F2(
+	function (match, idLists) {
+		lookfor:
+		while (true) {
+			var _p10 = idLists;
+			if (_p10.ctor === '[]') {
+				return 'none';
+			} else {
+				var _p11 = _p10._0._0;
+				if (_elm_lang$core$Native_Utils.eq(
+					A2(
+						_elm_lang$core$String$join,
+						'-',
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p10._0._1)),
+					match) && A2(_elm_lang$core$String$startsWith, 'bot ', _p11)) {
+					return _p11;
+				} else {
+					var _v15 = match,
+						_v16 = _p10._1;
+					match = _v15;
+					idLists = _v16;
+					continue lookfor;
+				}
+			}
+		}
+	});
+var _user$project$Y16D10$answers = function (input) {
+	var matches = _user$project$Y16D10$parse(input);
+	var state = A2(_user$project$Y16D10$process, matches, _user$project$Y16D10$init);
+	var a1 = A2(
+		_user$project$Y16D10$lookfor,
+		'17-61',
+		_elm_lang$core$Dict$toList(state));
+	var a2 = _elm_lang$core$Basics$toString(
+		A3(
+			_user$project$Y16D10$multiply,
+			1,
+			state,
+			{
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 1,
+					_1: {
+						ctor: '::',
+						_0: 2,
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D11$answers = function (input) {
+	return 'not implemented - too difficult';
+};
+
+var _user$project$Y16D12$initState = function (instructions) {
+	return {
+		index: 0,
+		instructions: instructions,
+		registers: _elm_lang$core$Dict$fromList(
+			{
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'a', _1: 0},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'c', _1: 0},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			})
+	};
+};
+var _user$project$Y16D12$set = F3(
+	function (reg, state, val) {
+		return A3(_elm_lang$core$Dict$insert, reg, val, state.registers);
+	});
+var _user$project$Y16D12$get = F2(
+	function (reg, state) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Dict$get, reg, state.registers));
+	});
+var _user$project$Y16D12$State = F3(
+	function (a, b, c) {
+		return {index: a, instructions: b, registers: c};
+	});
+var _user$project$Y16D12$Invalid = {ctor: 'Invalid'};
+var _user$project$Y16D12$process = function (state) {
+	process:
+	while (true) {
+		var maybeInstruction = A2(_elm_lang$core$Array$get, state.index, state.instructions);
+		var _p0 = maybeInstruction;
+		if (_p0.ctor === 'Nothing') {
+			return state;
+		} else {
+			var _p7 = _p0._0;
+			if (_elm_lang$core$Native_Utils.eq(_p7, _user$project$Y16D12$Invalid)) {
+				return state;
+			} else {
+				var index = function () {
+					var $default = state.index + 1;
+					var _p1 = _p7;
+					switch (_p1.ctor) {
+						case 'Jnz':
+							var _p2 = _p1._1;
+							return (_elm_lang$core$Native_Utils.eq(
+								A2(_user$project$Y16D12$get, _p1._0, state),
+								0) || _elm_lang$core$Native_Utils.eq(_p2, 0)) ? $default : (state.index + _p2);
+						case 'Jiz':
+							var _p3 = _p1._1;
+							return (_elm_lang$core$Native_Utils.eq(_p1._0, 0) || _elm_lang$core$Native_Utils.eq(_p3, 0)) ? $default : (state.index + _p3);
+						default:
+							return $default;
+					}
+				}();
+				var registers = function () {
+					var _p4 = _p7;
+					switch (_p4.ctor) {
+						case 'Cpn':
+							return A3(_user$project$Y16D12$set, _p4._1, state, _p4._0);
+						case 'Cpr':
+							return A3(
+								_user$project$Y16D12$set,
+								_p4._1,
+								state,
+								A2(_user$project$Y16D12$get, _p4._0, state));
+						case 'Inc':
+							var _p5 = _p4._0;
+							return A3(
+								_user$project$Y16D12$set,
+								_p5,
+								state,
+								A2(
+									F2(
+										function (x, y) {
+											return x + y;
+										}),
+									1,
+									A2(_user$project$Y16D12$get, _p5, state)));
+						case 'Dec':
+							var _p6 = _p4._0;
+							return A3(
+								_user$project$Y16D12$set,
+								_p6,
+								state,
+								A2(
+									F2(
+										function (x, y) {
+											return x + y;
+										}),
+									-1,
+									A2(_user$project$Y16D12$get, _p6, state)));
+						default:
+							return state.registers;
+					}
+				}();
+				var _v3 = _elm_lang$core$Native_Utils.update(
+					state,
+					{registers: registers, index: index});
+				state = _v3;
+				continue process;
+			}
+		}
+	}
+};
+var _user$project$Y16D12$Jiz = F2(
+	function (a, b) {
+		return {ctor: 'Jiz', _0: a, _1: b};
+	});
+var _user$project$Y16D12$Jnz = F2(
+	function (a, b) {
+		return {ctor: 'Jnz', _0: a, _1: b};
+	});
+var _user$project$Y16D12$Dec = function (a) {
+	return {ctor: 'Dec', _0: a};
+};
+var _user$project$Y16D12$Inc = function (a) {
+	return {ctor: 'Inc', _0: a};
+};
+var _user$project$Y16D12$Cpr = F2(
+	function (a, b) {
+		return {ctor: 'Cpr', _0: a, _1: b};
+	});
+var _user$project$Y16D12$Cpn = F2(
+	function (a, b) {
+		return {ctor: 'Cpn', _0: a, _1: b};
+	});
+var _user$project$Y16D12$parseMatches = function (matches) {
+	var _p8 = matches;
+	_v4_4:
+	do {
+		if (_p8.ctor === '::') {
+			if (_p8._0.ctor === 'Just') {
+				if (((((((((((_p8._1.ctor === '::') && (_p8._1._0.ctor === 'Just')) && (_p8._1._1.ctor === '::')) && (_p8._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1.ctor === '::')) && (_p8._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
+					var _p11 = _p8._1._0._0;
+					var _p10 = _p8._0._0;
+					var _p9 = _elm_lang$core$String$toInt(_p10);
+					if (_p9.ctor === 'Ok') {
+						return A2(_user$project$Y16D12$Cpn, _p9._0, _p11);
+					} else {
+						return A2(_user$project$Y16D12$Cpr, _p10, _p11);
+					}
+				} else {
+					break _v4_4;
+				}
+			} else {
+				if (((_p8._1.ctor === '::') && (_p8._1._0.ctor === 'Nothing')) && (_p8._1._1.ctor === '::')) {
+					if (_p8._1._1._0.ctor === 'Just') {
+						if (((((((_p8._1._1._1.ctor === '::') && (_p8._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
+							return _user$project$Y16D12$Inc(_p8._1._1._0._0);
+						} else {
+							break _v4_4;
+						}
+					} else {
+						if (_p8._1._1._1.ctor === '::') {
+							if (_p8._1._1._1._0.ctor === 'Just') {
+								if (((((_p8._1._1._1._1.ctor === '::') && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
+									return _user$project$Y16D12$Dec(_p8._1._1._1._0._0);
+								} else {
+									break _v4_4;
+								}
+							} else {
+								if (((((_p8._1._1._1._1.ctor === '::') && (_p8._1._1._1._1._0.ctor === 'Just')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Just')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
+									var _p13 = _p8._1._1._1._1._0._0;
+									var jmp = A2(
+										_elm_lang$core$Result$withDefault,
+										0,
+										_elm_lang$core$String$toInt(_p8._1._1._1._1._1._0._0));
+									var _p12 = _elm_lang$core$String$toInt(_p13);
+									if (_p12.ctor === 'Ok') {
+										return A2(_user$project$Y16D12$Jiz, _p12._0, jmp);
+									} else {
+										return A2(_user$project$Y16D12$Jnz, _p13, jmp);
+									}
+								} else {
+									break _v4_4;
+								}
+							}
+						} else {
+							break _v4_4;
+						}
+					}
+				} else {
+					break _v4_4;
+				}
+			}
+		} else {
+			break _v4_4;
+		}
+	} while(false);
+	return _user$project$Y16D12$Invalid;
+};
+var _user$project$Y16D12$parse = function (input) {
+	return _elm_lang$core$Array$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D12$parseMatches,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('cpy ([abcd]|-?\\d+) ([abcd])|inc ([abcd])|dec ([abcd])|jnz ([abcd]|-?\\d+) (-?\\d+)'),
+					input))));
+};
+var _user$project$Y16D12$answers = function (input) {
+	var state = _user$project$Y16D12$initState(
+		_user$project$Y16D12$parse(input));
+	var a1 = _elm_lang$core$Basics$toString(
+		A2(
+			_user$project$Y16D12$get,
+			'a',
+			_user$project$Y16D12$process(state)));
+	var a2 = _elm_lang$core$Basics$toString(
+		A2(
+			_user$project$Y16D12$get,
+			'a',
+			_user$project$Y16D12$process(
+				_elm_lang$core$Native_Utils.update(
+					state,
+					{
+						registers: A3(_user$project$Y16D12$set, 'c', state, 1)
+					}))));
+	return A2(_user$project$Util$join, a1, a2);
+};
+
+var _user$project$Y16D13$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D14$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D15$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D16$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D17$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D18$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D19$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D20$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D21$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D22$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D23$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D24$answers = function (input) {
+	return '';
+};
+
+var _user$project$Y16D25$answer = function (input) {
+	return '';
+};
+
+var _user$project$Y16$answer = F3(
+	function (day, part, input) {
+		var _p0 = day;
+		switch (_p0) {
+			case 1:
+				return A2(_user$project$Y16D01$answer, part, input);
+			case 2:
+				return A2(_user$project$Y16D02$answer, part, input);
+			case 3:
+				return A2(_user$project$Y16D03$answer, part, input);
+			case 4:
+				return A2(_user$project$Y16D04$answer, part, input);
+			case 5:
+				return A2(_user$project$Y16D05$answer, part, input);
+			case 6:
+				return A2(_user$project$Y16D06$answer, part, input);
+			case 7:
+				return A2(_user$project$Y16D07$answer, part, input);
+			case 8:
+				return A2(_user$project$Y16D08$answer, part, input);
+			case 9:
+				return A2(_user$project$Y16D09$answer, part, input);
+			case 10:
+				return _user$project$Y16D10$answers(input);
+			case 11:
+				return _user$project$Y16D11$answers(input);
+			case 12:
+				return _user$project$Y16D12$answers(input);
+			case 13:
+				return _user$project$Y16D13$answers(input);
+			case 14:
+				return _user$project$Y16D14$answers(input);
+			case 15:
+				return _user$project$Y16D15$answers(input);
+			case 16:
+				return _user$project$Y16D16$answers(input);
+			case 17:
+				return _user$project$Y16D17$answers(input);
+			case 18:
+				return _user$project$Y16D18$answers(input);
+			case 19:
+				return _user$project$Y16D19$answers(input);
+			case 20:
+				return _user$project$Y16D20$answers(input);
+			case 21:
+				return _user$project$Y16D21$answers(input);
+			case 22:
+				return _user$project$Y16D22$answers(input);
+			case 23:
+				return _user$project$Y16D23$answers(input);
+			case 24:
+				return _user$project$Y16D24$answers(input);
+			case 25:
+				return _user$project$Y16D25$answer(input);
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'year 2016, day ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						': not available'));
+		}
 	});
 
 var _user$project$Main$toInt = function (str) {
@@ -8299,9 +15360,10 @@ var _user$project$Main$viewOption = F3(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
 var _user$project$Main$defaultDay = 1;
 var _user$project$Main$defaultYear = 2015;
-var _user$project$Main$initialModel = {
+var _user$project$Main$initModel = {
 	years: {
 		ctor: '::',
 		_0: {
@@ -8319,12 +15381,13 @@ var _user$project$Main$initialModel = {
 	},
 	year: _user$project$Main$defaultYear,
 	day: _user$project$Main$defaultDay,
-	data: ''
+	data: _elm_lang$core$Maybe$Nothing,
+	answers: _user$project$Main$initAnswers
 };
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: _user$project$Main$initialModel,
-	_1: A2(_user$project$Main$getData, _user$project$Main$initialModel.year, _user$project$Main$initialModel.day)
+	_0: _user$project$Main$initModel,
+	_1: A2(_user$project$Main$getData, _user$project$Main$initModel.year, _user$project$Main$initModel.day)
 };
 var _user$project$Main$newProblem = F3(
 	function (year, day, model) {
@@ -8368,7 +15431,7 @@ var _user$project$Main$update = F2(
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						model,
+						_user$project$Main$initModel,
 						{year: newYear, day: newDay}),
 					{
 						ctor: '::',
@@ -8382,19 +15445,50 @@ var _user$project$Main$update = F2(
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
-						model,
+						_user$project$Main$initModel,
 						{year: newYear, day: newDay}),
 					{
 						ctor: '::',
 						_0: A2(_user$project$Main$getData, newYear, newDay),
 						_1: {ctor: '[]'}
 					});
-			default:
+			case 'NewData':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{data: _p3._0}),
+						{
+							data: _elm_lang$core$Maybe$Just(_p3._0)
+						}),
+					{ctor: '[]'});
+			default:
+				var _p7 = _p3._0;
+				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
+				var answer = function () {
+					var _p6 = model.year;
+					switch (_p6) {
+						case 2015:
+							return A3(_user$project$Y15$answer, model.day, _p7, data);
+						case 2016:
+							return A3(_user$project$Y16$answer, model.day, _p7, data);
+						default:
+							return '';
+					}
+				}();
+				var answers = _elm_lang$core$Native_Utils.eq(_p7, 1) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Maybe$Just(answer),
+					_1: _elm_lang$core$Tuple$second(model.answers)
+				} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Tuple$first(model.answers),
+					_1: _elm_lang$core$Maybe$Just(answer)
+				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{answers: answers}),
 					{ctor: '[]'});
 		}
 	});
@@ -8402,9 +15496,76 @@ var _user$project$Main$Year = F2(
 	function (a, b) {
 		return {year: a, days: b};
 	});
-var _user$project$Main$Model = F4(
-	function (a, b, c, d) {
-		return {years: a, year: b, day: c, data: d};
+var _user$project$Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {years: a, year: b, day: c, data: d, answers: e};
+	});
+var _user$project$Main$Answer = function (a) {
+	return {ctor: 'Answer', _0: a};
+};
+var _user$project$Main$viewAnswer = F2(
+	function (part, model) {
+		var answer = _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Tuple$first(model.answers) : _elm_lang$core$Tuple$second(model.answers);
+		var display = function () {
+			var _p8 = answer;
+			if (_p8.ctor === 'Nothing') {
+				return A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('btn btn-success btn-xs'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(
+								_user$project$Main$Answer(part)),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Get Answer'),
+						_1: {ctor: '[]'}
+					});
+			} else {
+				return _elm_lang$html$Html$text(_p8._0);
+			}
+		}();
+		var name = _elm_lang$core$Native_Utils.eq(part, 1) ? 'One' : 'Two';
+		return A2(
+			_elm_lang$html$Html$tr,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$th,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('col-xs-6 text-center'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(_elm_lang$core$Basics_ops['++'], 'Part ', name)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('col-xs-6 text-center'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: display,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
 	});
 var _user$project$Main$NewData = function (a) {
 	return {ctor: 'NewData', _0: a};
@@ -8419,15 +15580,16 @@ var _user$project$Main$SelectYear = function (a) {
 	return {ctor: 'SelectYear', _0: a};
 };
 var _user$project$Main$view = function (model) {
+	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p6) {
+		function (_p9) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p6));
+				_user$project$Main$toInt(_p9));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p7) {
+		function (_p10) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p7));
+				_user$project$Main$toInt(_p10));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
@@ -8609,24 +15771,79 @@ var _user$project$Main$view = function (model) {
 								_elm_lang$html$Html$div,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+									_0: _elm_lang$html$Html_Attributes$class('col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6'),
 									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$pre,
-										{ctor: '[]'},
+										_elm_lang$html$Html$table,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text(model.data),
+											_0: _elm_lang$html$Html_Attributes$class('table table-bordered'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$tbody,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(_user$project$Main$viewAnswer, 1, model),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Main$viewAnswer, 2, model),
+														_1: {ctor: '[]'}
+													}
+												}),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
 						}),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$hr,
+							{ctor: '[]'},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('row'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$pre,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(data),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		});

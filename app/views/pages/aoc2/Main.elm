@@ -4,6 +4,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
 import Ports
+import Y15
+import Y16
 
 
 -- MAIN
@@ -33,8 +35,13 @@ type alias Model =
     { years : List Year
     , year : Int
     , day : Int
-    , data : String
+    , data : Maybe String
+    , answers : Answers
     }
+
+
+type alias Answers =
+    ( Maybe String, Maybe String )
 
 
 defaultYear : Int
@@ -47,21 +54,27 @@ defaultDay =
     1
 
 
-initialModel : Model
-initialModel =
+initModel : Model
+initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 12 }
         ]
     , year = defaultYear
     , day = defaultDay
-    , data = ""
+    , data = Nothing
+    , answers = initAnswers
     }
+
+
+initAnswers : Answers
+initAnswers =
+    ( Nothing, Nothing )
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, getData initialModel.year initialModel.day )
+    ( initModel, getData initModel.year initModel.day )
 
 
 
@@ -72,6 +85,7 @@ type Msg
     = SelectYear Int
     | SelectDay Int
     | NewData String
+    | Answer Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -82,17 +96,41 @@ update msg model =
                 ( newYear, newDay ) =
                     newProblem year model.day model
             in
-                { model | year = newYear, day = newDay } ! [ getData newYear newDay ]
+                { initModel | year = newYear, day = newDay } ! [ getData newYear newDay ]
 
         SelectDay day ->
             let
                 ( newYear, newDay ) =
                     newProblem model.year day model
             in
-                { model | year = newYear, day = newDay } ! [ getData newYear newDay ]
+                { initModel | year = newYear, day = newDay } ! [ getData newYear newDay ]
 
         NewData data ->
-            { model | data = data } ! []
+            { model | data = Just data } ! []
+
+        Answer part ->
+            let
+                data =
+                    Maybe.withDefault "" model.data
+
+                answer =
+                    case model.year of
+                        2015 ->
+                            Y15.answer model.day part data
+
+                        2016 ->
+                            Y16.answer model.day part data
+
+                        _ ->
+                            ""
+
+                answers =
+                    if part == 1 then
+                        ( Just answer, model.answers |> Tuple.second )
+                    else
+                        ( model.answers |> Tuple.first, Just answer )
+            in
+                { model | answers = answers } ! []
 
 
 newProblem : Int -> Int -> Model -> ( Int, Int )
@@ -152,6 +190,10 @@ view model =
 
         onDayChange =
             toInt >> SelectDay |> Events.onInput
+
+        data =
+            model.data
+                |> Maybe.withDefault ""
     in
         div []
             [ div [ class "row" ]
@@ -170,8 +212,19 @@ view model =
                 ]
             , hr [] []
             , div [ class "row" ]
+                [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
+                    [ table [ class "table table-bordered" ]
+                        [ tbody []
+                            [ viewAnswer 1 model
+                            , viewAnswer 2 model
+                            ]
+                        ]
+                    ]
+                ]
+            , hr [] []
+            , div [ class "row" ]
                 [ div [ class "col-xs-12" ]
-                    [ pre [] [ text model.data ]
+                    [ pre [] [ text data ]
                     ]
                 ]
             ]
@@ -187,6 +240,37 @@ viewOption prefix sel opt =
             prefix ++ " " ++ val
     in
         option [ value val, sel == opt |> selected ] [ text txt ]
+
+
+viewAnswer : Int -> Model -> Html Msg
+viewAnswer part model =
+    let
+        name =
+            if part == 1 then
+                "One"
+            else
+                "Two"
+
+        answer =
+            if part == 1 then
+                Tuple.first model.answers
+            else
+                Tuple.second model.answers
+
+        display =
+            case answer of
+                Nothing ->
+                    span [ class "btn btn-success btn-xs", Events.onClick (Answer part) ] [ text "Get Answer" ]
+
+                Just ans ->
+                    text ans
+    in
+        tr []
+            [ th [ class "col-xs-6 text-center" ]
+                [ "Part " ++ name |> text ]
+            , td [ class "col-xs-6 text-center" ]
+                [ display ]
+            ]
 
 
 
