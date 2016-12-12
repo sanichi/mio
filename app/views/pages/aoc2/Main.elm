@@ -115,10 +115,10 @@ view model =
                 |> List.map (viewOption "Day" model.selectedDay)
 
         onYearChange =
-            Events.onInput (\x -> toInt x |> SelectYear)
+            toInt >> SelectYear |> Events.onInput
 
         onDayChange =
-            Events.onInput (\x -> toInt x |> SelectDay)
+            toInt >> SelectDay |> Events.onInput
     in
         div [ class "row" ]
             [ div [ class "col-xs-12" ]

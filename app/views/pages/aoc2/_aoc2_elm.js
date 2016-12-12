@@ -8365,14 +8365,14 @@ var _user$project$Main$SelectYear = function (a) {
 };
 var _user$project$Main$view = function (model) {
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (x) {
+		function (_p4) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(x));
+				_user$project$Main$toInt(_p4));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (x) {
+		function (_p5) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(x));
+				_user$project$Main$toInt(_p5));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
