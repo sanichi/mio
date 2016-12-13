@@ -11,9 +11,3 @@ port prepareAnswer : Int -> Cmd msg
 
 
 port startAnswer : (Int -> msg) -> Sub msg
-
-
-port concludeAnswer : Int -> Cmd msg
-
-
-port finishAnswer : (Int -> msg) -> Sub msg

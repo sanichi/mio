@@ -3,10 +3,10 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
+import Platform.Sub
 import Ports
 import Y15
 import Y16
-import Platform.Sub
 
 
 -- MAIN
@@ -52,12 +52,12 @@ type alias Thinks =
 
 defaultYear : Int
 defaultYear =
-    2015
+    2016
 
 
 defaultDay : Int
 defaultDay =
-    1
+    12
 
 
 initModel : Model
@@ -98,8 +98,7 @@ type Msg
     | SelectDay Int
     | NewData String
     | Answer Int
-    | Start Int
-    | Finish Int
+    | Prepare Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -122,11 +121,8 @@ update msg model =
         NewData data ->
             { model | data = Just data } ! []
 
-        Start part ->
+        Prepare part ->
             { model | thinks = thinking part } ! [ prepareAnswer part ]
-
-        Finish part ->
-            { model | thinks = initThinks } ! []
 
         Answer part ->
             let
@@ -150,7 +146,7 @@ update msg model =
                     else
                         ( model.answers |> Tuple.first, Just answer )
             in
-                { model | answers = answers } ! [ concludeAnswer part ]
+                { model | answers = answers, thinks = initThinks } ! []
 
 
 newProblem : Int -> Int -> Model -> ( Int, Int )
@@ -197,19 +193,14 @@ thinking part =
 -- COMMANDS & SUBSCRIPTIONS
 
 
-getData : Int -> Int -> Cmd msg
+getData : Int -> Int -> Cmd Msg
 getData year day =
     Ports.getData ( year, day )
 
 
-prepareAnswer : Int -> Cmd msg
+prepareAnswer : Int -> Cmd Msg
 prepareAnswer part =
     Ports.prepareAnswer part
-
-
-concludeAnswer : Int -> Cmd msg
-concludeAnswer part =
-    Ports.concludeAnswer part
 
 
 subscriptions : Model -> Sub Msg
@@ -217,7 +208,6 @@ subscriptions model =
     Platform.Sub.batch
         [ Ports.newData NewData
         , Ports.startAnswer Answer
-        , Ports.finishAnswer Finish
         ]
 
 
@@ -321,7 +311,7 @@ viewAnswer part model =
 
         display =
             if thinking then
-                text "Thinking"
+                img [ src "/images/loader.gif" ] []
             else
                 case answer of
                     Nothing ->
@@ -340,7 +330,7 @@ viewAnswer part model =
                                 else
                                     "danger"
                         in
-                            span [ class ("btn btn-" ++ btnType ++ " btn-xs"), Events.onClick (Start part) ] [ text words ]
+                            span [ class ("btn btn-" ++ btnType ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
 
                     Just ans ->
                         text ans

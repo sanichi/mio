@@ -13,7 +13,4 @@ $(function() {
       app.ports.startAnswer.send(part);
     }, 100);
   });
-  app.ports.concludeAnswer.subscribe(function(part) {
-    app.ports.finishAnswer.send(part);
-  });
 });
