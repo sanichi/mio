@@ -8,4 +8,12 @@ $(function() {
       app.ports.newData.send(data);
     });
   });
+  app.ports.prepareAnswer.subscribe(function(part) {
+    setTimeout(function() {
+      app.ports.startAnswer.send(part);
+    }, 100);
+  });
+  app.ports.concludeAnswer.subscribe(function(part) {
+    app.ports.finishAnswer.send(part);
+  });
 });

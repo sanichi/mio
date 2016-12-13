@@ -6,6 +6,7 @@ import Html.Events as Events
 import Ports
 import Y15
 import Y16
+import Platform.Sub
 
 
 -- MAIN
@@ -37,11 +38,16 @@ type alias Model =
     , day : Int
     , data : Maybe String
     , answers : Answers
+    , thinks : Thinks
     }
 
 
 type alias Answers =
     ( Maybe String, Maybe String )
+
+
+type alias Thinks =
+    ( Bool, Bool )
 
 
 defaultYear : Int
@@ -64,12 +70,18 @@ initModel =
     , day = defaultDay
     , data = Nothing
     , answers = initAnswers
+    , thinks = initThinks
     }
 
 
 initAnswers : Answers
 initAnswers =
     ( Nothing, Nothing )
+
+
+initThinks : Thinks
+initThinks =
+    ( False, False )
 
 
 init : ( Model, Cmd Msg )
@@ -86,6 +98,8 @@ type Msg
     | SelectDay Int
     | NewData String
     | Answer Int
+    | Start Int
+    | Finish Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -107,6 +121,12 @@ update msg model =
 
         NewData data ->
             { model | data = Just data } ! []
+
+        Start part ->
+            { model | thinks = thinking part } ! [ prepareAnswer part ]
+
+        Finish part ->
+            { model | thinks = initThinks } ! []
 
         Answer part ->
             let
@@ -130,7 +150,7 @@ update msg model =
                     else
                         ( model.answers |> Tuple.first, Just answer )
             in
-                { model | answers = answers } ! []
+                { model | answers = answers } ! [ concludeAnswer part ]
 
 
 newProblem : Int -> Int -> Model -> ( Int, Int )
@@ -163,6 +183,42 @@ newProblem year day model =
                     defaultDay
     in
         ( newYear, newDay )
+
+
+thinking : Int -> Thinks
+thinking part =
+    if part == 1 then
+        ( True, False )
+    else
+        ( False, True )
+
+
+
+-- COMMANDS & SUBSCRIPTIONS
+
+
+getData : Int -> Int -> Cmd msg
+getData year day =
+    Ports.getData ( year, day )
+
+
+prepareAnswer : Int -> Cmd msg
+prepareAnswer part =
+    Ports.prepareAnswer part
+
+
+concludeAnswer : Int -> Cmd msg
+concludeAnswer part =
+    Ports.concludeAnswer part
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Platform.Sub.batch
+        [ Ports.newData NewData
+        , Ports.startAnswer Answer
+        , Ports.finishAnswer Finish
+        ]
 
 
 
@@ -257,13 +313,37 @@ viewAnswer part model =
             else
                 Tuple.second model.answers
 
-        display =
-            case answer of
-                Nothing ->
-                    span [ class "btn btn-success btn-xs", Events.onClick (Answer part) ] [ text "Get Answer" ]
+        thinking =
+            if part == 1 then
+                Tuple.first model.thinks
+            else
+                Tuple.second model.thinks
 
-                Just ans ->
-                    text ans
+        display =
+            if thinking then
+                text "Thinking"
+            else
+                case answer of
+                    Nothing ->
+                        let
+                            time =
+                                slow model.year model.day part
+
+                            words =
+                                "Get Anwser"
+                                    :: List.repeat time "🕰"
+                                    |> String.join " "
+
+                            btnType =
+                                if time == 0 then
+                                    "success"
+                                else
+                                    "danger"
+                        in
+                            span [ class ("btn btn-" ++ btnType ++ " btn-xs"), Events.onClick (Start part) ] [ text words ]
+
+                    Just ans ->
+                        text ans
     in
         tr []
             [ th [ class "col-xs-6 text-center" ]
@@ -271,20 +351,6 @@ viewAnswer part model =
             , td [ class "col-xs-6 text-center" ]
                 [ display ]
             ]
-
-
-
--- COMMANDS & SUBSCRIPTIONS
-
-
-getData : Int -> Int -> Cmd msg
-getData year day =
-    Ports.getData ( year, day )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Ports.newData NewData
 
 
 
@@ -296,3 +362,28 @@ toInt str =
     str
         |> String.toInt
         |> Result.withDefault 0
+
+
+slow : Int -> Int -> Int -> Int
+slow year day part =
+    case ( year, day, part ) of
+        ( 2016, 5, 1 ) ->
+            5
+
+        ( 2016, 5, 2 ) ->
+            5
+
+        ( 2016, 9, 1 ) ->
+            5
+
+        ( 2016, 9, 2 ) ->
+            5
+
+        ( 2016, 12, 1 ) ->
+            1
+
+        ( 2016, 12, 2 ) ->
+            2
+
+        _ ->
+            0
