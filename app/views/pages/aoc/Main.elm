@@ -263,6 +263,7 @@ view model =
                         [ tbody []
                             [ viewAnswer 1 model
                             , viewAnswer 2 model
+                            , codeLink model
                             ]
                         ]
                     ]
@@ -346,6 +347,45 @@ viewAnswer part model =
             ]
 
 
+codeLink : Model -> Html Msg
+codeLink model =
+    let
+        year =
+            model.year |> toString
+
+        shortYear =
+            String.right 2 year
+
+        day =
+            model.day |> toString
+
+        paddedDay =
+            if model.day > 9 then
+                day
+            else
+                "0" ++ day
+
+        scheme =
+            "https://"
+
+        domain =
+            "bitbucket.org/"
+
+        path =
+            "sanichi/sni_mio_app/src/master/app/views/pages/aoc/" ++ year ++ "/"
+
+        file =
+            "Y" ++ shortYear ++ "D" ++ paddedDay ++ ".elm"
+
+        link =
+            scheme ++ domain ++ path ++ file
+    in
+        tr []
+            [ td [ class "col-xs-12 text-center", colspan 2 ]
+                [ a [ href link, target "external" ] [ text "Code" ] ]
+            ]
+
+
 
 -- HELPERS
 
@@ -359,24 +399,90 @@ toInt str =
 
 slow : Int -> Int -> Int -> Int
 slow year day part =
-    case ( year, day, part ) of
-        ( 2016, 5, 1 ) ->
-            3
+    let
+        faster =
+            [ year, day, part ]
+                |> List.map toString
+                |> String.join "-"
+    in
+        case faster of
+            "2015-4-1" ->
+                2
 
-        ( 2016, 5, 2 ) ->
-            3
+            "2015-4-2" ->
+                3
 
-        ( 2016, 9, 1 ) ->
-            3
+            "2015-6-1" ->
+                2
 
-        ( 2016, 9, 2 ) ->
-            3
+            "2015-6-2" ->
+                3
 
-        ( 2016, 12, 1 ) ->
-            1
+            "2015-10-1" ->
+                1
 
-        ( 2016, 12, 2 ) ->
-            2
+            "2015-10-2" ->
+                2
 
-        _ ->
-            0
+            "2015-11-1" ->
+                1
+
+            "2015-11-2" ->
+                2
+
+            "2015-13-1" ->
+                1
+
+            "2015-13-2" ->
+                2
+
+            "2015-15-1" ->
+                2
+
+            "2015-15-2" ->
+                2
+
+            "2015-17-1" ->
+                2
+
+            "2015-17-2" ->
+                2
+
+            "2015-18-1" ->
+                2
+
+            "2015-18-2" ->
+                2
+
+            "2015-20-1" ->
+                2
+
+            "2015-20-2" ->
+                2
+
+            "2015-24-1" ->
+                2
+
+            "2015-24-2" ->
+                1
+
+            "2016-5-1" ->
+                3
+
+            "2016-5-2" ->
+                3
+
+            "2016-9-1" ->
+                3
+
+            "2016-9-2" ->
+                3
+
+            "2016-12-1" ->
+                1
+
+            "2016-12-2" ->
+                2
+
+            _ ->
+                0

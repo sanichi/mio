@@ -15523,47 +15523,155 @@ var _user$project$Y16$answer = F3(
 
 var _user$project$Main$slow = F3(
 	function (year, day, part) {
-		var _p0 = {ctor: '_Tuple3', _0: year, _1: day, _2: part};
-		_v0_6:
-		do {
-			if ((_p0.ctor === '_Tuple3') && (_p0._0 === 2016)) {
-				switch (_p0._2) {
-					case 1:
-						switch (_p0._1) {
-							case 5:
-								return 3;
-							case 9:
-								return 3;
-							case 12:
-								return 1;
-							default:
-								break _v0_6;
+		var faster = A2(
+			_elm_lang$core$String$join,
+			'-',
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Basics$toString,
+				{
+					ctor: '::',
+					_0: year,
+					_1: {
+						ctor: '::',
+						_0: day,
+						_1: {
+							ctor: '::',
+							_0: part,
+							_1: {ctor: '[]'}
 						}
-					case 2:
-						switch (_p0._1) {
-							case 5:
-								return 3;
-							case 9:
-								return 3;
-							case 12:
-								return 2;
-							default:
-								break _v0_6;
-						}
-					default:
-						break _v0_6;
-				}
-			} else {
-				break _v0_6;
-			}
-		} while(false);
-		return 0;
+					}
+				}));
+		var _p0 = faster;
+		switch (_p0) {
+			case '2015-4-1':
+				return 2;
+			case '2015-4-2':
+				return 3;
+			case '2015-6-1':
+				return 2;
+			case '2015-6-2':
+				return 3;
+			case '2015-10-1':
+				return 1;
+			case '2015-10-2':
+				return 2;
+			case '2015-11-1':
+				return 1;
+			case '2015-11-2':
+				return 2;
+			case '2015-13-1':
+				return 1;
+			case '2015-13-2':
+				return 2;
+			case '2015-15-1x':
+				return 2;
+			case '2015-15-2':
+				return 2;
+			case '2015-17-1':
+				return 2;
+			case '2015-17-2':
+				return 2;
+			case '2015-18-1':
+				return 2;
+			case '2015-18-2':
+				return 2;
+			case '2015-20-1':
+				return 2;
+			case '2015-20-2':
+				return 2;
+			case '2015-24-1':
+				return 2;
+			case '2015-24-2':
+				return 1;
+			case '2016-5-1':
+				return 3;
+			case '2016-5-2':
+				return 3;
+			case '2016-9-1':
+				return 3;
+			case '2016-9-2':
+				return 3;
+			case '2016-12-1':
+				return 1;
+			case '2016-12-2':
+				return 2;
+			default:
+				return 0;
+		}
 	});
 var _user$project$Main$toInt = function (str) {
 	return A2(
 		_elm_lang$core$Result$withDefault,
 		0,
 		_elm_lang$core$String$toInt(str));
+};
+var _user$project$Main$codeLink = function (model) {
+	var domain = 'bitbucket.org/';
+	var scheme = 'https://';
+	var day = _elm_lang$core$Basics$toString(model.day);
+	var paddedDay = (_elm_lang$core$Native_Utils.cmp(model.day, 9) > 0) ? day : A2(_elm_lang$core$Basics_ops['++'], '0', day);
+	var year = _elm_lang$core$Basics$toString(model.year);
+	var shortYear = A2(_elm_lang$core$String$right, 2, year);
+	var file = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'Y',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			shortYear,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'D',
+				A2(_elm_lang$core$Basics_ops['++'], paddedDay, '.elm'))));
+	var path = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'sanichi/sni_mio_app/src/master/app/views/pages/aoc/',
+		A2(_elm_lang$core$Basics_ops['++'], year, '/'));
+	var link = A2(
+		_elm_lang$core$Basics_ops['++'],
+		scheme,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			domain,
+			A2(_elm_lang$core$Basics_ops['++'], path, file)));
+	return A2(
+		_elm_lang$html$Html$tr,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('col-xs-12 text-center'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$colspan(2),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$a,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href(link),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$target('external'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Code'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$Main$viewOption = F3(
 	function (prefix, sel, opt) {
@@ -16099,7 +16207,11 @@ var _user$project$Main$view = function (model) {
 													_1: {
 														ctor: '::',
 														_0: A2(_user$project$Main$viewAnswer, 2, model),
-														_1: {ctor: '[]'}
+														_1: {
+															ctor: '::',
+															_0: _user$project$Main$codeLink(model),
+															_1: {ctor: '[]'}
+														}
 													}
 												}),
 											_1: {ctor: '[]'}
