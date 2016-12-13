@@ -15220,9 +15220,30 @@ var _user$project$Y16D12$answer = F2(
 						}))));
 	});
 
+var _user$project$Y16D13$parse = function (input) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				'',
+				_elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_lang$core$Regex$regex('[1-9]\\d*'),
+							input))))));
+};
 var _user$project$Y16D13$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		var number = _user$project$Y16D13$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(number) : 'TODO';
 	});
 
 var _user$project$Y16D14$answer = F2(
@@ -15360,9 +15381,9 @@ var _user$project$Main$slow = F3(
 					case 1:
 						switch (_p0._1) {
 							case 5:
-								return 5;
+								return 3;
 							case 9:
-								return 5;
+								return 3;
 							case 12:
 								return 1;
 							default:
@@ -15371,9 +15392,9 @@ var _user$project$Main$slow = F3(
 					case 2:
 						switch (_p0._1) {
 							case 5:
-								return 5;
+								return 3;
 							case 9:
-								return 5;
+								return 3;
 							case 12:
 								return 2;
 							default:
@@ -15432,7 +15453,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 12;
+var _user$project$Main$defaultDay = 13;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {

@@ -57,7 +57,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    12
+    13
 
 
 initModel : Model
@@ -358,16 +358,16 @@ slow : Int -> Int -> Int -> Int
 slow year day part =
     case ( year, day, part ) of
         ( 2016, 5, 1 ) ->
-            5
+            3
 
         ( 2016, 5, 2 ) ->
-            5
+            3
 
         ( 2016, 9, 1 ) ->
-            5
+            3
 
         ( 2016, 9, 2 ) ->
-            5
+            3
 
         ( 2016, 12, 1 ) ->
             1
