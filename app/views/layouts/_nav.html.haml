@@ -103,8 +103,6 @@
               %li= link_to t("favourite.favourites"), favourites_path
             - if can?(:aoc, Page)
               %li= link_to t("pages.aoc.short"), aoc_path
-            - if can?(:aoc, Page)
-              %li= link_to t("pages.aoc.short") + "2", aoc2_path
             - if can?(:play, Page)
               %li= link_to t("pages.play"), play_path
             - if can?(:read, Device)

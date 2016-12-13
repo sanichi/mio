@@ -16,6 +16,6 @@ class Ability
     can :read, [Blog, Bucket, Favourite, Picture, Partnership, Tapa]
     can :notes, Tapa
     can [:read, :graph], Mass
-    can [:aoc, :aoc2, :risle, :risle_stats], Page
+    can [:aoc, :risle, :risle_stats], Page
   end
 end
