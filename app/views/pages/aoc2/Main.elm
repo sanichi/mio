@@ -333,7 +333,10 @@ viewAnswer part model =
                             span [ class ("btn btn-" ++ btnType ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
 
                     Just ans ->
-                        text ans
+                        if String.length ans > 25 then
+                            pre [] [ text ans ]
+                        else
+                            text ans
     in
         tr []
             [ th [ class "col-xs-6 text-center" ]

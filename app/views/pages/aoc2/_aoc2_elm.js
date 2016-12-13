@@ -15240,10 +15240,160 @@ var _user$project$Y16D13$parse = function (input) {
 							_elm_lang$core$Regex$regex('[1-9]\\d*'),
 							input))))));
 };
+var _user$project$Y16D13$same = F2(
+	function (c1, c2) {
+		return _elm_lang$core$Native_Utils.eq(c1.x, c2.x) && _elm_lang$core$Native_Utils.eq(c1.y, c2.y);
+	});
+var _user$project$Y16D13$toBinary = function (num) {
+	var _p0 = num;
+	switch (_p0) {
+		case 0:
+			return '0';
+		case 1:
+			return '1';
+		default:
+			var r = A2(_elm_lang$core$Basics_ops['%'], num, 2);
+			var q = (num / 2) | 0;
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Y16D13$toBinary(q),
+				_user$project$Y16D13$toBinary(r));
+	}
+};
+var _user$project$Y16D13$open = F2(
+	function (fav, cell) {
+		var y = cell.y;
+		var x = cell.x;
+		var num = (((((x * x) + (3 * x)) + ((2 * x) * y)) + y) + (y * y)) + fav;
+		var ones = _elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filter,
+				function (c) {
+					return _elm_lang$core$Native_Utils.eq(
+						c,
+						_elm_lang$core$Native_Utils.chr('1'));
+				},
+				_elm_lang$core$String$toList(
+					_user$project$Y16D13$toBinary(num))));
+		return _elm_lang$core$Native_Utils.eq(
+			A2(_elm_lang$core$Basics_ops['%'], ones, 2),
+			0);
+	});
+var _user$project$Y16D13$start = {x: 1, y: 1, d: 0};
+var _user$project$Y16D13$Cell = F3(
+	function (a, b, c) {
+		return {x: a, y: b, d: c};
+	});
+var _user$project$Y16D13$getNeighbours = F3(
+	function (fav, visited, cell) {
+		var notSeenBefore = function (neighbour) {
+			return !A2(
+				_elm_lang$core$List$any,
+				_user$project$Y16D13$same(neighbour),
+				visited);
+		};
+		var inBounds = function (neighbour) {
+			return (_elm_lang$core$Native_Utils.cmp(neighbour.x, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(neighbour.y, 0) > -1);
+		};
+		var $new = F2(
+			function (old, move) {
+				return A3(
+					_user$project$Y16D13$Cell,
+					old.x + _elm_lang$core$Tuple$first(move),
+					old.y + _elm_lang$core$Tuple$second(move),
+					old.d + 1);
+			});
+		var moves = {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 1, _1: 0},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 0, _1: 1},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: -1, _1: 0},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 0, _1: -1},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		};
+		return A2(
+			_elm_lang$core$List$filter,
+			notSeenBefore,
+			A2(
+				_elm_lang$core$List$filter,
+				_user$project$Y16D13$open(fav),
+				A2(
+					_elm_lang$core$List$filter,
+					inBounds,
+					A2(
+						_elm_lang$core$List$map,
+						$new(cell),
+						moves))));
+	});
+var _user$project$Y16D13$search = F5(
+	function (part, fav, finish, visited, queue) {
+		search:
+		while (true) {
+			var _p1 = queue;
+			if (_p1.ctor === '[]') {
+				return 0;
+			} else {
+				var _p2 = _p1._0;
+				if (_elm_lang$core$Native_Utils.eq(part, 2) && _elm_lang$core$Native_Utils.eq(_p2.d, 50)) {
+					return _elm_lang$core$List$length(visited);
+				} else {
+					var neighbours = A3(_user$project$Y16D13$getNeighbours, fav, visited, _p2);
+					var goal = A2(
+						_elm_lang$core$Maybe$withDefault,
+						_user$project$Y16D13$start,
+						_elm_lang$core$List$head(
+							A2(
+								_elm_lang$core$List$filter,
+								_user$project$Y16D13$same(finish),
+								neighbours)));
+					if (_elm_lang$core$Native_Utils.eq(part, 1) && (_elm_lang$core$Native_Utils.cmp(goal.d, 0) > 0)) {
+						return goal.d;
+					} else {
+						var _v2 = part,
+							_v3 = fav,
+							_v4 = finish,
+							_v5 = A2(_elm_lang$core$Basics_ops['++'], visited, neighbours),
+							_v6 = A2(_elm_lang$core$Basics_ops['++'], _p1._1, neighbours);
+						part = _v2;
+						fav = _v3;
+						finish = _v4;
+						visited = _v5;
+						queue = _v6;
+						continue search;
+					}
+				}
+			}
+		}
+	});
 var _user$project$Y16D13$answer = F2(
 	function (part, input) {
-		var number = _user$project$Y16D13$parse(input);
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(number) : 'TODO';
+		var finish = A3(_user$project$Y16D13$Cell, 31, 39, 0);
+		var fav = _user$project$Y16D13$parse(input);
+		return _elm_lang$core$Basics$toString(
+			A5(
+				_user$project$Y16D13$search,
+				part,
+				fav,
+				finish,
+				{
+					ctor: '::',
+					_0: _user$project$Y16D13$start,
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _user$project$Y16D13$start,
+					_1: {ctor: '[]'}
+				}));
 	});
 
 var _user$project$Y16D14$answer = F2(
@@ -15659,7 +15809,17 @@ var _user$project$Main$viewAnswer = F2(
 							_1: {ctor: '[]'}
 						});
 				} else {
-					return _elm_lang$html$Html$text(_p10._0);
+					var _p11 = _p10._0;
+					return (_elm_lang$core$Native_Utils.cmp(
+						_elm_lang$core$String$length(_p11),
+						25) > 0) ? A2(
+						_elm_lang$html$Html$pre,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p11),
+							_1: {ctor: '[]'}
+						}) : _elm_lang$html$Html$text(_p11);
 				}
 			}
 		}();
@@ -15727,14 +15887,14 @@ var _user$project$Main$SelectYear = function (a) {
 var _user$project$Main$view = function (model) {
 	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p11) {
+		function (_p12) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p11));
+				_user$project$Main$toInt(_p12));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p12) {
+		function (_p13) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p12));
+				_user$project$Main$toInt(_p13));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
