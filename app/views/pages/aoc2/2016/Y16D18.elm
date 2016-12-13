@@ -1,6 +1,9 @@
-module Y16D18 exposing (answers)
+module Y16D18 exposing (answer)
 
 
-answers : String -> String
-answers input =
-    ""
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        "TODO"
+    else
+        "TODO"

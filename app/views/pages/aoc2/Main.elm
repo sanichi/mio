@@ -58,7 +58,7 @@ initModel : Model
 initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
-        , { year = 2016, days = List.range 1 12 }
+        , { year = 2016, days = List.range 1 13 }
         ]
     , year = defaultYear
     , day = defaultDay

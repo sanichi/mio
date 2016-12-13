@@ -1,7 +1,9 @@
 module Util
     exposing
         ( combinations
+        , failed
         , join
+        , onlyOnePart
         , permutations
         )
 
@@ -39,6 +41,16 @@ combo n list =
                         combinations n xs
                 in
                     c1 ++ c2
+
+
+failed : String
+failed =
+    "failed to do this part"
+
+
+onlyOnePart : String
+onlyOnePart =
+    "no part two for this day"
 
 
 

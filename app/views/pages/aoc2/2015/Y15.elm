@@ -58,52 +58,52 @@ answer day part input =
             Y15D09.answer part input
 
         10 ->
-            Y15D10.answers input
+            Y15D10.answer part input
 
         11 ->
-            Y15D11.answers input
+            Y15D11.answer part input
 
         12 ->
-            Y15D12.answers input
+            Y15D12.answer part input
 
         13 ->
-            Y15D13.answers input
+            Y15D13.answer part input
 
         14 ->
-            Y15D14.answers input
+            Y15D14.answer part input
 
         15 ->
-            Y15D15.answers input
+            Y15D15.answer part input
 
         16 ->
-            Y15D16.answers input
+            Y15D16.answer part input
 
         17 ->
-            Y15D17.answers input
+            Y15D17.answer part input
 
         18 ->
-            Y15D18.answers input
+            Y15D18.answer part input
 
         19 ->
-            Y15D19.answers input
+            Y15D19.answer part input
 
         20 ->
-            Y15D20.answers input
+            Y15D20.answer part input
 
         21 ->
-            Y15D21.answers input
+            Y15D21.answer part input
 
         22 ->
-            Y15D22.answers input
+            Y15D22.answer part input
 
         23 ->
-            Y15D23.answers input
+            Y15D23.answer part input
 
         24 ->
-            Y15D24.answers input
+            Y15D24.answer part input
 
         25 ->
-            Y15D25.answer input
+            Y15D25.answer part input
 
         _ ->
             "year 2015, day " ++ (toString day) ++ ": not available"

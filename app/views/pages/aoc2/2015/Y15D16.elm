@@ -1,23 +1,21 @@
-module Y15D16 exposing (answers)
+module Y15D16 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
-        model =
-            parseInput input
-
-        p1 =
-            sue match1 model
-
-        p2 =
-            sue match2 model
+        match =
+            if part == 1 then
+                match1
+            else
+                match2
     in
-        Util.join p1 p2
+        input
+            |> parse
+            |> sue match
 
 
 sue : (String -> Int -> Bool -> Bool) -> Model -> String
@@ -117,8 +115,8 @@ match2 prop val prevProp =
                 False
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     String.split "\n" input
         |> List.filter (\l -> l /= "")
         |> List.foldl parseLine []

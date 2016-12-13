@@ -1,25 +1,21 @@
-module Y15D15 exposing (answers)
+module Y15D15 exposing (answer)
 
 import Regex exposing (HowMany(AtMost), find, regex)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         model =
             parseInput input
 
         cookie =
             initCookie model 100
-
-        p1 =
-            highScore model Nothing 0 cookie |> toString
-
-        p2 =
-            highScore model (Just 500) 0 cookie |> toString
     in
-        Util.join p1 p2
+        if part == 1 then
+            highScore model Nothing 0 cookie |> toString
+        else
+            highScore model (Just 500) 0 cookie |> toString
 
 
 highScore : Model -> Maybe Int -> Int -> Cookie -> Int

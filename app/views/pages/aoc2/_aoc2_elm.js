@@ -10130,6 +10130,8 @@ var _user$project$Util$permutations = function (xs) {
 			_user$project$Util$select(_p5));
 	}
 };
+var _user$project$Util$onlyOnePart = 'no part two for this day';
+var _user$project$Util$failed = 'failed to do this part';
 var _user$project$Util$combinations = F2(
 	function (n, list) {
 		return ((_elm_lang$core$Native_Utils.cmp(n, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
@@ -10736,16 +10738,17 @@ var _user$project$Y15D10$parse = function (input) {
 					_elm_lang$core$Regex$regex('\\d+'),
 					input))));
 };
-var _user$project$Y15D10$answers = function (input) {
-	var digits = _user$project$Y15D10$parse(input);
-	var digits_ = A2(_user$project$Y15D10$conway, 40, digits);
-	var p1 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$String$length(digits_));
-	var digits__ = A2(_user$project$Y15D10$conway, 10, digits_);
-	var p2 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$String$length(digits__));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D10$answer = F2(
+	function (part, input) {
+		var digits = A2(
+			_user$project$Y15D10$conway,
+			40,
+			_user$project$Y15D10$parse(input));
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$String$length(digits)) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$String$length(
+				A2(_user$project$Y15D10$conway, 10, digits)));
+	});
 
 var _user$project$Y15D11$has_enough_pairs = function (p) {
 	return A2(
@@ -10850,12 +10853,13 @@ var _user$project$Y15D11$parse = function (input) {
 					_elm_lang$core$Regex$regex('[a-z]{8}'),
 					input))));
 };
-var _user$project$Y15D11$answers = function (input) {
-	var p0 = _user$project$Y15D11$parse(input);
-	var p1 = _user$project$Y15D11$next(p0);
-	var p2 = _user$project$Y15D11$next(p1);
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D11$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y15D11$next(
+			_user$project$Y15D11$parse(input)) : _user$project$Y15D11$next(
+			_user$project$Y15D11$next(
+				_user$project$Y15D11$parse(input)));
+	});
 
 var _user$project$Y15D12$count = function (json) {
 	return _elm_lang$core$Basics$toString(
@@ -10877,11 +10881,10 @@ var _user$project$Y15D12$count = function (json) {
 							_elm_lang$core$Regex$regex('-?[1-9]\\d*'),
 							json))))));
 };
-var _user$project$Y15D12$answers = function (input) {
-	var p2 = 'couldn\'t do the second part in Elm';
-	var p1 = _user$project$Y15D12$count(input);
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D12$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y15D12$count(input) : _user$project$Util$failed;
+	});
 
 var _user$project$Y15D13$initModel = {happiness: _elm_lang$core$Dict$empty, people: _elm_lang$core$Set$empty};
 var _user$project$Y15D13$outer = function (list) {
@@ -10966,7 +10969,7 @@ var _user$project$Y15D13$parseLine = F2(
 			return model;
 		}
 	});
-var _user$project$Y15D13$parseInput = function (input) {
+var _user$project$Y15D13$parse = function (input) {
 	return A3(
 		_elm_lang$core$List$foldl,
 		_user$project$Y15D13$parseLine,
@@ -11046,23 +11049,23 @@ var _user$project$Y15D13$happinesses = function (model) {
 			_user$project$Util$permutations(
 				_elm_lang$core$Set$toList(model.people))));
 };
-var _user$project$Y15D13$answers = function (input) {
-	var m1 = _user$project$Y15D13$parseInput(input);
-	var a1 = _user$project$Y15D13$happinesses(m1);
-	var p1 = _elm_lang$core$Basics$toString(
-		A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(a1)));
-	var m2 = _user$project$Y15D13$addMe(m1);
-	var a2 = _user$project$Y15D13$happinesses(m2);
-	var p2 = _elm_lang$core$Basics$toString(
-		A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(a2)));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D13$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(
+					_user$project$Y15D13$happinesses(
+						_user$project$Y15D13$parse(input))))) : _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(
+					_user$project$Y15D13$happinesses(
+						_user$project$Y15D13$addMe(
+							_user$project$Y15D13$parse(input))))));
+	});
 var _user$project$Y15D13$Model = F2(
 	function (a, b) {
 		return {happiness: a, people: b};
@@ -11100,7 +11103,7 @@ var _user$project$Y15D14$parseLine = F2(
 			return model;
 		}
 	});
-var _user$project$Y15D14$parseInput = function (input) {
+var _user$project$Y15D14$parse = function (input) {
 	return A3(
 		_elm_lang$core$List$foldl,
 		_user$project$Y15D14$parseLine,
@@ -11193,13 +11196,12 @@ var _user$project$Y15D14$maxDistance = F2(
 						_user$project$Y15D14$distance(time),
 						model))));
 	});
-var _user$project$Y15D14$answers = function (input) {
-	var time = 2503;
-	var model = _user$project$Y15D14$parseInput(input);
-	var p1 = A2(_user$project$Y15D14$maxDistance, time, model);
-	var p2 = A2(_user$project$Y15D14$bestScore, time, model);
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D14$answer = F2(
+	function (part, input) {
+		var time = 2503;
+		var model = _user$project$Y15D14$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y15D14$maxDistance, time, model) : A2(_user$project$Y15D14$bestScore, time, model);
+	});
 var _user$project$Y15D14$Reindeer = F6(
 	function (a, b, c, d, e, f) {
 		return {name: a, speed: b, time: c, rest: d, km: e, score: f};
@@ -11484,20 +11486,19 @@ var _user$project$Y15D15$parseInput = function (input) {
 			},
 			A2(_elm_lang$core$String$split, '\n', input)));
 };
-var _user$project$Y15D15$answers = function (input) {
-	var model = _user$project$Y15D15$parseInput(input);
-	var cookie = A2(_user$project$Y15D15$initCookie, model, 100);
-	var p1 = _elm_lang$core$Basics$toString(
-		A4(_user$project$Y15D15$highScore, model, _elm_lang$core$Maybe$Nothing, 0, cookie));
-	var p2 = _elm_lang$core$Basics$toString(
-		A4(
-			_user$project$Y15D15$highScore,
-			model,
-			_elm_lang$core$Maybe$Just(500),
-			0,
-			cookie));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D15$answer = F2(
+	function (part, input) {
+		var model = _user$project$Y15D15$parseInput(input);
+		var cookie = A2(_user$project$Y15D15$initCookie, model, 100);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A4(_user$project$Y15D15$highScore, model, _elm_lang$core$Maybe$Nothing, 0, cookie)) : _elm_lang$core$Basics$toString(
+			A4(
+				_user$project$Y15D15$highScore,
+				model,
+				_elm_lang$core$Maybe$Just(500),
+				0,
+				cookie));
+	});
 
 var _user$project$Y15D16$parseInt = function (s) {
 	return A2(
@@ -11646,7 +11647,7 @@ var _user$project$Y15D16$parseLine = F2(
 			return model;
 		}
 	});
-var _user$project$Y15D16$parseInput = function (input) {
+var _user$project$Y15D16$parse = function (input) {
 	return A3(
 		_elm_lang$core$List$foldl,
 		_user$project$Y15D16$parseLine,
@@ -11658,14 +11659,16 @@ var _user$project$Y15D16$parseInput = function (input) {
 			},
 			A2(_elm_lang$core$String$split, '\n', input)));
 };
-var _user$project$Y15D16$answers = function (input) {
-	var model = _user$project$Y15D16$parseInput(input);
-	var p1 = A2(_user$project$Y15D16$sue, _user$project$Y15D16$match1, model);
-	var p2 = A2(_user$project$Y15D16$sue, _user$project$Y15D16$match2, model);
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D16$answer = F2(
+	function (part, input) {
+		var match = _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y15D16$match1 : _user$project$Y15D16$match2;
+		return A2(
+			_user$project$Y15D16$sue,
+			match,
+			_user$project$Y15D16$parse(input));
+	});
 
-var _user$project$Y15D17$parseInput = function (input) {
+var _user$project$Y15D17$parse = function (input) {
 	return A2(
 		_elm_lang$core$List$filter,
 		function (i) {
@@ -11712,19 +11715,18 @@ var _user$project$Y15D17$combos = F3(
 			};
 		}
 	});
-var _user$project$Y15D17$answers = function (input) {
-	var model = _user$project$Y15D17$parseInput(input);
-	var number = A3(
-		_user$project$Y15D17$combos,
-		_elm_lang$core$List$length(model),
-		150,
-		model);
-	var p1 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$Tuple$first(number));
-	var p2 = _elm_lang$core$Basics$toString(
-		_elm_lang$core$Tuple$second(number));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D17$answer = F2(
+	function (part, input) {
+		var select = _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Tuple$first : _elm_lang$core$Tuple$second;
+		var model = _user$project$Y15D17$parse(input);
+		var number = A3(
+			_user$project$Y15D17$combos,
+			_elm_lang$core$List$length(model),
+			150,
+			model);
+		return _elm_lang$core$Basics$toString(
+			select(number));
+	});
 
 var _user$project$Y15D18$initModel = {lights: _elm_lang$core$Array$empty, size: 0, maxIndex: 0, stuck: false};
 var _user$project$Y15D18$debug = function (model) {
@@ -11948,7 +11950,7 @@ var _user$project$Y15D18$Model = F4(
 	function (a, b, c, d) {
 		return {lights: a, size: b, maxIndex: c, stuck: d};
 	});
-var _user$project$Y15D18$parseInput = function (input) {
+var _user$project$Y15D18$parse = function (input) {
 	var a = A3(
 		_elm_lang$core$List$foldl,
 		_elm_lang$core$Array$push,
@@ -11975,20 +11977,21 @@ var _user$project$Y15D18$parseInput = function (input) {
 	var m = s - 1;
 	return A4(_user$project$Y15D18$Model, a, s, m, false);
 };
-var _user$project$Y15D18$answers = function (input) {
-	var nm = 100;
-	var model = _user$project$Y15D18$parseInput(input);
-	var m1 = A2(_user$project$Y15D18$steps, nm, model);
-	var p1 = _elm_lang$core$Basics$toString(
-		_user$project$Y15D18$count(m1));
-	var m2 = A2(
-		_user$project$Y15D18$steps,
-		nm,
-		_user$project$Y15D18$stick(model));
-	var p2 = _elm_lang$core$Basics$toString(
-		_user$project$Y15D18$count(m2));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D18$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y15D18$count(
+				A2(
+					_user$project$Y15D18$steps,
+					100,
+					_user$project$Y15D18$parse(input)))) : _elm_lang$core$Basics$toString(
+			_user$project$Y15D18$count(
+				A2(
+					_user$project$Y15D18$steps,
+					100,
+					_user$project$Y15D18$stick(
+						_user$project$Y15D18$parse(input)))));
+	});
 
 var _user$project$Y15D19$comaRgx = _elm_lang$core$Regex$regex('Y');
 var _user$project$Y15D19$bracRgx = _elm_lang$core$Regex$regex('(Ar|Rn)');
@@ -12109,18 +12112,18 @@ var _user$project$Y15D19$molecules = function (model) {
 	return _elm_lang$core$Basics$toString(
 		_elm_lang$core$Set$size(model_.replacements));
 };
-var _user$project$Y15D19$answers = function (input) {
-	var model = _user$project$Y15D19$parse(input);
-	var p1 = _user$project$Y15D19$molecules(model);
-	var p2 = _user$project$Y15D19$askalski(model);
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D19$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y15D19$molecules(
+			_user$project$Y15D19$parse(input)) : _user$project$Y15D19$askalski(
+			_user$project$Y15D19$parse(input));
+	});
 var _user$project$Y15D19$Model = F3(
 	function (a, b, c) {
 		return {rules: a, molecule: b, replacements: c};
 	});
 
-var _user$project$Y15D20$parseInput = function (input) {
+var _user$project$Y15D20$parse = function (input) {
 	return A2(
 		_elm_lang$core$Result$withDefault,
 		0,
@@ -12174,7 +12177,7 @@ var _user$project$Y15D20$factors = function (n) {
 		{ctor: '[]'});
 };
 var _user$project$Y15D20$house2 = F2(
-	function (goal, house) {
+	function (house, goal) {
 		house2:
 		while (true) {
 			var presents = _elm_lang$core$List$sum(
@@ -12193,16 +12196,16 @@ var _user$project$Y15D20$house2 = F2(
 			if (_elm_lang$core$Native_Utils.cmp(presents, goal) > -1) {
 				return house;
 			} else {
-				var _v0 = goal,
-					_v1 = house + 1;
-				goal = _v0;
-				house = _v1;
+				var _v0 = house + 1,
+					_v1 = goal;
+				house = _v0;
+				goal = _v1;
 				continue house2;
 			}
 		}
 	});
 var _user$project$Y15D20$house1 = F2(
-	function (goal, house) {
+	function (house, goal) {
 		house1:
 		while (true) {
 			var presents = _elm_lang$core$List$sum(
@@ -12216,22 +12219,26 @@ var _user$project$Y15D20$house1 = F2(
 			if (_elm_lang$core$Native_Utils.cmp(presents, goal) > -1) {
 				return house;
 			} else {
-				var _v2 = goal,
-					_v3 = house + 1;
-				goal = _v2;
-				house = _v3;
+				var _v2 = house + 1,
+					_v3 = goal;
+				house = _v2;
+				goal = _v3;
 				continue house1;
 			}
 		}
 	});
-var _user$project$Y15D20$answers = function (input) {
-	var goal = _user$project$Y15D20$parseInput(input);
-	var p1 = _elm_lang$core$Basics$toString(
-		A2(_user$project$Y15D20$house1, goal, 1));
-	var p2 = _elm_lang$core$Basics$toString(
-		A2(_user$project$Y15D20$house2, goal, 1));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D20$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D20$house1,
+				1,
+				_user$project$Y15D20$parse(input))) : _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D20$house2,
+				1,
+				_user$project$Y15D20$parse(input)));
+	});
 
 var _user$project$Y15D21$rings = _elm_lang$core$Array$fromList(
 	{
@@ -12699,7 +12706,7 @@ var _user$project$Y15D21$search = F4(
 			}
 		}
 	});
-var _user$project$Y15D21$parseInput = function (input) {
+var _user$project$Y15D21$parse = function (input) {
 	var ns = A2(
 		_elm_lang$core$List$map,
 		_elm_lang$core$String$toInt,
@@ -12726,18 +12733,18 @@ var _user$project$Y15D21$Index = F4(
 	});
 var _user$project$Y15D21$initIndex = _elm_lang$core$Maybe$Just(
 	A4(_user$project$Y15D21$Index, 0, 0, 0, 1));
-var _user$project$Y15D21$answers = function (input) {
-	var boss = _user$project$Y15D21$parseInput(input);
-	var p1 = _elm_lang$core$Basics$toString(
-		A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$lowest, 0, _user$project$Y15D21$initIndex));
-	var p2 = _elm_lang$core$Basics$toString(
-		A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$highest, 0, _user$project$Y15D21$initIndex));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D21$answer = F2(
+	function (part, input) {
+		var boss = _user$project$Y15D21$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$lowest, 0, _user$project$Y15D21$initIndex)) : _elm_lang$core$Basics$toString(
+			A4(_user$project$Y15D21$search, boss, _user$project$Y15D21$highest, 0, _user$project$Y15D21$initIndex));
+	});
 
-var _user$project$Y15D22$answers = function (input) {
-	return 'couldn\'t do this one at all in Elm';
-};
+var _user$project$Y15D22$answer = F2(
+	function (part, input) {
+		return _user$project$Util$failed;
+	});
 
 var _user$project$Y15D23$initModel = {instructions: _elm_lang$core$Array$empty, registers: _elm_lang$core$Dict$empty, i: 0};
 var _user$project$Y15D23$get = F2(
@@ -12913,7 +12920,7 @@ var _user$project$Y15D23$parseLine = F2(
 			return model;
 		}
 	});
-var _user$project$Y15D23$parseInput = function (input) {
+var _user$project$Y15D23$parse = function (input) {
 	return A3(
 		_elm_lang$core$List$foldl,
 		_user$project$Y15D23$parseLine,
@@ -12925,27 +12932,22 @@ var _user$project$Y15D23$parseInput = function (input) {
 			},
 			A2(_elm_lang$core$String$split, '\n', input)));
 };
-var _user$project$Y15D23$answers = function (input) {
-	var model1 = _user$project$Y15D23$parseInput(input);
-	var model2 = _elm_lang$core$Native_Utils.update(
-		model1,
-		{
-			registers: A3(_elm_lang$core$Dict$insert, 'a', 1, model1.registers)
-		});
-	var p2 = _elm_lang$core$Basics$toString(
-		A2(
-			_user$project$Y15D23$get,
-			'b',
-			_user$project$Y15D23$run(model2)));
-	var p1 = _elm_lang$core$Basics$toString(
-		A2(
-			_user$project$Y15D23$get,
-			'b',
-			_user$project$Y15D23$run(model1)));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D23$answer = F2(
+	function (part, input) {
+		var init = _user$project$Y15D23$parse(input);
+		var model = _elm_lang$core$Native_Utils.eq(part, 1) ? init : _elm_lang$core$Native_Utils.update(
+			init,
+			{
+				registers: A3(_elm_lang$core$Dict$insert, 'a', 1, init.registers)
+			});
+		return _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D23$get,
+				'b',
+				_user$project$Y15D23$run(model)));
+	});
 
-var _user$project$Y15D24$parseInput = function (input) {
+var _user$project$Y15D24$parse = function (input) {
 	return A2(
 		_elm_lang$core$List$filter,
 		function (w) {
@@ -13030,14 +13032,15 @@ var _user$project$Y15D24$bestQe = F2(
 		var weight = (_elm_lang$core$List$sum(weights) / groups) | 0;
 		return A5(_user$project$Y15D24$searchLength, 0, 1, maxLen, weight, weights);
 	});
-var _user$project$Y15D24$answers = function (input) {
-	var weights = _user$project$Y15D24$parseInput(input);
-	var p1 = _elm_lang$core$Basics$toString(
-		A2(_user$project$Y15D24$bestQe, 3, weights));
-	var p2 = _elm_lang$core$Basics$toString(
-		A2(_user$project$Y15D24$bestQe, 4, weights));
-	return A2(_user$project$Util$join, p1, p2);
-};
+var _user$project$Y15D24$answer = F2(
+	function (part, input) {
+		var num = _elm_lang$core$Native_Utils.eq(part, 1) ? 3 : 4;
+		return _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y15D24$bestQe,
+				num,
+				_user$project$Y15D24$parse(input)));
+	});
 
 var _user$project$Y15D25$start = {code: 20151125, row: 1, col: 1};
 var _user$project$Y15D25$search = F2(
@@ -13103,11 +13106,16 @@ var _user$project$Y15D25$parse = function (input) {
 	var col = _p5._1;
 	return {ctor: '_Tuple2', _0: row, _1: col};
 };
-var _user$project$Y15D25$answer = function (input) {
-	var target = _user$project$Y15D25$parse(input);
-	var model = A2(_user$project$Y15D25$search, target, _user$project$Y15D25$start);
-	return _elm_lang$core$Basics$toString(model.code);
-};
+var _user$project$Y15D25$answer = F2(
+	function (part, input) {
+		if (_elm_lang$core$Native_Utils.eq(part, 1)) {
+			var target = _user$project$Y15D25$parse(input);
+			var model = A2(_user$project$Y15D25$search, target, _user$project$Y15D25$start);
+			return _elm_lang$core$Basics$toString(model.code);
+		} else {
+			return _user$project$Util$onlyOnePart;
+		}
+	});
 var _user$project$Y15D25$Model = F3(
 	function (a, b, c) {
 		return {code: a, row: b, col: c};
@@ -13136,37 +13144,37 @@ var _user$project$Y15$answer = F3(
 			case 9:
 				return A2(_user$project$Y15D09$answer, part, input);
 			case 10:
-				return _user$project$Y15D10$answers(input);
+				return A2(_user$project$Y15D10$answer, part, input);
 			case 11:
-				return _user$project$Y15D11$answers(input);
+				return A2(_user$project$Y15D11$answer, part, input);
 			case 12:
-				return _user$project$Y15D12$answers(input);
+				return A2(_user$project$Y15D12$answer, part, input);
 			case 13:
-				return _user$project$Y15D13$answers(input);
+				return A2(_user$project$Y15D13$answer, part, input);
 			case 14:
-				return _user$project$Y15D14$answers(input);
+				return A2(_user$project$Y15D14$answer, part, input);
 			case 15:
-				return _user$project$Y15D15$answers(input);
+				return A2(_user$project$Y15D15$answer, part, input);
 			case 16:
-				return _user$project$Y15D16$answers(input);
+				return A2(_user$project$Y15D16$answer, part, input);
 			case 17:
-				return _user$project$Y15D17$answers(input);
+				return A2(_user$project$Y15D17$answer, part, input);
 			case 18:
-				return _user$project$Y15D18$answers(input);
+				return A2(_user$project$Y15D18$answer, part, input);
 			case 19:
-				return _user$project$Y15D19$answers(input);
+				return A2(_user$project$Y15D19$answer, part, input);
 			case 20:
-				return _user$project$Y15D20$answers(input);
+				return A2(_user$project$Y15D20$answer, part, input);
 			case 21:
-				return _user$project$Y15D21$answers(input);
+				return A2(_user$project$Y15D21$answer, part, input);
 			case 22:
-				return _user$project$Y15D22$answers(input);
+				return A2(_user$project$Y15D22$answer, part, input);
 			case 23:
-				return _user$project$Y15D23$answers(input);
+				return A2(_user$project$Y15D23$answer, part, input);
 			case 24:
-				return _user$project$Y15D24$answers(input);
+				return A2(_user$project$Y15D24$answer, part, input);
 			case 25:
-				return _user$project$Y15D25$answer(input);
+				return A2(_user$project$Y15D25$answer, part, input);
 			default:
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -14933,37 +14941,37 @@ var _user$project$Y16D10$lookfor = F2(
 			}
 		}
 	});
-var _user$project$Y16D10$answers = function (input) {
-	var matches = _user$project$Y16D10$parse(input);
-	var state = A2(_user$project$Y16D10$process, matches, _user$project$Y16D10$init);
-	var a1 = A2(
-		_user$project$Y16D10$lookfor,
-		'17-61',
-		_elm_lang$core$Dict$toList(state));
-	var a2 = _elm_lang$core$Basics$toString(
-		A3(
-			_user$project$Y16D10$multiply,
-			1,
-			state,
-			{
-				ctor: '::',
-				_0: 0,
-				_1: {
+var _user$project$Y16D10$answer = F2(
+	function (part, input) {
+		var matches = _user$project$Y16D10$parse(input);
+		var state = A2(_user$project$Y16D10$process, matches, _user$project$Y16D10$init);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(
+			_user$project$Y16D10$lookfor,
+			'17-61',
+			_elm_lang$core$Dict$toList(state)) : _elm_lang$core$Basics$toString(
+			A3(
+				_user$project$Y16D10$multiply,
+				1,
+				state,
+				{
 					ctor: '::',
-					_0: 1,
+					_0: 0,
 					_1: {
 						ctor: '::',
-						_0: 2,
-						_1: {ctor: '[]'}
+						_0: 1,
+						_1: {
+							ctor: '::',
+							_0: 2,
+							_1: {ctor: '[]'}
+						}
 					}
-				}
-			}));
-	return A2(_user$project$Util$join, a1, a2);
-};
+				}));
+	});
 
-var _user$project$Y16D11$answers = function (input) {
-	return 'not implemented - too difficult';
-};
+var _user$project$Y16D11$answer = F2(
+	function (part, input) {
+		return _user$project$Util$failed;
+	});
 
 var _user$project$Y16D12$initState = function (instructions) {
 	return {
@@ -15186,78 +15194,90 @@ var _user$project$Y16D12$parse = function (input) {
 					_elm_lang$core$Regex$regex('cpy ([abcd]|-?\\d+) ([abcd])|inc ([abcd])|dec ([abcd])|jnz ([abcd]|-?\\d+) (-?\\d+)'),
 					input))));
 };
-var _user$project$Y16D12$answers = function (input) {
-	var state = _user$project$Y16D12$initState(
-		_user$project$Y16D12$parse(input));
-	var a1 = _elm_lang$core$Basics$toString(
-		A2(
-			_user$project$Y16D12$get,
-			'a',
-			_user$project$Y16D12$process(state)));
-	var a2 = _elm_lang$core$Basics$toString(
-		A2(
-			_user$project$Y16D12$get,
-			'a',
-			_user$project$Y16D12$process(
-				_elm_lang$core$Native_Utils.update(
-					state,
-					{
-						registers: A3(_user$project$Y16D12$set, 'c', state, 1)
-					}))));
-	return A2(_user$project$Util$join, a1, a2);
-};
+var _user$project$Y16D12$answer = F2(
+	function (part, input) {
+		var state = _user$project$Y16D12$initState(
+			_user$project$Y16D12$parse(input));
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D12$get,
+				'a',
+				_user$project$Y16D12$process(state))) : _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D12$get,
+				'a',
+				_user$project$Y16D12$process(
+					_elm_lang$core$Native_Utils.update(
+						state,
+						{
+							registers: A3(_user$project$Y16D12$set, 'c', state, 1)
+						}))));
+	});
 
-var _user$project$Y16D13$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D13$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D14$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D14$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D15$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D15$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D16$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D16$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D17$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D17$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D18$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D18$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D19$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D19$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D20$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D20$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D21$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D21$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D22$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D22$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D23$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D23$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D24$answers = function (input) {
-	return '';
-};
+var _user$project$Y16D24$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+	});
 
-var _user$project$Y16D25$answer = function (input) {
-	return '';
-};
+var _user$project$Y16D25$answer = F2(
+	function (part, input) {
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : _user$project$Util$onlyOnePart;
+	});
 
 var _user$project$Y16$answer = F3(
 	function (day, part, input) {
@@ -15282,37 +15302,37 @@ var _user$project$Y16$answer = F3(
 			case 9:
 				return A2(_user$project$Y16D09$answer, part, input);
 			case 10:
-				return _user$project$Y16D10$answers(input);
+				return A2(_user$project$Y16D10$answer, part, input);
 			case 11:
-				return _user$project$Y16D11$answers(input);
+				return A2(_user$project$Y16D11$answer, part, input);
 			case 12:
-				return _user$project$Y16D12$answers(input);
+				return A2(_user$project$Y16D12$answer, part, input);
 			case 13:
-				return _user$project$Y16D13$answers(input);
+				return A2(_user$project$Y16D13$answer, part, input);
 			case 14:
-				return _user$project$Y16D14$answers(input);
+				return A2(_user$project$Y16D14$answer, part, input);
 			case 15:
-				return _user$project$Y16D15$answers(input);
+				return A2(_user$project$Y16D15$answer, part, input);
 			case 16:
-				return _user$project$Y16D16$answers(input);
+				return A2(_user$project$Y16D16$answer, part, input);
 			case 17:
-				return _user$project$Y16D17$answers(input);
+				return A2(_user$project$Y16D17$answer, part, input);
 			case 18:
-				return _user$project$Y16D18$answers(input);
+				return A2(_user$project$Y16D18$answer, part, input);
 			case 19:
-				return _user$project$Y16D19$answers(input);
+				return A2(_user$project$Y16D19$answer, part, input);
 			case 20:
-				return _user$project$Y16D20$answers(input);
+				return A2(_user$project$Y16D20$answer, part, input);
 			case 21:
-				return _user$project$Y16D21$answers(input);
+				return A2(_user$project$Y16D21$answer, part, input);
 			case 22:
-				return _user$project$Y16D22$answers(input);
+				return A2(_user$project$Y16D22$answer, part, input);
 			case 23:
-				return _user$project$Y16D23$answers(input);
+				return A2(_user$project$Y16D23$answer, part, input);
 			case 24:
-				return _user$project$Y16D24$answers(input);
+				return A2(_user$project$Y16D24$answer, part, input);
 			case 25:
-				return _user$project$Y16D25$answer(input);
+				return A2(_user$project$Y16D25$answer, part, input);
 			default:
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -15374,7 +15394,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 12)
+				days: A2(_elm_lang$core$List$range, 1, 13)
 			},
 			_1: {ctor: '[]'}
 		}

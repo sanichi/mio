@@ -1,30 +1,26 @@
-module Y16D10 exposing (answers)
+module Y16D10 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         matches =
             parse input
 
         state =
             process matches init
-
-        a1 =
+    in
+        if part == 1 then
             state
                 |> Dict.toList
                 |> lookfor "17-61"
-
-        a2 =
+        else
             [ 0, 1, 2 ]
                 |> multiply 1 state
                 |> toString
-    in
-        Util.join a1 a2
 
 
 lookfor : String -> List ( String, List Int ) -> String
