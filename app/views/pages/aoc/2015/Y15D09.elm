@@ -1,26 +1,23 @@
-module Y15D09 exposing (answers)
+module Y15D09 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)
 import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         model =
             parseInput input
 
         extremes =
             extreme model
-
-        p1 =
-            List.minimum extremes |> Maybe.withDefault 0 |> toString
-
-        p2 =
-            List.maximum extremes |> Maybe.withDefault 0 |> toString
     in
-        Util.join p1 p2
+        if part == 1 then
+            List.minimum extremes |> Maybe.withDefault 0 |> toString
+        else
+            List.maximum extremes |> Maybe.withDefault 0 |> toString
 
 
 extreme : Model -> List Int

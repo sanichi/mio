@@ -1,8 +1,9 @@
-module Y16D15 exposing (answers)
-
-import Util
+module Y16D15 exposing (answer)
 
 
-answers : String -> String
-answers input =
-    Util.todo
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        "TODO"
+    else
+        "TODO"

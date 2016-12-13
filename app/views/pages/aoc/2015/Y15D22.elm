@@ -1,6 +1,8 @@
-module Y15D22 exposing (answers)
+module Y15D22 exposing (answer)
+
+import Util
 
 
-answers : String -> String
-answers input =
-    "couldn't do this one at all in Elm"
+answer : Int -> String -> String
+answer part input =
+    Util.failed

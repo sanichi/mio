@@ -1,24 +1,20 @@
-module Y16D04 exposing (answers)
+module Y16D04 exposing (answer)
 
 import Char
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         rooms =
             parse input
-
-        a1 =
-            List.filter realRoom rooms |> List.map .sector |> List.sum |> toString
-
-        a2 =
-            List.filter northPole rooms |> List.map .sector |> List.sum |> toString
     in
-        Util.join a1 a2
+        if part == 1 then
+            List.filter realRoom rooms |> List.map .sector |> List.sum |> toString
+        else
+            List.filter northPole rooms |> List.map .sector |> List.sum |> toString
 
 
 type alias Room =

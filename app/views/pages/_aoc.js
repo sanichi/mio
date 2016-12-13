@@ -1,59 +1,16 @@
-var elm_app, date;
-
 $(function() {
-  // Embed the elm app as a worker.
-  elm_app = Elm.Main.worker();
-  elm_app.ports.answers.subscribe(display_solution);
-
-  // Send a problem to the Elm app every time the menu updates.
-  $('#year-day').change(function() {
-    solve_problem($(this).val());
+  var app = Elm.Main.embed($('#elm-app').get(0));
+  app.ports.getData.subscribe(function(year_day) {
+    var year = year_day[0];
+    var day = year_day[1];
+    var file = '/aoc/' + year + '/' + day + '.txt';
+    $.ajax({url: file}).done(function(data) {
+      app.ports.newData.send(data);
+    });
+  });
+  app.ports.prepareAnswer.subscribe(function(part) {
+    setTimeout(function() {
+      app.ports.startAnswer.send(part);
+    }, 100);
   });
 });
-
-// Check a year/day combination has been selected and, if so, get the input
-// for the problem and send it, along with year and day, to the Elm app.
-function solve_problem(year_day) {
-  var match = year_day.match(/^(\d{4})-(\d{1,2})$/);
-  if (match)
-  {
-    var year = parseInt(match[1], 10);
-    var day  = parseInt(match[2], 10);
-    var file = '/aoc/' + year + '/' + day + '.txt';
-    $('#answers').val('');
-    $('#input').val('');
-    $('#code').hide();
-    $('#loading').hide();
-    $.ajax({url: file}).done(function(text) {
-      $('#input').val(text);
-      $('#loading').show();
-      $('#code').attr('href', code_link(year, day));
-      $('#code').show();
-      setTimeout(function() { // flush DOM changes
-        date = new Date;
-        elm_app.ports.problem.send([year, day, text]);
-      }, 100);
-    });
-  }
-}
-
-// When the Elm app sends back a solution, display it.
-function display_solution(answers) {
-  $('#answers').val(answers + seconds(date));
-  $('#loading').hide();
-}
-
-// Link to code for given year and day.
-function code_link(year, day) {
-  var yy = year.toString().substring(2, 4);
-  var dd = (day < 10 ? '0' : '') + day;
-  return 'https://bitbucket.org/sanichi/sni_mio_app/src/master/app/views/pages/aoc/' + year + '/Y' + yy + 'D' + dd + '.elm';
-}
-
-// Calculate time difference for display.
-function seconds(d1)
-{
-  var d2 = new Date;
-  var diff = ((d2 - d1) / 1000).toFixed(2);
-  return ' (' + diff + 's)';
-}

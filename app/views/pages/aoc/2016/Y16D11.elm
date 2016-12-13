@@ -1,8 +1,8 @@
-module Y16D11 exposing (answers)
+module Y16D11 exposing (answer)
 
 import Util
 
 
-answers : String -> String
-answers input =
-    "not implemented - too difficult"
+answer : Int -> String -> String
+answer part input =
+    Util.failed

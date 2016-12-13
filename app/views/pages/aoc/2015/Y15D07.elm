@@ -1,29 +1,27 @@
-module Y15D07 exposing (answers)
+module Y15D07 exposing (answer)
 
 import Bitwise
 import Dict exposing (Dict)
 import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         circuit =
             parseInput input
-
-        circuit1 =
-            reduce "a" circuit
-
-        p1 =
-            getVal "a" circuit1 |> toString
-
-        circuit2 =
-            reduce "a" (Dict.insert "b" (NoOp 3176) circuit)
-
-        p2 =
-            getVal "a" circuit2 |> toString
     in
-        Util.join p1 p2
+        if part == 1 then
+            circuit
+                |> reduce "a"
+                |> getVal "a"
+                |> toString
+        else
+            circuit
+                |> Dict.insert "b" (NoOp 3176)
+                |> reduce "a"
+                |> getVal "a"
+                |> toString
 
 
 reduce : Wire -> Circuit -> Circuit

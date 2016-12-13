@@ -1,19 +1,14 @@
-module Y15D02 exposing (answers)
+module Y15D02 exposing (answer)
 
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        p1 =
-            sumInput wrapping input |> toString
-
-        p2 =
-            sumInput ribbon input |> toString
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        sumInput wrapping input |> toString
+    else
+        sumInput ribbon input |> toString
 
 
 sumInput : (Int -> Int -> Int -> Int) -> String -> Int

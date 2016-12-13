@@ -1,22 +1,18 @@
-module Y15D08 exposing (answers)
+module Y15D08 exposing (answer)
 
 import Regex exposing (HowMany(All), replace, regex)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         strings =
             parseInput input
-
-        p1 =
-            (chrLength strings) - (memLength strings) |> toString
-
-        p2 =
-            (escLength strings) - (chrLength strings) |> toString
     in
-        Util.join p1 p2
+        if part == 1 then
+            (chrLength strings) - (memLength strings) |> toString
+        else
+            (escLength strings) - (chrLength strings) |> toString
 
 
 parseInput : String -> List String

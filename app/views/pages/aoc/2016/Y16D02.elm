@@ -1,26 +1,22 @@
-module Y16D02 exposing (answers)
+module Y16D02 exposing (answer)
 
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         instructions =
             parse input
-
-        a1 =
+    in
+        if part == 1 then
             instructions
                 |> translate init [] move1
                 |> String.fromList
-
-        a2 =
+        else
             instructions
                 |> translate init [] move2
                 |> String.fromList
-    in
-        Util.join a1 a2
 
 
 translate : Char -> List Char -> (Char -> Char -> Char) -> List String -> List Char

@@ -1,31 +1,9 @@
-= render "utils/title", key: "pages.aoc.title"
+= render "utils/title", key: "pages.aoc.title", header: true
 
 - content_for :javascript do
-  = render "aoc_elm.min.js"
-  = render "aoc.js"
+  = render "aoc2_elm.min.js"
+  = render "aoc2.js"
 
-.row
-  .col-xs-12
-    %form{class: "form-horizontal", role: "form"}
-      .form-group
-        %label.control-label.col-xs-2= t("pages.aoc.year_day")
-        .col-xs-4.col-sm-3.col-md-2
-          %select{class: "form-control input-sm", size: "1", id: "year-day"}
-            %option{value: ""}= t("select")
-            - (2015..2016).each do |year|
-              - (1..25).each do |day|
-                %option{value: "#{year}-#{day}"}
-                  = "#{year}/#{day}"
-                  = (year == 2015 && day == 22) || (year == 2016 && (day== 11 || day > 12)) ? "✘" : "✔︎"
-                  = "🕰" if (year == 2015 && [4, 6, 10, 11, 13, 15, 17, 18, 20, 24].include?(day)) || (year == 2016 && [5, 9].include?(day))
-      .form-group
-        %label.control-label.col-xs-2= t("pages.aoc.answers")
-        .col-xs-5
-          %input{class: "form-control", type: "text", id: "answers"}
-        .col-xs-5.text-center
-          %span{style: "display: none", id: "loading"}= t("pages.aoc.thinking")
-          = link_to t("pages.aoc.code"), "#", style: "display: none", target: "_external", id: "code"
-      .form-group
-        %label.control-label.col-xs-2= t("pages.aoc.input")
-        .col-xs-10
-          %textarea{class: "form-control monospace", rows: "50", id: "input"}
+%hr
+
+.div{id: "elm-app"}

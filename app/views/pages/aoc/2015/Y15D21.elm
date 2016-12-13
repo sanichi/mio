@@ -1,23 +1,19 @@
-module Y15D21 exposing (answers)
+module Y15D21 exposing (answer)
 
 import Array exposing (Array)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         boss =
-            parseInput input
-
-        p1 =
-            search boss lowest 0 initIndex |> toString
-
-        p2 =
-            search boss highest 0 initIndex |> toString
+            parse input
     in
-        Util.join p1 p2
+        if part == 1 then
+            search boss lowest 0 initIndex |> toString
+        else
+            search boss highest 0 initIndex |> toString
 
 
 search : Fighter -> (Bool -> Int -> Int -> Bool) -> Int -> Maybe Index -> Int
@@ -150,8 +146,8 @@ rings =
         ]
 
 
-parseInput : String -> Fighter
-parseInput input =
+parse : String -> Fighter
+parse input =
     let
         ns =
             Regex.find (Regex.All) (Regex.regex "\\d+") input

@@ -1,18 +1,22 @@
 module Y15D25 exposing (answer)
 
 import Regex exposing (HowMany(AtMost), find, regex)
+import Util
 
 
-answer : String -> String
-answer input =
-    let
-        target =
-            parse input
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        let
+            target =
+                parse input
 
-        model =
-            search target start
-    in
-        toString model.code
+            model =
+                search target start
+        in
+            toString model.code
+    else
+        Util.onlyOnePart
 
 
 parse : String -> Target

@@ -1,23 +1,19 @@
-module Y15D19 exposing (answers)
+module Y15D19 exposing (answer)
 
 import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
 import Set exposing (Set)
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        model =
-            parse input
-
-        p1 =
-            molecules model
-
-        p2 =
-            askalski model
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        input
+            |> parse
+            |> molecules
+    else
+        input
+            |> parse
+            |> askalski
 
 
 type alias Model =

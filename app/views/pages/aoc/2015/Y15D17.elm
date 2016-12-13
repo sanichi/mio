@@ -1,26 +1,27 @@
-module Y15D17 exposing (answers)
+module Y15D17 exposing (answer)
 
 import Regex exposing (HowMany(All), find, regex)
-import Tuple exposing (first, second)
 import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         model =
-            parseInput input
+            parse input
 
         number =
             combos (List.length model) 150 model
 
-        p1 =
-            first number |> toString
-
-        p2 =
-            second number |> toString
+        select =
+            if part == 1 then
+                Tuple.first
+            else
+                Tuple.second
     in
-        Util.join p1 p2
+        number
+            |> select
+            |> toString
 
 
 combos : Int -> Int -> Model -> ( Int, Int )
@@ -45,8 +46,8 @@ combos n total model =
             )
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     find All (regex "[1-9]\\d*") input
         |> List.map .match
         |> List.map String.toInt

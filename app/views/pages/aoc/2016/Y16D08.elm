@@ -1,26 +1,22 @@
-module Y16D08 exposing (answers)
+module Y16D08 exposing (answer)
 
 import Array exposing (Array)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         instructions =
             parse input
 
         screen =
             decode instructions initialScreen
-
-        a1 =
-            count screen
-
-        a2 =
-            display screen
     in
-        Util.join a1 a2
+        if part == 1 then
+            count screen
+        else
+            display screen
 
 
 decode : List Instruction -> Screen -> Screen

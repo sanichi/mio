@@ -1,22 +1,18 @@
-module Y15D05 exposing (answers)
+module Y15D05 exposing (answer)
 
 import Regex exposing (HowMany(All), Regex, find, regex)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         strings =
             find All stringRgx input |> List.map .match
-
-        p1 =
-            countNice nice1 strings
-
-        p2 =
-            countNice nice2 strings
     in
-        Util.join p1 p2
+        if part == 1 then
+            countNice nice1 strings
+        else
+            countNice nice2 strings
 
 
 countNice : (String -> Bool) -> List String -> String

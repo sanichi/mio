@@ -1,18 +1,12 @@
-module Y15D01 exposing (answers)
-
-import Util
+module Y15D01 exposing (answer)
 
 
-answers : String -> String
-answers input =
-    let
-        p1 =
-            count 0 input |> toString
-
-        p2 =
-            position 0 0 input |> toString
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        count 0 input |> toString
+    else
+        position 0 0 input |> toString
 
 
 count : Int -> String -> Int

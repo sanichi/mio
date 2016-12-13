@@ -1,23 +1,20 @@
-module Y15D11 exposing (answers)
+module Y15D11 exposing (answer)
 
 import Char
 import Regex exposing (HowMany(All, AtMost), contains, find, regex)
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        p0 =
-            parse input
-
-        p1 =
-            next p0
-
-        p2 =
-            next p1
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        input
+            |> parse
+            |> next
+    else
+        input
+            |> parse
+            |> next
+            |> next
 
 
 parse : String -> String

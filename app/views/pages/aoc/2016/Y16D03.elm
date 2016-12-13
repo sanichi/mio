@@ -1,25 +1,21 @@
-module Y16D03 exposing (answers)
+module Y16D03 exposing (answer)
 
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         horizontals =
             parse input
 
         verticals =
             rearrange [] [] [] horizontals
-
-        a1 =
-            List.map List.sort horizontals |> count |> toString
-
-        a2 =
-            List.map List.sort verticals |> count |> toString
     in
-        Util.join a1 a2
+        if part == 1 then
+            List.map List.sort horizontals |> count |> toString
+        else
+            List.map List.sort verticals |> count |> toString
 
 
 count : List (List Int) -> Int

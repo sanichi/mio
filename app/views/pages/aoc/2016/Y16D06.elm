@@ -1,24 +1,20 @@
-module Y16D06 exposing (answers)
+module Y16D06 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         messages =
             parse input
-
-        a1 =
-            decrypt messages Most
-
-        a2 =
-            decrypt messages Least
     in
-        Util.join a1 a2
+        if part == 1 then
+            decrypt messages Most
+        else
+            decrypt messages Least
 
 
 type Frequency

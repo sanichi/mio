@@ -1,32 +1,24 @@
-module Y15D18 exposing (answers)
+module Y15D18 exposing (answer)
 
 import Array exposing (Array)
 import Regex exposing (HowMany(All), find, regex)
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        model =
-            parseInput input
-
-        nm =
-            100
-
-        m1 =
-            steps nm model
-
-        m2 =
-            stick model |> steps nm
-
-        p1 =
-            count m1 |> toString
-
-        p2 =
-            count m2 |> toString
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        input
+            |> parse
+            |> steps 100
+            |> count
+            |> toString
+    else
+        input
+            |> parse
+            |> stick
+            |> steps 100
+            |> count
+            |> toString
 
 
 steps : Int -> Model -> Model
@@ -153,8 +145,8 @@ stick model =
         { model | lights = a, stuck = True }
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     let
         a =
             find All (regex "[#.]") input

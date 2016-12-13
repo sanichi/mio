@@ -1,27 +1,23 @@
-module Y15D23 exposing (answers)
+module Y15D23 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
-        model1 =
-            parseInput input
+        init =
+            parse input
 
-        model2 =
-            { model1 | registers = Dict.insert "a" 1 model1.registers }
-
-        p1 =
-            run model1 |> get "b" |> toString
-
-        p2 =
-            run model2 |> get "b" |> toString
+        model =
+            if part == 1 then
+                init
+            else
+                { init | registers = Dict.insert "a" 1 init.registers }
     in
-        Util.join p1 p2
+        run model |> get "b" |> toString
 
 
 run : Model -> Model
@@ -103,8 +99,8 @@ get reg model =
     Dict.get reg model.registers |> Maybe.withDefault 0
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     String.split "\n" input
         |> List.filter (\l -> l /= "")
         |> List.foldl parseLine initModel

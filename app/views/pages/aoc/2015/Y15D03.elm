@@ -1,20 +1,15 @@
-module Y15D03 exposing (answers)
+module Y15D03 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        p1 =
-            christmas 1 input
-
-        p2 =
-            christmas 2 input
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        christmas 1 input
+    else
+        christmas 2 input
 
 
 christmas : Int -> String -> String

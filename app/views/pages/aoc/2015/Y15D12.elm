@@ -1,19 +1,15 @@
-module Y15D12 exposing (answers)
+module Y15D12 exposing (answer)
 
 import Regex
 import Util
 
 
-answers : String -> String
-answers input =
-    let
-        p1 =
-            count input
-
-        p2 =
-            "couldn't do the second part in Elm"
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        count input
+    else
+        Util.failed
 
 
 count : String -> String

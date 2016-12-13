@@ -1,28 +1,24 @@
-module Y16D07 exposing (answers)
+module Y16D07 exposing (answer)
 
 import Regex exposing (Regex)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         addresses =
             parse input
-
-        a1 =
+    in
+        if part == 1 then
             addresses
                 |> List.filter tls
                 |> List.length
                 |> toString
-
-        a2 =
+        else
             addresses
                 |> List.filter ssl
                 |> List.length
                 |> toString
-    in
-        Util.join a1 a2
 
 
 tls : String -> Bool

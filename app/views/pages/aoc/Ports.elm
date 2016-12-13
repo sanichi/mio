@@ -1,7 +1,13 @@
 port module Ports exposing (..)
 
 
-port problem : (( Int, Int, String ) -> msg) -> Sub msg
+port getData : ( Int, Int ) -> Cmd msg
 
 
-port answers : String -> Cmd msg
+port newData : (String -> msg) -> Sub msg
+
+
+port prepareAnswer : Int -> Cmd msg
+
+
+port startAnswer : (Int -> msg) -> Sub msg

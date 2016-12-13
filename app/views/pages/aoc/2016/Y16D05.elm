@@ -1,34 +1,20 @@
-module Y16D05 exposing (answers)
+module Y16D05 exposing (answer)
 
 import Array exposing (Array)
 import MD5
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         doorId =
             parse input
-
-        a1 =
-            password1 doorId 0 ""
-
-        a2 =
-            password2 doorId 0 (Array.repeat 8 Nothing)
     in
-        Util.join a1 a2
-
-
-zeros : String
-zeros =
-    "00000"
-
-
-zLen : Int
-zLen =
-    String.length zeros
+        if part == 1 then
+            password1 doorId 0 ""
+        else
+            password2 doorId 0 (Array.repeat 8 Nothing)
 
 
 password1 : String -> Int -> String -> String
@@ -114,6 +100,16 @@ password2 doorId index accum =
                 index + 1
         in
             password2 doorId newIndex newAccum
+
+
+zeros : String
+zeros =
+    "00000"
+
+
+zLen : Int
+zLen =
+    String.length zeros
 
 
 parse : String -> String

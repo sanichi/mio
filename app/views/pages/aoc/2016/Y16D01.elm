@@ -1,22 +1,23 @@
-module Y16D01 exposing (answers)
+module Y16D01 exposing (answer)
 
 import Regex
 import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         steps =
             parse input
-
-        a1 =
-            updates steps init |> blocks |> toString
-
-        a2 =
-            revisits steps [] init |> blocks |> toString
     in
-        Util.join a1 a2
+        if part == 1 then
+            updates steps init
+                |> blocks
+                |> toString
+        else
+            revisits steps [] init
+                |> blocks
+                |> toString
 
 
 type Rotation

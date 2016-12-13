@@ -1,23 +1,22 @@
-module Y15D04 exposing (answers)
+module Y15D04 exposing (answer)
 
 import Regex
 import MD5
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         key =
             parse input
 
         a1 =
             find 1 "00000" key
-
-        a2 =
-            find a1 "000000" key
     in
-        Util.join (toString a1) (toString a2)
+        if part == 1 then
+            a1 |> toString
+        else
+            find a1 "000000" key |> toString
 
 
 parse : String -> String

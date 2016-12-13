@@ -1,25 +1,21 @@
-module Y15D14 exposing (answers)
+module Y15D14 exposing (answer)
 
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         model =
-            parseInput input
+            parse input
 
         time =
             2503
-
-        p1 =
-            maxDistance time model
-
-        p2 =
-            bestScore time model
     in
-        Util.join p1 p2
+        if part == 1 then
+            maxDistance time model
+        else
+            bestScore time model
 
 
 maxDistance : Int -> Model -> String
@@ -90,8 +86,8 @@ score t time model =
             score t_ time model2
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     String.split "\n" input
         |> List.filter (\l -> l /= "")
         |> List.foldl parseLine []

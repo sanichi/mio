@@ -1,34 +1,30 @@
-module Y15D06 exposing (answers)
+module Y15D06 exposing (answer)
 
 import Array exposing (Array)
 import Regex
 import Tuple exposing (first, second)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         instructions =
             parse input
 
         model =
             process instructions initModel
-
-        p1 =
+    in
+        if part == 1 then
             first model
                 |> Array.toList
                 |> List.filter (\l -> l == 1)
                 |> List.length
                 |> toString
-
-        p2 =
+        else
             second model
                 |> Array.toList
                 |> List.sum
                 |> toString
-    in
-        Util.join p1 p2
 
 
 parse : String -> List Instruction

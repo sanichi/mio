@@ -1,27 +1,23 @@
-module Y16D09 exposing (answers)
+module Y16D09 exposing (answer)
 
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         file =
             parse input
-
-        a1 =
+    in
+        if part == 1 then
             file
                 |> decompress
                 |> String.length
                 |> toString
-
-        a2 =
+        else
             file
                 |> decompressedLength
                 |> toString
-    in
-        Util.join a1 a2
 
 
 decompress : String -> String

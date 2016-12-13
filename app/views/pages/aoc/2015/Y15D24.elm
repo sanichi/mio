@@ -1,22 +1,22 @@
-module Y15D24 exposing (answers)
+module Y15D24 exposing (answer)
 
 import Regex
 import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
-        weights =
-            parseInput input
-
-        p1 =
-            bestQe 3 weights |> toString
-
-        p2 =
-            bestQe 4 weights |> toString
+        num =
+            if part == 1 then
+                3
+            else
+                4
     in
-        Util.join p1 p2
+        input
+            |> parse
+            |> bestQe num
+            |> toString
 
 
 bestQe : Int -> Weights -> Int
@@ -73,8 +73,8 @@ searchCombo qe weight combos =
                 searchCombo qe_ weight rest
 
 
-parseInput : String -> Weights
-parseInput input =
+parse : String -> Weights
+parse input =
     Regex.find (Regex.All) (Regex.regex "\\d+") input
         |> List.map .match
         |> List.map String.toInt

@@ -1,32 +1,28 @@
-module Y16D12 exposing (answers)
+module Y16D12 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         state =
             input
                 |> parse
                 |> initState
-
-        a1 =
+    in
+        if part == 1 then
             state
                 |> process
                 |> get "a"
                 |> toString
-
-        a2 =
+        else
             { state | registers = set "c" state 1 }
                 |> process
                 |> get "a"
                 |> toString
-    in
-        Util.join a1 a2
 
 
 process : State -> State

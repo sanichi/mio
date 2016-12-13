@@ -1,27 +1,25 @@
-module Y15D20 exposing (answers)
+module Y15D20 exposing (answer)
 
 import Dict
 import Regex
-import Util
 
 
-answers : String -> String
-answers input =
-    let
-        goal =
-            parseInput input
-
-        p1 =
-            house1 goal 1 |> toString
-
-        p2 =
-            house2 goal 1 |> toString
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        input
+            |> parse
+            |> house1 1
+            |> toString
+    else
+        input
+            |> parse
+            |> house2 1
+            |> toString
 
 
 house1 : Int -> Int -> Int
-house1 goal house =
+house1 house goal =
     let
         presents =
             factors house
@@ -31,11 +29,11 @@ house1 goal house =
         if presents >= goal then
             house
         else
-            house1 goal (house + 1)
+            house1 (house + 1) goal
 
 
 house2 : Int -> Int -> Int
-house2 goal house =
+house2 house goal =
     let
         presents =
             factors house
@@ -46,7 +44,7 @@ house2 goal house =
         if presents >= goal then
             house
         else
-            house2 goal (house + 1)
+            house2 (house + 1) goal
 
 
 factors : Int -> List Int
@@ -79,8 +77,8 @@ fac n i l fs =
             fs1 ++ fac n (i + 1) l fs
 
 
-parseInput : String -> Int
-parseInput input =
+parse : String -> Int
+parse input =
     Regex.find (Regex.AtMost 1) (Regex.regex "\\d+") input
         |> List.map .match
         |> List.head

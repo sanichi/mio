@@ -1,4 +1,4 @@
-module Y15D13 exposing (answers)
+module Y15D13 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex exposing (HowMany(AtMost), find, regex)
@@ -6,28 +6,23 @@ import Set exposing (Set)
 import Util
 
 
-answers : String -> String
-answers input =
-    let
-        m1 =
-            parseInput input
-
-        a1 =
-            happinesses m1
-
-        p1 =
-            List.maximum a1 |> Maybe.withDefault 0 |> toString
-
-        m2 =
-            addMe m1
-
-        a2 =
-            happinesses m2
-
-        p2 =
-            List.maximum a2 |> Maybe.withDefault 0 |> toString
-    in
-        Util.join p1 p2
+answer : Int -> String -> String
+answer part input =
+    if part == 1 then
+        input
+            |> parse
+            |> happinesses
+            |> List.maximum
+            |> Maybe.withDefault 0
+            |> toString
+    else
+        input
+            |> parse
+            |> addMe
+            |> happinesses
+            |> List.maximum
+            |> Maybe.withDefault 0
+            |> toString
 
 
 happinesses : Model -> List Int
@@ -77,8 +72,8 @@ addMe model =
         { happiness = h2, people = p }
 
 
-parseInput : String -> Model
-parseInput input =
+parse : String -> Model
+parse input =
     String.split "\n" input
         |> List.filter (\l -> l /= "")
         |> List.foldl parseLine initModel

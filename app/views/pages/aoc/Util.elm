@@ -1,20 +1,16 @@
 module Util
     exposing
         ( combinations
+        , failed
         , join
+        , onlyOnePart
         , permutations
-        , todo
         )
 
 
 join : String -> String -> String
 join p1 p2 =
     p1 ++ " | " ++ p2
-
-
-todo : String
-todo =
-    "TODO"
 
 
 combinations : Int -> List a -> List (List a)
@@ -47,11 +43,18 @@ combo n list =
                     c1 ++ c2
 
 
+failed : String
+failed =
+    "failed to do this part"
 
-{-
-   The remaining functions are all from:
-   https://github.com/circuithub/elm-list-extra/blob/master/src/List/Extra.elm
--}
+
+onlyOnePart : String
+onlyOnePart =
+    "no part two for this day"
+
+
+
+-- The rest are from: https://github.com/circuithub/elm-list-extra/blob/master/src/List/Extra.elm
 
 
 permutations : List a -> List (List a)

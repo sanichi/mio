@@ -1,28 +1,25 @@
-module Y15D10 exposing (answers)
+module Y15D10 exposing (answer)
 
 import Regex exposing (HowMany(All, AtMost), Match, find, regex, replace)
-import Util
 
 
-answers : String -> String
-answers input =
+answer : Int -> String -> String
+answer part input =
     let
         digits =
-            parse input
-
-        digits_ =
-            conway 40 digits
-
-        p1 =
-            String.length digits_ |> toString
-
-        digits__ =
-            conway 10 digits_
-
-        p2 =
-            String.length digits__ |> toString
+            input
+                |> parse
+                |> conway 40
     in
-        Util.join p1 p2
+        if part == 1 then
+            digits
+                |> String.length
+                |> toString
+        else
+            digits
+                |> conway 10
+                |> String.length
+                |> toString
 
 
 parse : String -> String
