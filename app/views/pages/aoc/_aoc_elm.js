@@ -16037,7 +16037,7 @@ var _user$project$Main$viewAnswer = F2(
 							case 3:
 								return '🐌';
 							default:
-								return '🗓';
+								return '☠️';
 						}
 					}();
 					var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);

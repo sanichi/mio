@@ -335,7 +335,7 @@ viewAnswer part model =
                                         "🐌"
 
                                     _ ->
-                                        "🗓"
+                                        "☠️"
 
                             words =
                                 "Get Anwser " ++ decoration
