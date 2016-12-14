@@ -2,7 +2,6 @@ module Y15D07 exposing (answer)
 
 import Bitwise
 import Dict exposing (Dict)
-import Util
 
 
 answer : Int -> String -> String

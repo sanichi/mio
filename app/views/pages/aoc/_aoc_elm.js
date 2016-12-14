@@ -10087,107 +10087,6 @@ var _user$project$Y15D06$answer = F2(
 					_elm_lang$core$Tuple$second(model))));
 	});
 
-var _user$project$Util$select = function (xs) {
-	var _p0 = xs;
-	if (_p0.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p4 = _p0._1;
-		var _p3 = _p0._0;
-		return {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: _p3, _1: _p4},
-			_1: A2(
-				_elm_lang$core$List$map,
-				function (_p1) {
-					var _p2 = _p1;
-					return {
-						ctor: '_Tuple2',
-						_0: _p2._0,
-						_1: {ctor: '::', _0: _p3, _1: _p2._1}
-					};
-				},
-				_user$project$Util$select(_p4))
-		};
-	}
-};
-var _user$project$Util$permutations = function (xs) {
-	var _p5 = xs;
-	if (_p5.ctor === '[]') {
-		return {
-			ctor: '::',
-			_0: {ctor: '[]'},
-			_1: {ctor: '[]'}
-		};
-	} else {
-		var f = function (_p6) {
-			var _p7 = _p6;
-			return A2(
-				_elm_lang$core$List$map,
-				F2(
-					function (x, y) {
-						return {ctor: '::', _0: x, _1: y};
-					})(_p7._0),
-				_user$project$Util$permutations(_p7._1));
-		};
-		return A2(
-			_elm_lang$core$List$concatMap,
-			f,
-			_user$project$Util$select(_p5));
-	}
-};
-var _user$project$Util$onlyOnePart = 'no part two for this day';
-var _user$project$Util$failed = 'failed to do this part';
-var _user$project$Util$combinations = F2(
-	function (n, list) {
-		return ((_elm_lang$core$Native_Utils.cmp(n, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
-			n,
-			_elm_lang$core$List$length(list)) > 0)) ? {ctor: '[]'} : A2(_user$project$Util$combo, n, list);
-	});
-var _user$project$Util$combo = F2(
-	function (n, list) {
-		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
-			return {
-				ctor: '::',
-				_0: {ctor: '[]'},
-				_1: {ctor: '[]'}
-			};
-		} else {
-			if (_elm_lang$core$Native_Utils.eq(
-				n,
-				_elm_lang$core$List$length(list))) {
-				return {
-					ctor: '::',
-					_0: list,
-					_1: {ctor: '[]'}
-				};
-			} else {
-				var _p8 = list;
-				if (_p8.ctor === '[]') {
-					return {ctor: '[]'};
-				} else {
-					var _p9 = _p8._1;
-					var c2 = A2(_user$project$Util$combinations, n, _p9);
-					var c1 = A2(
-						_elm_lang$core$List$map,
-						F2(
-							function (x, y) {
-								return {ctor: '::', _0: x, _1: y};
-							})(_p8._0),
-						A2(_user$project$Util$combinations, n - 1, _p9));
-					return A2(_elm_lang$core$Basics_ops['++'], c1, c2);
-				}
-			}
-		}
-	});
-var _user$project$Util$join = F2(
-	function (p1, p2) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			p1,
-			A2(_elm_lang$core$Basics_ops['++'], ' | ', p2));
-	});
-
 var _user$project$Y15D07$maxValue = 65535;
 var _user$project$Y15D07$parseInt = function (i) {
 	return A2(
@@ -10577,6 +10476,107 @@ var _user$project$Y15D08$answer = F2(
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
 			_user$project$Y15D08$chrLength(strings) - _user$project$Y15D08$memLength(strings)) : _elm_lang$core$Basics$toString(
 			_user$project$Y15D08$escLength(strings) - _user$project$Y15D08$chrLength(strings));
+	});
+
+var _user$project$Util$select = function (xs) {
+	var _p0 = xs;
+	if (_p0.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p4 = _p0._1;
+		var _p3 = _p0._0;
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _p3, _1: _p4},
+			_1: A2(
+				_elm_lang$core$List$map,
+				function (_p1) {
+					var _p2 = _p1;
+					return {
+						ctor: '_Tuple2',
+						_0: _p2._0,
+						_1: {ctor: '::', _0: _p3, _1: _p2._1}
+					};
+				},
+				_user$project$Util$select(_p4))
+		};
+	}
+};
+var _user$project$Util$permutations = function (xs) {
+	var _p5 = xs;
+	if (_p5.ctor === '[]') {
+		return {
+			ctor: '::',
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
+		};
+	} else {
+		var f = function (_p6) {
+			var _p7 = _p6;
+			return A2(
+				_elm_lang$core$List$map,
+				F2(
+					function (x, y) {
+						return {ctor: '::', _0: x, _1: y};
+					})(_p7._0),
+				_user$project$Util$permutations(_p7._1));
+		};
+		return A2(
+			_elm_lang$core$List$concatMap,
+			f,
+			_user$project$Util$select(_p5));
+	}
+};
+var _user$project$Util$onlyOnePart = 'no part two for this day';
+var _user$project$Util$failed = 'failed to do this part';
+var _user$project$Util$combinations = F2(
+	function (n, list) {
+		return ((_elm_lang$core$Native_Utils.cmp(n, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
+			n,
+			_elm_lang$core$List$length(list)) > 0)) ? {ctor: '[]'} : A2(_user$project$Util$combo, n, list);
+	});
+var _user$project$Util$combo = F2(
+	function (n, list) {
+		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+			return {
+				ctor: '::',
+				_0: {ctor: '[]'},
+				_1: {ctor: '[]'}
+			};
+		} else {
+			if (_elm_lang$core$Native_Utils.eq(
+				n,
+				_elm_lang$core$List$length(list))) {
+				return {
+					ctor: '::',
+					_0: list,
+					_1: {ctor: '[]'}
+				};
+			} else {
+				var _p8 = list;
+				if (_p8.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					var _p9 = _p8._1;
+					var c2 = A2(_user$project$Util$combinations, n, _p9);
+					var c1 = A2(
+						_elm_lang$core$List$map,
+						F2(
+							function (x, y) {
+								return {ctor: '::', _0: x, _1: y};
+							})(_p8._0),
+						A2(_user$project$Util$combinations, n - 1, _p9));
+					return A2(_elm_lang$core$Basics_ops['++'], c1, c2);
+				}
+			}
+		}
+	});
+var _user$project$Util$join = F2(
+	function (p1, p2) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			p1,
+			A2(_elm_lang$core$Basics_ops['++'], ' | ', p2));
 	});
 
 var _user$project$Y15D09$initModel = {

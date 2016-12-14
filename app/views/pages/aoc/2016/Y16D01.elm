@@ -1,7 +1,6 @@
 module Y16D01 exposing (answer)
 
 import Regex
-import Util
 
 
 answer : Int -> String -> String
