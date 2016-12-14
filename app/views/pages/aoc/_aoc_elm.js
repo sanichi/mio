@@ -15412,10 +15412,128 @@ var _user$project$Y16D14$parse = function (input) {
 					_elm_lang$core$Regex$regex('[a-z]+'),
 					input))));
 };
+var _user$project$Y16D14$repeatHash = F2(
+	function (iterations, hash) {
+		repeatHash:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(iterations, 0) < 1) {
+				return hash;
+			} else {
+				var _v0 = iterations - 1,
+					_v1 = _sanichi$elm_md5$MD5$hex(hash);
+				iterations = _v0;
+				hash = _v1;
+				continue repeatHash;
+			}
+		}
+	});
+var _user$project$Y16D14$getHash = F4(
+	function (part, salt, index, cache) {
+		var iterations = _elm_lang$core$Native_Utils.eq(part, 1) ? 0 : 2016;
+		var maybeHash = A2(_elm_lang$core$Dict$get, index, cache);
+		var hash = function () {
+			var _p0 = maybeHash;
+			if (_p0.ctor === 'Just') {
+				return _p0._0;
+			} else {
+				return _sanichi$elm_md5$MD5$hex(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						salt,
+						_elm_lang$core$Basics$toString(index)));
+			}
+		}();
+		return A2(_user$project$Y16D14$repeatHash, iterations, hash);
+	});
+var _user$project$Y16D14$buildCache = F6(
+	function (part, salt, upto, index, oldCache, cache) {
+		buildCache:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(index, upto) > 0) {
+				return cache;
+			} else {
+				var newIndex = index + 1;
+				var hash = A4(_user$project$Y16D14$getHash, part, salt, index, oldCache);
+				var newCache = A3(_elm_lang$core$Dict$insert, index, hash, cache);
+				var _v3 = part,
+					_v4 = salt,
+					_v5 = upto,
+					_v6 = newIndex,
+					_v7 = oldCache,
+					_v8 = newCache;
+				part = _v3;
+				salt = _v4;
+				upto = _v5;
+				index = _v6;
+				oldCache = _v7;
+				cache = _v8;
+				continue buildCache;
+			}
+		}
+	});
+var _user$project$Y16D14$search = F5(
+	function (part, salt, keys, index, cache) {
+		search:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(keys, 64) > -1) {
+				return _elm_lang$core$Basics$toString(index - 1);
+			} else {
+				var newIndex = index + 1;
+				var hash = A4(_user$project$Y16D14$getHash, part, salt, index, cache);
+				var maybeMatch3 = _elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_lang$core$Regex$regex('(.)\\1\\1'),
+							hash)));
+				var _p1 = maybeMatch3;
+				if (_p1.ctor === 'Nothing') {
+					var _v10 = part,
+						_v11 = salt,
+						_v12 = keys,
+						_v13 = newIndex,
+						_v14 = cache;
+					part = _v10;
+					salt = _v11;
+					keys = _v12;
+					index = _v13;
+					cache = _v14;
+					continue search;
+				} else {
+					var newCache = A6(_user$project$Y16D14$buildCache, part, salt, index + 1000, newIndex, cache, _elm_lang$core$Dict$empty);
+					var match5 = A2(
+						_elm_lang$core$String$left,
+						5,
+						A2(_elm_lang$core$String$repeat, 2, _p1._0));
+					var matches = A2(
+						_elm_lang$core$List$any,
+						_elm_lang$core$String$contains(match5),
+						_elm_lang$core$Dict$values(newCache));
+					var newKeys = matches ? (keys + 1) : keys;
+					var _v15 = part,
+						_v16 = salt,
+						_v17 = newKeys,
+						_v18 = newIndex,
+						_v19 = newCache;
+					part = _v15;
+					salt = _v16;
+					keys = _v17;
+					index = _v18;
+					cache = _v19;
+					continue search;
+				}
+			}
+		}
+	});
 var _user$project$Y16D14$answer = F2(
 	function (part, input) {
 		var salt = _user$project$Y16D14$parse(input);
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? salt : salt;
+		return A5(_user$project$Y16D14$search, part, salt, 0, 0, _elm_lang$core$Dict$empty);
 	});
 
 var _user$project$Y16D15$answer = F2(
@@ -15540,7 +15658,7 @@ var _user$project$Y16$answer = F3(
 
 var _user$project$Main$slow = F3(
 	function (year, day, part) {
-		var faster = A2(
+		var key = A2(
 			_elm_lang$core$String$join,
 			'-',
 			A2(
@@ -15559,7 +15677,7 @@ var _user$project$Main$slow = F3(
 						}
 					}
 				}));
-		var _p0 = faster;
+		var _p0 = key;
 		switch (_p0) {
 			case '2015-4-1':
 				return 2;
@@ -15613,6 +15731,10 @@ var _user$project$Main$slow = F3(
 				return 1;
 			case '2016-12-2':
 				return 2;
+			case '2016-14-1':
+				return 2;
+			case '2016-14-2':
+				return 4;
 			default:
 				return 0;
 		}
@@ -15903,15 +16025,23 @@ var _user$project$Main$viewAnswer = F2(
 				var _p10 = answer;
 				if (_p10.ctor === 'Nothing') {
 					var time = A3(_user$project$Main$slow, model.year, model.day, part);
-					var words = A2(
-						_elm_lang$core$String$join,
-						' ',
-						{
-							ctor: '::',
-							_0: 'Get Anwser',
-							_1: A2(_elm_lang$core$List$repeat, time, '🕰')
-						});
-					var btnType = _elm_lang$core$Native_Utils.eq(time, 0) ? 'success' : 'danger';
+					var decoration = function () {
+						var _p11 = time;
+						switch (_p11) {
+							case 0:
+								return '⚡️';
+							case 1:
+								return '⏳';
+							case 2:
+								return '☕️';
+							case 3:
+								return '🐌';
+							default:
+								return '🗓';
+						}
+					}();
+					var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);
+					var colour = _elm_lang$core$Native_Utils.eq(time, 0) ? 'success' : (_elm_lang$core$Native_Utils.eq(time, 1) ? 'info' : (_elm_lang$core$Native_Utils.eq(time, 2) ? 'warning' : 'danger'));
 					return A2(
 						_elm_lang$html$Html$span,
 						{
@@ -15920,7 +16050,7 @@ var _user$project$Main$viewAnswer = F2(
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									'btn btn-',
-									A2(_elm_lang$core$Basics_ops['++'], btnType, ' btn-xs'))),
+									A2(_elm_lang$core$Basics_ops['++'], colour, ' btn-xs'))),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Events$onClick(
@@ -15934,17 +16064,17 @@ var _user$project$Main$viewAnswer = F2(
 							_1: {ctor: '[]'}
 						});
 				} else {
-					var _p11 = _p10._0;
+					var _p12 = _p10._0;
 					return (_elm_lang$core$Native_Utils.cmp(
-						_elm_lang$core$String$length(_p11),
-						25) > 0) ? A2(
+						_elm_lang$core$String$length(_p12),
+						32) > 0) ? A2(
 						_elm_lang$html$Html$pre,
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p11),
+							_0: _elm_lang$html$Html$text(_p12),
 							_1: {ctor: '[]'}
-						}) : _elm_lang$html$Html$text(_p11);
+						}) : _elm_lang$html$Html$text(_p12);
 				}
 			}
 		}();
@@ -16012,14 +16142,14 @@ var _user$project$Main$SelectYear = function (a) {
 var _user$project$Main$view = function (model) {
 	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p12) {
+		function (_p13) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p12));
+				_user$project$Main$toInt(_p13));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p13) {
+		function (_p14) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p13));
+				_user$project$Main$toInt(_p14));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,

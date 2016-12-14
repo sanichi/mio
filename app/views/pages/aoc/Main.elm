@@ -320,21 +320,40 @@ viewAnswer part model =
                             time =
                                 slow model.year model.day part
 
-                            words =
-                                "Get Anwser"
-                                    :: List.repeat time "🕰"
-                                    |> String.join " "
+                            decoration =
+                                case time of
+                                    0 ->
+                                        "⚡️"
 
-                            btnType =
+                                    1 ->
+                                        "⏳"
+
+                                    2 ->
+                                        "☕️"
+
+                                    3 ->
+                                        "🐌"
+
+                                    _ ->
+                                        "🗓"
+
+                            words =
+                                "Get Anwser " ++ decoration
+
+                            colour =
                                 if time == 0 then
                                     "success"
+                                else if time == 1 then
+                                    "info"
+                                else if time == 2 then
+                                    "warning"
                                 else
                                     "danger"
                         in
-                            span [ class ("btn btn-" ++ btnType ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
+                            span [ class ("btn btn-" ++ colour ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
 
                     Just ans ->
-                        if String.length ans > 25 then
+                        if String.length ans > 32 then
                             pre [] [ text ans ]
                         else
                             text ans
@@ -400,12 +419,12 @@ toInt str =
 slow : Int -> Int -> Int -> Int
 slow year day part =
     let
-        faster =
+        key =
             [ year, day, part ]
                 |> List.map toString
                 |> String.join "-"
     in
-        case faster of
+        case key of
             "2015-4-1" ->
                 2
 
@@ -483,6 +502,12 @@ slow year day part =
 
             "2016-12-2" ->
                 2
+
+            "2016-14-1" ->
+                2
+
+            "2016-14-2" ->
+                4
 
             _ ->
                 0
