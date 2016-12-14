@@ -15396,9 +15396,26 @@ var _user$project$Y16D13$answer = F2(
 				}));
 	});
 
+var _user$project$Y16D14$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[a-z]+'),
+					input))));
+};
 var _user$project$Y16D14$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		var salt = _user$project$Y16D14$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? salt : salt;
 	});
 
 var _user$project$Y16D15$answer = F2(
@@ -15564,7 +15581,7 @@ var _user$project$Main$slow = F3(
 				return 1;
 			case '2015-13-2':
 				return 2;
-			case '2015-15-1x':
+			case '2015-15-1':
 				return 2;
 			case '2015-15-2':
 				return 2;
@@ -15711,7 +15728,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 13;
+var _user$project$Main$defaultDay = 14;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -15724,7 +15741,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 13)
+				days: A2(_elm_lang$core$List$range, 1, 14)
 			},
 			_1: {ctor: '[]'}
 		}
