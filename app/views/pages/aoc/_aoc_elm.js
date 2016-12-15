@@ -15536,15 +15536,89 @@ var _user$project$Y16D14$answer = F2(
 		return A5(_user$project$Y16D14$search, part, salt, 0, 0, _elm_lang$core$Dict$empty);
 	});
 
+var _user$project$Y16D15$push = F2(
+	function (item, list) {
+		return _elm_lang$core$List$reverse(
+			function (l) {
+				return {ctor: '::', _0: item, _1: l};
+			}(
+				_elm_lang$core$List$reverse(list)));
+	});
 var _user$project$Y16D15$invalid = {number: 0, positions: 0, position: 0};
+var _user$project$Y16D15$rotate = F2(
+	function (time, disc) {
+		return _elm_lang$core$Native_Utils.update(
+			disc,
+			{
+				position: A2(_elm_lang$core$Basics_ops['%'], disc.position + time, disc.positions)
+			});
+	});
+var _user$project$Y16D15$initShift = F3(
+	function (time, maze, initMaze) {
+		initShift:
+		while (true) {
+			var _p0 = initMaze;
+			if (_p0.ctor === '[]') {
+				return maze;
+			} else {
+				var newTime = time + 1;
+				var newDisc = A2(_user$project$Y16D15$rotate, time, _p0._0);
+				var newMaze = A2(_user$project$Y16D15$push, newDisc, maze);
+				var _v1 = newTime,
+					_v2 = newMaze,
+					_v3 = _p0._1;
+				time = _v1;
+				maze = _v2;
+				initMaze = _v3;
+				continue initShift;
+			}
+		}
+	});
+var _user$project$Y16D15$advance = function (maze) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y16D15$rotate(1),
+		maze);
+};
+var _user$project$Y16D15$open = function (maze) {
+	return A2(
+		_elm_lang$core$List$all,
+		function (d) {
+			return _elm_lang$core$Native_Utils.eq(d.position, 0);
+		},
+		maze);
+};
+var _user$project$Y16D15$search_ = F2(
+	function (time, maze) {
+		search_:
+		while (true) {
+			if (_user$project$Y16D15$open(maze)) {
+				return time;
+			} else {
+				var _v4 = time + 1,
+					_v5 = _user$project$Y16D15$advance(maze);
+				time = _v4;
+				maze = _v5;
+				continue search_;
+			}
+		}
+	});
+var _user$project$Y16D15$search = function (maze) {
+	var shiftedMaze = A3(
+		_user$project$Y16D15$initShift,
+		1,
+		{ctor: '[]'},
+		maze);
+	return A2(_user$project$Y16D15$search_, 0, shiftedMaze);
+};
 var _user$project$Y16D15$Disc = F3(
 	function (a, b, c) {
 		return {number: a, positions: b, position: c};
 	});
 var _user$project$Y16D15$toDisc = function (numbers) {
-	var _p0 = numbers;
-	if ((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '[]')) {
-		return A3(_user$project$Y16D15$Disc, _p0._0, _p0._1._0, _p0._1._1._0);
+	var _p1 = numbers;
+	if ((((_p1.ctor === '::') && (_p1._1.ctor === '::')) && (_p1._1._1.ctor === '::')) && (_p1._1._1._1.ctor === '[]')) {
+		return A3(_user$project$Y16D15$Disc, _p1._0, _p1._1._0, _p1._1._1._0);
 	} else {
 		return _user$project$Y16D15$invalid;
 	}
@@ -15578,14 +15652,13 @@ var _user$project$Y16D15$parse = function (input) {
 var _user$project$Y16D15$answer = F2(
 	function (part, input) {
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
-			_elm_lang$core$List$length(
+			_user$project$Y16D15$search(
 				_user$project$Y16D15$parse(input))) : _elm_lang$core$Basics$toString(
-			A2(
-				_elm_lang$core$List$any,
-				function (d) {
-					return _elm_lang$core$Native_Utils.eq(d, _user$project$Y16D15$invalid);
-				},
-				_user$project$Y16D15$parse(input)));
+			_user$project$Y16D15$search(
+				A2(
+					_user$project$Y16D15$push,
+					A3(_user$project$Y16D15$Disc, 7, 11, 0),
+					_user$project$Y16D15$parse(input))));
 	});
 
 var _user$project$Y16D16$answer = F2(
@@ -15784,6 +15857,10 @@ var _user$project$Main$slow = F3(
 				return 2;
 			case '2016-14-2':
 				return 4;
+			case '2016-15-1':
+				return 1;
+			case '2016-15-2':
+				return 2;
 			default:
 				return 0;
 		}
