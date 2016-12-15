@@ -15719,6 +15719,8 @@ var _user$project$Main$slow = F3(
 				return 2;
 			case '2015-24-2':
 				return 1;
+			case '2015-25-1':
+				return 1;
 			case '2016-5-1':
 				return 3;
 			case '2016-5-2':
