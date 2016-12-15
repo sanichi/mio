@@ -111,7 +111,7 @@ type alias Time =
 invalid : Disc
 invalid =
     { number = 0
-    , positions = 0
+    , positions = 1
     , position = 0
     }
 

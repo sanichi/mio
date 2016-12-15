@@ -15544,7 +15544,7 @@ var _user$project$Y16D15$push = F2(
 			}(
 				_elm_lang$core$List$reverse(list)));
 	});
-var _user$project$Y16D15$invalid = {number: 0, positions: 0, position: 0};
+var _user$project$Y16D15$invalid = {number: 0, positions: 1, position: 0};
 var _user$project$Y16D15$rotate = F2(
 	function (time, disc) {
 		return _elm_lang$core$Native_Utils.update(
