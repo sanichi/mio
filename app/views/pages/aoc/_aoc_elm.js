@@ -15536,9 +15536,56 @@ var _user$project$Y16D14$answer = F2(
 		return A5(_user$project$Y16D14$search, part, salt, 0, 0, _elm_lang$core$Dict$empty);
 	});
 
+var _user$project$Y16D15$invalid = {number: 0, positions: 0, position: 0};
+var _user$project$Y16D15$Disc = F3(
+	function (a, b, c) {
+		return {number: a, positions: b, position: c};
+	});
+var _user$project$Y16D15$toDisc = function (numbers) {
+	var _p0 = numbers;
+	if ((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '[]')) {
+		return A3(_user$project$Y16D15$Disc, _p0._0, _p0._1._0, _p0._1._1._0);
+	} else {
+		return _user$project$Y16D15$invalid;
+	}
+};
+var _user$project$Y16D15$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y16D15$toDisc,
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$List$map(
+				_elm_lang$core$Result$withDefault(0)),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$List$map(_elm_lang$core$String$toInt),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$List$map(
+						_elm_lang$core$Maybe$withDefault('')),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.submatches;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('Disc #(\\d+) has (\\d+) positions; at time=0, it is at position (\\d+).'),
+							input))))));
+};
 var _user$project$Y16D15$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$length(
+				_user$project$Y16D15$parse(input))) : _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$List$any,
+				function (d) {
+					return _elm_lang$core$Native_Utils.eq(d, _user$project$Y16D15$invalid);
+				},
+				_user$project$Y16D15$parse(input)));
 	});
 
 var _user$project$Y16D16$answer = F2(
@@ -15912,7 +15959,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 14;
+var _user$project$Main$defaultDay = 15;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -15925,7 +15972,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 14)
+				days: A2(_elm_lang$core$List$range, 1, 15)
 			},
 			_1: {ctor: '[]'}
 		}
