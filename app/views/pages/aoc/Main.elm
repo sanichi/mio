@@ -221,7 +221,7 @@ view model =
         yearOptions =
             model.years
                 |> List.map .year
-                |> List.map (viewOption "Year" model.year)
+                |> List.map (viewYearOption model.year)
 
         dayOptions =
             model.years
@@ -229,7 +229,7 @@ view model =
                 |> List.map .days
                 |> List.head
                 |> Maybe.withDefault []
-                |> List.map (viewOption "Day" model.day)
+                |> List.map (viewDayOption model.year model.day)
 
         onYearChange =
             toInt >> SelectYear |> Events.onInput
@@ -277,16 +277,41 @@ view model =
             ]
 
 
-viewOption : String -> Int -> Int -> Html Msg
-viewOption prefix sel opt =
+viewYearOption : Int -> Int -> Html Msg
+viewYearOption chosen year =
     let
-        val =
-            toString opt
+        str =
+            toString year
 
         txt =
-            prefix ++ " " ++ val
+            "Year " ++ str
     in
-        option [ value val, sel == opt |> selected ] [ text txt ]
+        option [ value str, chosen == year |> selected ] [ text txt ]
+
+
+viewDayOption : Int -> Int -> Int -> Html Msg
+viewDayOption year chosen day =
+    let
+        str =
+            toString day
+
+        pad =
+            if String.length str == 1 then
+                "0" ++ str
+            else
+                str
+
+        symbol =
+            [ 1, 2 ]
+                |> List.map (slow year day)
+                |> List.maximum
+                |> Maybe.withDefault 0
+                |> speedIndicator
+
+        txt =
+            "Day " ++ pad ++ " " ++ symbol
+    in
+        option [ value str, chosen == day |> selected ] [ text txt ]
 
 
 viewAnswer : Int -> Model -> Html Msg
@@ -321,21 +346,7 @@ viewAnswer part model =
                                 slow model.year model.day part
 
                             decoration =
-                                case time of
-                                    0 ->
-                                        "⚡️"
-
-                                    1 ->
-                                        "⏳"
-
-                                    2 ->
-                                        "☕️"
-
-                                    3 ->
-                                        "🐌"
-
-                                    _ ->
-                                        "☠️"
+                                speedIndicator time
 
                             words =
                                 "Get Anwser " ++ decoration
@@ -364,6 +375,25 @@ viewAnswer part model =
             , td [ class "col-xs-6 text-center" ]
                 [ display ]
             ]
+
+
+speedIndicator : Int -> String
+speedIndicator time =
+    case time of
+        0 ->
+            "⚡️"
+
+        1 ->
+            "⏳"
+
+        2 ->
+            "☕️"
+
+        3 ->
+            "🐌"
+
+        _ ->
+            "☠️"
 
 
 codeLink : Model -> Html Msg

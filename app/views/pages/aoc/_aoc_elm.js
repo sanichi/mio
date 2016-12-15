@@ -15812,22 +15812,82 @@ var _user$project$Main$codeLink = function (model) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$viewOption = F3(
-	function (prefix, sel, opt) {
-		var val = _elm_lang$core$Basics$toString(opt);
+var _user$project$Main$speedIndicator = function (time) {
+	var _p1 = time;
+	switch (_p1) {
+		case 0:
+			return '⚡️';
+		case 1:
+			return '⏳';
+		case 2:
+			return '☕️';
+		case 3:
+			return '🐌';
+		default:
+			return '☠️';
+	}
+};
+var _user$project$Main$viewDayOption = F3(
+	function (year, chosen, day) {
+		var symbol = _user$project$Main$speedIndicator(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(
+					A2(
+						_elm_lang$core$List$map,
+						A2(_user$project$Main$slow, year, day),
+						{
+							ctor: '::',
+							_0: 1,
+							_1: {
+								ctor: '::',
+								_0: 2,
+								_1: {ctor: '[]'}
+							}
+						}))));
+		var str = _elm_lang$core$Basics$toString(day);
+		var pad = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(str),
+			1) ? A2(_elm_lang$core$Basics_ops['++'], '0', str) : str;
 		var txt = A2(
 			_elm_lang$core$Basics_ops['++'],
-			prefix,
-			A2(_elm_lang$core$Basics_ops['++'], ' ', val));
+			'Day ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				pad,
+				A2(_elm_lang$core$Basics_ops['++'], ' ', symbol)));
 		return A2(
 			_elm_lang$html$Html$option,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$value(val),
+				_0: _elm_lang$html$Html_Attributes$value(str),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$selected(
-						_elm_lang$core$Native_Utils.eq(sel, opt)),
+						_elm_lang$core$Native_Utils.eq(chosen, day)),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(txt),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Main$viewYearOption = F2(
+	function (chosen, year) {
+		var str = _elm_lang$core$Basics$toString(year);
+		var txt = A2(_elm_lang$core$Basics_ops['++'], 'Year ', str);
+		return A2(
+			_elm_lang$html$Html$option,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$value(str),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$selected(
+						_elm_lang$core$Native_Utils.eq(chosen, year)),
 					_1: {ctor: '[]'}
 				}
 			},
@@ -15889,21 +15949,21 @@ var _user$project$Main$newProblem = F3(
 				},
 				model.years));
 		var newYear = function () {
-			var _p1 = year_;
-			if (_p1.ctor === 'Just') {
-				return _p1._0.year;
+			var _p2 = year_;
+			if (_p2.ctor === 'Just') {
+				return _p2._0.year;
 			} else {
 				return _user$project$Main$defaultYear;
 			}
 		}();
 		var newDay = function () {
-			var _p2 = year_;
-			if (_p2.ctor === 'Just') {
-				var _p3 = _p2._0;
-				return A2(_elm_lang$core$List$member, day, _p3.days) ? day : A2(
+			var _p3 = year_;
+			if (_p3.ctor === 'Just') {
+				var _p4 = _p3._0;
+				return A2(_elm_lang$core$List$member, day, _p4.days) ? day : A2(
 					_elm_lang$core$Maybe$withDefault,
 					_user$project$Main$defaultDay,
-					_elm_lang$core$List$head(_p3.days));
+					_elm_lang$core$List$head(_p4.days));
 			} else {
 				return _user$project$Main$defaultDay;
 			}
@@ -15912,12 +15972,12 @@ var _user$project$Main$newProblem = F3(
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p4 = msg;
-		switch (_p4.ctor) {
+		var _p5 = msg;
+		switch (_p5.ctor) {
 			case 'SelectYear':
-				var _p5 = A3(_user$project$Main$newProblem, _p4._0, model.day, model);
-				var newYear = _p5._0;
-				var newDay = _p5._1;
+				var _p6 = A3(_user$project$Main$newProblem, _p5._0, model.day, model);
+				var newYear = _p6._0;
+				var newDay = _p6._1;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -15929,9 +15989,9 @@ var _user$project$Main$update = F2(
 						_1: {ctor: '[]'}
 					});
 			case 'SelectDay':
-				var _p6 = A3(_user$project$Main$newProblem, model.year, _p4._0, model);
-				var newYear = _p6._0;
-				var newDay = _p6._1;
+				var _p7 = A3(_user$project$Main$newProblem, model.year, _p5._0, model);
+				var newYear = _p7._0;
+				var newDay = _p7._1;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -15948,38 +16008,38 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							data: _elm_lang$core$Maybe$Just(_p4._0)
+							data: _elm_lang$core$Maybe$Just(_p5._0)
 						}),
 					{ctor: '[]'});
 			case 'Prepare':
-				var _p7 = _p4._0;
+				var _p8 = _p5._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							thinks: _user$project$Main$thinking(_p7)
+							thinks: _user$project$Main$thinking(_p8)
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Main$prepareAnswer(_p7),
+						_0: _user$project$Main$prepareAnswer(_p8),
 						_1: {ctor: '[]'}
 					});
 			default:
-				var _p9 = _p4._0;
+				var _p10 = _p5._0;
 				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 				var answer = function () {
-					var _p8 = model.year;
-					switch (_p8) {
+					var _p9 = model.year;
+					switch (_p9) {
 						case 2015:
-							return A3(_user$project$Y15$answer, model.day, _p9, data);
+							return A3(_user$project$Y15$answer, model.day, _p10, data);
 						case 2016:
-							return A3(_user$project$Y16$answer, model.day, _p9, data);
+							return A3(_user$project$Y16$answer, model.day, _p10, data);
 						default:
 							return '';
 					}
 				}();
-				var answers = _elm_lang$core$Native_Utils.eq(_p9, 1) ? {
+				var answers = _elm_lang$core$Native_Utils.eq(_p10, 1) ? {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Maybe$Just(answer),
 					_1: _elm_lang$core$Tuple$second(model.answers)
@@ -16022,24 +16082,10 @@ var _user$project$Main$viewAnswer = F2(
 					},
 					{ctor: '[]'});
 			} else {
-				var _p10 = answer;
-				if (_p10.ctor === 'Nothing') {
+				var _p11 = answer;
+				if (_p11.ctor === 'Nothing') {
 					var time = A3(_user$project$Main$slow, model.year, model.day, part);
-					var decoration = function () {
-						var _p11 = time;
-						switch (_p11) {
-							case 0:
-								return '⚡️';
-							case 1:
-								return '⏳';
-							case 2:
-								return '☕️';
-							case 3:
-								return '🐌';
-							default:
-								return '☠️';
-						}
-					}();
+					var decoration = _user$project$Main$speedIndicator(time);
 					var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);
 					var colour = _elm_lang$core$Native_Utils.eq(time, 0) ? 'success' : (_elm_lang$core$Native_Utils.eq(time, 1) ? 'info' : (_elm_lang$core$Native_Utils.eq(time, 2) ? 'warning' : 'danger'));
 					return A2(
@@ -16064,7 +16110,7 @@ var _user$project$Main$viewAnswer = F2(
 							_1: {ctor: '[]'}
 						});
 				} else {
-					var _p12 = _p10._0;
+					var _p12 = _p11._0;
 					return (_elm_lang$core$Native_Utils.cmp(
 						_elm_lang$core$String$length(_p12),
 						32) > 0) ? A2(
@@ -16153,7 +16199,7 @@ var _user$project$Main$view = function (model) {
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
-		A2(_user$project$Main$viewOption, 'Day', model.day),
+		A2(_user$project$Main$viewDayOption, model.year, model.day),
 		A2(
 			_elm_lang$core$Maybe$withDefault,
 			{ctor: '[]'},
@@ -16171,7 +16217,7 @@ var _user$project$Main$view = function (model) {
 						model.years)))));
 	var yearOptions = A2(
 		_elm_lang$core$List$map,
-		A2(_user$project$Main$viewOption, 'Year', model.year),
+		_user$project$Main$viewYearOption(model.year),
 		A2(
 			_elm_lang$core$List$map,
 			function (_) {
