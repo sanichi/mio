@@ -10528,7 +10528,7 @@ var _user$project$Util$permutations = function (xs) {
 	}
 };
 var _user$project$Util$onlyOnePart = 'no part two for this day';
-var _user$project$Util$failed = 'failed to do this part';
+var _user$project$Util$failed = 'failed to solve this part';
 var _user$project$Util$combinations = F2(
 	function (n, list) {
 		return ((_elm_lang$core$Native_Utils.cmp(n, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
@@ -15776,7 +15776,7 @@ var _user$project$Y16$answer = F3(
 		}
 	});
 
-var _user$project$Main$slow = F3(
+var _user$project$Main$failed = F3(
 	function (year, day, part) {
 		var key = A2(
 			_elm_lang$core$String$join,
@@ -15799,6 +15799,43 @@ var _user$project$Main$slow = F3(
 				}));
 		var _p0 = key;
 		switch (_p0) {
+			case '2015-12-2':
+				return true;
+			case '2015-22-1':
+				return true;
+			case '2015-22-2':
+				return true;
+			case '2016-11-1':
+				return true;
+			case '2016-11-2':
+				return true;
+			default:
+				return false;
+		}
+	});
+var _user$project$Main$speed = F3(
+	function (year, day, part) {
+		var key = A2(
+			_elm_lang$core$String$join,
+			'-',
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Basics$toString,
+				{
+					ctor: '::',
+					_0: year,
+					_1: {
+						ctor: '::',
+						_0: day,
+						_1: {
+							ctor: '::',
+							_0: part,
+							_1: {ctor: '[]'}
+						}
+					}
+				}));
+		var _p1 = key;
+		switch (_p1) {
 			case '2015-4-1':
 				return 2;
 			case '2015-4-2':
@@ -15938,9 +15975,12 @@ var _user$project$Main$codeLink = function (model) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$Main$failedIndicator = function (failed) {
+	return failed ? '✘' : '✔︎';
+};
 var _user$project$Main$speedIndicator = function (time) {
-	var _p1 = time;
-	switch (_p1) {
+	var _p2 = time;
+	switch (_p2) {
 		case 0:
 			return '⚡️';
 		case 1:
@@ -15955,14 +15995,34 @@ var _user$project$Main$speedIndicator = function (time) {
 };
 var _user$project$Main$viewDayOption = F3(
 	function (year, chosen, day) {
-		var symbol = _user$project$Main$speedIndicator(
+		var failedSymbol = _user$project$Main$failedIndicator(
+			A3(
+				_elm_lang$core$List$foldl,
+				F2(
+					function (x, y) {
+						return x || y;
+					}),
+				false,
+				A2(
+					_elm_lang$core$List$map,
+					A2(_user$project$Main$failed, year, day),
+					{
+						ctor: '::',
+						_0: 1,
+						_1: {
+							ctor: '::',
+							_0: 2,
+							_1: {ctor: '[]'}
+						}
+					})));
+		var speedSymbol = _user$project$Main$speedIndicator(
 			A2(
 				_elm_lang$core$Maybe$withDefault,
 				0,
 				_elm_lang$core$List$maximum(
 					A2(
 						_elm_lang$core$List$map,
-						A2(_user$project$Main$slow, year, day),
+						A2(_user$project$Main$speed, year, day),
 						{
 							ctor: '::',
 							_0: 1,
@@ -15982,7 +16042,13 @@ var _user$project$Main$viewDayOption = F3(
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				pad,
-				A2(_elm_lang$core$Basics_ops['++'], ' ', symbol)));
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						failedSymbol,
+						A2(_elm_lang$core$Basics_ops['++'], ' ', speedSymbol)))));
 		return A2(
 			_elm_lang$html$Html$option,
 			{
@@ -16031,6 +16097,18 @@ var _user$project$Main$getData = F2(
 		return _user$project$Ports$getData(
 			{ctor: '_Tuple2', _0: year, _1: day});
 	});
+var _user$project$Main$getAnswer = F3(
+	function (model, part, data) {
+		var _p3 = model.year;
+		switch (_p3) {
+			case 2015:
+				return A3(_user$project$Y15$answer, model.day, part, data);
+			case 2016:
+				return A3(_user$project$Y16$answer, model.day, part, data);
+			default:
+				return '';
+		}
+	});
 var _user$project$Main$thinking = function (part) {
 	return _elm_lang$core$Native_Utils.eq(part, 1) ? {ctor: '_Tuple2', _0: true, _1: false} : {ctor: '_Tuple2', _0: false, _1: true};
 };
@@ -16075,21 +16153,21 @@ var _user$project$Main$newProblem = F3(
 				},
 				model.years));
 		var newYear = function () {
-			var _p2 = year_;
-			if (_p2.ctor === 'Just') {
-				return _p2._0.year;
+			var _p4 = year_;
+			if (_p4.ctor === 'Just') {
+				return _p4._0.year;
 			} else {
 				return _user$project$Main$defaultYear;
 			}
 		}();
 		var newDay = function () {
-			var _p3 = year_;
-			if (_p3.ctor === 'Just') {
-				var _p4 = _p3._0;
-				return A2(_elm_lang$core$List$member, day, _p4.days) ? day : A2(
+			var _p5 = year_;
+			if (_p5.ctor === 'Just') {
+				var _p6 = _p5._0;
+				return A2(_elm_lang$core$List$member, day, _p6.days) ? day : A2(
 					_elm_lang$core$Maybe$withDefault,
 					_user$project$Main$defaultDay,
-					_elm_lang$core$List$head(_p4.days));
+					_elm_lang$core$List$head(_p6.days));
 			} else {
 				return _user$project$Main$defaultDay;
 			}
@@ -16098,12 +16176,12 @@ var _user$project$Main$newProblem = F3(
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p5 = msg;
-		switch (_p5.ctor) {
+		var _p7 = msg;
+		switch (_p7.ctor) {
 			case 'SelectYear':
-				var _p6 = A3(_user$project$Main$newProblem, _p5._0, model.day, model);
-				var newYear = _p6._0;
-				var newDay = _p6._1;
+				var _p8 = A3(_user$project$Main$newProblem, _p7._0, model.day, model);
+				var newYear = _p8._0;
+				var newDay = _p8._1;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -16115,9 +16193,9 @@ var _user$project$Main$update = F2(
 						_1: {ctor: '[]'}
 					});
 			case 'SelectDay':
-				var _p7 = A3(_user$project$Main$newProblem, model.year, _p5._0, model);
-				var newYear = _p7._0;
-				var newDay = _p7._1;
+				var _p9 = A3(_user$project$Main$newProblem, model.year, _p7._0, model);
+				var newYear = _p9._0;
+				var newDay = _p9._1;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -16134,38 +16212,28 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							data: _elm_lang$core$Maybe$Just(_p5._0)
+							data: _elm_lang$core$Maybe$Just(_p7._0)
 						}),
 					{ctor: '[]'});
 			case 'Prepare':
-				var _p8 = _p5._0;
+				var _p10 = _p7._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							thinks: _user$project$Main$thinking(_p8)
+							thinks: _user$project$Main$thinking(_p10)
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Main$prepareAnswer(_p8),
+						_0: _user$project$Main$prepareAnswer(_p10),
 						_1: {ctor: '[]'}
 					});
 			default:
-				var _p10 = _p5._0;
+				var _p11 = _p7._0;
 				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
-				var answer = function () {
-					var _p9 = model.year;
-					switch (_p9) {
-						case 2015:
-							return A3(_user$project$Y15$answer, model.day, _p10, data);
-						case 2016:
-							return A3(_user$project$Y16$answer, model.day, _p10, data);
-						default:
-							return '';
-					}
-				}();
-				var answers = _elm_lang$core$Native_Utils.eq(_p10, 1) ? {
+				var answer = A3(_user$project$Main$getAnswer, model, _p11, data);
+				var answers = _elm_lang$core$Native_Utils.eq(_p11, 1) ? {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Maybe$Just(answer),
 					_1: _elm_lang$core$Tuple$second(model.answers)
@@ -16194,59 +16262,66 @@ var _user$project$Main$Prepare = function (a) {
 	return {ctor: 'Prepare', _0: a};
 };
 var _user$project$Main$viewAnswer = F2(
-	function (part, model) {
+	function (model, part) {
+		var noSolution = A3(_user$project$Main$failed, model.year, model.day, part);
 		var thinking = _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Tuple$first(model.thinks) : _elm_lang$core$Tuple$second(model.thinks);
 		var answer = _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Tuple$first(model.answers) : _elm_lang$core$Tuple$second(model.answers);
 		var display = function () {
-			if (thinking) {
-				return A2(
-					_elm_lang$html$Html$img,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$src('/images/loader.gif'),
-						_1: {ctor: '[]'}
-					},
-					{ctor: '[]'});
+			if (noSolution) {
+				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
+				return _elm_lang$html$Html$text(
+					A3(_user$project$Main$getAnswer, model, part, data));
 			} else {
-				var _p11 = answer;
-				if (_p11.ctor === 'Nothing') {
-					var time = A3(_user$project$Main$slow, model.year, model.day, part);
-					var decoration = _user$project$Main$speedIndicator(time);
-					var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);
-					var colour = _elm_lang$core$Native_Utils.eq(time, 0) ? 'success' : (_elm_lang$core$Native_Utils.eq(time, 1) ? 'info' : (_elm_lang$core$Native_Utils.eq(time, 2) ? 'warning' : 'danger'));
+				if (thinking) {
 					return A2(
-						_elm_lang$html$Html$span,
+						_elm_lang$html$Html$img,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									'btn btn-',
-									A2(_elm_lang$core$Basics_ops['++'], colour, ' btn-xs'))),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onClick(
-									_user$project$Main$Prepare(part)),
-								_1: {ctor: '[]'}
-							}
+							_0: _elm_lang$html$Html_Attributes$src('/images/loader.gif'),
+							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(words),
-							_1: {ctor: '[]'}
-						});
+						{ctor: '[]'});
 				} else {
-					var _p12 = _p11._0;
-					return (_elm_lang$core$Native_Utils.cmp(
-						_elm_lang$core$String$length(_p12),
-						32) > 0) ? A2(
-						_elm_lang$html$Html$pre,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p12),
-							_1: {ctor: '[]'}
-						}) : _elm_lang$html$Html$text(_p12);
+					var _p12 = answer;
+					if (_p12.ctor === 'Nothing') {
+						var time = A3(_user$project$Main$speed, model.year, model.day, part);
+						var decoration = _user$project$Main$speedIndicator(time);
+						var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);
+						var colour = _elm_lang$core$Native_Utils.eq(time, 0) ? 'success' : (_elm_lang$core$Native_Utils.eq(time, 1) ? 'info' : (_elm_lang$core$Native_Utils.eq(time, 2) ? 'warning' : 'danger'));
+						return A2(
+							_elm_lang$html$Html$span,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'btn btn-',
+										A2(_elm_lang$core$Basics_ops['++'], colour, ' btn-xs'))),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(
+										_user$project$Main$Prepare(part)),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(words),
+								_1: {ctor: '[]'}
+							});
+					} else {
+						var _p13 = _p12._0;
+						return (_elm_lang$core$Native_Utils.cmp(
+							_elm_lang$core$String$length(_p13),
+							32) > 0) ? A2(
+							_elm_lang$html$Html$pre,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p13),
+								_1: {ctor: '[]'}
+							}) : _elm_lang$html$Html$text(_p13);
+					}
 				}
 			}
 		}();
@@ -16314,14 +16389,14 @@ var _user$project$Main$SelectYear = function (a) {
 var _user$project$Main$view = function (model) {
 	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p13) {
+		function (_p14) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p13));
+				_user$project$Main$toInt(_p14));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p14) {
+		function (_p15) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p14));
+				_user$project$Main$toInt(_p15));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
@@ -16522,10 +16597,10 @@ var _user$project$Main$view = function (model) {
 												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: A2(_user$project$Main$viewAnswer, 1, model),
+													_0: A2(_user$project$Main$viewAnswer, model, 1),
 													_1: {
 														ctor: '::',
-														_0: A2(_user$project$Main$viewAnswer, 2, model),
+														_0: A2(_user$project$Main$viewAnswer, model, 2),
 														_1: {
 															ctor: '::',
 															_0: _user$project$Main$codeLink(model),

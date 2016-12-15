@@ -130,15 +130,7 @@ update msg model =
                     Maybe.withDefault "" model.data
 
                 answer =
-                    case model.year of
-                        2015 ->
-                            Y15.answer model.day part data
-
-                        2016 ->
-                            Y16.answer model.day part data
-
-                        _ ->
-                            ""
+                    getAnswer model part data
 
                 answers =
                     if part == 1 then
@@ -187,6 +179,19 @@ thinking part =
         ( True, False )
     else
         ( False, True )
+
+
+getAnswer : Model -> Int -> String -> String
+getAnswer model part data =
+    case model.year of
+        2015 ->
+            Y15.answer model.day part data
+
+        2016 ->
+            Y16.answer model.day part data
+
+        _ ->
+            ""
 
 
 
@@ -261,8 +266,8 @@ view model =
                 [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
                     [ table [ class "table table-bordered" ]
                         [ tbody []
-                            [ viewAnswer 1 model
-                            , viewAnswer 2 model
+                            [ viewAnswer model 1
+                            , viewAnswer model 2
                             , codeLink model
                             ]
                         ]
@@ -301,21 +306,27 @@ viewDayOption year chosen day =
             else
                 str
 
-        symbol =
+        speedSymbol =
             [ 1, 2 ]
-                |> List.map (slow year day)
+                |> List.map (speed year day)
                 |> List.maximum
                 |> Maybe.withDefault 0
                 |> speedIndicator
 
+        failedSymbol =
+            [ 1, 2 ]
+                |> List.map (failed year day)
+                |> List.foldl (||) False
+                |> failedIndicator
+
         txt =
-            "Day " ++ pad ++ " " ++ symbol
+            "Day " ++ pad ++ " " ++ failedSymbol ++ " " ++ speedSymbol
     in
         option [ value str, chosen == day |> selected ] [ text txt ]
 
 
-viewAnswer : Int -> Model -> Html Msg
-viewAnswer part model =
+viewAnswer : Model -> Int -> Html Msg
+viewAnswer model part =
     let
         name =
             if part == 1 then
@@ -335,15 +346,25 @@ viewAnswer part model =
             else
                 Tuple.second model.thinks
 
+        noSolution =
+            failed model.year model.day part
+
         display =
-            if thinking then
+            if noSolution then
+                let
+                    data =
+                        model.data
+                            |> Maybe.withDefault ""
+                in
+                    getAnswer model part data |> text
+            else if thinking then
                 img [ src "/images/loader.gif" ] []
             else
                 case answer of
                     Nothing ->
                         let
                             time =
-                                slow model.year model.day part
+                                speed model.year model.day part
 
                             decoration =
                                 speedIndicator time
@@ -396,6 +417,14 @@ speedIndicator time =
             "☠️"
 
 
+failedIndicator : Bool -> String
+failedIndicator failed =
+    if failed then
+        "✘"
+    else
+        "✔︎"
+
+
 codeLink : Model -> Html Msg
 codeLink model =
     let
@@ -446,8 +475,8 @@ toInt str =
         |> Result.withDefault 0
 
 
-slow : Int -> Int -> Int -> Int
-slow year day part =
+speed : Int -> Int -> Int -> Int
+speed year day part =
     let
         key =
             [ year, day, part ]
@@ -550,3 +579,31 @@ slow year day part =
 
             _ ->
                 0
+
+
+failed : Int -> Int -> Int -> Bool
+failed year day part =
+    let
+        key =
+            [ year, day, part ]
+                |> List.map toString
+                |> String.join "-"
+    in
+        case key of
+            "2015-12-2" ->
+                True
+
+            "2015-22-1" ->
+                True
+
+            "2015-22-2" ->
+                True
+
+            "2016-11-1" ->
+                True
+
+            "2016-11-2" ->
+                True
+
+            _ ->
+                False

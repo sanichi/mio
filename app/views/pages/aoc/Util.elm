@@ -45,7 +45,7 @@ combo n list =
 
 failed : String
 failed =
-    "failed to do this part"
+    "failed to solve this part"
 
 
 onlyOnePart : String
