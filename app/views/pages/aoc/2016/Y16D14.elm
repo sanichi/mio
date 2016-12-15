@@ -46,13 +46,13 @@ search part salt keys index cache =
                         newCache =
                             buildCache part salt (index + 1000) newIndex cache Dict.empty
 
-                        matches =
+                        foundSome =
                             newCache
                                 |> Dict.values
                                 |> List.any (String.contains match5)
 
                         newKeys =
-                            if matches then
+                            if foundSome then
                                 keys + 1
                             else
                                 keys

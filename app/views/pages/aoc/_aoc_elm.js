@@ -15510,11 +15510,11 @@ var _user$project$Y16D14$search = F5(
 						_elm_lang$core$String$left,
 						5,
 						A2(_elm_lang$core$String$repeat, 2, _p1._0));
-					var matches = A2(
+					var foundSome = A2(
 						_elm_lang$core$List$any,
 						_elm_lang$core$String$contains(match5),
 						_elm_lang$core$Dict$values(newCache));
-					var newKeys = matches ? (keys + 1) : keys;
+					var newKeys = foundSome ? (keys + 1) : keys;
 					var _v15 = part,
 						_v16 = salt,
 						_v17 = newKeys,
