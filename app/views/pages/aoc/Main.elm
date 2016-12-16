@@ -268,7 +268,8 @@ view model =
                         [ tbody []
                             [ viewAnswer model 1
                             , viewAnswer model 2
-                            , codeLink model
+                            , viewLinks model
+                            , viewNote model
                             ]
                         ]
                     ]
@@ -425,6 +426,44 @@ failedIndicator failed =
         "✔︎"
 
 
+viewLinks : Model -> Html Msg
+viewLinks model =
+    tr []
+        [ td [ class "text-center", colspan 2 ]
+            [ probLink model
+            , (text " • ")
+            , codeLink model
+            ]
+        ]
+
+
+probLink : Model -> Html Msg
+probLink model =
+    let
+        year =
+            model.year |> toString
+
+        day =
+            model.day |> toString
+
+        scheme =
+            "https://"
+
+        domain =
+            "adventofcode.com/"
+
+        path =
+            year ++ "/day/"
+
+        file =
+            day
+
+        link =
+            scheme ++ domain ++ path ++ file
+    in
+        a [ href link, target "external" ] [ text "Problem" ]
+
+
 codeLink : Model -> Html Msg
 codeLink model =
     let
@@ -458,10 +497,24 @@ codeLink model =
         link =
             scheme ++ domain ++ path ++ file
     in
-        tr []
-            [ td [ class "col-xs-12 text-center", colspan 2 ]
-                [ a [ href link, target "external" ] [ text "Code" ] ]
-            ]
+        a [ href link, target "external2" ] [ text "Code" ]
+
+
+viewNote : Model -> Html Msg
+viewNote model =
+    let
+        note =
+            getNote model.year model.day
+                |> Maybe.withDefault ""
+
+        display =
+            if note == "" then
+                "none"
+            else
+                "table-row"
+    in
+        tr [ style [ ( "display", display ) ] ]
+            [ td [ colspan 2 ] [ text note ] ]
 
 
 
@@ -610,3 +663,31 @@ failed year day part =
 
             _ ->
                 False
+
+
+getNote : Int -> Int -> Maybe String
+getNote year day =
+    let
+        key =
+            [ year, day ]
+                |> List.map toString
+                |> String.join "-"
+    in
+        case key of
+            "2015-12" ->
+                Just "For part 2 I couldn't see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead."
+
+            "2015-22" ->
+                Just "I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn't face trying to redo it all in Elm."
+
+            "2016-11" ->
+                Just "I didn't have much of a clue about this one so quickly admitted defeat and spent my time on other things that day."
+
+            "2016-14" ->
+                Just "I left part 2 running for nearly 24 hours and it still hadn't finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that's not the whole story since 100 times 20 seconds is only about half an hour."
+
+            "2016-16" ->
+                Just "The Elm program for part 2 crashed my browser window after a few minutes (presumably out of memory) so instead I wrote a Perl 5 program which got the answer in less than a minute while using almost 3GB of memory."
+
+            _ ->
+                Nothing
