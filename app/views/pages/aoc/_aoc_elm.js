@@ -15661,9 +15661,118 @@ var _user$project$Y16D15$answer = F2(
 					_user$project$Y16D15$parse(input))));
 	});
 
+var _user$project$Y16D16$parse = function (input) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex('[01]+'),
+					input))));
+};
+var _user$project$Y16D16$twoToOne = function (pair) {
+	var _p0 = pair;
+	switch (_p0) {
+		case '11':
+			return '1';
+		case '00':
+			return '1';
+		case '10':
+			return '0';
+		default:
+			return '0';
+	}
+};
+var _user$project$Y16D16$swap = function (c) {
+	return _elm_lang$core$Native_Utils.eq(
+		c,
+		_elm_lang$core$Native_Utils.chr('0')) ? _elm_lang$core$Native_Utils.chr('1') : _elm_lang$core$Native_Utils.chr('0');
+};
+var _user$project$Y16D16$checksum_ = function (data) {
+	checksum_:
+	while (true) {
+		if (_elm_lang$core$Native_Utils.eq(
+			A2(
+				_elm_lang$core$Basics_ops['%'],
+				_elm_lang$core$String$length(data),
+				2),
+			1)) {
+			return data;
+		} else {
+			var _v1 = _elm_lang$core$String$concat(
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Y16D16$twoToOne,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('..'),
+							data))));
+			data = _v1;
+			continue checksum_;
+		}
+	}
+};
+var _user$project$Y16D16$checksum = F2(
+	function (len, data) {
+		return _user$project$Y16D16$checksum_(
+			A2(_elm_lang$core$String$left, len, data));
+	});
+var _user$project$Y16D16$generate = F2(
+	function (len, data) {
+		generate:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$String$length(data),
+				len) > -1) {
+				return data;
+			} else {
+				var copy = _elm_lang$core$String$fromList(
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$Y16D16$swap,
+						_elm_lang$core$String$toList(
+							_elm_lang$core$String$reverse(data))));
+				var newData = A2(
+					_elm_lang$core$Basics_ops['++'],
+					data,
+					A2(_elm_lang$core$Basics_ops['++'], '0', copy));
+				var _v2 = len,
+					_v3 = newData;
+				len = _v2;
+				data = _v3;
+				continue generate;
+			}
+		}
+	});
+var _user$project$Y16D16$generateAndChecksum = F2(
+	function (len, init) {
+		return A2(
+			_user$project$Y16D16$checksum,
+			len,
+			A2(_user$project$Y16D16$generate, len, init));
+	});
 var _user$project$Y16D16$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(
+			_user$project$Y16D16$generateAndChecksum,
+			272,
+			_user$project$Y16D16$parse(input)) : A2(
+			_user$project$Y16D16$generateAndChecksum,
+			35651584,
+			_user$project$Y16D16$parse(input));
 	});
 
 var _user$project$Y16D17$answer = F2(
@@ -16114,7 +16223,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 15;
+var _user$project$Main$defaultDay = 16;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -16127,7 +16236,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 15)
+				days: A2(_elm_lang$core$List$range, 1, 16)
 			},
 			_1: {ctor: '[]'}
 		}
