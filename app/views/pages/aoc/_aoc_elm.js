@@ -15791,9 +15791,131 @@ var _user$project$Y16D17$parse = function (input) {
 					_elm_lang$core$Regex$regex('\\S+'),
 					input))));
 };
+var _user$project$Y16D17$fCode = _elm_lang$core$Char$toCode(
+	_elm_lang$core$Native_Utils.chr('f'));
+var _user$project$Y16D17$bCode = _elm_lang$core$Char$toCode(
+	_elm_lang$core$Native_Utils.chr('b'));
+var _user$project$Y16D17$found = function (location) {
+	return _elm_lang$core$Native_Utils.eq(location.x, 3) && _elm_lang$core$Native_Utils.eq(location.y, 3);
+};
+var _user$project$Y16D17$Location = F3(
+	function (a, b, c) {
+		return {x: a, y: b, path: c};
+	});
+var _user$project$Y16D17$newLocation = F2(
+	function (location, _p0) {
+		var _p1 = _p0;
+		var _p4 = _p1._1;
+		if ((_elm_lang$core$Native_Utils.cmp(_p4, _user$project$Y16D17$bCode) < 0) || (_elm_lang$core$Native_Utils.cmp(_p4, _user$project$Y16D17$fCode) > 0)) {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			var _p2 = function () {
+				var _p3 = _p1._0;
+				switch (_p3) {
+					case 0:
+						return {ctor: '_Tuple3', _0: location.x, _1: location.y - 1, _2: 'U'};
+					case 1:
+						return {ctor: '_Tuple3', _0: location.x, _1: location.y + 1, _2: 'D'};
+					case 2:
+						return {ctor: '_Tuple3', _0: location.x - 1, _1: location.y, _2: 'L'};
+					default:
+						return {ctor: '_Tuple3', _0: location.x + 1, _1: location.y, _2: 'R'};
+				}
+			}();
+			var x = _p2._0;
+			var y = _p2._1;
+			var step = _p2._2;
+			return ((_elm_lang$core$Native_Utils.cmp(x, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(y, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(x, 3) > 0) || (_elm_lang$core$Native_Utils.cmp(y, 3) > 0)))) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+				A3(
+					_user$project$Y16D17$Location,
+					x,
+					y,
+					A2(_elm_lang$core$Basics_ops['++'], location.path, step)));
+		}
+	});
+var _user$project$Y16D17$newLocations = F2(
+	function (passcode, location) {
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_user$project$Y16D17$newLocation(location),
+			A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (i, c) {
+						return {ctor: '_Tuple2', _0: i, _1: c};
+					}),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$Char$toCode,
+					_elm_lang$core$String$toList(
+						A2(
+							_elm_lang$core$String$left,
+							4,
+							_sanichi$elm_md5$MD5$hex(
+								A2(_elm_lang$core$Basics_ops['++'], passcode, location.path)))))));
+	});
+var _user$project$Y16D17$search = F4(
+	function (part, len, queue, passcode) {
+		search:
+		while (true) {
+			var _p5 = queue;
+			if (_p5.ctor === '[]') {
+				return _elm_lang$core$Native_Utils.eq(part, 1) ? 'none' : _elm_lang$core$Basics$toString(len);
+			} else {
+				var _p9 = _p5._1;
+				var locations = A2(_user$project$Y16D17$newLocations, passcode, _p5._0);
+				var maybeGoal = _elm_lang$core$List$head(
+					A2(_elm_lang$core$List$filter, _user$project$Y16D17$found, locations));
+				var _p6 = maybeGoal;
+				if (_p6.ctor === 'Nothing') {
+					var _v4 = part,
+						_v5 = len,
+						_v6 = A2(_elm_lang$core$Basics_ops['++'], _p9, locations),
+						_v7 = passcode;
+					part = _v4;
+					len = _v5;
+					queue = _v6;
+					passcode = _v7;
+					continue search;
+				} else {
+					var _p8 = _p6._0;
+					if (_elm_lang$core$Native_Utils.eq(part, 1)) {
+						return _p8.path;
+					} else {
+						var notGoals = A2(
+							_elm_lang$core$List$filter,
+							function (_p7) {
+								return !_user$project$Y16D17$found(_p7);
+							},
+							locations);
+						var newLen = _elm_lang$core$String$length(_p8.path);
+						var _v8 = part,
+							_v9 = newLen,
+							_v10 = A2(_elm_lang$core$Basics_ops['++'], _p9, notGoals),
+							_v11 = passcode;
+						part = _v8;
+						len = _v9;
+						queue = _v10;
+						passcode = _v11;
+						continue search;
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y16D17$start = A3(_user$project$Y16D17$Location, 0, 0, '');
 var _user$project$Y16D17$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _user$project$Y16D17$parse(input) : _user$project$Y16D17$parse(input);
+		return A4(
+			_user$project$Y16D17$search,
+			part,
+			0,
+			{
+				ctor: '::',
+				_0: _user$project$Y16D17$start,
+				_1: {ctor: '[]'}
+			},
+			_user$project$Y16D17$parse(input));
 	});
 
 var _user$project$Y16D18$answer = F2(
@@ -16058,6 +16180,8 @@ var _user$project$Main$speed = F3(
 				return 2;
 			case '2016-16-2':
 				return 4;
+			case '2016-17-2':
+				return 2;
 			default:
 				return 0;
 		}
