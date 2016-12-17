@@ -16453,11 +16453,10 @@ var _user$project$Main$viewYearOption = F2(
 var _user$project$Main$prepareAnswer = function (part) {
 	return _user$project$Ports$prepareAnswer(part);
 };
-var _user$project$Main$getData = F2(
-	function (year, day) {
-		return _user$project$Ports$getData(
-			{ctor: '_Tuple2', _0: year, _1: day});
-	});
+var _user$project$Main$getData = function (model) {
+	return _user$project$Ports$getData(
+		{ctor: '_Tuple2', _0: model.year, _1: model.day});
+};
 var _user$project$Main$getAnswer = F3(
 	function (model, part, data) {
 		var _p4 = model.year;
@@ -16499,30 +16498,32 @@ var _user$project$Main$initModel = {
 	answers: _user$project$Main$initAnswers,
 	thinks: _user$project$Main$initThinks
 };
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: _user$project$Main$initModel,
-	_1: A2(_user$project$Main$getData, _user$project$Main$initModel.year, _user$project$Main$initModel.day)
-};
-var _user$project$Main$newProblem = F3(
-	function (year, day, model) {
-		var year_ = _elm_lang$core$List$head(
+var _user$project$Main$newProblem = F2(
+	function (year, day) {
+		var year1 = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
 				function (y) {
 					return _elm_lang$core$Native_Utils.eq(y.year, year);
 				},
-				model.years));
+				_user$project$Main$initModel.years));
 		var newYear = function () {
-			var _p5 = year_;
+			var _p5 = year1;
 			if (_p5.ctor === 'Just') {
 				return _p5._0.year;
 			} else {
 				return _user$project$Main$defaultYear;
 			}
 		}();
+		var year2 = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (y) {
+					return _elm_lang$core$Native_Utils.eq(y.year, newYear);
+				},
+				_user$project$Main$initModel.years));
 		var newDay = function () {
-			var _p6 = year_;
+			var _p6 = year2;
 			if (_p6.ctor === 'Just') {
 				var _p7 = _p6._0;
 				return A2(_elm_lang$core$List$member, day, _p7.days) ? day : A2(
@@ -16533,38 +16534,48 @@ var _user$project$Main$newProblem = F3(
 				return _user$project$Main$defaultDay;
 			}
 		}();
-		return {ctor: '_Tuple2', _0: newYear, _1: newDay};
+		return _elm_lang$core$Native_Utils.update(
+			_user$project$Main$initModel,
+			{year: newYear, day: newDay});
 	});
+var _user$project$Main$init = function (flags) {
+	var day = A2(
+		_elm_lang$core$Result$withDefault,
+		_user$project$Main$defaultDay,
+		_elm_lang$core$String$toInt(flags.day));
+	var year = A2(
+		_elm_lang$core$Result$withDefault,
+		_user$project$Main$defaultYear,
+		_elm_lang$core$String$toInt(flags.year));
+	var model = A2(_user$project$Main$newProblem, year, day);
+	return {
+		ctor: '_Tuple2',
+		_0: model,
+		_1: _user$project$Main$getData(model)
+	};
+};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p8 = msg;
 		switch (_p8.ctor) {
 			case 'SelectYear':
-				var _p9 = A3(_user$project$Main$newProblem, _p8._0, model.day, model);
-				var newYear = _p9._0;
-				var newDay = _p9._1;
+				var newModel = A2(_user$project$Main$newProblem, _p8._0, model.day);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						_user$project$Main$initModel,
-						{year: newYear, day: newDay}),
+					newModel,
 					{
 						ctor: '::',
-						_0: A2(_user$project$Main$getData, newYear, newDay),
+						_0: _user$project$Main$getData(newModel),
 						_1: {ctor: '[]'}
 					});
 			case 'SelectDay':
-				var _p10 = A3(_user$project$Main$newProblem, model.year, _p8._0, model);
-				var newYear = _p10._0;
-				var newDay = _p10._1;
+				var newModel = A2(_user$project$Main$newProblem, model.year, _p8._0);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						_user$project$Main$initModel,
-						{year: newYear, day: newDay}),
+					newModel,
 					{
 						ctor: '::',
-						_0: A2(_user$project$Main$getData, newYear, newDay),
+						_0: _user$project$Main$getData(newModel),
 						_1: {ctor: '[]'}
 					});
 			case 'NewData':
@@ -16577,24 +16588,24 @@ var _user$project$Main$update = F2(
 						}),
 					{ctor: '[]'});
 			case 'Prepare':
-				var _p11 = _p8._0;
+				var _p9 = _p8._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							thinks: _user$project$Main$thinking(_p11)
+							thinks: _user$project$Main$thinking(_p9)
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Main$prepareAnswer(_p11),
+						_0: _user$project$Main$prepareAnswer(_p9),
 						_1: {ctor: '[]'}
 					});
 			default:
-				var _p12 = _p8._0;
+				var _p10 = _p8._0;
 				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
-				var answer = A3(_user$project$Main$getAnswer, model, _p12, data);
-				var answers = _elm_lang$core$Native_Utils.eq(_p12, 1) ? {
+				var answer = A3(_user$project$Main$getAnswer, model, _p10, data);
+				var answers = _elm_lang$core$Native_Utils.eq(_p10, 1) ? {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Maybe$Just(answer),
 					_1: _elm_lang$core$Tuple$second(model.answers)
@@ -16618,6 +16629,10 @@ var _user$project$Main$Year = F2(
 var _user$project$Main$Model = F6(
 	function (a, b, c, d, e, f) {
 		return {years: a, year: b, day: c, data: d, answers: e, thinks: f};
+	});
+var _user$project$Main$Flags = F2(
+	function (a, b) {
+		return {year: a, day: b};
 	});
 var _user$project$Main$Prepare = function (a) {
 	return {ctor: 'Prepare', _0: a};
@@ -16643,8 +16658,8 @@ var _user$project$Main$viewAnswer = F2(
 						},
 						{ctor: '[]'});
 				} else {
-					var _p13 = answer;
-					if (_p13.ctor === 'Nothing') {
+					var _p11 = answer;
+					if (_p11.ctor === 'Nothing') {
 						var time = A3(_user$project$Main$speed, model.year, model.day, part);
 						var decoration = _user$project$Main$speedIndicator(time);
 						var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', decoration);
@@ -16671,17 +16686,17 @@ var _user$project$Main$viewAnswer = F2(
 								_1: {ctor: '[]'}
 							});
 					} else {
-						var _p14 = _p13._0;
+						var _p12 = _p11._0;
 						return (_elm_lang$core$Native_Utils.cmp(
-							_elm_lang$core$String$length(_p14),
+							_elm_lang$core$String$length(_p12),
 							32) > 0) ? A2(
 							_elm_lang$html$Html$pre,
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(_p14),
+								_0: _elm_lang$html$Html$text(_p12),
 								_1: {ctor: '[]'}
-							}) : _elm_lang$html$Html$text(_p14);
+							}) : _elm_lang$html$Html$text(_p12);
 					}
 				}
 			}
@@ -16750,14 +16765,14 @@ var _user$project$Main$SelectYear = function (a) {
 var _user$project$Main$view = function (model) {
 	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p15) {
+		function (_p13) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p15));
+				_user$project$Main$toInt(_p13));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p16) {
+		function (_p14) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p16));
+				_user$project$Main$toInt(_p14));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
@@ -17024,8 +17039,20 @@ var _user$project$Main$view = function (model) {
 			}
 		});
 };
-var _user$project$Main$main = _elm_lang$html$Html$program(
-	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})();
+var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
+	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (day) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (year) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{day: day, year: year});
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'year', _elm_lang$core$Json_Decode$string));
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'day', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

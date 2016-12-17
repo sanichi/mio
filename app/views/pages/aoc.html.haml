@@ -2,7 +2,7 @@
 
 - content_for :javascript do
   = render "aoc_elm.min.js"
-  = render "aoc.js"
+  = render "aoc.js", year: params[:year], day: params[:day]
 
 %hr
 

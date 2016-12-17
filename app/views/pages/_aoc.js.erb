@@ -1,5 +1,9 @@
 $(function() {
-  var app = Elm.Main.embed($('#elm-app').get(0));
+  var node = $('#elm-app').get(0);
+  var app = Elm.Main.embed(node, {
+    year: '<%= year %>',
+    day: '<%= day %>',
+  });
   app.ports.getData.subscribe(function(year_day) {
     var year = year_day[0];
     var day = year_day[1];

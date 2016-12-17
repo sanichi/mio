@@ -12,9 +12,9 @@ import Y16
 -- MAIN
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { init = init
         , update = update
         , view = view
@@ -48,6 +48,12 @@ type alias Answers =
 
 type alias Thinks =
     ( Bool, Bool )
+
+
+type alias Flags =
+    { year : String
+    , day : String
+    }
 
 
 defaultYear : Int
@@ -84,9 +90,23 @@ initThinks =
     ( False, False )
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( initModel, getData initModel.year initModel.day )
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    let
+        year =
+            flags.year
+                |> String.toInt
+                |> Result.withDefault defaultYear
+
+        day =
+            flags.day
+                |> String.toInt
+                |> Result.withDefault defaultDay
+
+        model =
+            newProblem year day
+    in
+        ( model, getData model )
 
 
 
@@ -106,17 +126,17 @@ update msg model =
     case msg of
         SelectYear year ->
             let
-                ( newYear, newDay ) =
-                    newProblem year model.day model
+                newModel =
+                    newProblem year model.day
             in
-                { initModel | year = newYear, day = newDay } ! [ getData newYear newDay ]
+                newModel ! [ getData newModel ]
 
         SelectDay day ->
             let
-                ( newYear, newDay ) =
-                    newProblem model.year day model
+                newModel =
+                    newProblem model.year day
             in
-                { initModel | year = newYear, day = newDay } ! [ getData newYear newDay ]
+                newModel ! [ getData newModel ]
 
         NewData data ->
             { model | data = Just data } ! []
@@ -141,24 +161,29 @@ update msg model =
                 { model | answers = answers, thinks = initThinks } ! []
 
 
-newProblem : Int -> Int -> Model -> ( Int, Int )
-newProblem year day model =
+newProblem : Int -> Int -> Model
+newProblem year day =
     let
-        year_ =
-            model.years
+        year1 =
+            initModel.years
                 |> List.filter (\y -> y.year == year)
                 |> List.head
 
         newYear =
-            case year_ of
+            case year1 of
                 Just y ->
                     y.year
 
                 Nothing ->
                     defaultYear
 
+        year2 =
+            initModel.years
+                |> List.filter (\y -> y.year == newYear)
+                |> List.head
+
         newDay =
-            case year_ of
+            case year2 of
                 Just y ->
                     if List.member day y.days then
                         day
@@ -170,7 +195,7 @@ newProblem year day model =
                 Nothing ->
                     defaultDay
     in
-        ( newYear, newDay )
+        { initModel | year = newYear, day = newDay }
 
 
 thinking : Int -> Thinks
@@ -198,9 +223,9 @@ getAnswer model part data =
 -- COMMANDS & SUBSCRIPTIONS
 
 
-getData : Int -> Int -> Cmd Msg
-getData year day =
-    Ports.getData ( year, day )
+getData : Model -> Cmd Msg
+getData model =
+    Ports.getData ( model.year, model.day )
 
 
 prepareAnswer : Int -> Cmd Msg
