@@ -392,21 +392,14 @@ viewAnswer model part =
                             time =
                                 speed model.year model.day part
 
-                            decoration =
+                            colour =
+                                speedColour time
+
+                            symbol =
                                 speedIndicator time
 
                             words =
-                                "Get Anwser " ++ decoration
-
-                            colour =
-                                if time == 0 then
-                                    "success"
-                                else if time == 1 then
-                                    "info"
-                                else if time == 2 then
-                                    "warning"
-                                else
-                                    "danger"
+                                "Get Anwser " ++ symbol
                         in
                             span [ class ("btn btn-" ++ colour ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
 
@@ -441,6 +434,25 @@ speedIndicator time =
 
         _ ->
             "☠️"
+
+
+speedColour : Int -> String
+speedColour time =
+    case time of
+        0 ->
+            "success"
+
+        1 ->
+            "info"
+
+        2 ->
+            "primary"
+
+        3 ->
+            "warning"
+
+        _ ->
+            "danger"
 
 
 failedIndicator : Bool -> String
@@ -629,9 +641,6 @@ speed year day part =
                 3
 
             "2016-5-2" ->
-                3
-
-            "2016-9-1" ->
                 3
 
             "2016-9-2" ->
