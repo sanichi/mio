@@ -300,6 +300,8 @@ view model =
                     ]
                 ]
             , hr [] []
+            , viewHelps
+            , hr [] []
             , div [ class "row" ]
                 [ div [ class "col-xs-12" ]
                     [ pre [] [ text data ]
@@ -453,6 +455,36 @@ speedColour time =
 
         _ ->
             "danger"
+
+
+viewHelps : Html Msg
+viewHelps =
+    List.map viewHelp [ 0, 1, 2, 3, 4 ]
+        |> List.concat
+        |> p [ class "text-center" ]
+
+
+viewHelp : Int -> List (Html Msg)
+viewHelp time =
+    let
+        colour =
+            speedColour time
+
+        symbol =
+            speedIndicator time
+
+        klass =
+            "btn btn-xs btn-" ++ colour
+
+        lt =
+            if time >= 4 then
+                ""
+            else
+                " < "
+    in
+        [ button [ type_ "button", class klass ] [ text symbol ]
+        , text lt
+        ]
 
 
 failedIndicator : Bool -> String
