@@ -15918,9 +15918,164 @@ var _user$project$Y16D17$answer = F2(
 			_user$project$Y16D17$parse(input));
 	});
 
+var _user$project$Y16D18$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (c) {
+			return _elm_lang$core$Native_Utils.eq(
+				c,
+				_elm_lang$core$Native_Utils.chr('^')) ? true : false;
+		},
+		_elm_lang$core$String$toList(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				'',
+				_elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_lang$core$Regex$regex('\\S+'),
+							input))))));
+};
+var _user$project$Y16D18$isTrap = F3(
+	function (t1, t2, t3) {
+		var _p0 = {ctor: '_Tuple3', _0: t1, _1: t2, _2: t3};
+		_v0_4:
+		do {
+			if (_p0.ctor === '_Tuple3') {
+				if (_p0._0 === true) {
+					if (_p0._1 === true) {
+						if (_p0._2 === false) {
+							return true;
+						} else {
+							break _v0_4;
+						}
+					} else {
+						if (_p0._2 === false) {
+							return true;
+						} else {
+							break _v0_4;
+						}
+					}
+				} else {
+					if (_p0._1 === true) {
+						if (_p0._2 === true) {
+							return true;
+						} else {
+							break _v0_4;
+						}
+					} else {
+						if (_p0._2 === true) {
+							return true;
+						} else {
+							break _v0_4;
+						}
+					}
+				}
+			} else {
+				break _v0_4;
+			}
+		} while(false);
+		return false;
+	});
+var _user$project$Y16D18$nextRow = F2(
+	function (start, row) {
+		var _p1 = row;
+		if (_p1.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p1._1.ctor === '[]') {
+				var t = A3(_user$project$Y16D18$isTrap, false, _p1._0, false);
+				return {
+					ctor: '::',
+					_0: t,
+					_1: {ctor: '[]'}
+				};
+			} else {
+				if (_p1._1._1.ctor === '[]') {
+					var _p3 = _p1._1._0;
+					var _p2 = _p1._0;
+					if (start) {
+						var t = A3(_user$project$Y16D18$isTrap, false, _p2, _p3);
+						return {
+							ctor: '::',
+							_0: t,
+							_1: A2(_user$project$Y16D18$nextRow, false, row)
+						};
+					} else {
+						var t = A3(_user$project$Y16D18$isTrap, _p2, _p3, false);
+						return {
+							ctor: '::',
+							_0: t,
+							_1: {ctor: '[]'}
+						};
+					}
+				} else {
+					var _p6 = _p1._1._1._0;
+					var _p5 = _p1._1._0;
+					var _p4 = _p1._0;
+					if (start) {
+						var t = A3(_user$project$Y16D18$isTrap, false, _p4, _p5);
+						return {
+							ctor: '::',
+							_0: t,
+							_1: A2(_user$project$Y16D18$nextRow, false, row)
+						};
+					} else {
+						var t = A3(_user$project$Y16D18$isTrap, _p4, _p5, _p6);
+						return {
+							ctor: '::',
+							_0: t,
+							_1: A2(
+								_user$project$Y16D18$nextRow,
+								start,
+								{
+									ctor: '::',
+									_0: _p5,
+									_1: {ctor: '::', _0: _p6, _1: _p1._1._1._1}
+								})
+						};
+					}
+				}
+			}
+		}
+	});
+var _user$project$Y16D18$count = F3(
+	function (num, total, row) {
+		count:
+		while (true) {
+			var rowCount = _elm_lang$core$List$length(
+				A2(_elm_lang$core$List$filter, _elm_lang$core$Basics$not, row));
+			var newTotal = total + rowCount;
+			if (_elm_lang$core$Native_Utils.cmp(num, 1) < 1) {
+				return newTotal;
+			} else {
+				var newNum = num - 1;
+				var newRow = A2(_user$project$Y16D18$nextRow, true, row);
+				var _v2 = newNum,
+					_v3 = newTotal,
+					_v4 = newRow;
+				num = _v2;
+				total = _v3;
+				row = _v4;
+				continue count;
+			}
+		}
+	});
 var _user$project$Y16D18$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		var num = _elm_lang$core$Native_Utils.eq(part, 1) ? 40 : 400000;
+		return _elm_lang$core$Basics$toString(
+			A3(
+				_user$project$Y16D18$count,
+				num,
+				0,
+				_user$project$Y16D18$parse(input)));
 	});
 
 var _user$project$Y16D19$answer = F2(
@@ -16180,6 +16335,8 @@ var _user$project$Main$speed = F3(
 				return 4;
 			case '2016-17-2':
 				return 2;
+			case '2016-18-2':
+				return 1;
 			default:
 				return 0;
 		}
@@ -16549,7 +16706,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 17;
+var _user$project$Main$defaultDay = 18;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -16562,7 +16719,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 17)
+				days: A2(_elm_lang$core$List$range, 1, 18)
 			},
 			_1: {ctor: '[]'}
 		}

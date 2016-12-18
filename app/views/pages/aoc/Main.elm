@@ -63,14 +63,14 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    17
+    18
 
 
 initModel : Model
 initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
-        , { year = 2016, days = List.range 1 17 }
+        , { year = 2016, days = List.range 1 18 }
         ]
     , year = defaultYear
     , day = defaultDay
@@ -701,6 +701,9 @@ speed year day part =
 
             "2016-17-2" ->
                 2
+
+            "2016-18-2" ->
+                1
 
             _ ->
                 0
