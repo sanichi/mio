@@ -16494,9 +16494,24 @@ var _user$project$Main$viewLinks = function (model) {
 var _user$project$Main$failedIndicator = function (failed) {
 	return failed ? '✘' : '✔︎';
 };
-var _user$project$Main$speedColour = function (time) {
+var _user$project$Main$speedDescription = function (time) {
 	var _p3 = time;
 	switch (_p3) {
+		case 0:
+			return 'Answer should be returned instantly';
+		case 1:
+			return 'Won\'t take more than a few seconds';
+		case 2:
+			return 'May take as much as a minute';
+		case 3:
+			return 'You should have time to get a coffee';
+		default:
+			return 'Will take many hours or run out of memory';
+	}
+};
+var _user$project$Main$speedColour = function (time) {
+	var _p4 = time;
+	switch (_p4) {
 		case 0:
 			return 'success';
 		case 1:
@@ -16510,82 +16525,71 @@ var _user$project$Main$speedColour = function (time) {
 	}
 };
 var _user$project$Main$speedIndicator = function (time) {
-	var _p4 = time;
-	switch (_p4) {
+	var _p5 = time;
+	switch (_p5) {
 		case 0:
 			return '⚡️';
 		case 1:
 			return '⏳';
 		case 2:
-			return '☕️';
-		case 3:
 			return '🐌';
+		case 3:
+			return '☕️';
 		default:
 			return '☠️';
 	}
 };
-var _user$project$Main$viewHelp = function (time) {
-	var lt = (_elm_lang$core$Native_Utils.cmp(time, 4) > -1) ? '' : ' < ';
+var _user$project$Main$viewIcon = function (time) {
+	var description = _user$project$Main$speedDescription(time);
 	var symbol = _user$project$Main$speedIndicator(time);
 	var colour = _user$project$Main$speedColour(time);
 	var klass = A2(_elm_lang$core$Basics_ops['++'], 'btn btn-xs btn-', colour);
-	return {
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$button,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$type_('button'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class(klass),
-					_1: {ctor: '[]'}
-				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(symbol),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
+	return A2(
+		_elm_lang$html$Html$tr,
+		{ctor: '[]'},
+		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text(lt),
-			_1: {ctor: '[]'}
-		}
-	};
-};
-var _user$project$Main$viewHelps = A2(
-	_elm_lang$html$Html$p,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('text-center'),
-		_1: {ctor: '[]'}
-	},
-	_elm_lang$core$List$concat(
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$Main$viewHelp,
-			{
-				ctor: '::',
-				_0: 0,
-				_1: {
+			_0: A2(
+				_elm_lang$html$Html$td,
+				{
 					ctor: '::',
-					_0: 1,
-					_1: {
-						ctor: '::',
-						_0: 2,
-						_1: {
+					_0: _elm_lang$html$Html_Attributes$class('col-xs-1 text-center'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$span,
+						{
 							ctor: '::',
-							_0: 3,
-							_1: {
-								ctor: '::',
-								_0: 4,
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			})));
+							_0: _elm_lang$html$Html_Attributes$class(klass),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(symbol),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('col-xs-11'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(description),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$Main$viewDayOption = F3(
 	function (year, chosen, day) {
 		var failedSymbol = _user$project$Main$failedIndicator(
@@ -16691,8 +16695,8 @@ var _user$project$Main$getData = function (model) {
 };
 var _user$project$Main$getAnswer = F3(
 	function (model, part, data) {
-		var _p5 = model.year;
-		switch (_p5) {
+		var _p6 = model.year;
+		switch (_p6) {
 			case 2015:
 				return A3(_user$project$Y15$answer, model.day, part, data);
 			case 2016:
@@ -16728,7 +16732,8 @@ var _user$project$Main$initModel = {
 	day: _user$project$Main$defaultDay,
 	data: _elm_lang$core$Maybe$Nothing,
 	answers: _user$project$Main$initAnswers,
-	thinks: _user$project$Main$initThinks
+	thinks: _user$project$Main$initThinks,
+	help: false
 };
 var _user$project$Main$newProblem = F2(
 	function (year, day) {
@@ -16740,9 +16745,9 @@ var _user$project$Main$newProblem = F2(
 				},
 				_user$project$Main$initModel.years));
 		var newYear = function () {
-			var _p6 = year1;
-			if (_p6.ctor === 'Just') {
-				return _p6._0.year;
+			var _p7 = year1;
+			if (_p7.ctor === 'Just') {
+				return _p7._0.year;
 			} else {
 				return _user$project$Main$defaultYear;
 			}
@@ -16755,13 +16760,13 @@ var _user$project$Main$newProblem = F2(
 				},
 				_user$project$Main$initModel.years));
 		var newDay = function () {
-			var _p7 = year2;
-			if (_p7.ctor === 'Just') {
-				var _p8 = _p7._0;
-				return A2(_elm_lang$core$List$member, day, _p8.days) ? day : A2(
+			var _p8 = year2;
+			if (_p8.ctor === 'Just') {
+				var _p9 = _p8._0;
+				return A2(_elm_lang$core$List$member, day, _p9.days) ? day : A2(
 					_elm_lang$core$Maybe$withDefault,
 					_user$project$Main$defaultDay,
-					_elm_lang$core$List$head(_p8.days));
+					_elm_lang$core$List$head(_p9.days));
 			} else {
 				return _user$project$Main$defaultDay;
 			}
@@ -16788,10 +16793,10 @@ var _user$project$Main$init = function (flags) {
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p9 = msg;
-		switch (_p9.ctor) {
+		var _p10 = msg;
+		switch (_p10.ctor) {
 			case 'SelectYear':
-				var newModel = A2(_user$project$Main$newProblem, _p9._0, model.day);
+				var newModel = A2(_user$project$Main$newProblem, _p10._0, model.day);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					newModel,
@@ -16801,7 +16806,7 @@ var _user$project$Main$update = F2(
 						_1: {ctor: '[]'}
 					});
 			case 'SelectDay':
-				var newModel = A2(_user$project$Main$newProblem, model.year, _p9._0);
+				var newModel = A2(_user$project$Main$newProblem, model.year, _p10._0);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					newModel,
@@ -16816,28 +16821,28 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							data: _elm_lang$core$Maybe$Just(_p9._0)
+							data: _elm_lang$core$Maybe$Just(_p10._0)
 						}),
 					{ctor: '[]'});
 			case 'Prepare':
-				var _p10 = _p9._0;
+				var _p11 = _p10._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							thinks: _user$project$Main$thinking(_p10)
+							thinks: _user$project$Main$thinking(_p11)
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Main$prepareAnswer(_p10),
+						_0: _user$project$Main$prepareAnswer(_p11),
 						_1: {ctor: '[]'}
 					});
-			default:
-				var _p11 = _p9._0;
+			case 'Answer':
+				var _p12 = _p10._0;
 				var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
-				var answer = A3(_user$project$Main$getAnswer, model, _p11, data);
-				var answers = _elm_lang$core$Native_Utils.eq(_p11, 1) ? {
+				var answer = A3(_user$project$Main$getAnswer, model, _p12, data);
+				var answers = _elm_lang$core$Native_Utils.eq(_p12, 1) ? {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Maybe$Just(answer),
 					_1: _elm_lang$core$Tuple$second(model.answers)
@@ -16852,20 +16857,172 @@ var _user$project$Main$update = F2(
 						model,
 						{answers: answers, thinks: _user$project$Main$initThinks}),
 					{ctor: '[]'});
+			case 'ShowHelp':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{help: true}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{help: false}),
+					{ctor: '[]'});
 		}
 	});
 var _user$project$Main$Year = F2(
 	function (a, b) {
 		return {year: a, days: b};
 	});
-var _user$project$Main$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {years: a, year: b, day: c, data: d, answers: e, thinks: f};
+var _user$project$Main$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {years: a, year: b, day: c, data: d, answers: e, thinks: f, help: g};
 	});
 var _user$project$Main$Flags = F2(
 	function (a, b) {
 		return {year: a, day: b};
 	});
+var _user$project$Main$HideHelp = {ctor: 'HideHelp'};
+var _user$project$Main$ShowHelp = {ctor: 'ShowHelp'};
+var _user$project$Main$viewHelp = function (show) {
+	var btnText = function (txt) {
+		return _elm_lang$html$Html$text(
+			A2(_elm_lang$core$Basics_ops['++'], txt, ' Icon Decriptions'));
+	};
+	if (show) {
+		var help = ' Icon Descriptions';
+		var trows = A2(
+			_elm_lang$core$List$map,
+			_user$project$Main$viewIcon,
+			{
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 1,
+					_1: {
+						ctor: '::',
+						_0: 2,
+						_1: {
+							ctor: '::',
+							_0: 3,
+							_1: {
+								ctor: '::',
+								_0: 4,
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			});
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('row'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('text-center'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$type_('button'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('btn btn-xs btn-default'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$HideHelp),
+												_1: {ctor: '[]'}
+											}
+										}
+									},
+									{
+										ctor: '::',
+										_0: btnText('Hide'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$table,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('table table-bordered'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$tbody,
+										{ctor: '[]'},
+										trows),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	} else {
+		return A2(
+			_elm_lang$html$Html$p,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('text-center'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$button,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$type_('button'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('btn btn-xs btn-default'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$ShowHelp),
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: btnText('Show'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	}
+};
 var _user$project$Main$Prepare = function (a) {
 	return {ctor: 'Prepare', _0: a};
 };
@@ -16890,8 +17047,8 @@ var _user$project$Main$viewAnswer = F2(
 						},
 						{ctor: '[]'});
 				} else {
-					var _p12 = answer;
-					if (_p12.ctor === 'Nothing') {
+					var _p13 = answer;
+					if (_p13.ctor === 'Nothing') {
 						var time = A3(_user$project$Main$speed, model.year, model.day, part);
 						var colour = _user$project$Main$speedColour(time);
 						var symbol = _user$project$Main$speedIndicator(time);
@@ -16918,17 +17075,17 @@ var _user$project$Main$viewAnswer = F2(
 								_1: {ctor: '[]'}
 							});
 					} else {
-						var _p13 = _p12._0;
+						var _p14 = _p13._0;
 						return (_elm_lang$core$Native_Utils.cmp(
-							_elm_lang$core$String$length(_p13),
+							_elm_lang$core$String$length(_p14),
 							32) > 0) ? A2(
 							_elm_lang$html$Html$pre,
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(_p13),
+								_0: _elm_lang$html$Html$text(_p14),
 								_1: {ctor: '[]'}
-							}) : _elm_lang$html$Html$text(_p13);
+							}) : _elm_lang$html$Html$text(_p14);
 					}
 				}
 			}
@@ -16997,14 +17154,14 @@ var _user$project$Main$SelectYear = function (a) {
 var _user$project$Main$view = function (model) {
 	var data = A2(_elm_lang$core$Maybe$withDefault, '', model.data);
 	var onDayChange = _elm_lang$html$Html_Events$onInput(
-		function (_p14) {
+		function (_p15) {
 			return _user$project$Main$SelectDay(
-				_user$project$Main$toInt(_p14));
+				_user$project$Main$toInt(_p15));
 		});
 	var onYearChange = _elm_lang$html$Html_Events$onInput(
-		function (_p15) {
+		function (_p16) {
 			return _user$project$Main$SelectYear(
-				_user$project$Main$toInt(_p15));
+				_user$project$Main$toInt(_p16));
 		});
 	var dayOptions = A2(
 		_elm_lang$core$List$map,
@@ -17234,7 +17391,7 @@ var _user$project$Main$view = function (model) {
 							{ctor: '[]'}),
 						_1: {
 							ctor: '::',
-							_0: _user$project$Main$viewHelps,
+							_0: _user$project$Main$viewHelp(model.help),
 							_1: {
 								ctor: '::',
 								_0: A2(

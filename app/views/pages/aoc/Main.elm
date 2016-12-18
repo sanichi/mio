@@ -39,6 +39,7 @@ type alias Model =
     , data : Maybe String
     , answers : Answers
     , thinks : Thinks
+    , help : Bool
     }
 
 
@@ -77,6 +78,7 @@ initModel =
     , data = Nothing
     , answers = initAnswers
     , thinks = initThinks
+    , help = False
     }
 
 
@@ -119,6 +121,8 @@ type Msg
     | NewData String
     | Answer Int
     | Prepare Int
+    | ShowHelp
+    | HideHelp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -159,6 +163,12 @@ update msg model =
                         ( model.answers |> Tuple.first, Just answer )
             in
                 { model | answers = answers, thinks = initThinks } ! []
+
+        ShowHelp ->
+            { model | help = True } ! []
+
+        HideHelp ->
+            { model | help = False } ! []
 
 
 newProblem : Int -> Int -> Model
@@ -300,7 +310,7 @@ view model =
                     ]
                 ]
             , hr [] []
-            , viewHelps
+            , viewHelp model.help
             , hr [] []
             , div [ class "row" ]
                 [ div [ class "col-xs-12" ]
@@ -429,10 +439,10 @@ speedIndicator time =
             "⏳"
 
         2 ->
-            "☕️"
+            "🐌"
 
         3 ->
-            "🐌"
+            "☕️"
 
         _ ->
             "☠️"
@@ -457,15 +467,54 @@ speedColour time =
             "danger"
 
 
-viewHelps : Html Msg
-viewHelps =
-    List.map viewHelp [ 0, 1, 2, 3, 4 ]
-        |> List.concat
-        |> p [ class "text-center" ]
+speedDescription : Int -> String
+speedDescription time =
+    case time of
+        0 ->
+            "Answer should be returned instantly"
+
+        1 ->
+            "Won't take more than a few seconds"
+
+        2 ->
+            "May take as much as a minute"
+
+        3 ->
+            "You should have time to get a coffee"
+
+        _ ->
+            "Will take many hours or run out of memory"
 
 
-viewHelp : Int -> List (Html Msg)
-viewHelp time =
+viewHelp : Bool -> Html Msg
+viewHelp show =
+    let
+        btnText txt =
+            txt ++ " Icon Decriptions" |> text
+    in
+        if show then
+            let
+                trows =
+                    List.map viewIcon [ 0, 1, 2, 3, 4 ]
+
+                help =
+                    " Icon Descriptions"
+            in
+                div [ class "row" ]
+                    [ div [ class "col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" ]
+                        [ p [ class "text-center" ]
+                            [ button [ type_ "button", class "btn btn-xs btn-default", Events.onClick HideHelp ] [ btnText "Hide" ] ]
+                        , table [ class "table table-bordered" ]
+                            [ tbody [] trows ]
+                        ]
+                    ]
+        else
+            p [ class "text-center" ]
+                [ button [ type_ "button", class "btn btn-xs btn-default", Events.onClick ShowHelp ] [ btnText "Show" ] ]
+
+
+viewIcon : Int -> Html Msg
+viewIcon time =
     let
         colour =
             speedColour time
@@ -476,15 +525,15 @@ viewHelp time =
         klass =
             "btn btn-xs btn-" ++ colour
 
-        lt =
-            if time >= 4 then
-                ""
-            else
-                " < "
+        description =
+            speedDescription time
     in
-        [ button [ type_ "button", class klass ] [ text symbol ]
-        , text lt
-        ]
+        tr []
+            [ td [ class "col-xs-1 text-center" ]
+                [ span [ class klass ] [ text symbol ] ]
+            , td [ class "col-xs-11" ]
+                [ text description ]
+            ]
 
 
 failedIndicator : Bool -> String
