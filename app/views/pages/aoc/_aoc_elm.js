@@ -17097,7 +17097,7 @@ var _user$project$Main$viewAnswer = F2(
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$th,
+					_elm_lang$html$Html$td,
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$class('col-xs-6 text-center'),

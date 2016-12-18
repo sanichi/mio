@@ -422,7 +422,7 @@ viewAnswer model part =
                             text ans
     in
         tr []
-            [ th [ class "col-xs-6 text-center" ]
+            [ td [ class "col-xs-6 text-center" ]
                 [ "Part " ++ name |> text ]
             , td [ class "col-xs-6 text-center" ]
                 [ display ]
