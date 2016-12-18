@@ -301,7 +301,8 @@ view model =
                 [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
                     [ table [ class "table table-bordered" ]
                         [ tbody []
-                            [ viewAnswer model 1
+                            [ viewHeader
+                            , viewAnswer model 1
                             , viewAnswer model 2
                             , viewLinks model
                             , viewNote model
@@ -363,15 +364,19 @@ viewDayOption year chosen day =
         option [ value str, chosen == day |> selected ] [ text txt ]
 
 
+viewHeader : Html Msg
+viewHeader =
+    tr []
+        [ td [ class "col-xs-2 text-center" ]
+            [ text "Part" ]
+        , td [ class "col-xs-10 text-center" ]
+            [ text "Answer" ]
+        ]
+
+
 viewAnswer : Model -> Int -> Html Msg
 viewAnswer model part =
     let
-        name =
-            if part == 1 then
-                "One"
-            else
-                "Two"
-
         answer =
             if part == 1 then
                 Tuple.first model.answers
@@ -409,11 +414,8 @@ viewAnswer model part =
 
                             symbol =
                                 speedIndicator time
-
-                            words =
-                                "Get Anwser " ++ symbol
                         in
-                            span [ class ("btn btn-" ++ colour ++ " btn-xs"), Events.onClick (Prepare part) ] [ text words ]
+                            span [ class ("btn btn-" ++ colour ++ " btn-xs"), Events.onClick (Prepare part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then
@@ -422,9 +424,9 @@ viewAnswer model part =
                             text ans
     in
         tr []
-            [ td [ class "col-xs-6 text-center" ]
-                [ "Part " ++ name |> text ]
-            , td [ class "col-xs-6 text-center" ]
+            [ td [ class "col-xs-2 text-center" ]
+                [ toString part |> text ]
+            , td [ class "col-xs-10 text-center" ]
                 [ display ]
             ]
 
@@ -490,7 +492,7 @@ viewHelp : Bool -> Html Msg
 viewHelp show =
     let
         btnText txt =
-            txt ++ " Icon Decriptions" |> text
+            txt ++ " Button Decriptions" |> text
     in
         if show then
             let

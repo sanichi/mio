@@ -16590,6 +16590,40 @@ var _user$project$Main$viewIcon = function (time) {
 			}
 		});
 };
+var _user$project$Main$viewHeader = A2(
+	_elm_lang$html$Html$tr,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$td,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('col-xs-2 text-center'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Part'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('col-xs-10 text-center'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Answer'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Main$viewDayOption = F3(
 	function (year, chosen, day) {
 		var failedSymbol = _user$project$Main$failedIndicator(
@@ -16890,7 +16924,7 @@ var _user$project$Main$ShowHelp = {ctor: 'ShowHelp'};
 var _user$project$Main$viewHelp = function (show) {
 	var btnText = function (txt) {
 		return _elm_lang$html$Html$text(
-			A2(_elm_lang$core$Basics_ops['++'], txt, ' Icon Decriptions'));
+			A2(_elm_lang$core$Basics_ops['++'], txt, ' Button Decriptions'));
 	};
 	if (show) {
 		var help = ' Icon Descriptions';
@@ -17052,7 +17086,6 @@ var _user$project$Main$viewAnswer = F2(
 						var time = A3(_user$project$Main$speed, model.year, model.day, part);
 						var colour = _user$project$Main$speedColour(time);
 						var symbol = _user$project$Main$speedIndicator(time);
-						var words = A2(_elm_lang$core$Basics_ops['++'], 'Get Anwser ', symbol);
 						return A2(
 							_elm_lang$html$Html$span,
 							{
@@ -17071,7 +17104,7 @@ var _user$project$Main$viewAnswer = F2(
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(words),
+								_0: _elm_lang$html$Html$text(symbol),
 								_1: {ctor: '[]'}
 							});
 					} else {
@@ -17090,7 +17123,6 @@ var _user$project$Main$viewAnswer = F2(
 				}
 			}
 		}();
-		var name = _elm_lang$core$Native_Utils.eq(part, 1) ? 'One' : 'Two';
 		return A2(
 			_elm_lang$html$Html$tr,
 			{ctor: '[]'},
@@ -17100,13 +17132,13 @@ var _user$project$Main$viewAnswer = F2(
 					_elm_lang$html$Html$td,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col-xs-6 text-center'),
+						_0: _elm_lang$html$Html_Attributes$class('col-xs-2 text-center'),
 						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text(
-							A2(_elm_lang$core$Basics_ops['++'], 'Part ', name)),
+							_elm_lang$core$Basics$toString(part)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -17115,7 +17147,7 @@ var _user$project$Main$viewAnswer = F2(
 						_elm_lang$html$Html$td,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col-xs-6 text-center'),
+							_0: _elm_lang$html$Html_Attributes$class('col-xs-10 text-center'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -17362,17 +17394,21 @@ var _user$project$Main$view = function (model) {
 												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: A2(_user$project$Main$viewAnswer, model, 1),
+													_0: _user$project$Main$viewHeader,
 													_1: {
 														ctor: '::',
-														_0: A2(_user$project$Main$viewAnswer, model, 2),
+														_0: A2(_user$project$Main$viewAnswer, model, 1),
 														_1: {
 															ctor: '::',
-															_0: _user$project$Main$viewLinks(model),
+															_0: A2(_user$project$Main$viewAnswer, model, 2),
 															_1: {
 																ctor: '::',
-																_0: _user$project$Main$viewNote(model),
-																_1: {ctor: '[]'}
+																_0: _user$project$Main$viewLinks(model),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$Main$viewNote(model),
+																	_1: {ctor: '[]'}
+																}
 															}
 														}
 													}
