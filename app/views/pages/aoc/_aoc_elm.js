@@ -11735,38 +11735,6 @@ var _user$project$Y15D17$answer = F2(
 	});
 
 var _user$project$Y15D18$initModel = {lights: _elm_lang$core$Array$empty, size: 0, maxIndex: 0, stuck: false};
-var _user$project$Y15D18$debug = function (model) {
-	var chars = A2(
-		_elm_lang$core$String$join,
-		'',
-		A2(
-			_elm_lang$core$List$map,
-			function (b) {
-				return b ? '#' : '.';
-			},
-			_elm_lang$core$Array$toList(model.lights)));
-	var lines = A2(
-		_elm_lang$core$List$map,
-		function (_) {
-			return _.match;
-		},
-		A3(
-			_elm_lang$core$Regex$find,
-			_elm_lang$core$Regex$All,
-			_elm_lang$core$Regex$regex(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'.{',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(model.size),
-						'}'))),
-			chars));
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		A2(_elm_lang$core$String$join, '\n', lines),
-		'\n');
-};
 var _user$project$Y15D18$count = function (model) {
 	return _elm_lang$core$List$length(
 		A2(
@@ -14471,7 +14439,7 @@ var _user$project$Y16D08$display = function (screen) {
 	};
 	return A2(
 		_elm_lang$core$String$join,
-		'|',
+		'\n',
 		A2(
 			_elm_lang$core$List$map,
 			rowToString,

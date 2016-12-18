@@ -163,27 +163,6 @@ parse input =
         Model a s m False
 
 
-debug : Model -> String
-debug model =
-    let
-        chars =
-            Array.toList model.lights
-                |> List.map
-                    (\b ->
-                        if b then
-                            "#"
-                        else
-                            "."
-                    )
-                |> String.join ""
-
-        lines =
-            find All (regex (".{" ++ toString model.size ++ "}")) chars
-                |> List.map .match
-    in
-        (String.join "\n" lines) ++ "\n"
-
-
 type alias Model =
     { lights : Array Bool
     , size : Int
