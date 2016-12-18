@@ -304,7 +304,15 @@ view model =
                             [ viewHeader
                             , viewAnswer model 1
                             , viewAnswer model 2
-                            , viewLinks model
+                            ]
+                        ]
+                    ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
+                    [ table [ class "table table-bordered" ]
+                        [ tbody []
+                            [ viewLinks model
                             , viewNote model
                             ]
                         ]
@@ -549,7 +557,7 @@ failedIndicator failed =
 viewLinks : Model -> Html Msg
 viewLinks model =
     tr []
-        [ td [ class "text-center", colspan 2 ]
+        [ td [ class "text-center" ]
             [ probLink model
             , (text " • ")
             , codeLink model
@@ -634,7 +642,7 @@ viewNote model =
                 "table-row"
     in
         tr [ style [ ( "display", display ) ] ]
-            [ td [ colspan 2 ] [ text note ] ]
+            [ td [] [ text note ] ]
 
 
 
