@@ -8,17 +8,26 @@ answer part input =
     let
         horizontals =
             parse input
-
-        verticals =
-            rearrange [] [] [] horizontals
     in
         if part == 1 then
-            List.map List.sort horizontals |> count |> toString
+            process horizontals
         else
-            List.map List.sort verticals |> count |> toString
+            let
+                verticals =
+                    rearrange [] [] [] horizontals
+            in
+                process verticals
 
 
-count : List (List Int) -> Int
+process : List Triangle -> String
+process triangles =
+    triangles
+        |> List.map List.sort
+        |> count
+        |> toString
+
+
+count : List Triangle -> Int
 count triangles =
     case triangles of
         [] ->
@@ -28,7 +37,7 @@ count triangles =
             ok triangle + count rest
 
 
-ok : List Int -> Int
+ok : Triangle -> Int
 ok triangle =
     case triangle of
         [ s1, s2, s3 ] ->
@@ -41,7 +50,7 @@ ok triangle =
             0
 
 
-rearrange : List Int -> List Int -> List Int -> List (List Int) -> List (List Int)
+rearrange : Triangle -> Triangle -> Triangle -> List Triangle -> List Triangle
 rearrange a1 a2 a3 horizontals =
     if List.length a1 >= 3 then
         [ a1, a2, a3 ] ++ rearrange [] [] [] horizontals
@@ -67,7 +76,11 @@ rearrange a1 a2 a3 horizontals =
                 rearrange a1 a2 a3 rest
 
 
-parse : String -> List (List Int)
+type alias Triangle =
+    List Int
+
+
+parse : String -> List Triangle
 parse input =
     Regex.find Regex.All (Regex.regex "(\\d+) +(\\d+) +(\\d+)") input
         |> List.map .submatches

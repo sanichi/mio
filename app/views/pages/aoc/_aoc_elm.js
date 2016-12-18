@@ -13849,20 +13849,25 @@ var _user$project$Y16D03$count = function (triangles) {
 		return _user$project$Y16D03$ok(_p2._0) + _user$project$Y16D03$count(_p2._1);
 	}
 };
+var _user$project$Y16D03$process = function (triangles) {
+	return _elm_lang$core$Basics$toString(
+		_user$project$Y16D03$count(
+			A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, triangles)));
+};
 var _user$project$Y16D03$answer = F2(
 	function (part, input) {
 		var horizontals = _user$project$Y16D03$parse(input);
-		var verticals = A4(
-			_user$project$Y16D03$rearrange,
-			{ctor: '[]'},
-			{ctor: '[]'},
-			{ctor: '[]'},
-			horizontals);
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
-			_user$project$Y16D03$count(
-				A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, horizontals))) : _elm_lang$core$Basics$toString(
-			_user$project$Y16D03$count(
-				A2(_elm_lang$core$List$map, _elm_lang$core$List$sort, verticals)));
+		if (_elm_lang$core$Native_Utils.eq(part, 1)) {
+			return _user$project$Y16D03$process(horizontals);
+		} else {
+			var verticals = A4(
+				_user$project$Y16D03$rearrange,
+				{ctor: '[]'},
+				{ctor: '[]'},
+				{ctor: '[]'},
+				horizontals);
+			return _user$project$Y16D03$process(verticals);
+		}
 	});
 
 var _user$project$Y16D04$potentialRoom = function (room) {
