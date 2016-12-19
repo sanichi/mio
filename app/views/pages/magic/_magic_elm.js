@@ -8266,7 +8266,7 @@ var _user$project$Ports$continue = _elm_lang$core$Native_Platform.incomingPort('
 var _user$project$Main$hexToInt = function (hex) {
 	var zero = _elm_lang$core$Char$toCode(
 		_elm_lang$core$Native_Utils.chr('0'));
-	var add = F2(
+	var digitToInt = F2(
 		function (index, $char) {
 			return A2(
 				F2(
@@ -8282,7 +8282,7 @@ var _user$project$Main$hexToInt = function (hex) {
 	return _elm_lang$core$List$sum(
 		A2(
 			_elm_lang$core$List$indexedMap,
-			add,
+			digitToInt,
 			_elm_lang$core$String$toList(
 				_elm_lang$core$String$reverse(hex))));
 };

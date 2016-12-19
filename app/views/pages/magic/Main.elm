@@ -172,7 +172,7 @@ hexToInt hex =
         zero =
             Char.toCode '0'
 
-        add index char =
+        digitToInt index char =
             char
                 |> Char.toCode
                 |> (\code -> code - zero)
@@ -181,7 +181,7 @@ hexToInt hex =
         hex
             |> String.reverse
             |> String.toList
-            |> List.indexedMap add
+            |> List.indexedMap digitToInt
             |> List.sum
 
 
