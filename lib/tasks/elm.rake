@@ -71,4 +71,11 @@ namespace :elm do
       compile_and_minify "play"
     end
   end
+
+  desc "make and minify the Elm JS file for Magic Numbers"
+  task :magic do
+    Dir.chdir("app/views/pages/magic") do
+      compile_and_minify "magic"
+    end
+  end
 end
