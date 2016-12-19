@@ -15198,20 +15198,7 @@ var _user$project$Y16D13$parse = function (input) {
 		_elm_lang$core$Result$withDefault,
 		0,
 		_elm_lang$core$String$toInt(
-			A2(
-				_elm_lang$core$Maybe$withDefault,
-				'',
-				_elm_lang$core$List$head(
-					A2(
-						_elm_lang$core$List$map,
-						function (_) {
-							return _.match;
-						},
-						A3(
-							_elm_lang$core$Regex$find,
-							_elm_lang$core$Regex$AtMost(1),
-							_elm_lang$core$Regex$regex('[1-9]\\d*'),
-							input))))));
+			A2(_elm_lang$core$String$dropRight, 1, input)));
 };
 var _user$project$Y16D13$same = F2(
 	function (c1, c2) {
@@ -16051,9 +16038,48 @@ var _user$project$Y16D18$answer = F2(
 				_user$project$Y16D18$parse(input)));
 	});
 
+var _user$project$Y16D19$parse = function (input) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		1,
+		_elm_lang$core$String$toInt(
+			A2(_elm_lang$core$String$dropRight, 1, input)));
+};
+var _user$project$Y16D19$stealAcross = function (num) {
+	var thresh = A2(
+		F2(
+			function (x, y) {
+				return Math.pow(x, y);
+			}),
+		3,
+		_elm_lang$core$Basics$floor(
+			A2(
+				_elm_lang$core$Basics$logBase,
+				3,
+				_elm_lang$core$Basics$toFloat(num))));
+	return _elm_lang$core$Native_Utils.eq(num, thresh) ? num : ((_elm_lang$core$Native_Utils.cmp(num, 2 * thresh) < 1) ? (num - thresh) : ((2 * num) - (3 * thresh)));
+};
+var _user$project$Y16D19$stealLeft = function (num) {
+	var thresh = A2(
+		F2(
+			function (x, y) {
+				return Math.pow(x, y);
+			}),
+		2,
+		_elm_lang$core$Basics$floor(
+			A2(
+				_elm_lang$core$Basics$logBase,
+				2,
+				_elm_lang$core$Basics$toFloat(num))));
+	return (2 * (num - thresh)) + 1;
+};
 var _user$project$Y16D19$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y16D19$stealLeft(
+				_user$project$Y16D19$parse(input))) : _elm_lang$core$Basics$toString(
+			_user$project$Y16D19$stealAcross(
+				_user$project$Y16D19$parse(input)));
 	});
 
 var _user$project$Y16D20$answer = F2(
@@ -16709,7 +16735,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 18;
+var _user$project$Main$defaultDay = 19;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -16722,7 +16748,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 18)
+				days: A2(_elm_lang$core$List$range, 1, 19)
 			},
 			_1: {ctor: '[]'}
 		}
