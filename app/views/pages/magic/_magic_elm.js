@@ -8259,7 +8259,7 @@ var _elm_lang$html$Html_Events$Options = F2(
 var _user$project$Ports$waitAMoment = _elm_lang$core$Native_Platform.outgoingPort(
 	'waitAMoment',
 	function (v) {
-		return v;
+		return null;
 	});
 var _user$project$Ports$continue = _elm_lang$core$Native_Platform.incomingPort(
 	'continue',
@@ -8348,6 +8348,8 @@ var _user$project$Main$viewNumberRow = function (number) {
 			}
 		});
 };
+var _user$project$Main$waitAMoment = _user$project$Ports$waitAMoment(
+	{ctor: '_Tuple0'});
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -8360,7 +8362,7 @@ var _user$project$Main$update = F2(
 				newModel,
 				{
 					ctor: '::',
-					_0: _user$project$Ports$waitAMoment(100),
+					_0: _user$project$Main$waitAMoment,
 					_1: {ctor: '[]'}
 				});
 		} else {

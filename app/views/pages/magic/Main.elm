@@ -61,7 +61,7 @@ update msg model =
                 newModel =
                     { model | thinking = True }
             in
-                newModel ! [ Ports.waitAMoment 100 ]
+                newModel ! [ waitAMoment ]
 
         Continue _ ->
             let
@@ -81,6 +81,11 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Ports.continue Continue
+
+
+waitAMoment : Cmd Msg
+waitAMoment =
+    Ports.waitAMoment ()
 
 
 
