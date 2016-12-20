@@ -16085,7 +16085,7 @@ var _user$project$Y16D19$answer = F2(
 var _user$project$Y16D20$size = function (block) {
 	return (block.upper - block.lower) + 1;
 };
-var _user$project$Y16D20$overlap = F2(
+var _user$project$Y16D20$mergeable = F2(
 	function (b1, b2) {
 		return _elm_lang$core$Native_Utils.cmp(b2.lower, b1.upper + 1) < 1;
 	});
@@ -16162,7 +16162,7 @@ var _user$project$Y16D20$compact = function (blocks) {
 				var _p9 = _p6._1._1;
 				var _p8 = _p6._1._0;
 				var _p7 = _p6._0;
-				if (A2(_user$project$Y16D20$overlap, _p7, _p8)) {
+				if (A2(_user$project$Y16D20$mergeable, _p7, _p8)) {
 					var b = A2(_user$project$Y16D20$merge, _p7, _p8);
 					var _v8 = {ctor: '::', _0: b, _1: _p9};
 					blocks = _v8;

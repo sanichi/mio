@@ -97,7 +97,7 @@ compact blocks =
             blocks
 
         b1 :: b2 :: rest ->
-            if overlap b1 b2 then
+            if mergeable b1 b2 then
                 let
                     b =
                         merge b1 b2
@@ -107,8 +107,8 @@ compact blocks =
                 b1 :: compact (b2 :: rest)
 
 
-overlap : Block -> Block -> Bool
-overlap b1 b2 =
+mergeable : Block -> Block -> Bool
+mergeable b1 b2 =
     b2.lower <= b1.upper + 1
 
 
