@@ -109,7 +109,7 @@ compact blocks =
 
 overlap : Block -> Block -> Bool
 overlap b1 b2 =
-    b2.lower <= b1.upper
+    b2.lower <= b1.upper + 1
 
 
 merge : Block -> Block -> Block

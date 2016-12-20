@@ -16087,7 +16087,7 @@ var _user$project$Y16D20$size = function (block) {
 };
 var _user$project$Y16D20$overlap = F2(
 	function (b1, b2) {
-		return _elm_lang$core$Native_Utils.cmp(b2.lower, b1.upper) < 1;
+		return _elm_lang$core$Native_Utils.cmp(b2.lower, b1.upper + 1) < 1;
 	});
 var _user$project$Y16D20$allowed = F2(
 	function (remaining, blocks) {
