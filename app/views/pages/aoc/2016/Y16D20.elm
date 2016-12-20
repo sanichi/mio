@@ -52,9 +52,7 @@ type alias Block =
 
 invalid : Block
 invalid =
-    { lower = 0
-    , upper = 0
-    }
+    Block 0 0
 
 
 notInvalid : Block -> Bool
@@ -79,9 +77,9 @@ parse input =
 toBlock : List Int -> Block
 toBlock list =
     case list of
-        [ a, b ] ->
-            if a < b then
-                { lower = a, upper = b }
+        [ l, u ] ->
+            if l <= u then
+                Block l u
             else
                 invalid
 
@@ -119,7 +117,7 @@ merge b1 b2 =
     if b2.upper <= b1.upper then
         b1
     else
-        { lower = b1.lower, upper = b2.upper }
+        Block b1.lower b2.upper
 
 
 size : Block -> Int
