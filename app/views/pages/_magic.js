@@ -3,7 +3,7 @@ $(function() {
   var app = Elm.Main.embed(node);
   app.ports.waitAMoment.subscribe(function(ms) {
     setTimeout(function() {
-      app.ports.continue.send(ms);
+      app.ports.continue.send(null);
     }, ms);
   });
 });

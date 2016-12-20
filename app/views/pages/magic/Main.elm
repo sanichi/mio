@@ -50,7 +50,7 @@ init =
 
 type Msg
     = NextNumber
-    | Continue Int
+    | Continue ()
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

@@ -8261,7 +8261,10 @@ var _user$project$Ports$waitAMoment = _elm_lang$core$Native_Platform.outgoingPor
 	function (v) {
 		return v;
 	});
-var _user$project$Ports$continue = _elm_lang$core$Native_Platform.incomingPort('continue', _elm_lang$core$Json_Decode$int);
+var _user$project$Ports$continue = _elm_lang$core$Native_Platform.incomingPort(
+	'continue',
+	_elm_lang$core$Json_Decode$null(
+		{ctor: '_Tuple0'}));
 
 var _user$project$Main$hexToInt = function (hex) {
 	var zero = _elm_lang$core$Char$toCode(
