@@ -16082,9 +16082,149 @@ var _user$project$Y16D19$answer = F2(
 				_user$project$Y16D19$parse(input)));
 	});
 
+var _user$project$Y16D20$size = function (block) {
+	return (block.upper - block.lower) + 1;
+};
+var _user$project$Y16D20$merge = F2(
+	function (b1, b2) {
+		return (_elm_lang$core$Native_Utils.cmp(b2.upper, b1.upper) < 1) ? b1 : {lower: b1.lower, upper: b2.upper};
+	});
+var _user$project$Y16D20$overlap = F2(
+	function (b1, b2) {
+		return _elm_lang$core$Native_Utils.cmp(b2.lower, b1.upper) < 1;
+	});
+var _user$project$Y16D20$compact = function (blocks) {
+	compact:
+	while (true) {
+		var _p0 = blocks;
+		if (_p0.ctor === '[]') {
+			return blocks;
+		} else {
+			if (_p0._1.ctor === '[]') {
+				return blocks;
+			} else {
+				var _p3 = _p0._1._1;
+				var _p2 = _p0._1._0;
+				var _p1 = _p0._0;
+				if (A2(_user$project$Y16D20$overlap, _p1, _p2)) {
+					var b = A2(_user$project$Y16D20$merge, _p1, _p2);
+					var _v1 = {ctor: '::', _0: b, _1: _p3};
+					blocks = _v1;
+					continue compact;
+				} else {
+					return {
+						ctor: '::',
+						_0: _p1,
+						_1: _user$project$Y16D20$compact(
+							{ctor: '::', _0: _p2, _1: _p3})
+					};
+				}
+			}
+		}
+	}
+};
+var _user$project$Y16D20$invalid = {lower: 0, upper: 0};
+var _user$project$Y16D20$notInvalid = function (block) {
+	return !_elm_lang$core$Native_Utils.eq(block, _user$project$Y16D20$invalid);
+};
+var _user$project$Y16D20$toBlock = function (list) {
+	var _p4 = list;
+	if (((_p4.ctor === '::') && (_p4._1.ctor === '::')) && (_p4._1._1.ctor === '[]')) {
+		var _p6 = _p4._1._0;
+		var _p5 = _p4._0;
+		return (_elm_lang$core$Native_Utils.cmp(_p5, _p6) < 0) ? {lower: _p5, upper: _p6} : _user$project$Y16D20$invalid;
+	} else {
+		return _user$project$Y16D20$invalid;
+	}
+};
+var _user$project$Y16D20$parse = function (input) {
+	return _user$project$Y16D20$compact(
+		A2(
+			_elm_lang$core$List$sortBy,
+			function (_) {
+				return _.lower;
+			},
+			A2(
+				_elm_lang$core$List$filter,
+				_user$project$Y16D20$notInvalid,
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Y16D20$toBlock,
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$List$map(
+							_elm_lang$core$Result$withDefault(0)),
+						A2(
+							_elm_lang$core$List$map,
+							_elm_lang$core$List$map(_elm_lang$core$String$toInt),
+							A2(
+								_elm_lang$core$List$map,
+								_elm_lang$core$List$map(
+									_elm_lang$core$Maybe$withDefault('')),
+								A2(
+									_elm_lang$core$List$map,
+									function (_) {
+										return _.submatches;
+									},
+									A3(
+										_elm_lang$core$Regex$find,
+										_elm_lang$core$Regex$All,
+										_elm_lang$core$Regex$regex('(\\d+)-(\\d+)'),
+										input)))))))));
+};
+var _user$project$Y16D20$allowed = F2(
+	function (remaining, blocks) {
+		allowed:
+		while (true) {
+			var _p7 = blocks;
+			if (_p7.ctor === '[]') {
+				return remaining;
+			} else {
+				var newRemaining = remaining - _user$project$Y16D20$size(_p7._0);
+				var _v4 = newRemaining,
+					_v5 = _p7._1;
+				remaining = _v4;
+				blocks = _v5;
+				continue allowed;
+			}
+		}
+	});
+var _user$project$Y16D20$lowest = F2(
+	function (num, blocks) {
+		lowest:
+		while (true) {
+			var _p8 = blocks;
+			if (_p8.ctor === '[]') {
+				return num;
+			} else {
+				var _p9 = _p8._0;
+				if (_elm_lang$core$Native_Utils.cmp(num, _p9.lower) < 0) {
+					return num;
+				} else {
+					var _v7 = _p9.upper + 1,
+						_v8 = _p8._1;
+					num = _v7;
+					blocks = _v8;
+					continue lowest;
+				}
+			}
+		}
+	});
 var _user$project$Y16D20$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D20$lowest,
+				0,
+				_user$project$Y16D20$parse(input))) : _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D20$allowed,
+				4294967296,
+				_user$project$Y16D20$parse(input)));
+	});
+var _user$project$Y16D20$Block = F2(
+	function (a, b) {
+		return {lower: a, upper: b};
 	});
 
 var _user$project$Y16D21$answer = F2(
@@ -16735,7 +16875,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 19;
+var _user$project$Main$defaultDay = 20;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -16748,7 +16888,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 19)
+				days: A2(_elm_lang$core$List$range, 1, 20)
 			},
 			_1: {ctor: '[]'}
 		}
