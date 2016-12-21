@@ -16227,9 +16227,180 @@ var _user$project$Y16D20$answer = F2(
 				_user$project$Y16D20$parse(input)));
 	});
 
+var _user$project$Y16D21$toChar = function (str) {
+	var _p0 = _elm_lang$core$String$uncons(str);
+	if (_p0.ctor === 'Just') {
+		return _p0._0._0;
+	} else {
+		return _elm_lang$core$Native_Utils.chr('_');
+	}
+};
+var _user$project$Y16D21$toInt = function (str) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(str));
+};
+var _user$project$Y16D21$instructionPattern = function () {
+	var list = {
+		ctor: '::',
+		_0: '(swap position) ([0-9]) with position ([0-9])',
+		_1: {
+			ctor: '::',
+			_0: '(swap letter) ([a-z]) with letter ([a-z])',
+			_1: {
+				ctor: '::',
+				_0: '(rotate left) ([0-9]) steps?',
+				_1: {
+					ctor: '::',
+					_0: '(rotate right) ([0-9]) steps?',
+					_1: {
+						ctor: '::',
+						_0: '(rotate based) on position of letter ([a-z])',
+						_1: {
+							ctor: '::',
+							_0: '(reverse positions) ([0-9]) through ([1-9])',
+							_1: {
+								ctor: '::',
+								_0: '(move position) ([0-9]) to position ([0-9])',
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+	return _elm_lang$core$Regex$regex(
+		A2(_elm_lang$core$String$join, '|', list));
+}();
+var _user$project$Y16D21$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$List$filter(
+			function (_p1) {
+				return !_elm_lang$core$String$isEmpty(_p1);
+			}),
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$List$map(
+				_elm_lang$core$Maybe$withDefault('')),
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.submatches;
+				},
+				A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y16D21$instructionPattern, input))));
+};
+var _user$project$Y16D21$movePosition = F3(
+	function (i1, i2, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$reversePosition = F3(
+	function (i1, i2, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$rotateBased = F2(
+	function (c, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$rotateRight = F2(
+	function (n, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$rotateLeft = F2(
+	function (n, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$swapLetter = F3(
+	function (c1, c2, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$swapPosition = F3(
+	function (i1, i2, chars) {
+		return _elm_lang$core$Basics$identity(chars);
+	});
+var _user$project$Y16D21$getTransformer = function (instruction) {
+	var _p2 = instruction;
+	_v1_7:
+	do {
+		if ((_p2.ctor === '::') && (_p2._1.ctor === '::')) {
+			if (_p2._1._1.ctor === '[]') {
+				switch (_p2._0) {
+					case 'rotate left':
+						var n = _user$project$Y16D21$toInt(_p2._1._0);
+						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$rotateLeft(n) : _elm_lang$core$Basics$identity;
+					case 'rotate right':
+						var n = _user$project$Y16D21$toInt(_p2._1._0);
+						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$rotateRight(n) : _elm_lang$core$Basics$identity;
+					case 'rotate based':
+						var c = _user$project$Y16D21$toChar(_p2._1._0);
+						return _user$project$Y16D21$rotateBased(c);
+					default:
+						break _v1_7;
+				}
+			} else {
+				if (_p2._1._1._1.ctor === '[]') {
+					switch (_p2._0) {
+						case 'swap position':
+							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$swapPosition, i1, i2) : _elm_lang$core$Basics$identity;
+						case 'swap letter':
+							var c2 = _user$project$Y16D21$toChar(_p2._1._1._0);
+							var c1 = _user$project$Y16D21$toChar(_p2._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(c1, c2)) ? A2(_user$project$Y16D21$swapLetter, c1, c2) : _elm_lang$core$Basics$identity;
+						case 'reverse positions':
+							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
+							return (_elm_lang$core$Native_Utils.cmp(i1, i2) < 0) ? A2(_user$project$Y16D21$reversePosition, i1, i2) : _elm_lang$core$Basics$identity;
+						case 'move position':
+							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$movePosition, i1, i2) : _elm_lang$core$Basics$identity;
+						default:
+							break _v1_7;
+					}
+				} else {
+					break _v1_7;
+				}
+			}
+		} else {
+			break _v1_7;
+		}
+	} while(false);
+	return _elm_lang$core$Basics$identity;
+};
+var _user$project$Y16D21$transform = F2(
+	function (instruction, chars) {
+		return A2(_user$project$Y16D21$getTransformer, instruction, chars);
+	});
+var _user$project$Y16D21$process = F2(
+	function (instructions, chars) {
+		process:
+		while (true) {
+			var _p3 = instructions;
+			if (_p3.ctor === '[]') {
+				return chars;
+			} else {
+				var _v3 = _p3._1,
+					_v4 = A2(_user$project$Y16D21$transform, _p3._0, chars);
+				instructions = _v3;
+				chars = _v4;
+				continue process;
+			}
+		}
+	});
 var _user$project$Y16D21$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		var chars = _elm_lang$core$Array$fromList(
+			_elm_lang$core$String$toList('abcde'));
+		var test = '\n            swap position 4 with position 0\n            swap letter d with letter b\n            reverse positions 0 through 4\n            rotate left 1 step\n            move position 1 to position 4\n            move position 3 to position 0\n            rotate based on position of letter b\n            rotate based on position of letter d\n            ';
+		var instructions = _user$project$Y16D21$parse(test);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$String$fromList(
+			_elm_lang$core$Array$toList(
+				A2(_user$project$Y16D21$process, instructions, chars))) : _elm_lang$core$Basics$toString(
+			A2(_elm_lang$core$List$map, _user$project$Y16D21$getTransformer, instructions));
 	});
 
 var _user$project$Y16D22$answer = F2(
@@ -16875,7 +17046,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 20;
+var _user$project$Main$defaultDay = 21;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -16888,7 +17059,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 20)
+				days: A2(_elm_lang$core$List$range, 1, 21)
 			},
 			_1: {ctor: '[]'}
 		}
