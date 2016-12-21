@@ -16227,6 +16227,21 @@ var _user$project$Y16D20$answer = F2(
 				_user$project$Y16D20$parse(input)));
 	});
 
+var _user$project$Y16D21$indexOf = F2(
+	function ($char, chars) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Tuple$first,
+				A2(
+					_elm_lang$core$List$filter,
+					function (t) {
+						return _elm_lang$core$Native_Utils.eq(
+							_elm_lang$core$Tuple$second(t),
+							$char);
+					},
+					_elm_lang$core$Array$toIndexedList(chars))));
+	});
 var _user$project$Y16D21$toChar = function (str) {
 	var _p0 = _elm_lang$core$String$uncons(str);
 	if (_p0.ctor === 'Just') {
@@ -16274,133 +16289,328 @@ var _user$project$Y16D21$instructionPattern = function () {
 	return _elm_lang$core$Regex$regex(
 		A2(_elm_lang$core$String$join, '|', list));
 }();
-var _user$project$Y16D21$parse = function (input) {
-	return A2(
-		_elm_lang$core$List$map,
-		_elm_lang$core$List$filter(
-			function (_p1) {
-				return !_elm_lang$core$String$isEmpty(_p1);
-			}),
-		A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$List$map(
-				_elm_lang$core$Maybe$withDefault('')),
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.submatches;
-				},
-				A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y16D21$instructionPattern, input))));
-};
 var _user$project$Y16D21$movePosition = F3(
 	function (i1, i2, chars) {
-		return _elm_lang$core$Basics$identity(chars);
+		var len = _elm_lang$core$Array$length(chars);
+		if ((_elm_lang$core$Native_Utils.cmp(i1, len) < 0) && (_elm_lang$core$Native_Utils.cmp(i2, len) < 0)) {
+			var a3 = A3(_elm_lang$core$Array$slice, i1 + 1, len, chars);
+			var a2 = A3(_elm_lang$core$Array$slice, i1, i1 + 1, chars);
+			var a1 = A3(_elm_lang$core$Array$slice, 0, i1, chars);
+			var a4 = A2(_elm_lang$core$Array$append, a1, a3);
+			var a5 = A3(_elm_lang$core$Array$slice, 0, i2, a4);
+			var a6 = A3(_elm_lang$core$Array$slice, i2, len - 1, a4);
+			return A2(
+				_elm_lang$core$Array$append,
+				a5,
+				A2(_elm_lang$core$Array$append, a2, a6));
+		} else {
+			return chars;
+		}
 	});
 var _user$project$Y16D21$reversePosition = F3(
 	function (i1, i2, chars) {
-		return _elm_lang$core$Basics$identity(chars);
-	});
-var _user$project$Y16D21$rotateBased = F2(
-	function (c, chars) {
-		return _elm_lang$core$Basics$identity(chars);
-	});
-var _user$project$Y16D21$rotateRight = F2(
-	function (n, chars) {
-		return _elm_lang$core$Basics$identity(chars);
+		var len = _elm_lang$core$Array$length(chars);
+		if ((_elm_lang$core$Native_Utils.cmp(i1, len) < 0) && (_elm_lang$core$Native_Utils.cmp(i2, len) < 0)) {
+			var a3 = A3(_elm_lang$core$Array$slice, i2 + 1, len, chars);
+			var a2 = _elm_lang$core$Array$fromList(
+				_elm_lang$core$List$reverse(
+					_elm_lang$core$Array$toList(
+						A3(_elm_lang$core$Array$slice, i1, i2 + 1, chars))));
+			var a1 = A3(_elm_lang$core$Array$slice, 0, i1, chars);
+			return A2(
+				_elm_lang$core$Array$append,
+				a1,
+				A2(_elm_lang$core$Array$append, a2, a3));
+		} else {
+			return chars;
+		}
 	});
 var _user$project$Y16D21$rotateLeft = F2(
 	function (n, chars) {
-		return _elm_lang$core$Basics$identity(chars);
+		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+			return chars;
+		} else {
+			var len = _elm_lang$core$Array$length(chars);
+			var n_ = A2(_elm_lang$core$Basics_ops['%'], n, len);
+			var a1 = A3(_elm_lang$core$Array$slice, 0, n_, chars);
+			var a2 = A3(_elm_lang$core$Array$slice, n_, len, chars);
+			return A2(_elm_lang$core$Array$append, a2, a1);
+		}
 	});
-var _user$project$Y16D21$swapLetter = F3(
-	function (c1, c2, chars) {
-		return _elm_lang$core$Basics$identity(chars);
+var _user$project$Y16D21$rotateRight = F2(
+	function (n, chars) {
+		if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+			return chars;
+		} else {
+			var len = _elm_lang$core$Array$length(chars);
+			var n_ = A2(_elm_lang$core$Basics_ops['%'], n, len);
+			return A2(_user$project$Y16D21$rotateLeft, len - n_, chars);
+		}
+	});
+var _user$project$Y16D21$rotateBased = F2(
+	function (c, chars) {
+		var mi = A2(_user$project$Y16D21$indexOf, c, chars);
+		var _p1 = mi;
+		if (_p1.ctor === 'Just') {
+			var _p2 = _p1._0;
+			var x = (_elm_lang$core$Native_Utils.cmp(_p2, 4) > -1) ? 1 : 0;
+			var n = (1 + _p2) + x;
+			return A2(_user$project$Y16D21$rotateRight, n, chars);
+		} else {
+			return chars;
+		}
+	});
+var _user$project$Y16D21$rotateBasedInverse = F2(
+	function (c, chars) {
+		var mi = A2(_user$project$Y16D21$indexOf, c, chars);
+		var n = function () {
+			var _p3 = mi;
+			_v2_8:
+			do {
+				if (_p3.ctor === 'Just') {
+					switch (_p3._0) {
+						case 0:
+							return 1;
+						case 1:
+							return 1;
+						case 2:
+							return 6;
+						case 3:
+							return 2;
+						case 4:
+							return 7;
+						case 5:
+							return 3;
+						case 6:
+							return 0;
+						case 7:
+							return 4;
+						default:
+							break _v2_8;
+					}
+				} else {
+					break _v2_8;
+				}
+			} while(false);
+			return 0;
+		}();
+		return A2(_user$project$Y16D21$rotateLeft, n, chars);
 	});
 var _user$project$Y16D21$swapPosition = F3(
 	function (i1, i2, chars) {
-		return _elm_lang$core$Basics$identity(chars);
-	});
-var _user$project$Y16D21$getTransformer = function (instruction) {
-	var _p2 = instruction;
-	_v1_7:
-	do {
-		if ((_p2.ctor === '::') && (_p2._1.ctor === '::')) {
-			if (_p2._1._1.ctor === '[]') {
-				switch (_p2._0) {
-					case 'rotate left':
-						var n = _user$project$Y16D21$toInt(_p2._1._0);
-						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$rotateLeft(n) : _elm_lang$core$Basics$identity;
-					case 'rotate right':
-						var n = _user$project$Y16D21$toInt(_p2._1._0);
-						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$rotateRight(n) : _elm_lang$core$Basics$identity;
-					case 'rotate based':
-						var c = _user$project$Y16D21$toChar(_p2._1._0);
-						return _user$project$Y16D21$rotateBased(c);
-					default:
-						break _v1_7;
-				}
-			} else {
-				if (_p2._1._1._1.ctor === '[]') {
-					switch (_p2._0) {
-						case 'swap position':
-							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
-							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
-							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$swapPosition, i1, i2) : _elm_lang$core$Basics$identity;
-						case 'swap letter':
-							var c2 = _user$project$Y16D21$toChar(_p2._1._1._0);
-							var c1 = _user$project$Y16D21$toChar(_p2._1._0);
-							return (!_elm_lang$core$Native_Utils.eq(c1, c2)) ? A2(_user$project$Y16D21$swapLetter, c1, c2) : _elm_lang$core$Basics$identity;
-						case 'reverse positions':
-							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
-							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
-							return (_elm_lang$core$Native_Utils.cmp(i1, i2) < 0) ? A2(_user$project$Y16D21$reversePosition, i1, i2) : _elm_lang$core$Basics$identity;
-						case 'move position':
-							var i2 = _user$project$Y16D21$toInt(_p2._1._1._0);
-							var i1 = _user$project$Y16D21$toInt(_p2._1._0);
-							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$movePosition, i1, i2) : _elm_lang$core$Basics$identity;
-						default:
-							break _v1_7;
-					}
-				} else {
-					break _v1_7;
-				}
-			}
+		var mc2 = A2(_elm_lang$core$Array$get, i2, chars);
+		var mc1 = A2(_elm_lang$core$Array$get, i1, chars);
+		var _p4 = {ctor: '_Tuple2', _0: mc1, _1: mc2};
+		if (((_p4.ctor === '_Tuple2') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === 'Just')) {
+			return A3(
+				_elm_lang$core$Array$set,
+				i2,
+				_p4._0._0,
+				A3(_elm_lang$core$Array$set, i1, _p4._1._0, chars));
 		} else {
-			break _v1_7;
+			return chars;
 		}
-	} while(false);
-	return _elm_lang$core$Basics$identity;
-};
+	});
+var _user$project$Y16D21$swapLetter = F3(
+	function (c1, c2, chars) {
+		var mi2 = A2(_user$project$Y16D21$indexOf, c2, chars);
+		var mi1 = A2(_user$project$Y16D21$indexOf, c1, chars);
+		var _p5 = {ctor: '_Tuple2', _0: mi1, _1: mi2};
+		if (((_p5.ctor === '_Tuple2') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === 'Just')) {
+			return A3(_user$project$Y16D21$swapPosition, _p5._0._0, _p5._1._0, chars);
+		} else {
+			return chars;
+		}
+	});
 var _user$project$Y16D21$transform = F2(
 	function (instruction, chars) {
-		return A2(_user$project$Y16D21$getTransformer, instruction, chars);
+		var _p6 = instruction;
+		switch (_p6.ctor) {
+			case 'NoOp':
+				return chars;
+			case 'SwapPosition':
+				return A3(_user$project$Y16D21$swapPosition, _p6._0, _p6._1, chars);
+			case 'SwapLetter':
+				return A3(_user$project$Y16D21$swapLetter, _p6._0, _p6._1, chars);
+			case 'RotateLeft':
+				return A2(_user$project$Y16D21$rotateLeft, _p6._0, chars);
+			case 'RotateRight':
+				return A2(_user$project$Y16D21$rotateRight, _p6._0, chars);
+			case 'RotateBased':
+				return A2(_user$project$Y16D21$rotateBased, _p6._0, chars);
+			case 'RotateBasedInverse':
+				return A2(_user$project$Y16D21$rotateBasedInverse, _p6._0, chars);
+			case 'ReversePosition':
+				return A3(_user$project$Y16D21$reversePosition, _p6._0, _p6._1, chars);
+			default:
+				return A3(_user$project$Y16D21$movePosition, _p6._0, _p6._1, chars);
+		}
 	});
 var _user$project$Y16D21$process = F2(
 	function (instructions, chars) {
 		process:
 		while (true) {
-			var _p3 = instructions;
-			if (_p3.ctor === '[]') {
+			var _p7 = instructions;
+			if (_p7.ctor === '[]') {
 				return chars;
 			} else {
-				var _v3 = _p3._1,
-					_v4 = A2(_user$project$Y16D21$transform, _p3._0, chars);
-				instructions = _v3;
-				chars = _v4;
+				var newChars = A2(_user$project$Y16D21$transform, _p7._0, chars);
+				var _v7 = _p7._1,
+					_v8 = newChars;
+				instructions = _v7;
+				chars = _v8;
 				continue process;
 			}
 		}
 	});
+var _user$project$Y16D21$scramble = F2(
+	function (instructions, password) {
+		var chars = _elm_lang$core$Array$fromList(
+			_elm_lang$core$String$toList(password));
+		var scrambledChars = A2(_user$project$Y16D21$process, instructions, chars);
+		return _elm_lang$core$String$fromList(
+			_elm_lang$core$Array$toList(scrambledChars));
+	});
+var _user$project$Y16D21$MovePosition = F2(
+	function (a, b) {
+		return {ctor: 'MovePosition', _0: a, _1: b};
+	});
+var _user$project$Y16D21$ReversePosition = F2(
+	function (a, b) {
+		return {ctor: 'ReversePosition', _0: a, _1: b};
+	});
+var _user$project$Y16D21$RotateBasedInverse = function (a) {
+	return {ctor: 'RotateBasedInverse', _0: a};
+};
+var _user$project$Y16D21$RotateBased = function (a) {
+	return {ctor: 'RotateBased', _0: a};
+};
+var _user$project$Y16D21$RotateRight = function (a) {
+	return {ctor: 'RotateRight', _0: a};
+};
+var _user$project$Y16D21$RotateLeft = function (a) {
+	return {ctor: 'RotateLeft', _0: a};
+};
+var _user$project$Y16D21$SwapLetter = F2(
+	function (a, b) {
+		return {ctor: 'SwapLetter', _0: a, _1: b};
+	});
+var _user$project$Y16D21$SwapPosition = F2(
+	function (a, b) {
+		return {ctor: 'SwapPosition', _0: a, _1: b};
+	});
+var _user$project$Y16D21$NoOp = {ctor: 'NoOp'};
+var _user$project$Y16D21$reverse = function (instruction) {
+	var _p8 = instruction;
+	switch (_p8.ctor) {
+		case 'NoOp':
+			return _user$project$Y16D21$NoOp;
+		case 'SwapPosition':
+			return A2(_user$project$Y16D21$SwapPosition, _p8._1, _p8._0);
+		case 'SwapLetter':
+			return A2(_user$project$Y16D21$SwapLetter, _p8._1, _p8._0);
+		case 'RotateLeft':
+			return _user$project$Y16D21$RotateRight(_p8._0);
+		case 'RotateRight':
+			return _user$project$Y16D21$RotateLeft(_p8._0);
+		case 'RotateBased':
+			return _user$project$Y16D21$RotateBasedInverse(_p8._0);
+		case 'RotateBasedInverse':
+			return _user$project$Y16D21$NoOp;
+		case 'ReversePosition':
+			return A2(_user$project$Y16D21$ReversePosition, _p8._0, _p8._1);
+		default:
+			return A2(_user$project$Y16D21$MovePosition, _p8._1, _p8._0);
+	}
+};
+var _user$project$Y16D21$unscramble = F2(
+	function (instructions, scrambled) {
+		var scrambledChars = _elm_lang$core$Array$fromList(
+			_elm_lang$core$String$toList(scrambled));
+		var newInstructions = A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D21$reverse,
+			_elm_lang$core$List$reverse(instructions));
+		var chars = A2(_user$project$Y16D21$process, newInstructions, scrambledChars);
+		return _elm_lang$core$String$fromList(
+			_elm_lang$core$Array$toList(chars));
+	});
+var _user$project$Y16D21$toInstruction = function (words) {
+	var _p9 = words;
+	_v10_7:
+	do {
+		if ((_p9.ctor === '::') && (_p9._1.ctor === '::')) {
+			if (_p9._1._1.ctor === '[]') {
+				switch (_p9._0) {
+					case 'rotate left':
+						var n = _user$project$Y16D21$toInt(_p9._1._0);
+						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$RotateLeft(n) : _user$project$Y16D21$NoOp;
+					case 'rotate right':
+						var n = _user$project$Y16D21$toInt(_p9._1._0);
+						return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? _user$project$Y16D21$RotateRight(n) : _user$project$Y16D21$NoOp;
+					case 'rotate based':
+						var c = _user$project$Y16D21$toChar(_p9._1._0);
+						return _user$project$Y16D21$RotateBased(c);
+					default:
+						break _v10_7;
+				}
+			} else {
+				if (_p9._1._1._1.ctor === '[]') {
+					switch (_p9._0) {
+						case 'swap position':
+							var i2 = _user$project$Y16D21$toInt(_p9._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p9._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$SwapPosition, i1, i2) : _user$project$Y16D21$NoOp;
+						case 'swap letter':
+							var c2 = _user$project$Y16D21$toChar(_p9._1._1._0);
+							var c1 = _user$project$Y16D21$toChar(_p9._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(c1, c2)) ? A2(_user$project$Y16D21$SwapLetter, c1, c2) : _user$project$Y16D21$NoOp;
+						case 'reverse positions':
+							var i2 = _user$project$Y16D21$toInt(_p9._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p9._1._0);
+							return (_elm_lang$core$Native_Utils.cmp(i1, i2) < 0) ? A2(_user$project$Y16D21$ReversePosition, i1, i2) : _user$project$Y16D21$NoOp;
+						case 'move position':
+							var i2 = _user$project$Y16D21$toInt(_p9._1._1._0);
+							var i1 = _user$project$Y16D21$toInt(_p9._1._0);
+							return (!_elm_lang$core$Native_Utils.eq(i1, i2)) ? A2(_user$project$Y16D21$MovePosition, i1, i2) : _user$project$Y16D21$NoOp;
+						default:
+							break _v10_7;
+					}
+				} else {
+					break _v10_7;
+				}
+			}
+		} else {
+			break _v10_7;
+		}
+	} while(false);
+	return _user$project$Y16D21$NoOp;
+};
+var _user$project$Y16D21$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y16D21$toInstruction,
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$List$filter(
+				function (_p10) {
+					return !_elm_lang$core$String$isEmpty(_p10);
+				}),
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$List$map(
+					_elm_lang$core$Maybe$withDefault('')),
+				A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.submatches;
+					},
+					A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, _user$project$Y16D21$instructionPattern, input)))));
+};
 var _user$project$Y16D21$answer = F2(
 	function (part, input) {
-		var chars = _elm_lang$core$Array$fromList(
-			_elm_lang$core$String$toList('abcde'));
-		var test = '\n            swap position 4 with position 0\n            swap letter d with letter b\n            reverse positions 0 through 4\n            rotate left 1 step\n            move position 1 to position 4\n            move position 3 to position 0\n            rotate based on position of letter b\n            rotate based on position of letter d\n            ';
-		var instructions = _user$project$Y16D21$parse(test);
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$String$fromList(
-			_elm_lang$core$Array$toList(
-				A2(_user$project$Y16D21$process, instructions, chars))) : _elm_lang$core$Basics$toString(
-			A2(_elm_lang$core$List$map, _user$project$Y16D21$getTransformer, instructions));
+		var instructions = _user$project$Y16D21$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y16D21$scramble, instructions, 'abcdefgh') : A2(_user$project$Y16D21$unscramble, instructions, 'fbgdceah');
 	});
 
 var _user$project$Y16D22$answer = F2(
