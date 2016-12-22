@@ -17068,6 +17068,8 @@ var _user$project$Main$speed = F3(
 				return 2;
 			case '2016-18-2':
 				return 1;
+			case '2016-22-1':
+				return 1;
 			default:
 				return 0;
 		}
