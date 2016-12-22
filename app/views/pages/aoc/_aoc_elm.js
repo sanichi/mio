@@ -16613,9 +16613,169 @@ var _user$project$Y16D21$answer = F2(
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y16D21$scramble, instructions, 'abcdefgh') : A2(_user$project$Y16D21$unscramble, instructions, 'fbgdceah');
 	});
 
+var _user$project$Y16D22$Node = F6(
+	function (a, b, c, d, e, f) {
+		return {x: a, y: b, size: c, used: d, avail: e, use: f};
+	});
+var _user$project$Y16D22$invalidNode = A6(_user$project$Y16D22$Node, 0, 0, 0, 0, -1, 0);
+var _user$project$Y16D22$viable2 = F6(
+	function (x1, y1, x2, y2, total, cluster) {
+		viable2:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(x2, cluster.width) > -1) {
+				return A4(_user$project$Y16D22$viable1, x1, y1 + 1, total, cluster);
+			} else {
+				if (_elm_lang$core$Native_Utils.cmp(y2, cluster.height) > -1) {
+					var _v0 = x1,
+						_v1 = y1,
+						_v2 = x2 + 1,
+						_v3 = 0,
+						_v4 = total,
+						_v5 = cluster;
+					x1 = _v0;
+					y1 = _v1;
+					x2 = _v2;
+					y2 = _v3;
+					total = _v4;
+					cluster = _v5;
+					continue viable2;
+				} else {
+					var node2 = A2(
+						_elm_lang$core$Maybe$withDefault,
+						_user$project$Y16D22$invalidNode,
+						A2(
+							_elm_lang$core$Dict$get,
+							{ctor: '_Tuple2', _0: x2, _1: y2},
+							cluster.nodes));
+					var node1 = A2(
+						_elm_lang$core$Maybe$withDefault,
+						_user$project$Y16D22$invalidNode,
+						A2(
+							_elm_lang$core$Dict$get,
+							{ctor: '_Tuple2', _0: x1, _1: y1},
+							cluster.nodes));
+					var add12 = ((_elm_lang$core$Native_Utils.cmp(node1.used, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(node1.used, node2.avail) < 1)) ? 1 : 0;
+					var add21 = ((_elm_lang$core$Native_Utils.cmp(node2.used, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(node2.used, node1.avail) < 1)) ? 1 : 0;
+					var newTotal = (total + add12) + add21;
+					var _v6 = x1,
+						_v7 = y1,
+						_v8 = x2,
+						_v9 = y2 + 1,
+						_v10 = newTotal,
+						_v11 = cluster;
+					x1 = _v6;
+					y1 = _v7;
+					x2 = _v8;
+					y2 = _v9;
+					total = _v10;
+					cluster = _v11;
+					continue viable2;
+				}
+			}
+		}
+	});
+var _user$project$Y16D22$viable1 = F4(
+	function (x, y, total, cluster) {
+		viable1:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(x, cluster.width) > -1) {
+				return total;
+			} else {
+				if (_elm_lang$core$Native_Utils.cmp(y, cluster.height) > -1) {
+					var _v12 = x + 1,
+						_v13 = 0,
+						_v14 = total,
+						_v15 = cluster;
+					x = _v12;
+					y = _v13;
+					total = _v14;
+					cluster = _v15;
+					continue viable1;
+				} else {
+					return A6(_user$project$Y16D22$viable2, x, y, x, y + 1, total, cluster);
+				}
+			}
+		}
+	});
+var _user$project$Y16D22$viable = function (cluster) {
+	return A4(_user$project$Y16D22$viable1, 0, 0, 0, cluster);
+};
+var _user$project$Y16D22$toNode = function (numbers) {
+	var _p0 = numbers;
+	if (((((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '::')) && (_p0._1._1._1._1.ctor === '::')) && (_p0._1._1._1._1._1.ctor === '::')) && (_p0._1._1._1._1._1._1.ctor === '[]')) {
+		return A6(_user$project$Y16D22$Node, _p0._0, _p0._1._0, _p0._1._1._0, _p0._1._1._1._0, _p0._1._1._1._1._0, _p0._1._1._1._1._1._0);
+	} else {
+		return _user$project$Y16D22$invalidNode;
+	}
+};
+var _user$project$Y16D22$Cluster = F3(
+	function (a, b, c) {
+		return {width: a, height: b, nodes: c};
+	});
+var _user$project$Y16D22$emptyCluster = A3(_user$project$Y16D22$Cluster, 0, 0, _elm_lang$core$Dict$empty);
+var _user$project$Y16D22$toCluster = F2(
+	function (cluster, nodes) {
+		toCluster:
+		while (true) {
+			var _p1 = nodes;
+			if (_p1.ctor === '[]') {
+				return cluster;
+			} else {
+				var _p2 = _p1._0;
+				var newNodes = A3(
+					_elm_lang$core$Dict$insert,
+					{ctor: '_Tuple2', _0: _p2.x, _1: _p2.y},
+					_p2,
+					cluster.nodes);
+				var newHeight = (_elm_lang$core$Native_Utils.cmp(_p2.y + 1, cluster.height) > 0) ? (_p2.y + 1) : cluster.height;
+				var newWidth = (_elm_lang$core$Native_Utils.cmp(_p2.x + 1, cluster.width) > 0) ? (_p2.x + 1) : cluster.width;
+				var newCluster = A3(_user$project$Y16D22$Cluster, newWidth, newHeight, newNodes);
+				var _v18 = newCluster,
+					_v19 = _p1._1;
+				cluster = _v18;
+				nodes = _v19;
+				continue toCluster;
+			}
+		}
+	});
+var _user$project$Y16D22$parse = function (input) {
+	return A2(
+		_user$project$Y16D22$toCluster,
+		_user$project$Y16D22$emptyCluster,
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D22$toNode,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$List$map(
+					_elm_lang$core$Result$withDefault(0)),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$List$map(_elm_lang$core$String$toInt),
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$List$map(
+							_elm_lang$core$Maybe$withDefault('')),
+						A2(
+							_elm_lang$core$List$map,
+							function (_) {
+								return _.submatches;
+							},
+							A3(
+								_elm_lang$core$Regex$find,
+								_elm_lang$core$Regex$All,
+								_elm_lang$core$Regex$regex('/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)%'),
+								input)))))));
+};
 var _user$project$Y16D22$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y16D22$viable(
+				_user$project$Y16D22$parse(input))) : _elm_lang$core$Basics$toString(
+			function (_) {
+				return _.height;
+			}(
+				_user$project$Y16D22$parse(input)));
 	});
 
 var _user$project$Y16D23$answer = F2(
@@ -17256,7 +17416,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 21;
+var _user$project$Main$defaultDay = 22;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -17269,7 +17429,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 21)
+				days: A2(_elm_lang$core$List$range, 1, 22)
 			},
 			_1: {ctor: '[]'}
 		}
