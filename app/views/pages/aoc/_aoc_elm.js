@@ -16613,11 +16613,11 @@ var _user$project$Y16D21$answer = F2(
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? A2(_user$project$Y16D21$scramble, instructions, 'abcdefgh') : A2(_user$project$Y16D21$unscramble, instructions, 'fbgdceah');
 	});
 
-var _user$project$Y16D22$Node = F6(
-	function (a, b, c, d, e, f) {
-		return {x: a, y: b, size: c, used: d, avail: e, use: f};
+var _user$project$Y16D22$Node = F5(
+	function (a, b, c, d, e) {
+		return {x: a, y: b, size: c, used: d, avail: e};
 	});
-var _user$project$Y16D22$invalidNode = A6(_user$project$Y16D22$Node, 0, 0, 0, 0, -1, 0);
+var _user$project$Y16D22$invalidNode = A5(_user$project$Y16D22$Node, 0, 0, 0, 0, 0);
 var _user$project$Y16D22$viable2 = F6(
 	function (x1, y1, x2, y2, total, cluster) {
 		viable2:
@@ -16700,10 +16700,64 @@ var _user$project$Y16D22$viable1 = F4(
 var _user$project$Y16D22$viable = function (cluster) {
 	return A4(_user$project$Y16D22$viable1, 0, 0, 0, cluster);
 };
+var _user$project$Y16D22$printNode = F3(
+	function (cluster, y, x) {
+		if (_elm_lang$core$Native_Utils.eq(y, 0) && _elm_lang$core$Native_Utils.eq(x, 0)) {
+			return _elm_lang$core$Native_Utils.chr('0');
+		} else {
+			if (_elm_lang$core$Native_Utils.eq(y, 0) && _elm_lang$core$Native_Utils.eq(x, cluster.width - 1)) {
+				return _elm_lang$core$Native_Utils.chr('G');
+			} else {
+				var node = A2(
+					_elm_lang$core$Maybe$withDefault,
+					_user$project$Y16D22$invalidNode,
+					A2(
+						_elm_lang$core$Dict$get,
+						{ctor: '_Tuple2', _0: x, _1: y},
+						cluster.nodes));
+				return _elm_lang$core$Native_Utils.eq(node, _user$project$Y16D22$invalidNode) ? _elm_lang$core$Native_Utils.chr(' ') : (_elm_lang$core$Native_Utils.eq(node.used, 0) ? _elm_lang$core$Native_Utils.chr('_') : ((_elm_lang$core$Native_Utils.cmp(node.size, 500) > -1) ? _elm_lang$core$Native_Utils.chr('#') : _elm_lang$core$Native_Utils.chr('.')));
+			}
+		}
+	});
+var _user$project$Y16D22$printRow = F2(
+	function (cluster, y) {
+		return _elm_lang$core$String$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				A2(_user$project$Y16D22$printNode, cluster, y),
+				A2(
+					_elm_lang$core$List$range,
+					0,
+					A2(
+						F2(
+							function (x, y) {
+								return x + y;
+							}),
+						-1,
+						cluster.width))));
+	});
+var _user$project$Y16D22$print = function (cluster) {
+	return A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D22$printRow(cluster),
+			A2(
+				_elm_lang$core$List$range,
+				0,
+				A2(
+					F2(
+						function (x, y) {
+							return x + y;
+						}),
+					-1,
+					cluster.height))));
+};
 var _user$project$Y16D22$toNode = function (numbers) {
 	var _p0 = numbers;
-	if (((((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '::')) && (_p0._1._1._1._1.ctor === '::')) && (_p0._1._1._1._1._1.ctor === '::')) && (_p0._1._1._1._1._1._1.ctor === '[]')) {
-		return A6(_user$project$Y16D22$Node, _p0._0, _p0._1._0, _p0._1._1._0, _p0._1._1._1._0, _p0._1._1._1._1._0, _p0._1._1._1._1._1._0);
+	if ((((((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '::')) && (_p0._1._1._1.ctor === '::')) && (_p0._1._1._1._1.ctor === '::')) && (_p0._1._1._1._1._1.ctor === '[]')) {
+		return A5(_user$project$Y16D22$Node, _p0._0, _p0._1._0, _p0._1._1._0, _p0._1._1._1._0, _p0._1._1._1._1._0);
 	} else {
 		return _user$project$Y16D22$invalidNode;
 	}
@@ -16764,18 +16818,15 @@ var _user$project$Y16D22$parse = function (input) {
 							A3(
 								_elm_lang$core$Regex$find,
 								_elm_lang$core$Regex$All,
-								_elm_lang$core$Regex$regex('/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)%'),
+								_elm_lang$core$Regex$regex('/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+\\d+%'),
 								input)))))));
 };
 var _user$project$Y16D22$answer = F2(
 	function (part, input) {
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
 			_user$project$Y16D22$viable(
-				_user$project$Y16D22$parse(input))) : _elm_lang$core$Basics$toString(
-			function (_) {
-				return _.height;
-			}(
-				_user$project$Y16D22$parse(input)));
+				_user$project$Y16D22$parse(input))) : _user$project$Y16D22$print(
+			_user$project$Y16D22$parse(input));
 	});
 
 var _user$project$Y16D23$answer = F2(

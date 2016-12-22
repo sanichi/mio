@@ -14,8 +14,7 @@ answer part input =
     else
         input
             |> parse
-            |> .height
-            |> toString
+            |> print
 
 
 viable : Cluster -> Int
@@ -69,13 +68,53 @@ viable2 x1 y1 x2 y2 total cluster =
             viable2 x1 y1 x2 (y2 + 1) newTotal cluster
 
 
+print : Cluster -> String
+print cluster =
+    cluster.height
+        |> (+) -1
+        |> List.range 0
+        |> List.map (printRow cluster)
+        |> String.join "\n"
+
+
+printRow : Cluster -> Int -> String
+printRow cluster y =
+    cluster.width
+        |> (+) -1
+        |> List.range 0
+        |> List.map (printNode cluster y)
+        |> String.fromList
+
+
+printNode : Cluster -> Int -> Int -> Char
+printNode cluster y x =
+    if y == 0 && x == 0 then
+        '0'
+    else if y == 0 && x == cluster.width - 1 then
+        'G'
+    else
+        let
+            node =
+                cluster.nodes
+                    |> Dict.get ( x, y )
+                    |> Maybe.withDefault invalidNode
+        in
+            if node == invalidNode then
+                ' '
+            else if node.used == 0 then
+                '_'
+            else if node.size >= 500 then
+                '#'
+            else
+                '.'
+
+
 type alias Node =
     { x : Int
     , y : Int
     , size : Int
     , used : Int
     , avail : Int
-    , use : Int
     }
 
 
@@ -88,7 +127,7 @@ type alias Cluster =
 
 invalidNode : Node
 invalidNode =
-    Node 0 0 0 0 -1 0
+    Node 0 0 0 0 0
 
 
 emptyCluster : Cluster
@@ -99,7 +138,7 @@ emptyCluster =
 parse : String -> Cluster
 parse input =
     input
-        |> Regex.find Regex.All (Regex.regex "/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)%")
+        |> Regex.find Regex.All (Regex.regex "/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+\\d+%")
         |> List.map .submatches
         |> List.map (List.map (Maybe.withDefault ""))
         |> List.map (List.map String.toInt)
@@ -111,8 +150,8 @@ parse input =
 toNode : List Int -> Node
 toNode numbers =
     case numbers of
-        [ x, y, size, used, avail, use ] ->
-            Node x y size used avail use
+        [ x, y, size, used, avail ] ->
+            Node x y size used avail
 
         _ ->
             invalidNode
