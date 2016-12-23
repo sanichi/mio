@@ -8,21 +8,18 @@ import Regex
 answer : Int -> String -> String
 answer part input =
     let
-        state =
-            input
-                |> parse
-                |> initState
+        a =
+            if part == 1 then
+                7
+            else
+                12
     in
-        if part == 1 then
-            state
-                |> process
-                |> get "a"
-                |> toString
-        else
-            { state | registers = set "a" state 12 }
-                |> process
-                |> get "a"
-                |> toString
+        input
+            |> parse
+            |> initState a
+            |> process
+            |> get "a"
+            |> toString
 
 
 process : State -> State
@@ -231,11 +228,11 @@ type Instruction
     | Invalid
 
 
-initState : Array Instruction -> State
-initState instructions =
+initState : Int -> Array Instruction -> State
+initState a instructions =
     { index = 0
     , instructions = instructions
-    , registers = Dict.fromList [ ( "a", 7 ), ( "b", 0 ), ( "c", 0 ), ( "d", 0 ) ]
+    , registers = Dict.fromList [ ( "a", a ), ( "b", 0 ), ( "c", 0 ), ( "d", 0 ) ]
     }
 
 

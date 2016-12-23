@@ -14952,30 +14952,31 @@ var _user$project$Y16D11$answer = F2(
 		return _user$project$Util$failed;
 	});
 
-var _user$project$Y16D12$initState = function (instructions) {
-	return {
-		index: 0,
-		instructions: instructions,
-		registers: _elm_lang$core$Dict$fromList(
-			{
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'a', _1: 0},
-				_1: {
+var _user$project$Y16D12$initState = F2(
+	function (c, instructions) {
+		return {
+			index: 0,
+			instructions: instructions,
+			registers: _elm_lang$core$Dict$fromList(
+				{
 					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
+					_0: {ctor: '_Tuple2', _0: 'a', _1: 0},
 					_1: {
 						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'c', _1: 0},
+						_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
 						_1: {
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
-							_1: {ctor: '[]'}
+							_0: {ctor: '_Tuple2', _0: 'c', _1: c},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
+								_1: {ctor: '[]'}
+							}
 						}
 					}
-				}
-			})
-	};
-};
+				})
+		};
+	});
 var _user$project$Y16D12$set = F3(
 	function (reg, state, val) {
 		return A3(_elm_lang$core$Dict$insert, reg, val, state.registers);
@@ -15172,22 +15173,16 @@ var _user$project$Y16D12$parse = function (input) {
 };
 var _user$project$Y16D12$answer = F2(
 	function (part, input) {
-		var state = _user$project$Y16D12$initState(
-			_user$project$Y16D12$parse(input));
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
-			A2(
-				_user$project$Y16D12$get,
-				'a',
-				_user$project$Y16D12$process(state))) : _elm_lang$core$Basics$toString(
+		var c = _elm_lang$core$Native_Utils.eq(part, 1) ? 0 : 1;
+		return _elm_lang$core$Basics$toString(
 			A2(
 				_user$project$Y16D12$get,
 				'a',
 				_user$project$Y16D12$process(
-					_elm_lang$core$Native_Utils.update(
-						state,
-						{
-							registers: A3(_user$project$Y16D12$set, 'c', state, 1)
-						}))));
+					A2(
+						_user$project$Y16D12$initState,
+						c,
+						_user$project$Y16D12$parse(input)))));
 	});
 
 var _user$project$Y16D13$parse = function (input) {
@@ -16826,30 +16821,31 @@ var _user$project$Y16D22$answer = F2(
 			_user$project$Y16D22$parse(input));
 	});
 
-var _user$project$Y16D23$initState = function (instructions) {
-	return {
-		index: 0,
-		instructions: instructions,
-		registers: _elm_lang$core$Dict$fromList(
-			{
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'a', _1: 7},
-				_1: {
+var _user$project$Y16D23$initState = F2(
+	function (a, instructions) {
+		return {
+			index: 0,
+			instructions: instructions,
+			registers: _elm_lang$core$Dict$fromList(
+				{
 					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
+					_0: {ctor: '_Tuple2', _0: 'a', _1: a},
 					_1: {
 						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'c', _1: 0},
+						_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
 						_1: {
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
-							_1: {ctor: '[]'}
+							_0: {ctor: '_Tuple2', _0: 'c', _1: 0},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
+								_1: {ctor: '[]'}
+							}
 						}
 					}
-				}
-			})
-	};
-};
+				})
+		};
+	});
 var _user$project$Y16D23$set = F3(
 	function (reg, state, val) {
 		return A3(_elm_lang$core$Dict$insert, reg, val, state.registers);
@@ -17217,22 +17213,16 @@ var _user$project$Y16D23$parse = function (input) {
 };
 var _user$project$Y16D23$answer = F2(
 	function (part, input) {
-		var state = _user$project$Y16D23$initState(
-			_user$project$Y16D23$parse(input));
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
-			A2(
-				_user$project$Y16D23$get,
-				'a',
-				_user$project$Y16D23$process(state))) : _elm_lang$core$Basics$toString(
+		var a = _elm_lang$core$Native_Utils.eq(part, 1) ? 7 : 12;
+		return _elm_lang$core$Basics$toString(
 			A2(
 				_user$project$Y16D23$get,
 				'a',
 				_user$project$Y16D23$process(
-					_elm_lang$core$Native_Utils.update(
-						state,
-						{
-							registers: A3(_user$project$Y16D23$set, 'a', state, 12)
-						}))));
+					A2(
+						_user$project$Y16D23$initState,
+						a,
+						_user$project$Y16D23$parse(input)))));
 	});
 
 var _user$project$Y16D24$answer = F2(

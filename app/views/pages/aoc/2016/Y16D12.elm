@@ -8,21 +8,18 @@ import Regex
 answer : Int -> String -> String
 answer part input =
     let
-        state =
-            input
-                |> parse
-                |> initState
+        c =
+            if part == 1 then
+                0
+            else
+                1
     in
-        if part == 1 then
-            state
-                |> process
-                |> get "a"
-                |> toString
-        else
-            { state | registers = set "c" state 1 }
-                |> process
-                |> get "a"
-                |> toString
+        input
+            |> parse
+            |> initState c
+            |> process
+            |> get "a"
+            |> toString
 
 
 process : State -> State
@@ -96,11 +93,11 @@ set reg state val =
         |> Dict.insert reg val
 
 
-initState : Array Instruction -> State
-initState instructions =
+initState : Int -> Array Instruction -> State
+initState c instructions =
     { index = 0
     , instructions = instructions
-    , registers = Dict.fromList [ ( "a", 0 ), ( "b", 0 ), ( "c", 0 ), ( "d", 0 ) ]
+    , registers = Dict.fromList [ ( "a", 0 ), ( "b", 0 ), ( "c", c ), ( "d", 0 ) ]
     }
 
 
