@@ -16829,9 +16829,270 @@ var _user$project$Y16D22$answer = F2(
 			_user$project$Y16D22$parse(input));
 	});
 
+var _user$project$Y16D23$initState = function (instructions) {
+	return {
+		index: 0,
+		instructions: instructions,
+		registers: _elm_lang$core$Dict$fromList(
+			{
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'a', _1: 7},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'b', _1: 0},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'c', _1: 0},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'd', _1: 0},
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			})
+	};
+};
+var _user$project$Y16D23$set = F3(
+	function (reg, state, val) {
+		return A3(_elm_lang$core$Dict$insert, reg, val, state.registers);
+	});
+var _user$project$Y16D23$get = F2(
+	function (reg, state) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(_elm_lang$core$Dict$get, reg, state.registers));
+	});
+var _user$project$Y16D23$State = F3(
+	function (a, b, c) {
+		return {index: a, instructions: b, registers: c};
+	});
+var _user$project$Y16D23$Invalid = {ctor: 'Invalid'};
+var _user$project$Y16D23$process = function (state) {
+	process:
+	while (true) {
+		var maybeInstruction = A2(_elm_lang$core$Array$get, state.index, state.instructions);
+		var _p0 = maybeInstruction;
+		if (_p0.ctor === 'Nothing') {
+			return state;
+		} else {
+			var _p5 = _p0._0;
+			if (_elm_lang$core$Native_Utils.eq(_p5, _user$project$Y16D23$Invalid)) {
+				return state;
+			} else {
+				var index = function () {
+					var nextIndex = F2(
+						function ($int, jmp) {
+							return (_elm_lang$core$Native_Utils.eq($int, 0) || _elm_lang$core$Native_Utils.eq(jmp, 0)) ? (state.index + 1) : (state.index + jmp);
+						});
+					var _p1 = _p5;
+					switch (_p1.ctor) {
+						case 'JnzRR':
+							var jmp = A2(_user$project$Y16D23$get, _p1._1, state);
+							var $int = A2(_user$project$Y16D23$get, _p1._0, state);
+							return A2(nextIndex, $int, jmp);
+						case 'JnzRI':
+							var $int = A2(_user$project$Y16D23$get, _p1._0, state);
+							return A2(nextIndex, $int, _p1._1);
+						case 'JnzIR':
+							var jmp = A2(_user$project$Y16D23$get, _p1._1, state);
+							return A2(nextIndex, _p1._0, jmp);
+						case 'JnzII':
+							return A2(nextIndex, _p1._0, _p1._1);
+						default:
+							return state.index + 1;
+					}
+				}();
+				var registers = function () {
+					var _p2 = _p5;
+					switch (_p2.ctor) {
+						case 'CpyI':
+							return A3(_user$project$Y16D23$set, _p2._1, state, _p2._0);
+						case 'CpyR':
+							return A3(
+								_user$project$Y16D23$set,
+								_p2._1,
+								state,
+								A2(_user$project$Y16D23$get, _p2._0, state));
+						case 'Inc':
+							var _p3 = _p2._0;
+							return A3(
+								_user$project$Y16D23$set,
+								_p3,
+								state,
+								A2(
+									F2(
+										function (x, y) {
+											return x + y;
+										}),
+									1,
+									A2(_user$project$Y16D23$get, _p3, state)));
+						case 'Dec':
+							var _p4 = _p2._0;
+							return A3(
+								_user$project$Y16D23$set,
+								_p4,
+								state,
+								A2(
+									F2(
+										function (x, y) {
+											return x + y;
+										}),
+									-1,
+									A2(_user$project$Y16D23$get, _p4, state)));
+						default:
+							return state.registers;
+					}
+				}();
+				var _v3 = _elm_lang$core$Native_Utils.update(
+					state,
+					{registers: registers, index: index});
+				state = _v3;
+				continue process;
+			}
+		}
+	}
+};
+var _user$project$Y16D23$TglR = function (a) {
+	return {ctor: 'TglR', _0: a};
+};
+var _user$project$Y16D23$TglI = function (a) {
+	return {ctor: 'TglI', _0: a};
+};
+var _user$project$Y16D23$JnzRR = F2(
+	function (a, b) {
+		return {ctor: 'JnzRR', _0: a, _1: b};
+	});
+var _user$project$Y16D23$JnzIR = F2(
+	function (a, b) {
+		return {ctor: 'JnzIR', _0: a, _1: b};
+	});
+var _user$project$Y16D23$JnzRI = F2(
+	function (a, b) {
+		return {ctor: 'JnzRI', _0: a, _1: b};
+	});
+var _user$project$Y16D23$JnzII = F2(
+	function (a, b) {
+		return {ctor: 'JnzII', _0: a, _1: b};
+	});
+var _user$project$Y16D23$Inc = function (a) {
+	return {ctor: 'Inc', _0: a};
+};
+var _user$project$Y16D23$Dec = function (a) {
+	return {ctor: 'Dec', _0: a};
+};
+var _user$project$Y16D23$CpyR = F2(
+	function (a, b) {
+		return {ctor: 'CpyR', _0: a, _1: b};
+	});
+var _user$project$Y16D23$CpyI = F2(
+	function (a, b) {
+		return {ctor: 'CpyI', _0: a, _1: b};
+	});
+var _user$project$Y16D23$toInstruction = function (matches) {
+	var _p6 = matches;
+	_v4_5:
+	do {
+		if ((_p6.ctor === '::') && (_p6._1.ctor === '::')) {
+			if (_p6._1._1.ctor === '::') {
+				if (_p6._1._1._1.ctor === '[]') {
+					switch (_p6._0) {
+						case 'cpy':
+							var _p9 = _p6._1._1._0;
+							var _p8 = _p6._1._0;
+							var _p7 = _elm_lang$core$String$toInt(_p8);
+							if (_p7.ctor === 'Ok') {
+								return A2(_user$project$Y16D23$CpyI, _p7._0, _p9);
+							} else {
+								return A2(_user$project$Y16D23$CpyR, _p8, _p9);
+							}
+						case 'jnz':
+							var _p12 = _p6._1._1._0;
+							var _p11 = _p6._1._0;
+							var maybeNum2 = _elm_lang$core$String$toInt(_p12);
+							var maybeNum1 = _elm_lang$core$String$toInt(_p11);
+							var _p10 = {ctor: '_Tuple2', _0: maybeNum1, _1: maybeNum2};
+							if (_p10._0.ctor === 'Ok') {
+								if (_p10._1.ctor === 'Ok') {
+									return A2(_user$project$Y16D23$JnzII, _p10._0._0, _p10._1._0);
+								} else {
+									return A2(_user$project$Y16D23$JnzIR, _p10._0._0, _p12);
+								}
+							} else {
+								if (_p10._1.ctor === 'Ok') {
+									return A2(_user$project$Y16D23$JnzRI, _p11, _p10._1._0);
+								} else {
+									return A2(_user$project$Y16D23$JnzRR, _p11, _p12);
+								}
+							}
+						default:
+							break _v4_5;
+					}
+				} else {
+					break _v4_5;
+				}
+			} else {
+				switch (_p6._0) {
+					case 'inc':
+						return _user$project$Y16D23$Inc(_p6._1._0);
+					case 'dec':
+						return _user$project$Y16D23$Dec(_p6._1._0);
+					case 'tgl':
+						var _p14 = _p6._1._0;
+						var _p13 = _elm_lang$core$String$toInt(_p14);
+						if (_p13.ctor === 'Ok') {
+							return _user$project$Y16D23$TglI(_p13._0);
+						} else {
+							return _user$project$Y16D23$TglR(_p14);
+						}
+					default:
+						break _v4_5;
+				}
+			}
+		} else {
+			break _v4_5;
+		}
+	} while(false);
+	return _user$project$Y16D23$Invalid;
+};
+var _user$project$Y16D23$parse = function (input) {
+	return _elm_lang$core$Array$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y16D23$toInstruction,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$List$filter(
+					function (m) {
+						return !_elm_lang$core$Native_Utils.eq(m, '');
+					}),
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$List$map(
+						_elm_lang$core$Maybe$withDefault('')),
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.submatches;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('(cpy) ([abcd]|-?\\d+) ([abcd])|(inc) ([abcd])|(dec) ([abcd])|(jnz) ([abcd]|-?\\d+) ([abcd]|-?\\d+)|(tgl) ([abcd]|-?\\d+)'),
+							input))))));
+};
 var _user$project$Y16D23$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		var state = _user$project$Y16D23$initState(
+			_user$project$Y16D23$parse(input));
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D23$get,
+				'a',
+				_user$project$Y16D23$process(state))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$head(
+				_elm_lang$core$Array$toList(state.instructions)));
 	});
 
 var _user$project$Y16D24$answer = F2(
@@ -17469,7 +17730,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 22;
+var _user$project$Main$defaultDay = 23;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -17482,7 +17743,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 22)
+				days: A2(_elm_lang$core$List$range, 1, 23)
 			},
 			_1: {ctor: '[]'}
 		}
