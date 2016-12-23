@@ -14995,78 +14995,75 @@ var _user$project$Y16D12$Invalid = {ctor: 'Invalid'};
 var _user$project$Y16D12$process = function (state) {
 	process:
 	while (true) {
-		var maybeInstruction = A2(_elm_lang$core$Array$get, state.index, state.instructions);
-		var _p0 = maybeInstruction;
-		if (_p0.ctor === 'Nothing') {
+		var instruction = A2(
+			_elm_lang$core$Maybe$withDefault,
+			_user$project$Y16D12$Invalid,
+			A2(_elm_lang$core$Array$get, state.index, state.instructions));
+		if (_elm_lang$core$Native_Utils.eq(instruction, _user$project$Y16D12$Invalid)) {
 			return state;
 		} else {
-			var _p7 = _p0._0;
-			if (_elm_lang$core$Native_Utils.eq(_p7, _user$project$Y16D12$Invalid)) {
-				return state;
-			} else {
-				var index = function () {
-					var $default = state.index + 1;
-					var _p1 = _p7;
-					switch (_p1.ctor) {
-						case 'Jnz':
-							var _p2 = _p1._1;
-							return (_elm_lang$core$Native_Utils.eq(
-								A2(_user$project$Y16D12$get, _p1._0, state),
-								0) || _elm_lang$core$Native_Utils.eq(_p2, 0)) ? $default : (state.index + _p2);
-						case 'Jiz':
-							var _p3 = _p1._1;
-							return (_elm_lang$core$Native_Utils.eq(_p1._0, 0) || _elm_lang$core$Native_Utils.eq(_p3, 0)) ? $default : (state.index + _p3);
-						default:
-							return $default;
-					}
-				}();
-				var registers = function () {
-					var _p4 = _p7;
-					switch (_p4.ctor) {
-						case 'Cpn':
-							return A3(_user$project$Y16D12$set, _p4._1, state, _p4._0);
-						case 'Cpr':
-							return A3(
-								_user$project$Y16D12$set,
-								_p4._1,
-								state,
-								A2(_user$project$Y16D12$get, _p4._0, state));
-						case 'Inc':
-							var _p5 = _p4._0;
-							return A3(
-								_user$project$Y16D12$set,
-								_p5,
-								state,
-								A2(
-									F2(
-										function (x, y) {
-											return x + y;
-										}),
-									1,
-									A2(_user$project$Y16D12$get, _p5, state)));
-						case 'Dec':
-							var _p6 = _p4._0;
-							return A3(
-								_user$project$Y16D12$set,
-								_p6,
-								state,
-								A2(
-									F2(
-										function (x, y) {
-											return x + y;
-										}),
-									-1,
-									A2(_user$project$Y16D12$get, _p6, state)));
-						default:
-							return state.registers;
-					}
-				}();
-				var _v3 = _elm_lang$core$Native_Utils.update(
-					state,
-					{registers: registers, index: index});
-				state = _v3;
-				continue process;
-			}
+			var index = function () {
+				var $default = state.index + 1;
+				var _p0 = instruction;
+				switch (_p0.ctor) {
+					case 'Jnz':
+						var _p1 = _p0._1;
+						return (_elm_lang$core$Native_Utils.eq(
+							A2(_user$project$Y16D12$get, _p0._0, state),
+							0) || _elm_lang$core$Native_Utils.eq(_p1, 0)) ? $default : (state.index + _p1);
+					case 'Jiz':
+						var _p2 = _p0._1;
+						return (_elm_lang$core$Native_Utils.eq(_p0._0, 0) || _elm_lang$core$Native_Utils.eq(_p2, 0)) ? $default : (state.index + _p2);
+					default:
+						return $default;
+				}
+			}();
+			var registers = function () {
+				var _p3 = instruction;
+				switch (_p3.ctor) {
+					case 'Cpn':
+						return A3(_user$project$Y16D12$set, _p3._1, state, _p3._0);
+					case 'Cpr':
+						return A3(
+							_user$project$Y16D12$set,
+							_p3._1,
+							state,
+							A2(_user$project$Y16D12$get, _p3._0, state));
+					case 'Inc':
+						var _p4 = _p3._0;
+						return A3(
+							_user$project$Y16D12$set,
+							_p4,
+							state,
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								1,
+								A2(_user$project$Y16D12$get, _p4, state)));
+					case 'Dec':
+						var _p5 = _p3._0;
+						return A3(
+							_user$project$Y16D12$set,
+							_p5,
+							state,
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								-1,
+								A2(_user$project$Y16D12$get, _p5, state)));
+					default:
+						return state.registers;
+				}
+			}();
+			var _v2 = _elm_lang$core$Native_Utils.update(
+				state,
+				{registers: registers, index: index});
+			state = _v2;
+			continue process;
 		}
 	}
 };
@@ -15093,66 +15090,66 @@ var _user$project$Y16D12$Cpn = F2(
 		return {ctor: 'Cpn', _0: a, _1: b};
 	});
 var _user$project$Y16D12$parseMatches = function (matches) {
-	var _p8 = matches;
-	_v4_4:
+	var _p6 = matches;
+	_v3_4:
 	do {
-		if (_p8.ctor === '::') {
-			if (_p8._0.ctor === 'Just') {
-				if (((((((((((_p8._1.ctor === '::') && (_p8._1._0.ctor === 'Just')) && (_p8._1._1.ctor === '::')) && (_p8._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1.ctor === '::')) && (_p8._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
-					var _p11 = _p8._1._0._0;
-					var _p10 = _p8._0._0;
-					var _p9 = _elm_lang$core$String$toInt(_p10);
-					if (_p9.ctor === 'Ok') {
-						return A2(_user$project$Y16D12$Cpn, _p9._0, _p11);
+		if (_p6.ctor === '::') {
+			if (_p6._0.ctor === 'Just') {
+				if (((((((((((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '::')) && (_p6._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1.ctor === '::')) && (_p6._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1._1.ctor === '[]')) {
+					var _p9 = _p6._1._0._0;
+					var _p8 = _p6._0._0;
+					var _p7 = _elm_lang$core$String$toInt(_p8);
+					if (_p7.ctor === 'Ok') {
+						return A2(_user$project$Y16D12$Cpn, _p7._0, _p9);
 					} else {
-						return A2(_user$project$Y16D12$Cpr, _p10, _p11);
+						return A2(_user$project$Y16D12$Cpr, _p8, _p9);
 					}
 				} else {
-					break _v4_4;
+					break _v3_4;
 				}
 			} else {
-				if (((_p8._1.ctor === '::') && (_p8._1._0.ctor === 'Nothing')) && (_p8._1._1.ctor === '::')) {
-					if (_p8._1._1._0.ctor === 'Just') {
-						if (((((((_p8._1._1._1.ctor === '::') && (_p8._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
-							return _user$project$Y16D12$Inc(_p8._1._1._0._0);
+				if (((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Nothing')) && (_p6._1._1.ctor === '::')) {
+					if (_p6._1._1._0.ctor === 'Just') {
+						if (((((((_p6._1._1._1.ctor === '::') && (_p6._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1._1.ctor === '[]')) {
+							return _user$project$Y16D12$Inc(_p6._1._1._0._0);
 						} else {
-							break _v4_4;
+							break _v3_4;
 						}
 					} else {
-						if (_p8._1._1._1.ctor === '::') {
-							if (_p8._1._1._1._0.ctor === 'Just') {
-								if (((((_p8._1._1._1._1.ctor === '::') && (_p8._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Nothing')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
-									return _user$project$Y16D12$Dec(_p8._1._1._1._0._0);
+						if (_p6._1._1._1.ctor === '::') {
+							if (_p6._1._1._1._0.ctor === 'Just') {
+								if (((((_p6._1._1._1._1.ctor === '::') && (_p6._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1._1._1._1.ctor === '[]')) {
+									return _user$project$Y16D12$Dec(_p6._1._1._1._0._0);
 								} else {
-									break _v4_4;
+									break _v3_4;
 								}
 							} else {
-								if (((((_p8._1._1._1._1.ctor === '::') && (_p8._1._1._1._1._0.ctor === 'Just')) && (_p8._1._1._1._1._1.ctor === '::')) && (_p8._1._1._1._1._1._0.ctor === 'Just')) && (_p8._1._1._1._1._1._1.ctor === '[]')) {
-									var _p13 = _p8._1._1._1._1._0._0;
+								if (((((_p6._1._1._1._1.ctor === '::') && (_p6._1._1._1._1._0.ctor === 'Just')) && (_p6._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._0.ctor === 'Just')) && (_p6._1._1._1._1._1._1.ctor === '[]')) {
+									var _p11 = _p6._1._1._1._1._0._0;
 									var jmp = A2(
 										_elm_lang$core$Result$withDefault,
 										0,
-										_elm_lang$core$String$toInt(_p8._1._1._1._1._1._0._0));
-									var _p12 = _elm_lang$core$String$toInt(_p13);
-									if (_p12.ctor === 'Ok') {
-										return A2(_user$project$Y16D12$Jiz, _p12._0, jmp);
+										_elm_lang$core$String$toInt(_p6._1._1._1._1._1._0._0));
+									var _p10 = _elm_lang$core$String$toInt(_p11);
+									if (_p10.ctor === 'Ok') {
+										return A2(_user$project$Y16D12$Jiz, _p10._0, jmp);
 									} else {
-										return A2(_user$project$Y16D12$Jnz, _p13, jmp);
+										return A2(_user$project$Y16D12$Jnz, _p11, jmp);
 									}
 								} else {
-									break _v4_4;
+									break _v3_4;
 								}
 							}
 						} else {
-							break _v4_4;
+							break _v3_4;
 						}
 					}
 				} else {
-					break _v4_4;
+					break _v3_4;
 				}
 			}
 		} else {
-			break _v4_4;
+			break _v3_4;
 		}
 	} while(false);
 	return _user$project$Y16D12$Invalid;
@@ -16869,91 +16866,6 @@ var _user$project$Y16D23$State = F3(
 		return {index: a, instructions: b, registers: c};
 	});
 var _user$project$Y16D23$Invalid = {ctor: 'Invalid'};
-var _user$project$Y16D23$process = function (state) {
-	process:
-	while (true) {
-		var maybeInstruction = A2(_elm_lang$core$Array$get, state.index, state.instructions);
-		var _p0 = maybeInstruction;
-		if (_p0.ctor === 'Nothing') {
-			return state;
-		} else {
-			var _p5 = _p0._0;
-			if (_elm_lang$core$Native_Utils.eq(_p5, _user$project$Y16D23$Invalid)) {
-				return state;
-			} else {
-				var index = function () {
-					var nextIndex = F2(
-						function ($int, jmp) {
-							return (_elm_lang$core$Native_Utils.eq($int, 0) || _elm_lang$core$Native_Utils.eq(jmp, 0)) ? (state.index + 1) : (state.index + jmp);
-						});
-					var _p1 = _p5;
-					switch (_p1.ctor) {
-						case 'JnzRR':
-							var jmp = A2(_user$project$Y16D23$get, _p1._1, state);
-							var $int = A2(_user$project$Y16D23$get, _p1._0, state);
-							return A2(nextIndex, $int, jmp);
-						case 'JnzRI':
-							var $int = A2(_user$project$Y16D23$get, _p1._0, state);
-							return A2(nextIndex, $int, _p1._1);
-						case 'JnzIR':
-							var jmp = A2(_user$project$Y16D23$get, _p1._1, state);
-							return A2(nextIndex, _p1._0, jmp);
-						case 'JnzII':
-							return A2(nextIndex, _p1._0, _p1._1);
-						default:
-							return state.index + 1;
-					}
-				}();
-				var registers = function () {
-					var _p2 = _p5;
-					switch (_p2.ctor) {
-						case 'CpyI':
-							return A3(_user$project$Y16D23$set, _p2._1, state, _p2._0);
-						case 'CpyR':
-							return A3(
-								_user$project$Y16D23$set,
-								_p2._1,
-								state,
-								A2(_user$project$Y16D23$get, _p2._0, state));
-						case 'Inc':
-							var _p3 = _p2._0;
-							return A3(
-								_user$project$Y16D23$set,
-								_p3,
-								state,
-								A2(
-									F2(
-										function (x, y) {
-											return x + y;
-										}),
-									1,
-									A2(_user$project$Y16D23$get, _p3, state)));
-						case 'Dec':
-							var _p4 = _p2._0;
-							return A3(
-								_user$project$Y16D23$set,
-								_p4,
-								state,
-								A2(
-									F2(
-										function (x, y) {
-											return x + y;
-										}),
-									-1,
-									A2(_user$project$Y16D23$get, _p4, state)));
-						default:
-							return state.registers;
-					}
-				}();
-				var _v3 = _elm_lang$core$Native_Utils.update(
-					state,
-					{registers: registers, index: index});
-				state = _v3;
-				continue process;
-			}
-		}
-	}
-};
 var _user$project$Y16D23$TglR = function (a) {
 	return {ctor: 'TglR', _0: a};
 };
@@ -16990,68 +16902,209 @@ var _user$project$Y16D23$CpyI = F2(
 	function (a, b) {
 		return {ctor: 'CpyI', _0: a, _1: b};
 	});
+var _user$project$Y16D23$toggle = function (instruction) {
+	var _p0 = instruction;
+	switch (_p0.ctor) {
+		case 'CpyI':
+			return A2(_user$project$Y16D23$JnzIR, _p0._0, _p0._1);
+		case 'CpyR':
+			return A2(_user$project$Y16D23$JnzRR, _p0._0, _p0._1);
+		case 'Dec':
+			return _user$project$Y16D23$Inc(_p0._0);
+		case 'Inc':
+			return _user$project$Y16D23$Dec(_p0._0);
+		case 'JnzII':
+			return _user$project$Y16D23$Invalid;
+		case 'JnzRI':
+			return _user$project$Y16D23$Invalid;
+		case 'JnzIR':
+			return A2(_user$project$Y16D23$CpyI, _p0._0, _p0._1);
+		case 'JnzRR':
+			return A2(_user$project$Y16D23$CpyR, _p0._0, _p0._1);
+		case 'TglI':
+			return _user$project$Y16D23$Invalid;
+		case 'TglR':
+			return _user$project$Y16D23$Inc(_p0._0);
+		default:
+			return _user$project$Y16D23$Invalid;
+	}
+};
+var _user$project$Y16D23$process = function (state) {
+	process:
+	while (true) {
+		if ((_elm_lang$core$Native_Utils.cmp(state.index, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
+			state.index,
+			_elm_lang$core$Array$length(state.instructions)) > -1)) {
+			return state;
+		} else {
+			var instruction = A2(
+				_elm_lang$core$Maybe$withDefault,
+				_user$project$Y16D23$Invalid,
+				A2(_elm_lang$core$Array$get, state.index, state.instructions));
+			var index = function () {
+				var _p1 = function () {
+					var _p2 = instruction;
+					switch (_p2.ctor) {
+						case 'JnzRR':
+							return {
+								ctor: '_Tuple2',
+								_0: A2(_user$project$Y16D23$get, _p2._0, state),
+								_1: A2(_user$project$Y16D23$get, _p2._1, state)
+							};
+						case 'JnzRI':
+							return {
+								ctor: '_Tuple2',
+								_0: A2(_user$project$Y16D23$get, _p2._0, state),
+								_1: _p2._1
+							};
+						case 'JnzIR':
+							return {
+								ctor: '_Tuple2',
+								_0: _p2._0,
+								_1: A2(_user$project$Y16D23$get, _p2._1, state)
+							};
+						case 'JnzII':
+							return {ctor: '_Tuple2', _0: _p2._0, _1: _p2._1};
+						default:
+							return {ctor: '_Tuple2', _0: 0, _1: 0};
+					}
+				}();
+				var test = _p1._0;
+				var shift = _p1._1;
+				return (_elm_lang$core$Native_Utils.eq(test, 0) || _elm_lang$core$Native_Utils.eq(shift, 0)) ? (state.index + 1) : (state.index + shift);
+			}();
+			var instructions = function () {
+				var indexToToggle = function () {
+					var _p3 = instruction;
+					switch (_p3.ctor) {
+						case 'TglI':
+							return state.index + _p3._0;
+						case 'TglR':
+							return state.index + A2(_user$project$Y16D23$get, _p3._0, state);
+						default:
+							return _elm_lang$core$Array$length(state.instructions);
+					}
+				}();
+				var instructionToToggle = A2(
+					_elm_lang$core$Maybe$withDefault,
+					_user$project$Y16D23$Invalid,
+					A2(_elm_lang$core$Array$get, indexToToggle, state.instructions));
+				if (_elm_lang$core$Native_Utils.eq(instructionToToggle, _user$project$Y16D23$Invalid)) {
+					return state.instructions;
+				} else {
+					var toggledInstruction = _user$project$Y16D23$toggle(instructionToToggle);
+					return A3(_elm_lang$core$Array$set, indexToToggle, toggledInstruction, state.instructions);
+				}
+			}();
+			var registers = function () {
+				var _p4 = instruction;
+				switch (_p4.ctor) {
+					case 'CpyI':
+						return A3(_user$project$Y16D23$set, _p4._1, state, _p4._0);
+					case 'CpyR':
+						return A3(
+							_user$project$Y16D23$set,
+							_p4._1,
+							state,
+							A2(_user$project$Y16D23$get, _p4._0, state));
+					case 'Inc':
+						var _p5 = _p4._0;
+						return A3(
+							_user$project$Y16D23$set,
+							_p5,
+							state,
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								1,
+								A2(_user$project$Y16D23$get, _p5, state)));
+					case 'Dec':
+						var _p6 = _p4._0;
+						return A3(
+							_user$project$Y16D23$set,
+							_p6,
+							state,
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								-1,
+								A2(_user$project$Y16D23$get, _p6, state)));
+					default:
+						return state.registers;
+				}
+			}();
+			var _v4 = A3(_user$project$Y16D23$State, index, instructions, registers);
+			state = _v4;
+			continue process;
+		}
+	}
+};
 var _user$project$Y16D23$toInstruction = function (matches) {
-	var _p6 = matches;
-	_v4_5:
+	var _p7 = matches;
+	_v5_5:
 	do {
-		if ((_p6.ctor === '::') && (_p6._1.ctor === '::')) {
-			if (_p6._1._1.ctor === '::') {
-				if (_p6._1._1._1.ctor === '[]') {
-					switch (_p6._0) {
+		if ((_p7.ctor === '::') && (_p7._1.ctor === '::')) {
+			if (_p7._1._1.ctor === '::') {
+				if (_p7._1._1._1.ctor === '[]') {
+					switch (_p7._0) {
 						case 'cpy':
-							var _p9 = _p6._1._1._0;
-							var _p8 = _p6._1._0;
-							var _p7 = _elm_lang$core$String$toInt(_p8);
-							if (_p7.ctor === 'Ok') {
-								return A2(_user$project$Y16D23$CpyI, _p7._0, _p9);
+							var _p10 = _p7._1._1._0;
+							var _p9 = _p7._1._0;
+							var _p8 = _elm_lang$core$String$toInt(_p9);
+							if (_p8.ctor === 'Ok') {
+								return A2(_user$project$Y16D23$CpyI, _p8._0, _p10);
 							} else {
-								return A2(_user$project$Y16D23$CpyR, _p8, _p9);
+								return A2(_user$project$Y16D23$CpyR, _p9, _p10);
 							}
 						case 'jnz':
-							var _p12 = _p6._1._1._0;
-							var _p11 = _p6._1._0;
-							var maybeNum2 = _elm_lang$core$String$toInt(_p12);
-							var maybeNum1 = _elm_lang$core$String$toInt(_p11);
-							var _p10 = {ctor: '_Tuple2', _0: maybeNum1, _1: maybeNum2};
-							if (_p10._0.ctor === 'Ok') {
-								if (_p10._1.ctor === 'Ok') {
-									return A2(_user$project$Y16D23$JnzII, _p10._0._0, _p10._1._0);
+							var _p13 = _p7._1._1._0;
+							var _p12 = _p7._1._0;
+							var maybeNum2 = _elm_lang$core$String$toInt(_p13);
+							var maybeNum1 = _elm_lang$core$String$toInt(_p12);
+							var _p11 = {ctor: '_Tuple2', _0: maybeNum1, _1: maybeNum2};
+							if (_p11._0.ctor === 'Ok') {
+								if (_p11._1.ctor === 'Ok') {
+									return A2(_user$project$Y16D23$JnzII, _p11._0._0, _p11._1._0);
 								} else {
-									return A2(_user$project$Y16D23$JnzIR, _p10._0._0, _p12);
+									return A2(_user$project$Y16D23$JnzIR, _p11._0._0, _p13);
 								}
 							} else {
-								if (_p10._1.ctor === 'Ok') {
-									return A2(_user$project$Y16D23$JnzRI, _p11, _p10._1._0);
+								if (_p11._1.ctor === 'Ok') {
+									return A2(_user$project$Y16D23$JnzRI, _p12, _p11._1._0);
 								} else {
-									return A2(_user$project$Y16D23$JnzRR, _p11, _p12);
+									return A2(_user$project$Y16D23$JnzRR, _p12, _p13);
 								}
 							}
 						default:
-							break _v4_5;
+							break _v5_5;
 					}
 				} else {
-					break _v4_5;
+					break _v5_5;
 				}
 			} else {
-				switch (_p6._0) {
+				switch (_p7._0) {
 					case 'inc':
-						return _user$project$Y16D23$Inc(_p6._1._0);
+						return _user$project$Y16D23$Inc(_p7._1._0);
 					case 'dec':
-						return _user$project$Y16D23$Dec(_p6._1._0);
+						return _user$project$Y16D23$Dec(_p7._1._0);
 					case 'tgl':
-						var _p14 = _p6._1._0;
-						var _p13 = _elm_lang$core$String$toInt(_p14);
-						if (_p13.ctor === 'Ok') {
-							return _user$project$Y16D23$TglI(_p13._0);
+						var _p15 = _p7._1._0;
+						var _p14 = _elm_lang$core$String$toInt(_p15);
+						if (_p14.ctor === 'Ok') {
+							return _user$project$Y16D23$TglI(_p14._0);
 						} else {
-							return _user$project$Y16D23$TglR(_p14);
+							return _user$project$Y16D23$TglR(_p15);
 						}
 					default:
-						break _v4_5;
+						break _v5_5;
 				}
 			}
 		} else {
-			break _v4_5;
+			break _v5_5;
 		}
 	} while(false);
 	return _user$project$Y16D23$Invalid;
@@ -17091,8 +17144,15 @@ var _user$project$Y16D23$answer = F2(
 				_user$project$Y16D23$get,
 				'a',
 				_user$project$Y16D23$process(state))) : _elm_lang$core$Basics$toString(
-			_elm_lang$core$List$head(
-				_elm_lang$core$Array$toList(state.instructions)));
+			A2(
+				_user$project$Y16D23$get,
+				'a',
+				_user$project$Y16D23$process(
+					_elm_lang$core$Native_Utils.update(
+						state,
+						{
+							registers: A3(_user$project$Y16D23$set, 'a', state, 12)
+						}))));
 	});
 
 var _user$project$Y16D24$answer = F2(

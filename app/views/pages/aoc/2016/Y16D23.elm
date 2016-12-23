@@ -19,89 +19,98 @@ answer part input =
                 |> get "a"
                 |> toString
         else
-            state.instructions
-                |> Array.toList
-                |> List.head
+            { state | registers = set "a" state 12 }
+                |> process
+                |> get "a"
                 |> toString
 
 
 process : State -> State
 process state =
-    let
-        maybeInstruction =
-            Array.get state.index state.instructions
-    in
-        case maybeInstruction of
-            Nothing ->
-                state
+    if state.index < 0 || state.index >= Array.length state.instructions then
+        state
+    else
+        let
+            instruction =
+                state.instructions
+                    |> Array.get state.index
+                    |> Maybe.withDefault Invalid
 
-            Just instruction ->
-                if instruction == Invalid then
-                    state
-                else
-                    let
-                        registers =
-                            case instruction of
-                                CpyI val reg ->
-                                    set reg state val
+            index =
+                let
+                    ( test, shift ) =
+                        case instruction of
+                            JnzRR reg1 reg2 ->
+                                ( get reg1 state, get reg2 state )
 
-                                CpyR source target ->
-                                    get source state
-                                        |> set target state
+                            JnzRI reg jmp ->
+                                ( get reg state, jmp )
 
-                                Inc reg ->
-                                    get reg state
-                                        |> (+) 1
-                                        |> set reg state
+                            JnzIR int reg ->
+                                ( int, get reg state )
 
-                                Dec reg ->
-                                    get reg state
-                                        |> (+) -1
-                                        |> set reg state
+                            JnzII int jmp ->
+                                ( int, jmp )
 
-                                _ ->
-                                    state.registers
+                            _ ->
+                                ( 0, 0 )
+                in
+                    if test == 0 || shift == 0 then
+                        state.index + 1
+                    else
+                        state.index + shift
 
-                        index =
-                            let
-                                nextIndex int jmp =
-                                    if int == 0 || jmp == 0 then
-                                        state.index + 1
-                                    else
-                                        state.index + jmp
-                            in
-                                case instruction of
-                                    JnzRR reg1 reg2 ->
-                                        let
-                                            int =
-                                                get reg1 state
+            instructions =
+                let
+                    indexToToggle =
+                        case instruction of
+                            TglI jmp ->
+                                state.index + jmp
 
-                                            jmp =
-                                                get reg2 state
-                                        in
-                                            nextIndex int jmp
+                            TglR reg ->
+                                state.index + get reg state
 
-                                    JnzRI reg jmp ->
-                                        let
-                                            int =
-                                                get reg state
-                                        in
-                                            nextIndex int jmp
+                            _ ->
+                                Array.length state.instructions
 
-                                    JnzIR int reg ->
-                                        let
-                                            jmp =
-                                                get reg state
-                                        in
-                                            nextIndex int jmp
+                    instructionToToggle =
+                        state.instructions
+                            |> Array.get indexToToggle
+                            |> Maybe.withDefault Invalid
+                in
+                    if instructionToToggle == Invalid then
+                        state.instructions
+                    else
+                        let
+                            toggledInstruction =
+                                toggle instructionToToggle
+                        in
+                            Array.set indexToToggle toggledInstruction state.instructions
 
-                                    JnzII int jmp ->
-                                        nextIndex int jmp
+            registers =
+                case instruction of
+                    CpyI val reg ->
+                        set reg state val
 
-                                    _ ->
-                                        state.index + 1
-                    in
-                        process { state | registers = registers, index = index }
+                    CpyR source target ->
+                        get source state
+                            |> set target state
+
+                    Inc reg ->
+                        get reg state
+                            |> (+) 1
+                            |> set reg state
+
+                    Dec reg ->
+                        get reg state
+                            |> (+) -1
+                            |> set reg state
+
+                    _ ->
+                        state.registers
+        in
+            State index instructions registers
+                |> process
 
 
 get : String -> State -> Int
@@ -115,6 +124,43 @@ set : String -> State -> Int -> Dict String Int
 set reg state val =
     state.registers
         |> Dict.insert reg val
+
+
+toggle : Instruction -> Instruction
+toggle instruction =
+    case instruction of
+        CpyI int reg ->
+            JnzIR int reg
+
+        CpyR reg1 reg2 ->
+            JnzRR reg1 reg2
+
+        Dec reg ->
+            Inc reg
+
+        Inc reg ->
+            Dec reg
+
+        JnzII int1 int2 ->
+            Invalid
+
+        JnzRI reg int ->
+            Invalid
+
+        JnzIR int reg ->
+            CpyI int reg
+
+        JnzRR reg1 reg2 ->
+            CpyR reg1 reg2
+
+        TglI int ->
+            Invalid
+
+        TglR reg ->
+            Inc reg
+
+        Invalid ->
+            Invalid
 
 
 type alias State =

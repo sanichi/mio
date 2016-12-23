@@ -28,62 +28,59 @@ answer part input =
 process : State -> State
 process state =
     let
-        maybeInstruction =
-            Array.get state.index state.instructions
+        instruction =
+            state.instructions
+                |> Array.get state.index
+                |> Maybe.withDefault Invalid
     in
-        case maybeInstruction of
-            Nothing ->
-                state
+        if instruction == Invalid then
+            state
+        else
+            let
+                registers =
+                    case instruction of
+                        Cpn val reg ->
+                            set reg state val
 
-            Just instruction ->
-                if instruction == Invalid then
-                    state
-                else
+                        Cpr from to ->
+                            get from state
+                                |> set to state
+
+                        Inc reg ->
+                            get reg state
+                                |> (+) 1
+                                |> set reg state
+
+                        Dec reg ->
+                            get reg state
+                                |> (+) -1
+                                |> set reg state
+
+                        _ ->
+                            state.registers
+
+                index =
                     let
-                        registers =
-                            case instruction of
-                                Cpn val reg ->
-                                    set reg state val
-
-                                Cpr from to ->
-                                    get from state
-                                        |> set to state
-
-                                Inc reg ->
-                                    get reg state
-                                        |> (+) 1
-                                        |> set reg state
-
-                                Dec reg ->
-                                    get reg state
-                                        |> (+) -1
-                                        |> set reg state
-
-                                _ ->
-                                    state.registers
-
-                        index =
-                            let
-                                default =
-                                    state.index + 1
-                            in
-                                case instruction of
-                                    Jnz reg jmp ->
-                                        if get reg state == 0 || jmp == 0 then
-                                            default
-                                        else
-                                            state.index + jmp
-
-                                    Jiz int jmp ->
-                                        if int == 0 || jmp == 0 then
-                                            default
-                                        else
-                                            state.index + jmp
-
-                                    _ ->
-                                        default
+                        default =
+                            state.index + 1
                     in
-                        process { state | registers = registers, index = index }
+                        case instruction of
+                            Jnz reg jmp ->
+                                if get reg state == 0 || jmp == 0 then
+                                    default
+                                else
+                                    state.index + jmp
+
+                            Jiz int jmp ->
+                                if int == 0 || jmp == 0 then
+                                    default
+                                else
+                                    state.index + jmp
+
+                            _ ->
+                                default
+            in
+                process { state | registers = registers, index = index }
 
 
 get : String -> State -> Int
