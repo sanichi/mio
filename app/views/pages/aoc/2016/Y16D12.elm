@@ -36,12 +36,12 @@ process state =
             let
                 registers =
                     case instruction of
-                        Cpn val reg ->
-                            set reg state val
+                        CpyI int reg ->
+                            set reg state int
 
-                        Cpr from to ->
-                            get from state
-                                |> set to state
+                        CpyR reg1 reg2 ->
+                            get reg1 state
+                                |> set reg2 state
 
                         Inc reg ->
                             get reg state
@@ -62,13 +62,13 @@ process state =
                             state.index + 1
                     in
                         case instruction of
-                            Jnz reg jmp ->
+                            JnzR reg jmp ->
                                 if get reg state == 0 || jmp == 0 then
                                     default
                                 else
                                     state.index + jmp
 
-                            Jiz int jmp ->
+                            JnzI int jmp ->
                                 if int == 0 || jmp == 0 then
                                     default
                                 else
@@ -109,12 +109,12 @@ type alias State =
 
 
 type Instruction
-    = Cpn Int String
-    | Cpr String String
-    | Inc String
+    = CpyI Int String
+    | CpyR String String
     | Dec String
-    | Jnz String Int
-    | Jiz Int Int
+    | Inc String
+    | JnzI Int Int
+    | JnzR String Int
     | Invalid
 
 
@@ -133,10 +133,10 @@ parseMatches matches =
         [ Just numOrReg, Just reg, Nothing, Nothing, Nothing, Nothing ] ->
             case String.toInt numOrReg of
                 Ok num ->
-                    Cpn num reg
+                    CpyI num reg
 
                 Err _ ->
-                    Cpr numOrReg reg
+                    CpyR numOrReg reg
 
         [ Nothing, Nothing, Just reg, Nothing, Nothing, Nothing ] ->
             Inc reg
@@ -153,10 +153,10 @@ parseMatches matches =
             in
                 case String.toInt numOrReg of
                     Ok num ->
-                        Jiz num jmp
+                        JnzI num jmp
 
                     Err _ ->
-                        Jnz numOrReg jmp
+                        JnzR numOrReg jmp
 
         _ ->
             Invalid

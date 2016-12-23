@@ -15007,12 +15007,12 @@ var _user$project$Y16D12$process = function (state) {
 				var $default = state.index + 1;
 				var _p0 = instruction;
 				switch (_p0.ctor) {
-					case 'Jnz':
+					case 'JnzR':
 						var _p1 = _p0._1;
 						return (_elm_lang$core$Native_Utils.eq(
 							A2(_user$project$Y16D12$get, _p0._0, state),
 							0) || _elm_lang$core$Native_Utils.eq(_p1, 0)) ? $default : (state.index + _p1);
-					case 'Jiz':
+					case 'JnzI':
 						var _p2 = _p0._1;
 						return (_elm_lang$core$Native_Utils.eq(_p0._0, 0) || _elm_lang$core$Native_Utils.eq(_p2, 0)) ? $default : (state.index + _p2);
 					default:
@@ -15022,9 +15022,9 @@ var _user$project$Y16D12$process = function (state) {
 			var registers = function () {
 				var _p3 = instruction;
 				switch (_p3.ctor) {
-					case 'Cpn':
+					case 'CpyI':
 						return A3(_user$project$Y16D12$set, _p3._1, state, _p3._0);
-					case 'Cpr':
+					case 'CpyR':
 						return A3(
 							_user$project$Y16D12$set,
 							_p3._1,
@@ -15068,27 +15068,27 @@ var _user$project$Y16D12$process = function (state) {
 		}
 	}
 };
-var _user$project$Y16D12$Jiz = F2(
+var _user$project$Y16D12$JnzR = F2(
 	function (a, b) {
-		return {ctor: 'Jiz', _0: a, _1: b};
+		return {ctor: 'JnzR', _0: a, _1: b};
 	});
-var _user$project$Y16D12$Jnz = F2(
+var _user$project$Y16D12$JnzI = F2(
 	function (a, b) {
-		return {ctor: 'Jnz', _0: a, _1: b};
+		return {ctor: 'JnzI', _0: a, _1: b};
 	});
-var _user$project$Y16D12$Dec = function (a) {
-	return {ctor: 'Dec', _0: a};
-};
 var _user$project$Y16D12$Inc = function (a) {
 	return {ctor: 'Inc', _0: a};
 };
-var _user$project$Y16D12$Cpr = F2(
+var _user$project$Y16D12$Dec = function (a) {
+	return {ctor: 'Dec', _0: a};
+};
+var _user$project$Y16D12$CpyR = F2(
 	function (a, b) {
-		return {ctor: 'Cpr', _0: a, _1: b};
+		return {ctor: 'CpyR', _0: a, _1: b};
 	});
-var _user$project$Y16D12$Cpn = F2(
+var _user$project$Y16D12$CpyI = F2(
 	function (a, b) {
-		return {ctor: 'Cpn', _0: a, _1: b};
+		return {ctor: 'CpyI', _0: a, _1: b};
 	});
 var _user$project$Y16D12$parseMatches = function (matches) {
 	var _p6 = matches;
@@ -15101,9 +15101,9 @@ var _user$project$Y16D12$parseMatches = function (matches) {
 					var _p8 = _p6._0._0;
 					var _p7 = _elm_lang$core$String$toInt(_p8);
 					if (_p7.ctor === 'Ok') {
-						return A2(_user$project$Y16D12$Cpn, _p7._0, _p9);
+						return A2(_user$project$Y16D12$CpyI, _p7._0, _p9);
 					} else {
-						return A2(_user$project$Y16D12$Cpr, _p8, _p9);
+						return A2(_user$project$Y16D12$CpyR, _p8, _p9);
 					}
 				} else {
 					break _v3_4;
@@ -15133,9 +15133,9 @@ var _user$project$Y16D12$parseMatches = function (matches) {
 										_elm_lang$core$String$toInt(_p6._1._1._1._1._1._0._0));
 									var _p10 = _elm_lang$core$String$toInt(_p11);
 									if (_p10.ctor === 'Ok') {
-										return A2(_user$project$Y16D12$Jiz, _p10._0, jmp);
+										return A2(_user$project$Y16D12$JnzI, _p10._0, jmp);
 									} else {
-										return A2(_user$project$Y16D12$Jnz, _p11, jmp);
+										return A2(_user$project$Y16D12$JnzR, _p11, jmp);
 									}
 								} else {
 									break _v3_4;
