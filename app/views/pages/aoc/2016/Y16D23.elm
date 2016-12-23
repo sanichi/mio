@@ -31,86 +31,95 @@ process state =
         state
     else
         let
-            instruction =
-                state.instructions
-                    |> Array.get state.index
-                    |> Maybe.withDefault Invalid
-
-            index =
-                let
-                    ( test, shift ) =
-                        case instruction of
-                            JnzRR reg1 reg2 ->
-                                ( get reg1 state, get reg2 state )
-
-                            JnzRI reg jmp ->
-                                ( get reg state, jmp )
-
-                            JnzIR int reg ->
-                                ( int, get reg state )
-
-                            JnzII int jmp ->
-                                ( int, jmp )
-
-                            _ ->
-                                ( 0, 0 )
-                in
-                    if test == 0 || shift == 0 then
-                        state.index + 1
-                    else
-                        state.index + shift
-
-            instructions =
-                let
-                    indexToToggle =
-                        case instruction of
-                            TglI jmp ->
-                                state.index + jmp
-
-                            TglR reg ->
-                                state.index + get reg state
-
-                            _ ->
-                                Array.length state.instructions
-
-                    instructionToToggle =
-                        state.instructions
-                            |> Array.get indexToToggle
-                            |> Maybe.withDefault Invalid
-                in
-                    if instructionToToggle == Invalid then
-                        state.instructions
-                    else
-                        let
-                            toggledInstruction =
-                                toggle instructionToToggle
-                        in
-                            Array.set indexToToggle toggledInstruction state.instructions
-
-            registers =
-                case instruction of
-                    CpyI val reg ->
-                        set reg state val
-
-                    CpyR source target ->
-                        get source state
-                            |> set target state
-
-                    Inc reg ->
-                        get reg state
-                            |> (+) 1
-                            |> set reg state
-
-                    Dec reg ->
-                        get reg state
-                            |> (+) -1
-                            |> set reg state
-
-                    _ ->
-                        state.registers
+            maybeMultiplication =
+                multiply state
         in
-            State index instructions registers
-                |> process
+            case maybeMultiplication of
+                Just newState ->
+                    process newState
+
+                _ ->
+                    let
+                        instruction =
+                            state.instructions
+                                |> Array.get state.index
+                                |> Maybe.withDefault Invalid
+
+                        index =
+                            let
+                                ( test, shift ) =
+                                    case instruction of
+                                        JnzRR reg1 reg2 ->
+                                            ( get reg1 state, get reg2 state )
+
+                                        JnzRI reg jmp ->
+                                            ( get reg state, jmp )
+
+                                        JnzIR int reg ->
+                                            ( int, get reg state )
+
+                                        JnzII int jmp ->
+                                            ( int, jmp )
+
+                                        _ ->
+                                            ( 0, 0 )
+                            in
+                                if test == 0 || shift == 0 then
+                                    state.index + 1
+                                else
+                                    state.index + shift
+
+                        instructions =
+                            let
+                                indexToToggle =
+                                    case instruction of
+                                        TglI jmp ->
+                                            state.index + jmp
+
+                                        TglR reg ->
+                                            state.index + get reg state
+
+                                        _ ->
+                                            Array.length state.instructions
+
+                                instructionToToggle =
+                                    state.instructions
+                                        |> Array.get indexToToggle
+                                        |> Maybe.withDefault Invalid
+                            in
+                                if instructionToToggle == Invalid then
+                                    state.instructions
+                                else
+                                    let
+                                        toggledInstruction =
+                                            toggle instructionToToggle
+                                    in
+                                        Array.set indexToToggle toggledInstruction state.instructions
+
+                        registers =
+                            case instruction of
+                                CpyI val reg ->
+                                    set reg state val
+
+                                CpyR source target ->
+                                    get source state
+                                        |> set target state
+
+                                Inc reg ->
+                                    get reg state
+                                        |> (+) 1
+                                        |> set reg state
+
+                                Dec reg ->
+                                    get reg state
+                                        |> (+) -1
+                                        |> set reg state
+
+                                _ ->
+                                    state.registers
+                    in
+                        State index instructions registers
+                            |> process
 
 
 get : String -> State -> Int
@@ -161,6 +170,44 @@ toggle instruction =
 
         Invalid ->
             Invalid
+
+
+multiply : State -> Maybe State
+multiply state =
+    let
+        getInstruction i =
+            state.instructions
+                |> Array.get (state.index + i)
+                |> Maybe.withDefault Invalid
+
+        possibleMultiplication =
+            List.map getInstruction [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+    in
+        case possibleMultiplication of
+            [ CpyR ra rd, CpyI 0 ra2, CpyR rb rc, Inc ra3, Dec rc2, JnzRI rc3 -2, Dec rd2, JnzRI rd3 -5 ] ->
+                if ra == ra2 && ra == ra3 && rc == rc2 && rc == rc3 && rd == rd2 && rd == rd3 then
+                    let
+                        va =
+                            get ra state
+
+                        vb =
+                            get rb state
+
+                        registers =
+                            state.registers
+                                |> Dict.insert ra (va * vb)
+                                |> Dict.insert rc 0
+                                |> Dict.insert rd 0
+
+                        index =
+                            state.index + 8
+                    in
+                        Just { state | index = index, registers = registers }
+                else
+                    Nothing
+
+            _ ->
+                Nothing
 
 
 type alias State =
