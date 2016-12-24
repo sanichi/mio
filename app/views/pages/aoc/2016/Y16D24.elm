@@ -34,7 +34,7 @@ type alias Node =
     , target : Bool
     , visited : Bool
     , distance : Int
-    , targetsSeen : Int
+    , targets : Int
     }
 
 

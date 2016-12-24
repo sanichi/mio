@@ -17273,7 +17273,7 @@ var _user$project$Y16D24$toState = function (list) {
 };
 var _user$project$Y16D24$Node = F7(
 	function (a, b, c, d, e, f, g) {
-		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targetsSeen: g};
+		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targets: g};
 	});
 var _user$project$Y16D24$toNode = F3(
 	function (x, y, v) {
