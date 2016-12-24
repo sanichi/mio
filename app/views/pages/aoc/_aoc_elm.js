@@ -17225,24 +17225,6 @@ var _user$project$Y16D23$answer = F2(
 						_user$project$Y16D23$parse(input)))));
 	});
 
-var _user$project$Y16D24$Node = F7(
-	function (a, b, c, d, e, f, g) {
-		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targetsSeen: g};
-	});
-var _user$project$Y16D24$toNode = F3(
-	function (x, y, v) {
-		var visited = _elm_lang$core$Native_Utils.eq(
-			v,
-			_elm_lang$core$Native_Utils.chr('0'));
-		var target = !(_elm_lang$core$Native_Utils.eq(
-			v,
-			_elm_lang$core$Native_Utils.chr('0')) || (_elm_lang$core$Native_Utils.eq(
-			v,
-			_elm_lang$core$Native_Utils.chr('.')) || _elm_lang$core$Native_Utils.eq(
-			v,
-			_elm_lang$core$Native_Utils.chr('#'))));
-		return A7(_user$project$Y16D24$Node, x, y, v, target, visited, 0, 0);
-	});
 var _user$project$Y16D24$State = F3(
 	function (a, b, c) {
 		return {current: a, nodes: b, targets: c};
@@ -17289,17 +17271,33 @@ var _user$project$Y16D24$toState = function (list) {
 			list));
 	return A3(_user$project$Y16D24$State, current, nodes, targets);
 };
+var _user$project$Y16D24$Node = F7(
+	function (a, b, c, d, e, f, g) {
+		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targetsSeen: g};
+	});
+var _user$project$Y16D24$toNode = F3(
+	function (x, y, v) {
+		var visited = _elm_lang$core$Native_Utils.eq(
+			v,
+			_elm_lang$core$Native_Utils.chr('0'));
+		var target = (_elm_lang$core$Native_Utils.cmp(
+			v,
+			_elm_lang$core$Native_Utils.chr('1')) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			v,
+			_elm_lang$core$Native_Utils.chr('9')) < 1);
+		return A7(_user$project$Y16D24$Node, x, y, v, target, visited, 0, 0);
+	});
+var _user$project$Y16D24$parseRow = F2(
+	function (y, chars) {
+		return A2(
+			_elm_lang$core$List$indexedMap,
+			F2(
+				function (x, v) {
+					return A3(_user$project$Y16D24$toNode, x, y, v);
+				}),
+			chars);
+	});
 var _user$project$Y16D24$parse = function (input) {
-	var parseRow = F2(
-		function (y, chars) {
-			return A2(
-				_elm_lang$core$List$indexedMap,
-				F2(
-					function (x, v) {
-						return A3(_user$project$Y16D24$toNode, x, y, v);
-					}),
-				chars);
-		});
 	return _user$project$Y16D24$toState(
 		A2(
 			_elm_lang$core$List$filter,
@@ -17311,7 +17309,7 @@ var _user$project$Y16D24$parse = function (input) {
 			_elm_lang$core$List$concat(
 				A2(
 					_elm_lang$core$List$indexedMap,
-					parseRow,
+					_user$project$Y16D24$parseRow,
 					A2(
 						_elm_lang$core$List$map,
 						_elm_lang$core$String$toList,

@@ -20,6 +20,13 @@ answer part input =
             |> toString
 
 
+type alias State =
+    { current : Location
+    , nodes : Dict Location Node
+    , targets : Int
+    }
+
+
 type alias Node =
     { x : Int
     , y : Int
@@ -35,34 +42,28 @@ type alias Location =
     ( Int, Int )
 
 
-type alias State =
-    { current : Location
-    , nodes : Dict Location Node
-    , targets : Int
-    }
-
-
 parse : String -> State
 parse input =
-    let
-        parseRow y chars =
-            List.indexedMap (\x v -> toNode x y v) chars
-    in
-        input
-            |> Regex.find Regex.All (Regex.regex "[#.0-9]+")
-            |> List.map .match
-            |> List.map String.toList
-            |> List.indexedMap parseRow
-            |> List.concat
-            |> List.filter (\n -> n.v /= '#')
-            |> toState
+    input
+        |> Regex.find Regex.All (Regex.regex "[#.0-9]+")
+        |> List.map .match
+        |> List.map String.toList
+        |> List.indexedMap parseRow
+        |> List.concat
+        |> List.filter (\n -> n.v /= '#')
+        |> toState
+
+
+parseRow : Int -> List Char -> List Node
+parseRow y chars =
+    List.indexedMap (\x v -> toNode x y v) chars
 
 
 toNode : Int -> Int -> Char -> Node
 toNode x y v =
     let
         target =
-            v == '0' || v == '.' || v == '#' |> not
+            v >= '1' && v <= '9'
 
         visited =
             v == '0'
