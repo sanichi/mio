@@ -17225,9 +17225,120 @@ var _user$project$Y16D23$answer = F2(
 						_user$project$Y16D23$parse(input)))));
 	});
 
+var _user$project$Y16D24$Node = F7(
+	function (a, b, c, d, e, f, g) {
+		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targetsSeen: g};
+	});
+var _user$project$Y16D24$toNode = F3(
+	function (x, y, v) {
+		var visited = _elm_lang$core$Native_Utils.eq(
+			v,
+			_elm_lang$core$Native_Utils.chr('0'));
+		var target = !(_elm_lang$core$Native_Utils.eq(
+			v,
+			_elm_lang$core$Native_Utils.chr('0')) || (_elm_lang$core$Native_Utils.eq(
+			v,
+			_elm_lang$core$Native_Utils.chr('.')) || _elm_lang$core$Native_Utils.eq(
+			v,
+			_elm_lang$core$Native_Utils.chr('#'))));
+		return A7(_user$project$Y16D24$Node, x, y, v, target, visited, 0, 0);
+	});
+var _user$project$Y16D24$State = F3(
+	function (a, b, c) {
+		return {current: a, nodes: b, targets: c};
+	});
+var _user$project$Y16D24$toState = function (list) {
+	var targets = _elm_lang$core$List$length(
+		A2(
+			_elm_lang$core$List$filter,
+			function (n) {
+				return (!_elm_lang$core$Native_Utils.eq(
+					n.v,
+					_elm_lang$core$Native_Utils.chr('0'))) && (!_elm_lang$core$Native_Utils.eq(
+					n.v,
+					_elm_lang$core$Native_Utils.chr('.')));
+			},
+			list));
+	var current = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{ctor: '_Tuple2', _0: 1, _1: 1},
+		_elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$map,
+				function (n) {
+					return {ctor: '_Tuple2', _0: n.x, _1: n.y};
+				},
+				A2(
+					_elm_lang$core$List$filter,
+					function (n) {
+						return _elm_lang$core$Native_Utils.eq(
+							n.v,
+							_elm_lang$core$Native_Utils.chr('0'));
+					},
+					list))));
+	var nodes = _elm_lang$core$Dict$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			function (n) {
+				return {
+					ctor: '_Tuple2',
+					_0: {ctor: '_Tuple2', _0: n.x, _1: n.y},
+					_1: n
+				};
+			},
+			list));
+	return A3(_user$project$Y16D24$State, current, nodes, targets);
+};
+var _user$project$Y16D24$parse = function (input) {
+	var parseRow = F2(
+		function (y, chars) {
+			return A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (x, v) {
+						return A3(_user$project$Y16D24$toNode, x, y, v);
+					}),
+				chars);
+		});
+	return _user$project$Y16D24$toState(
+		A2(
+			_elm_lang$core$List$filter,
+			function (n) {
+				return !_elm_lang$core$Native_Utils.eq(
+					n.v,
+					_elm_lang$core$Native_Utils.chr('#'));
+			},
+			_elm_lang$core$List$concat(
+				A2(
+					_elm_lang$core$List$indexedMap,
+					parseRow,
+					A2(
+						_elm_lang$core$List$map,
+						_elm_lang$core$String$toList,
+						A2(
+							_elm_lang$core$List$map,
+							function (_) {
+								return _.match;
+							},
+							A3(
+								_elm_lang$core$Regex$find,
+								_elm_lang$core$Regex$All,
+								_elm_lang$core$Regex$regex('[#.0-9]+'),
+								input)))))));
+};
 var _user$project$Y16D24$answer = F2(
 	function (part, input) {
-		return _elm_lang$core$Native_Utils.eq(part, 1) ? 'TODO' : 'TODO';
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			function (_) {
+				return _.targets;
+			}(
+				_user$project$Y16D24$parse(input))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$head(
+				_elm_lang$core$Dict$toList(
+					function (_) {
+						return _.nodes;
+					}(
+						_user$project$Y16D24$parse(input)))));
 	});
 
 var _user$project$Y16D25$answer = F2(
@@ -17860,7 +17971,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 23;
+var _user$project$Main$defaultDay = 24;
 var _user$project$Main$defaultYear = 2016;
 var _user$project$Main$initModel = {
 	years: {
@@ -17873,7 +17984,7 @@ var _user$project$Main$initModel = {
 			ctor: '::',
 			_0: {
 				year: 2016,
-				days: A2(_elm_lang$core$List$range, 1, 23)
+				days: A2(_elm_lang$core$List$range, 1, 24)
 			},
 			_1: {ctor: '[]'}
 		}
