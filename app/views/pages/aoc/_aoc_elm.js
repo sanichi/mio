@@ -17225,118 +17225,212 @@ var _user$project$Y16D23$answer = F2(
 						_user$project$Y16D23$parse(input)))));
 	});
 
+var _user$project$Y16D24$toEntry = function (node) {
+	return {
+		ctor: '_Tuple2',
+		_0: {ctor: '_Tuple2', _0: node.x, _1: node.y},
+		_1: node
+	};
+};
+var _user$project$Y16D24$neighbours = F3(
+	function (x, y, nodes) {
+		var u = {ctor: '_Tuple2', _0: x, _1: y - 1};
+		var l = {ctor: '_Tuple2', _0: x - 1, _1: y};
+		var d = {ctor: '_Tuple2', _0: x, _1: y + 1};
+		var r = {ctor: '_Tuple2', _0: x + 1, _1: y};
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				function (loc) {
+					return A2(_elm_lang$core$Dict$get, loc, nodes);
+				},
+				{
+					ctor: '::',
+					_0: r,
+					_1: {
+						ctor: '::',
+						_0: d,
+						_1: {
+							ctor: '::',
+							_0: l,
+							_1: {
+								ctor: '::',
+								_0: u,
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}));
+	});
+var _user$project$Y16D24$bfs = F2(
+	function (target, state) {
+		bfs:
+		while (true) {
+			var _p0 = state.current;
+			if (_p0.ctor === 'Nothing') {
+				return 0;
+			} else {
+				var _p4 = _p0._0;
+				var update = function (node) {
+					return (_elm_lang$core$Native_Utils.eq(node.distance, 0) || (_elm_lang$core$Native_Utils.cmp(node.distance, _p4.distance + 1) > 0)) ? _elm_lang$core$Native_Utils.update(
+						node,
+						{distance: _p4.distance + 1}) : node;
+				};
+				var updatedNeighboursList = A2(
+					_elm_lang$core$List$map,
+					update,
+					A3(_user$project$Y16D24$neighbours, _p4.x, _p4.y, state.nodes));
+				var maybeTarget = _elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$filter,
+						function (n) {
+							return _elm_lang$core$Native_Utils.eq(n.v, target);
+						},
+						updatedNeighboursList));
+				var _p1 = maybeTarget;
+				if (_p1.ctor === 'Just') {
+					return _p1._0.distance;
+				} else {
+					var newUpdatedNodes = _elm_lang$core$Dict$fromList(
+						A2(_elm_lang$core$List$map, _user$project$Y16D24$toEntry, updatedNeighboursList));
+					var tmpNodes = A2(_elm_lang$core$Dict$union, newUpdatedNodes, state.nodes);
+					var newCurrent = _elm_lang$core$List$head(
+						A2(
+							_elm_lang$core$List$map,
+							_elm_lang$core$Tuple$second,
+							A2(
+								_elm_lang$core$List$sortBy,
+								_elm_lang$core$Tuple$first,
+								A2(
+									_elm_lang$core$List$map,
+									function (n) {
+										return {ctor: '_Tuple2', _0: n.distance, _1: n};
+									},
+									A2(
+										_elm_lang$core$List$filter,
+										function (n) {
+											return _elm_lang$core$Native_Utils.cmp(n.distance, 0) > 0;
+										},
+										_elm_lang$core$Dict$values(tmpNodes))))));
+					var newNodes = function () {
+						var _p2 = newCurrent;
+						if (_p2.ctor === 'Nothing') {
+							return tmpNodes;
+						} else {
+							var _p3 = _p2._0;
+							return A2(
+								_elm_lang$core$Dict$remove,
+								{ctor: '_Tuple2', _0: _p3.x, _1: _p3.y},
+								tmpNodes);
+						}
+					}();
+					var newState = _elm_lang$core$Native_Utils.update(
+						state,
+						{current: newCurrent, nodes: newNodes});
+					var _v3 = target,
+						_v4 = newState;
+					target = _v3;
+					state = _v4;
+					continue bfs;
+				}
+			}
+		}
+	});
 var _user$project$Y16D24$State = F3(
 	function (a, b, c) {
 		return {current: a, nodes: b, targets: c};
 	});
-var _user$project$Y16D24$toState = function (list) {
-	var targets = _elm_lang$core$List$length(
-		A2(
-			_elm_lang$core$List$filter,
-			function (n) {
-				return (!_elm_lang$core$Native_Utils.eq(
-					n.v,
-					_elm_lang$core$Native_Utils.chr('0'))) && (!_elm_lang$core$Native_Utils.eq(
-					n.v,
-					_elm_lang$core$Native_Utils.chr('.')));
-			},
-			list));
-	var current = A2(
-		_elm_lang$core$Maybe$withDefault,
-		{ctor: '_Tuple2', _0: 1, _1: 1},
-		_elm_lang$core$List$head(
+var _user$project$Y16D24$Node = F4(
+	function (a, b, c, d) {
+		return {x: a, y: b, v: c, distance: d};
+	});
+var _user$project$Y16D24$parse = function (input) {
+	var parseYthRow = F2(
+		function (y, row) {
+			return A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (x, v) {
+						return A4(_user$project$Y16D24$Node, x, y, v, 0);
+					}),
+				row);
+		});
+	var nodeList = A2(
+		_elm_lang$core$List$filter,
+		function (n) {
+			return !_elm_lang$core$Native_Utils.eq(
+				n.v,
+				_elm_lang$core$Native_Utils.chr('#'));
+		},
+		_elm_lang$core$List$concat(
 			A2(
-				_elm_lang$core$List$map,
-				function (n) {
-					return {ctor: '_Tuple2', _0: n.x, _1: n.y};
-				},
+				_elm_lang$core$List$indexedMap,
+				parseYthRow,
 				A2(
-					_elm_lang$core$List$filter,
-					function (n) {
-						return _elm_lang$core$Native_Utils.eq(
-							n.v,
-							_elm_lang$core$Native_Utils.chr('0'));
-					},
-					list))));
+					_elm_lang$core$List$map,
+					_elm_lang$core$String$toList,
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$All,
+							_elm_lang$core$Regex$regex('[#.0-9]+'),
+							input))))));
 	var nodes = _elm_lang$core$Dict$fromList(
 		A2(
 			_elm_lang$core$List$map,
-			function (n) {
-				return {
-					ctor: '_Tuple2',
-					_0: {ctor: '_Tuple2', _0: n.x, _1: n.y},
-					_1: n
-				};
-			},
-			list));
-	return A3(_user$project$Y16D24$State, current, nodes, targets);
-};
-var _user$project$Y16D24$Node = F7(
-	function (a, b, c, d, e, f, g) {
-		return {x: a, y: b, v: c, target: d, visited: e, distance: f, targets: g};
-	});
-var _user$project$Y16D24$toNode = F3(
-	function (x, y, v) {
-		var visited = _elm_lang$core$Native_Utils.eq(
-			v,
-			_elm_lang$core$Native_Utils.chr('0'));
-		var target = (_elm_lang$core$Native_Utils.cmp(
-			v,
-			_elm_lang$core$Native_Utils.chr('1')) > -1) && (_elm_lang$core$Native_Utils.cmp(
-			v,
-			_elm_lang$core$Native_Utils.chr('9')) < 1);
-		return A7(_user$project$Y16D24$Node, x, y, v, target, visited, 0, 0);
-	});
-var _user$project$Y16D24$parseRow = F2(
-	function (y, chars) {
-		return A2(
-			_elm_lang$core$List$indexedMap,
-			F2(
-				function (x, v) {
-					return A3(_user$project$Y16D24$toNode, x, y, v);
-				}),
-			chars);
-	});
-var _user$project$Y16D24$parse = function (input) {
-	return _user$project$Y16D24$toState(
+			_user$project$Y16D24$toEntry,
+			A2(
+				_elm_lang$core$List$filter,
+				function (n) {
+					return !_elm_lang$core$Native_Utils.eq(
+						n.v,
+						_elm_lang$core$Native_Utils.chr('0'));
+				},
+				nodeList)));
+	var current = _elm_lang$core$List$head(
 		A2(
 			_elm_lang$core$List$filter,
 			function (n) {
-				return !_elm_lang$core$Native_Utils.eq(
+				return _elm_lang$core$Native_Utils.eq(
 					n.v,
-					_elm_lang$core$Native_Utils.chr('#'));
+					_elm_lang$core$Native_Utils.chr('0'));
 			},
-			_elm_lang$core$List$concat(
-				A2(
-					_elm_lang$core$List$indexedMap,
-					_user$project$Y16D24$parseRow,
-					A2(
-						_elm_lang$core$List$map,
-						_elm_lang$core$String$toList,
-						A2(
-							_elm_lang$core$List$map,
-							function (_) {
-								return _.match;
-							},
-							A3(
-								_elm_lang$core$Regex$find,
-								_elm_lang$core$Regex$All,
-								_elm_lang$core$Regex$regex('[#.0-9]+'),
-								input)))))));
+			nodeList));
+	var targets = _elm_lang$core$List$sort(
+		A2(
+			_elm_lang$core$List$filter,
+			function (v) {
+				return (_elm_lang$core$Native_Utils.cmp(
+					v,
+					_elm_lang$core$Native_Utils.chr('0')) > 0) && (_elm_lang$core$Native_Utils.cmp(
+					v,
+					_elm_lang$core$Native_Utils.chr('9')) < 1);
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.v;
+				},
+				nodeList)));
+	return A3(_user$project$Y16D24$State, current, nodes, targets);
 };
 var _user$project$Y16D24$answer = F2(
 	function (part, input) {
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			A2(
+				_user$project$Y16D24$bfs,
+				_elm_lang$core$Native_Utils.chr('3'),
+				_user$project$Y16D24$parse(input))) : _elm_lang$core$Basics$toString(
 			function (_) {
 				return _.targets;
 			}(
-				_user$project$Y16D24$parse(input))) : _elm_lang$core$Basics$toString(
-			_elm_lang$core$List$head(
-				_elm_lang$core$Dict$toList(
-					function (_) {
-						return _.nodes;
-					}(
-						_user$project$Y16D24$parse(input)))));
+				_user$project$Y16D24$parse(input)));
 	});
 
 var _user$project$Y16D25$answer = F2(
