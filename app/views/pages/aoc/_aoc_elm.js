@@ -17225,6 +17225,10 @@ var _user$project$Y16D23$answer = F2(
 						_user$project$Y16D23$parse(input)))));
 	});
 
+var _user$project$Y16D24$swap = function (_p0) {
+	var _p1 = _p0;
+	return {ctor: '_Tuple2', _0: _p1._1, _1: _p1._0};
+};
 var _user$project$Y16D24$toEntry = function (node) {
 	return {
 		ctor: '_Tuple2',
@@ -17264,24 +17268,24 @@ var _user$project$Y16D24$neighbours = F3(
 					}
 				}));
 	});
-var _user$project$Y16D24$bfs = F2(
+var _user$project$Y16D24$cost_ = F2(
 	function (target, state) {
-		bfs:
+		cost_:
 		while (true) {
-			var _p0 = state.current;
-			if (_p0.ctor === 'Nothing') {
+			var _p2 = state.current;
+			if (_p2.ctor === 'Nothing') {
 				return 0;
 			} else {
-				var _p4 = _p0._0;
+				var _p6 = _p2._0;
 				var update = function (node) {
-					return (_elm_lang$core$Native_Utils.eq(node.distance, 0) || (_elm_lang$core$Native_Utils.cmp(node.distance, _p4.distance + 1) > 0)) ? _elm_lang$core$Native_Utils.update(
+					return (_elm_lang$core$Native_Utils.eq(node.distance, 0) || (_elm_lang$core$Native_Utils.cmp(node.distance, _p6.distance + 1) > 0)) ? _elm_lang$core$Native_Utils.update(
 						node,
-						{distance: _p4.distance + 1}) : node;
+						{distance: _p6.distance + 1}) : node;
 				};
 				var updatedNeighboursList = A2(
 					_elm_lang$core$List$map,
 					update,
-					A3(_user$project$Y16D24$neighbours, _p4.x, _p4.y, state.nodes));
+					A3(_user$project$Y16D24$neighbours, _p6.x, _p6.y, state.nodes));
 				var maybeTarget = _elm_lang$core$List$head(
 					A2(
 						_elm_lang$core$List$filter,
@@ -17289,9 +17293,9 @@ var _user$project$Y16D24$bfs = F2(
 							return _elm_lang$core$Native_Utils.eq(n.v, target);
 						},
 						updatedNeighboursList));
-				var _p1 = maybeTarget;
-				if (_p1.ctor === 'Just') {
-					return _p1._0.distance;
+				var _p3 = maybeTarget;
+				if (_p3.ctor === 'Just') {
+					return _p3._0.distance;
 				} else {
 					var newUpdatedNodes = _elm_lang$core$Dict$fromList(
 						A2(_elm_lang$core$List$map, _user$project$Y16D24$toEntry, updatedNeighboursList));
@@ -17315,25 +17319,148 @@ var _user$project$Y16D24$bfs = F2(
 										},
 										_elm_lang$core$Dict$values(tmpNodes))))));
 					var newNodes = function () {
-						var _p2 = newCurrent;
-						if (_p2.ctor === 'Nothing') {
+						var _p4 = newCurrent;
+						if (_p4.ctor === 'Nothing') {
 							return tmpNodes;
 						} else {
-							var _p3 = _p2._0;
+							var _p5 = _p4._0;
 							return A2(
 								_elm_lang$core$Dict$remove,
-								{ctor: '_Tuple2', _0: _p3.x, _1: _p3.y},
+								{ctor: '_Tuple2', _0: _p5.x, _1: _p5.y},
 								tmpNodes);
 						}
 					}();
 					var newState = _elm_lang$core$Native_Utils.update(
 						state,
 						{current: newCurrent, nodes: newNodes});
-					var _v3 = target,
-						_v4 = newState;
-					target = _v3;
-					state = _v4;
-					continue bfs;
+					var _v4 = target,
+						_v5 = newState;
+					target = _v4;
+					state = _v5;
+					continue cost_;
+				}
+			}
+		}
+	});
+var _user$project$Y16D24$cost = F2(
+	function (_p7, state) {
+		var _p8 = _p7;
+		var _p12 = _p8._1;
+		var _p11 = _p8._0;
+		if (_elm_lang$core$Native_Utils.eq(_p11, _p12)) {
+			return 0;
+		} else {
+			var newCurrent = _elm_lang$core$List$head(
+				A2(
+					_elm_lang$core$List$filter,
+					function (n) {
+						return _elm_lang$core$Native_Utils.eq(n.v, _p11);
+					},
+					_elm_lang$core$Dict$values(
+						function (_) {
+							return _.nodes;
+						}(state))));
+			var newNodes = function () {
+				var _p9 = newCurrent;
+				if (_p9.ctor === 'Just') {
+					var _p10 = _p9._0;
+					return A2(
+						_elm_lang$core$Dict$remove,
+						{ctor: '_Tuple2', _0: _p10.x, _1: _p10.y},
+						state.nodes);
+				} else {
+					return state.nodes;
+				}
+			}();
+			var newState = _elm_lang$core$Native_Utils.update(
+				state,
+				{current: newCurrent, nodes: newNodes});
+			return A2(_user$project$Y16D24$cost_, _p12, newState);
+		}
+	});
+var _user$project$Y16D24$getDistances_ = F3(
+	function (pairs, state, distances) {
+		getDistances_:
+		while (true) {
+			var _p13 = pairs;
+			if (_p13.ctor === '[]') {
+				return distances;
+			} else {
+				var _p14 = _p13._0;
+				var newCost = A2(_user$project$Y16D24$cost, _p14, state);
+				var newDistances = A3(
+					_elm_lang$core$Dict$insert,
+					_user$project$Y16D24$swap(_p14),
+					newCost,
+					A3(_elm_lang$core$Dict$insert, _p14, newCost, distances));
+				var _v9 = _p13._1,
+					_v10 = state,
+					_v11 = newDistances;
+				pairs = _v9;
+				state = _v10;
+				distances = _v11;
+				continue getDistances_;
+			}
+		}
+	});
+var _user$project$Y16D24$getDistances = function (state) {
+	var toPair = function (list) {
+		var _p15 = list;
+		if (((_p15.ctor === '::') && (_p15._1.ctor === '::')) && (_p15._1._1.ctor === '[]')) {
+			return {ctor: '_Tuple2', _0: _p15._0, _1: _p15._1._0};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.chr('_'),
+				_1: _elm_lang$core$Native_Utils.chr('_')
+			};
+		}
+	};
+	var pairs = A2(
+		_elm_lang$core$List$map,
+		toPair,
+		A2(
+			_user$project$Util$combinations,
+			2,
+			{
+				ctor: '::',
+				_0: _elm_lang$core$Native_Utils.chr('0'),
+				_1: state.targets
+			}));
+	return A3(_user$project$Y16D24$getDistances_, pairs, state, _elm_lang$core$Dict$empty);
+};
+var _user$project$Y16D24$pathCost = F3(
+	function (costs, cost, path) {
+		pathCost:
+		while (true) {
+			var _p16 = path;
+			if (_p16.ctor === '[]') {
+				return cost;
+			} else {
+				if (_p16._1.ctor === '[]') {
+					return cost;
+				} else {
+					var _p17 = _p16._1._0;
+					var newCost = A2(
+						F2(
+							function (x, y) {
+								return x + y;
+							}),
+						cost,
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							0,
+							A2(
+								_elm_lang$core$Dict$get,
+								{ctor: '_Tuple2', _0: _p16._0, _1: _p17},
+								costs)));
+					var _v14 = costs,
+						_v15 = newCost,
+						_v16 = {ctor: '::', _0: _p17, _1: _p16._1._1};
+					costs = _v14;
+					cost = _v15;
+					path = _v16;
+					continue pathCost;
 				}
 			}
 		}
@@ -17347,6 +17474,7 @@ var _user$project$Y16D24$Node = F4(
 		return {x: a, y: b, v: c, distance: d};
 	});
 var _user$project$Y16D24$parse = function (input) {
+	var current = _elm_lang$core$Maybe$Nothing;
 	var parseYthRow = F2(
 		function (y, row) {
 			return A2(
@@ -17382,26 +17510,7 @@ var _user$project$Y16D24$parse = function (input) {
 							_elm_lang$core$Regex$regex('[#.0-9]+'),
 							input))))));
 	var nodes = _elm_lang$core$Dict$fromList(
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$Y16D24$toEntry,
-			A2(
-				_elm_lang$core$List$filter,
-				function (n) {
-					return !_elm_lang$core$Native_Utils.eq(
-						n.v,
-						_elm_lang$core$Native_Utils.chr('0'));
-				},
-				nodeList)));
-	var current = _elm_lang$core$List$head(
-		A2(
-			_elm_lang$core$List$filter,
-			function (n) {
-				return _elm_lang$core$Native_Utils.eq(
-					n.v,
-					_elm_lang$core$Native_Utils.chr('0'));
-			},
-			nodeList));
+		A2(_elm_lang$core$List$map, _user$project$Y16D24$toEntry, nodeList));
 	var targets = _elm_lang$core$List$sort(
 		A2(
 			_elm_lang$core$List$filter,
@@ -17422,15 +17531,45 @@ var _user$project$Y16D24$parse = function (input) {
 };
 var _user$project$Y16D24$answer = F2(
 	function (part, input) {
+		var state = _user$project$Y16D24$parse(input);
+		var costs = _user$project$Y16D24$getDistances(state);
+		var paths = A2(
+			_elm_lang$core$List$map,
+			F2(
+				function (x, y) {
+					return {ctor: '::', _0: x, _1: y};
+				})(
+				_elm_lang$core$Native_Utils.chr('0')),
+			_user$project$Util$permutations(state.targets));
 		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
 			A2(
-				_user$project$Y16D24$bfs,
-				_elm_lang$core$Native_Utils.chr('3'),
-				_user$project$Y16D24$parse(input))) : _elm_lang$core$Basics$toString(
-			function (_) {
-				return _.targets;
-			}(
-				_user$project$Y16D24$parse(input)));
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$minimum(
+					A2(
+						_elm_lang$core$List$map,
+						A2(_user$project$Y16D24$pathCost, costs, 0),
+						paths)))) : _elm_lang$core$Basics$toString(
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$minimum(
+					A2(
+						_elm_lang$core$List$map,
+						A2(_user$project$Y16D24$pathCost, costs, 0),
+						A2(
+							_elm_lang$core$List$map,
+							function (path) {
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									path,
+									{
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('0'),
+										_1: {ctor: '[]'}
+									});
+							},
+							paths)))));
 	});
 
 var _user$project$Y16D25$answer = F2(

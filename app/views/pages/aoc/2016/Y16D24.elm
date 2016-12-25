@@ -2,24 +2,126 @@ module Y16D24 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex
+import Util
 
 
 answer : Int -> String -> String
 answer part input =
-    if part == 1 then
-        input
-            |> parse
-            |> bfs '3'
-            |> toString
+    let
+        state =
+            parse input
+
+        costs =
+            getDistances state
+
+        paths =
+            state.targets
+                |> Util.permutations
+                |> List.map ((::) '0')
+    in
+        if part == 1 then
+            paths
+                |> List.map (pathCost costs 0)
+                |> List.minimum
+                |> Maybe.withDefault 0
+                |> toString
+        else
+            paths
+                |> List.map (\path -> path ++ [ '0' ])
+                |> List.map (pathCost costs 0)
+                |> List.minimum
+                |> Maybe.withDefault 0
+                |> toString
+
+
+pathCost : Costs -> Int -> Path -> Int
+pathCost costs cost path =
+    case path of
+        [] ->
+            cost
+
+        [ _ ] ->
+            cost
+
+        v1 :: v2 :: rest ->
+            let
+                newCost =
+                    costs
+                        |> Dict.get ( v1, v2 )
+                        |> Maybe.withDefault 0
+                        |> (+) cost
+            in
+                pathCost costs newCost (v2 :: rest)
+
+
+getDistances : State -> Costs
+getDistances state =
+    let
+        toPair list =
+            case list of
+                [ v1, v2 ] ->
+                    ( v1, v2 )
+
+                _ ->
+                    ( '_', '_' )
+
+        pairs =
+            '0'
+                :: state.targets
+                |> Util.combinations 2
+                |> List.map toPair
+    in
+        getDistances_ pairs state Dict.empty
+
+
+getDistances_ : List Pair -> State -> Costs -> Costs
+getDistances_ pairs state distances =
+    case pairs of
+        [] ->
+            distances
+
+        pair :: rest ->
+            let
+                newCost =
+                    cost pair state
+
+                newDistances =
+                    distances
+                        |> Dict.insert pair newCost
+                        |> Dict.insert (swap pair) newCost
+            in
+                getDistances_ rest state newDistances
+
+
+cost : Pair -> State -> Int
+cost ( source, target ) state =
+    if source == target then
+        0
     else
-        input
-            |> parse
-            |> .targets
-            |> toString
+        let
+            newCurrent =
+                state
+                    |> .nodes
+                    |> Dict.values
+                    |> List.filter (\n -> n.v == source)
+                    |> List.head
+
+            newNodes =
+                case newCurrent of
+                    Just node ->
+                        Dict.remove ( node.x, node.y ) state.nodes
+
+                    Nothing ->
+                        state.nodes
+
+            newState =
+                { state | current = newCurrent, nodes = newNodes }
+        in
+            cost_ target newState
 
 
-bfs : Char -> State -> Int
-bfs target state =
+cost_ : Char -> State -> Int
+cost_ target state =
     case state.current of
         Nothing ->
             0
@@ -76,7 +178,7 @@ bfs target state =
                             newState =
                                 { state | current = newCurrent, nodes = newNodes }
                         in
-                            bfs target newState
+                            cost_ target newState
 
 
 neighbours : Int -> Int -> Dict Location Node -> List Node
@@ -118,6 +220,18 @@ type alias Location =
     ( Int, Int )
 
 
+type alias Pair =
+    ( Char, Char )
+
+
+type alias Costs =
+    Dict Pair Int
+
+
+type alias Path =
+    List Char
+
+
 parse : String -> State
 parse input =
     let
@@ -135,14 +249,11 @@ parse input =
 
         nodes =
             nodeList
-                |> List.filter (\n -> n.v /= '0')
                 |> List.map toEntry
                 |> Dict.fromList
 
         current =
-            nodeList
-                |> List.filter (\n -> n.v == '0')
-                |> List.head
+            Nothing
 
         targets =
             nodeList
@@ -156,3 +267,8 @@ parse input =
 toEntry : Node -> ( Location, Node )
 toEntry node =
     ( ( node.x, node.y ), node )
+
+
+swap : Pair -> Pair
+swap ( v1, v2 ) =
+    ( v2, v1 )
