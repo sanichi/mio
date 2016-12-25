@@ -487,13 +487,13 @@ speedDescription time =
             "Won't take more than a few seconds"
 
         2 ->
-            "May take as much as a minute"
+            "Will take more like a minute"
 
         3 ->
             "You should have time to get a coffee"
 
         _ ->
-            "Will take many hours or run out of memory"
+            "May take many hours or run out of memory"
 
 
 viewHelp : Bool -> Html Msg
@@ -766,6 +766,12 @@ speed year day part =
 
             "2016-22-1" ->
                 1
+
+            "2016-24-1" ->
+                2
+
+            "2016-24-2" ->
+                2
 
             _ ->
                 0

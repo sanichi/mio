@@ -17803,6 +17803,10 @@ var _user$project$Main$speed = F3(
 				return 1;
 			case '2016-22-1':
 				return 1;
+			case '2016-24-1':
+				return 2;
+			case '2016-24-2':
+				return 2;
 			default:
 				return 0;
 		}
@@ -17960,11 +17964,11 @@ var _user$project$Main$speedDescription = function (time) {
 		case 1:
 			return 'Won\'t take more than a few seconds';
 		case 2:
-			return 'May take as much as a minute';
+			return 'Will take more like a minute';
 		case 3:
 			return 'You should have time to get a coffee';
 		default:
-			return 'Will take many hours or run out of memory';
+			return 'May take many hours or run out of memory';
 	}
 };
 var _user$project$Main$speedColour = function (time) {
