@@ -6,5 +6,5 @@
     %td{class: "text-center"}= number_with_precision(trade.pound_sold, precision: 2)
     %td{class: "text-center"}= trade.days_held
     %td{class: "text-center"}= number_to_percentage(trade.growth_rate, precision: 0)
-    %td{class: "text-center"}= number_with_precision(trade.profit, precision: 2)
+    %td{class: "text-center"}= number_with_precision(trade.profit, precision: 0)
 = render "utils/pagination_links", pager: trades, columns: 1
