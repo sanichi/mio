@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027122627) do
+ActiveRecord::Schema.define(version: 20170104180258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -288,14 +288,16 @@ ActiveRecord::Schema.define(version: 20161027122627) do
   end
 
   create_table "trades", force: :cascade do |t|
-    t.string   "stock",      limit: 60
-    t.decimal  "units",                 precision: 10, scale: 3
-    t.decimal  "buy_price",             precision: 9,  scale: 2
-    t.decimal  "sell_price",            precision: 9,  scale: 2
+    t.string   "stock",       limit: 60
+    t.decimal  "units",                  precision: 10, scale: 3
+    t.decimal  "buy_price",              precision: 9,  scale: 2
+    t.decimal  "sell_price",             precision: 9,  scale: 2
     t.date     "buy_date"
     t.date     "sell_date"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
+    t.decimal  "buy_factor",             precision: 6,  scale: 3, default: "1.0"
+    t.decimal  "sell_factor",            precision: 6,  scale: 3, default: "1.0"
   end
 
   create_table "transactions", force: :cascade do |t|

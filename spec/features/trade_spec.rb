@@ -16,8 +16,10 @@ describe Trade do
       fill_in t(:trade_units), with: data.units
       fill_in t(:trade_buy__date), with: data.buy_date
       fill_in t(:trade_buy__price), with: data.buy_price
+      fill_in t(:trade_buy__factor), with: data.buy_factor
       fill_in t(:trade_sell__date), with: data.sell_date
       fill_in t(:trade_sell__price), with: data.sell_price
+      fill_in t(:trade_sell__factor), with: data.sell_factor
       click_button t(:save)
 
       expect(page).to have_title data.stock
@@ -28,8 +30,10 @@ describe Trade do
       expect(t.stock).to eq data.stock
       expect(t.units).to eq data.units
       expect(t.buy_date).to eq data.buy_date
+      expect(t.buy_factor).to eq data.buy_factor
       expect(t.buy_price).to eq data.buy_price
       expect(t.sell_date).to eq data.sell_date
+      expect(t.sell_factor).to eq data.sell_factor
       expect(t.sell_price).to eq data.sell_price
     end
 
@@ -39,8 +43,10 @@ describe Trade do
       fill_in t(:trade_units), with: data.units
       fill_in t(:trade_buy__date), with: data.sell_date
       fill_in t(:trade_buy__price), with: data.buy_price
+      fill_in t(:trade_buy__factor), with: data.buy_factor
       fill_in t(:trade_sell__date), with: data.buy_date
       fill_in t(:trade_sell__price), with: data.sell_price
+      fill_in t(:trade_sell__factor), with: data.sell_factor
       click_button t(:save)
 
       expect(page).to have_title t(:trade_new)

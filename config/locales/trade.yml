@@ -1,6 +1,7 @@
 en:
   trade:
     buy_date: Buy Date
+    buy_factor: Buy Factor
     buy_price: Buy Price
     days_held: Days Held
     edit: Edit Trade
@@ -10,6 +11,7 @@ en:
     pounds: £
     profit: Profit
     sell_date: Sell Date
+    sell_factor: Sell Factor
     sell_price: Sell Price
     stock: Stock
     trades: Trades

@@ -15,13 +15,19 @@
           %td= @trade.buy_date
         %tr
           %th= t("trade.buy_price")
-          %td= number_with_precision(@trade.buy_price, precision: 2) + t("trade.pence")
+          %td= number_with_precision(@trade.buy_price, precision: 2)
+        %tr
+          %th= t("trade.buy_factor")
+          %td= number_with_precision(@trade.buy_factor, precision: 3)
         %tr
           %th= t("trade.sell_date")
           %td= @trade.sell_date
         %tr
           %th= t("trade.sell_price")
-          %td= number_with_precision(@trade.sell_price, precision: 2) + t("trade.pence")
+          %td= number_with_precision(@trade.sell_price, precision: 2)
+        %tr
+          %th= t("trade.sell_factor")
+          %td= number_with_precision(@trade.sell_factor, precision: 3)
         %tr
           %th= t("trade.days_held")
           %td= @trade.days_held

@@ -39,6 +39,6 @@ class TradesController < ApplicationController
   end
 
   def strong_params
-    params.require(:trade).permit(:buy_date, :buy_price, :stock, :sell_date, :sell_price, :units)
+    params.require(:trade).permit(:buy_date, :buy_factor, :buy_price, :stock, :sell_date, :sell_factor, :sell_price, :units)
   end
 end

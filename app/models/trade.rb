@@ -7,12 +7,13 @@ class Trade < ApplicationRecord
 
   validates :stock, presence: true, length: { maximum: MAX_STOCK }
   validates :buy_date, :sell_date, presence: true
+  validates :buy_factor, :sell_factor, presence: true, numericality: { greater_than: 0.0 }
   validates :units, :buy_price, :sell_price, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
   validate  :date_constraints
 
   scope :by_stock, -> { order(:stock) }
-  scope :by_profit_desc, -> { order("units * (buy_price - sell_price)") }
-  scope :by_profit_asc, -> { order("units * (sell_price - buy_price)") }
+  scope :by_profit_desc, -> { order("units * (buy_price / buy_factor - sell_price / sell_factor)") }
+  scope :by_profit_asc, -> { order("units * (sell_price / sell_factor - buy_price / buy_factor)") }
 
   def self.search(params, path, opt={})
     matches =
@@ -28,12 +29,20 @@ class Trade < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def pound_cost
+    buy_price / buy_factor
+  end
+
+  def pound_sold
+    sell_price / sell_factor
+  end
+
   def profit
-    units * (sell_price - buy_price) / 100.0
+    units * (pound_sold - pound_cost)
   end
 
   def growth_rate
-    36500.0 * (sell_price - buy_price) / (days_held * buy_price)
+    36500.0 * (pound_sold - pound_cost) / (days_held * pound_cost)
   end
 
   def days_held
