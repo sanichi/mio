@@ -3,7 +3,7 @@ class PositionsController < ApplicationController
   before_action :find_position, only: [:edit, :update, :show, :destroy]
 
   def index
-    @positions = Position.search(params, positions_path)
+    @positions = Position.search(params, positions_path, per_page: 25)
   end
 
   def new
