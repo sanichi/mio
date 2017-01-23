@@ -1,6 +1,5 @@
 set :application, "sni_mio_app"
 
-set :scm, :git
 set :repo_url, "git@bitbucket.org:sanichi/sni_mio_app.git"
 set :branch, "master"
 
