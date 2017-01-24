@@ -78,4 +78,11 @@ namespace :elm do
       compile_and_minify "magic"
     end
   end
+
+  desc "make and minify the Elm JS file for Retina"
+  task :retina do
+    Dir.chdir("app/views/pages/retina") do
+      compile_and_minify "retina"
+    end
+  end
 end

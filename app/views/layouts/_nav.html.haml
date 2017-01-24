@@ -87,7 +87,7 @@
             - if can?(:read, Expense)
               %li= link_to t("expense.expenses"), expenses_path
 
-      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("other")
@@ -103,6 +103,8 @@
               %li= link_to t("favourite.favourites"), favourites_path
             - if can?(:aoc, Page)
               %li= link_to t("pages.aoc.short"), aoc_path
+            - if can?(:retina, Page)
+              %li= link_to t("pages.retina"), retina_path
             - if can?(:magic, Page)
               %li= link_to t("pages.magic"), magic_path
             - if can?(:play, Page)

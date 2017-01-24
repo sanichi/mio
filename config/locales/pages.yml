@@ -2,6 +2,7 @@ en:
   pages:
     magic: Magic Numbers
     play: Elm Play
+    retina: Retina
     aoc:
       answers: Answers
       code: Elm code
