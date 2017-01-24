@@ -5,8 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http exposing (Error(..))
-import Json.Decode as Json exposing ((:=))
-import Task exposing (Task)
+import Json.Decode as Json
 import Messages exposing (Msg(..))
 
 
@@ -51,33 +50,29 @@ view checker =
 
 check : Cmd Msg
 check =
-    Task.perform CheckFail CheckSucceed checkTask
+    Http.send testResponse checkRequest
 
 
-checkTask : Task Http.Error ( Bool, String )
-checkTask =
-    Http.get decoder "/check.json"
+checkRequest : Http.Request ( Bool, String )
+checkRequest =
+    Http.get "/check.json" decoder
+
+
+testResponse : Result Http.Error ( Bool, String ) -> Msg
+testResponse response =
+    case response of
+        Ok rsp ->
+            CheckSucceed rsp
+
+        Err err ->
+            CheckFail err
 
 
 decoder : Json.Decoder ( Bool, String )
 decoder =
-    Json.object2 (,)
-        ("ok" := Json.bool)
-        ("message" := Json.string)
-
-
-updateHistory : String -> History -> History
-updateHistory message history =
-    let
-        update count =
-            case count of
-                Nothing ->
-                    Just 1
-
-                Just n ->
-                    Just (n + 1)
-    in
-        Dict.update message update history
+    Json.map2 (,)
+        (Json.field "ok" Json.bool)
+        (Json.field "message" Json.string)
 
 
 succeed : Model -> Bool -> String -> Model
@@ -100,17 +95,20 @@ fail checker err =
     let
         details =
             case err of
+                BadUrl str ->
+                    "(url) " ++ str
+
                 Timeout ->
                     "timeout"
 
                 NetworkError ->
                     "network"
 
-                UnexpectedPayload str ->
-                    "(payload) " ++ str
+                BadPayload str rsp ->
+                    "(payload) " ++ str ++ " (" ++ toString rsp ++ ")"
 
-                BadResponse int str ->
-                    "(bad response " ++ (toString int) ++ ") " ++ str
+                BadStatus rsp ->
+                    "(response) " ++ toString rsp
 
         nextMessage =
             "Elm request error: " ++ details
@@ -119,3 +117,17 @@ fail checker err =
             | lastMessage = nextMessage
             , history = updateHistory nextMessage checker.history
         }
+
+
+updateHistory : String -> History -> History
+updateHistory message history =
+    let
+        update count =
+            case count of
+                Nothing ->
+                    Just 1
+
+                Just n ->
+                    Just (n + 1)
+    in
+        Dict.update message update history
