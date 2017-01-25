@@ -1,26 +1,21 @@
 module Main exposing (..)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html exposing (Html)
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
 
 
--- model
+-- local modules
 
-
-type alias Model =
-    Int
-
-
-initModel : Model
-initModel =
-    1
-
+import Config
+import Messages exposing (Msg(..))
+import Retina exposing (Retina)
 
 
 -- main program
 
 
-main : Program Never Model Msg
+main : Program Never Retina Msg
 main =
     Html.program
         { init = init
@@ -31,43 +26,44 @@ main =
 
 
 init =
-    ( initModel, initTasks )
+    ( Retina.init, initTasks )
 
 
 initTasks : Cmd Msg
 initTasks =
-    Cmd.none
+    Config.getRandomVals
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Retina -> Sub Msg
 subscriptions model =
     Sub.none
-
-
-
--- messages
-
-
-type Msg
-    = NoOp
 
 
 
 -- view
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ text (toString model) ]
+view : Retina -> Html Msg
+view retina =
+    let
+        background =
+            rect [ class "background", width (toString Config.width), height (toString Config.height) ] []
+
+        cells =
+            Retina.view retina
+    in
+        svg [ id "retina", version "1.1", viewBox Config.viewBox ] (background :: cells)
 
 
 
 -- update
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> Retina -> ( Retina, Cmd Msg )
+update msg retina =
     case msg of
         NoOp ->
-            model ! []
+            retina ! []
+
+        NewValues vals ->
+            Retina.update vals retina ! []
