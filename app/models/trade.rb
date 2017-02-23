@@ -11,19 +11,25 @@ class Trade < ApplicationRecord
   validates :units, :buy_price, :sell_price, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
   validate  :date_constraints
 
-  scope :by_stock, -> { order(:stock) }
+  scope :by_stock, -> { order(:stock, :sell_date) }
   scope :by_profit_desc, -> { order("units * (buy_price / buy_factor - sell_price / sell_factor)") }
   scope :by_profit_asc, -> { order("units * (sell_price / sell_factor - buy_price / buy_factor)") }
+  scope :by_date_desc, -> { order(sell_date: :desc) }
+  scope :by_date_asc, -> { order(sell_date: :asc) }
 
   def self.search(params, path, opt={})
     matches =
     case params[:order]
       when "profit_asc"
         by_profit_asc
+      when "profit_desc"
+        by_profit_desc
+      when "date_asc"
+        by_date_asc
       when "stock"
         by_stock
       else
-        by_profit_desc
+        by_date_desc
     end
     matches = matches.where("stock ILIKE ? ", "%#{params[:stock]}%") if params[:stock].present?
     paginate(matches, params, path, opt)

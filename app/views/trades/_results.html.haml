@@ -1,6 +1,7 @@
 - trades.matches.each do |trade|
   %tr
     %td= link_to trade.stock, trade
+    %td{class: "text-center"}= trade.sell_date
     %td{class: "text-center"}= number_with_precision(trade.units, precision: 2)
     %td{class: "text-center"}= number_with_precision(trade.pound_cost, precision: 2)
     %td{class: "text-center"}= number_with_precision(trade.pound_sold, precision: 2)
