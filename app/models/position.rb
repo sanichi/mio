@@ -9,7 +9,7 @@ class Position < ApplicationRecord
   EN_PASSANT = /\A(-|[a-h][36])\z/
   MAX_NAME = 255
   MAX_OPENING_365 = 255
-  OPENING_365_URL = "http://www.365chess.com/opening.php?"
+  OPENING_365_URL = "https://www.365chess.com/opening.php?"
   SYMBOL = { "K" => "♔", "Q" => "♕", "B" => "♗", "N" => "♘", "R" => "♖" }
 
   belongs_to :opening
