@@ -1,0 +1,13 @@
+en:
+  vocab:
+    audio: Audio
+    edit: Edit Vocab
+    kana: Kana
+    kanji: Kanji
+    kanji_correct: Kanji Correct
+    kanji_incorrect: Kanji Incorrect
+    meaning: Meaning
+    meaning_correct: Meaning Correct
+    meaning_incorrect: Meaning Inorrect
+    new: New Vocab
+    vocabs: Vocabs

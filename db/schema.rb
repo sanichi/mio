@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104180258) do
+ActiveRecord::Schema.define(version: 20170417162832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -341,6 +341,19 @@ ActiveRecord::Schema.define(version: 20170104180258) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.string   "description",  limit: 20
+  end
+
+  create_table "vocabs", force: :cascade do |t|
+    t.string   "audio",             limit: 50
+    t.string   "kana",              limit: 20
+    t.string   "kanji",             limit: 20
+    t.string   "meaning",           limit: 100
+    t.integer  "kanji_correct",     limit: 2,   default: 0
+    t.integer  "kanji_incorrect",   limit: 2,   default: 0
+    t.integer  "meaning_correct",   limit: 2,   default: 0
+    t.integer  "meaning_incorrect", limit: 2,   default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
 end

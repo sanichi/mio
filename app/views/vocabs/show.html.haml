@@ -1,0 +1,35 @@
+= render "utils/title", text: @vocab.kanji, header: true
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("vocab.audio")
+          %td= render "audio", vocab: @vocab, autoplay: "true"
+        %tr
+          %th= t("vocab.kana")
+          %td= @vocab.kana
+        %tr
+          %th= t("vocab.kanji")
+          %td= @vocab.kanji
+        %tr
+          %th= t("vocab.meaning")
+          %td= @vocab.meaning
+        %tr
+          %th= t("vocab.kanji_correct")
+          %td= @vocab.kanji_correct
+        %tr
+          %th= t("vocab.kanji_incorrect")
+          %td= @vocab.kanji_incorrect
+        %tr
+          %th= t("vocab.meaning_correct")
+          %td= @vocab.meaning_correct
+        %tr
+          %th= t("vocab.meaning_incorrect")
+          %td= @vocab.meaning_incorrect
+
+.text-center
+  = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"
+  - if can?(:manage, Vocab)
+    = link_to t("edit"), edit_vocab_path(@vocab), class: "btn btn-info"

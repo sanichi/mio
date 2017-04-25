@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    = form_for vocab, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: vocab, col: "md", pad: 2 }
+        = render "utils/text_field_for", shared.merge(param: :audio, text: t("vocab.audio"), width: 7)
+        = render "utils/text_field_for", shared.merge(param: :kana, text: t("vocab.kana"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :kanji, text: t("vocab.kanji"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :meaning, text: t("vocab.meaning"), width: 7)
+        = render "utils/text_field_for", shared.merge(param: :kanji_correct, text: t("vocab.kanji_correct"), width: 1)
+        = render "utils/text_field_for", shared.merge(param: :kanji_incorrect, text: t("vocab.kanji_incorrect"), width: 1)
+        = render "utils/text_field_for", shared.merge(param: :meaning_correct, text: t("vocab.meaning_correct"), width: 1)
+        = render "utils/text_field_for", shared.merge(param: :meaning_incorrect, text: t("vocab.meaning_incorrect"), width: 1)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), vocab.new_record?? vocabs_path : vocab, class: "btn btn-default"
+          - unless vocab.new_record?
+            = link_to t("delete"), vocab, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

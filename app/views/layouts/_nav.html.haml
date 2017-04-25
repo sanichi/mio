@@ -95,6 +95,8 @@
           %ul.dropdown-menu
             - if can?(:read, Mass)
               %li= link_to t("mass.mass"), graph_masses_path
+            - if can?(:read, Vocab)
+              %li= link_to t("vocab.vocabs"), vocabs_path
             - if can?(:read, Tapa)
               %li= link_to t("tapa.tapas"), tapas_path
             - if can?(:read, Bucket)

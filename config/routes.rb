@@ -58,4 +58,5 @@ Rails.application.routes.draw do
   resources :vehicles do
     get :match, on: :collection
   end
+  resources :vocabs
 end
