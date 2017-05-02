@@ -77,7 +77,6 @@ begin
   exit(true) unless new_kanji.any?
 
   # Loop over the new kanji.
-  count = 0
   new_kanji.each do |kanji|
     # Get the API data for this vocab.
     data = wk.vocab[kanji]
@@ -90,8 +89,8 @@ begin
   end
 
   # Feedback about number created.
-  puts "new vocabs created: #{new_kanji.size} (from #{new_kanji.first} to #{kanji.last})"
+  puts "new vocabs created: #{new_kanji.size} (from #{new_kanji.first} to #{new_kanji.last})"
 rescue => e
-  # Feedback if the is an error.
+  # Feedback if there is an error.
   puts "exception: #{e.message}"
 end
