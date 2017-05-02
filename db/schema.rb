@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417162832) do
+ActiveRecord::Schema.define(version: 20170502144711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -354,6 +354,9 @@ ActiveRecord::Schema.define(version: 20170417162832) do
     t.integer  "meaning_incorrect", limit: 2,   default: 0
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.integer  "level",             limit: 2
+    t.index ["kana"], name: "index_vocabs_on_kana", using: :btree
+    t.index ["meaning"], name: "index_vocabs_on_meaning", using: :btree
   end
 
 end

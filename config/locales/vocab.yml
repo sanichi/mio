@@ -6,6 +6,7 @@ en:
     kanji: Kanji
     kanji_correct: Kanji Correct
     kanji_incorrect: Kanji Incorrect
+    level: Level
     meaning: Meaning
     meaning_correct: Meaning Correct
     meaning_incorrect: Meaning Inorrect

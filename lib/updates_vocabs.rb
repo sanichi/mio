@@ -2,8 +2,9 @@ require 'net/https'
 require 'uri'
 require 'mechanize'
 
+# Helper class.
 class WaniKani
-  DELAY = 1.0
+  DELAY = 5.0
 
   attr_reader :api, :username, :password, :vocab
 
@@ -25,14 +26,12 @@ class WaniKani
     data = ActiveSupport::JSON.decode(response.body)
     raise "vocab data not a hash" unless data&.is_a?(Hash)
     data = data["requested_information"]
-    raise "vocab data has no 'requested_information' hash" unless data&.is_a?(Hash) || data&.is_a?(Array)
-    if data.is_a?(Hash)
-      data = data["general"]
-      raise "'requested_information' hash has no 'general' array" unless data&.is_a?(Array)
-    end
+    raise "vocab data has no 'requested_information' hash" unless data&.is_a?(Hash)
+    data = data["general"]
+    raise "'requested_information' hash has no 'general' array" unless data&.is_a?(Array)
     raise "array does not consist entirely of hashes with 'character' entries" unless data.all?{ |v| v.is_a?(Hash) && v.has_key?("character") }
-    @vocab = data
-    @vocab.collect { |v| v["character"] }
+    @vocab = data.each_with_object({}) { |v, h| h[v["character"]] = v }
+    @vocab.keys
   end
 
   def agent
@@ -51,13 +50,14 @@ class WaniKani
   def audio(kanji)
     sleep(DELAY)
     page = agent.get("/vocabulary/#{kanji}")
-    src = page.search("//audio/source").map { |s| s["src"] }
+    src = page.search("//audio/source").map { |s| s["src"]&.sub(/\A.*\//, "") }
     raise "no audio sources found for '#{janji}'" unless src.any?
     mp3 = src.select { |s| s =~ /\.mp3\z/ }
     mp3.any?? mp3.first : src.first
   end
 end
 
+# Main program.
 begin
   # Give log messages a bit of context.
   puts Date.today
@@ -73,9 +73,25 @@ begin
 
   # Get a list of vocab we don't have yet.
   new_kanji = wk_kanji - db_kanji
-  puts "new vocabulary count: #{new_kanji.size}"
+  puts "new vocabulary to retreive: #{new_kanji.size}"
+  exit(true) unless new_kanji.any?
 
-  puts wk.audio(new_kanji[0])
+  # Loop over the new kanji.
+  count = 0
+  new_kanji.each do |kanji|
+    # Get the API data for this vocab.
+    data = wk.vocab[kanji]
+
+    # Scrape the audio data (which isn't returned by the API) from the website for this vocab.
+    audio = wk.audio(kanji)
+
+    # Store all the new data in the DB.
+    Vocab.create!(audio: audio, kanji: kanji, kana: data["kana"], level: data["level"], meaning: data["meaning"])
+  end
+
+  # Feedback about number created.
+  puts "new vocabs created: #{new_kanji.size} (from #{new_kanji.first} to #{kanji.last})"
 rescue => e
+  # Feedback if the is an error.
   puts "exception: #{e.message}"
 end

@@ -3,5 +3,6 @@
     %td= link_to vocab.kanji, vocab
     %td= vocab.kana
     %td= vocab.meaning
+    %td.text-center= vocab.level
     %td.text-center= render "audio", vocab: vocab
 = render "utils/pagination_links", pager: vocabs, columns: 4
