@@ -3,7 +3,7 @@ class VocabsController < ApplicationController
   before_action :find_vocab, only: [:destroy, :edit, :show, :update]
 
   def index
-    @vocabs = Vocab.search(params, vocabs_path)
+    @vocabs = Vocab.search(params, vocabs_path, remote: true)
   end
 
   def new

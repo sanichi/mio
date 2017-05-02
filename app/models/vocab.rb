@@ -1,4 +1,5 @@
 class Vocab < ApplicationRecord
+  include Constrainable
   include Pageable
 
   MAX_AUDIO = 50
@@ -24,6 +25,9 @@ class Vocab < ApplicationRecord
     when "meaning" then by_meaning
     when "level"   then by_level
     else                by_kana
+    end
+    if sql = cross_constraint(params[:q], cols: %w{kanji kana meaning})
+      matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)
   end
