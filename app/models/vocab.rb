@@ -17,10 +17,12 @@ class Vocab < ApplicationRecord
 
   scope :by_kana,    -> { order(:kana, :meaning) }
   scope :by_meaning, -> { order(:meaning, :kana) }
+  scope :by_level,   -> { order(:level, :kana) }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
     when "meaning" then by_meaning
+    when "level"   then by_level
     else                by_kana
     end
     paginate(matches, params, path, opt)
