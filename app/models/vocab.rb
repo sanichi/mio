@@ -16,9 +16,9 @@ class Vocab < ApplicationRecord
   validates :meaning, presence: true, length: { maximum: MAX_MEANING }
   validates :kanji_correct, :kanji_incorrect, :meaning_correct, :meaning_incorrect, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
-  scope :by_kana,    -> { order(:kana, :meaning) }
-  scope :by_meaning, -> { order(:meaning, :kana) }
-  scope :by_level,   -> { order(:level, :kana) }
+  scope :by_kana,    -> { order('kana COLLATE "C"', :meaning) }
+  scope :by_meaning, -> { order(:meaning, 'kana COLLATE "C"') }
+  scope :by_level,   -> { order(:level, 'kana COLLATE "C"') }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
