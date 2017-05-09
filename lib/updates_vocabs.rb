@@ -10,7 +10,7 @@ class WaniKani
 
   def initialize(credentials)
     raise "invalid WaniKani credentials" unless credentials.is_a?(Hash)
-    @api, @username, @password = %w/api username password/.map { |k| credentials[k] }
+    @api, @username, @password = %i/api username password/.map { |k| credentials[k] }
     raise "invalid WaniKani API key" unless @api.is_a?(String) && @api.length == 32
     raise "invalid WaniKani username" unless @username.is_a?(String) && @username.present?
     raise "invalid WaniKani password" unless @password.is_a?(String) && @password.present?
