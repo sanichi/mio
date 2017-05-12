@@ -16,11 +16,12 @@ Bundler.require(*Rails.groups)
 
 module SniMioApp
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    # This causes problems for me - see also initializers/new_framework_defaults.rb (TODO).
+    # config.load_defaults 5.1
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-
-    # Include /lib in the autoload path.
-    # config.autoload_paths << "#{Rails.root}/lib"
   end
 end
