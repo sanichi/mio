@@ -9,7 +9,7 @@
           %td= @test.level
         %tr
           %th= t("vocab.test.category")
-          %td= @test.category
+          %td= t("vocab.test.#{@test.category}")
         %tr
           %th= t("vocab.test.complete")
           %td= @test.complete
