@@ -51,7 +51,7 @@ describe Vocab do
 
       expect(page).to have_title t(:vocab_new)
       expect(Vocab.count).to eq 0
-      expect(page).to have_css(error, text: "blank")
+      expect(page).to have_css(error, text: "invalid")
     end
   end
 end
