@@ -57,5 +57,6 @@ Rails.application.routes.draw do
   resources :vehicles do
     get :match, on: :collection
   end
+  resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
   resources :vocabs
 end

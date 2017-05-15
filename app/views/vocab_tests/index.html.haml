@@ -1,0 +1,26 @@
+= render "utils/title", key: "vocab.test.tests"
+
+.text-center
+  = form_tag vocab_tests_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, vocab_test_search_order_menu(params[:order]), class: "form-control auto-submit"
+    .form-group
+      = label_tag :category, t("vocab.test.category"), class: "sr-only"
+      = select_tag :category, vocab_test_category_menu(params[:category], search: true), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-2.text-center= t("vocab.test.complete")
+          %th.col-xs-2.text-center= t("vocab.level")
+          %th.col-xs-8= t("vocab.test.category")
+      %tbody{id: "results"}
+        = render "results", tests: @tests
+
+.text-center
+  - if can?(:create, VocabTest)
+    = link_to t("vocab.test.new"), new_vocab_test_path, class: "btn btn-info"

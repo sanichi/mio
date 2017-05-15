@@ -1,0 +1,20 @@
+= render "utils/title", text: t("vocab.test.test")
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("vocab.level")
+          %td= @test.level
+        %tr
+          %th= t("vocab.test.category")
+          %td= @test.category
+        %tr
+          %th= t("vocab.test.complete")
+          %td= @test.complete
+
+.text-center
+  = link_to t("vocab.test.tests"), vocab_tests_path, class: "btn btn-success"
+  - if can?(:manage, VocabTest)
+    = link_to t("delete"), @test, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

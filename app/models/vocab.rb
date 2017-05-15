@@ -5,15 +5,16 @@ class Vocab < ApplicationRecord
   MAX_AUDIO = 50
   MAX_KANA = 20
   MAX_KANJI = 20
+  MAX_LEVEL = 60
   MAX_MEANING = 100
 
   before_validation :truncate
 
-  validates :audio, presence: true, length: { maximum: MAX_AUDIO }, format: { with: /\A[a-f0-9]+\.(mp3|ogg)\z/ }, uniqueness: true
-  validates :kana, presence: true, length: { maximum: MAX_KANA }
-  validates :kanji, presence: true, length: { maximum: MAX_KANJI }, uniqueness: true
-  validates :level, presence: true, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: 60 }
-  validates :meaning, presence: true, length: { maximum: MAX_MEANING }
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[a-f0-9]+\.(mp3|ogg)\z/ }, uniqueness: true
+  validates :kana, length: { maximum: MAX_KANA }, presence: true
+  validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
+  validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
+  validates :meaning, length: { maximum: MAX_MEANING }, presence: true
   validates :kanji_correct, :kanji_incorrect, :meaning_correct, :meaning_incorrect, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
   scope :by_kana,    -> { order('kana COLLATE "C"', :meaning) }

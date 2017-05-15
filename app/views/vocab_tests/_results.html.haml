@@ -1,0 +1,6 @@
+- tests.matches.each do |t|
+  %tr
+    %td.text-center= link_to t.complete, t
+    %td.text-center= t.level
+    %td= t("vocab.test.#{t.category}")
+= render "utils/pagination_links", pager: tests, columns: 3

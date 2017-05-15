@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170509163902) do
+ActiveRecord::Schema.define(version: 20170514194221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -330,6 +330,14 @@ ActiveRecord::Schema.define(version: 20170509163902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description", limit: 20
+  end
+
+  create_table "vocab_tests", force: :cascade do |t|
+    t.integer "complete", limit: 2, default: 0
+    t.integer "level", limit: 2
+    t.string "category", limit: 5
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "vocabs", force: :cascade do |t|

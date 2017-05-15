@@ -1,0 +1,11 @@
+.row
+  .col-md-12
+    = form_for t, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: t, col: "md", pad: 4 }
+        = render "utils/select_for", shared.merge(param: :category, text: t("vocab.test.category"), width: 3, menu: vocab_test_category_menu(t.category))
+        = render "utils/text_field_for", shared.merge(param: :level, text: t("vocab.level"), width: 1)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), t.new_record?? vocab_tests_path : t, class: "btn btn-default"
