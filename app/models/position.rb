@@ -39,8 +39,8 @@ class Position < ApplicationRecord
                            else matches.by_name
     end
     sql = nil
-    matches = matches.where(sql) if sql = cross_constraint(params[:name], cols: %w{name})
-    matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
+    matches = matches.where(sql) if sql = cross_constraint(params[:name], %w{name})
+    matches = matches.where(sql) if sql = cross_constraint(params[:notes], %w{notes})
     paginate(matches, params, path, opt)
   end
 

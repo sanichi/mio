@@ -24,7 +24,7 @@ class Blog < ApplicationRecord
         matches = matches.where(published.or(owner(user.id)))
       end
     end
-    matches = matches.where(sql) if sql = cross_constraint(params[:q], cols: %w{title story})
+    matches = matches.where(sql) if sql = cross_constraint(params[:q], %w{title story})
     matches
   end
 

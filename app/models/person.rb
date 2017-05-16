@@ -68,8 +68,8 @@ class Person < ApplicationRecord
     when "known" then by_known_as
     else              by_last_name
     end
-    matches = matches.where(sql) if sql = cross_constraint(params[:name])
-    matches = matches.where(sql) if sql = cross_constraint(params[:notes], cols: %w{notes})
+    matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name))
+    matches = matches.where(sql) if sql = cross_constraint(params[:notes], %w{notes})
     matches = matches.where(sql) if sql = numerical_constraint(params[:born], :born)
     matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
@@ -78,7 +78,7 @@ class Person < ApplicationRecord
   end
 
   def self.match(params)
-    sql = cross_constraint(params[:term])
+    sql = cross_constraint(params[:term], %w(last_name first_names known_as married_name))
     return [] unless sql
     matches = where(sql)
     matches = matches.where(male: true)  if params[:gender] == "male"

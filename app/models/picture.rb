@@ -20,8 +20,8 @@ class Picture < ApplicationRecord
   def self.search(params)
     sql = nil
     matches = joins(:people)
-    matches = matches.where(sql) if sql = cross_constraint(params[:name], table: :people)
-    matches = matches.where(sql) if sql = cross_constraint(params[:description], cols: %w{description})
+    matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name), table: :people)
+    matches = matches.where(sql) if sql = cross_constraint(params[:description], %w{description})
     matches = matches.distinct
     matches
   end

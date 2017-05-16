@@ -43,22 +43,29 @@ describe Constrainable do
     end
 
     it "no terms" do
-      expect(Person.cross_constraint(nil)).to be_nil
-      expect(Person.cross_constraint("")).to be_nil
-      expect(Person.cross_constraint("*£' &^%")).to be_nil
+      expect(Person.cross_constraint(nil, %w(c))).to be_nil
+      expect(Person.cross_constraint("", %w(c))).to be_nil
+      expect(Person.cross_constraint("*£' &^%", %w(c))).to be_nil
     end
 
-    it "one terms" do
-      expect(Person.cross_constraint("ma")).to eq "last_name ILIKE '%ma%' OR first_names ILIKE '%ma%' OR known_as ILIKE '%ma%' OR married_name ILIKE '%ma%'"
-      expect(Person.cross_constraint("ah-ja")).to eq "last_name ILIKE '%ah-ja%' OR first_names ILIKE '%ah-ja%' OR known_as ILIKE '%ah-ja%' OR married_name ILIKE '%ah-ja%'"
+    it "one term" do
+      expect(Person.cross_constraint("ma", %w(c1 c2))).to eq "c1 ILIKE '%ma%' OR c2 ILIKE '%ma%'"
+      expect(Person.cross_constraint("ah-ja", %w(c))).to eq "c ILIKE '%ah-ja%'"
     end
 
     it "two terms" do
-      expect(Person.cross_constraint(" x  y ")).to eq "(last_name ILIKE '%x%' OR first_names ILIKE '%x%' OR known_as ILIKE '%x%' OR married_name ILIKE '%x%') AND (last_name ILIKE '%y%' OR first_names ILIKE '%y%' OR known_as ILIKE '%y%' OR married_name ILIKE '%y%')"
+      expect(Person.cross_constraint(" x  y ", %w(c1 c2))).to eq "(c1 ILIKE '%x%' OR c2 ILIKE '%x%') AND (c1 ILIKE '%y%' OR c2 ILIKE '%y%')"
     end
 
     it "with table name" do
-      expect(Person.cross_constraint("a", table: "people")).to eq "people.last_name ILIKE '%a%' OR people.first_names ILIKE '%a%' OR people.known_as ILIKE '%a%' OR people.married_name ILIKE '%a%'"
+      expect(Person.cross_constraint("a", %w(c), table: "people")).to eq "people.c ILIKE '%a%'"
+    end
+
+    it "regular expression" do
+      expect(Person.cross_constraint("/^Mark$/", %w(c))).to eq "c ~* '^Mark$'"
+      expect(Person.cross_constraint("/^Mark$/", %w(c1 c2))).to eq "c1 ~* '^Mark$' OR c2 ~* '^Mark$'"
+      expect(Person.cross_constraint("/^Mark$/", %w(c1 c2), table: "person")).to eq "person.c1 ~* '^Mark$' OR person.c2 ~* '^Mark$'"
+      expect(Person.cross_constraint("/^Mark$", %w(c1 c2), table: "person")).to eq "person.c1 ~* '^Mark$' OR person.c2 ~* '^Mark$'"
     end
   end
 end

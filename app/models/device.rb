@@ -15,7 +15,7 @@ class Device < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = ordered
-    if (constraint = cross_constraint(params[:q], cols: %w/name notes/))
+    if (constraint = cross_constraint(params[:q], %w/name notes/))
       matches = matches.where(constraint)
     end
     paginate(matches, params, path, opt)

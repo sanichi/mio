@@ -12,12 +12,12 @@ class Opening < ApplicationRecord
   def self.search(params, path, opt={})
     sql = nil
     matches = by_code
-    matches = matches.where(sql) if sql = cross_constraint(params[:q], cols: %w{code description})
+    matches = matches.where(sql) if sql = cross_constraint(params[:q], %w{code description})
     paginate(matches, params, path, opt)
   end
 
   def self.match(query)
-    sql = cross_constraint(query, cols: %w{code description})
+    sql = cross_constraint(query, %w{code description})
     return [] if sql.blank?
     where(sql).by_code.map do |o|
       { id: o.id, value: o.desc(54) }

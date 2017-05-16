@@ -29,7 +29,7 @@ class Vocab < ApplicationRecord
     when "level"   then by_level
     else                by_kana
     end
-    if sql = cross_constraint(params[:q], cols: %w{kanji kana meaning category})
+    if sql = cross_constraint(params[:q], %w{kanji kana meaning category})
       matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)

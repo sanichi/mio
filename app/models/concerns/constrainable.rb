@@ -23,11 +23,26 @@ module Constrainable
       end
     end
 
-    def cross_constraint(input, cols: %w(last_name first_names known_as married_name), table: nil)
-      return nil if (terms = input.to_s.scan(/[-[:alnum:]]+/)).empty?
-      cols = cols.map{ |c| "#{table}." + c } if table
+    def cross_constraint(input, cols, table: nil)
+      cols = cols.map{ |c| "#{table}." + c } if table.present?
+      if input&.match("\\A/([^'\\/]+)/?\\z")
+        regex_constraint($1, cols)
+      else
+        terms = input.to_s.scan(/[-[:alnum:]]+/)
+        like_constraint(terms, cols)
+      end
+    end
+
+    private
+
+    def regex_constraint(regex, cols)
+      cols.map{ |c| "#{c} ~* '#{regex}'"}.join(" OR ")
+    end
+
+    def like_constraint(terms, cols)
+      return nil if terms.empty?
       clause = cols.map{ |c| "#{c} ILIKE '%%%s%%'"}.join(" OR ")
-      clauses = terms.map{ |t| clause % [t, t, t, t] }
+      clauses = terms.map{ |t| clause % Array.new(cols.size, t) }
       terms.size == 1 ? clauses.first : "(" + clauses.join(") AND (") + ")"
     end
   end

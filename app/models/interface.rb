@@ -21,7 +21,7 @@ class Interface < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = ordered
-    if (constraint = cross_constraint(params[:q], cols: %w/ip_address mac_address manufacturer name/))
+    if (constraint = cross_constraint(params[:q], %w/ip_address mac_address manufacturer name/))
       matches = matches.where(constraint)
     end
     paginate(matches, params, path, opt)
