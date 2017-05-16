@@ -47,13 +47,20 @@ class WaniKani
     @agent
   end
 
-  def audio(kanji)
+  def scrape(kanji)
     sleep(DELAY)
     page = agent.get("/vocabulary/#{kanji}")
+
     src = page.search("//audio/source").map { |s| s["src"]&.sub(/\A.*\//, "") }
-    raise "no audio sources found for '#{janji}'" unless src.any?
+    raise "no audio sources found for '#{kanji}'" unless src.any?
     mp3 = src.select { |s| s =~ /\.mp3\z/ }
-    mp3.any?? mp3.first : src.first
+    audio = mp3.any?? mp3.first : src.first
+
+    src = page.search("//section[@id='information']/div[contains(@class,'part-of-speech')]/p").map{ |s| s.text }
+    raise "no part-of-speech found for '#{kanji}'" unless src.any?
+    category = src.first.downcase
+
+    [audio, category]
   end
 end
 
@@ -81,11 +88,11 @@ begin
     # Get the API data for this vocab.
     data = wk.vocab[kanji]
 
-    # Scrape the audio data (which isn't returned by the API) from the website for this vocab.
-    audio = wk.audio(kanji)
+    # Scrape data that isn't returned by the API from the website for this vocab.
+    audio, category = wk.scrape(kanji)
 
     # Store all the new data in the DB.
-    Vocab.create!(audio: audio, kanji: kanji, kana: data["kana"], level: data["level"], meaning: data["meaning"])
+    Vocab.create!(audio: audio, category: category, kanji: kanji, kana: data["kana"], level: data["level"], meaning: data["meaning"])
   end
 
   # Feedback about number created.

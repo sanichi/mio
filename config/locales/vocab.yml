@@ -1,6 +1,7 @@
 en:
   vocab:
     audio: Audio
+    category: Part of Speech
     edit: Edit Vocab
     kana: Kana
     kanji: Kanji
