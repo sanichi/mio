@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Vocab do
   # something's not right with the factory
   data = {
-    audio:   "b80ece728d726fdc1faac8e3e663201252bb5a8f.mp3",
+    audio:    "b80ece728d726fdc1faac8e3e663201252bb5a8f.mp3",
     category: "Noun, Na adjective",
-    kana:    "いっぽんぎ",
-    kanji:   "一本気",
-    meaning: "one track mind",
-    level:   1,
+    kanji:    "一本気",
+    meaning:  "one track mind",
+    level:    1,
+    reading:  "いっぽんぎ",
   }
 
   before(:each) do
@@ -21,7 +21,7 @@ describe Vocab do
       click_link t(:vocab_new)
       fill_in t(:vocab_audio), with: data[:audio]
       fill_in t(:vocab_category), with: data[:category]
-      fill_in t(:vocab_kana), with: data[:kana]
+      fill_in t(:vocab_reading), with: data[:reading]
       fill_in t(:vocab_kanji), with: data[:kanji]
       fill_in t(:vocab_level), with: data[:level]
       fill_in t(:vocab_meaning), with: data[:meaning]
@@ -34,20 +34,16 @@ describe Vocab do
 
       expect(v.audio).to eq data[:audio]
       expect(v.category).to eq data[:category]
-      expect(v.kana).to eq data[:kana]
+      expect(v.reading).to eq data[:reading]
       expect(v.kanji).to eq data[:kanji]
       expect(v.level).to eq data[:level]
       expect(v.meaning).to eq data[:meaning]
-      expect(v.kanji_correct).to eq 0
-      expect(v.kanji_incorrect).to eq 0
-      expect(v.meaning_correct).to eq 0
-      expect(v.meaning_incorrect).to eq 0
     end
 
     it "failure" do
       click_link t(:vocab_new)
       fill_in t(:vocab_category), with: data[:category]
-      fill_in t(:vocab_kana), with: data[:kana]
+      fill_in t(:vocab_reading), with: data[:reading]
       fill_in t(:vocab_kanji), with: data[:kanji]
       fill_in t(:vocab_level), with: data[:level]
       fill_in t(:vocab_meaning), with: data[:meaning]

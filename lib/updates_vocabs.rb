@@ -92,7 +92,7 @@ begin
     audio, category = wk.scrape(kanji)
 
     # Store all the new data in the DB.
-    Vocab.create!(audio: audio, category: category, kanji: kanji, kana: data["kana"], level: data["level"], meaning: data["meaning"])
+    Vocab.create!(audio: audio, category: category, kanji: kanji, level: data["level"], meaning: data["meaning"], reading: data["kana"])
   end
 
   # Feedback about number created.

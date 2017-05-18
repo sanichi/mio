@@ -1,6 +1,6 @@
 module VocabHelper
   def vocab_search_order_menu(selected)
-    opts = %w/kana meaning level/.map { |g| [t("vocab.#{g}"), g] }
+    opts = %w/reading meaning level/.map { |g| [t("vocab.#{g}"), g] }
     options_for_select(opts, selected)
   end
 

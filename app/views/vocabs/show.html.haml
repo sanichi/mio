@@ -8,8 +8,8 @@
           %th= t("vocab.audio")
           %td= render "audio", vocab: @vocab
         %tr
-          %th= t("vocab.kana")
-          %td= @vocab.kana
+          %th= t("vocab.reading")
+          %td= @vocab.reading
         %tr
           %th= t("vocab.kanji")
           %td= @vocab.kanji
@@ -22,18 +22,6 @@
         %tr
           %th= t("vocab.level")
           %td= @vocab.level
-        %tr
-          %th= t("vocab.kanji_correct")
-          %td= @vocab.kanji_correct
-        %tr
-          %th= t("vocab.kanji_incorrect")
-          %td= @vocab.kanji_incorrect
-        %tr
-          %th= t("vocab.meaning_correct")
-          %td= @vocab.meaning_correct
-        %tr
-          %th= t("vocab.meaning_incorrect")
-          %td= @vocab.meaning_incorrect
 
 .text-center
   = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"

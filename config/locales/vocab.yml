@@ -3,15 +3,11 @@ en:
     audio: Audio
     category: Part of Speech
     edit: Edit Vocab
-    kana: Kana
     kanji: Kanji
-    kanji_correct: Kanji Correct
-    kanji_incorrect: Kanji Incorrect
     level: Level
     meaning: Meaning
-    meaning_correct: Meaning Correct
-    meaning_incorrect: Meaning Inorrect
     new: New Vocab
+    reading: Reading
     vocabs: Vocabs
     test:
       a2mr: Audio to Meaning and Reading

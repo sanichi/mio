@@ -39,6 +39,6 @@ class VocabsController < ApplicationController
   end
 
   def strong_params
-    params.require(:vocab).permit(:audio, :category, :kana, :kana_correct, :kana_incorrect, :kanji, :kanji_correct, :kanji_incorrect, :level, :meaning)
+    params.require(:vocab).permit(:audio, :category, :kanji, :level, :meaning, :reading)
   end
 end
