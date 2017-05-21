@@ -11,6 +11,8 @@ class VocabQuestion < ApplicationRecord
   validates :meaning, length: { maximum: Vocab::MAX_MEANING }, allow_nil: true
   validates :reading, length: { maximum: Vocab::MAX_READING }, allow_nil: true
 
+  default_scope { order(id: :desc) }
+
   def answered_correctly?
     kanji_correct && meaning_correct && reading_correct
   end
