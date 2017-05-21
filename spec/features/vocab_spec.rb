@@ -1,15 +1,8 @@
 require 'rails_helper'
 
 describe Vocab do
-  # something's not right with the factory
-  data = {
-    audio:    "b80ece728d726fdc1faac8e3e663201252bb5a8f.mp3",
-    category: "Noun, Na adjective",
-    kanji:    "一本気",
-    meaning:  "one track mind",
-    level:    1,
-    reading:  "いっぽんぎ",
-  }
+  let(:data)   { build(:vocab) }
+  let!(:vocab) { create(:vocab) }
 
   before(:each) do
     login
@@ -19,39 +12,60 @@ describe Vocab do
   context "create" do
     it "success" do
       click_link t(:vocab_new)
-      fill_in t(:vocab_audio), with: data[:audio]
-      fill_in t(:vocab_category), with: data[:category]
-      fill_in t(:vocab_reading), with: data[:reading]
-      fill_in t(:vocab_kanji), with: data[:kanji]
-      fill_in t(:vocab_level), with: data[:level]
-      fill_in t(:vocab_meaning), with: data[:meaning]
+      fill_in t(:vocab_audio), with: data.audio
+      fill_in t(:vocab_category), with: data.category
+      fill_in t(:vocab_reading), with: data.reading
+      fill_in t(:vocab_kanji), with: data.kanji
+      fill_in t(:vocab_level), with: data.level
+      fill_in t(:vocab_meaning), with: data.meaning
       click_button t(:save)
 
-      expect(page).to have_title data[:kanji]
+      expect(page).to have_title data.kanji
 
-      expect(Vocab.count).to eq 1
+      expect(Vocab.count).to eq 2
       v = Vocab.last
 
-      expect(v.audio).to eq data[:audio]
-      expect(v.category).to eq data[:category]
-      expect(v.reading).to eq data[:reading]
-      expect(v.kanji).to eq data[:kanji]
-      expect(v.level).to eq data[:level]
-      expect(v.meaning).to eq data[:meaning]
+      expect(v.audio).to eq data.audio
+      expect(v.category).to eq data.category
+      expect(v.reading).to eq data.reading
+      expect(v.kanji).to eq data.kanji
+      expect(v.level).to eq data.level
+      expect(v.meaning).to eq data.meaning
     end
 
     it "failure" do
       click_link t(:vocab_new)
-      fill_in t(:vocab_category), with: data[:category]
-      fill_in t(:vocab_reading), with: data[:reading]
-      fill_in t(:vocab_kanji), with: data[:kanji]
-      fill_in t(:vocab_level), with: data[:level]
-      fill_in t(:vocab_meaning), with: data[:meaning]
+      fill_in t(:vocab_category), with: data.category
+      fill_in t(:vocab_reading), with: data.reading
+      fill_in t(:vocab_kanji), with: data.kanji
+      fill_in t(:vocab_level), with: data.level
+      fill_in t(:vocab_meaning), with: data.meaning
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_new)
-      expect(Vocab.count).to eq 0
+      expect(Vocab.count).to eq 1
       expect(page).to have_css(error, text: "invalid")
     end
+  end
+
+  it "delete" do
+    click_link vocab.kanji
+    click_link t(:edit)
+    click_link t(:delete)
+
+    expect(Vocab.count).to eq 0
+  end
+
+  it "edit" do
+    click_link vocab.kanji
+    click_link t(:edit)
+
+    fill_in t(:vocab_kanji), with: data.kanji
+    click_button t(:save)
+
+    expect(Vocab.count).to eq 1
+    v = Vocab.last
+
+    expect(v.kanji).to eq data.kanji
   end
 end

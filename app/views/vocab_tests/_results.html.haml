@@ -1,6 +1,8 @@
 - tests.matches.each do |t|
   %tr
-    %td.text-center= link_to t.complete, t
-    %td.text-center= t.level
-    %td= t("vocab.test.#{t.category}")
-= render "utils/pagination_links", pager: tests, columns: 3
+    %td= link_to t.level_skill, t
+    %td.text-center= t.updated_at.to_date
+    %td.text-center= t.total
+    %td.text-center= "#{t.progress_rate}%"
+    %td.text-center= "#{t.hit_rate}%"
+= render "utils/pagination_links", pager: tests, columns: 5

@@ -1,0 +1,15 @@
+.row
+  %strong.col-md-4.text-right= t("vocab.kanji")
+  .col-md-8= question.vocab.kanji
+.row.top_margin
+  .col-md-12
+    = form_for question, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: question, col: "md", pad: 4 }
+        = render "utils/text_field_for", shared.merge(param: :meaning, text: t("vocab.meaning"), width: 4)
+        = render "utils/text_field_for", shared.merge(param: :reading, text: t("vocab.reading"), width: 4)
+        = f.hidden_field(:vocab_id, value: question.vocab.id)
+        = f.hidden_field(:vocab_test_id, value: question.vocab_test.id)
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("submit"), class: "btn btn-info"

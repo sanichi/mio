@@ -21,9 +21,13 @@ describe VocabTest do
       expect(VocabTest.count).to eq 2
       t = VocabTest.last
 
-      expect(t.level).to eq data.level
+      expect(t.attempts).to eq 0
       expect(t.category).to eq data.category
-      expect(t.complete).to eq 0
+      expect(t.correct).to eq 0
+      expect(t.hit_rate).to eq 0
+      expect(t.level).to eq data.level
+      expect(t.progress_rate).to eq 0
+      expect(t.total).to eq 0
     end
 
     it "failure" do
@@ -38,7 +42,7 @@ describe VocabTest do
   end
 
   it "destroy" do
-    click_link vtest.complete
+    click_link vtest.level_skill
     click_link t(:delete)
 
     expect(page).to have_title t(:vocab_test_tests)

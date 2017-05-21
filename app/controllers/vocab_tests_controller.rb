@@ -6,6 +6,10 @@ class VocabTestsController < ApplicationController
     @tests = VocabTest.search(params, vocab_tests_path, remote: true)
   end
 
+  def show
+    @next_question = @test.next_question
+  end
+
   def new
     @test = VocabTest.new
   end
@@ -27,7 +31,7 @@ class VocabTestsController < ApplicationController
   private
 
   def find_test
-    @test = VocabTest.find(params[:id])
+    @test = VocabTest.includes(:vocab_questions).find(params[:id])
   end
 
   def strong_params

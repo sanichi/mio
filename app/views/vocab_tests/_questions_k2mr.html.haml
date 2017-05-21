@@ -1,0 +1,18 @@
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-2= t("vocab.kanji")
+          %th.col-xs-6= t("vocab.meaning")
+          %th.col-xs-3= t("vocab.reading")
+          %th.col-xs-1
+      %tbody
+        - test.vocab_questions.each do |q|
+          %tr
+            %td= q.vocab.kanji
+            %td= q.meaning
+            %td= q.reading
+            %td.text-center
+              = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
+              = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")

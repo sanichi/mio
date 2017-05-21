@@ -8,7 +8,8 @@ class Vocab < ApplicationRecord
   MAX_KANJI = 20
   MAX_LEVEL = 60
   MAX_MEANING = 100
-  MAX_KANA = MAX_READING # for original migration as 'kana' has since been 'renamed' to reading
+
+  has_many :vocab_questions, dependent: :destroy
 
   before_validation :truncate
 
@@ -39,10 +40,23 @@ class Vocab < ApplicationRecord
     "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : 'ogg'}"
   end
 
+  def test_kanji(str)
+    str.to_s == kanji
+  end
+
+  def test_meaning(str)
+    return false unless str.to_s.length > 1
+    meaning.downcase.include?(str.to_s.downcase)
+  end
+
+  def test_reading(str)
+    str.to_s == reading
+  end
+
   private
 
   def truncate
-    self.meaning = meaning&.truncate(MAX_MEANING)
     self.category = category&.truncate(MAX_CATEGORY)
+    self.meaning = meaning&.truncate(MAX_MEANING)
   end
 end

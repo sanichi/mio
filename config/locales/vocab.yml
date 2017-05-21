@@ -10,11 +10,16 @@ en:
     reading: Reading
     vocabs: Vocabs
     test:
-      a2mr: Audio to Meaning and Reading
+      a2km: Audio to Kanji and Meaning
       any: Any Skill
+      answer: Answer
       category: Skill
-      complete: Complete
-      m2r: Meaning to Reading
+      hit_rate: Success
+      k2mr: Kanji to Meaning and Reading
+      m2k: Meaning to Kanji
       new: New Vocab Test
+      progress_rate: Progress
       test: Vocab Test
       tests: Vocab Tests
+      question: Question
+      response: Response

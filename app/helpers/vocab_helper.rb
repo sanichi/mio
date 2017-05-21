@@ -11,7 +11,7 @@ module VocabHelper
   end
 
   def vocab_test_search_order_menu(selected)
-    opts = [[t("updated"), "updated"], [t("vocab.test.complete"), "complete"], [t("vocab.level"), "level"]]
+    opts = [[t("updated"), "updated"], [t("vocab.level"), "level"], [t("vocab.test.progress_rate"), "progress"], [t("vocab.test.hit_rate"), "hit"]]
     options_for_select(opts, selected)
   end
 end

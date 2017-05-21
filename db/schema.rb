@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518181155) do
+ActiveRecord::Schema.define(version: 20170521092851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -332,12 +332,30 @@ ActiveRecord::Schema.define(version: 20170518181155) do
     t.string "description", limit: 20
   end
 
+  create_table "vocab_questions", force: :cascade do |t|
+    t.integer "vocab_id"
+    t.integer "vocab_test_id"
+    t.string "kanji", limit: 20
+    t.string "meaning", limit: 100
+    t.string "reading", limit: 20
+    t.boolean "kanji_correct", default: false
+    t.boolean "meaning_correct", default: false
+    t.boolean "reading_correct", default: false
+    t.datetime "created_at"
+    t.index ["vocab_id"], name: "index_vocab_questions_on_vocab_id"
+    t.index ["vocab_test_id"], name: "index_vocab_questions_on_vocab_test_id"
+  end
+
   create_table "vocab_tests", force: :cascade do |t|
-    t.integer "complete", limit: 2, default: 0
+    t.integer "total", limit: 2, default: 0
     t.integer "level", limit: 2
     t.string "category", limit: 5
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "attempts", limit: 2, default: 0
+    t.integer "correct", limit: 2, default: 0
+    t.integer "hit_rate", limit: 2, default: 0
+    t.integer "progress_rate", limit: 2, default: 0
   end
 
   create_table "vocabs", force: :cascade do |t|
