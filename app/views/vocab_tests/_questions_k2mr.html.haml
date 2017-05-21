@@ -11,7 +11,7 @@
         - test.vocab_questions.each do |q|
           %tr
             %td= q.vocab.kanji
-            %td= q.meaning
+            %td= q.meaning_plus
             %td= q.reading
             %td.text-center
               = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")

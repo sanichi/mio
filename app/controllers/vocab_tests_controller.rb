@@ -31,7 +31,7 @@ class VocabTestsController < ApplicationController
   private
 
   def find_test
-    @test = VocabTest.includes(:vocab_questions).find(params[:id])
+    @test = VocabTest.includes(vocab_questions: :vocab).find(params[:id])
   end
 
   def strong_params

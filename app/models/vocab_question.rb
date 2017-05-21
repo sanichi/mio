@@ -15,6 +15,11 @@ class VocabQuestion < ApplicationRecord
     kanji_correct && meaning_correct && reading_correct
   end
 
+  def meaning_plus
+    return meaning unless meaning_correct
+    "#{meaning} (#{vocab&.meaning})"
+  end
+
   private
 
   def truncate
