@@ -4,6 +4,12 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
+  def vocab_search_level_menu(selected)
+    opts = (Vocab::MIN_LEVEL..Vocab::MAX_LEVEL).to_a.map { |l| [l, l] }
+    opts.unshift [t("vocab.any_level"), ""]
+    options_for_select(opts, selected)
+  end
+
   def vocab_test_category_menu(selected, search: false)
     opts = VocabTest::CATEGORIES.map { |c| [t("vocab.test.#{c}"), c] }
     opts.unshift [search ? t("vocab.test.any") : t("select"), ""]
