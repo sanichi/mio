@@ -31,7 +31,10 @@ class VocabQuestion < ApplicationRecord
   end
 
   def cleanup
-    self.kanji = kanji&.gsub(/\x08/, '') # for some reason, backspaces sometimes corrupt input
+    # for some reason, backspaces can sometimes corrupt the input
+    self.kanji = kanji&.gsub(/\x08/, "")
+    self.meaning = meaning&.gsub(/\x08/, "")
+    self.reading = reading&.gsub(/\x08/, "")
   end
 
   def check_answer
