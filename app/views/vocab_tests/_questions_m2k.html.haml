@@ -4,11 +4,15 @@
       %thead
         %tr
           %th.col-xs-8= t("vocab.meaning")
-          %th.col-xs-3= t("vocab.kanji")
+          %th.col-xs-2= t("vocab.kanji")
+          %th.col-xs-1.text-center= t("vocab.audio")
           %th.col-xs-1
       %tbody
         - test.vocab_questions.each do |q|
           %tr
             %td= q.vocab.meaning
             %td= q.kanji
+            %td.text-center
+              - if q.answered_correctly?
+                = render "vocabs/audio", vocab: q.vocab
             %td.text-center= t("symbol.#{q.kanji_correct ? 'tick' : 'cross'}")

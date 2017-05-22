@@ -2,7 +2,7 @@ class VocabQuestion < ApplicationRecord
   belongs_to :vocab
   belongs_to :vocab_test
 
-  before_validation :truncate
+  before_validation :truncate, :cleanup
   before_create :check_answer
   after_create :update_test
 
@@ -28,6 +28,10 @@ class VocabQuestion < ApplicationRecord
     self.kanji = kanji&.truncate(Vocab::MAX_KANJI)
     self.meaning = meaning&.truncate(Vocab::MAX_MEANING)
     self.reading = reading&.truncate(Vocab::MAX_READING)
+  end
+
+  def cleanup
+    self.kanji = kanji&.gsub(/\x08/, '') # for some reason, backspaces sometimes corrupt input
   end
 
   def check_answer
