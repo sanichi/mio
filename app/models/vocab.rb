@@ -54,7 +54,7 @@ class Vocab < ApplicationRecord
   end
 
   def test_reading(str)
-    str.to_s == reading
+    reading.split(/\s*,\s*/).include?(str.to_s)
   end
 
   private

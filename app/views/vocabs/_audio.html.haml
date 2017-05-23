@@ -3,4 +3,4 @@
 
 %button.btn.btn-default.btn-xs.btn-info{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()"}= t("symbol.audio")
 %audio{autoplay: autoplay, id: "audio_#{vocab.id}"}
-  %source{src: "https://cdn.wanikani.com/audio/#{vocab.audio}", type: vocab.audio_type}
+  %source{src: "/system/audio/wani_kani/#{vocab.audio}", type: vocab.audio_type}

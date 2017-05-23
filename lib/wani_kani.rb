@@ -1,5 +1,6 @@
 require 'net/https'
 require 'uri'
+require 'open-uri'
 require 'mechanize'
 
 class WaniKani
@@ -59,6 +60,39 @@ class WaniKani
     raise "no part-of-speech found for '#{kanji}'" unless src.any?
     category = src.first.downcase
 
+    download_audio(audio)
+
     [audio, category]
+  end
+
+  def audio_dir
+    return @audio_dir if @audio_dir
+    base = Rails.env == "production" ? "/var/www/mio/current" : "/Users/mjo/Projects/sni_mio_app"
+    @audio_dir = "#{base}/public/system/audio/wani_kani"
+    raise "#{@audio_dir} does not exist" unless Dir.exist?(@audio_dir)
+    @audio_dir
+  end
+
+  def audio_source(file)
+    "https://cdn.wanikani.com/audio/#{file}"
+  end
+
+  def audio_target(file)
+    "#{audio_dir}/#{file}"
+  end
+
+  def audio_exist?(file)
+    File.exist?(audio_target(file))
+  end
+
+  def download_audio(file)
+    sleep(DELAY)
+    source = audio_source(file)
+    target = audio_target(file)
+    File.open(target, "wb") do |t|
+      open(source, "rb") do |s|
+        t.write(s.read)
+      end
+    end
   end
 end
