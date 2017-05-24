@@ -4,7 +4,7 @@
       %fieldset
         - shared = { form: f, object: t, col: "md", pad: 4 }
         = render "utils/select_for", shared.merge(param: :category, text: t("vocab.test.category"), width: 3, menu: vocab_test_category_menu(t.category))
-        = render "utils/text_field_for", shared.merge(param: :level, text: t("vocab.level"), width: 1)
+        = render "utils/select_for", shared.merge(param: :level, text: t("vocab.level"), width: 2, menu: vocab_level_menu(t.level))
       .row
         .col-md-offset-4.col-md-8
           = f.submit t("save"), class: "btn btn-info"

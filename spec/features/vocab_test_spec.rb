@@ -12,8 +12,8 @@ describe VocabTest do
   context "create" do
     it "success" do
       click_link t(:vocab_test_new)
-      fill_in t(:vocab_level), with: data.level
       select t(:vocab_test)[data.category.to_sym], from: t(:vocab_test_category)
+      select data.level, from: t(:vocab_level)
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_test_test)

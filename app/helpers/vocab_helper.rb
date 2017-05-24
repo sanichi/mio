@@ -4,9 +4,9 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
-  def vocab_search_level_menu(selected)
+  def vocab_level_menu(selected, search: false)
     opts = (Vocab::MIN_LEVEL..Vocab::MAX_LEVEL).to_a.map { |l| [l, l] }
-    opts.unshift [t("vocab.any_level"), ""]
+    opts.unshift [search ? t("vocab.any_level") : t("select"), ""]
     options_for_select(opts, selected)
   end
 
