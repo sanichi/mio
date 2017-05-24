@@ -15,11 +15,9 @@
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.col-xs-7
-            = t("vocab.level")
-            = "/"
-            = t("vocab.test.category")
           %th.col-xs-2.text-center= t("updated_at")
+          %th.col-xs-1= t("vocab.level")
+          %th.col-xs-6= t("vocab.test.category")
           %th.col-xs-1.text-center= t("total")
           %th.col-xs-1.text-center= t("vocab.test.progress_rate")
           %th.col-xs-1.text-center= t("vocab.test.hit_rate")

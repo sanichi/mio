@@ -55,9 +55,8 @@ class VocabTest < ApplicationRecord
     category == "k2mr"
   end
 
-  def level_skill
-    cat = I18n.t("vocab.test.#{category}")
-    "#{level}/#{cat}"
+  def updated_date
+    updated_at.to_date
   end
 
   def self.search(params, path, opt={})
