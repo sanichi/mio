@@ -16,7 +16,7 @@
   = render "next_question_#{@test.category}", question: @next_question
 
 %hr
-= render "questions_#{@test.category}", test: @test
+= render "questions_#{@test.category}", test: @test, test_not_finished: @next_question.present?
 
 %hr
 .text-center

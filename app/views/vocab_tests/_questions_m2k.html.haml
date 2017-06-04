@@ -8,11 +8,11 @@
           %th.col-xs-1.text-center= t("vocab.audio")
           %th.col-xs-1
       %tbody
-        - test.vocab_questions.each do |q|
+        - test.vocab_questions.each_with_index do |q, i|
           %tr
             %td= q.vocab.meaning
             %td= q.kanji
             %td.text-center
               - if q.answered_correctly?
-                = render "vocabs/audio", vocab: q.vocab
+                = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && test_not_finished
             %td.text-center= t("symbol.#{q.kanji_correct ? 'tick' : 'cross'}")
