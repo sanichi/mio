@@ -15,7 +15,7 @@
             %td= q.meaning_plus
             %td= q.reading
             %td.text-center
-              - if q.answered_correctly?
+              - if q.reading_correct
                 = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && test_not_finished
             %td.text-center
               = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
