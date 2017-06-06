@@ -67,6 +67,7 @@ class VocabTest < ApplicationRecord
     else                 by_updated
     end
     matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
+    matches = matches.where(level: params[:level].to_i) if params[:level].to_i > 0
     paginate(matches, params, path, opt)
   end
 

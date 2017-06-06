@@ -3,11 +3,14 @@
 .text-center
   = form_tag vocab_tests_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, vocab_test_search_order_menu(params[:order]), class: "form-control auto-submit"
+      = label_tag :level, t("vocab.level"), class: "sr-only"
+      = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
     .form-group
       = label_tag :category, t("vocab.test.category"), class: "sr-only"
       = select_tag :category, vocab_test_category_menu(params[:category], search: true), class: "form-control auto-submit"
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, vocab_test_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
