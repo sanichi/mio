@@ -85,6 +85,17 @@
             - if can?(:read, Expense)
               %li= link_to t("expense.expenses"), expenses_path
 
+      - if [Vocab, VocabTest].map{ |c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("vocab.japanese")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, Vocab)
+              %li= link_to t("vocab.vocabs"), vocabs_path
+            - if can?(:read, VocabTest)
+              %li= link_to t("vocab.test.tests"), vocab_tests_path
+
       - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
@@ -93,10 +104,6 @@
           %ul.dropdown-menu
             - if can?(:read, Mass)
               %li= link_to t("mass.mass"), graph_masses_path
-            - if can?(:read, Vocab)
-              %li= link_to t("vocab.vocabs"), vocabs_path
-            - if can?(:read, VocabTest)
-              %li= link_to t("vocab.test.tests"), vocab_tests_path
             - if can?(:read, Tapa)
               %li= link_to t("tapa.tapas"), tapas_path
             - if can?(:read, Bucket)
