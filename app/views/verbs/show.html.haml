@@ -1,0 +1,26 @@
+= render "utils/title", text: @verb.kanji, header: true
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("vocab.reading")
+          %td= @verb.reading
+        %tr
+          %th= t("vocab.kanji")
+          %td= @verb.kanji
+        %tr
+          %th= t("vocab.meaning")
+          %td= @verb.meaning
+        %tr
+          %th= t("verb.category")
+          %td= t("verb.categories.#{@verb.category}")
+        %tr
+          %th= t("verb.transitivity")
+          %td= @verb.transitive ? t("verb.transitive") : t("verb.intransitive")
+
+.text-center
+  = link_to t("verb.verbs"), verbs_path, class: "btn btn-success"
+  - if can?(:manage, Verb)
+    = link_to t("edit"), edit_verb_path(@verb), class: "btn btn-info"

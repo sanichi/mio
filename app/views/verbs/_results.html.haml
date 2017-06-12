@@ -1,0 +1,8 @@
+- verbs.matches.each do |verb|
+  %tr
+    %td= link_to verb.kanji, verb
+    %td= verb.reading
+    %td= verb.short_meaning
+    %td= t("verb.categories.#{verb.category}")
+    %td.text-center= t("symbol.#{verb.transitive ? 'tick' : 'cross'}")
+= render "utils/pagination_links", pager: verbs, columns: 4
