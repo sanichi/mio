@@ -8,6 +8,7 @@ en:
     new: New Verb
     transitive: Transitive
     transitivity: Transitivity
+    verb: Verb
     verbs: Verbs
     categories:
       v1: ichidan

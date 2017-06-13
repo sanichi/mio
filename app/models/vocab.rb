@@ -11,8 +11,10 @@ class Vocab < ApplicationRecord
   MIN_LEVEL = 1
 
   has_many :vocab_questions, dependent: :destroy
+  has_one :verb, dependent: :nullify
 
   before_validation :truncate
+  after_save :link_verb
 
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[a-f0-9]+\.(mp3|ogg)\z/ }, uniqueness: true
   validates :category, length: { maximum: MAX_CATEGORY }, presence: true
@@ -62,5 +64,10 @@ class Vocab < ApplicationRecord
   def truncate
     self.category = category&.truncate(MAX_CATEGORY)
     self.meaning = meaning&.truncate(MAX_MEANING)
+  end
+
+  def link_verb
+    match = Verb.find_by(kanji: kanji)
+    match.update_column(:vocab_id, id) if match && match.vocab_id != id
   end
 end

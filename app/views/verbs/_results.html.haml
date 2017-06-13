@@ -5,4 +5,6 @@
     %td= verb.short_meaning
     %td= t("verb.categories.#{verb.category}")
     %td.text-center= t("symbol.#{verb.transitive ? 'tick' : 'cross'}")
+    %td.text-center= render("vocabs/audio", vocab: verb.vocab) if verb.vocab
+
 = render "utils/pagination_links", pager: verbs, columns: 4

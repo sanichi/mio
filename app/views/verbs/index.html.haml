@@ -24,8 +24,9 @@
           %th.col-xs-1= t("vocab.kanji")
           %th.col-xs-2= t("vocab.reading")
           %th.col-xs-5= t("vocab.meaning")
-          %th.col-xs-3= t("verb.category")
+          %th.col-xs-2= t("verb.category")
           %th.col-xs-1.text-center= t("verb.short.transitivity")
+          %th.col-xs-1.text-center= t("vocab.audio")
       %tbody{id: "results"}
         = render "results", verbs: @verbs
 

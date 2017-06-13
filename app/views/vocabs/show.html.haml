@@ -22,6 +22,10 @@
         %tr
           %th= t("vocab.level")
           %td= @vocab.level
+        - if @vocab.verb
+          %tr
+            %th= t("verb.verb")
+            %td= link_to @vocab.verb.kanji, @vocab.verb
 
 .text-center
   = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"

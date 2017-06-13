@@ -19,6 +19,10 @@
         %tr
           %th= t("verb.transitivity")
           %td= @verb.transitive ? t("verb.transitive") : t("verb.intransitive")
+        - if @verb.vocab
+          %tr
+            %th= t("vocab.vocab")
+            %td= link_to(@verb.vocab.kanji, @verb.vocab)
 
 .text-center
   = link_to t("verb.verbs"), verbs_path, class: "btn btn-success"
