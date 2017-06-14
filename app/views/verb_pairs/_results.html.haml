@@ -3,8 +3,8 @@
     %td.col-xs-3.text-right= pair.transitive.meaning.truncate(30)
     %td.col-xs-1.text-right= render "vocabs/audio", vocab: pair.transitive, text: pair.transitive.reading
     %td.col-xs-1.text-right= link_to pair.transitive.kanji, pair.transitive
+    %td.col-xs-2.text-center= link_to t("verb_pair.categories.#{pair.category}"), pair
     %td.col-xs-1= link_to pair.intransitive.kanji, pair.intransitive
     %td.col-xs-1= render "vocabs/audio", vocab: pair.intransitive, text: pair.intransitive.reading
     %td.col-xs-3= pair.intransitive.meaning.truncate(30)
-    %td.col-xs-2.text-center= link_to t("verb_pair.categories.#{pair.category}"), pair
 = render "utils/pagination_links", pager: pairs, columns: 7

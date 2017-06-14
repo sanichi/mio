@@ -8,8 +8,8 @@ en:
     verb_pair: Verb Pair
     verb_pairs: Verb Pairs
     categories:
-      asu_eru: asu→eru
-      eru_aru: eru→aru
-      eru_u: eru→u
-      u_eru: u→eru
+      asu_eru: あす→える
+      eru_aru: える→ある
+      eru_u: える→う
+      u_eru: う→える
       irregular: irregular
