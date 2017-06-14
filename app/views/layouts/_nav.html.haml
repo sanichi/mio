@@ -57,17 +57,6 @@
             - if can?(:deeds, Page)
               %li= link_to t("flat.deeds"), deeds_path
 
-      - if [Position, Opening].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("chess")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Position)
-              %li= link_to t("position.positions"), positions_path
-            - if can?(:read, Opening)
-              %li= link_to t("opening.openings"), openings_path
-
       - if [Income, Trade, Fund, Transaction, Expense].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
@@ -85,7 +74,18 @@
             - if can?(:read, Expense)
               %li= link_to t("expense.expenses"), expenses_path
 
-      - if [Vocab, VocabTest].map{ |c| can?(:read, c) }.any?
+      - if [Position, Opening].map{|c| can?(:read, c) }.any?
+        %li.dropdown
+          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
+            = t("chess")
+            %b.caret
+          %ul.dropdown-menu
+            - if can?(:read, Position)
+              %li= link_to t("position.positions"), positions_path
+            - if can?(:read, Opening)
+              %li= link_to t("opening.openings"), openings_path
+
+      - if [Vocab, VocabTest, VerbPair].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("vocab.japanese")
@@ -95,6 +95,8 @@
               %li= link_to t("vocab.vocabs"), vocabs_path
             - if can?(:read, VocabTest)
               %li= link_to t("vocab.test.tests"), vocab_tests_path
+            - if can?(:read, VerbPair)
+              %li= link_to t("verb_pair.verb_pairs"), verb_pairs_path
 
       - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown

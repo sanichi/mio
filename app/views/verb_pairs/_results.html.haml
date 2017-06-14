@@ -1,0 +1,10 @@
+- pairs.matches.each do |pair|
+  %tr
+    %td.col-xs-1.text-center= link_to pair.transitive.kanji, pair.transitive
+    %td.col-xs-1.text-center= pair.transitive.reading
+    %td.col-xs-3.text-center= pair.transitive.category
+    %td.col-xs-2.text-center= link_to t("verb_pair.categories.#{pair.category}"), pair
+    %td.col-xs-1.text-center= link_to pair.intransitive.kanji, pair.intransitive
+    %td.col-xs-1.text-center= pair.intransitive.reading
+    %td.col-xs-3.text-center= pair.intransitive.category
+= render "utils/pagination_links", pager: pairs, columns: 3

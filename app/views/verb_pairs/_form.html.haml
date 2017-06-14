@@ -1,0 +1,14 @@
+.row
+  .col-md-12
+    = form_for pair, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: pair, col: "md", pad: 4 }
+        = render "utils/select_for", shared.merge(param: :transitive_id, text: t("verb_pair.transitive"), width: 3, menu: verb_pair_transitive_menu(pair.transitive_id))
+        = render "utils/select_for", shared.merge(param: :intransitive_id, text: t("verb_pair.intransitive"), width: 3, menu: verb_pair_intransitive_menu(pair.intransitive_id))
+        = render "utils/select_for", shared.merge(param: :category, text: t("verb_pair.category"), width: 2, menu: verb_pair_category_menu(pair.category))
+      .row
+        .col-md-offset-4.col-md-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), pair.new_record?? verb_pairs_path : pair, class: "btn btn-default"
+          - unless pair.new_record?
+            = link_to t("delete"), pair, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

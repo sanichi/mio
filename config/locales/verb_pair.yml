@@ -1,0 +1,15 @@
+en:
+  verb_pair:
+    category: Category
+    edit: Edit Verb Pair
+    intransitive: Intransitive
+    new: New Verb Pair
+    transitive: Transitive
+    verb_pair: Verb Pair
+    verb_pairs: Verb Pairs
+    categories:
+      asu_eru: asu→eru
+      eru_aru: eru→aru
+      eru_u: eru→u
+      u_eru: u→eru
+      irregular: irregular

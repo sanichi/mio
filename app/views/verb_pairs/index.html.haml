@@ -1,0 +1,26 @@
+= render "utils/title", key: "verb_pair.verb_pairs"
+
+.text-center
+  = form_tag verb_pairs_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("query"), size: 16
+    .form-group
+      = label_tag :category, t("verb_pair.category"), class: "sr-only"
+      = select_tag :category, verb_pair_category_menu(params[:category], search: true), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.transitive")
+          %th.col-xs-2.text-center= t("verb_pair.category")
+          %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.intransitive")
+      %tbody{id: "results"}
+        = render "results", pairs: @verb_pairs
+
+.text-center
+  - if can?(:create, VerbPair)
+    = link_to t("verb_pair.new"), new_verb_pair_path, class: "btn btn-info"
