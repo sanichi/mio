@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613074622) do
+ActiveRecord::Schema.define(version: 20170614075925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -330,18 +330,6 @@ ActiveRecord::Schema.define(version: 20170613074622) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description", limit: 20
-  end
-
-  create_table "verbs", force: :cascade do |t|
-    t.string "category", limit: 3
-    t.string "kanji", limit: 20
-    t.string "meaning", limit: 500
-    t.string "reading", limit: 20
-    t.boolean "transitive"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "vocab_id"
-    t.index ["vocab_id"], name: "index_verbs_on_vocab_id"
   end
 
   create_table "vocab_questions", force: :cascade do |t|
