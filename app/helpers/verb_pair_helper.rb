@@ -6,7 +6,7 @@ module VerbPairHelper
   end
 
   def verb_pair_transitive_menu(selected)
-    vocabs = Vocab.by_kanji.where("category ILIKE '%verb%' AND category NOT ILIKE '%intransitive%'").to_a
+    vocabs = Vocab.by_kanji.where("category ILIKE '%verb%' AND category ILIKE '%transitive%' AND category NOT ILIKE '%intransitive%'").to_a
     opts = vocabs.map { |v| [v.kanji_reading, v.id] }
     opts.unshift [t("select"), ""]
     options_for_select(opts, selected)
