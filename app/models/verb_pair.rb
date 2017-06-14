@@ -11,7 +11,8 @@ class VerbPair < ApplicationRecord
   belongs_to :intransitive, class_name: "Vocab", foreign_key: :intransitive_id
 
   validates :category, inclusion: { in: CATEGORIES }
-  validates :transitive_id, :intransitive_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
+  validates :transitive_id, numericality: { integer_only: true, greater_than: 0 }
+  validates :intransitive_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: :transitive_id }
 
   scope :by_tag, -> { order('tag COLLATE "C"') }
 

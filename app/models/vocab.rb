@@ -64,7 +64,7 @@ class Vocab < ApplicationRecord
   end
 
   def verb?
-    category.match(/verb/) && reading.match(/[くぐすつぬぶむるう]\z/)
+    category.match(/\bverb\b/)
   end
 
   def conjugate(tense)

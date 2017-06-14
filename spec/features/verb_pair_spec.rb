@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Vocab do
+describe VerbPair do
   let!(:vt1)       { create(:vocab, kanji: "上げる", category: "transitive verb, ichidan verb") }
   let!(:vi1)       { create(:vocab, kanji: "上がる", category: "intransitive verb, godan verb") }
   let!(:vt2)       { create(:vocab, kanji: "切る", category: "transitive verb, godan verb") }
