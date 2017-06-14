@@ -16,8 +16,8 @@
       %thead
         %tr
           %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.transitive")
-          %th.col-xs-2.text-center= t("verb_pair.category")
           %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.intransitive")
+          %th.col-xs-2.text-center= t("verb_pair.category")
       %tbody{id: "results"}
         = render "results", pairs: @verb_pairs
 
