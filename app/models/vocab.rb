@@ -9,6 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
+  TENSES = %w/dict masu/
 
   has_many :vocab_questions, dependent: :destroy
 
@@ -55,6 +56,18 @@ class Vocab < ApplicationRecord
 
   def test_reading(str)
     reading.split(/\s*,\s*/).include?(str.to_s)
+  end
+
+  def verb?
+    category.match(/verb/) && reading.match(/[くぐすつぬぶむるう]\z/)
+  end
+
+  def conjugate(tense)
+    case tense
+    when "dict" then kanji
+    when "masu" then kanji
+    else nil
+    end
   end
 
   private

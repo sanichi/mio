@@ -23,6 +23,9 @@
           %th= t("vocab.level")
           %td= @vocab.level
 
+- if @vocab.verb?
+  = render "conjugate", verb: @vocab
+
 .text-center
   = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"
   - if can?(:manage, Vocab)

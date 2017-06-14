@@ -3,6 +3,7 @@ en:
     any_level: Any Level
     audio: Audio
     category: Part of Speech
+    conjugation: Conjugation
     edit: Edit Vocab
     japanese: Japanese
     kanji: Kanji
@@ -12,6 +13,9 @@ en:
     reading: Reading
     vocab: Vocab
     vocabs: Vocabs
+    tense:
+      dict: Dictionary
+      masu: Polite
     test:
       a2km: Audio to Kanji and Meaning
       any: Any Skill
