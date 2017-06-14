@@ -1,6 +1,7 @@
 - defined?(autoplay) || autoplay = nil
 - defined?(title)    || title    = nil
+- defined?(text)     || text     = t("symbol.audio")
 
-%button.btn.btn-default.btn-xs.btn-info{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()"}= t("symbol.audio")
+%button.btn.btn-default.btn-xs.btn-info{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()"}= text
 %audio{autoplay: autoplay, id: "audio_#{vocab.id}"}
   %source{src: "/system/audio/wani_kani/#{vocab.audio}", type: vocab.audio_type}

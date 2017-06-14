@@ -28,7 +28,7 @@ class VerbPair < ApplicationRecord
   end
 
   def title
-    transitive.kanji + "→" + intransitive.kanji
+    transitive.kanji + " → " + intransitive.kanji
   end
 
   private

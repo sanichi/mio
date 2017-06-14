@@ -8,7 +8,7 @@
           %th{rowspan: 4}= t("verb_pair.transitive")
           %td= link_to @verb_pair.transitive.kanji, @verb_pair.transitive
         %tr
-          %td= @verb_pair.transitive.reading
+          %td= render "vocabs/audio", vocab: @verb_pair.transitive, text: @verb_pair.transitive.reading
         %tr
           %td= @verb_pair.transitive.meaning
         %tr
@@ -17,7 +17,7 @@
           %th{rowspan: 4}= t("verb_pair.intransitive")
           %td= link_to @verb_pair.intransitive.kanji, @verb_pair.transitive
         %tr
-          %td= @verb_pair.intransitive.reading
+          %td= render "vocabs/audio", vocab: @verb_pair.intransitive, text: @verb_pair.intransitive.reading
         %tr
           %td= @verb_pair.intransitive.meaning
         %tr
