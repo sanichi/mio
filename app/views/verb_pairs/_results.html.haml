@@ -2,9 +2,9 @@
   %tr
     %td.col-xs-1.text-center= link_to pair.transitive.kanji, pair.transitive
     %td.col-xs-1.text-center= pair.transitive.reading
-    %td.col-xs-3.text-center= pair.transitive.meaning.truncate(30)
+    %td.col-xs-3= pair.transitive.meaning.truncate(30)
     %td.col-xs-2.text-center= link_to t("verb_pair.categories.#{pair.category}"), pair
     %td.col-xs-1.text-center= link_to pair.intransitive.kanji, pair.intransitive
     %td.col-xs-1.text-center= pair.intransitive.reading
-    %td.col-xs-3.text-center= pair.intransitive.meaning.truncate(30)
+    %td.col-xs-3= pair.intransitive.meaning.truncate(30)
 = render "utils/pagination_links", pager: pairs, columns: 3
