@@ -7,7 +7,11 @@ class VocabTestsController < ApplicationController
   end
 
   def show
-    @next_question = @test.next_question(params[:ask_again])
+    if params[:redo_last].present?
+      @next_question = @test.next_question(@test.drop_last_question)
+    else
+      @next_question = @test.next_question(params[:ask_again])
+    end
   end
 
   def new

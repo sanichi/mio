@@ -29,6 +29,15 @@ class VocabTest < ApplicationRecord
     VocabQuestion.new(vocab: vocab, vocab_test: self)
   end
 
+  def drop_last_question
+    last_question = vocab_questions.first
+    return unless last_question
+    last_question.destroy
+    reload
+    update_stats
+    last_question.vocab.id
+  end
+
   def update_stats
     set_total
     questions = vocab_questions.to_a

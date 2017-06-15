@@ -12,7 +12,4 @@
         = render "utils/text_field_for", shared.merge(param: :kanji, text: t("vocab.kanji"), width: 4, autofocus: true)
         = f.hidden_field(:vocab_id, value: question.vocab.id)
         = f.hidden_field(:vocab_test_id, value: question.vocab_test.id)
-      .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("submit"), class: "btn btn-info"
-          = link_to t("skip"), question.vocab_test, class: "btn btn-default"
+      = render "new_question_buttons", question: question, f: f

@@ -17,7 +17,7 @@ class VocabQuestion < ApplicationRecord
     kanji_correct && meaning_correct && reading_correct
   end
 
-  def blanks?
+  def blank_answers?
     case vocab_test.category
     when "a2km"
       kanji.blank? || meaning.blank?

@@ -4,7 +4,7 @@ class VocabQuestionsController < ApplicationController
 
   def create
     @question = VocabQuestion.new(strong_params)
-    if @question.blanks?
+    if @question.blank_answers?
       redirect_to vocab_test_path(@question.vocab_test, ask_again: @question.vocab_id)
     else
       @question.save
