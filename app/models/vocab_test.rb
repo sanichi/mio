@@ -16,12 +16,15 @@ class VocabTest < ApplicationRecord
   scope :by_progress, -> { order(progress_rate: :asc, updated_at: :desc) }
   scope :by_updated,  -> { order(updated_at: :desc) }
 
-  def next_question
-    completed = vocab_questions.each_with_object(Hash.new) do |q, h|
-      h[q.vocab_id] = true if q.answered_correctly?
+  def next_question(vocab_id)
+    vocab = Vocab.find_by(id: vocab_id) if vocab_id.present?
+    unless vocab.present?
+      completed = vocab_questions.each_with_object(Hash.new) do |q, h|
+        h[q.vocab_id] = true if q.answered_correctly?
+      end
+      available = Vocab.where(level: level).all
+      vocab = available.reject{ |v| completed[v.id] }.sample
     end
-    available = Vocab.where(level: level).all
-    vocab = available.reject{ |v| completed[v.id] }.sample
     return unless vocab.present?
     VocabQuestion.new(vocab: vocab, vocab_test: self)
   end

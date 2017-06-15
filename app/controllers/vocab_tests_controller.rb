@@ -7,7 +7,7 @@ class VocabTestsController < ApplicationController
   end
 
   def show
-    @next_question = @test.next_question
+    @next_question = @test.next_question(params[:ask_again])
   end
 
   def new

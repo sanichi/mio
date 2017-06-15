@@ -17,6 +17,19 @@ class VocabQuestion < ApplicationRecord
     kanji_correct && meaning_correct && reading_correct
   end
 
+  def blanks?
+    case vocab_test.category
+    when "a2km"
+      kanji.blank? || meaning.blank?
+    when "k2mr"
+      meaning.blank? || reading.blank?
+    when "m2k"
+      kanji.blank?
+    else
+      false
+    end
+  end
+
   def meaning_plus
     return meaning unless meaning_correct
     "#{meaning} (#{vocab&.meaning})"
