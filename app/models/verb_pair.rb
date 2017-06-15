@@ -15,7 +15,7 @@ class VerbPair < ApplicationRecord
   validates :intransitive_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: :transitive_id }
 
   scope :by_tag,   -> { order('tag COLLATE "C"') }
-  scope :by_group, -> { order(:group) }
+  scope :by_group, -> { order(:group, 'tag COLLATE "C"') }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
