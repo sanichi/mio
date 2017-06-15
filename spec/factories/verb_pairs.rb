@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :verb_pair do
     transitive   { vocab }
     intransitive { vocab }
-    category     { VerbPair::CATEGORIES.sample }
+    group        { rand(VerbPair::MAX_GROUP + 1) }
   end
 end

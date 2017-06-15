@@ -1,15 +1,16 @@
 en:
   verb_pair:
-    category: Category
     edit: Edit Verb Pair
+    group: Group
     intransitive: Intransitive
     new: New Verb Pair
+    tag: Reading
     transitive: Transitive
     verb_pair: Verb Pair
     verb_pairs: Verb Pairs
-    categories:
-      asu_eru: あす→える
-      eru_aru: える→ある
-      eru_u: える→う
-      u_eru: う→える
-      irregular: irregular
+    groups:
+      - あす→える
+      - える→ある
+      - える→う
+      - う→える
+      - irregular

@@ -39,6 +39,6 @@ class VerbPairsController < ApplicationController
   end
 
   def strong_params
-    params.require(:verb_pair).permit(:category, :transitive_id, :intransitive_id)
+    params.require(:verb_pair).permit(:group, :transitive_id, :intransitive_id)
   end
 end

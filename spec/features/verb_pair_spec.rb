@@ -5,8 +5,8 @@ describe VerbPair do
   let!(:vi1)       { create(:vocab, kanji: "上がる", category: "intransitive verb, godan verb") }
   let!(:vt2)       { create(:vocab, kanji: "切る", category: "transitive verb, godan verb") }
   let!(:vi2)       { create(:vocab, kanji: "切れる", category: "intransitive verb, ichidan verb") }
-  let!(:verb_pair) { create(:verb_pair, transitive: vt1, intransitive: vi1, category: "eru_aru") }
-  let(:data)       { build(:verb_pair, transitive: vt2, intransitive: vi2, category: "u_eru") }
+  let!(:verb_pair) { create(:verb_pair, transitive: vt1, intransitive: vi1, group: 1) }
+  let(:data)       { build(:verb_pair, transitive: vt2, intransitive: vi2, group: 3) }
 
   before(:each) do
     login
@@ -18,7 +18,7 @@ describe VerbPair do
       click_link t(:verb__pair_new)
       select data.transitive.kanji_reading, from: t(:verb__pair_transitive)
       select data.intransitive.kanji_reading, from: t(:verb__pair_intransitive)
-      select I18n.t("verb_pair.categories.#{data.category}"), from: t(:verb__pair_category)
+      select I18n.t("verb_pair.groups")[data.group], from: t(:verb__pair_group)
       click_button t(:save)
 
       expect(page).to have_title data.title
@@ -28,7 +28,7 @@ describe VerbPair do
 
       expect(p.transitive_id).to eq data.transitive.id
       expect(p.intransitive_id).to eq data.intransitive.id
-      expect(p.category).to eq data.category
+      expect(p.group).to eq data.group
     end
 
     it "failure" do
@@ -39,12 +39,13 @@ describe VerbPair do
 
       expect(page).to have_title t(:verb__pair_new)
       expect(VerbPair.count).to eq 1
-      expect(page).to have_css(error, text: "not included")
+      expect(page).to have_css(error, text: "not a number")
     end
   end
 
   it "delete" do
-    click_link I18n.t("verb_pair.categories.#{verb_pair.category}")
+    expect(VerbPair.count).to eq 1
+    click_link I18n.t("verb_pair.groups")[verb_pair.group]
     click_link t(:edit)
     click_link t(:delete)
 
@@ -52,7 +53,7 @@ describe VerbPair do
   end
 
   it "edit" do
-    click_link I18n.t("verb_pair.categories.#{verb_pair.category}")
+    click_link I18n.t("verb_pair.groups")[verb_pair.group]
     click_link t(:edit)
 
     select data.transitive.kanji_reading, from: t(:verb__pair_transitive)

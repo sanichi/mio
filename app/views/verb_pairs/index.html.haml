@@ -6,8 +6,11 @@
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :query, params[:query], class: "form-control", placeholder: t("query"), size: 16
     .form-group
-      = label_tag :category, t("verb_pair.category"), class: "sr-only"
-      = select_tag :category, verb_pair_category_menu(params[:category], search: true), class: "form-control auto-submit"
+      = label_tag :group, t("verb_pair.group"), class: "sr-only"
+      = select_tag :group, verb_pair_group_menu(params[:group], search: true), class: "form-control auto-submit"
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, verb_pair_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
@@ -16,7 +19,7 @@
       %thead
         %tr
           %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.transitive")
-          %th.col-xs-2.text-center= t("verb_pair.category")
+          %th.col-xs-2.text-center= t("verb_pair.group")
           %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.intransitive")
       %tbody{id: "results"}
         = render "results", pairs: @verb_pairs

@@ -23,8 +23,8 @@
         %tr
           %td= @verb_pair.intransitive.category
         %tr
-          %th= t("verb_pair.category")
-          %td= t("verb_pair.categories.#{@verb_pair.category}")
+          %th= t("verb_pair.group")
+          %td= t("verb_pair.groups")[@verb_pair.group]
 
 .text-center
   = link_to t("verb_pair.verb_pairs"), verb_pairs_path, class: "btn btn-success"

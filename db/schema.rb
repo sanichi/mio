@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614135335) do
+ActiveRecord::Schema.define(version: 20170615120732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20170614135335) do
     t.integer "intransitive_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "group", limit: 2
+    t.index ["group"], name: "index_verb_pairs_on_group"
     t.index ["intransitive_id"], name: "index_verb_pairs_on_intransitive_id"
     t.index ["tag"], name: "index_verb_pairs_on_tag"
     t.index ["transitive_id", "intransitive_id"], name: "index_verb_pairs_on_transitive_id_and_intransitive_id"

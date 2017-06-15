@@ -22,10 +22,13 @@ class Vocab < ApplicationRecord
   validates :meaning, length: { maximum: MAX_MEANING }, presence: true
   validates :reading, length: { maximum: MAX_READING }, presence: true
 
-  scope :by_kanji,   -> { order('kanji COLLATE "C"') }
-  scope :by_level,   -> { order(:level, 'reading COLLATE "C"') }
-  scope :by_meaning, -> { order(:meaning, 'reading COLLATE "C"') }
-  scope :by_reading, -> { order('reading COLLATE "C"', :meaning) }
+  scope :by_kanji,     -> { order('kanji COLLATE "C"') }
+  scope :by_level,     -> { order(:level, 'reading COLLATE "C"') }
+  scope :by_meaning,   -> { order(:meaning, 'reading COLLATE "C"') }
+  scope :by_reading,   -> { order('reading COLLATE "C"', :meaning) }
+  scope :transitive,   -> { where("category ILIKE '%verb%' AND category ILIKE '%transitive%' AND category NOT ILIKE '%intransitive%'") }
+  scope :intransitive, -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
+
 
   def self.search(params, path, opt={})
     matches = case params[:order]
