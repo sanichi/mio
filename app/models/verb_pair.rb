@@ -3,6 +3,7 @@ class VerbPair < ApplicationRecord
 
   MAX_GROUP = I18n.t("verb_pair.groups").length - 1
   MAX_TAG = 2 * (Vocab::MAX_KANJI + Vocab::MAX_READING + Vocab::MAX_MEANING) + 5
+  CATEGORIES = %w/eru_aru u_eru eru_u asu_eru irregular/
 
   after_save :set_tag
 
