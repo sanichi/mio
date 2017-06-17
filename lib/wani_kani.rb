@@ -16,7 +16,7 @@ class WaniKani
     raise "invalid WaniKani password" unless @password.is_a?(String) && @password.present?
   end
 
-  def kanji
+  def vocabs
     uri = URI.parse("https://www.wanikani.com/api/user/#{api}/vocabulary")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true

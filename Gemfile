@@ -18,6 +18,7 @@ gem "chronic", "~> 0.10"
 gem "libv8", "3.16.14.15"
 gem "oga", "~> 2.5"
 gem "mechanize", "~> 2.7"
+gem "ruby-progressbar", "~> 1.8"
 
 group :development do
   gem "capistrano-rails"
