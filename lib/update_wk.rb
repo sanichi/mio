@@ -78,8 +78,8 @@ def update_kanjis(wk)
     k = Kanji.create(symbol: kanji)
 
     # Organise the WaniKani reading data.
-    onyomi = data["onyomi"].to_s.sub(/[\sa-zA-Z\/.\*]/, "").split(",")
-    kunyomi = data["kunyomi"].to_s.sub(/[\sa-zA-Z\/.\*]/, "").split(",")
+    onyomi = data["onyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
+    kunyomi = data["kunyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
     die "no onyomi or kunyomi for kanji: #{kanji}" if onyomi.empty? && kunyomi.empty?
 
     # Check the important readings.
