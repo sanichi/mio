@@ -75,7 +75,7 @@ def update_kanjis(wk)
     data = wk.kanji[kanji]
 
     # Create a new kanji object.
-    k = Kanji.create(symbol: kanji, meaning: data["meaning"])
+    k = Kanji.create!(symbol: kanji, meaning: data["meaning"])
 
     # Organise the WaniKani reading data.
     onyomi = data["onyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
@@ -94,14 +94,14 @@ def update_kanjis(wk)
 
     # Store the new onyomi readings and their links to the kanji.
     onyomi.each do |on|
-      r = Reading.find_or_create_by(kana: on)
-      y = Yomi.create(kanji: k, reading: r, on: true, important: important == "onyomi")
+      r = Reading.find_or_create_by!(kana: on)
+      y = Yomi.create!(kanji: k, reading: r, on: true, important: important == "onyomi")
     end
 
     # Store the new kunyomi readings and their links to the kanji.
     kunyomi.each do |kun|
-      r = Reading.find_or_create_by(kana: kun)
-      y = Yomi.create(kanji: k, reading: r, on: false, important: important == "kunyomi")
+      r = Reading.find_or_create_by!(kana: kun)
+      y = Yomi.create!(kanji: k, reading: r, on: false, important: important == "kunyomi")
     end
 
     # Update progress.
@@ -122,10 +122,10 @@ begin
   wk = WaniKani.new(Rails.application.secrets.wani_kani)
 
   # Update vocabs.
-  update_vocabs wk
+  update_vocabs(wk)
 
   # Update kanjis, readings and yomis.
-  update_kanjis wk
+  update_kanjis(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}"
