@@ -2,8 +2,8 @@
   %tr
     %td.col-xs-1.text-center= kanji.symbol
     %td.col-xs-1.text-center= kanji.total
-    %td.col-xs-4= kanji.yomis.select{ |y| y.on }.map{ |y| y.reading.kana }.join(", ")
+    %td.col-xs-4= render "kanas", yomis: kanji.yomis.select{ |y| y.on }
     %td.col-xs-1.text-center= kanji.onyomi
-    %td.col-xs-4= kanji.yomis.select{ |y| !y.on }.map{ |y| y.reading.kana }.join(", ")
+    %td.col-xs-4= render "kanas", yomis: kanji.yomis.select{ |y| !y.on }
     %td.col-xs-1.text-center= kanji.kunyomi
 = render "utils/pagination_links", pager: kanjis, columns: 6

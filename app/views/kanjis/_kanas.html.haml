@@ -1,0 +1,6 @@
+- yomis.each_with_index.reverse_each do |yomi, i|
+  = succeed(i == 0 ? "" : ",") do
+    - if yomi.important
+      %strong= yomi.reading.kana
+    - else
+      %span= yomi.reading.kana

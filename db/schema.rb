@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618072259) do
+ActiveRecord::Schema.define(version: 20170618113627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -401,6 +401,7 @@ ActiveRecord::Schema.define(version: 20170618072259) do
     t.bigint "kanji_id"
     t.bigint "reading_id"
     t.boolean "on", default: true
+    t.boolean "important", default: true
     t.index ["kanji_id"], name: "index_yomis_on_kanji_id"
     t.index ["reading_id"], name: "index_yomis_on_reading_id"
   end

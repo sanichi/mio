@@ -3,7 +3,7 @@ class Reading < ApplicationRecord
 
   MAX_KANA = 5
 
-  has_many :yomis
+  has_many :yomis, dependent: :destroy
   has_many :kanjis, through: :yomis
 
   validates :kana, presence: true, length: { maximum: MAX_KANA }, uniqueness: true

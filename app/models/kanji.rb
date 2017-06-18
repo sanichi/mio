@@ -3,7 +3,7 @@ class Kanji < ApplicationRecord
 
   MAX_SYMBOL = 1
 
-  has_many :yomis
+  has_many :yomis, dependent: :destroy
   has_many :readings, through: :yomis
 
   validates :symbol, presence: true, length: { maximum: MAX_SYMBOL }, uniqueness: true
