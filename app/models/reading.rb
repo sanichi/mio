@@ -10,7 +10,8 @@ class Reading < ApplicationRecord
 
   scope :by_onyomi,  -> { order("onyomi DESC", 'kana COLLATE "C"') }
   scope :by_kunyomi, -> { order("kunyomi DESC", 'kana COLLATE "C"') }
-  scope :by_kanjis,  -> { order("(onyomi + kunyomi) DESC", 'kana COLLATE "C"') }
+  scope :by_total,   -> { order("(onyomi + kunyomi) DESC", 'kana COLLATE "C"') }
+  scope :by_kana,    -> { order('kana COLLATE "C"', "(onyomi + kunyomi) DESC") }
 
   def total
     onyomi + kunyomi
@@ -20,7 +21,8 @@ class Reading < ApplicationRecord
     matches = case params[:order]
     when "onyomi"   then by_onyomi
     when "kunyomi"  then by_kunyomi
-    else                 by_kanjis
+    when "kana"     then by_kana
+    else                 by_total
     end
     matches = matches.includes(yomis: :kanji)
     paginate(matches, params, path, opt)
