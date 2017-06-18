@@ -7,10 +7,14 @@ en:
     edit: Edit Vocab
     japanese: Japanese
     kanji: Kanji
+    kanjis: Kanji
+    kunyomi: Kunyomi
     level: Level
     meaning: Meaning
+    onyomi: Onyomi
     new: New Vocab
     reading: Reading
+    readings: Readings
     vocab: Vocab
     vocabs: Vocabs
     tense:

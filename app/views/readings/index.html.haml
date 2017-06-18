@@ -1,0 +1,23 @@
+= render "utils/title", key: "vocab.readings"
+
+.text-center
+  = form_tag readings_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, reading_search_order_menu(params[:order]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-1.text-center= t("vocab.reading")
+          %th.col-xs-1.text-center= t("vocab.kanjis")
+          %th.col-xs-5.text-center{colspan: 2}= t("vocab.onyomi")
+          %th.col-xs-5.text-center{colspan: 2}= t("vocab.kunyomi")
+      %tbody{id: "results"}
+        = render "results", readings: @readings
+
+.text-center
+  = link_to t("vocab.kanjis"), kanjis_path, class: "btn btn-success"

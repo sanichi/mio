@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get :graph, on: :collection
   end
   resources :interfaces
+  resources :kanjis, only: [:index]
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection
@@ -41,6 +42,7 @@ Rails.application.routes.draw do
   end
   resources :pictures
   resources :positions
+  resources :readings, only: [:index]
   resources :residents
   resources :sessions, only: [:create]
   resources :tapas, except: [:show] do

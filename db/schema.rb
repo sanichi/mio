@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615133233) do
+ActiveRecord::Schema.define(version: 20170618072259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,12 @@ ActiveRecord::Schema.define(version: 20170615133233) do
     t.string "manufacturer", limit: 50
   end
 
+  create_table "kanjis", force: :cascade do |t|
+    t.string "symbol", limit: 1
+    t.integer "onyomi", default: 0
+    t.integer "kunyomi", default: 0
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "url", limit: 256
     t.string "target", limit: 20, default: "external"
@@ -235,6 +241,12 @@ ActiveRecord::Schema.define(version: 20170615133233) do
     t.integer "opening_id", limit: 2
     t.date "last_reviewed"
     t.string "opening_365", limit: 255
+  end
+
+  create_table "readings", force: :cascade do |t|
+    t.string "kana", limit: 5
+    t.integer "onyomi", default: 0
+    t.integer "kunyomi", default: 0
   end
 
   create_table "residents", force: :cascade do |t|
@@ -383,6 +395,14 @@ ActiveRecord::Schema.define(version: 20170615133233) do
     t.string "category", limit: 50
     t.index ["meaning"], name: "index_vocabs_on_meaning"
     t.index ["reading"], name: "index_vocabs_on_reading"
+  end
+
+  create_table "yomis", force: :cascade do |t|
+    t.bigint "kanji_id"
+    t.bigint "reading_id"
+    t.boolean "on", default: true
+    t.index ["kanji_id"], name: "index_yomis_on_kanji_id"
+    t.index ["reading_id"], name: "index_yomis_on_reading_id"
   end
 
 end

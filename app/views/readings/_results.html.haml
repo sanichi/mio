@@ -1,0 +1,9 @@
+- readings.matches.each do |reading|
+  %tr
+    %td.col-xs-1.text-center= reading.kana
+    %td.col-xs-1.text-center= reading.total
+    %td.col-xs-4= reading.yomis.select{ |y| y.on }.map{ |y| y.kanji.symbol }.join(", ")
+    %td.col-xs-1.text-center= reading.onyomi
+    %td.col-xs-4= reading.yomis.select{ |y| !y.on }.map{ |y| y.kanji.symbol }.join(", ")
+    %td.col-xs-1.text-center= reading.kunyomi
+= render "utils/pagination_links", pager: readings, columns: 6
