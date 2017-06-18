@@ -10,6 +10,9 @@
         %tr
           %th= t("vocab.kunyomi")
           %td= render "kanas", yomis: @kanji.yomis.select{ |y| !y.on }
+        %tr
+          %th= t("vocab.meaning")
+          %td= @kanji.meaning
 
 .text-center
   = link_to t("vocab.kanjis"), kanjis_path, class: "btn btn-success"

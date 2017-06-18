@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618113627) do
+ActiveRecord::Schema.define(version: 20170618155824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "blogs", force: :cascade do |t|
+  create_table "blogs", id: :serial, force: :cascade do |t|
     t.text "story"
     t.string "title", limit: 150
     t.integer "user_id"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.boolean "draft", default: true
   end
 
-  create_table "buckets", force: :cascade do |t|
+  create_table "buckets", id: :serial, force: :cascade do |t|
     t.string "name", limit: 50
     t.text "notes"
     t.integer "mark", limit: 2, default: 0
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "comments", force: :cascade do |t|
+  create_table "comments", id: :serial, force: :cascade do |t|
     t.date "date"
     t.string "source", limit: 50
     t.text "text"
@@ -44,14 +44,14 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
-  create_table "devices", force: :cascade do |t|
+  create_table "devices", id: :serial, force: :cascade do |t|
     t.string "name", limit: 50
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "expenses", force: :cascade do |t|
+  create_table "expenses", id: :serial, force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2
     t.string "category", limit: 10
     t.string "description", limit: 60
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "favourites", force: :cascade do |t|
+  create_table "favourites", id: :serial, force: :cascade do |t|
     t.integer "category", limit: 2
     t.string "name", limit: 50
     t.string "link", limit: 100
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.integer "sandra", limit: 2, default: 0
   end
 
-  create_table "flats", force: :cascade do |t|
+  create_table "flats", id: :serial, force: :cascade do |t|
     t.integer "bay", limit: 2
     t.integer "block", limit: 2
     t.integer "building", limit: 2
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.text "notes"
   end
 
-  create_table "funds", force: :cascade do |t|
+  create_table "funds", id: :serial, force: :cascade do |t|
     t.decimal "annual_fee", precision: 3, scale: 2
     t.string "category", limit: 10
     t.string "company", limit: 50
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.boolean "srri_estimated", default: false
   end
 
-  create_table "historical_events", force: :cascade do |t|
+  create_table "historical_events", id: :serial, force: :cascade do |t|
     t.integer "start", limit: 2
     t.integer "finish", limit: 2
     t.string "description", limit: 50
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "incomes", force: :cascade do |t|
+  create_table "incomes", id: :serial, force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2
     t.string "category", limit: 10
     t.string "description", limit: 60
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.integer "joint", limit: 2, default: 100
   end
 
-  create_table "interfaces", force: :cascade do |t|
+  create_table "interfaces", id: :serial, force: :cascade do |t|
     t.string "mac_address", limit: 17
     t.integer "device_id"
     t.string "name", limit: 50
@@ -135,9 +135,10 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.string "symbol", limit: 1
     t.integer "onyomi", default: 0
     t.integer "kunyomi", default: 0
+    t.string "meaning", limit: 100
   end
 
-  create_table "links", force: :cascade do |t|
+  create_table "links", id: :serial, force: :cascade do |t|
     t.string "url", limit: 256
     t.string "target", limit: 20, default: "external"
     t.string "text", limit: 50
@@ -148,14 +149,14 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
   end
 
-  create_table "logins", force: :cascade do |t|
+  create_table "logins", id: :serial, force: :cascade do |t|
     t.string "email", limit: 75
     t.string "ip", limit: 39
     t.boolean "success"
     t.datetime "created_at"
   end
 
-  create_table "masses", force: :cascade do |t|
+  create_table "masses", id: :serial, force: :cascade do |t|
     t.date "date"
     t.decimal "start", precision: 4, scale: 1
     t.decimal "finish", precision: 4, scale: 1
@@ -163,14 +164,14 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "openings", force: :cascade do |t|
+  create_table "openings", id: :serial, force: :cascade do |t|
     t.string "code", limit: 3
     t.string "description", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "parkings", force: :cascade do |t|
+  create_table "parkings", id: :serial, force: :cascade do |t|
     t.integer "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -179,7 +180,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["vehicle_id"], name: "index_parkings_on_vehicle_id"
   end
 
-  create_table "partnerships", force: :cascade do |t|
+  create_table "partnerships", id: :serial, force: :cascade do |t|
     t.integer "divorce", limit: 2
     t.integer "husband_id"
     t.integer "wedding", limit: 2
@@ -191,7 +192,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.boolean "divorce_guess", default: false
   end
 
-  create_table "people", force: :cascade do |t|
+  create_table "people", id: :serial, force: :cascade do |t|
     t.integer "born", limit: 2
     t.integer "died", limit: 2
     t.string "first_names", limit: 100
@@ -215,7 +216,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["picture_id"], name: "index_people_pictures_on_picture_id"
   end
 
-  create_table "pictures", force: :cascade do |t|
+  create_table "pictures", id: :serial, force: :cascade do |t|
     t.string "image_file_name"
     t.string "image_content_type"
     t.integer "image_file_size"
@@ -227,7 +228,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.string "title"
   end
 
-  create_table "positions", force: :cascade do |t|
+  create_table "positions", id: :serial, force: :cascade do |t|
     t.string "pieces", limit: 71
     t.string "active", limit: 1
     t.string "castling", limit: 4
@@ -249,7 +250,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.integer "kunyomi", default: 0
   end
 
-  create_table "residents", force: :cascade do |t|
+  create_table "residents", id: :serial, force: :cascade do |t|
     t.string "first_names", limit: 100
     t.string "last_name", limit: 50
     t.string "email", limit: 75
@@ -259,7 +260,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.string "agent", limit: 200
   end
 
-  create_table "returns", force: :cascade do |t|
+  create_table "returns", id: :serial, force: :cascade do |t|
     t.integer "year", limit: 2
     t.decimal "percent", precision: 4, scale: 1
     t.integer "returnable_id"
@@ -269,7 +270,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
   end
 
-  create_table "tapas", force: :cascade do |t|
+  create_table "tapas", id: :serial, force: :cascade do |t|
     t.string "title", limit: 50
     t.string "keywords", limit: 100
     t.integer "number", limit: 2
@@ -280,7 +281,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.boolean "star", default: false
   end
 
-  create_table "todos", force: :cascade do |t|
+  create_table "todos", id: :serial, force: :cascade do |t|
     t.string "description", limit: 60
     t.boolean "done", default: false
     t.integer "priority", limit: 2, default: 0
@@ -288,7 +289,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "trades", force: :cascade do |t|
+  create_table "trades", id: :serial, force: :cascade do |t|
     t.string "stock", limit: 60
     t.decimal "units", precision: 10, scale: 3
     t.decimal "buy_price", precision: 9, scale: 2
@@ -301,7 +302,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.decimal "sell_factor", precision: 6, scale: 3, default: "1.0"
   end
 
-  create_table "transactions", force: :cascade do |t|
+  create_table "transactions", id: :serial, force: :cascade do |t|
     t.decimal "cost", precision: 10, scale: 2
     t.datetime "created_at"
     t.string "description"
@@ -317,7 +318,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.index ["upload_id"], name: "index_transactions_on_upload_id"
   end
 
-  create_table "uploads", force: :cascade do |t|
+  create_table "uploads", id: :serial, force: :cascade do |t|
     t.text "content"
     t.string "content_type"
     t.string "error"
@@ -327,7 +328,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.string "account", limit: 3
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", limit: 75
     t.string "encrypted_password", limit: 32
     t.string "role", limit: 20
@@ -336,7 +337,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.integer "person_id"
   end
 
-  create_table "vehicles", force: :cascade do |t|
+  create_table "vehicles", id: :serial, force: :cascade do |t|
     t.integer "resident_id"
     t.string "registration", limit: 12
     t.datetime "created_at", null: false
@@ -384,7 +385,7 @@ ActiveRecord::Schema.define(version: 20170618113627) do
     t.integer "progress_rate", limit: 2, default: 0
   end
 
-  create_table "vocabs", force: :cascade do |t|
+  create_table "vocabs", id: :serial, force: :cascade do |t|
     t.string "audio", limit: 50
     t.string "reading", limit: 20
     t.string "kanji", limit: 20

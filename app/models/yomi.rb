@@ -5,6 +5,7 @@ class Yomi < ApplicationRecord
   belongs_to :reading
 
   after_save :update_counter_caches
+  before_destroy :cleanup
 
   private
 
@@ -16,5 +17,9 @@ class Yomi < ApplicationRecord
       kanji.update_column(:kunyomi, kanji.kunyomi + 1)
       reading.update_column(:kunyomi, reading.kunyomi + 1)
     end
+  end
+
+  def cleanup
+    reading&.destroy
   end
 end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Kanji do
   it "kanji, readings and yomi" do
-    k = Kanji.find_or_create_by(symbol: "木")
+    k = Kanji.create(symbol: "木", meaning: "tree")
     r = Reading.find_or_create_by(kana: "もく")
     y = Yomi.create(kanji: k, reading: r, on: true)
 
@@ -15,7 +15,6 @@ describe Kanji do
     expect(r.onyomi).to eq 1
     expect(r.kunyomi).to eq 0
 
-    k = Kanji.find_or_create_by(symbol: "木")
     r = Reading.find_or_create_by(kana: "き")
     y = Yomi.create(kanji: k, reading: r, on: false)
 
@@ -28,7 +27,7 @@ describe Kanji do
     expect(r.onyomi).to eq 0
     expect(r.kunyomi).to eq 1
 
-    k = Kanji.find_or_create_by(symbol: "気")
+    k = Kanji.create(symbol: "気", meaning: "energy")
     r = Reading.find_or_create_by(kana: "き")
     y = Yomi.create(kanji: k, reading: r, on: true)
 
@@ -41,7 +40,7 @@ describe Kanji do
     expect(r.onyomi).to eq 1
     expect(r.kunyomi).to eq 1
 
-    k = Kanji.find_or_create_by(symbol: "目")
+    k = Kanji.find_or_create_by(symbol: "目", meaning: "eye")
     r = Reading.find_or_create_by(kana: "もく")
     y = Yomi.create(kanji: k, reading: r, on: true)
 

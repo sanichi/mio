@@ -1,6 +1,6 @@
 - readings.matches.each do |reading|
   %tr
-    %td.col-xs-1.text-center= reading.kana
+    %td.col-xs-1.text-center= link_to reading.kana, reading
     %td.col-xs-1.text-center= reading.total
     %td.col-xs-4= render "symbols", yomis: reading.yomis.select{ |y| y.on }
     %td.col-xs-1.text-center= reading.onyomi
