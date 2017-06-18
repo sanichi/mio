@@ -122,7 +122,7 @@ begin
   wk = WaniKani.new(Rails.application.secrets.wani_kani)
 
   # Update vocabs.
-  # update_vocabs wk
+  update_vocabs wk
 
   # Update kanjis, readings and yomis.
   update_kanjis wk
