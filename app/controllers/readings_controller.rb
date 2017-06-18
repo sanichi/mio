@@ -4,4 +4,8 @@ class ReadingsController < ApplicationController
   def index
     @readings = Reading.search(params, readings_path, remote: true, per_page: 20)
   end
+
+  def show
+    @reading = Reading.find(params[:id])
+  end
 end

@@ -1,6 +1,7 @@
 - yomis.each_with_index.reverse_each do |yomi, i|
   = succeed(i == 0 ? "" : ",") do
-    - if yomi.important
-      %strong= yomi.kanji.symbol
-    - else
-      = yomi.kanji.symbol
+    = link_to yomi.kanji do
+      - if yomi.important
+        %strong= yomi.kanji.symbol
+      - else
+        = yomi.kanji.symbol

@@ -1,0 +1,16 @@
+= render "utils/title", text: @kanji.symbol, header: true
+
+.row
+  .col-md-offset-3.col-md-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th.col-md-2= t("vocab.onyomi")
+          %td.col-md-10= render "kanas", yomis: @kanji.yomis.select{ |y| y.on }
+        %tr
+          %th= t("vocab.kunyomi")
+          %td= render "kanas", yomis: @kanji.yomis.select{ |y| !y.on }
+
+.text-center
+  = link_to t("vocab.kanjis"), kanjis_path, class: "btn btn-success"
+  = link_to t("vocab.readings"), readings_path, class: "btn btn-success"
