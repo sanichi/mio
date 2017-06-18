@@ -27,6 +27,9 @@ class Kanji < ApplicationRecord
     else                 by_total
     end
     matches = matches.includes(yomis: :reading)
+    if (m = params[:meaning]).present?
+      matches = matches.where("meaning ILIKE ?", "%#{m}%")
+    end
     paginate(matches, params, path, opt)
   end
 

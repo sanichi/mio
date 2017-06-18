@@ -25,6 +25,9 @@ class Reading < ApplicationRecord
     else                 by_total
     end
     matches = matches.includes(yomis: :kanji)
+    if (k = params[:kana]).present?
+      matches = matches.where("kana LIKE ?", "%#{k}%")
+    end
     paginate(matches, params, path, opt)
   end
 end
