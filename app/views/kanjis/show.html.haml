@@ -13,6 +13,9 @@
         %tr
           %th= t("vocab.meaning")
           %td= @kanji.meaning
+        %tr
+          %th= t("vocab.level")
+          %td= @kanji.level
 
 .text-center
   = link_to t("vocab.kanjis"), kanjis_path, class: "btn btn-success"

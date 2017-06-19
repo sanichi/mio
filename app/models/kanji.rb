@@ -11,6 +11,7 @@ class Kanji < ApplicationRecord
 
   validates :symbol, presence: true, length: { maximum: MAX_SYMBOL }, uniqueness: true
   validates :meaning, presence: true, length: { maximum: MAX_MEANING }
+  validates :level, numericality: { integer_only: true, greater_than_or_equal_to: Vocab::MIN_LEVEL, less_than_or_equal_to: Vocab::MAX_LEVEL }
 
   scope :by_onyomi,  -> { order("onyomi DESC", 'symbol COLLATE "C"') }
   scope :by_kunyomi, -> { order("kunyomi DESC", 'symbol COLLATE "C"') }
@@ -29,6 +30,9 @@ class Kanji < ApplicationRecord
     matches = matches.includes(yomis: :reading)
     if (m = params[:meaning]).present?
       matches = matches.where("meaning ILIKE ?", "%#{m}%")
+    end
+    if (l = params[:level].to_i) > 0
+      matches = matches.where(level: l)
     end
     paginate(matches, params, path, opt)
   end

@@ -6,6 +6,9 @@
       = label_tag :q, t("vocab.meaning"), class: "sr-only"
       = text_field_tag :meaning, params[:meaning], class: "form-control", placeholder: t("vocab.meaning"), size: 16
     .form-group
+      = label_tag :level, t("vocab.level"), class: "sr-only"
+      = select_tag :level, kanji_search_level_menu(params[:level]), class: "form-control auto-submit"
+    .form-group
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, kanji_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"

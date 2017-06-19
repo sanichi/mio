@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Kanji do
   it "kanji, readings and yomi" do
-    k = Kanji.create(symbol: "木", meaning: "tree")
-    r = Reading.find_or_create_by(kana: "もく")
-    y = Yomi.create(kanji: k, reading: r, on: true)
+    k = Kanji.create!(symbol: "木", meaning: "tree", level: 1)
+    r = Reading.find_or_create_by!(kana: "もく")
+    y = Yomi.create!(kanji: k, reading: r, on: true)
 
     expect(Kanji.count).to eq 1
     expect(Reading.count).to eq 1
@@ -15,8 +15,8 @@ describe Kanji do
     expect(r.onyomi).to eq 1
     expect(r.kunyomi).to eq 0
 
-    r = Reading.find_or_create_by(kana: "き")
-    y = Yomi.create(kanji: k, reading: r, on: false)
+    r = Reading.find_or_create_by!(kana: "き")
+    y = Yomi.create!(kanji: k, reading: r, on: false)
 
     expect(Kanji.count).to eq 1
     expect(Reading.count).to eq 2
@@ -27,9 +27,9 @@ describe Kanji do
     expect(r.onyomi).to eq 0
     expect(r.kunyomi).to eq 1
 
-    k = Kanji.create(symbol: "気", meaning: "energy")
-    r = Reading.find_or_create_by(kana: "き")
-    y = Yomi.create(kanji: k, reading: r, on: true)
+    k = Kanji.create!(symbol: "気", meaning: "energy", level: 2)
+    r = Reading.find_or_create_by!(kana: "き")
+    y = Yomi.create!(kanji: k, reading: r, on: true)
 
     expect(Kanji.count).to eq 2
     expect(Reading.count).to eq 2
@@ -40,9 +40,9 @@ describe Kanji do
     expect(r.onyomi).to eq 1
     expect(r.kunyomi).to eq 1
 
-    k = Kanji.find_or_create_by(symbol: "目", meaning: "eye")
-    r = Reading.find_or_create_by(kana: "もく")
-    y = Yomi.create(kanji: k, reading: r, on: true)
+    k = Kanji.create!(symbol: "目", meaning: "eye", level: 2)
+    r = Reading.find_or_create_by!(kana: "もく")
+    y = Yomi.create!(kanji: k, reading: r, on: true)
 
     expect(Kanji.count).to eq 3
     expect(Reading.count).to eq 2

@@ -75,7 +75,7 @@ def update_kanjis(wk)
     data = wk.kanji[kanji]
 
     # Create a new kanji object.
-    k = Kanji.create!(symbol: kanji, meaning: data["meaning"])
+    k = Kanji.create!(symbol: kanji, meaning: data["meaning"], level: data["level"])
 
     # Organise the WaniKani reading data.
     onyomi = data["onyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
