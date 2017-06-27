@@ -8,14 +8,12 @@ gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
 gem "jquery-rails"
 gem "jquery-ui-rails"
-gem "therubyracer", platforms: :ruby
 gem "cancancan", "~> 2.0"
 gem "redcarpet", "~> 3.2"
 gem "whenever", require: false
 gem "paperclip", "~> 5.0"
 gem "rack-mini-profiler", require: false
 gem "chronic", "~> 0.10"
-gem "libv8", "3.16.14.15"
 gem "oga", "~> 2.5"
 gem "mechanize", "~> 2.7"
 gem "ruby-progressbar", "~> 1.8"
