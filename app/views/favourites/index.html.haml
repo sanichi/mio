@@ -12,8 +12,8 @@
       = label_tag :category, t("favourite.category"), class: "sr-only"
       = select_tag :category, favourite_category_search_menu(params[:category]), class: "form-control auto-submit"
     .form-group
-      = label_tag :fan, t("favourite.fans"), class: "sr-only"
-      = select_tag :fan, favourite_fan_search_menu(params[:fan]), class: "form-control auto-submit"
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, favourite_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 %p
@@ -26,8 +26,8 @@
           %th= t("name")
           %th.text-center.col-xs-1= t("favourite.category")
           %th.text-center.col-xs-1= t("year")
-          %th.text-center.col-xs-1= t("favourite.mark")
           %th.text-center.col-xs-1= t("favourite.sandra")
+          %th.text-center.col-xs-1= t("favourite.mark")
           - if can?(:edit, Favourite)
             %th.col-xs-1
       %tbody{id: "results"}

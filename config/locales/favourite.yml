@@ -1,14 +1,13 @@
 en:
   favourite:
     any_category: Any Type
-    any_fan: Any Fan
     category: Type
     edit: Edit Favourite
-    fans: Fans
     favourite: Favourite
     favourites: Favourites
     link: Link
     mark: Mark
+    not_applicable: N/A
     sandra: Sandra
     new: New Favourite
     person: Fan
@@ -17,10 +16,8 @@ en:
       - TV
       - Book
       - Play
-    votes:
-      - None
-      - 😀
-      - 😢
-      - 😧
-      - 🤔
-      - 😂
+    order:
+      combo: By Combined Score
+      mark: By Mark's Score
+      sandra: By Sandra's Score
+      year: By Year

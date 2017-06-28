@@ -14,8 +14,8 @@ describe Favourite do
       click_link t(:favourite_new)
       fill_in t(:name), with: data.name
       fill_in t(:year), with: data.year
-      select t(:favourite_votes)[data.mark], from: t(:favourite_mark)
-      select t(:favourite_votes)[data.sandra], from: t(:favourite_sandra)
+      select data.mark.to_s, from: t(:favourite_mark)
+      select data.sandra.to_s, from: t(:favourite_sandra)
       fill_in t(:favourite_link), with: data.link
       select t(:favourite_categories)[data.category], from: t(:favourite_category)
       click_button t(:save)
@@ -36,8 +36,9 @@ describe Favourite do
     it "failure" do
       click_link t(:favourite_new)
       fill_in t(:year), with: data.year
-      select t(:favourite_votes)[data.mark], from: t(:favourite_mark)
-      select t(:favourite_votes)[data.sandra], from: t(:favourite_sandra)
+      select data.mark.to_s, from: t(:favourite_mark)
+      select data.sandra.to_s, from: t(:favourite_sandra)
+      fill_in t(:favourite_link), with: data.link
       select t(:favourite_categories)[data.category], from: t(:favourite_category)
       click_button t(:save)
 
@@ -57,9 +58,7 @@ describe Favourite do
 
       expect(page).to have_title t(:favourite_favourites)
 
-      expect(Favourite.count).to eq 1
       f = Favourite.last
-
       expect(f.name).to eq data.name
     end
 
@@ -67,16 +66,14 @@ describe Favourite do
       click_link t(:edit)
 
       expect(page).to have_title t(:favourite_edit)
-      select t(:favourite_votes)[0], from: t(:favourite_mark)
-      select t(:favourite_votes)[0], from: t(:favourite_sandra)
+      select t("favourite_not__applicable"), from: t(:favourite_mark)
+      select t("favourite_not__applicable"), from: t(:favourite_sandra)
       click_button t(:save)
 
       expect(page).to have_title t(:favourite_edit)
-      expect(page).to have_css(error, text: "at least one vote")
+      expect(page).to have_css(error, text: "at least one")
 
-      expect(Favourite.count).to eq 1
       f = Favourite.last
-
       expect(f.mark + f.sandra).to be > 0
     end
   end

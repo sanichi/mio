@@ -11,18 +11,18 @@ module FavouritesHelper
     options_for_select(cats, category)
   end
 
-  def favourite_fan_search_menu(fan)
-    fans =
-    [
-      [t("favourite.any_fan"), ""],
-      [t("favourite.mark"),   "m"],
-      [t("favourite.sandra"), "s"],
-    ]
-    options_for_select(fans, fan)
+  def favourite_score_menu(selected, new_record)
+    scores = (Favourite::MIN_SCORE..Favourite::MAX_SCORE).to_a.map do |s|
+      txt = s == 0 ? t("favourite.not_applicable") : s.to_s
+      num = s
+      [txt, num]
+    end
+    scores.unshift [t("select"), ""] if new_record
+    options_for_select(scores, selected)
   end
 
-  def favourite_vote_menu(vote)
-    votes = t("favourite.votes").each_with_index.map { |v, i| [v, i] }
-    options_for_select(votes, vote)
+  def favourite_order_menu(selected)
+    fans = %w/combo sandra mark year/.map{ |o| [t("favourite.order.#{o}"), o] }
+    options_for_select(fans, selected)
   end
 end

@@ -1,9 +1,10 @@
-- favourites.each do |favourite|
+- favourites.matches.each do |favourite|
   %tr
     %td= link_to_if favourite.link, favourite.name, favourite.link, target: "_external"
     %td.text-center= I18n.t("favourite.categories")[favourite.category]
     %td.text-center= favourite.year
-    %td.text-center= t("favourite.votes")[favourite.mark] if favourite.mark > 0
-    %td.text-center= t("favourite.votes")[favourite.sandra] if favourite.sandra > 0
+    %td.text-center= favourite.sandra if favourite.sandra > 0
+    %td.text-center= favourite.mark if favourite.mark > 0
     - if can?(:edit, favourite)
       %td.text-center= link_to t("edit"), edit_favourite_path(favourite), class: "btn btn-info btn-xs"
+= render "utils/pagination_links", pager: favourites, columns: can?(:edit, Favourite) ? 6 : 5
