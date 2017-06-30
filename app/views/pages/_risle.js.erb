@@ -6,8 +6,10 @@ bids['flat-<%= flat.building %>-<%= flat.number %>'] = 'bay-<%= flat.bay %>';
 <% end %>
 
 var text = {};  // bay ID to array of textual parking info
-<% @pdata.bay.each do |bid, array| %>
-text['bay-<%= bid %>'] = [<%= array.map{ |t| "'#{t}'" }.join(', ').html_safe %>];
+<% if @pstat %>
+  <% @pdata.bay.each do |bid, array| %>
+  text['bay-<%= bid %>'] = [<%= array.map{ |t| "'#{t}'" }.join(', ').html_safe %>];
+  <% end %>
 <% end %>
 
 function highlight_bft(bay, flat, on) {
