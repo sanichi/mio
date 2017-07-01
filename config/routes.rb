@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :buckets
   resources :devices
   resources :expenses, except: [:show]
-  resources :favourites, except: [:show]
+  resources :favourites
   resources :flats
   resources :funds do
     resources :comments, except: [:index, :show]

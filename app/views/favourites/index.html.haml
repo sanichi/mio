@@ -3,8 +3,8 @@
 .text-center
   = form_tag favourites_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :name, t("name"), class: "sr-only"
-      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 20
+      = label_tag :name, t("query"), class: "sr-only"
+      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("query"), size: 20
     .form-group
       = label_tag :year, t("year"), class: "sr-only"
       = text_field_tag :year, params[:year], class: "form-control", placeholder: t("year"), size: 7
@@ -19,11 +19,12 @@
 %p
 
 .row
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
           %th= t("name")
+          %th= t("note")
           %th.text-center.col-xs-1= t("favourite.category")
           %th.text-center.col-xs-1= t("year")
           %th.text-center.col-xs-1= t("favourite.sandra")

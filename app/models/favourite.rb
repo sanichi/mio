@@ -4,6 +4,7 @@ class Favourite < ApplicationRecord
 
   MAX_LINK = 100
   MAX_NAME = 50
+  MAX_NOTE = 200
   MIN_YEAR = 1900
   MAX_SCORE = 10
   MIN_SCORE = 0
@@ -14,6 +15,7 @@ class Favourite < ApplicationRecord
   validates :link, format: { with: /\Ahttps?:\/\/[^\s]+\z/ }, length: { maximum: MAX_LINK }, allow_nil: true
   validates :mark, :sandra, numericality: { integer_only: true, greater_than_or_equal_to: MIN_SCORE, less_than_or_equal_to: MAX_SCORE }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
+  validates :note, presence: true
   validates :year, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YEAR, less_than_or_equal_to: Date.today.year }
   validate :at_least_one_vote
 
@@ -33,10 +35,14 @@ class Favourite < ApplicationRecord
     else
       by_combo
     end
-    matches = matches.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
-    matches = matches.where(category: params[:category].to_i) if params[:category].present?
-    if constraint = numerical_constraint(params[:year], :year)
-      matches = matches.where(constraint)
+    if params[:category].present?
+      matches = matches.where(category: params[:category].to_i)
+    end
+    if sql = cross_constraint(params[:query], %w{name note})
+      matches = matches.where(sql)
+    end
+    if sql = numerical_constraint(params[:year], :year)
+      matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)
   end
@@ -44,9 +50,12 @@ class Favourite < ApplicationRecord
   private
 
   def normalize_attributes
-    self.link.squish!
+    self.link&.squish!
     self.link = nil unless link.present?
-    self.name.squish!
+    self.name&.squish!
+    self.name = name&.truncate(MAX_NAME)
+    self.note&.squish!
+    self.note = note&.truncate(MAX_NOTE)
   end
 
   def at_least_one_vote

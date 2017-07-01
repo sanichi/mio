@@ -4,6 +4,7 @@
       %fieldset
         - shared = { form: f, object: favourite, col: "md", pad: 2 }
         = render "utils/text_field_for", shared.merge(param: :name, text: t("name"), width: 6)
+        = render "utils/text_field_for", shared.merge(param: :note, text: t("note"), width: 8)
         = render "utils/text_field_for", shared.merge(param: :year, text: t("year"), width: 2)
         = render "utils/select_for", shared.merge(param: :category, text: t("favourite.category"), width: 2, menu: favourite_category_menu(favourite))
         = render "utils/select_for", shared.merge(param: :mark, text: t("favourite.mark"), width: 1, menu: favourite_score_menu(favourite.mark, favourite.new_record?))
