@@ -3,8 +3,8 @@
 .text-center
   = form_tag verb_pairs_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("query"), size: 16
+      = label_tag :q, t("search"), class: "sr-only"
+      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("search"), size: 16
     .form-group
       = label_tag :group, t("verb_pair.group"), class: "sr-only"
       = select_tag :group, verb_pair_group_menu(params[:group], search: true), class: "form-control auto-submit"
