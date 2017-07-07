@@ -29,8 +29,7 @@
           %th.text-center.col-xs-1= t("year")
           %th.text-center.col-xs-1= t("favourite.sandra")
           %th.text-center.col-xs-1= t("favourite.mark")
-          - if can?(:edit, Favourite)
-            %th.col-xs-1
+          %th.text-center.col-xs-1= t("total")
       %tbody{id: "results"}
         = render "results", favourites: @favourites
 

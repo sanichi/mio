@@ -17,7 +17,7 @@ en:
       - Book
       - Play
     order:
-      combo: By Combined Score
+      combo: By Total Score
       mark: By Mark's Score
       sandra: By Sandra's Score
       year: By Year

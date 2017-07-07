@@ -6,4 +6,5 @@
     %td.text-center= favourite.year
     %td.text-center= favourite.sandra if favourite.sandra > 0
     %td.text-center= favourite.mark if favourite.mark > 0
-= render "utils/pagination_links", pager: favourites, columns: 6
+    %td.text-center= favourite.total
+= render "utils/pagination_links", pager: favourites, columns: 7

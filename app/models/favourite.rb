@@ -47,6 +47,10 @@ class Favourite < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def total
+    mark + sandra
+  end
+
   private
 
   def normalize_attributes
