@@ -28,7 +28,7 @@ module Constrainable
       if input&.match("\\A/([^'\\/]+)/?\\z")
         regex_constraint($1, cols)
       else
-        terms = input.to_s.scan(/[-[:alnum:]]+/)
+        terms = plain_terms(input) + quoted_terms(input)
         like_constraint(terms, cols)
       end
     end
@@ -44,6 +44,14 @@ module Constrainable
       clause = cols.map{ |c| "#{c} ILIKE '%%%s%%'"}.join(" OR ")
       clauses = terms.map{ |t| clause % Array.new(cols.size, t) }
       terms.size == 1 ? clauses.first : "(" + clauses.join(") AND (") + ")"
+    end
+
+    def plain_terms(input)
+      input.to_s.gsub(/"[^"]*"/, "").scan(/[-〜[:alnum:]]+/)
+    end
+
+    def quoted_terms(input)
+      input.to_s.scan(/"([-〜\s[:alnum:]]*)"/).flatten.reject{ |t| t.match(/\A\s*\z/) }
     end
   end
 end
