@@ -18,10 +18,10 @@ class VerbPair < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = case params[:order]
-    when "group"
-      by_group
-    else
+    when "tag"
       by_tag
+    else
+      by_group
     end
     if params[:group].present? && (g = params[:group].to_i) >= 0 && g <= MAX_GROUP
       matches = matches.where(group: g)

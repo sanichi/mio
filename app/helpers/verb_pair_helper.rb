@@ -1,6 +1,6 @@
 module VerbPairHelper
   def verb_pair_search_order_menu(selected)
-    opts = %w/tag group/.map { |o| [t("verb_pair.#{o}"), o] }
+    opts = %w/group tag/.map { |o| [t("verb_pair.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
