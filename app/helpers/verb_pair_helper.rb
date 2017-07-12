@@ -11,14 +11,14 @@ module VerbPairHelper
   end
 
   def verb_pair_transitive_menu(selected)
-    vocabs = Vocab.transitive.by_kanji.to_a
+    vocabs = Vocab.transitive.by_reading.to_a
     opts = vocabs.map { |v| [v.kanji_reading, v.id] }
     opts.unshift [t("select"), ""]
     options_for_select(opts, selected)
   end
 
   def verb_pair_intransitive_menu(selected)
-    vocabs = Vocab.intransitive.by_kanji.to_a
+    vocabs = Vocab.intransitive.by_reading.to_a
     opts = vocabs.map { |v| [v.kanji_reading, v.id] }
     opts.unshift [t("select"), ""]
     options_for_select(opts, selected)
