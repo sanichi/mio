@@ -22,7 +22,7 @@ def update_vocabs(wk)
   vocab_count = Vocab.count
 
   # Get a progress bar.
-  progress = ProgressBar.create(title: "Vocabs", total: new_vocabs.size, output: STDOUT)
+  progress = ProgressBar.create(title: "Vocabs", total: new_vocabs.size, output: STDOUT, format: "%t %c |%B|")
 
   # Loop over the new vocabs.
   new_vocabs.each do |vocab|
@@ -67,7 +67,7 @@ def update_kanjis(wk)
   yomi_count = Yomi.count
 
   # Get a progress bar.
-  progress = ProgressBar.create(title: "Kanji", total: new_kanjis.size, output: STDOUT)
+  progress = ProgressBar.create(title: "Kanji", total: new_kanjis.size, output: STDOUT, format: "%t %c |%B|")
 
   # Loop over the new kanji.
   new_kanjis.each do |kanji|
