@@ -9,7 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
-  TENSES = %w/dict masu/
+  TENSES = %w/dict masu pote prog/
 
   has_many :vocab_questions, dependent: :destroy
 
@@ -73,8 +73,10 @@ class Vocab < ApplicationRecord
   def conjugate(tense)
     case tense
     when "dict" then kanji
-    when "masu" then kanji
-    else nil
+    when "masu" then polite_form
+    when "pote" then potential_form
+    when "prog" then te_form + "いる"
+    else "invalid tense (#{tense})"
     end
   end
 
@@ -83,5 +85,110 @@ class Vocab < ApplicationRecord
   def truncate
     self.category = category&.truncate(MAX_CATEGORY)
     self.meaning = meaning&.truncate(MAX_MEANING)
+  end
+
+  def ichidan?
+    category.match(/\bichidan verb\b/) && reading.match(/[いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ]る\z/)
+  end
+
+  def godan?
+    category.match(/\bgodan verb\b/) && reading.match(/[うくぐすつむぶぬる]\z/)
+  end
+
+  def suru_verb?
+    category.match(/\bsuru verb\b/)
+  end
+
+  def kuru?
+    kanji == "来る"
+  end
+
+  def suru?
+    reading == "する"
+  end
+
+  def te_form
+    if kanji == "行く"
+      "行って"
+    elsif godan?
+      replacement =
+        case kanji[-1]
+        when "す"            then "して"
+        when "く"            then "いて"
+        when "ぐ"            then "いで"
+        when "む", "ぶ", "ぬ" then "んで"
+        when "る", "う", "つ" then "って"
+        else "[invalid godan verb for te-form]"
+        end
+      kanji.sub(/.\z/, replacement)
+    elsif ichidan?
+      kanji.sub(/る\z/, "て")
+    elsif suru_verb?
+      kanji + "して"
+    elsif kuru?
+      "きて"
+    elsif suru?
+      "して"
+    else
+      kanji + "[not a recognisable type of verb for te-form]"
+    end
+  end
+
+  def potential_form
+    if godan?
+      replacement =
+        case kanji[-1]
+        when "う" then "え"
+        when "く" then "け"
+        when "ぐ" then "げ"
+        when "す" then "せ"
+        when "つ" then "て"
+        when "ぬ" then "ね"
+        when "ぶ" then "べ"
+        when "む" then "め"
+        when "る" then "れ"
+        else "[invalid godan verb for potential form]"
+        end
+      kanji.sub(/.\z/, replacement + "る")
+    elsif ichidan?
+      kanji.sub(/る\z/, "られる")
+    elsif suru_verb?
+      kanji + "して"
+    elsif kuru?
+      "こられる"
+    elsif suru?
+      "出来る"
+    else
+      kanji + "[not a recognisable type of verb for potential form]"
+    end
+  end
+
+  def polite_form
+    if godan?
+      replacement =
+        case kanji[-1]
+        when "う" then "い"
+        when "く" then "き"
+        when "ぐ" then "ぎ"
+        when "す" then "し"
+        when "つ" then "ち"
+        when "ぬ" then "に"
+        when "ぶ" then "び"
+        when "む" then "み"
+        when "る" then "り"
+        else "[invalid godan verb for polite form]"
+        end
+      kanji.sub(/.\z/, replacement + "ます")
+    elsif ichidan?
+      kanji.sub(/る\z/, "ます")
+    elsif suru_verb?
+      kanji + "します"
+    elsif kuru?
+      "きます"
+    elsif suru?
+      "します"
+    else
+      kanji + "[not a recognisable type of verb for polite form]"
+    end
   end
 end

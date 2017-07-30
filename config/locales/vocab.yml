@@ -21,6 +21,8 @@ en:
     tense:
       dict: Dictionary
       masu: Polite
+      pote: Potential
+      prog: Progressive
     test:
       a2km: Audio to Kanji and Meaning
       any: Any Skill
