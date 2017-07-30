@@ -153,7 +153,7 @@ class Vocab < ApplicationRecord
     elsif ichidan?
       kanji.sub(/る\z/, "られる")
     elsif suru_verb?
-      kanji + "して"
+      kanji + "できる"
     elsif kuru?
       "こられる"
     elsif suru?
