@@ -107,6 +107,10 @@ class Vocab < ApplicationRecord
     reading == "する"
   end
 
+  def unsuru
+    kanji.sub(/する\z/, "")
+  end
+
   def te_form
     if kanji == "行く"
       "行って"
@@ -124,7 +128,7 @@ class Vocab < ApplicationRecord
     elsif ichidan?
       kanji.sub(/る\z/, "て")
     elsif suru_verb?
-      kanji + "して"
+      unsuru + "して"
     elsif kuru?
       "きて"
     elsif suru?
@@ -153,7 +157,7 @@ class Vocab < ApplicationRecord
     elsif ichidan?
       kanji.sub(/る\z/, "られる")
     elsif suru_verb?
-      kanji + "できる"
+      unsuru + "できる"
     elsif kuru?
       "こられる"
     elsif suru?
@@ -182,7 +186,7 @@ class Vocab < ApplicationRecord
     elsif ichidan?
       kanji.sub(/る\z/, "ます")
     elsif suru_verb?
-      kanji + "します"
+      unsuru + "します"
     elsif kuru?
       "きます"
     elsif suru?
