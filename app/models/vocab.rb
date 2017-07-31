@@ -70,6 +70,15 @@ class Vocab < ApplicationRecord
     category.match(/\bverb\b/)
   end
 
+  def color_id
+    return 0 unless verb?
+    return 1 if ichidan?
+    return 3 if godan? && iru_eru?
+    return 2 if godan?
+    return 4 if suru_verb?
+    return 5
+  end
+
   def conjugate(tense)
     case tense
     when "dict" then kanji
@@ -87,8 +96,12 @@ class Vocab < ApplicationRecord
     self.meaning = meaning&.truncate(MAX_MEANING)
   end
 
+  def iru_eru?
+    reading.match(/[いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ]る\z/)
+  end
+
   def ichidan?
-    category.match(/\bichidan verb\b/) && reading.match(/[いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ]る\z/)
+    category.match(/\bichidan verb\b/) && iru_eru?
   end
 
   def godan?

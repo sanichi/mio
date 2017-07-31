@@ -1,27 +1,30 @@
 = render "utils/title", text: @verb_pair.title, header: true
 
+- v1 = @verb_pair.transitive
+- v2 = @verb_pair.intransitive
+
 .row
   .col-md-offset-2.col-md-8
     %table{class: "table table-bordered"}
       %tbody
         %tr
           %th{rowspan: 4}= t("verb_pair.transitive")
-          %td= link_to @verb_pair.transitive.kanji, @verb_pair.transitive
+          %td= link_to v1.kanji, v1
         %tr
-          %td= render "vocabs/audio", vocab: @verb_pair.transitive, text: @verb_pair.transitive.reading
+          %td= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id
         %tr
-          %td= @verb_pair.transitive.meaning
+          %td= v1.meaning
         %tr
-          %td= @verb_pair.transitive.category
+          %td= v1.category
         %tr
           %th{rowspan: 4}= t("verb_pair.intransitive")
-          %td= link_to @verb_pair.intransitive.kanji, @verb_pair.intransitive
+          %td= link_to v2.kanji, v2
         %tr
-          %td= render "vocabs/audio", vocab: @verb_pair.intransitive, text: @verb_pair.intransitive.reading
+          %td= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id
         %tr
-          %td= @verb_pair.intransitive.meaning
+          %td= v2.meaning
         %tr
-          %td= @verb_pair.intransitive.category
+          %td= v2.category
         %tr
           %th= t("verb_pair.group")
           %td= t("verb_pair.groups")[@verb_pair.group]
