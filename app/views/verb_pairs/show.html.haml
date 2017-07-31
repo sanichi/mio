@@ -15,7 +15,7 @@
           %td= @verb_pair.transitive.category
         %tr
           %th{rowspan: 4}= t("verb_pair.intransitive")
-          %td= link_to @verb_pair.intransitive.kanji, @verb_pair.transitive
+          %td= link_to @verb_pair.intransitive.kanji, @verb_pair.intransitive
         %tr
           %td= render "vocabs/audio", vocab: @verb_pair.intransitive, text: @verb_pair.intransitive.reading
         %tr
