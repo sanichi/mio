@@ -75,81 +75,10 @@ def repair_vocabs(wk)
   end
 
   # Feedback.
-  todo = "No" if todo == 0
+  todo = "no" if todo == 0
   done = "none" if done == 0
   puts "#{todo} potential repairs found, #{done} carried out"
 end
-
-# def update_kanjis(wk)
-#   # Get the symbols of the current kanji from the DB.
-#   db_kanjis = Kanji.pluck(:symbol)
-#   puts "current count of kanji in #{Rails.env} DB: #{db_kanjis.size}"
-#
-#   # Get the user's kanji from WaniKani.
-#   wk_kanjis = wk.kanjis
-#   puts "current count of user kanji: #{wk_kanjis.size}"
-#
-#   # Warn about excess kanji.
-#   excess_kanjis = db_kanjis - wk_kanjis
-#   puts "excess kanji (#{excess_kanjis.size}): #{excess_kanjis.join(', ')}" if excess_kanjis.any?
-#
-#   # Get a list of kanji we don't have yet.
-#   new_kanjis = wk_kanjis - db_kanjis
-#   puts "new kanji to retreive: #{new_kanjis.size}"
-#   return unless new_kanjis.any?
-#
-#   # Note the number of releavant objects now.
-#   kanji_count = Kanji.count
-#   reading_count = Reading.count
-#   yomi_count = Yomi.count
-#
-#   # Get a progress bar.
-#   progress = ProgressBar.create(title: "Kanji", total: new_kanjis.size, output: STDOUT, format: "%t %c |%B|")
-#
-#   # Loop over the new kanji.
-#   new_kanjis.each do |kanji|
-#     # Get the API data for this kanji.
-#     data = wk.kanji[kanji]
-#
-#     # Create a new kanji object.
-#     k = Kanji.create!(symbol: kanji, meaning: data["meaning"], level: data["level"])
-#
-#     # Organise the WaniKani reading data.
-#     onyomi = data["onyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
-#     kunyomi = data["kunyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
-#     die "no onyomi or kunyomi for kanji: #{kanji}" if onyomi.empty? && kunyomi.empty?
-#
-#     # Check the important readings.
-#     important = data["important_reading"]
-#     die "invalid value (#{important} for 'importent_reading' for kanji: #{kanji}" unless important == "onyomi" || important == "kunyomi"
-#     message = "important readings for kanji #{kanji} are #{important} but there are none"
-#     if important == "onyomi"
-#       die message if onyomi.empty?
-#     else
-#       die message if kunyomi.empty?
-#     end
-#
-#     # Store the new onyomi readings and their links to the kanji.
-#     onyomi.each do |on|
-#       r = Reading.find_or_create_by!(kana: on)
-#       y = Yomi.create!(kanji: k, reading: r, on: true, important: important == "onyomi")
-#     end
-#
-#     # Store the new kunyomi readings and their links to the kanji.
-#     kunyomi.each do |kun|
-#       r = Reading.find_or_create_by!(kana: kun)
-#       y = Yomi.create!(kanji: k, reading: r, on: false, important: important == "kunyomi")
-#     end
-#
-#     # Update progress.
-#     progress.increment
-#   end
-
-#   # Feedback about number created.
-#   puts "new kanji created: #{Kanji.count - kanji_count}"
-#   puts "new readings created: #{Reading.count - reading_count}"
-#   puts "new yomi created: #{Yomi.count - yomi_count}"
-# end
 
 def permission_granted?(count=1)
   print "  update [Ynq]? "
@@ -179,9 +108,6 @@ begin
 
   # Repair vocabs.
   repair_vocabs(wk)
-
-  # Update kanjis, readings and yomis.
-  # repair_kanjis(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}"
