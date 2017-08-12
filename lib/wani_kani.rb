@@ -4,7 +4,7 @@ require 'open-uri'
 require 'mechanize'
 
 class WaniKani
-  DELAY = 5.0
+  DELAY = 3.0
 
   attr_reader :api, :username, :password, :vocab, :kanji
 
