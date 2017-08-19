@@ -5,7 +5,7 @@
         %tr
           %th.text-center{colspan: 2}= t("vocab.conjugation")
       %tbody
-        - Vocab::TENSES.each do |tense|
+        - t("vocab.tense").sort_by{|key,tense| tense}.each do |key,tense|
           %tr
-            %td= t("vocab.tense.#{tense}")
-            %td= verb.conjugate(tense)
+            %td= tense
+            %td= verb.conjugate(key)

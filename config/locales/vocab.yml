@@ -21,6 +21,7 @@ en:
     tense:
       dict: Dictionary
       masu: Polite
+      past: Plain Past
       pote: Potential
       prog: Progressive
     test:

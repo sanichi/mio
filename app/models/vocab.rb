@@ -9,7 +9,6 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
-  TENSES = %w/dict masu pote prog/
 
   has_many :vocab_questions, dependent: :destroy
 
@@ -80,9 +79,10 @@ class Vocab < ApplicationRecord
   end
 
   def conjugate(tense)
-    case tense
+    case tense.to_s
     when "dict" then kanji
     when "masu" then polite_form
+    when "past" then past_form
     when "pote" then potential_form
     when "prog" then te_form + "いる"
     else "invalid tense (#{tense})"
@@ -122,6 +122,33 @@ class Vocab < ApplicationRecord
 
   def unsuru
     kanji.sub(/する\z/, "")
+  end
+
+  def past_form
+    if kanji == "行く"
+      "行った"
+    elsif godan?
+      replacement =
+        case kanji[-1]
+        when "す"            then "した"
+        when "く"            then "いた"
+        when "ぐ"            then "いだ"
+        when "む", "ぶ", "ぬ" then "んだ"
+        when "る", "う", "つ" then "った"
+        else "[invalid godan verb for plain past]"
+        end
+      kanji.sub(/.\z/, replacement)
+    elsif ichidan?
+      kanji.sub(/る\z/, "た")
+    elsif suru_verb?
+      unsuru + "した"
+    elsif kuru?
+      "きた"
+    elsif suru?
+      "した"
+    else
+      kanji + "[not a recognisable type of verb for te-form]"
+    end
   end
 
   def te_form
