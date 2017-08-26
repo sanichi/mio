@@ -19,6 +19,7 @@ en:
     vocab: Vocab
     vocabs: Vocabs
     tense:
+      comm: Imperative
       dict: Dictionary
       masu: Polite
       past: Plain Past
