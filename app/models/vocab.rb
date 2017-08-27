@@ -98,7 +98,7 @@ class Vocab < ApplicationRecord
 
   def command
     if godan?
-      godan("e", "command")
+      godan(:e)
     elsif ichidan?
       kanji.sub(/る\z/, "ろ")
     elsif suru_verb?
@@ -141,7 +141,7 @@ class Vocab < ApplicationRecord
 
   def polite
     if godan?
-      godan("i", "polite") + "ます"
+      godan(:i) + "ます"
     elsif ichidan?
       kanji.sub(/る\z/, "ます")
     elsif suru_verb?
@@ -157,7 +157,7 @@ class Vocab < ApplicationRecord
 
   def potential
     if godan?
-      godan("e", "potential")
+      godan(:e)
     elsif ichidan?
       kanji.sub(/る\z/, "られる")
     elsif suru_verb?
@@ -202,38 +202,56 @@ class Vocab < ApplicationRecord
   # Conjugation helpers.
   #
 
-  def godan(base, form)
-    error = "[invalid godan verb for #{form} form]"
+  def godan(base)
+    return "[invalid base #{base} for godan verb]" unless %i/i e/.include?(base)
     replacement =
-      case base
-      when "i"
-        case kanji[-1]
-        when "う" then "い"
-        when "く" then "き"
-        when "ぐ" then "ぎ"
-        when "す" then "し"
-        when "つ" then "ち"
-        when "ぬ" then "に"
-        when "ぶ" then "び"
-        when "む" then "み"
-        when "る" then "り"
-        else error
+      case kanji[-1]
+      when "う"
+        case base
+        when :e then "え"
+        when :i then "い"
         end
-      when "e"
-        case kanji[-1]
-        when "う" then "え"
-        when "く" then "け"
-        when "ぐ" then "げ"
-        when "す" then "せ"
-        when "つ" then "て"
-        when "ぬ" then "ね"
-        when "ぶ" then "べ"
-        when "む" then "め"
-        when "る" then "れ"
-        else error
+      when "く"
+        case base
+        when :e then "け"
+        when :i then "き"
         end
-      else
-        "[invalid base #{base} for godan verb]"
+      when "ぐ"
+        case base
+        when :e then "げ"
+        when :i then "ぎ"
+        end
+      when "す"
+        case base
+        when :e then "せ"
+        when :i then "し"
+        end
+      when "つ"
+        case base
+        when :e then "て"
+        when :i then "ち"
+        end
+      when "ぬ"
+        case base
+        when :e then "ね"
+        when :i then "に"
+        end
+      when "ぶ"
+        case base
+        when :e then "べ"
+        when :i then "び"
+        end
+      when "む"
+        case base
+        when :e then "め"
+        when :i then "み"
+        end
+      when "る"
+        case base
+        when :e then "れ"
+        when :i then "り"
+        end
+      else "[invalid base #{base} for godan verb]"
       end
     kanji.sub(/.\z/, replacement)
   end
