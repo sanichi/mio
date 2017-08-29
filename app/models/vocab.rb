@@ -83,6 +83,7 @@ class Vocab < ApplicationRecord
     when "comm" then command
     when "dict" then kanji
     when "masu" then polite
+    when "pass" then passive
     when "past" then past
     when "pote" then potential
     when "prog" then te + "いる"
@@ -109,6 +110,22 @@ class Vocab < ApplicationRecord
       "しろ"
     else
       kanji + "[not a recognisable type of verb for command form]"
+    end
+  end
+
+  def passive
+    if godan?
+      godan(:a) + "れる"
+    elsif ichidan?
+      kanji.sub(/る\z/, "られる")
+    elsif suru_verb?
+      unsuru + "される"
+    elsif kuru?
+      "こられる"
+    elsif suru?
+      "される"
+    else
+      kanji + "[not a recognisable type of verb for passive form]"
     end
   end
 
@@ -157,7 +174,7 @@ class Vocab < ApplicationRecord
 
   def potential
     if godan?
-      godan(:e)
+      godan(:e) + "る"
     elsif ichidan?
       kanji.sub(/る\z/, "られる")
     elsif suru_verb?
@@ -203,51 +220,60 @@ class Vocab < ApplicationRecord
   #
 
   def godan(base)
-    return "[invalid base #{base} for godan verb]" unless %i/i e/.include?(base)
+    return "[invalid base #{base} for godan verb]" unless %i/a i e/.include?(base)
     replacement =
       case kanji[-1]
       when "う"
         case base
+        when :a then "わ"
         when :e then "え"
         when :i then "い"
         end
       when "く"
         case base
+        when :a then "か"
         when :e then "け"
         when :i then "き"
         end
       when "ぐ"
         case base
+        when :a then "が"
         when :e then "げ"
         when :i then "ぎ"
         end
       when "す"
         case base
+        when :a then "さ"
         when :e then "せ"
         when :i then "し"
         end
       when "つ"
         case base
+        when :a then "た"
         when :e then "て"
         when :i then "ち"
         end
       when "ぬ"
         case base
+        when :a then "ま"
         when :e then "ね"
         when :i then "に"
         end
       when "ぶ"
         case base
+        when :a then "ば"
         when :e then "べ"
         when :i then "び"
         end
       when "む"
         case base
+        when :a then "ま"
         when :e then "め"
         when :i then "み"
         end
       when "る"
         case base
+        when :a then "ら"
         when :e then "れ"
         when :i then "り"
         end
