@@ -19,10 +19,11 @@ class Favourite < ApplicationRecord
   validates :year, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YEAR, less_than_or_equal_to: Date.today.year }
   validate :at_least_one_vote
 
-  scope :by_year,   -> { order(year: :desc, name: :asc) }
-  scope :by_mark,   -> { order(mark: :desc, name: :asc) }
-  scope :by_sandra, -> { order(sandra: :desc, name: :asc) }
-  scope :by_combo,  -> { order("(sandra + mark) DESC, name ASC") }
+  scope :by_year,     -> { order(year: :desc, name: :asc) }
+  scope :by_mark,     -> { order(mark: :desc, name: :asc) }
+  scope :by_sandra,   -> { order(sandra: :desc, name: :asc) }
+  scope :by_combo,    -> { order("(sandra + mark) DESC, name ASC") }
+  scope :by_entered,  -> { order(created_at: :desc) }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -32,6 +33,8 @@ class Favourite < ApplicationRecord
       by_sandra
     when "year"
       by_year
+    when "entered"
+      by_entered
     else
       by_combo
     end

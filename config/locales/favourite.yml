@@ -18,6 +18,7 @@ en:
       - Play
     order:
       combo: By Total Score
+      entered: By Date Entered
       mark: By Mark's Score
       sandra: By Sandra's Score
       year: By Year
