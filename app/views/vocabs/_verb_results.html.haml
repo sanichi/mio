@@ -1,0 +1,9 @@
+- verbs.matches.each do |verb|
+  %tr
+    %td= link_to verb.kanji, verb
+    %td= verb.reading
+    %td= verb.meaning
+    %td= verb.category
+    %td.text-center= verb.level
+    %td.text-center= render "audio", vocab: verb, color_id: verb.color_id
+= render "utils/pagination_links", pager: verbs, columns: 6

@@ -41,3 +41,18 @@ en:
       tests: Vocab Tests
       question: Question
       response: Response
+    trans:
+      all: All Trans
+      both: Both
+      intransitive: Intransitive
+      neither: Neither
+      transitivity: Transitivity
+      transitive: Transitive
+    verb:
+      all: All Types
+      godan: Godan
+      goichidan: Goichidan
+      ichidan: Ichidan
+      suru: Suru
+      type: Verb Type
+      verbs: Verbs

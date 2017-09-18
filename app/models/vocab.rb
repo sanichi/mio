@@ -9,6 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
+  IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
 
   has_many :vocab_questions, dependent: :destroy
 
@@ -40,6 +41,35 @@ class Vocab < ApplicationRecord
     end
     if (level = params[:level].to_i) > 0
       matches = matches.where(level: level)
+    end
+    paginate(matches, params, path, opt)
+  end
+
+  def self.verb_search(params, path, opt={})
+    matches = where("category ~* '(^|[^d])verb'")
+    matches = case params[:order]
+    when "meaning" then matches.by_meaning
+    when "level"   then matches.by_level
+    else                matches.by_reading
+    end
+    if sql = cross_constraint(params[:q], %w{kanji meaning reading})
+      matches = matches.where(sql)
+    end
+    if (level = params[:level].to_i) > 0
+      matches = matches.where(level: level)
+    end
+    if %w/godan ichidan suru/.include?(type = params[:type])
+      matches = matches.where("category ILIKE '%#{type}%'")
+    end
+    if params[:type] == "goichidan"
+      matches = matches.where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'")
+    end
+    matches = case params[:trans]
+    when "transitive"   then matches.where("category ~* '(^|[^n])transitive' AND category NOT ILIKE '%intransitive%'")
+    when "intransitive" then matches.where("category !~* '(^|[^n])transitive' AND category ILIKE '%intransitive%'")
+    when "both"         then matches.where("category ~* '(^|[^n])transitive' AND category ILIKE '%intransitive%'")
+    when "neither"      then matches.where("category NOT ILIKE '%transitive%' AND category NOT ILIKE '%suru%'")
+    else matches
     end
     paginate(matches, params, path, opt)
   end
@@ -291,7 +321,7 @@ class Vocab < ApplicationRecord
   end
 
   def iru_eru?
-    reading.match(/[いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ]る\z/)
+    reading.match(/[#{IE}]る\z/)
   end
 
   def kuru?

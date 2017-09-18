@@ -3,7 +3,7 @@
 - defined?(text)     || text     = t("symbol.audio")
 - defined?(color_id) || color_id = 0
 
-- color = %w/info success warning danger primary default/[color_id] || "info"
+- color = %w/info success warning danger default primary/[color_id] || "info"
 
 %button.btn.btn-xs{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()", class: "btn-#{color}"}= text
 %audio{autoplay: autoplay, id: "audio_#{vocab.id}"}

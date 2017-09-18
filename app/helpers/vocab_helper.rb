@@ -20,4 +20,16 @@ module VocabHelper
     opts = [[t("updated"), "updated"], [t("vocab.level"), "level"], [t("vocab.test.progress_rate"), "progress"], [t("vocab.test.hit_rate"), "hit"]]
     options_for_select(opts, selected)
   end
+
+  def vocab_verb_type_menu(selected)
+    opts = %w/godan ichidan suru goichidan/.map { |t| [t("vocab.verb.#{t}"), t] }
+    opts.unshift [t("vocab.verb.all"), ""]
+    options_for_select(opts, selected)
+  end
+
+  def vocab_verb_trans_menu(selected)
+    opts = %w/transitive intransitive both neither/.map { |t| [t("vocab.trans.#{t}"), t] }
+    opts.unshift [t("vocab.trans.all"), ""]
+    options_for_select(opts, selected)
+  end
 end
