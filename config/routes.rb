@@ -63,6 +63,6 @@ Rails.application.routes.draw do
   resources :vocab_questions, only: [:create]
   resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
   resources :vocabs do
-    get :verbs, on: :collection
+    get :homonyms, :verbs, on: :collection
   end
 end

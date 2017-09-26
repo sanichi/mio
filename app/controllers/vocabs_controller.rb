@@ -10,6 +10,10 @@ class VocabsController < ApplicationController
     @verbs = Vocab.verb_search(params, verbs_vocabs_path, remote: true, per_page: 20)
   end
 
+  def homonyms
+    @homonyms = Vocab.homonym_search(params, homonyms_vocabs_path, remote: true, per_page: 20)
+  end
+
   def new
     @vocab = Vocab.new
   end

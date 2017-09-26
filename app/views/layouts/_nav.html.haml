@@ -94,6 +94,7 @@
             - if can?(:read, Vocab)
               %li= link_to t("vocab.vocabs"), vocabs_path
               %li= link_to t("vocab.verb.verbs"), verbs_vocabs_path
+              %li= link_to t("vocab.homonyms"), homonyms_vocabs_path
             - if can?(:read, VocabTest)
               %li= link_to t("vocab.test.tests"), vocab_tests_path
             - if can?(:read, VerbPair)

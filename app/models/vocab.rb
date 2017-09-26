@@ -74,6 +74,16 @@ class Vocab < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.homonym_search(params, path, opt={})
+    homonyms = Vocab.group(:reading).having('count(*) > 1').pluck(:reading)
+    matches = Vocab.where(reading: homonyms)
+    matches = matches.by_reading
+    if sql = cross_constraint(params[:q], %w{kanji meaning reading})
+      matches = matches.where(sql)
+    end
+    paginate(matches, params, path, opt)
+  end
+
   def kanji_reading
     "#{kanji} (#{reading})"
   end
