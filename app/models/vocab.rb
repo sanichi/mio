@@ -15,7 +15,7 @@ class Vocab < ApplicationRecord
 
   before_validation :truncate
 
-  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[a-f0-9]+\.(mp3|ogg)\z/ }, uniqueness: true
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[^.]+\.(mp3|ogg)\z/ }, uniqueness: true
   validates :category, length: { maximum: MAX_CATEGORY }, presence: true
   validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }

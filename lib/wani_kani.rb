@@ -71,6 +71,7 @@ class WaniKani
     raise "no audio sources found for '#{kanji}'" unless src.any?
     mp3 = src.select { |s| s =~ /\.mp3\z/ }
     audio = mp3.any?? mp3.first : src.first
+    audio = sanitize(audio)
 
     src = page.search("//section[@id='information']/div[contains(@class,'part-of-speech')]/p").map{ |s| s.text }
     raise "no part-of-speech found for '#{kanji}'" unless src.any?
@@ -81,6 +82,24 @@ class WaniKani
     [audio, category]
   end
 
+  def download_audio(file)
+    sleep(DELAY)
+    puts "attempting to download audio file: #{file}"
+    source = audio_source(file)
+    target = audio_target(file)
+    File.open(target, "wb") do |t|
+      open(source, "rb") do |s|
+        t.write(s.read)
+      end
+    end
+  end
+
+  def audio_exist?(file)
+    File.exist?(audio_target(file))
+  end
+
+  private
+
   def audio_dir
     return @audio_dir if @audio_dir
     base = Rails.env == "production" ? "/var/www/mio/current" : "/Users/mjo/Projects/sni_mio_app"
@@ -90,25 +109,19 @@ class WaniKani
   end
 
   def audio_source(file)
-    "https://cdn.wanikani.com/audio/#{file}"
+    "https://cdn.wanikani.com/subjects/audio/#{desanitize(file)}"
   end
 
   def audio_target(file)
     "#{audio_dir}/#{file}"
   end
 
-  def audio_exist?(file)
-    File.exist?(audio_target(file))
+
+  def sanitize(file)
+    file.gsub("%", "_")
   end
 
-  def download_audio(file)
-    sleep(DELAY)
-    source = audio_source(file)
-    target = audio_target(file)
-    File.open(target, "wb") do |t|
-      open(source, "rb") do |s|
-        t.write(s.read)
-      end
-    end
+  def desanitize(file)
+    file.gsub("_", "%")
   end
 end

@@ -5,7 +5,7 @@ def repair_vocabs(wk)
   db_vocabs = Vocab.pluck(:kanji)
   puts "current count of vocabs in #{Rails.env} DB: #{db_vocabs.size}"
 
-  # Get the  user's vocabs from WaniKani.
+  # Get the user's vocabs from WaniKani.
   wk_vocabs = wk.vocabs
   puts "current count of user vocabulary: #{wk_vocabs.size}"
 
@@ -111,4 +111,5 @@ begin
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}"
+  puts e.backtrace
 end
