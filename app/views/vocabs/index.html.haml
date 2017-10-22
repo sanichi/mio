@@ -9,6 +9,9 @@
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
     .form-group
+      = label_tag :special, t("vocab.special.special"), class: "sr-only"
+      = select_tag :special, vocab_special_search_menu(params[:special]), class: "form-control auto-submit"
+    .form-group
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, vocab_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"

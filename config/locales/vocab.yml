@@ -19,6 +19,9 @@ en:
     readings: Readings
     vocab: Vocab
     vocabs: Vocabs
+    special:
+      special: Special Search
+      verb: Tricky Verbs
     tense:
       comm: Imperative
       dict: Dictionary
