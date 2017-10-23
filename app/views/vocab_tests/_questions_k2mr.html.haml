@@ -10,13 +10,14 @@
           %th.col-xs-1
       %tbody
         - test.vocab_questions.each_with_index do |q, i|
-          %tr
-            %td= q.vocab.kanji
-            %td= q.meaning_plus
-            %td= q.reading
-            %td.text-center
-              - if q.reading_correct
-                = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && test_not_finished
-            %td.text-center
-              = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
-              = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")
+          - if test_not_finished || !q.answered_correctly?
+            %tr
+              %td= q.vocab.kanji
+              %td= q.meaning_plus
+              %td= q.reading
+              %td.text-center
+                - if q.reading_correct
+                  = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && test_not_finished
+              %td.text-center
+                = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
+                = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")
