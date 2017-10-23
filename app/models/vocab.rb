@@ -9,6 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
+  OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:"
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
 
   has_many :vocab_questions, dependent: :destroy
@@ -133,6 +134,10 @@ class Vocab < ApplicationRecord
     when "prog" then te + "いる"
     else "invalid tense (#{tense})"
     end
+  end
+
+  def ojad
+    OJAD + kanji
   end
 
   private

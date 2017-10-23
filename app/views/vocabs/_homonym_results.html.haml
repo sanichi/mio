@@ -5,5 +5,5 @@
     %td= homonym.meaning
     %td= homonym.category
     %td.text-center= homonym.level
-    %td.text-center= render "audio", vocab: homonym, color_id: homonym.color_id
+    %td.text-center= render "audio", vocab: homonym, color_id: homonym.color_id, ojad: true
 = render "utils/pagination_links", pager: homonyms, columns: 6
