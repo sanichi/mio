@@ -9,7 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MIN_LEVEL = 1
-  OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:"
+  OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/eng/search/index/word:"
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
 
   has_many :vocab_questions, dependent: :destroy
