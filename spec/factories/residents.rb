@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :resident do
     address     { [nil, [Faker::Address.street_address, Faker::Address.city].join(", ")].sample }
     agent       { [nil, [Faker::Name.first_name, Faker::Name.last_name].join(" ")].sample }

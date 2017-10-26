@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :fund do
     annual_fee          0.45
     category            "oeic"

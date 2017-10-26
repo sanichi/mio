@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :trade do
     stock                  { Faker::Company.name.truncate(Trade::MAX_STOCK) }
     units                  { Faker::Number.decimal(3,2) }

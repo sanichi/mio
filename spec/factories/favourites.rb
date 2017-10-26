@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :favourite do
     category { rand(I18n.t("favourite.categories").size) }
     link     { Faker::Internet.url("wikipedia.org") }

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :partnership do
     wedding       { (1955..1975).to_a.sample }
     wedding_guess { [true, false].sample }

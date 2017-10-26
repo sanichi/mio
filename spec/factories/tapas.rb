@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :tapa do
     keywords           { Faker::Book.title.truncate(Tapa::MAX_KEYWORDS) }
     notes              { Faker::Lorem.paragraph(2) }

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :income do
     amount      127.0
     category    "mark"

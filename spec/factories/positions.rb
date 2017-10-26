@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :position do
     pieces                 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
     active                 "w"

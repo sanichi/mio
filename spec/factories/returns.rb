@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :return do
     year    { Date.today.year }
     percent 5.5

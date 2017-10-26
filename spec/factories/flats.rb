@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :flat do
     sequence(:building) { |i| Flat::BUILDINGS[i % (Flat::BUILDINGS.size - 1)] }
     sequence(:number)   { |i| Flat::NUMBERS[i % (Flat::NUMBERS.size - 1)] }

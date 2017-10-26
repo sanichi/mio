@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vocab do
     audio    { Array.new(40) { "abcdef0123456789"[rand(16)] }.join("") + ".mp3" }
     category { %w/noun verb adjective/.sample }

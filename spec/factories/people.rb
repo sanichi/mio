@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :person do
     born         { (1927..1955).to_a.sample }
     born_guess   { [true, false].sample }
