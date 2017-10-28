@@ -2,7 +2,7 @@ class Vocab < ApplicationRecord
   include Constrainable
   include Pageable
 
-  MAX_AUDIO = 50
+  MAX_AUDIO = 75
   MAX_CATEGORY = 50
   MAX_READING = 20
   MAX_KANJI = 20

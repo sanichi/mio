@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170829201530) do
+ActiveRecord::Schema.define(version: 20171028141603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -388,7 +388,7 @@ ActiveRecord::Schema.define(version: 20170829201530) do
   end
 
   create_table "vocabs", id: :serial, force: :cascade do |t|
-    t.string "audio", limit: 50
+    t.string "audio", limit: 75
     t.string "reading", limit: 20
     t.string "kanji", limit: 20
     t.string "meaning", limit: 100
