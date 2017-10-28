@@ -84,7 +84,6 @@ class WaniKani
 
   def download_audio(file)
     sleep(DELAY)
-    puts "attempting to download audio file: #{file}"
     source = audio_source(file)
     target = audio_target(file)
     File.open(target, "wb") do |t|
