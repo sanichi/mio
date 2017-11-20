@@ -7,5 +7,6 @@ class KanjisController < ApplicationController
 
   def show
     @kanji = Kanji.find(params[:id])
+    @vocabs = Vocab.kanji_vocabs(@kanji)
   end
 end

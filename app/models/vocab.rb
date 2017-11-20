@@ -89,6 +89,11 @@ class Vocab < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.kanji_vocabs(kanji)
+    return [] unless kanji.present?
+    Vocab.by_level.where("kanji ILIKE '%#{kanji.symbol}%'").to_a
+  end
+
   def kanji_reading
     "#{kanji} (#{reading})"
   end
