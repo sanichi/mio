@@ -35,5 +35,5 @@ group :development, :test do
   gem "faker"
   gem "database_cleaner"
   gem "byebug", platform: :mri
-  gem "rack-test", "0.7.0" # temporary while test problems persist (/features/upload_spec and features/picture_spec related to click_button)
+  gem "rack-test", "0.7.0" # temporary line, while test problems persist (/features/upload_spec and features/picture_spec related to click_button)
 end
