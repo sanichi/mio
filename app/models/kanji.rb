@@ -1,4 +1,5 @@
 class Kanji < ApplicationRecord
+  include Constrainable
   include Pageable
 
   MAX_SYMBOL = 1
@@ -28,8 +29,8 @@ class Kanji < ApplicationRecord
     else                 by_total
     end
     matches = matches.includes(yomis: :reading)
-    if (m = params[:meaning]).present?
-      matches = matches.where("meaning ILIKE ?", "%#{m}%")
+    if sql = cross_constraint(params[:q], %w{symbol meaning})
+      matches = matches.where(sql)
     end
     if (l = params[:level].to_i) > 0
       matches = matches.where(level: l)

@@ -3,8 +3,8 @@
 .text-center
   = form_tag kanjis_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :q, t("vocab.meaning"), class: "sr-only"
-      = text_field_tag :meaning, params[:meaning], class: "form-control", placeholder: t("vocab.meaning"), size: 16
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("query"), size: 16
     .form-group
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, kanji_search_level_menu(params[:level]), class: "form-control auto-submit"
