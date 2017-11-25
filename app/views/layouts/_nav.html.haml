@@ -85,7 +85,7 @@
             - if can?(:read, Opening)
               %li= link_to t("opening.openings"), openings_path
 
-      - if [Vocab, VocabTest, VerbPair, Kanji, Reading].map{ |c| can?(:read, c) }.any?
+      - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("vocab.japanese")
@@ -103,6 +103,8 @@
               %li= link_to t("vocab.kanjis"), kanjis_path
             - if can?(:read, Reading)
               %li= link_to t("vocab.readings"), readings_path
+            - if can?(:read, Conversation)
+              %li= link_to t("conversation.conversations"), conversations_path
 
       - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown

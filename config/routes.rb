@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :blogs
   resources :buckets
+  resources :conversations
   resources :devices
   resources :expenses, except: [:show]
   resources :favourites

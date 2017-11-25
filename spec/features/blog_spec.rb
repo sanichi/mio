@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Person do
+describe Blog do
   let(:data) { build(:blog) }
 
   before(:each) do

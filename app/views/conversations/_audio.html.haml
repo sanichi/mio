@@ -1,0 +1,3 @@
+- if conversation.audio_exist?
+  %audio{controls: "true", id: "audio_#{conversation.id}"}
+    %source{src: conversation.audio_path, type: conversation.audio_type}
