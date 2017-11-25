@@ -23,11 +23,11 @@ class Conversation < ApplicationRecord
   end
 
   def short_story
-    story.truncate(25)
+    story.truncate(15)
   end
 
   def short_title
-    title.truncate(25)
+    title.truncate(15)
   end
 
   def story_html
