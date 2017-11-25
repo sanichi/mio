@@ -8,7 +8,7 @@ class Conversation < ApplicationRecord
 
   before_validation :normalize_attributes
 
-  validates :audio, presence: true, length: { maximum: MAX_AUDIO }, format: { with: /\A[A-Za-z_]+\.(mp3|ogg|m4a)\z/ }, uniqueness: true
+  validates :audio, presence: true, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|ogg|m4a)\z/ }, uniqueness: true
   validates :story, presence: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
