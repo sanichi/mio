@@ -14,3 +14,7 @@
     = link_to t("edit"), edit_conversation_path(@conversation), class: "btn btn-info"
   - if can?(:delete, Blog)
     = link_to t("delete"), @conversation, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+  - if @prev
+    = link_to t("symbol.prev"), @prev, class: "btn btn-success"
+  - if @next
+    = link_to t("symbol.next"), @next, class: "btn btn-success"

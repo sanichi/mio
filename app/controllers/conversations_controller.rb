@@ -10,6 +10,13 @@ class ConversationsController < ApplicationController
     @conversation = Conversation.new
   end
 
+  def show
+    if @conversation
+      @next = Conversation.where("id > #{@conversation.id}").first
+      @prev = Conversation.where("id < #{@conversation.id}").last
+    end
+  end
+
   def create
     @conversation = Conversation.new(strong_params)
     if @conversation.save
