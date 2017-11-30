@@ -9,6 +9,7 @@ class MassGraphData
     get_start_options
     get_start
     get_date_window
+    fix_missing_data
     get_mass_window
     get_data_rows
   end
@@ -64,6 +65,16 @@ class MassGraphData
       max = Date.today.end_of_month.days_since(1)
     end
     @date_window = "{ min: #{chart_date(min)}, max: #{chart_date(max)} }".html_safe
+  end
+
+  def fix_missing_data
+    starts = @data.map(&:start).compact
+    finishes = @data.map(&:finish).compact
+    if starts.any? && finishes.empty?
+      @data[-1].finish = starts.last
+    elsif finishes.any? && starts.empty?
+      @data[-1].start = finish.last
+    end
   end
 
   def get_mass_window
