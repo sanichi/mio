@@ -1,0 +1,8 @@
+- tests.matches.each do |t|
+  %tr
+    %td.text-center= link_to t.updated_date, t
+    %td.text-center= t.level
+    %td.text-center= t.total
+    %td.text-center= "#{t.progress_rate}%"
+    %td.text-center= "#{t.hit_rate}%"
+= render "utils/pagination_links", pager: tests, columns: 5

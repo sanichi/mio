@@ -1,6 +1,5 @@
 class VocabQuestionsController < ApplicationController
   authorize_resource
-  before_action :find_test, only: [:destroy, :show]
 
   def create
     @question = VocabQuestion.new(strong_params)

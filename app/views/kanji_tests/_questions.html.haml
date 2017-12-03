@@ -1,0 +1,20 @@
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("vocab.kanji")
+          %th= t("vocab.meaning")
+          %th= t("vocab.onyomi")
+          %th= t("vocab.kunyomi")
+          %th
+      %tbody
+        - test.kanji_questions.each_with_index do |q, i|
+          - if !(test_finished && q.answer)
+            %tr
+              %td= link_to q.kanji.symbol, q.kanji
+              %td= q.kanji.meaning
+              %td= render "kanas", yomis: q.kanji.yomis.select{ |y| y.on }
+              %td= render "kanas", yomis: q.kanji.yomis.select{ |y| !y.on }
+              %td.text-center
+                = t("symbol.#{q.answer ? 'tick' : 'cross'}")

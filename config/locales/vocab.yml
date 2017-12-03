@@ -20,6 +20,13 @@ en:
     readings: Readings
     vocab: Vocab
     vocabs: Vocabs
+    kanji_test:
+      failure: No! I was wrong!
+      new: New Kanji Test
+      reveal: Reveal
+      success: Yes! I was right!
+      test: Kanji Test
+      tests: Kanji Tests
     special:
       special: Special Search
       verb: Tricky Verbs

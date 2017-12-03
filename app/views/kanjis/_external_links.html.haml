@@ -1,8 +1,7 @@
 - content_for :javascript do
-  = render "external_links.js"
+  = render "kanjis/external_links.js"
 = link_to "WK", "https://www.wanikani.com/kanji/#{symbol}", class: "btn btn-primary btn-sm external-link", target: "wanikani"
 = link_to "JS", "http://jisho.org/search/#{symbol}%20%23kanji", class: "btn btn-success btn-sm external-link", target: "jisho"
 = link_to "KA", "https://app.kanjialive.com/#{symbol}", class: "btn btn-warning btn-sm external-link", target: "kanjialive"
 = link_to "KM", "https://thekanjimap.com/index.html?k=#{symbol}", class: "btn btn-danger btn-sm external-link", target: "kanjimap"
-%button.btn-default.btn-sm#click-all-links
-  = "All"
+%button.btn-default.btn-sm#click-all-links= "All"

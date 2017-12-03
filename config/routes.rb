@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   end
   resources :interfaces
   resources :kanjis, only: [:index, :show]
+  resources :kanji_questions, only: [:create]
+  resources :kanji_tests, only: [:index, :show, :new, :create, :destroy]
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
     get :graph, on: :collection

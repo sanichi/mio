@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125124145) do
+ActiveRecord::Schema.define(version: 20171202124038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,6 +138,26 @@ ActiveRecord::Schema.define(version: 20171125124145) do
     t.datetime "updated_at", null: false
     t.string "ip_address", limit: 15
     t.string "manufacturer", limit: 50
+  end
+
+  create_table "kanji_questions", force: :cascade do |t|
+    t.integer "kanji_id"
+    t.integer "kanji_test_id"
+    t.boolean "answer", default: false
+    t.datetime "created_at"
+    t.index ["kanji_id"], name: "index_kanji_questions_on_kanji_id"
+    t.index ["kanji_test_id"], name: "index_kanji_questions_on_kanji_test_id"
+  end
+
+  create_table "kanji_tests", force: :cascade do |t|
+    t.integer "attempts", limit: 2, default: 0
+    t.integer "correct", limit: 2, default: 0
+    t.integer "hit_rate", limit: 2, default: 0
+    t.integer "level", limit: 2
+    t.integer "progress_rate", limit: 2, default: 0
+    t.integer "total", limit: 2, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "kanjis", force: :cascade do |t|
