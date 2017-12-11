@@ -107,7 +107,7 @@ class Vocab < ApplicationRecord
   end
 
   def test_meaning(str)
-    return false unless str.to_s.length > 1
+    return false unless str.to_s.length > 1 || str.to_s.length == meaning.length
     meaning.downcase.include?(str.to_s.downcase)
   end
 
