@@ -16,4 +16,8 @@ class PagesController < ApplicationController
       format.json { render json: ::Checker.check }
     end
   end
+
+  def pam
+    @answer = Flat.pam(params[:q])
+  end
 end

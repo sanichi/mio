@@ -55,6 +55,34 @@ class Flat < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  # Turn block/number to bay or bay to block/number.
+  def self.pam(q)
+    answer = nil
+    if q =~ /\A\s*([1-9]\d*)\D+(\d*)\s*\z/
+      building = $1.to_i
+      number = $2.to_i
+      flats = Flat.where(building: building).to_a
+      flat = case flats.size
+      when 0
+        nil
+      when 1
+        flats.first
+      else
+        Flat.find_by building: building, number: number
+      end
+      if flat
+        answer = flat.bay.present?? "#{flat.address} → #{flat.bay}" : "#{flat.address} → none"
+      end
+    elsif q =~ /\A\s*([1-9]\d*)\s*\z/
+      bay = $1.to_i
+      flat = Flat.find_by bay: bay
+      if flat
+        answer = "#{bay} ← #{flat.address}"
+      end
+    end
+    answer
+  end
+
   def address
     [building, number].compact.join("/")
   end
