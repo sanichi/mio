@@ -2,7 +2,10 @@ class KanjisController < ApplicationController
   authorize_resource
 
   def index
-    @kanjis = Kanji.search(params, kanjis_path, remote: true, per_page: 20)
+    @kanjis = Kanji.search(params, kanjis_path, per_page: 20)
+    if @kanjis.count == 1
+      redirect_to @kanjis.matches.first
+    end
   end
 
   def show
