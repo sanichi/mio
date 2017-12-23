@@ -27,6 +27,10 @@ en:
       success: Yes! I was right!
       test: Kanji Test
       tests: Kanji Tests
+    similar:
+      edit: Edit Similar Words
+      new: New Similar Words
+      words: Similar Words
     special:
       special: Special Search
       verb: Tricky Verbs

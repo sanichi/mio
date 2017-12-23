@@ -1,0 +1,4 @@
+- similar_words.matches.each do |similar_word|
+  %tr
+    %td= link_to similar_word.display, similar_word
+= render "utils/pagination_links", pager: similar_words, columns: 1

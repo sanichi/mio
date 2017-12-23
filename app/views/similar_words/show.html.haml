@@ -1,0 +1,8 @@
+= render "utils/title", text: @similar_word.display, header: true
+
+.text-center.top_margin
+  = link_to t("vocab.similar.words"), similar_words_path, class: "btn btn-success"
+  - if can?(:update, @similar_word)
+    = link_to t("edit"), edit_similar_word_path(@similar_word), class: "btn btn-info"
+  - if can?(:delete, @similar_word)
+    = link_to t("delete"), @similar_word, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

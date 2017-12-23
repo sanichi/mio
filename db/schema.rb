@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171202124038) do
+ActiveRecord::Schema.define(version: 20171223162044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,6 +298,12 @@ ActiveRecord::Schema.define(version: 20171202124038) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
+  end
+
+  create_table "similar_words", force: :cascade do |t|
+    t.string "readings", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tapas", id: :serial, force: :cascade do |t|
