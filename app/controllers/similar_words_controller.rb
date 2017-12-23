@@ -6,6 +6,10 @@ class SimilarWordsController < ApplicationController
     @similar_words = SimilarWord.search(params, similar_words_path, per_page: 20)
   end
 
+  def show
+    @vocabs = Vocab.by_reading.where(reading: @similar_word.readings.split).to_a
+  end
+
   def new
     @similar_word = SimilarWord.new
   end
