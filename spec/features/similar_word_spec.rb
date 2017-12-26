@@ -59,7 +59,7 @@ describe SimilarWord do
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_similar_edit)
-      expect(page).to have_css(error, text: "blank")
+      expect(page).to have_css(error, text: "invalid")
     end
   end
 
