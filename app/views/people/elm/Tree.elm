@@ -4,6 +4,7 @@ import Array exposing (Array)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
+import Tuple exposing (first, second)
 
 
 -- local modules
@@ -182,8 +183,8 @@ box person pictureIndex centerX level focus =
 
         svgs =
             [ rect (rectAttrs boxClass boxX boxY Config.boxRadius boxWidth Config.boxHeight handler) []
-            , text' (textAttrs nameClass nameX nameY nameWidth handler) [ text name ]
-            , text' (textAttrs yearsClass yearsX yearsY yearsWidth handler) [ text years ]
+            , text_ (textAttrs nameClass nameX nameY nameWidth handler) [ text name ]
+            , text_ (textAttrs yearsClass yearsX yearsY yearsWidth handler) [ text years ]
             , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
             ]
     in
@@ -260,7 +261,7 @@ switcherBox families index centerX =
 
                 svgs =
                     [ rect (rectAttrs boxClass boxX boxY Config.switchBoxRadius boxWidth Config.switchBoxHeight handler) []
-                    , text' (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
+                    , text_ (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
                     ]
 
                 bx =
@@ -299,10 +300,10 @@ parentBoxes focusBox father mother picture =
             box mother picture center 1 False
 
         leftFatherBox =
-            shiftBox (center - fst fatherBox.right.outer) fatherBox
+            shiftBox (center - first fatherBox.right.outer) fatherBox
 
         rightMotherBox =
-            shiftBox (center - fst motherBox.left.outer) motherBox
+            shiftBox (center - first motherBox.left.outer) motherBox
 
         parentLinks =
             linkT leftFatherBox rightMotherBox focusBox
@@ -453,7 +454,7 @@ partnerBoxes focusBox families index picture =
                                 focusBox.right.outer
 
                             Just bx ->
-                                ( fst bx.top.inner, snd bx.top.inner + Config.switchBoxHeight )
+                                ( first bx.top.inner, second bx.top.inner + Config.switchBoxHeight )
                 in
                     ( boxes, links, siblingShift, parentPoint )
 
@@ -478,7 +479,7 @@ childrenBoxes focusBox families index picture parentPoint =
                     else
                         let
                             center =
-                                fst parentPoint
+                                first parentPoint
 
                             boxes =
                                 Array.map (\p -> box p picture center 3 False) people
@@ -546,28 +547,28 @@ linkT : Box -> Box -> Box -> List (Svg Msg)
 linkT left right below =
     let
         ax1 =
-            fst left.right.inner |> toString
+            first left.right.inner |> toString
 
         ay1 =
-            snd left.right.inner |> toString
+            second left.right.inner |> toString
 
         ax2 =
-            fst right.left.inner |> toString
+            first right.left.inner |> toString
 
         ay2 =
-            snd right.left.inner |> toString
+            second right.left.inner |> toString
 
         bx1 =
-            (fst left.right.outer + fst right.left.outer) // 2 |> toString
+            (first left.right.outer + first right.left.outer) // 2 |> toString
 
         by1 =
-            (snd left.right.outer + snd right.left.outer) // 2 |> toString
+            (second left.right.outer + second right.left.outer) // 2 |> toString
 
         bx2 =
-            fst below.top.inner |> toString
+            first below.top.inner |> toString
 
         by2 =
-            snd below.top.inner |> toString
+            second below.top.inner |> toString
     in
         [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
         , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
@@ -583,16 +584,16 @@ linkH bx1 mbx2 =
         Just bx2 ->
             let
                 i1 =
-                    fst bx1.top.outer |> toString
+                    first bx1.top.outer |> toString
 
                 j1 =
-                    snd bx1.top.outer |> toString
+                    second bx1.top.outer |> toString
 
                 i2 =
-                    fst bx2.top.outer |> toString
+                    first bx2.top.outer |> toString
 
                 j2 =
-                    snd bx2.top.outer |> toString
+                    second bx2.top.outer |> toString
             in
                 [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
 
@@ -601,16 +602,16 @@ linkM : Box -> Box -> List (Svg Msg)
 linkM bx1 bx2 =
     let
         i1 =
-            fst bx1.right.inner |> toString
+            first bx1.right.inner |> toString
 
         j1 =
-            snd bx1.right.inner |> toString
+            second bx1.right.inner |> toString
 
         i2 =
-            fst bx2.left.inner |> toString
+            first bx2.left.inner |> toString
 
         j2 =
-            snd bx2.left.inner |> toString
+            second bx2.left.inner |> toString
     in
         [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
 
@@ -629,16 +630,16 @@ linkO boxes point =
                 Just bx ->
                     let
                         i1 =
-                            fst point |> toString
+                            first point |> toString
 
                         j1 =
-                            snd point |> toString
+                            second point |> toString
 
                         i2 =
-                            fst point |> toString
+                            first point |> toString
 
                         j2 =
-                            snd bx.top.outer |> toString
+                            second bx.top.outer |> toString
                     in
                         Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
 
@@ -650,16 +651,16 @@ linkO boxes point =
                 ( Just bx1, Just bx2 ) ->
                     let
                         i1 =
-                            fst bx1.top.outer |> toString
+                            first bx1.top.outer |> toString
 
                         j1 =
-                            snd bx1.top.outer |> toString
+                            second bx1.top.outer |> toString
 
                         i2 =
-                            fst bx2.top.outer |> toString
+                            first bx2.top.outer |> toString
 
                         j2 =
-                            snd bx2.top.outer |> toString
+                            second bx2.top.outer |> toString
                     in
                         Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
 
@@ -680,7 +681,7 @@ linkO boxes point =
 
 boxWidth : Box -> Int
 boxWidth bx =
-    fst bx.right.outer - fst bx.left.outer
+    first bx.right.outer - first bx.left.outer
 
 
 currentPicturePath : Person -> Int -> String
@@ -716,33 +717,33 @@ handleToLink : Handle -> Svg Msg
 handleToLink handle =
     let
         i1 =
-            fst handle.inner |> toString
+            first handle.inner |> toString
 
         j1 =
-            snd handle.inner |> toString
+            second handle.inner |> toString
 
         i2 =
-            fst handle.outer |> toString
+            first handle.outer |> toString
 
         j2 =
-            snd handle.outer |> toString
+            second handle.outer |> toString
     in
         line [ x1 i1, y1 j1, x2 i2, y2 j2 ] []
 
 
 middleBox : Box -> Int
 middleBox bx =
-    fst bx.top.inner
+    first bx.top.inner
 
 
 pointers : List Box -> List (Svg Msg)
 pointers boxes =
     let
         leftMost =
-            List.map (\b -> fst b.left.outer) boxes |> List.minimum |> Maybe.withDefault 0
+            List.map (\b -> first b.left.outer) boxes |> List.minimum |> Maybe.withDefault 0
 
         rightMost =
-            List.map (\b -> fst b.right.outer) boxes |> List.maximum |> Maybe.withDefault Config.width
+            List.map (\b -> first b.right.outer) boxes |> List.maximum |> Maybe.withDefault Config.width
 
         leftPointer =
             let
@@ -755,7 +756,7 @@ pointers boxes =
                 h =
                     onClick ShiftLeft
             in
-                text' (pointerAttrs "pointer" i j h) [ text "☜" ]
+                text_ (pointerAttrs "pointer" i j h) [ text "☜" ]
 
         rightPointer =
             let
@@ -768,7 +769,7 @@ pointers boxes =
                 h =
                     onClick ShiftRight
             in
-                text' (pointerAttrs "pointer" i j h) [ text "☞" ]
+                text_ (pointerAttrs "pointer" i j h) [ text "☞" ]
     in
         case ( leftMost < 0, rightMost > Config.width ) of
             ( True, True ) ->
@@ -791,4 +792,4 @@ shiftHandle deltaX handle =
 
 shiftPoint : Int -> Point -> Point
 shiftPoint deltaX point =
-    ( fst point + deltaX, snd point )
+    ( first point + deltaX, second point )

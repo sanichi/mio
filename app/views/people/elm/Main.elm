@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (Html)
-import Html.App exposing (programWithFlags)
+import Html exposing (programWithFlags)
 import Platform.Sub
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -20,7 +20,7 @@ import Types exposing (Model, Flags, Focus, initModel)
 -- main program
 
 
-main : Program Flags
+main : Program Flags Model Msg
 main =
     programWithFlags
         { init = (\flags -> ( initModel flags, initTasks ))
