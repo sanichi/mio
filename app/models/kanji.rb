@@ -14,9 +14,9 @@ class Kanji < ApplicationRecord
   validates :meaning, presence: true, length: { maximum: MAX_MEANING }
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: Vocab::MIN_LEVEL, less_than_or_equal_to: Vocab::MAX_LEVEL }
 
-  scope :by_onyomi,  -> { order("onyomi DESC", 'symbol COLLATE "C"') }
-  scope :by_kunyomi, -> { order("kunyomi DESC", 'symbol COLLATE "C"') }
-  scope :by_total,   -> { order("(onyomi + kunyomi) DESC", 'symbol COLLATE "C"') }
+  scope :by_onyomi,  -> { order("kanjis.onyomi DESC", 'symbol COLLATE "C"') }
+  scope :by_kunyomi, -> { order("kanjis.kunyomi DESC", 'symbol COLLATE "C"') }
+  scope :by_total,   -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", 'symbol COLLATE "C"') }
 
   def total
     onyomi + kunyomi
@@ -24,13 +24,15 @@ class Kanji < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = case params[:order]
-    when "onyomi"   then by_level
+    when "onyomi"   then by_onyomi
     when "kunyomi"  then by_kunyomi
     else                 by_total
     end
     matches = matches.includes(yomis: :reading)
-    if sql = cross_constraint(params[:q], %w{symbol meaning})
-      matches = matches.where(sql)
+    if sql = cross_constraint(params[:q], %w{symbol meaning readings.kana})
+      # Note .uniq seems to work and is used in place of .distinct as the
+      # latter runs into postgres problems with DISTINCT and ORDER BY.
+      matches = matches.joins(:readings).where(sql).uniq
     end
     if (l = params[:level].to_i) > 0
       matches = matches.where(level: l)
