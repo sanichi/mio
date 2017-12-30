@@ -6,6 +6,10 @@ class VocabsController < ApplicationController
     @vocabs = Vocab.search(params, vocabs_path, remote: true, per_page: 20)
   end
 
+  def show
+    @kanji = Kanji.find_by(symbol: @vocab.kanji) if @vocab.kanji.length == 1
+  end
+
   def verbs
     @verbs = Vocab.verb_search(params, verbs_vocabs_path, remote: true, per_page: 20)
   end
