@@ -150,11 +150,11 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
-    nio4r (2.1.0)
+    nio4r (2.2.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
-    oga (2.11)
+    oga (2.12)
       ast
       ruby-ll (~> 2.1)
     paperclip (5.1.0)
