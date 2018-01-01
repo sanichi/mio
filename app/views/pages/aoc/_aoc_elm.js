@@ -17798,6 +17798,110 @@ var _user$project$Y17D02$answer = F2(
 				A2(_elm_lang$core$List$map, _user$project$Y17D02$even, list)));
 	});
 
+var _user$project$Y17D03$parse = function (input) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		1,
+		_elm_lang$core$String$toInt(
+			A2(_elm_lang$core$String$filter, _elm_lang$core$Char$isDigit, input)));
+};
+var _user$project$Y17D03$findLevel = F2(
+	function (level, num) {
+		findLevel:
+		while (true) {
+			var width = (2 * level) + 1;
+			var corner = Math.pow(width, 2);
+			if (_elm_lang$core$Native_Utils.cmp(num, corner) < 1) {
+				return level;
+			} else {
+				var _v0 = level + 1,
+					_v1 = num;
+				level = _v0;
+				num = _v1;
+				continue findLevel;
+			}
+		}
+	});
+var _user$project$Y17D03$spiralDown = F5(
+	function (num, level, upper, _p1, _p0) {
+		spiralDown:
+		while (true) {
+			var _p2 = _p1;
+			var _p9 = _p2._1;
+			var _p8 = _p2._0;
+			var _p3 = _p0;
+			var _p7 = _p3._1;
+			var _p6 = _p3._0;
+			if (_elm_lang$core$Native_Utils.cmp(upper, num) < 1) {
+				return _elm_lang$core$Basics$abs(_p8) + _elm_lang$core$Basics$abs(_p9);
+			} else {
+				var upper_ = upper - 1;
+				var y_ = _p9 + _p7;
+				var x_ = _p8 + _p6;
+				var _p4 = function () {
+					var _p5 = {ctor: '_Tuple2', _0: _p6, _1: _p7};
+					_v4_3:
+					do {
+						if (_p5.ctor === '_Tuple2') {
+							switch (_p5._1) {
+								case 1:
+									if (_p5._0 === 0) {
+										return (_elm_lang$core$Native_Utils.cmp(y_, level) > -1) ? {ctor: '_Tuple2', _0: 1, _1: 0} : {ctor: '_Tuple2', _0: _p6, _1: _p7};
+									} else {
+										break _v4_3;
+									}
+								case 0:
+									switch (_p5._0) {
+										case -1:
+											return (_elm_lang$core$Native_Utils.cmp(x_, 0 - level) < 1) ? {ctor: '_Tuple2', _0: 0, _1: 1} : {ctor: '_Tuple2', _0: _p6, _1: _p7};
+										case 1:
+											return (_elm_lang$core$Native_Utils.cmp(x_, level) > -1) ? {ctor: '_Tuple2', _0: 0, _1: -1} : {ctor: '_Tuple2', _0: _p6, _1: _p7};
+										default:
+											break _v4_3;
+									}
+								default:
+									break _v4_3;
+							}
+						} else {
+							break _v4_3;
+						}
+					} while(false);
+					return (_elm_lang$core$Native_Utils.cmp(y_, 0) < 1) ? {ctor: '_Tuple2', _0: -1, _1: 0} : {ctor: '_Tuple2', _0: _p6, _1: _p7};
+				}();
+				var dx_ = _p4._0;
+				var dy_ = _p4._1;
+				var _v5 = num,
+					_v6 = level,
+					_v7 = upper_,
+					_v8 = {ctor: '_Tuple2', _0: x_, _1: y_},
+					_v9 = {ctor: '_Tuple2', _0: dx_, _1: dy_};
+				num = _v5;
+				level = _v6;
+				upper = _v7;
+				_p1 = _v8;
+				_p0 = _v9;
+				continue spiralDown;
+			}
+		}
+	});
+var _user$project$Y17D03$manhattan = function (num) {
+	var level = A2(_user$project$Y17D03$findLevel, 0, num);
+	var upper = Math.pow((2 * level) + 1, 2);
+	return A5(
+		_user$project$Y17D03$spiralDown,
+		num,
+		level,
+		upper,
+		{ctor: '_Tuple2', _0: level, _1: 0 - level},
+		{ctor: '_Tuple2', _0: -1, _1: 0});
+};
+var _user$project$Y17D03$answer = F2(
+	function (part, input) {
+		var num = _user$project$Y17D03$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_user$project$Y17D03$manhattan(num)) : 'TODO';
+	});
+
 var _user$project$Y17$answer = F3(
 	function (day, part, input) {
 		var _p0 = day;
@@ -17806,6 +17910,8 @@ var _user$project$Y17$answer = F3(
 				return A2(_user$project$Y17D01$answer, part, input);
 			case 2:
 				return A2(_user$project$Y17D02$answer, part, input);
+			case 3:
+				return A2(_user$project$Y17D03$answer, part, input);
 			default:
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -18383,7 +18489,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 2;
+var _user$project$Main$defaultDay = 3;
 var _user$project$Main$defaultYear = 2017;
 var _user$project$Main$initModel = {
 	years: {
@@ -18402,7 +18508,7 @@ var _user$project$Main$initModel = {
 				ctor: '::',
 				_0: {
 					year: 2017,
-					days: A2(_elm_lang$core$List$range, 1, 2)
+					days: A2(_elm_lang$core$List$range, 1, 3)
 				},
 				_1: {ctor: '[]'}
 			}
