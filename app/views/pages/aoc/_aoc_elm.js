@@ -17733,19 +17733,87 @@ var _user$project$Y17D01$answer = F2(
 		}
 	});
 
+var _user$project$Y17D02$toNumbers = function (string) {
+	return A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Result$withDefault(0),
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$toInt,
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.match;
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('[1-9]\\d*'),
+					string))));
+};
+var _user$project$Y17D02$parse = function (input) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Y17D02$toNumbers,
+		A2(_elm_lang$core$String$split, '\n', input));
+};
+var _user$project$Y17D02$pair = function (list) {
+	var _p0 = list;
+	if (((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '[]')) {
+		var _p2 = _p0._0;
+		var _p1 = _p0._1._0;
+		var qot = (_p1 / _p2) | 0;
+		return _elm_lang$core$Native_Utils.eq(_p2 * qot, _p1) ? qot : 0;
+	} else {
+		return 0;
+	}
+};
+var _user$project$Y17D02$even = function (list) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$Y17D02$pair,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$List$sort,
+				A2(_user$project$Util$combinations, 2, list))));
+};
+var _user$project$Y17D02$diff = function (list) {
+	var max = _elm_lang$core$List$maximum(list);
+	var min = _elm_lang$core$List$minimum(list);
+	var _p3 = {ctor: '_Tuple2', _0: min, _1: max};
+	if (((_p3.ctor === '_Tuple2') && (_p3._0.ctor === 'Just')) && (_p3._1.ctor === 'Just')) {
+		return _p3._1._0 - _p3._0._0;
+	} else {
+		return 0;
+	}
+};
+var _user$project$Y17D02$answer = F2(
+	function (part, input) {
+		var list = _user$project$Y17D02$parse(input);
+		return _elm_lang$core$Native_Utils.eq(part, 1) ? _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$sum(
+				A2(_elm_lang$core$List$map, _user$project$Y17D02$diff, list))) : _elm_lang$core$Basics$toString(
+			_elm_lang$core$List$sum(
+				A2(_elm_lang$core$List$map, _user$project$Y17D02$even, list)));
+	});
+
 var _user$project$Y17$answer = F3(
 	function (day, part, input) {
 		var _p0 = day;
-		if (_p0 === 1) {
-			return A2(_user$project$Y17D01$answer, part, input);
-		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'year 2017, day ',
-				A2(
+		switch (_p0) {
+			case 1:
+				return A2(_user$project$Y17D01$answer, part, input);
+			case 2:
+				return A2(_user$project$Y17D02$answer, part, input);
+			default:
+				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(day),
-					': not available'));
+					'year 2017, day ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						': not available'));
 		}
 	});
 
@@ -18315,7 +18383,7 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 1;
+var _user$project$Main$defaultDay = 2;
 var _user$project$Main$defaultYear = 2017;
 var _user$project$Main$initModel = {
 	years: {
@@ -18334,7 +18402,7 @@ var _user$project$Main$initModel = {
 				ctor: '::',
 				_0: {
 					year: 2017,
-					days: A2(_elm_lang$core$List$range, 1, 1)
+					days: A2(_elm_lang$core$List$range, 1, 2)
 				},
 				_1: {ctor: '[]'}
 			}
