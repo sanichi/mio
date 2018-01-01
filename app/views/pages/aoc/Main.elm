@@ -7,6 +7,7 @@ import Platform.Sub
 import Ports
 import Y15
 import Y16
+import Y17
 
 
 -- MAIN
@@ -59,12 +60,12 @@ type alias Flags =
 
 defaultYear : Int
 defaultYear =
-    2016
+    2017
 
 
 defaultDay : Int
 defaultDay =
-    25
+    1
 
 
 initModel : Model
@@ -72,6 +73,7 @@ initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 25 }
+        , { year = 2017, days = List.range 1 1 }
         ]
     , year = defaultYear
     , day = defaultDay
@@ -224,6 +226,9 @@ getAnswer model part data =
 
         2016 ->
             Y16.answer model.day part data
+
+        2017 ->
+            Y17.answer model.day part data
 
         _ ->
             ""

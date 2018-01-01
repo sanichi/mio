@@ -6,7 +6,8 @@
     "source-directories": [
         ".",
         "2015",
-        "2016"
+        "2016",
+        "2017"
     ],
     "exposed-modules": [],
     "dependencies": {

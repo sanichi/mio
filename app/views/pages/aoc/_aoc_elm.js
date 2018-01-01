@@ -17682,6 +17682,73 @@ var _user$project$Y16$answer = F3(
 		}
 	});
 
+var _user$project$Y17D01$parse = function (string) {
+	return _elm_lang$core$Array$fromList(
+		_elm_lang$core$String$toList(
+			A2(_elm_lang$core$String$filter, _elm_lang$core$Char$isDigit, string)));
+};
+var _user$project$Y17D01$sum = F4(
+	function (total, index, delta, array) {
+		sum:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				index,
+				_elm_lang$core$Array$length(array)) > -1) {
+				return total;
+			} else {
+				var char1 = A2(_elm_lang$core$Array$get, index, array);
+				var index_ = index + delta;
+				var len = _elm_lang$core$Array$length(array);
+				var index2 = (_elm_lang$core$Native_Utils.cmp(index_, len) > -1) ? (index_ - len) : index_;
+				var char2 = A2(_elm_lang$core$Array$get, index2, array);
+				var _p0 = {ctor: '_Tuple2', _0: char1, _1: char2};
+				if (((_p0.ctor === '_Tuple2') && (_p0._0.ctor === 'Just')) && (_p0._1.ctor === 'Just')) {
+					var _p1 = _p0._0._0;
+					var total_ = _elm_lang$core$Native_Utils.eq(_p1, _p0._1._0) ? ((total + _elm_lang$core$Char$toCode(_p1)) - 48) : total;
+					var _v1 = total_,
+						_v2 = index + 1,
+						_v3 = delta,
+						_v4 = array;
+					total = _v1;
+					index = _v2;
+					delta = _v3;
+					array = _v4;
+					continue sum;
+				} else {
+					return total;
+				}
+			}
+		}
+	});
+var _user$project$Y17D01$answer = F2(
+	function (part, input) {
+		var array = _user$project$Y17D01$parse(input);
+		if (_elm_lang$core$Native_Utils.eq(part, 1)) {
+			return _elm_lang$core$Basics$toString(
+				A4(_user$project$Y17D01$sum, 0, 0, 1, array));
+		} else {
+			var delta = (_elm_lang$core$Array$length(array) / 2) | 0;
+			return _elm_lang$core$Basics$toString(
+				A4(_user$project$Y17D01$sum, 0, 0, delta, array));
+		}
+	});
+
+var _user$project$Y17$answer = F3(
+	function (day, part, input) {
+		var _p0 = day;
+		if (_p0 === 1) {
+			return A2(_user$project$Y17D01$answer, part, input);
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'year 2017, day ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(day),
+					': not available'));
+		}
+	});
+
 var _user$project$Main$getNote = F2(
 	function (year, day) {
 		var key = A2(
@@ -18237,6 +18304,8 @@ var _user$project$Main$getAnswer = F3(
 				return A3(_user$project$Y15$answer, model.day, part, data);
 			case 2016:
 				return A3(_user$project$Y16$answer, model.day, part, data);
+			case 2017:
+				return A3(_user$project$Y17$answer, model.day, part, data);
 			default:
 				return '';
 		}
@@ -18246,8 +18315,8 @@ var _user$project$Main$thinking = function (part) {
 };
 var _user$project$Main$initThinks = {ctor: '_Tuple2', _0: false, _1: false};
 var _user$project$Main$initAnswers = {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
-var _user$project$Main$defaultDay = 25;
-var _user$project$Main$defaultYear = 2016;
+var _user$project$Main$defaultDay = 1;
+var _user$project$Main$defaultYear = 2017;
 var _user$project$Main$initModel = {
 	years: {
 		ctor: '::',
@@ -18261,7 +18330,14 @@ var _user$project$Main$initModel = {
 				year: 2016,
 				days: A2(_elm_lang$core$List$range, 1, 25)
 			},
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: {
+					year: 2017,
+					days: A2(_elm_lang$core$List$range, 1, 1)
+				},
+				_1: {ctor: '[]'}
+			}
 		}
 	},
 	year: _user$project$Main$defaultYear,
