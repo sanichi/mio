@@ -102,3 +102,7 @@ type alias Position =
 
 type alias Direction =
     ( Int, Int )
+
+
+
+-- https://github.com/pierrebeitz/advent-of-code/blob/master/2017/Day03.elm#L48
