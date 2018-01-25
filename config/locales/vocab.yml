@@ -27,6 +27,17 @@ en:
       success: Yes! I was right!
       test: Kanji Test
       tests: Kanji Tests
+    occupation:
+      edit: Edit Occupation
+      new: New Occupation
+      occupations: Occupations
+      ending:
+        all: All
+        ending: Ending
+        ka: 家
+        other: Other
+        sha: 者
+        te: 手
     similar:
       edit: Edit Similar Words
       new: New Similar Words

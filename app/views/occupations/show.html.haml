@@ -1,0 +1,24 @@
+= render "utils/title", text: @occupation.kanji, header: true
+
+.row
+  .col-md-offset-2.col-md-8
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr
+          %th= t("vocab.reading")
+          %td= @occupation.reading
+        %tr
+          %th= t("vocab.meaning")
+          %td= @occupation.meaning
+        - if @occupation.vocab
+          %tr
+            %th= t("vocab.vocab")
+            %td= link_to @occupation.kanji, @occupation.vocab
+          %tr
+            %th= t("vocab.audio")
+            %td= render "vocabs/audio", vocab: @occupation.vocab
+
+.text-center
+  = link_to t("vocab.occupation.occupations"), occupations_path, class: "btn btn-success"
+  - if can?(:manage, Occupation)
+    = link_to t("edit"), edit_occupation_path(@occupation), class: "btn btn-info"
