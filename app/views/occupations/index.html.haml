@@ -9,7 +9,7 @@
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, occupation_search_order_menu(params[:order]), class: "form-control auto-submit"
     .form-group
-      = label_tag :ending, t("vocab.occupation.ending.ending"), class: "sr-only"
+      = label_tag :ending, t("vocab.ending"), class: "sr-only"
       = select_tag :ending, occupation_ending_menu(params[:ending]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 

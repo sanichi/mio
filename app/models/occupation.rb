@@ -13,6 +13,7 @@ class Occupation < ApplicationRecord
   scope :by_kanji,   -> { order('kanji COLLATE "C"') }
   scope :by_meaning, -> { order(:meaning, 'reading COLLATE "C"') }
   scope :by_reading, -> { order('reading COLLATE "C"', :meaning) }
+  scope :by_ending,  -> { order('substring(kanji from \'.$\') COLLATE "C" DESC', 'reading COLLATE "C"') }
 
   def self.search(params, path, opt={})
     matches =
@@ -21,6 +22,8 @@ class Occupation < ApplicationRecord
       by_meaning
     when "kanji"
       by_kanji
+    when "ending"
+      by_ending
     else
       by_reading
     end

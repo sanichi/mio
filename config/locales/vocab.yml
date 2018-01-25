@@ -5,6 +5,7 @@ en:
     category: Part of Speech
     conjugation: Conjugation
     edit: Edit Vocab
+    ending: Ending
     homonyms: Homonyms
     japanese: Japanese
     kana: Kana
@@ -33,7 +34,6 @@ en:
       occupations: Occupations
       ending:
         all: All
-        ending: Ending
         ka: 家
         other: Other
         sha: 者
