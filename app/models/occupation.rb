@@ -2,6 +2,8 @@ class Occupation < ApplicationRecord
   include Constrainable
   include Pageable
 
+  ENDINGS = %w/者 手 家 人/
+
   belongs_to :vocab
 
   before_validation :import
@@ -27,15 +29,10 @@ class Occupation < ApplicationRecord
     else
       by_reading
     end
-    case params[:ending]
-    when "sha"
-      matches = matches.where("kanji LIKE '%者'")
-    when "te"
-      matches = matches.where("kanji LIKE '%手'")
-    when "ka"
-      matches = matches.where("kanji LIKE '%家'")
-    when "other"
-      matches = matches.where(%w{者 手 家}.map{|k| "kanji NOT LIKE '%#{k}'"}.join(" AND "))
+    if ENDINGS.include?(params[:ending])
+      matches = matches.where("kanji LIKE '%#{params[:ending]}'")
+    elsif params[:ending] == "other"
+      matches = matches.where(ENDINGS.map{|k| "kanji NOT LIKE '%#{k}'"}.join(" AND "))
     end
     if sql = cross_constraint(params[:q], %w{kanji meaning reading})
       matches = matches.where(sql)

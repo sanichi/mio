@@ -4,7 +4,8 @@ module OccupationHelper
     options_for_select(opts, selected)
   end
   def occupation_ending_menu(selected)
-    opts = %w/all sha te ka other/.map { |g| [t("vocab.occupation.ending.#{g}"), g] }
+    opts = Occupation::ENDINGS.map { |g| [g, g] }
+    opts = opts.unshift([t("all"), "all"]).push([t("other"), "other"])
     options_for_select(opts, selected)
   end
 end
