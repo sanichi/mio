@@ -1,10 +1,12 @@
+= render "vocabs/multi_search", kanji: false
+
 = render "utils/title", key: "vocab.kanjis"
 
 .text-center
   = form_tag kanjis_path, method: :get, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("query"), size: 16
+      = label_tag :q, t("vocab.kanji"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("vocab.kanji"), size: 16
     .form-group
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, kanji_search_level_menu(params[:level]), class: "form-control auto-submit"

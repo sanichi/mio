@@ -1,10 +1,12 @@
+= render "vocabs/multi_search", reading: false
+
 = render "utils/title", key: "vocab.readings"
 
 .text-center
   = form_tag readings_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
-      = label_tag :q, t("vocab.kana"), class: "sr-only"
-      = text_field_tag :kana, params[:kana], class: "form-control", placeholder: t("vocab.kana"), size: 16
+      = label_tag :q, t("vocab.reading"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("vocab.reading"), size: 16
     .form-group
       = label_tag :order, t("order"), class: "sr-only"
       = select_tag :order, reading_search_order_menu(params[:order]), class: "form-control auto-submit"

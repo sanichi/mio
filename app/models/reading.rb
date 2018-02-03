@@ -18,6 +18,7 @@ class Reading < ApplicationRecord
   end
 
   def self.search(params, path, opt={})
+    params[:q] = params[:qr] if params[:qr].present? # for views/vocabs/_multi_search
     matches = case params[:order]
     when "onyomi"   then by_onyomi
     when "kunyomi"  then by_kunyomi
@@ -25,8 +26,8 @@ class Reading < ApplicationRecord
     else                 by_total
     end
     matches = matches.includes(yomis: :kanji)
-    if (k = params[:kana]).present?
-      matches = matches.where("kana LIKE ?", "%#{k}%")
+    if (q = params[:q]).present?
+      matches = matches.where("kana LIKE ?", "%#{q}%")
     end
     paginate(matches, params, path, opt)
   end

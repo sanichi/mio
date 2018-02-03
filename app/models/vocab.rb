@@ -32,6 +32,7 @@ class Vocab < ApplicationRecord
   scope :tricky_verb,  -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
 
   def self.search(params, path, opt={})
+    params[:q] = params[:qv] if params[:qv].present? # for views/vocabs/_multi_search
     matches = case params[:order]
     when "meaning" then by_meaning
     when "level"   then by_level

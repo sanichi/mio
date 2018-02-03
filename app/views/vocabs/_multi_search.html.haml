@@ -1,0 +1,24 @@
+- defined?(vocab)   || vocab = true
+- defined?(kanji)   || kanji  = true
+- defined?(reading) || reading  = true
+
+.text-center
+  %table.table-center
+    %tr
+      - if vocab
+        %td
+          = form_tag vocabs_path, method: :get, class: "form-inline", role: "form" do
+            = label_tag :qv, t("vocab.vocab"), class: "sr-only"
+            = text_field_tag :qv, params[:qv], class: "form-control", placeholder: t("vocab.vocab"), size: 16
+      - if kanji
+        %td
+          = form_tag kanjis_path, method: :get, class: "form-inline", role: "form" do
+            = label_tag :qk, t("vocab.kanji"), class: "sr-only"
+            = text_field_tag :qk, params[:qk], class: "form-control", placeholder: t("vocab.kanji"), size: 16
+      - if reading
+        %td
+          = form_tag readings_path, method: :get, class: "form-inline", role: "form" do
+            = label_tag :qr, t("vocab.reading"), class: "sr-only"
+            = text_field_tag :qr, params[:qr], class: "form-control", placeholder: t("vocab.reading"), size: 16
+
+%hr
