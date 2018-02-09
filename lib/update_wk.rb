@@ -9,6 +9,9 @@ def update_vocabs(wk)
   wk_vocabs = wk.vocabs
   puts "current count of user vocabulary: #{wk_vocabs.size}"
 
+  # Block any probelmatic kanji (e.g. the sound files returning "access denied").
+  wk_vocabs -= ["取り決め"]
+
   # Warn about excess vocabs.
   excess_vocabs = db_vocabs - wk_vocabs
   puts "excess vocabs (#{excess_vocabs.size}): #{excess_vocabs.join(', ')}" if excess_vocabs.any?
@@ -128,5 +131,5 @@ begin
   update_kanjis(wk)
 rescue => e
   # Feedback if there is an error.
-  puts "exception: #{e.message}"
+  puts "exception: #{e.message}\n#{e.backtrace.join("\n")}"
 end
