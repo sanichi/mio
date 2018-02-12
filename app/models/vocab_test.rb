@@ -11,7 +11,7 @@ class VocabTest < ApplicationRecord
   validates :category, inclusion: { in: CATEGORIES }
   validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: Vocab::MAX_LEVEL }
 
-  scope :by_hit,      -> { order(hit_rate: :asc, updated_at: :desc) }
+  scope :by_hit,      -> { order(hit_rate: :desc, updated_at: :desc) }
   scope :by_level,    -> { order(level: :asc, updated_at: :desc) }
   scope :by_progress, -> { order(progress_rate: :asc, updated_at: :desc) }
   scope :by_updated,  -> { order(updated_at: :desc) }
