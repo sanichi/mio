@@ -1,0 +1,6 @@
+- notes.matches.each do |note|
+  %tr
+    %td= link_to note.title, note
+    %td.text-center= note.created_at.strftime("%Y-%m-%d")
+    %td.text-center= note.updated_at.strftime("%Y-%m-%d")
+= render "utils/pagination_links", pager: notes, columns: 3

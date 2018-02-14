@@ -87,7 +87,7 @@
             - if can?(:read, Opening)
               %li= link_to t("opening.openings"), openings_path
 
-      - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, Occupation].map{ |c| can?(:read, c) }.any?
+      - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, Occupation, Note].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
             = t("vocab.japanese")
@@ -110,6 +110,8 @@
               %li= link_to t("vocab.similar.words"), similar_words_path
               %li= link_to t("vocab.occupation.occupations"), occupations_path
               %li= link_to t("vocab.homonyms"), homonyms_vocabs_path
+            - if can?(:read, Note)
+              %li= link_to t("vocab.note.notes"), notes_path
             - if can?(:read, Conversation)
               %li= link_to t("conversation.conversations"), conversations_path
 

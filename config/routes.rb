@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :masses, except: [:show] do
     get :graph, on: :collection
   end
+  resources :notes
   resources :occupations
   resources :openings do
     get :match, on: :collection

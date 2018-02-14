@@ -1,0 +1,26 @@
+= render "utils/title", key: "vocab.note.notes"
+
+.text-center
+  = form_tag notes_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, note_search_order_menu(params[:order]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-8= t("vocab.note.title")
+          %th.col-xs-2.text-center= t("vocab.note.created")
+          %th.col-xs-2.text-center= t("vocab.note.updated")
+      %tbody{id: "results"}
+        = render "results", notes: @notes
+
+.text-center.top_margin
+  - if can?(:create, Note)
+    = link_to t("vocab.note.new"), new_note_path, class: "btn btn-info"

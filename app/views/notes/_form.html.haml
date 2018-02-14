@@ -1,0 +1,14 @@
+.row
+  .col-xs-12
+    = form_for note, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: note, col: "md", pad: 1, width: 10}
+        = render "utils/text_field_for", shared.merge(param: :title, text: t("vocab.note.title"))
+        = render "utils/text_area_for", shared.merge(param: :stuff, text: t("vocab.note.stuff"), rows: 40)
+
+      .row
+        .col-xs-offset-1.col-xs-10
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), note.new_record?? notes_path : note, class: "btn btn-default"
+          - unless note.new_record?
+            = link_to t("delete"), note, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
