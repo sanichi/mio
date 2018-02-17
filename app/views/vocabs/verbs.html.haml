@@ -4,7 +4,7 @@
   = form_tag verbs_vocabs_path, method: :get, remote: true, class: "form-inline", role: "form" do
     .form-group
       = label_tag :q, t("search"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
     .form-group
       = label_tag :type, t("vocab.verb.type"), class: "sr-only"
       = select_tag :type, vocab_verb_type_menu(params[:type]), class: "form-control auto-submit"
