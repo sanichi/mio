@@ -6,18 +6,16 @@
       %thead
         %tr
           %th.col-xs-1.text-center= t("vocab.kanji")
-          %th.col-xs-1.text-center= t("total")
-          %th.col-xs-5.text-center{colspan: 2}= t("vocab.onyomi")
-          %th.col-xs-5.text-center{colspan: 2}= t("vocab.kunyomi")
+          %th.col-xs-5= t("vocab.meaning")
+          %th.col-xs-3= t("vocab.onyomi")
+          %th.col-xs-3= t("vocab.kunyomi")
       %tbody
         - @kanjis.each do |kanji|
           %tr
             %td.col-xs-1.text-center= link_to kanji.symbol, kanji
-            %td.col-xs-1.text-center= kanji.total
-            %td.col-xs-4= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| y.on }
-            %td.col-xs-1.text-center= kanji.onyomi
-            %td.col-xs-4= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| !y.on }
-            %td.col-xs-1.text-center= kanji.kunyomi
+            %td.col-xs-5= kanji.meaning
+            %td.col-xs-3= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| y.on }
+            %td.col-xs-3= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| !y.on }
 
 .text-center.top_margin
   = link_to t("vocab.similar.kanjis"), similar_kanjis_path, class: "btn btn-success"
