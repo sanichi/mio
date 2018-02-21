@@ -1,0 +1,11 @@
+.row
+  .col-xs-12
+    = form_for similar_kanji, html: { class: "form-horizontal", role: "form" } do |f|
+      %fieldset
+        - shared = { form: f, object: similar_kanji, col: "xs", pad: 4, width: 4}
+        = render "utils/text_field_for", shared.merge(param: :kanjis, text: t("vocab.kanjis"))
+
+      .row
+        .col-xs-offset-4.col-xs-8
+          = f.submit t("save"), class: "btn btn-info"
+          = link_to t("cancel"), similar_kanji.new_record?? similar_kanjis_path : similar_kanji, class: "btn btn-default"

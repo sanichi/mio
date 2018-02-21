@@ -11,7 +11,7 @@ describe SimilarWord do
 
   context "create" do
     it "success" do
-      click_link t(:vocab_similar_new)
+      click_link t(:vocab_similar_word_new)
       fill_in t(:vocab_readings), with: data.readings
       click_button t(:save)
 
@@ -24,11 +24,11 @@ describe SimilarWord do
     end
 
     it "failure" do
-      click_link t(:vocab_similar_new)
+      click_link t(:vocab_similar_word_new)
       fill_in t(:vocab_readings), with: similar_word.readings
       click_button t(:save)
 
-      expect(page).to have_title t(:vocab_similar_new)
+      expect(page).to have_title t(:vocab_similar_word_new)
       expect(SimilarWord.count).to eq 1
       expect(page).to have_css(error, text: "taken")
     end
@@ -39,7 +39,7 @@ describe SimilarWord do
       click_link similar_word.display
       click_link t(:edit)
 
-      expect(page).to have_title t(:vocab_similar_edit)
+      expect(page).to have_title t(:vocab_similar_word_edit)
       fill_in t(:vocab_readings), with: data.readings.split.reverse.join("\t")
       click_button t(:save)
 
@@ -58,7 +58,7 @@ describe SimilarWord do
       fill_in t(:vocab_readings), with: ""
       click_button t(:save)
 
-      expect(page).to have_title t(:vocab_similar_edit)
+      expect(page).to have_title t(:vocab_similar_word_edit)
       expect(page).to have_css(error, text: "invalid")
     end
   end

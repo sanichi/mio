@@ -16,6 +16,7 @@ class Kanji < ApplicationRecord
 
   scope :by_onyomi,  -> { order("kanjis.onyomi DESC", 'symbol COLLATE "C"') }
   scope :by_kunyomi, -> { order("kanjis.kunyomi DESC", 'symbol COLLATE "C"') }
+  scope :by_symbol,  -> { order('symbol COLLATE "C"') }
   scope :by_total,   -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", 'symbol COLLATE "C"') }
 
   def total

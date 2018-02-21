@@ -1,0 +1,4 @@
+- similar_kanjis.matches.each do |similar_kanji|
+  %tr
+    %td= link_to similar_kanji.kanjis, similar_kanji
+= render "utils/pagination_links", pager: similar_kanjis, columns: 1

@@ -1,0 +1,27 @@
+= render "utils/title", text: @similar_kanji.kanjis, header: true
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered"}
+      %thead
+        %tr
+          %th.col-xs-1.text-center= t("vocab.kanji")
+          %th.col-xs-1.text-center= t("total")
+          %th.col-xs-5.text-center{colspan: 2}= t("vocab.onyomi")
+          %th.col-xs-5.text-center{colspan: 2}= t("vocab.kunyomi")
+      %tbody
+        - @kanjis.each do |kanji|
+          %tr
+            %td.col-xs-1.text-center= link_to kanji.symbol, kanji
+            %td.col-xs-1.text-center= kanji.total
+            %td.col-xs-4= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| y.on }
+            %td.col-xs-1.text-center= kanji.onyomi
+            %td.col-xs-4= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| !y.on }
+            %td.col-xs-1.text-center= kanji.kunyomi
+
+.text-center.top_margin
+  = link_to t("vocab.similar.kanjis"), similar_kanjis_path, class: "btn btn-success"
+  - if can?(:update, @similar_kanji)
+    = link_to t("edit"), edit_similar_kanji_path(@similar_kanji), class: "btn btn-info"
+  - if can?(:delete, @similar_kanji)
+    = link_to t("delete"), @similar_kanji, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

@@ -41,9 +41,14 @@ en:
       new: New Occupation
       occupations: Occupations
     similar:
-      edit: Edit Similar Words
-      new: New Similar Words
+      kanjis: Similar Kanjis
       words: Similar Words
+      kanji:
+        edit: Edit Similar Kanjis
+        new: New Similar Kanjis
+      word:
+        edit: Edit Similar Words
+        new: New Similar Words
     special:
       special: Special Search
       verb: Tricky Verbs
