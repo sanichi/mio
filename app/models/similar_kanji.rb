@@ -21,6 +21,6 @@ class SimilarKanji < ApplicationRecord
   private
 
   def canonicalize
-    self.kanjis = kanjis.to_s.squish.split.sort.join('')
+    self.kanjis = kanjis.to_s.squish.split.sort.uniq.join('')
   end
 end
