@@ -18,9 +18,13 @@ class SimilarKanji < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.tidy(k)
+    k.to_s.squish.split('').sort.uniq.join('')
+  end
+
   private
 
   def canonicalize
-    self.kanjis = kanjis.to_s.squish.split.sort.uniq.join('')
+    self.kanjis = self.class.tidy(kanjis)
   end
 end

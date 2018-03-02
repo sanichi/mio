@@ -15,12 +15,12 @@ describe SimilarKanji do
       fill_in t(:vocab_kanjis), with: data.kanjis
       click_button t(:save)
 
-      expect(page).to have_title data.kanjis
+      expect(page).to have_title SimilarKanji.tidy(data.kanjis)
 
       expect(SimilarKanji.count).to eq 2
       k = SimilarKanji.last
 
-      expect(k.kanjis).to eq data.kanjis
+      expect(k.kanjis).to eq SimilarKanji.tidy(data.kanjis)
     end
 
     it "failure" do
@@ -43,12 +43,12 @@ describe SimilarKanji do
       fill_in t(:vocab_kanjis), with: data.kanjis.split.reverse.join("\t")
       click_button t(:save)
 
-      expect(page).to have_title data.kanjis
+      expect(page).to have_title SimilarKanji.tidy(data.kanjis)
 
       expect(SimilarKanji.count).to eq 1
       k = SimilarKanji.last
 
-      expect(k.kanjis).to eq data.kanjis
+      expect(k.kanjis).to eq SimilarKanji.tidy(data.kanjis)
     end
 
     it "failure" do
