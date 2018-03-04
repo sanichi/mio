@@ -7,9 +7,10 @@ class Ability
       return
     end
 
-    # Family stuff.
-    # can [:read, :tree, :checks, :match, :relative], Person
-    # can :read, [Picture, Partnership]
+    if !user.guest? # anyone else logged in
+      can [:read, :tree, :checks, :match, :relative], Person
+      can :read, [Picture, Partnership]
+    end
 
     can :read, [Blog, Bucket, Favourite, Tapa]
     can :notes, Tapa
