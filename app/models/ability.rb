@@ -7,8 +7,11 @@ class Ability
       return
     end
 
-    can [:read, :tree, :checks, :match, :relative], Person
-    can :read, [Blog, Bucket, Favourite, Picture, Partnership, Tapa]
+    # Family stuff.
+    # can [:read, :tree, :checks, :match, :relative], Person
+    # can :read, [Picture, Partnership]
+
+    can :read, [Blog, Bucket, Favourite, Tapa]
     can :notes, Tapa
     can [:read, :graph], Mass
     can [:aoc, :pam, :risle, :risle_stats], Page
