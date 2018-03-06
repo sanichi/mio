@@ -8,7 +8,7 @@ namespace :vocab do
       if vocab.blank?
         puts "no match with '#{word}' found"
       else
-        item = " **#{vocab.kanji}** (#{vocab.reading}) #{vocab.meaning} (#{vocab.category})"
+        item = "* **#{vocab.kanji}** (#{vocab.reading}) #{vocab.meaning} (#{vocab.category})"
         puts item
         %x{echo '#{item}' | pbcopy} if Rails.env == "development"
       end
