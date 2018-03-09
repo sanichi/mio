@@ -1,5 +1,5 @@
 - similar_kanjis.matches.each do |similar_kanji|
   %tr
     %td.lead= link_to similar_kanji.kanjis, similar_kanji
-    %td.lead= t("vocab.similar.kanji.category.#{similar_kanji.category}")
+    %td= t("vocab.similar.kanji.category.#{similar_kanji.category}")
 = render "utils/pagination_links", pager: similar_kanjis, columns: 2
