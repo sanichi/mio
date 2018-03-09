@@ -46,6 +46,10 @@ en:
       kanji:
         edit: Edit Similar Kanjis
         new: New Similar Kanjis
+        category:
+          category: Type
+          reading: Reading
+          shape: Shape
       word:
         edit: Edit Similar Words
         new: New Similar Words

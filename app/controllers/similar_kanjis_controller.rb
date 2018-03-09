@@ -43,6 +43,6 @@ class SimilarKanjisController < ApplicationController
   end
 
   def strong_params
-    params.require(:similar_kanji).permit(:kanjis)
+    params.require(:similar_kanji).permit(:kanjis, :category)
   end
 end

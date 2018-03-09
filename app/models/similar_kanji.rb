@@ -3,15 +3,20 @@ class SimilarKanji < ApplicationRecord
   include Pageable
 
   MAX_KANJIS = 20
+  MAX_CATEGORY = 10
+
+  CATEGORIES = %w[shape reading]
 
   before_validation :canonicalize
 
   validates :kanjis, length: { maximum: MAX_KANJIS, minimum: 2 }, format: { with: /\A\S+\z/ }, uniqueness: true
+  validates :category, inclusion: { in: CATEGORIES }
 
   scope :by_kanjis, -> { order('kanjis COLLATE "C"') }
 
   def self.search(params, path, opt={})
     matches = by_kanjis
+    matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
     if sql = cross_constraint(params[:q], %w{kanjis})
       matches = matches.where(sql)
     end

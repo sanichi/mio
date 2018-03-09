@@ -13,6 +13,7 @@ describe SimilarKanji do
     it "success" do
       click_link t(:vocab_similar_kanji_new)
       fill_in t(:vocab_kanjis), with: data.kanjis
+      select I18n.t("vocab.similar.kanji.category.#{data.category}"), from: t(:vocab_similar_kanji_category_category)
       click_button t(:save)
 
       expect(page).to have_title SimilarKanji.tidy(data.kanjis)
@@ -21,11 +22,13 @@ describe SimilarKanji do
       k = SimilarKanji.last
 
       expect(k.kanjis).to eq SimilarKanji.tidy(data.kanjis)
+      expect(k.category).to eq data.category
     end
 
     it "failure" do
       click_link t(:vocab_similar_kanji_new)
       fill_in t(:vocab_kanjis), with: similar_kanji.kanjis
+      select I18n.t("vocab.similar.kanji.category.#{data.category}"), from: t(:vocab_similar_kanji_category_category)
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_similar_kanji_new)

@@ -38,4 +38,11 @@ module VocabHelper
     opts.unshift [t("vocab.trans.all"), ""]
     options_for_select(opts, selected)
   end
+
+  def similar_kanjis_category_menu(selected, any: false, select: false)
+    opts = SimilarKanji::CATEGORIES.map { |c| [t("vocab.similar.kanji.category.#{c}"), c] }
+    opts.unshift [t("any"), ""] if any
+    opts.unshift [t("select"), ""] if select
+    options_for_select(opts, selected)
+  end
 end
