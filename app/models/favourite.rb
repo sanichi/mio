@@ -2,7 +2,7 @@ class Favourite < ApplicationRecord
   include Constrainable
   include Pageable
 
-  MAX_LINK = 100
+  MAX_LINK = 200
   MAX_NAME = 50
   MAX_NOTE = 200
   MIN_YEAR = 1900
