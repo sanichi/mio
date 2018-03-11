@@ -13,8 +13,8 @@ class Note < ApplicationRecord
   def self.search(params, path, opt={})
     matches = case params[:order]
     when "created" then order(created_at: :asc)
-    when "updated" then order(updated_at: :desc)
-    else                order(:title)
+    when "title"   then order(:title)
+    else                order(updated_at: :desc)
     end
     if sql = cross_constraint(params[:q], %w{title stuff})
       matches = matches.where(sql)
