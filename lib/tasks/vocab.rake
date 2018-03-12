@@ -10,7 +10,7 @@ namespace :vocab do
       else
         item = "* **#{vocab.kanji}** (#{vocab.reading}) #{vocab.meaning} (#{vocab.category})"
         puts item
-        %x{echo '#{item}' | pbcopy} if Rails.env == "development"
+        %x{echo '#{item.gsub("'", %Q('"'"'))}' | pbcopy} if Rails.env == "development"
       end
     end
   end
