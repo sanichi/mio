@@ -3,15 +3,16 @@
 = render "utils/title", text: @reading.kana, header: true
 
 .row
-  .col-md-offset-3.col-md-6
+  .col-sm-offset-1.col-sm-10
     %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %td.col-xs-1.text-center= t("vocab.kanji")
+          %td.col-xs-5.text-center= t("vocab.onyomi")
+          %td.col-xs-6.text-center= t("vocab.kunyomi")
       %tbody
-        %tr
-          %th.col-md-2= t("vocab.onyomi")
-          %td.col-md-10= render "symbols", yomis: @reading.yomis.select{ |y| y.on }
-        %tr
-          %th= t("vocab.kunyomi")
-          %td= render "symbols", yomis: @reading.yomis.select{ |y| !y.on }
+        = render "kanjis", kanjis: @reading.on_kanjis, skip_link: @reading.kana
+        = render "kanjis", kanjis: @reading.kun_kanjis, skip_link: @reading.kana
 
 .text-center
   = link_to t("vocab.readings"), readings_path, class: "btn btn-success"

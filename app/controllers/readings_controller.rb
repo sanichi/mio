@@ -6,6 +6,6 @@ class ReadingsController < ApplicationController
   end
 
   def show
-    @reading = Reading.find(params[:id])
+    @reading = Reading.includes(yomis: { kanji: { yomis: :reading } }).find(params[:id])
   end
 end

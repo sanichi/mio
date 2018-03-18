@@ -39,4 +39,12 @@ class Reading < ApplicationRecord
   def kun_yomis
     yomis.select{ |y| !y.on }
   end
+
+  def on_kanjis
+    on_yomis.map{ |y| y.kanji }
+  end
+
+  def kun_kanjis
+    kun_yomis.map{ |y| y.kanji }
+  end
 end
