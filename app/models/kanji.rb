@@ -42,6 +42,30 @@ class Kanji < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def on_yomis
+    yomis.select{ |y| y.on }
+  end
+
+  def kun_yomis
+    yomis.select{ |y| !y.on }
+  end
+
+  def on_yomi_readings
+    on_yomis.map{ |y| y.reading }
+  end
+
+  def kun_yomi_readings
+    kun_yomis.map{ |y| y.reading }
+  end
+
+  def on_yomi_kana
+    on_yomi_readings.map{ |r| r.kana }
+  end
+
+  def kun_yomi_kana
+    kun_yomi_readings.map{ |r| r.kana }
+  end
+
   private
 
   def truncate

@@ -14,7 +14,7 @@
             %tr
               %td= link_to q.kanji.symbol, q.kanji
               %td= q.kanji.meaning
-              %td= render "kanas", yomis: q.kanji.yomis.select{ |y| y.on }
-              %td= render "kanas", yomis: q.kanji.yomis.select{ |y| !y.on }
+              %td= render "kanas", yomis: q.kanji.on_yomis
+              %td= render "kanas", yomis: q.kanji.kun_yomis
               %td.text-center
                 = t("symbol.#{q.answer ? 'tick' : 'cross'}")

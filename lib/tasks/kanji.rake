@@ -8,8 +8,8 @@ namespace :kanji do
       if kanji.blank?
         puts "no match with '#{char}' found"
       else
-        kun = kanji.yomis.select{ |y| !y.on }.map{ |y| y.reading.kana }.join(",")
-        on  = kanji.yomis.select{ |y|  y.on }.map{ |y| y.reading.kana }.join(",")
+        kun = kanji.kun_yomi_kana.join(",")
+        on  = kanji.on_yomi_kana.join(",")
         item = "* **#{kanji.symbol}** (#{on};#{kun}) #{kanji.meaning}"
         puts item
         %x{echo '#{item.gsub("'", %Q('"'"'))}' | pbcopy} if Rails.env == "development"

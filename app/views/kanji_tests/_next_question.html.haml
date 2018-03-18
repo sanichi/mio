@@ -18,10 +18,10 @@
           %td= kanji.meaning
         %tr
           %th= t("vocab.onyomi")
-          %td= render "kanas", yomis: kanji.yomis.select{ |y| y.on }
+          %td= render "kanas", yomis: kanji.on_yomis
         %tr
           %th= t("vocab.kunyomi")
-          %td= render "kanas", yomis: kanji.yomis.select{ |y| !y.on }
+          %td= render "kanas", yomis: kanji.kun_yomis
 .row.top_margin
   .col-xs-12.text-center
     %button.btn.btn-sm.btn-primary{id: "reveal-button"}= t("vocab.kanji_test.reveal")

@@ -8,10 +8,10 @@
       %tbody
         %tr
           %th.col-md-2= t("vocab.onyomi")
-          %td.col-md-10= render "kanas", yomis: @kanji.yomis.select{ |y| y.on }
+          %td.col-md-10= render "kanas", yomis: @kanji.on_yomis
         %tr
           %th= t("vocab.kunyomi")
-          %td= render "kanas", yomis: @kanji.yomis.select{ |y| !y.on }
+          %td= render "kanas", yomis: @kanji.kun_yomis
         %tr
           %th= t("vocab.meaning")
           %td= @kanji.meaning

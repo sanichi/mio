@@ -31,4 +31,12 @@ class Reading < ApplicationRecord
     end
     paginate(matches, params, path, opt)
   end
+
+  def on_yomis
+    yomis.select{ |y| y.on }
+  end
+
+  def kun_yomis
+    yomis.select{ |y| !y.on }
+  end
 end
