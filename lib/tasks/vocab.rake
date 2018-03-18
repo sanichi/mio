@@ -1,5 +1,5 @@
 namespace :vocab do
-  desc "conver a vocab into a specially formated list item"
+  desc "convert a vocab item into a specially formated list item"
   task :item, [:word] => [:environment] do |t, args|
     if (word = args[:word]).blank?
       puts "please supply a word argument (in square braces)"
