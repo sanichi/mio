@@ -25,6 +25,10 @@
           %th= t("vocab.level")
           %td= @vocab.level
 
+.row.top_margin.bottom_margin
+  .col-xs-12.text-center
+    = render "external_links", kanji: @vocab.kanji
+
 - if @vocab.verb?
   = render "conjugate", verb: @vocab
 
