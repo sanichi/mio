@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309125338) do
+ActiveRecord::Schema.define(version: 20180324152610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(version: 20180309125338) do
     t.integer "kunyomi", default: 0
     t.string "meaning", limit: 100
     t.integer "level", limit: 2
+    t.index ["meaning"], name: "index_kanjis_on_meaning"
+    t.index ["symbol"], name: "index_kanjis_on_symbol"
   end
 
   create_table "links", id: :serial, force: :cascade do |t|

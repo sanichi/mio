@@ -99,6 +99,13 @@ class Vocab < ApplicationRecord
     "#{kanji} (#{reading})"
   end
 
+  def linked_kanji
+    kanji.split('').map do |c|
+      k = Kanji.find_by(symbol: c)
+      k ? %Q{<a href="/kanjis/#{k.id}">#{c}</a>} : c
+    end.join('').html_safe
+  end
+
   def audio_type
     "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : 'ogg'}"
   end

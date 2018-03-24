@@ -1,6 +1,8 @@
 = render "multi_search"
 
-= render "utils/title", text: @vocab.kanji, header: true
+= render "utils/title", text: @vocab.kanji
+
+%h1.text-center= @vocab.linked_kanji
 
 .row
   .col-md-offset-2.col-md-8
