@@ -23,13 +23,14 @@ class Vocab < ApplicationRecord
   validates :meaning, length: { maximum: MAX_MEANING }, presence: true
   validates :reading, length: { maximum: MAX_READING }, presence: true
 
-  scope :by_kanji,     -> { order('kanji COLLATE "C"') }
-  scope :by_level,     -> { order(:level, 'reading COLLATE "C"') }
-  scope :by_meaning,   -> { order(:meaning, 'reading COLLATE "C"') }
-  scope :by_reading,   -> { order('reading COLLATE "C"', :level) }
-  scope :transitive,   -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
-  scope :intransitive, -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
-  scope :tricky_verb,  -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
+  scope :by_kanji,         -> { order('kanji COLLATE "C"') }
+  scope :by_level,         -> { order(:level, 'reading COLLATE "C"') }
+  scope :by_meaning,       -> { order(:meaning, 'reading COLLATE "C"') }
+  scope :by_reading,       -> { order('reading COLLATE "C"', :level) }
+  scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
+  scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
+  scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
+  scope :tricky_adjective, -> { where("category ILIKE '%na adjective%' AND kanji ~* 'い$'") }
 
   def self.search(params, path, opt={})
     params[:q] = params[:qv] if params[:qv].present? # for views/vocabs/_multi_search
@@ -45,7 +46,8 @@ class Vocab < ApplicationRecord
       matches = matches.where(level: level)
     end
     matches = case params[:special]
-    when "verb" then matches.tricky_verb
+    when "verb"      then matches.tricky_verb
+    when "adjective" then matches.tricky_adjective
     else matches
     end
     paginate(matches, params, path, opt)

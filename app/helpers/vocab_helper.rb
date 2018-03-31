@@ -11,7 +11,7 @@ module VocabHelper
   end
 
   def vocab_special_search_menu(selected)
-    opts = %w/verb/.map { |s| [t("vocab.special.#{s}"), s]}
+    opts = %w/verb adjective/.map { |s| [t("vocab.special.#{s}"), s]}
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
