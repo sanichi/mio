@@ -14,7 +14,6 @@ require 'capistrano/rails/assets'
 require 'capistrano/rails/console'
 require 'capistrano/rails/migrations'
 require 'capistrano/passenger'
-require 'whenever/capistrano'
 
 # For prettier console output.
 require "airbrussh/capistrano"
