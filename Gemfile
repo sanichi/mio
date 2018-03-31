@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.1.5"
+gem "rails", "~> 5.1.6"
 gem "puma", "~> 3.7"
 gem "pg"
 gem "haml-rails"
@@ -10,9 +10,7 @@ gem "jquery-rails"
 gem "jquery-ui-rails"
 gem "cancancan", "~> 2.0"
 gem "redcarpet", "~> 3.2"
-gem "whenever", require: false
 gem "paperclip", "~> 5.0"
-gem "rack-mini-profiler", require: false
 gem "chronic", "~> 0.10"
 gem "oga", "~> 2.5"
 gem "mechanize", "~> 2.7"
@@ -22,7 +20,7 @@ group :development do
   gem "capistrano-rails"
   gem "capistrano-rails-console"
   gem "capistrano-passenger"
-  gem "airbrussh", :require => false
+  gem "airbrussh", require: false
   gem "awesome_print", require: "ap"
 end
 
