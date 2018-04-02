@@ -9,7 +9,8 @@
         = @misa.minutes
         - if @misa.japanese
           = t("misa.abbrev.japanese")
-  .panel-body= @misa.note_html
+  - if @misa.note.present?
+    .panel-body= @misa.note_html
 
 .text-center.top_margin
   = link_to t("misa.misas"), misas_path, class: "btn btn-success"

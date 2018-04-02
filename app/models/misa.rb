@@ -10,6 +10,7 @@ class Misa < ApplicationRecord
   MAX_TITLE = 150
 
   before_validation :normalize_attributes
+  after_save :count_lines
 
   validates :category, inclusion: { in: CATEGORIES }
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
@@ -53,5 +54,10 @@ class Misa < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+  end
+
+  def count_lines
+    count = note ? note.split("\n").size : 0
+    update_column(:lines, count) unless lines == count
   end
 end

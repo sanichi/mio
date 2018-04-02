@@ -2,7 +2,8 @@
   %tr
     %td= link_to misa.title, misa
     %td= t("misa.categories.#{misa.category}")
+    %td.text-center= misa.lines
     %td.text-center= misa.minutes
     %td.text-center= misa.japanese ? t("symbol.tick") : t("symbol.cross")
     %td.text-center= link_to t("misa.abbrev.short"), misa.short_url, target: misa.target
-= render "utils/pagination_links", pager: misas, columns: 5
+= render "utils/pagination_links", pager: misas, columns: 6
