@@ -5,7 +5,7 @@ en:
     japanese: 日本語
     minutes: Minutes
     misa: Ammo Lesson
-    misas: Ammo Lessons
+    misas: Ammo
     new: New Lesson
     note: Notes
     short: Short Video Code
@@ -21,3 +21,6 @@ en:
       howto: How To
       native: Native Way
       none: None
+    order:
+      created: First Created
+      updated: Last Updated

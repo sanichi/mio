@@ -7,7 +7,10 @@
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
     .form-group
       = label_tag :category, t("misa.category"), class: "sr-only"
-      = select_tag :category, misa_category_menu(params[:category]), class: "form-control auto-submit"
+      = select_tag :category, misa_category_menu(params[:category], search: true), class: "form-control auto-submit"
+    .form-group
+      = label_tag :order, t("order"), class: "sr-only"
+      = select_tag :order, misa_search_order_menu(params[:order]), class: "form-control auto-submit"
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin

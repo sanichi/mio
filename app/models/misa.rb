@@ -18,10 +18,10 @@ class Misa < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = case params[:order]
-    when "title"
-      order(:title)
+    when "created"
+      order(:id)
     else
-      order(id: :asc)
+      order(updated_at: :desc)
     end
     matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
     if sql = cross_constraint(params[:q], %w{title note})
@@ -32,6 +32,10 @@ class Misa < ApplicationRecord
 
   def note_html
     to_html(note)
+  end
+
+  def full_title
+    "#{title} (#{I18n.t("misa.categories.#{category}")})"
   end
 
   def short_url

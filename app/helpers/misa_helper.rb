@@ -8,4 +8,9 @@ module MisaHelper
     end
     options_for_select(opts, selected)
   end
+
+  def misa_search_order_menu(selected)
+    opts = %w/updated created/.map { |o| [t("misa.order.#{o}"), o] }
+    options_for_select(opts, selected)
+  end
 end
