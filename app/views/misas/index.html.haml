@@ -1,0 +1,28 @@
+= render "utils/title", key: "misa.misas"
+
+.text-center
+  = form_tag misas_path, method: :get, remote: true, class: "form-inline", role: "form" do
+    .form-group
+      = label_tag :q, t("query"), class: "sr-only"
+      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
+    .form-group
+      = label_tag :category, t("misa.category"), class: "sr-only"
+      = select_tag :category, misa_category_menu(params[:category]), class: "form-control auto-submit"
+    = button_tag t("search"), type: "submit", class: "btn btn-success"
+
+.row.top_margin
+  .col-xs-12
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th.col-xs-7= t("misa.title")
+          %th.col-xs-2= t("misa.category")
+          %th.col-xs-1.text-center= t("misa.abbrev.minutes")
+          %th.col-xs-1.text-center= t("misa.abbrev.japanese")
+          %th.col-xs-1.text-center= t("misa.abbrev.short")
+      %tbody{id: "results"}
+        = render "results", misas: @misas
+
+.text-center.top_margin
+  - if can?(:create, Misa)
+    = link_to t("misa.new"), new_misa_path, class: "btn btn-info"

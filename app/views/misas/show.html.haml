@@ -1,0 +1,19 @@
+= render "utils/title", text: t("misa.misa")
+
+.panel.panel-default.top_margin
+  .panel-heading
+    = @misa.title
+    .pull-right
+      .small
+        = link_to t("misa.abbrev.short"), @misa.short_url, target: @misa.target
+        = @misa.minutes
+        - if @misa.japanese
+          = t("misa.abbrev.japanese")
+  .panel-body= @misa.note_html
+
+.text-center.top_margin
+  = link_to t("misa.misas"), misas_path, class: "btn btn-success"
+  - if can?(:edit, Misa)
+    = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-info"
+  - if can?(:delete, Misa)
+    = link_to t("delete"), @misa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

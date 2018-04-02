@@ -1,0 +1,23 @@
+en:
+  misa:
+    category: Series
+    edit: Edit Lesson
+    japanese: 日本語
+    minutes: Minutes
+    misa: Ammo Lesson
+    misas: Ammo Lessons
+    new: New Lesson
+    note: Notes
+    short: Short Video Code
+    title: Title
+    abbrev:
+      japanese: 🇯🇵
+      minutes: ⏱
+      short: 📺
+    categories:
+      dajare: Dajare
+      difference: Differences
+      beginners: Beginners
+      howto: How To
+      native: Native Way
+      none: None
