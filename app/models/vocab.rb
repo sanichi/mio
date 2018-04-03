@@ -39,7 +39,10 @@ class Vocab < ApplicationRecord
     when "level"   then by_level
     else                by_reading
     end
-    if sql = cross_constraint(params[:q], %w{category kanji meaning reading})
+    if sql = cross_constraint(params[:q], %w{kanji meaning reading})
+      matches = matches.where(sql)
+    end
+    if sql = cross_constraint(params[:category], %w{category})
       matches = matches.where(sql)
     end
     if (level = params[:level].to_i) > 0

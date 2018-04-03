@@ -8,6 +8,9 @@
       = label_tag :q, t("vocab.vocab"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("vocab.vocab"), size: 16, autofocus: true
     .form-group
+      = label_tag :category, t("vocab.category"), class: "sr-only"
+      = text_field_tag :category, params[:category], class: "form-control", placeholder: t("vocab.category"), size: 10
+    .form-group
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
     .form-group
