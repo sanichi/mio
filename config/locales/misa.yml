@@ -3,6 +3,7 @@ en:
     category: Series
     edit: Edit Lesson
     japanese: 日本語
+    long: Long Video Code
     minutes: Minutes
     misa: Ammo Lesson
     misas: Ammo
@@ -13,6 +14,7 @@ en:
     abbrev:
       japanese: 🇯🇵
       lines: 📖
+      long: 🎞
       minutes: ⏱
       short: 📺
     categories:

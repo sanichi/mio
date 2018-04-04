@@ -14,6 +14,9 @@ describe Misa do
       click_link t(:misa_new)
       select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
+      if data.long
+        fill_in t(:misa_long), with: data.long
+      end
       fill_in t(:misa_minutes), with: data.minutes
       fill_in t(:misa_note), with: data.note
       fill_in t(:misa_short), with: data.short
@@ -27,6 +30,7 @@ describe Misa do
 
       expect(m.category).to eq data.category
       expect(m.japanese).to eq data.japanese
+      expect(m.long).to eq data.long
       expect(m.minutes).to eq data.minutes
       expect(m.note).to eq data.note
       expect(m.short).to eq data.short
@@ -39,6 +43,9 @@ describe Misa do
       click_link t(:misa_new)
       select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
+      if data.long
+        fill_in t(:misa_long), with: data.long
+      end
       fill_in t(:misa_minutes), with: data.minutes
       fill_in t(:misa_note), with: data.note
       fill_in t(:misa_short), with: data.short

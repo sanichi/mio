@@ -7,6 +7,7 @@ class Misa < ApplicationRecord
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
   MAX_SHORT = 15
+  MAX_LONG = 15
   MAX_TITLE = 150
 
   before_validation :normalize_attributes
@@ -14,8 +15,9 @@ class Misa < ApplicationRecord
 
   validates :category, inclusion: { in: CATEGORIES }
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
-  validates :short, format: { with: /\A\S+\z/}, length: { maximum: MAX_SHORT }
-  validates :title, presence: true, length: { maximum: MAX_TITLE }
+  validates :short, format: { with: /\A\S+\z/ }, length: { maximum: MAX_SHORT }, uniqueness: true
+  validates :long, format: { with: /\A\S+\z/ }, length: { maximum: MAX_LONG }, uniqueness: true, allow_nil: true
+  validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -43,6 +45,10 @@ class Misa < ApplicationRecord
     "https://www.youtube.com/watch?v=#{short}"
   end
 
+  def long_url
+    "https://youtu.be/#{long}"
+  end
+
   def target
     "misa"
   end
@@ -54,6 +60,7 @@ class Misa < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.long = nil if long.blank?
   end
 
   def count_lines
