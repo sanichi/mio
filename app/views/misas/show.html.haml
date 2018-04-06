@@ -5,6 +5,7 @@
     = @misa.full_title
     .pull-right
       .small
+        = @misa.published
         - if @misa.long
           = link_to t("misa.abbrev.long"), @misa.long_url, target: @misa.target
         = link_to t("misa.abbrev.short"), @misa.short_url, target: @misa.target

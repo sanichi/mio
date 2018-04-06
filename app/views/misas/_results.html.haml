@@ -1,6 +1,9 @@
 - misas.matches.each do |misa|
   %tr
-    %td= link_to misa.title, misa
+    %td
+      = link_to misa.title, misa
+      - if misa.japanese
+        = t("misa.abbrev.japanese")
     %td= t("misa.categories.#{misa.category}")
     %td.text-center= misa.lines
     %td.text-center= misa.minutes
