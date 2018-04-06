@@ -15,6 +15,7 @@ gem "chronic", "~> 0.10"
 gem "oga", "~> 2.5"
 gem "mechanize", "~> 2.7"
 gem "ruby-progressbar", "~> 1.8"
+gem "date_validator", "~> 0.9"
 
 group :development do
   gem "capistrano-rails"

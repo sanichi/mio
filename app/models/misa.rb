@@ -17,12 +17,15 @@ class Misa < ApplicationRecord
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
   validates :short, format: { with: /\A\S+\z/ }, length: { maximum: MAX_SHORT }, uniqueness: true
   validates :long, format: { with: /\A\S+\z/ }, length: { maximum: MAX_LONG }, uniqueness: true, allow_nil: true
+  validates :published, date: { before_or_equal: Proc.new { Date.today } }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
 
   def self.search(params, path, opt={})
     matches = case params[:order]
     when "created"
       order(:id)
+    when "published"
+      order(:published)
     else
       order(updated_at: :desc)
     end

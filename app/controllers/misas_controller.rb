@@ -39,6 +39,6 @@ class MisasController < ApplicationController
   end
 
   def strong_params
-    params.require(:misa).permit(:category, :japanese, :long, :minutes, :note, :short, :title)
+    params.require(:misa).permit(:category, :japanese, :long, :minutes, :note, :published, :short, :title)
   end
 end

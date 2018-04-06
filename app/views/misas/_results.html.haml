@@ -4,7 +4,7 @@
     %td= t("misa.categories.#{misa.category}")
     %td.text-center= misa.lines
     %td.text-center= misa.minutes
-    %td.text-center= misa.japanese ? t("symbol.tick") : t("symbol.cross")
+    %td.text-center= misa.published&.strftime("%y-%m-%d")
     %td.text-center
       - if misa.long
         = link_to t("misa.abbrev.long"), misa.long_url, target: misa.target

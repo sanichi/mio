@@ -9,6 +9,7 @@ en:
     misas: Ammo
     new: New Lesson
     note: Notes
+    published: Published
     short: Short Video Code
     title: Title
     abbrev:
@@ -16,6 +17,7 @@ en:
       lines: 📖
       long: 🎞
       minutes: ⏱
+      published: 🖨
       short: 📺
     categories:
       dajare: Dajare
@@ -26,4 +28,5 @@ en:
       none: None
     order:
       created: First Created
+      published: First Published
       updated: Last Updated

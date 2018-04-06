@@ -7,6 +7,7 @@
         = render "utils/select_for", shared.merge(param: :category, text: t("misa.category"), menu: misa_category_menu(misa.category, new_record: misa.new_record?), width: 2)
         = render "utils/text_field_for", shared.merge(param: :short, text: t("misa.short"), width: 2)
         = render "utils/text_field_for", shared.merge(param: :minutes, text: t("misa.minutes"), width: 2)
+        = render "utils/text_field_for", shared.merge(param: :published, text: t("misa.published"), width: 2)
         = render "utils/check_box_for", shared.merge(param: :japanese, text: t("misa.japanese"), width: 1)
         = render "utils/text_field_for", shared.merge(param: :long, text: t("misa.long"), width: 2)
         = render "utils/text_area_for", shared.merge(param: :note, text: t("misa.note"), rows: 30)
