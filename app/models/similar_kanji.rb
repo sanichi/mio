@@ -5,7 +5,7 @@ class SimilarKanji < ApplicationRecord
   MAX_KANJIS = 20
   MAX_CATEGORY = 10
 
-  CATEGORIES = %w[shape reading]
+  CATEGORIES = %w[shape reading meaning]
 
   before_validation :canonicalize
 

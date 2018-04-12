@@ -48,6 +48,7 @@ en:
         new: New Similar Kanjis
         category:
           category: Type
+          meaning: Meaning
           reading: Reading
           shape: Shape
       word:
