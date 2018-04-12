@@ -3,7 +3,7 @@ class Misa < ApplicationRecord
   include Pageable
   include Remarkable
 
-  CATEGORIES = %w/none beginners difference native howto dajare/
+  CATEGORIES = %w/none beginners grammar difference native howto dajare/
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
   MAX_SHORT = 15
