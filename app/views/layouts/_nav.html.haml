@@ -99,6 +99,8 @@
               %li= link_to t("vocab.kanjis"), kanjis_path
             - if can?(:read, Reading)
               %li= link_to t("vocab.readings"), readings_path
+            - if can?(:read, Vocab)
+              %li= link_to t("vocab.verb.verbs"), verbs_vocabs_path
             - if can?(:read, VerbPair)
               %li= link_to t("verb_pair.verb_pairs"), verb_pairs_path
             - if can?(:read, VocabTest)
@@ -106,7 +108,6 @@
             - if can?(:read, KanjiTest)
               %li= link_to t("vocab.kanji_test.tests"), kanji_tests_path
             - if can?(:read, Vocab)
-              %li= link_to t("vocab.verb.verbs"), verbs_vocabs_path
               %li= link_to t("vocab.similar.words"), similar_words_path
               %li= link_to t("vocab.similar.kanjis"), similar_kanjis_path
               %li= link_to t("vocab.occupation.occupations"), occupations_path
