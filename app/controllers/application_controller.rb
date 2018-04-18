@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include SessionHelper
 
-  protect_from_forgery with: :exception # prevent CSRF attacks by raising an exception
   helper_method :authenticated?
   before_action :remember_last_non_autenticated_path
 

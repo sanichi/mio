@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.1.6"
-gem "puma", "~> 3.7"
+gem "rails", "~> 5.2.0"
+gem "puma", "~> 3.11"
 gem "pg"
 gem "haml-rails"
 gem "sass-rails", "~> 5.0"
@@ -27,12 +27,11 @@ end
 
 group :development, :test do
   gem "rspec-rails", "~> 3.0"
-  gem "capybara"
+  gem "capybara", "~> 2.13"
   gem "selenium-webdriver"
   gem "factory_bot_rails", "~> 4.8"
   gem "launchy"
   gem "faker"
   gem "database_cleaner"
   gem "byebug", platform: :mri
-  gem "rack-test"
 end

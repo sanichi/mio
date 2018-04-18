@@ -14,10 +14,10 @@ class Kanji < ApplicationRecord
   validates :meaning, presence: true, length: { maximum: MAX_MEANING }
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: Vocab::MIN_LEVEL, less_than_or_equal_to: Vocab::MAX_LEVEL }
 
-  scope :by_onyomi,  -> { order("kanjis.onyomi DESC", 'symbol COLLATE "C"') }
+  scope :by_onyomi,  -> { order("kanjis.onyomi DESC", Arel.sql('symbol COLLATE "C"')) }
   scope :by_kunyomi, -> { order("kanjis.kunyomi DESC", 'symbol COLLATE "C"') }
-  scope :by_symbol,  -> { order('symbol COLLATE "C"') }
-  scope :by_total,   -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", 'symbol COLLATE "C"') }
+  scope :by_symbol,  -> { order(Arel.sql('symbol COLLATE "C"')) }
+  scope :by_total,   -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", Arel.sql('symbol COLLATE "C"')) }
 
   def total
     onyomi + kunyomi

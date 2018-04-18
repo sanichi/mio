@@ -12,10 +12,10 @@ class Occupation < ApplicationRecord
   validates :meaning, length: { maximum: Vocab::MAX_MEANING }, presence: true
   validates :reading, length: { maximum: Vocab::MAX_READING }, presence: true
 
-  scope :by_kanji,   -> { order('kanji COLLATE "C"') }
-  scope :by_meaning, -> { order(:meaning, 'reading COLLATE "C"') }
-  scope :by_reading, -> { order('reading COLLATE "C"', :meaning) }
-  scope :by_ending,  -> { order('substring(kanji from \'.$\') COLLATE "C" DESC', 'reading COLLATE "C"') }
+  scope :by_kanji,   -> { order(Arel.sql('kanji COLLATE "C"')) }
+  scope :by_meaning, -> { order(:meaning, Arel.sql('reading COLLATE "C"')) }
+  scope :by_reading, -> { order(Arel.sql('reading COLLATE "C"'), :meaning) }
+  scope :by_ending,  -> { order(Arel.sql('substring(kanji from \'.$\') COLLATE "C" DESC'), Arel.sql('reading COLLATE "C"')) }
 
   def self.search(params, path, opt={})
     matches =

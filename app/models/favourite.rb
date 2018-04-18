@@ -22,7 +22,7 @@ class Favourite < ApplicationRecord
   scope :by_year,     -> { order(year: :desc, name: :asc) }
   scope :by_mark,     -> { order(mark: :desc, name: :asc) }
   scope :by_sandra,   -> { order(sandra: :desc, name: :asc) }
-  scope :by_combo,    -> { order("(sandra + mark) DESC, name ASC") }
+  scope :by_combo,    -> { order(Arel.sql("(sandra + mark) DESC, name ASC")) }
   scope :by_entered,  -> { order(created_at: :desc) }
 
   def self.search(params, path, opt={})

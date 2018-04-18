@@ -104,7 +104,7 @@ begin
   puts Date.today
 
   # Get a helper object for the tasks we're about to do.
-  wk = WaniKani.new(Rails.application.secrets.wani_kani)
+  wk = WaniKani.new(Rails.application.credentials.wani_kani)
 
   # Repair vocabs.
   repair_vocabs(wk)

@@ -18,7 +18,7 @@ begin
   puts "audio references in #{Rails.env} DB: #{db_audio.size}"
 
   # Get a WaniKani object.
-  wk = WaniKani.new(Rails.application.secrets.wani_kani)
+  wk = WaniKani.new(Rails.application.credentials.wani_kani)
 
   # Find which of these have not been downloaded yet.
   new_audio = db_audio.reject { |f| wk.audio_exist?(f) }

@@ -12,7 +12,7 @@ class SimilarKanji < ApplicationRecord
   validates :kanjis, length: { maximum: MAX_KANJIS, minimum: 2 }, format: { with: /\A\S+\z/ }, uniqueness: true
   validates :category, inclusion: { in: CATEGORIES }
 
-  scope :by_kanjis, -> { order('kanjis COLLATE "C"') }
+  scope :by_kanjis, -> { order(Arel.sql('kanjis COLLATE "C"')) }
 
   def self.search(params, path, opt={})
     matches = by_kanjis

@@ -23,10 +23,10 @@ class Vocab < ApplicationRecord
   validates :meaning, length: { maximum: MAX_MEANING }, presence: true
   validates :reading, length: { maximum: MAX_READING }, presence: true
 
-  scope :by_kanji,         -> { order('kanji COLLATE "C"') }
-  scope :by_level,         -> { order(:level, 'reading COLLATE "C"') }
-  scope :by_meaning,       -> { order(:meaning, 'reading COLLATE "C"') }
-  scope :by_reading,       -> { order('reading COLLATE "C"', :level) }
+  scope :by_kanji,         -> { order(Arel.sql('kanji COLLATE "C"')) }
+  scope :by_level,         -> { order(:level, Arel.sql('reading COLLATE "C"')) }
+  scope :by_meaning,       -> { order(:meaning, Arel.sql('reading COLLATE "C"')) }
+  scope :by_reading,       -> { order(Arel.sql('reading COLLATE "C"'), :level) }
   scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
   scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
   scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }

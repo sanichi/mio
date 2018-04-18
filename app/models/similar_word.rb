@@ -9,7 +9,7 @@ class SimilarWord < ApplicationRecord
 
   validates :readings, length: { maximum: MAX_READINGS }, format: { with: /\A\S+( \S+)+\z/ }, uniqueness: true
 
-  scope :by_readings, -> { order('readings COLLATE "C"') }
+  scope :by_readings, -> { order(Arel.sql('readings COLLATE "C"')) }
 
   def self.search(params, path, opt={})
     matches = by_readings

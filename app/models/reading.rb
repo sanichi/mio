@@ -8,10 +8,10 @@ class Reading < ApplicationRecord
 
   validates :kana, presence: true, length: { maximum: MAX_KANA }, uniqueness: true
 
-  scope :by_onyomi,  -> { order("onyomi DESC", 'kana COLLATE "C"') }
-  scope :by_kunyomi, -> { order("kunyomi DESC", 'kana COLLATE "C"') }
-  scope :by_total,   -> { order("(onyomi + kunyomi) DESC", 'kana COLLATE "C"') }
-  scope :by_kana,    -> { order('kana COLLATE "C"', "(onyomi + kunyomi) DESC") }
+  scope :by_onyomi,  -> { order("onyomi DESC", Arel.sql('kana COLLATE "C"')) }
+  scope :by_kunyomi, -> { order("kunyomi DESC", Arel.sql('kana COLLATE "C"')) }
+  scope :by_total,   -> { order("(onyomi + kunyomi) DESC", Arel.sql('kana COLLATE "C"')) }
+  scope :by_kana,    -> { order(Arel.sql('kana COLLATE "C"'), "(onyomi + kunyomi) DESC") }
 
   def total
     onyomi + kunyomi

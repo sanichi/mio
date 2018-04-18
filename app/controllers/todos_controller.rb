@@ -1,7 +1,6 @@
 class TodosController < ApplicationController
   authorize_resource
   before_action :find_todo, only: [:toggle, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, if: :json_request?
 
   def index
     @todos = Todo.ordered
