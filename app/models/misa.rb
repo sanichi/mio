@@ -15,10 +15,11 @@ class Misa < ApplicationRecord
 
   validates :category, inclusion: { in: CATEGORIES }
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
-  validates :short, format: { with: /\A\S+\z/ }, length: { maximum: MAX_SHORT }, uniqueness: true
+  validates :short, format: { with: /\A\S+\z/ }, length: { maximum: MAX_SHORT }, uniqueness: true, allow_nil: true
   validates :long, format: { with: /\A\S+\z/ }, length: { maximum: MAX_LONG }, uniqueness: true, allow_nil: true
   validates :published, date: { before_or_equal: Proc.new { Date.today } }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
+  validate :must_have_at_least_one_video
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -63,11 +64,16 @@ class Misa < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.short = nil if short.blank?
     self.long = nil if long.blank?
   end
 
   def count_lines
     count = note ? note.split("\n").size : 0
     update_column(:lines, count) unless lines == count
+  end
+
+  def must_have_at_least_one_video
+    errors.add(:short, "must have at least one video") unless short.present? || long.present?
   end
 end

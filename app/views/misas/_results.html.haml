@@ -11,5 +11,6 @@
     %td.text-center
       - if misa.long
         = link_to t("misa.abbrev.long"), misa.long_url, target: misa.target
-      = link_to t("misa.abbrev.short"), misa.short_url, target: misa.target
+      - if misa.short
+        = link_to t("misa.abbrev.short"), misa.short_url, target: misa.target
 = render "utils/pagination_links", pager: misas, columns: 6

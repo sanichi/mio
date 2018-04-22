@@ -8,7 +8,8 @@
         = @misa.published
         - if @misa.long
           = link_to t("misa.abbrev.long"), @misa.long_url, target: @misa.target
-        = link_to t("misa.abbrev.short"), @misa.short_url, target: @misa.target
+        - if @misa.short
+          = link_to t("misa.abbrev.short"), @misa.short_url, target: @misa.target
         = @misa.minutes
         - if @misa.japanese
           = t("misa.abbrev.japanese")
