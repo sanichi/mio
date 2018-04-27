@@ -16,6 +16,7 @@ en:
       - TV
       - Book
       - Play
+      - Podcast
     order:
       combo: By Total Score
       entered: By Date Entered
