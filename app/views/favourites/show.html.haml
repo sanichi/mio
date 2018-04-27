@@ -8,9 +8,6 @@
           %th= t("name")
           %td= @favourite.name
         %tr
-          %th= t("note")
-          %td= @favourite.note
-        %tr
           %th= t("favourite.category")
           %td= t("favourite.categories")[@favourite.category]
         %tr
@@ -26,6 +23,8 @@
           %tr
             %th= t("favourite.link")
             %td= link_to @favourite.link, @favourite.link, target: "_external"
+        %tr
+          %td{colspan: 2}= @favourite.note_html
 
 .text-center
   = link_to t("favourite.favourites"), favourites_path, class: "btn btn-success"

@@ -1,10 +1,10 @@
 class Favourite < ApplicationRecord
   include Constrainable
   include Pageable
+  include Remarkable
 
   MAX_LINK = 200
   MAX_NAME = 50
-  MAX_NOTE = 200
   MIN_YEAR = 1900
   MAX_SCORE = 10
   MIN_SCORE = 0
@@ -54,6 +54,10 @@ class Favourite < ApplicationRecord
     mark + sandra
   end
 
+  def note_html
+    to_html(note)
+  end
+
   private
 
   def normalize_attributes
@@ -61,8 +65,6 @@ class Favourite < ApplicationRecord
     self.link = nil unless link.present?
     self.name&.squish!
     self.name = name&.truncate(MAX_NAME)
-    self.note&.squish!
-    self.note = note&.truncate(MAX_NOTE)
   end
 
   def at_least_one_vote
