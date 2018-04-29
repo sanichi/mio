@@ -2,6 +2,9 @@
   %strong.col-md-4.text-right= t("vocab.kanji")
   .col-md-8= question.vocab.kanji
 .row.top_margin
+  %strong.col-md-4.text-right= t("vocab.category")
+  .col-md-8= question.vocab.category
+.row.top_margin
   .col-md-12
     = form_for question, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
