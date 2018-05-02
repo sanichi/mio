@@ -117,6 +117,6 @@ class WaniKani
   end
 
   def remove_args(link)
-    link.sub("\?.*\z", "")
+    link.sub(/\?.*\z/, "")
   end
 end
