@@ -69,22 +69,25 @@ class WaniKani
 
     src = page.search("//audio/source").map { |s| s["src"]&.sub(/\A.*\//, "") }
     raise "no audio sources found for '#{kanji}'" unless src.any?
-    mp3 = src.select { |s| s =~ /\.mp3\z/ }
-    audio = mp3.any?? mp3.first : src.first
-    audio = sanitize(audio)
+    mp3 = src.select { |s| s =~ /\.mp3/ }
+    audio_link = mp3.any?? mp3.first : src.first
+    audio_link = remove_args(audio_link)
+    audio_file = sanitize(audio_link)
 
     src = page.search("//section[@id='information']/div[contains(@class,'part-of-speech')]/p").map{ |s| s.text }
     raise "no part-of-speech found for '#{kanji}'" unless src.any?
     category = src.first.downcase
 
-    download_audio(audio)
+    download_audio(audio_link, audio_file)
 
-    [audio, category]
+    [audio_file, category]
   end
 
-  def download_audio(file)
+  private
+
+  def download_audio(source, file)
     sleep(DELAY)
-    source = audio_source(file)
+    source = audio_source(source)
     target = audio_target(file)
     File.open(target, "wb") do |t|
       open(source, "rb") do |s|
@@ -92,12 +95,6 @@ class WaniKani
       end
     end
   end
-
-  def audio_exist?(file)
-    File.exist?(audio_target(file))
-  end
-
-  private
 
   def audio_dir
     return @audio_dir if @audio_dir
@@ -107,20 +104,19 @@ class WaniKani
     @audio_dir
   end
 
-  def audio_source(file)
-    "https://cdn.wanikani.com/subjects/audio/#{desanitize(file)}"
+  def audio_source(link)
+    "https://cdn.wanikani.com/subjects/audio/#{link}"
   end
 
   def audio_target(file)
     "#{audio_dir}/#{file}"
   end
 
-
-  def sanitize(file)
-    file.gsub("%", "_")
+  def sanitize(link)
+    link.gsub("%", "_")
   end
 
-  def desanitize(file)
-    file.gsub("_", "%")
+  def remove_args(link)
+    link.sub("\?.*\z", "")
   end
 end
