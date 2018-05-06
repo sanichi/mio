@@ -33,7 +33,7 @@ describe SimilarKanji do
 
       expect(page).to have_title t(:vocab_similar_kanji_new)
       expect(SimilarKanji.count).to eq 1
-      expect(page).to have_css(error, text: "taken")
+      expect(page).to have_css(error, text: "duplicate")
     end
   end
 

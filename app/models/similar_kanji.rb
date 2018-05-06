@@ -9,8 +9,9 @@ class SimilarKanji < ApplicationRecord
 
   before_validation :canonicalize
 
-  validates :kanjis, length: { maximum: MAX_KANJIS, minimum: 2 }, format: { with: /\A\S+\z/ }, uniqueness: true
+  validates :kanjis, length: { maximum: MAX_KANJIS, minimum: 2 }, format: { with: /\A\S+\z/ }
   validates :category, inclusion: { in: CATEGORIES }
+  validate :cant_be_substring_or_duplicate_of_previous_entry
 
   scope :by_kanjis, -> { order(Arel.sql('kanjis COLLATE "C"')) }
 
@@ -31,5 +32,9 @@ class SimilarKanji < ApplicationRecord
 
   def canonicalize
     self.kanjis = self.class.tidy(kanjis)
+  end
+
+  def cant_be_substring_or_duplicate_of_previous_entry
+    errors.add(:kanjis, "can't be duplicate or substring") if self.class.where("kanjis LIKE ?", "%#{kanjis}%").count > 0
   end
 end
