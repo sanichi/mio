@@ -27,7 +27,7 @@ end
 
 group :development, :test do
   gem "rspec-rails", "~> 3.0"
-  gem "capybara", "~> 2.13"
+  gem "capybara", "~> 3.2"
   gem "selenium-webdriver"
   gem "factory_bot_rails", "~> 4.8"
   gem "launchy"
