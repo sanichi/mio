@@ -43,7 +43,7 @@ class Misa < ApplicationRecord
 
   def full_title
     cat = I18n.t("misa.categories.#{category}")
-    if title.include? category
+    if title.include? cat
       cat = ""
     else
       cat = " (#{cat})"
