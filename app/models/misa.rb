@@ -42,7 +42,24 @@ class Misa < ApplicationRecord
   end
 
   def full_title
-    "#{title} (#{I18n.t("misa.categories.#{category}")})"
+    cat = I18n.t("misa.categories.#{category}")
+    if cat == title
+      cat = ""
+    else
+      cat = " (#{cat})"
+    end
+    links = ""
+    if title =~ /^#([1-9]\d*) /
+      num = $1.to_i
+      prev_misa = Misa.where(category: category).where("title LIKE ?", "##{num - 1} %").pluck(:id)
+      next_misa = Misa.where(category: category).where("title LIKE ?", "##{num + 1} %").pluck(:id)
+      prev_link = %Q{<a href="/misas/#{prev_misa.first}">#{I18n.t("symbol.prev")}</a>} if prev_misa.size == 1
+      next_link = %Q{<a href="/misas/#{next_misa.first}">#{I18n.t("symbol.next")}</a>} if next_misa.size == 1
+      if prev_link || next_link
+        links = " " + [prev_link, next_link].compact.join(" ")
+      end
+    end
+    (title + cat + links).html_safe
   end
 
   def short_url
