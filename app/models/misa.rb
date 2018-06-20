@@ -51,10 +51,11 @@ class Misa < ApplicationRecord
     links = nil
     if title =~ /^#([1-9]\d*) / && category != "none"
       num = $1.to_i
-      prev_misa = Misa.where(category: category).where("title LIKE ?", "##{num - 1} %").pluck(:id)
-      next_misa = Misa.where(category: category).where("title LIKE ?", "##{num + 1} %").pluck(:id)
-      prev_link = %Q{<a href="/misas/#{prev_misa.first}">#{I18n.t("misa.prev")}</a>} if prev_misa.size == 1
-      next_link = %Q{<a href="/misas/#{next_misa.first}">#{I18n.t("misa.next")}</a>} if next_misa.size == 1
+      collection = Misa.where(category: category).order(:published).where("title ~ '^#[1-9]\d*'")
+      prev_misa = collection.where('published < ?', published).pluck(:id)
+      next_misa = collection.where('published > ?', published).pluck(:id)
+      prev_link = %Q{<a href="/misas/#{prev_misa.last}">#{I18n.t("misa.prev")}</a>} unless prev_misa.empty?
+      next_link = %Q{<a href="/misas/#{next_misa.first}">#{I18n.t("misa.next")}</a>} unless next_misa.empty?
       if prev_link || next_link
         links = [prev_link, next_link].compact.join(" ")
       end
