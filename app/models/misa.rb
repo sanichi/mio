@@ -52,8 +52,8 @@ class Misa < ApplicationRecord
     if title =~ /^#([1-9]\d*) / && category != "none"
       num = $1.to_i
       collection = Misa.where(category: category).order(:published).where("title ~ '^#[1-9]\d*'")
-      prev_misa = collection.where('published < ?', published).pluck(:id)
-      next_misa = collection.where('published > ?', published).pluck(:id)
+      prev_misa = collection.where("published < ?", published).pluck(:id)
+      next_misa = collection.where("published > ?", published).pluck(:id)
       prev_link = %Q{<a href="/misas/#{prev_misa.last}">#{I18n.t("misa.prev")}</a>} unless prev_misa.empty?
       next_link = %Q{<a href="/misas/#{next_misa.first}">#{I18n.t("misa.next")}</a>} unless next_misa.empty?
       if prev_link || next_link
