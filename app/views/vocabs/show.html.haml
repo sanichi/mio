@@ -12,11 +12,11 @@
           %th= t("vocab.audio")
           %td= render "audio", vocab: @vocab
         %tr
-          %th= t("vocab.accent")
-          %td= @vocab.accent
-        %tr
           %th= t("vocab.reading")
           %td= @vocab.reading
+        %tr
+          %th= t("vocab.accent")
+          %td= render "accent_pattern", vocab: @vocab
         %tr
           %th= t("vocab.kanji")
           %td= link_to_if @kanji, @vocab.kanji, @kanji

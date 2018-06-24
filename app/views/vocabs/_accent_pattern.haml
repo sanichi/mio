@@ -1,0 +1,11 @@
+- if vocab.accent.present?
+  - type = "danger"
+  - if vocab.pattern == "heiban"
+    - type = "default"
+  - elsif vocab.pattern == "atamadaka"
+    - type = "success"
+  - elsif vocab.pattern == "nakadaka"
+    - type = "warning"
+  - elsif vocab.pattern == "odaka"
+    - type = "info"
+  %button{class: "btn-xs btn-#{type}"}= vocab.accent

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_24_094325) do
+ActiveRecord::Schema.define(version: 2018_06_24_172655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -468,6 +468,7 @@ ActiveRecord::Schema.define(version: 2018_06_24_094325) do
     t.integer "level", limit: 2
     t.string "category", limit: 50
     t.integer "accent", limit: 2
+    t.string "pattern", limit: 10
     t.index ["meaning"], name: "index_vocabs_on_meaning"
     t.index ["reading"], name: "index_vocabs_on_reading"
   end

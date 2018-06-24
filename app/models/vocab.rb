@@ -11,10 +11,11 @@ class Vocab < ApplicationRecord
   MIN_LEVEL = 1
   OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/eng/search/index/word:"
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
+  PATTERNS = %w[heiban atamadaka nakadaka odaka]
 
   has_many :vocab_questions, dependent: :destroy
 
-  before_validation :truncate
+  before_validation :truncate, :deduce_pattern
 
   validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_READING }, allow_nil: true
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[^.]+\.(mp3|ogg)\z/ }, uniqueness: true
@@ -22,7 +23,9 @@ class Vocab < ApplicationRecord
   validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }
   validates :meaning, length: { maximum: MAX_MEANING }, presence: true
+  validates :pattern, inclusion: { in: PATTERNS }, allow_nil: true
   validates :reading, length: { maximum: MAX_READING }, presence: true
+  validate :accent_must_be_valid
 
   scope :by_kanji,         -> { order(Arel.sql('kanji COLLATE "C"')) }
   scope :by_level,         -> { order(:level, Arel.sql('reading COLLATE "C"')) }
@@ -52,6 +55,8 @@ class Vocab < ApplicationRecord
     if (accent = params[:accent]).present?
       if accent == "none"
         matches = matches.where(accent: nil)
+      elsif PATTERNS.include?(accent)
+        matches = matches.where(pattern: accent)
       else
         matches = matches.where(accent: accent.to_i)
       end
@@ -112,14 +117,6 @@ class Vocab < ApplicationRecord
     "#{kanji} (#{reading})"
   end
 
-  def reading_with_accent
-    if accent.nil?
-      reading
-    else
-      "#{reading} (#{accent})"
-    end
-  end
-
   def linked_kanji
     kanji.split('').map do |c|
       k = Kanji.find_by(symbol: c)
@@ -172,6 +169,23 @@ class Vocab < ApplicationRecord
 
   def ojad
     OJAD + kanji
+  end
+
+  def mora
+    # get a throwaway copy of the reading and handle the nil case
+    string = reading.to_s
+    # make sure to get only the first reading if there's more than one
+    string.sub!(/,.*/, "")
+    # count 1 for all hiragana, katakana and the katakana elongation symbol
+    full = string.each_char.map{ |c| c =~ /\A[ぁ-んァ-ンー]\z/ ? 1 : 0 }.sum
+    # count 1 for all small hiragana and katakana (but not the っ or ッ)
+    tiny = string.each_char.map{ |c| c =~ /\A[ぁァぃィぅゥぇェぉォゃャゅュょョ]\z/ ? 1 : 0 }.sum
+    # the number of mora is the difference between these two
+    full - tiny
+  end
+
+  def self.mora(string)
+    self.new(reading: string).mora
   end
 
   private
@@ -397,8 +411,29 @@ class Vocab < ApplicationRecord
   # Other helpers.
   #
 
+  def accent_must_be_valid
+    if accent.present? && accent > mora
+      errors.add(:accent, "exceeds number of mora")
+    end
+  end
+
   def truncate
     self.category = category&.truncate(MAX_CATEGORY)
     self.meaning = meaning&.truncate(MAX_MEANING)
+  end
+
+  def deduce_pattern
+    self.pattern = case accent
+    when nil
+      nil
+    when 0
+      "heiban"
+    when 1
+      "atamadaka"
+    when mora
+      "odaka"
+    else
+      "nakadaka"
+    end
   end
 end

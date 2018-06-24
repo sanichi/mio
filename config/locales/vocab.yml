@@ -42,6 +42,11 @@ en:
       edit: Edit Occupation
       new: New Occupation
       occupations: Occupations
+    pattern:
+      heiban: 平板
+      atamadaka: 頭高
+      nakadaka: 中高
+      odaka: 尾高
     similar:
       kanjis: Similar Kanjis
       words: Similar Words

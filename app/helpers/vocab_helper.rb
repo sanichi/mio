@@ -29,7 +29,12 @@ module VocabHelper
 
   def vocab_accent_search_menu(selected)
     max = Vocab.maximum(:accent)
-    opts = max.nil?? [] : 0.upto(max).to_a.map { |a| [ a.to_s, a] }
+    opts = []
+    unless max.nil?
+      patterns = Vocab::PATTERNS.map { |p| [ t("vocab.pattern.#{p}"), p] }
+      accents = 0.upto(max).map { |a| [ a.to_s, a] }
+      opts = patterns.concat(accents)
+    end
     opts.unshift [t("none"), "none"] unless opts.empty?
     opts.unshift [t("vocab.any_accent"), ""]
     options_for_select(opts, selected)

@@ -1,7 +1,9 @@
 - homonyms.matches.each do |homonym|
   %tr
     %td= link_to homonym.kanji, homonym
-    %td= homonym.reading_with_accent
+    %td
+      = render "accent_pattern", vocab: vocab
+      = vocab.reading
     %td= homonym.meaning
     %td= homonym.category
     %td.text-center= homonym.level
