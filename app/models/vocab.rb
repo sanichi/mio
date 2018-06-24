@@ -31,6 +31,7 @@ class Vocab < ApplicationRecord
   scope :by_level,         -> { order(:level, Arel.sql('reading COLLATE "C"')) }
   scope :by_meaning,       -> { order(:meaning, Arel.sql('reading COLLATE "C"')) }
   scope :by_reading,       -> { order(Arel.sql('reading COLLATE "C"'), :level) }
+  scope :by_accent,        -> { order(:accent, :pattern) }
   scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
   scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
   scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
@@ -41,6 +42,7 @@ class Vocab < ApplicationRecord
     matches = case params[:order]
     when "meaning" then by_meaning
     when "level"   then by_level
+    when "accent"  then by_accent
     else                by_reading
     end
     if sql = cross_constraint(params[:q], %w{kanji meaning reading})
@@ -76,6 +78,7 @@ class Vocab < ApplicationRecord
     matches = case params[:order]
     when "meaning" then matches.by_meaning
     when "level"   then matches.by_level
+    when "accent"  then by_accent
     else                matches.by_reading
     end
     if sql = cross_constraint(params[:q], %w{kanji meaning reading})
