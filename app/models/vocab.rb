@@ -8,10 +8,11 @@ class Vocab < ApplicationRecord
   MAX_KANJI = 20
   MAX_LEVEL = 60
   MAX_MEANING = 100
+  MAX_PATTERN = I18n.t("vocab.patterns").size - 1
   MIN_LEVEL = 1
+  MIN_PATTERN = 0
   OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/eng/search/index/word:"
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
-  PATTERNS = %w[heiban atamadaka nakadaka odaka]
 
   has_many :vocab_questions, dependent: :destroy
 
@@ -23,7 +24,7 @@ class Vocab < ApplicationRecord
   validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }
   validates :meaning, length: { maximum: MAX_MEANING }, presence: true
-  validates :pattern, inclusion: { in: PATTERNS }, allow_nil: true
+  validates :pattern_no, numericality: { integer_only: true, greater_than_or_equal_to: MIN_PATTERN, less_than_or_equal_to: MAX_PATTERN }, allow_nil: true
   validates :reading, length: { maximum: MAX_READING }, presence: true
   validate :accent_must_be_valid
 
@@ -31,8 +32,8 @@ class Vocab < ApplicationRecord
   scope :by_level,         -> { order(:level, Arel.sql('reading COLLATE "C"')) }
   scope :by_meaning,       -> { order(:meaning, Arel.sql('reading COLLATE "C"')) }
   scope :by_reading,       -> { order(Arel.sql('reading COLLATE "C"'), :level) }
-  scope :by_accent,        -> { order(:accent, :pattern, Arel.sql('reading COLLATE "C"'), :level) }
-  scope :by_pattern,       -> { order(:pattern, :accent, Arel.sql('reading COLLATE "C"'), :level) }
+  scope :by_accent,        -> { order(:accent, :pattern_no, Arel.sql('reading COLLATE "C"'), :level) }
+  scope :by_pattern,       -> { order(:pattern_no, :accent, Arel.sql('reading COLLATE "C"'), :level) }
   scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
   scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
   scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
@@ -61,10 +62,10 @@ class Vocab < ApplicationRecord
         matches = matches.where(accent: nil)
       elsif accent == "all"
         matches = matches.where.not(accent: nil)
-      elsif PATTERNS.include?(accent)
-        matches = matches.where(pattern: accent)
-      else
-        matches = matches.where(accent: accent.to_i)
+      elsif accent =~ /\A(\d)p\z/
+        matches = matches.where(pattern: $1.to_i)
+      elsif accent =~ /\A(\d+)a\z/
+        matches = matches.where(accent: $1.to_i)
       end
     end
     matches = case params[:special]
@@ -431,17 +432,17 @@ class Vocab < ApplicationRecord
   end
 
   def deduce_pattern
-    self.pattern = case accent
+    self.pattern_no = case accent
     when nil
       nil
     when 0
-      "heiban"
+      0
     when 1
-      "atamadaka"
+      1
     when mora
-      "odaka"
+      3
     else
-      "nakadaka"
+      2
     end
   end
 end

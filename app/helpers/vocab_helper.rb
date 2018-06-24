@@ -31,8 +31,8 @@ module VocabHelper
     max = Vocab.maximum(:accent)
     opts = []
     unless max.nil?
-      patterns = Vocab::PATTERNS.map { |p| [ t("vocab.patterns.#{p}"), p] }
-      accents = 0.upto(max).map { |a| [ a.to_s, a] }
+      patterns = Vocab::MIN_PATTERN.upto(Vocab::MAX_PATTERN).map { |p| [ t("vocab.patterns")[p], "#{p}p"] }
+      accents = 0.upto(max).map { |a| [ a.to_s, "#{a}a"] }
       opts = patterns.concat(accents)
     end
     opts.unshift [t("none"), "none"] unless opts.empty?
