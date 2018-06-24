@@ -19,6 +19,7 @@ en:
     ojad: Ⓙ
     onyomi: Onyomi
     new: New Vocab
+    pattern: Pattern
     reading: Reading
     readings: Readings
     vocab: Vocab
@@ -42,7 +43,7 @@ en:
       edit: Edit Occupation
       new: New Occupation
       occupations: Occupations
-    pattern:
+    patterns:
       heiban: 平板
       atamadaka: 頭高
       nakadaka: 中高

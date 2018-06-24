@@ -1,6 +1,6 @@
 module VocabHelper
   def vocab_search_order_menu(selected)
-    opts = %w/reading meaning level accent/.map { |g| [t("vocab.#{g}"), g] }
+    opts = %w/reading meaning level accent pattern/.map { |g| [t("vocab.#{g}"), g] }
     options_for_select(opts, selected)
   end
 
@@ -31,7 +31,7 @@ module VocabHelper
     max = Vocab.maximum(:accent)
     opts = []
     unless max.nil?
-      patterns = Vocab::PATTERNS.map { |p| [ t("vocab.pattern.#{p}"), p] }
+      patterns = Vocab::PATTERNS.map { |p| [ t("vocab.patterns.#{p}"), p] }
       accents = 0.upto(max).map { |a| [ a.to_s, a] }
       opts = patterns.concat(accents)
     end
