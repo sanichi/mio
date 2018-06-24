@@ -63,7 +63,7 @@ class Vocab < ApplicationRecord
       elsif accent == "all"
         matches = matches.where.not(accent: nil)
       elsif accent =~ /\A(\d)p\z/
-        matches = matches.where(pattern: $1.to_i)
+        matches = matches.where(pattern_no: $1.to_i)
       elsif accent =~ /\A(\d+)a\z/
         matches = matches.where(accent: $1.to_i)
       end
