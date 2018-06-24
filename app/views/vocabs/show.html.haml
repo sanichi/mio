@@ -12,6 +12,9 @@
           %th= t("vocab.audio")
           %td= render "audio", vocab: @vocab
         %tr
+          %th= t("vocab.accent")
+          %td= @vocab.accent
+        %tr
           %th= t("vocab.reading")
           %td= @vocab.reading
         %tr

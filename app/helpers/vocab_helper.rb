@@ -27,6 +27,14 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
+  def vocab_accent_search_menu(selected)
+    max = Vocab.maximum(:accent)
+    opts = max.nil?? [] : 0.upto(max).to_a.map { |a| [ a.to_s, a] }
+    opts.unshift [t("none"), "none"] unless opts.empty?
+    opts.unshift [t("vocab.any_accent"), ""]
+    options_for_select(opts, selected)
+  end
+
   def vocab_verb_type_menu(selected)
     opts = %w/godan ichidan suru goichidan/.map { |t| [t("vocab.verb.#{t}"), t] }
     opts.unshift [t("vocab.verb.all"), ""]

@@ -1,7 +1,7 @@
 - vocabs.matches.each do |vocab|
   %tr
     %td= link_to vocab.kanji, vocab
-    %td= vocab.reading
+    %td= vocab.reading_with_accent
     %td= vocab.meaning
     %td= vocab.category
     %td.text-center= vocab.level

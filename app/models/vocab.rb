@@ -16,6 +16,7 @@ class Vocab < ApplicationRecord
 
   before_validation :truncate
 
+  validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_READING }, allow_nil: true
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[^.]+\.(mp3|ogg)\z/ }, uniqueness: true
   validates :category, length: { maximum: MAX_CATEGORY }, presence: true
   validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
@@ -47,6 +48,13 @@ class Vocab < ApplicationRecord
     end
     if (level = params[:level].to_i) > 0
       matches = matches.where(level: level)
+    end
+    if (accent = params[:accent]).present?
+      if accent == "none"
+        matches = matches.where(accent: nil)
+      else
+        matches = matches.where(accent: accent.to_i)
+      end
     end
     matches = case params[:special]
     when "verb"      then matches.tricky_verb
@@ -102,6 +110,14 @@ class Vocab < ApplicationRecord
 
   def kanji_reading
     "#{kanji} (#{reading})"
+  end
+
+  def reading_with_accent
+    if accent.nil?
+      reading
+    else
+      "#{reading} (#{accent})"
+    end
   end
 
   def linked_kanji

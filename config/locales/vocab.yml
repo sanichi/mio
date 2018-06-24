@@ -1,5 +1,7 @@
 en:
   vocab:
+    accent: Accent
+    any_accent: Any Accent
     any_level: Any Level
     audio: Audio
     category: Part of Speech
