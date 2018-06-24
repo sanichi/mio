@@ -36,6 +36,7 @@ module VocabHelper
       opts = patterns.concat(accents)
     end
     opts.unshift [t("none"), "none"] unless opts.empty?
+    opts.unshift [t("all"), "all"] unless opts.empty?
     opts.unshift [t("vocab.any_accent"), ""]
     options_for_select(opts, selected)
   end

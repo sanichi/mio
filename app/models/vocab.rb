@@ -55,6 +55,8 @@ class Vocab < ApplicationRecord
     if (accent = params[:accent]).present?
       if accent == "none"
         matches = matches.where(accent: nil)
+      elsif accent == "all"
+        matches = matches.where.not(accent: nil)
       elsif PATTERNS.include?(accent)
         matches = matches.where(pattern: accent)
       else
