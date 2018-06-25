@@ -38,7 +38,9 @@
         - @vocabs.each do |vocab|
           %tr
             %td= link_to vocab.kanji, vocab
-            %td= vocab.reading
+            %td
+              = render "vocabs/accent_pattern", vocab: vocab
+              = vocab.reading
             %td= vocab.meaning
             %td= vocab.category
             %td.text-center= vocab.level
