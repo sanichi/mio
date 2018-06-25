@@ -2,8 +2,8 @@
   %tr
     %td= link_to homonym.kanji, homonym
     %td
-      = render "accent_pattern", vocab: vocab
-      = vocab.reading
+      = render "accent_pattern", vocab: homonym
+      = homonym.reading
     %td= homonym.meaning
     %td= homonym.category
     %td.text-center= homonym.level
