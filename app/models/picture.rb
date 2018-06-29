@@ -11,6 +11,8 @@ class Picture < ApplicationRecord
 
   has_attached_file :image, styles: SIZE.each_with_object({}){ |(nm,sz),o| o[nm] = "#{sz}x#{sz}#{nm == :tn ? '#' : '>'}" }
 
+  has_one_attached :image2
+
   before_validation :normalize_attributes
 
   validates_attachment :image, presence: true, content_type: { content_type: /\Aimage\/(#{TYPES})\z/, file_name: /\.(#{TYPES})\z/i }, size: { less_than: MAX_SIZE }
