@@ -6,22 +6,22 @@ describe Picture do
   let!(:person2) { create(:person) }
   let!(:person3) { create(:person) }
 
-  let(:image_dir) { Rails.root + "spec/files/" }
+  let(:good_file)  { "malcolm.jpg" }
+  let(:good_file2) { "malcolm.png" }
 
   before(:each) do
     login
     click_link t(:picture_pictures)
   end
 
-  context "create" do
-    let(:file) { "malcolm.jpg" }
+  context "create", type: :active_storage do
 
     context "success" do
       it "with people" do
         click_link t(:picture_new)
         fill_in t(:description), with: data.description
         check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), image_dir + file
+        attach_file t(:picture_file), test_file_path(good_file)
         select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
         select person2.name(reversed: true, with_years: true), from: t(:picture_person, number: 2)
         click_button t(:save)
@@ -39,16 +39,16 @@ describe Picture do
         expect(p.people).to be_include(person1)
         expect(p.people).to be_include(person2)
         expect(p.title).to eq title
-        expect(p.image_file_name).to eq file
-        expect(p.image_content_type).to eq "image/jpeg"
-        expect(p.image_file_size).to eq 13738
+        expect(p.image2.filename).to eq good_file
+        expect(p.image2.content_type).to eq "image/jpeg"
+        expect(p.image2.byte_size).to eq 13738
       end
 
       it "without people" do
         click_link t(:picture_new)
         fill_in t(:description), with: data.description
         check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), image_dir + file
+        attach_file t(:picture_file), test_file_path(good_file)
         click_button t(:save)
 
         expect(PersonPicture.count).to eq 0
@@ -62,48 +62,38 @@ describe Picture do
         expect(p.portrait).to eq data.portrait
         expect(p.people.size).to eq 0
         expect(p.title).to eq title
-        expect(p.image_file_name).to eq file
-        expect(p.image_content_type).to eq "image/jpeg"
-        expect(p.image_file_size).to eq 13738
+        expect(p.image2.filename).to eq good_file
+        expect(p.image2.content_type).to eq "image/jpeg"
+        expect(p.image2.byte_size).to eq 13738
       end
     end
 
     context "failure" do
-      let(:file_bad_name) { "malcolm.txt" }
-      let(:file_bad_type) { "malcolm.gif" }
+      let(:bad_file) { "malcolm.txt" }
 
       it "bad name" do
         click_link t(:picture_new)
         fill_in t(:description), with: data.description
         check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), image_dir + file_bad_name
+        attach_file t(:picture_file), test_file_path(bad_file)
         select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
         click_button t(:save)
 
         expect(page).to have_title t(:picture_new)
         expect(Picture.count).to eq 0
         expect(PersonPicture.count).to eq 0
-        expect(page).to have_css(error, text: "contents")
-      end
-
-      it "bad type" do
-        click_link t(:picture_new)
-        fill_in t(:description), with: data.description
-        check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), image_dir + file_bad_type
-        select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
-        click_button t(:save)
-
-        expect(page).to have_title t(:picture_new)
-        expect(Picture.count).to eq 0
-        expect(PersonPicture.count).to eq 0
-        expect(page).to have_css(error, text: "contents")
+        expect(page).to have_css(error, text: "invalid filename")
       end
     end
   end
 
-  context "edit" do
-    let!(:picture) { create(:picture, people: [person1, person2]) }
+  context "edit", type: :active_storage do
+    let!(:picture) do
+      p = Picture.new(people: [person1, person2], description: data.description)
+      p.image2.attach(io: File.open(test_file_path(good_file)), filename: good_file)
+      p.save
+      p
+    end
 
     before(:each) do
       visit picture_path(picture)
@@ -143,10 +133,34 @@ describe Picture do
       picture.reload
       expect(picture.description).to be_nil
     end
+
+    it "image" do
+      expect(picture.image2.filename).to eq good_file
+      expect(picture.image2.content_type).to eq "image/jpeg"
+      expect(picture.image2.byte_size).to eq 13738
+
+      expect(page).to have_title t(:picture_edit)
+      attach_file t(:picture_file), test_file_path(good_file2)
+      click_button t(:save)
+
+      expect(page).to_not have_title t(:picture_edit)
+      expect(Picture.count).to eq 1
+      expect(PersonPicture.count).to eq 2
+
+      picture.reload
+      expect(picture.image2.filename).to eq good_file2
+      expect(picture.image2.content_type).to eq "image/png"
+      expect(picture.image2.byte_size).to eq 8285
+    end
   end
 
   context "delete" do
-    let!(:picture) { create(:picture, people: [person1, person2, person3]) }
+    let!(:picture) do
+      p = Picture.new(people: [person1, person2, person3], description: data.description)
+      p.image2.attach(io: File.open(test_file_path(good_file)), filename: good_file)
+      p.save
+      p
+    end
 
     it "success" do
       expect(Picture.count).to eq 1

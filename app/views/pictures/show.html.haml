@@ -3,10 +3,10 @@
 = render "prev_next", picture: @picture
 
 .text-center.top_margin
-  - Picture::SIZE.each_pair do |nm, sz|
+  - Picture::STYLE.each_pair do |nm, style|
     - unless nm == :tn
       %div{class: "visible-#{nm}-block"}
-        = image_tag @picture.image.url(nm)
+        = image_tag @picture.image2.variant(style)
   - if @picture.portrait
     %div{title: t("picture.portrait")}= "☐"
 

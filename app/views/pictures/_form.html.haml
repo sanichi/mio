@@ -8,7 +8,7 @@
     = form_for picture, html: { class: "form-horizontal", role: "form" } do |f|
       %fieldset
         - shared = { form: f, object: picture, col: "md", pad: 2}
-        = render "utils/file_field_for", shared.merge(param: :image, text: t("picture.file"), width: 4)
+        = render "utils/file_field_for", shared.merge(param: :image2, text: t("picture.file"), width: 4)
         = render "check_box_completers", shared.merge(param: :people, width: 4, number: number)
         = render "utils/check_box_for", shared.merge(param: :portrait, text: t("picture.portrait"), width: 1)
         = render "utils/text_area_for", shared.merge(param: :description, text: t("description"), width: 10)

@@ -17,6 +17,11 @@ RSpec.configure do |config|
 
   # See https://relishapp.com/rspec/rspec-rails/docs.
   config.infer_spec_type_from_file_location!
+
+  # For removing active_storage files after a test (database_cleaner takes care of records).
+  config.after(:each, type: :active_storage) do
+    FileUtils.rm_rf("#{Rails.root}/tmp/storage")
+  end
 end
 
 Capybara.configure do |config|

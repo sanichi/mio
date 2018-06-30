@@ -11,4 +11,4 @@
               - row.each do |picture|
                 %td{width: wd}
                   = link_to picture do
-                    = image_tag picture.image.url(:tn), width: wd, height: wd, title: picture.title, alt: picture.title
+                    = image_tag picture.image2.variant(Picture::STYLE[:tn]), width: wd, height: wd, title: picture.title, alt: picture.title

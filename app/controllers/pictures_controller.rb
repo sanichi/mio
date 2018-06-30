@@ -45,7 +45,7 @@ class PicturesController < ApplicationController
   end
 
   def strong_params
-    params.require(:picture).permit(:description, :image, :portrait)
+    params.require(:picture).permit(:description, :image2, :portrait)
   end
 
   def update_people
