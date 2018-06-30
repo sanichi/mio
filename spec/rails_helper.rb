@@ -19,9 +19,8 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # For removing active_storage files after a test (database_cleaner takes care of records).
-  config.after(:each, type: :active_storage) do
-    FileUtils.rm_rf("#{Rails.root}/tmp/storage")
-  end
+  config.after(:each, type: :active_storage) { remove_active_storage_files }
+  config.after(:suite) { remove_active_storage_files }
 end
 
 Capybara.configure do |config|
@@ -55,4 +54,8 @@ end
 
 def error
   "div.help-block"
+end
+
+def remove_active_storage_files
+  FileUtils.rm_rf("#{Rails.root}/tmp/storage")
 end
