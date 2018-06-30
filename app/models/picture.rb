@@ -16,8 +16,6 @@ class Picture < ApplicationRecord
 
   has_and_belongs_to_many :people
 
-  # has_attached_file :image, styles: SIZE.each_with_object({}){ |(nm,sz),o| o[nm] = "#{sz}x#{sz}#{nm == :tn ? '#' : '>'}" }
-
   before_destroy :cleanup_attachment
 
   has_one_attached :image2, dependent: :purge
@@ -25,8 +23,6 @@ class Picture < ApplicationRecord
   before_validation :normalize_attributes
 
   validate :check_image_attachment
-
-  # validates_attachment :image, presence: true, content_type: { content_type: /\Aimage\/(#{TYPES})\z/, file_name: /\.(#{TYPES})\z/i }, size: { less_than: MAX_SIZE }
 
   default_scope { order(id: :desc) }
 
