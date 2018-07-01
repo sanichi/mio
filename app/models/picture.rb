@@ -14,8 +14,6 @@ class Picture < ApplicationRecord
   end
   TYPES = "jpe?g|gif|png"
 
-  has_attached_file :image, styles: SIZE.each_with_object({}){ |(nm,sz),o| o[nm] = "#{sz}x#{sz}#{nm == :tn ? '#' : '>'}" }
-
   has_and_belongs_to_many :people
 
   before_destroy :cleanup_attachment
