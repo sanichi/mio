@@ -28,7 +28,7 @@ class Picture < ApplicationRecord
 
   def self.search(params)
     sql = nil
-    matches = joins(:people)
+    matches = joins(:people).includes(:image2_attachment).includes(:image2_blob)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name), table: :people)
     matches = matches.where(sql) if sql = cross_constraint(params[:description], %w{description})
     matches = matches.distinct
@@ -45,6 +45,10 @@ class Picture < ApplicationRecord
     old_ids = people.map(&:id).sort
     return if old_ids == new_ids
     self.people = new_ids.map{ |id| Person.find_by(id: id) }.compact
+  end
+
+  def thumbnail_path
+    Rails.application.routes.url_helpers.rails_representation_url(image2.variant(STYLE[:tn]), only_path: true)
   end
 
   private

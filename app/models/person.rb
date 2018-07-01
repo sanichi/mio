@@ -237,7 +237,7 @@ class Person < ApplicationRecord
   end
 
   def portrait_paths
-    paths = pictures.where(portrait: true).map { |p| p.image2.variant(Picture::STYLE[:tn]) }
+    paths = pictures.where(portrait: true).map { |p| p.thumbnail_path }
     paths.push dummy_portrait_path(male) if paths.empty?
     paths
   end
