@@ -79,6 +79,9 @@ GEM
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
+    climate_control (0.2.0)
+    cocaine (0.5.8)
+      climate_control (>= 0.0.3, < 1.0)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.2)
     crass (1.0.4)
@@ -166,6 +169,12 @@ GEM
     oga (2.15)
       ast
       ruby-ll (~> 2.1)
+    paperclip (5.2.1)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      cocaine (~> 0.5.5)
+      mime-types
+      mimemagic (~> 0.3.0)
     pg (1.0.0)
     public_suffix (3.0.2)
     puma (3.11.4)
@@ -294,6 +303,7 @@ DEPENDENCIES
   mechanize (~> 2.7)
   mini_magick (~> 4.8)
   oga (~> 2.5)
+  paperclip (~> 5.0)
   pg
   puma (~> 3.11)
   rails (~> 5.2.0)
