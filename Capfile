@@ -5,7 +5,7 @@ require 'capistrano/setup'
 require 'capistrano/deploy'
 
 # For compatibility with future versions of capistrano (replaces :scm setting in deploy.rb).
-require "capistrano/scm/git"
+require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
 
 # Include tasks from other gems in your Gemfile.
@@ -14,6 +14,7 @@ require 'capistrano/rails/assets'
 require 'capistrano/rails/console'
 require 'capistrano/rails/migrations'
 require 'capistrano/passenger'
+require 'whenever/capistrano'
 
 # For prettier console output.
-require "airbrussh/capistrano"
+require 'airbrussh/capistrano'
