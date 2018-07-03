@@ -1,6 +1,9 @@
 class VocabsController < ApplicationController
   authorize_resource
   before_action :find_vocab, only: [:destroy, :edit, :show, :update]
+  before_action :lazy_accent, only: [:update]
+  JDIGITS = "０１２３４５６７８９"
+  EDIGITS = "0123456789"
 
   def index
     @vocabs = Vocab.search(params, vocabs_path, remote: true, per_page: 20)
@@ -52,5 +55,12 @@ class VocabsController < ApplicationController
 
   def strong_params
     params.require(:vocab).permit(:accent, :audio, :category, :kanji, :level, :meaning, :reading)
+  end
+
+  # Don't force the user to switch input language just to input a single digit.
+  def lazy_accent
+    a = params[:vocab][:accent]
+    i = JDIGITS.index(a) if a&.length == 1
+    params[:vocab][:accent] = EDIGITS[i] unless i.nil?
   end
 end
