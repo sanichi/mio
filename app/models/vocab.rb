@@ -16,7 +16,7 @@ class Vocab < ApplicationRecord
 
   has_many :vocab_questions, dependent: :destroy
 
-  before_validation :truncate, :deduce_pattern
+  before_validation :truncate, :set_morae_and_deduce_pattern
 
   validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_READING }, allow_nil: true
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[^.]+\.(mp3|ogg)\z/ }, uniqueness: true
@@ -56,6 +56,9 @@ class Vocab < ApplicationRecord
     end
     if (level = params[:level].to_i) > 0
       matches = matches.where(level: level)
+    end
+    if (morae = params[:morae]).present?
+      matches = matches.where(morae: morae.to_i)
     end
     if (accent = params[:accent]).present?
       if accent == "none"
@@ -180,7 +183,7 @@ class Vocab < ApplicationRecord
     OJAD + kanji
   end
 
-  def mora
+  def self.count_morae(reading)
     # get a throwaway copy of the reading and handle the nil case
     string = reading.to_s
     # make sure to get only the first reading if there's more than one
@@ -189,12 +192,8 @@ class Vocab < ApplicationRecord
     full = string.each_char.map{ |c| c =~ /\A[ぁ-んァ-ンー]\z/ ? 1 : 0 }.sum
     # count 1 for all small hiragana and katakana (but not the っ or ッ)
     tiny = string.each_char.map{ |c| c =~ /\A[ぁァぃィぅゥぇェぉォゃャゅュょョ]\z/ ? 1 : 0 }.sum
-    # the number of mora is the difference between these two
+    # the number of morae is the difference between these two
     full - tiny
-  end
-
-  def self.mora(string)
-    self.new(reading: string).mora
   end
 
   private
@@ -421,7 +420,7 @@ class Vocab < ApplicationRecord
   #
 
   def accent_must_be_valid
-    if accent.present? && accent > mora
+    if accent.present? && accent > self.class.count_morae(reading)
       errors.add(:accent, "exceeds number of mora")
     end
   end
@@ -431,7 +430,8 @@ class Vocab < ApplicationRecord
     self.meaning = meaning&.truncate(MAX_MEANING)
   end
 
-  def deduce_pattern
+  def set_morae_and_deduce_pattern
+    self.morae = self.class.count_morae(reading)
     self.pattern_no = case accent
     when nil
       nil
@@ -439,7 +439,7 @@ class Vocab < ApplicationRecord
       0
     when 1
       1
-    when mora
+    when morae
       3
     else
       2

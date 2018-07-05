@@ -14,6 +14,9 @@
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
     .form-group
+      = label_tag :morae, t("vocab.morae"), class: "sr-only"
+      = select_tag :morae, vocab_morae_search_menu(params[:morae]), class: "form-control auto-submit"
+    .form-group
       = label_tag :accent, t("vocab.accent"), class: "sr-only"
       = select_tag :accent, vocab_accent_search_menu(params[:accent]), class: "form-control auto-submit"
     .form-group

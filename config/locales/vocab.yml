@@ -3,6 +3,7 @@ en:
     accent: Accent
     any_accent: Any Accent
     any_level: Any Level
+    any_morae: Any Morae
     audio: Audio
     category: Part of Speech
     conjugation: Conjugation
@@ -16,6 +17,7 @@ en:
     kunyomi: Kunyomi
     level: Level
     meaning: Meaning
+    morae: Morae
     ojad: Ⓙ
     onyomi: Onyomi
     new: New Vocab

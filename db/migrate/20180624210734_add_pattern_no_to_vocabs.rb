@@ -1,5 +1,5 @@
 class AddPatternNoToVocabs < ActiveRecord::Migration[5.2]
-  def change
+  def up
     add_column :vocabs, :pattern_no, :integer, limit: 1
 
     Vocab.where.not(pattern: nil).each do |vocab|
@@ -17,5 +17,9 @@ class AddPatternNoToVocabs < ActiveRecord::Migration[5.2]
       end
       vocab.update_column(:pattern_no, pattern_no)
     end
+  end
+
+  def down
+    remove_column :vocabs, :pattern_no
   end
 end

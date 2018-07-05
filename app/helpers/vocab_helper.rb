@@ -41,6 +41,13 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
+  def vocab_morae_search_menu(selected)
+    max = Vocab.maximum(:morae) || 0
+    opts = 0.upto(max).map { |a| [ a.to_s, a.to_s] }
+    opts.unshift [t("vocab.any_morae"), ""]
+    options_for_select(opts, selected)
+  end
+
   def vocab_verb_type_menu(selected)
     opts = %w/godan ichidan suru goichidan/.map { |t| [t("vocab.verb.#{t}"), t] }
     opts.unshift [t("vocab.verb.all"), ""]

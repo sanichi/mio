@@ -31,6 +31,7 @@ describe Vocab do
       expect(v.kanji).to eq data.kanji
       expect(v.level).to eq data.level
       expect(v.meaning).to eq data.meaning
+      expect(v.morae).to eq Vocab.count_morae(data.reading)
     end
 
     it "failure" do
@@ -61,11 +62,14 @@ describe Vocab do
     click_link t(:edit)
 
     fill_in t(:vocab_kanji), with: data.kanji
+    fill_in t(:vocab_reading), with: data.reading
     click_button t(:save)
 
     expect(Vocab.count).to eq 1
     v = Vocab.last
 
     expect(v.kanji).to eq data.kanji
+    expect(v.reading).to eq data.reading
+    expect(v.morae).to eq Vocab.count_morae(data.reading)
   end
 end

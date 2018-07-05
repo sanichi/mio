@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :vocab do
-    accent   { reading.nil?? nil : 0.upto(Vocab.mora(reading)).to_a.sample }
+    accent   { reading.nil?? nil : 0.upto(Vocab.count_morae(reading)).to_a.sample }
     audio    { Array.new(40) { "abcdef0123456789"[rand(16)] }.join("") + ".mp3" }
     category { %w/noun verb adjective/.sample }
     level    { rand(60) + 1 }

@@ -6,6 +6,7 @@ describe Vocab do
       [0, nil, "nil"],
       [0, "", "empty string"],
       [0, "aA最後123", "no hiragana or katakana"],
+      [0, "ゅゅ", "only tiny"],
       [1, "き"],
       [3, "だった"],
       [3, "さいご"],
@@ -15,18 +16,11 @@ describe Vocab do
       [6, "あめりかじん, アメリカじん"],
       [10, "はっぴゃくきゅうじゅうはち"],
     ].each do |data|
-      count, string, comment = data
-      comment = string if comment.blank?
+      count, reading, comment = data
+      comment = reading if comment.blank?
       it comment do
-        vocab = build(:vocab, reading: string)
-        expect(vocab.mora).to eq count
+        expect(Vocab.count_morae(reading)).to eq count
       end
-    end
-  end
-
-  context "self.mora" do
-    it "コーヒー" do
-      expect(Vocab.mora("コーヒー")).to eq 4
     end
   end
 end
