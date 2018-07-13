@@ -1,16 +1,16 @@
 - pairs.matches.each do |pair|
   - v1 = pair.transitive
   - v2 = pair.intransitive
-  %tr
-    %td.col-xs-3.text-right= v1.meaning.truncate(30)
-    %td.col-xs-1.text-right= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id
-    %td.col-xs-1.text-right
+  %tr.d-flex
+    %td.col-3.text-right= v1.meaning.truncate(30)
+    %td.col-1.text-right= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id
+    %td.col-1.text-right
       = link_to v1.kanji, v1
       = render "vocabs/accent_pattern", vocab: v1
-    %td.col-xs-2.text-center= link_to t("verb_pair.groups")[pair.group], pair
-    %td.col-xs-1
+    %td.col-2.text-center= link_to t("verb_pair.groups")[pair.group], pair
+    %td.col-1
       = render "vocabs/accent_pattern", vocab: v2
       = link_to v2.kanji, v2
-    %td.col-xs-1= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id
-    %td.col-xs-3= v2.meaning.truncate(30)
+    %td.col-1= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id
+    %td.col-3= v2.meaning.truncate(30)
 = render "utils/pagination_links", pager: pairs, columns: 7

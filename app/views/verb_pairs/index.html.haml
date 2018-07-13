@@ -1,29 +1,23 @@
 = render "utils/title", key: "verb_pair.verb_pairs"
 
-.text-center
-  = form_tag verb_pairs_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("search"), class: "sr-only"
-      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
-    .form-group
-      = label_tag :group, t("verb_pair.group"), class: "sr-only"
-      = select_tag :group, verb_pair_group_menu(params[:group], search: true), class: "form-control auto-submit"
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, verb_pair_search_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag verb_pairs_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("search"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :group, t("verb_pair.group"), class: "sr-only"
+  = select_tag :group, verb_pair_group_menu(params[:group], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, verb_pair_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.transitive")
-          %th.col-xs-2.text-center= t("verb_pair.group")
-          %th.col-xs-5.text-center{colspan: 3}= t("verb_pair.intransitive")
-      %tbody{id: "results"}
-        = render "results", pairs: @verb_pairs
+%table{class: "table table-bordered table-striped mt-3"}
+  %thead
+    %tr.d-flex
+      %th.col-5.text-center{colspan: 3}= t("verb_pair.transitive")
+      %th.col-2.text-center= t("verb_pair.group")
+      %th.col-5.text-center{colspan: 3}= t("verb_pair.intransitive")
+  %tbody{id: "results"}
+    = render "results", pairs: @verb_pairs
 
-.text-center
-  - if can?(:create, VerbPair)
+- if can?(:create, VerbPair)
+  .text-center
     = link_to t("verb_pair.new"), new_verb_pair_path, class: "btn btn-info"

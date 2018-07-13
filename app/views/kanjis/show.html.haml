@@ -3,48 +3,45 @@
 = render "utils/title", text: @kanji.symbol, header: true
 
 .row
-  .offset-md-3.col-md-6
+  .offset-md-2.col-md-8.offset-lg-3.col-lg-6
     %table{class: "table table-bordered table-striped"}
       %tbody
-        %tr
-          %th.col-md-2= t("vocab.onyomi")
-          %td.col-md-10= render "kanas", yomis: @kanji.on_yomis
-        %tr
-          %th= t("vocab.kunyomi")
-          %td= render "kanas", yomis: @kanji.kun_yomis
-        %tr
-          %th= t("vocab.meaning")
-          %td= @kanji.meaning
-        %tr
-          %th= t("vocab.level")
-          %td= @kanji.level
+        %tr.d-flex
+          %th.col-3= t("vocab.onyomi")
+          %td.col-9= render "kanas", yomis: @kanji.on_yomis
+        %tr.d-flex
+          %th.col-3= t("vocab.kunyomi")
+          %td.col-9= render "kanas", yomis: @kanji.kun_yomis
+        %tr.d-flex
+          %th.col-3= t("vocab.meaning")
+          %td.col-9= @kanji.meaning
+        %tr.d-flex
+          %th.col-3= t("vocab.level")
+          %td.col-9= @kanji.level
 
-.row.top_margin
-  .col-xs-12.text-center
-    = render "external_links", symbol: @kanji.symbol
+.text-center
+  = render "external_links", symbol: @kanji.symbol
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-1= t("vocab.kanji")
-          %th.col-xs-2= t("vocab.reading")
-          %th.col-xs-4= t("vocab.meaning")
-          %th.col-xs-3= t("vocab.category")
-          %th.col-xs-1.text-center= t("vocab.level")
-          %th.col-xs-1.text-center= t("vocab.audio")
-      %tbody
-        - @vocabs.each do |vocab|
-          %tr
-            %td= link_to vocab.kanji, vocab
-            %td
-              = render "vocabs/accent_pattern", vocab: vocab
-              = vocab.reading
-            %td= vocab.meaning
-            %td= vocab.category
-            %td.text-center= vocab.level
-            %td.text-center= render "vocabs/audio", vocab: vocab, ojad: true
+%table{class: "table table-bordered table-striped mt-3"}
+  %thead
+    %tr.d-flex
+      %th.col-1= t("vocab.kanji")
+      %th.col-2= t("vocab.reading")
+      %th.col-4= t("vocab.meaning")
+      %th.col-3= t("vocab.category")
+      %th.col-1.text-center= t("vocab.level")
+      %th.col-1.text-center= t("vocab.audio")
+  %tbody
+    - @vocabs.each do |vocab|
+      %tr.d-flex
+        %td.col-1= link_to vocab.kanji, vocab
+        %td.col-2
+          = render "vocabs/accent_pattern", vocab: vocab
+          = vocab.reading
+        %td.col-4= vocab.meaning
+        %td.col-3= vocab.category
+        %td.col-1.text-center= vocab.level
+        %td.col-1.text-center= render "vocabs/audio", vocab: vocab
 
 .text-center
   = link_to t("vocab.kanjis"), kanjis_path, class: "btn btn-success"

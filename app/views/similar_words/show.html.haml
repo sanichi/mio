@@ -19,7 +19,7 @@
             %td= vocab.meaning
             %td= vocab.category
             %td.text-center= vocab.level
-            %td.text-center= render "vocabs/audio", vocab: vocab, ojad: true
+            %td.text-center= render "vocabs/audio", vocab: vocab
 
 .text-center.top_margin
   = link_to t("vocab.similar.words"), similar_words_path, class: "btn btn-success"

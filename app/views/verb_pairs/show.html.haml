@@ -13,7 +13,7 @@
             = render "vocabs/accent_pattern", vocab: v1
             = link_to v1.kanji, v1
         %tr
-          %td= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id, ojad: true
+          %td= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id
         %tr
           %td= v1.meaning
         %tr
@@ -24,7 +24,7 @@
             = render "vocabs/accent_pattern", vocab: v2
             = link_to v2.kanji, v2
         %tr
-          %td= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id, ojad: true
+          %td= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id
         %tr
           %td= v2.meaning
         %tr

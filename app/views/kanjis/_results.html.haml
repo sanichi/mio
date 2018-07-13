@@ -1,9 +1,9 @@
 - kanjis.matches.each do |kanji|
-  %tr
-    %td.col-xs-1.text-center= link_to kanji.symbol, kanji
-    %td.col-xs-1.text-center= kanji.total
-    %td.col-xs-4= render "kanas", yomis: kanji.on_yomis
-    %td.col-xs-1.text-center= kanji.onyomi
-    %td.col-xs-4= render "kanas", yomis: kanji.kun_yomis
-    %td.col-xs-1.text-center= kanji.kunyomi
+  %tr.d-flex
+    %td.col-1.text-center= link_to kanji.symbol, kanji
+    %td.col-1.text-center= kanji.total
+    %td.col-4= render "kanas", yomis: kanji.on_yomis
+    %td.col-1.text-center= kanji.onyomi
+    %td.col-4= render "kanas", yomis: kanji.kun_yomis
+    %td.col-1.text-center= kanji.kunyomi
 = render "utils/pagination_links", pager: kanjis, columns: 6

@@ -2,12 +2,9 @@
 - defined?(title)    || title    = nil
 - defined?(text)     || text     = t("symbol.audio")
 - defined?(color_id) || color_id = 0
-- defined?(ojad)     || ojad     = false
 
 - color = %w/info success warning danger secondary primary/[color_id] || "info"
 
 %button.btn.btn-sm{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()", class: "btn-#{color}"}= text
 %audio{autoplay: autoplay, id: "audio_#{vocab.id}"}
   %source{src: "/system/audio/wani_kani/#{vocab.audio}", type: vocab.audio_type}
--# - if ojad
--#   = link_to t("vocab.ojad"), vocab.ojad, class: "btn btn-default btn-sm", target: "ojad"
