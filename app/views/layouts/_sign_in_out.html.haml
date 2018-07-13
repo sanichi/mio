@@ -1,4 +1,4 @@
 - if authenticated?
-  %li= link_to t("session.sign_out"), sign_out_path
+  = link_to t("session.sign_out"), sign_out_path, class: "nav-item nav-link"
 - else
-  %li= link_to t("session.sign_in"), sign_in_path
+  = link_to t("session.sign_in"), sign_in_path, class: "nav-item nav-link"

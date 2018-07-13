@@ -1,9 +1,7 @@
-.text-center
-  = form_tag pam_path, method: :get, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :q, t("search"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag pam_path, method: :get, class: "form-inline justify-content-center" do
+  = label_tag :q, t("search"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 - if @answer
-  %h1.text-center= @answer
+  %h1.text-center.mt-3= @answer

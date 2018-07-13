@@ -1,7 +1,7 @@
 = render "utils/title", key: "vocab.similar.kanjis"
 
 .text-center
-  = form_tag similar_kanjis_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag similar_kanjis_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("vocab.kanjis"), autofocus: true
@@ -11,7 +11,7 @@
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-8.col-xs-offset-2.col-sm-6.col-sm-offset-3.col-md-4.col-md-offset-4
+  .col-xs-8.offset-xs-2.col-sm-6.offset-sm-3.col-md-4.offset-md-4
     %table{class: "table table-bordered"}
       %thead
         %tr

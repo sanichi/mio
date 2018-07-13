@@ -1,11 +1,12 @@
 !!!
-%html
+%html{lang: "en"}
   %head
     = render "layouts/head"
   %body
-    .container.top_margin.bottom_margin
+    .container.mt-3.mb-3
       = render "layouts/nav"
       = render "layouts/flash"
       = yield
     - if content_for? :help
       = render "utils/help"
+    = render "layouts/tail"

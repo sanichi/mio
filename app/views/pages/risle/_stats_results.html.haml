@@ -11,9 +11,9 @@
           - stat.each do |item|
             - case item.to_s
               - when /\AB_0\z/  # street
-                %span.street.btn.btn-default.btn-xs= t("parking.street")
+                %span.street.btn.btn-secondary.btn-sm= t("parking.street")
               - when /\AB_(\d+)\z/  # bay number
-                %span.bay.btn.btn-success.btn-xs{"data-bay" => $1}= $1
+                %span.bay.btn.btn-success.btn-sm{"data-bay" => $1}= $1
               - when /\AV_(\d+)_(.+)\z/  # registration number with vehicle ID
                 = link_to_if can?(:view, Vehicle), $2, vehicle_path($1)
               - when /\AP_(\d+)_(\d+)\z/  # parking count with vehicle ID

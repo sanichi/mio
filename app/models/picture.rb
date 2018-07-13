@@ -51,6 +51,32 @@ class Picture < ApplicationRecord
     Rails.application.routes.url_helpers.rails_representation_url(image2.variant(STYLE[:tn]), only_path: true)
   end
 
+  def self.hidden_class(nm)
+    case nm
+    when :xs
+      "d-block d-sm-none"
+    when :sm
+      "d-none d-sm-block d-md-none"
+    when :md
+      "d-none d-md-block d-lg-none"
+    else
+      "d-none d-lg-block"
+    end
+  end
+
+  def self.number_of_cols(nm)
+    case nm
+    when :xs
+      3
+    when :sm
+      4
+    when :md
+      6
+    else
+      9
+    end
+  end
+
   private
 
   def normalize_attributes

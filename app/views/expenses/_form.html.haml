@@ -1,6 +1,6 @@
 .row
-  .col-md-offset-2.col-md-8
-    = form_for expense, html: { class: "form-horizontal", role: "form" } do |f|
+  .offset-md-2.col-md-8
+    = form_for expense, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: expense, col: "md", pad: 4 }
         = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
@@ -8,8 +8,8 @@
         = render "utils/select_for", shared.merge(param: :period, text: t("expense.period"), width: 4, menu: expense_period_menu(expense))
         = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), expenses_path, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), expenses_path, class: "btn btn-secondary"
           - unless expense.new_record?
             = link_to t("delete"), expense, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

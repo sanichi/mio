@@ -1,5 +1,5 @@
 .row
-  .col-md-offset-4.col-md-8
+  .offset-md-4.col-md-8
     = f.submit t("submit"), class: "btn btn-info"
     = link_to t("skip"), question.vocab_test, class: "btn btn-default"
     - last_question = question.vocab_test.vocab_questions.first

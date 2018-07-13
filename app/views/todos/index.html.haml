@@ -1,13 +1,11 @@
 = render "utils/title", key: "todo.todos"
 
-.text-center
-  - if can?(:create, Todo)
-    = link_to t("todo.new"), new_todo_path, class: "btn btn-info"
-
-%p
-
 .row
   .col-md-12
     %table{class: "table table-bordered table-striped"}
       %tbody{id: "results"}
         = render "results", todos: @todos
+
+- if can?(:create, Todo)
+  .text-center.mt-3
+    = link_to t("todo.new"), new_todo_path, class: "btn btn-info"

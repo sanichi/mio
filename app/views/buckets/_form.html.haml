@@ -1,6 +1,6 @@
 .row
   .col-md-12
-    = form_for bucket, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for bucket, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: bucket, col: "md", pad: 2 }
         = render "utils/text_field_for", shared.merge(param: :name, text: t("name"), width: 6)
@@ -8,8 +8,8 @@
         = render "utils/select_for", shared.merge(param: :sandra, text: t("bucket.sandra"), width: 2, menu: bucket_level_menu(bucket.sandra))
         = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), bucket.new_record?? buckets_path : bucket, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), bucket.new_record?? buckets_path : bucket, class: "btn btn-secondary"
           - unless bucket.new_record?
             = link_to t("delete"), bucket, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

@@ -1,15 +1,15 @@
 = render "utils/title", key: "historical_event.events"
 
 .row
-  .col-md-offset-1.col-md-10.col-sm-offset-0.col-sm-12
+  .offset-md-1.col-md-10
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th= t("description")
-          %th.col-md-1.text-center= t("historical_event.start")
-          %th.col-md-1.text-center= t("historical_event.finish")
+          %th.col-9= t("description")
+          %th.col-1.text-center= t("historical_event.start")
+          %th.col-1.text-center= t("historical_event.finish")
           - if can?(:edit, HistoricalEvent)
-            %th.col-md-1
+            %th.col-1
       %tbody
         - @events.each do |event|
           %tr
@@ -18,8 +18,8 @@
             %td.text-center= event.finish
             - if can?(:edit, HistoricalEvent)
               %td.text-center
-                = link_to t("edit"), edit_historical_event_path(event), class: "btn btn-info btn-xs"
+                = link_to t("edit"), edit_historical_event_path(event), class: "btn btn-info btn-sm"
 
-.text-center.bottom_margin
-  - if can?(:create, HistoricalEvent)
+- if can?(:create, HistoricalEvent)
+  .text-center
     = link_to t("historical_event.new"), new_historical_event_path, class: "btn btn-info"

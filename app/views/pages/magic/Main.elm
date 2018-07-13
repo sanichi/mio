@@ -96,7 +96,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ div [ class "row" ]
-            [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
+            [ div [ class "col-xs-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
                 [ table [ class "table table-bordered" ]
                     [ tbody []
                         (viewRows model)

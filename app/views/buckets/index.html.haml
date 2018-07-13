@@ -1,28 +1,23 @@
 = render "utils/title", key: "bucket.buckets"
 
-.text-center
-  = form_tag buckets_path, method: :get, remote: true, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :name, t("name"), class: "sr-only"
-      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 20
-    .form-group
-      = label_tag :fan, t("bucket.fans"), class: "sr-only"
-      = select_tag :fan, bucket_fan_search_menu(params[:fan]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag buckets_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :name, t("name"), class: "sr-only"
+  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 20
+  = label_tag :fan, t("bucket.fans"), class: "sr-only"
+  = select_tag :fan, bucket_fan_search_menu(params[:fan]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-%p
-
-.row
-  .col-xs-12.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+.row.mt-3
+  .col-md-10.offset-md-1
     %table{class: "table table-bordered table-striped"}
       %thead
-        %tr
-          %th.text-center= t("bucket.name")
-          %th.text-center.col-xs-1= t("bucket.mark")
-          %th.text-center.col-xs-1= t("bucket.sandra")
+        %tr.d-flex
+          %th.col-8.text-center= t("bucket.name")
+          %th.col-2.text-center= t("bucket.mark")
+          %th.col-2.text-center= t("bucket.sandra")
       %tbody{id: "results"}
         = render "results", buckets: @buckets
 
-.text-center
-  - if can?(:create, Bucket)
+- if can?(:create, Bucket)
+  .text-center.mt-3
     = link_to t("bucket.new"), new_bucket_path, class: "btn btn-info"

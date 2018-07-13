@@ -1,15 +1,17 @@
 - list = session[:picture_ids].to_s
 - prv = Picture.find_by(id: $1.to_i) if list.match(/_(\d+)_#{picture.id}_/)
 - nxt = Picture.find_by(id: $1.to_i) if list.match(/_#{picture.id}_(\d+)_/)
-.text-center
-  .btn-group
-    - if prv || nxt
+.btn-toolbar.justify-content-center
+  - if prv || nxt
+    .btn-group.mr-1
       = link_to t("symbol.prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'}"
       = link_to t("symbol.next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'}"
+  .btn-group.mr-1
     = link_to t("picture.original"), picture.image2, class: "btn btn-success"
     -# = link_to picture.person.name(full: false), picture.person, class: "btn btn-success"
     -# = link_to t("person.tree"), tree_people_path(id: picture.person.id), class: "btn btn-success"
     = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
     = link_to t("person.people"), people_path, class: "btn btn-success"
+  .btn-group.mr-1
     - if can?(:manage, picture)
       = link_to t("edit"), edit_picture_path(picture), class: "btn btn-info"

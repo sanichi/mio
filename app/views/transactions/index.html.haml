@@ -1,7 +1,7 @@
 = render "utils/title", key: "transaction.transactions"
 
 .text-center
-  = form_tag transactions_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag transactions_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :description, t("transaction.description"), class: "sr-only"
       = text_field_tag :description, params[:description], class: "form-control", placeholder: t("transaction.description"), size: 20
@@ -16,7 +16,7 @@
 %p
 
 .row
-  .col-md-offset-1.col-md-10
+  .offset-md-1.col-md-10
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

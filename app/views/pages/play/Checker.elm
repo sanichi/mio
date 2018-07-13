@@ -44,7 +44,7 @@ view : Model -> Html Msg
 view checker =
     div []
         [ text (toText checker)
-        , button [ class "btn btn-warning btn-xs pull-right", onClick CheckRequest ] [ text "↩︎" ]
+        , button [ class "btn btn-warning btn-sm float-right", onClick CheckRequest ] [ text "↩︎" ]
         ]
 
 

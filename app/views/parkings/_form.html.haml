@@ -3,7 +3,7 @@
 
 .row
   .col-xs-12
-    = form_for parking, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for parking, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: parking, col: "md", pad: 3 }
         = render "utils/select_completer_for", shared.merge(param: :vehicle_id, text: t("vehicle.vehicle"), menu: vehicle_menu(parking.vehicle_id), width: 2)
@@ -13,8 +13,8 @@
       = render "bay_map"
 
       .row.top_margin
-        .col-md-offset-3.col-md-9
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), parkings_path, class: "btn btn-default"
+        .offset-md-3.col-md-9
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), parkings_path, class: "btn btn-secondary"
           - if can?(:create, Vehicle)
             = link_to t("vehicle.new"), new_vehicle_path, class: "btn btn-info"

@@ -2,9 +2,9 @@
   .modal-dialog{role: "document"}
     .modal-content
       .modal-header
+        %h5#notes-title.modal-title= t("notes")
         %button{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => t("close")}
           %span{"aria-hidden" => "true"}= t("symbol.cross")
-        %h4#notes-title= t("notes")
       .modal-body
-      .modal-footer
-        %button{type: "button", class: "btn btn-default", "data-dismiss" => "modal"}= t("close")
+      -# .modal-footer
+      -#   %button{type: "button", class: "btn btn-default", "data-dismiss" => "modal"}= t("close")

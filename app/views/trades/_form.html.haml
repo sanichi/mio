@@ -1,6 +1,6 @@
 .row
   .col-md-10
-    = form_for trade, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for trade, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: trade, col: "md", pad: 3, width: 2}
         = render "utils/text_field_for", shared.merge(param: :stock, text: t("trade.stock"), width: 7)
@@ -13,8 +13,8 @@
         = render "utils/text_field_for", shared.merge(param: :sell_factor, text: t("trade.sell_factor"))
 
       .row
-        .col-md-offset-3.col-md-9
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), trade.new_record?? trades_path : trade, class: "btn btn-default"
+        .offset-md-3.col-md-9
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), trade.new_record?? trades_path : trade, class: "btn btn-secondary"
           - unless trade.new_record?
             = link_to t("delete"), trade, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

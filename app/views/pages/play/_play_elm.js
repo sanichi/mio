@@ -9158,7 +9158,7 @@ var _user$project$Checker$view = function (checker) {
 					_elm_lang$html$Html$button,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
+						_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-sm float-right'),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Events$onClick(_user$project$Messages$CheckRequest),
@@ -9205,7 +9205,7 @@ var _user$project$Counter$view = function (counter) {
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('pull-right'),
+						_0: _elm_lang$html$Html_Attributes$class('float-right'),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -9214,7 +9214,7 @@ var _user$project$Counter$view = function (counter) {
 							_elm_lang$html$Html$button,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('btn btn-danger btn-xs'),
+								_0: _elm_lang$html$Html_Attributes$class('btn btn-danger btn-sm'),
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html_Events$onClick(_user$project$Messages$CounterIncrement),
@@ -9242,7 +9242,7 @@ var _user$project$Counter$view = function (counter) {
 									_elm_lang$html$Html$button,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs'),
+										_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-sm'),
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html_Events$onClick(_user$project$Messages$CounterReset),
@@ -9302,7 +9302,7 @@ var _user$project$Randoms$view = function (rand) {
 					_elm_lang$html$Html$button,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-xs pull-right'),
+						_0: _elm_lang$html$Html_Attributes$class('btn btn-warning btn-sm float-right'),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Events$onClick(_user$project$Messages$RandomRequest),
@@ -9387,7 +9387,7 @@ var _user$project$Main$panel = F2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('panel panel-default'),
+				_0: _elm_lang$html$Html_Attributes$class('card mt-3'),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -9396,23 +9396,12 @@ var _user$project$Main$panel = F2(
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('panel-heading'),
+						_0: _elm_lang$html$Html_Attributes$class('card-header'),
 						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('panel-title'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(title),
-								_1: {ctor: '[]'}
-							}),
+						_0: _elm_lang$html$Html$text(title),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -9421,7 +9410,7 @@ var _user$project$Main$panel = F2(
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('panel-body'),
+							_0: _elm_lang$html$Html_Attributes$class('card-body'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -9447,14 +9436,14 @@ var _user$project$Main$view = function (model) {
 				ctor: '::',
 				_0: A2(
 					_user$project$Main$panel,
-					'Checker',
-					_user$project$Checker$view(model.checker)),
+					'Randoms',
+					_user$project$Randoms$view(model.randoms)),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_user$project$Main$panel,
-						'Randoms',
-						_user$project$Randoms$view(model.randoms)),
+						'Checker',
+						_user$project$Checker$view(model.checker)),
 					_1: {ctor: '[]'}
 				}
 			}

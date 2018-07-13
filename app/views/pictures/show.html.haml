@@ -2,23 +2,23 @@
 
 = render "prev_next", picture: @picture
 
-.text-center.top_margin
-  - Picture::STYLE.each_pair do |nm, style|
-    - unless nm == :tn
-      %div{class: "visible-#{nm}-block"}
-        = image_tag @picture.image2.variant(style)
-  - if @picture.portrait
-    %div{title: t("picture.portrait")}= "☐"
+.row.mt-3
+  .offset-1.col-10.text-center
+    = image_tag @picture.image2.variant(Picture::STYLE[:lg]), class: "img-fluid"
+    - if @picture.portrait
+      %div{title: t("picture.portrait"), class: "text-center"}= "☐"
 
 - people = @picture.people.by_last_name
-- unless people.empty?
-  %p.top_margin
-    = succeed(":") do
-      = t("picture.in")
-  %ul
-    - people.each_with_index do |p, i|
-      %li= link_to p.name(reversed: true, with_years: true, with_married_name: true), tree_people_path(id: p.id)
-
-- if @picture.description.present?
-  .panel.panel-default.top_margin
-    .panel-body= @picture.description_html
+- if @picture.description.present? || !people.empty?
+  .card.mt-3
+    .card-header
+      = t("notes")
+    .card-body
+      = @picture.description_html
+      - unless people.empty?
+        %p
+          = succeed(":") do
+            = t("picture.in")
+        %ul
+          - people.each_with_index do |p, i|
+            %li= link_to p.name(reversed: true, with_years: true, with_married_name: true), tree_people_path(id: p.id)

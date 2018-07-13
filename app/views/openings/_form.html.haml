@@ -1,13 +1,13 @@
 .row
   .col-md-12
-    = form_for opening, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for opening, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: opening, col: "md", pad: 2 }
         = render "utils/text_field_for", shared.merge(param: :code, text: t("opening.code"), width: 2)
         = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 8)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), opening.new_record?? openings_path : opening, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), opening.new_record?? openings_path : opening, class: "btn btn-secondary"
           - unless opening.new_record?
             = link_to t("delete"), opening, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

@@ -9,7 +9,7 @@
 
 = render "panel", blog: @blog, index: false
 
-.text-center.top_margin
+.text-center
   = link_to t("blog.blog"), blogs_path, class: "btn btn-success"
   - if can?(:edit, Blog)
     = link_to t("edit"), edit_blog_path(@blog), class: "btn btn-info"

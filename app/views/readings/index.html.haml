@@ -3,7 +3,7 @@
 = render "utils/title", key: "vocab.readings"
 
 .text-center
-  = form_tag readings_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag readings_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("vocab.reading"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("vocab.reading"), size: 16, autofocus: true

@@ -4,7 +4,7 @@
   = render "flats.js"
 
 .text-center.top_margin
-  = form_tag flats_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag flats_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :building, t("flat.building"), class: "sr-only"
       = text_field_tag :building, params[:building], class: "form-control", placeholder: t("flat.building"), size: 5
@@ -30,7 +30,7 @@
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
-  .col-xs-12.col-md-8.col-md-offset-2
+  .col-xs-12.col-md-8.offset-md-2
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

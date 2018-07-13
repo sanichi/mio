@@ -1,6 +1,6 @@
 .row
   .col-md-12
-    = form_for fund, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for fund, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: fund, col: "md", pad: 4 }
         = render "utils/text_field_for", shared.merge(param: :name, text: t("fund.name"), width: 6)
@@ -14,8 +14,8 @@
         = render "utils/text_field_for", shared.merge(param: :annual_fee, text: t("fund.annual_fee"), width: 2)
         = render "utils/check_box_for", shared.merge(param: :performance_fee, text: t("fund.performance_fee"), width: 1)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), fund.new_record?? funds_path : fund, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), fund.new_record?? funds_path : fund, class: "btn btn-secondary"
           - unless fund.new_record?
             = link_to t("delete"), fund, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

@@ -1,7 +1,7 @@
 = render "utils/title", key: "vocab.occupation.occupations"
 
 .text-center
-  = form_tag occupations_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag occupations_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("search"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true

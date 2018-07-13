@@ -2,8 +2,9 @@
 
 - Picture::SIZE.each_pair do |nm,sz|
   - unless nm == :tn
-    - cols = sz / wd
-    %div{class: "visible-#{nm}-block"}
+    - cols = Picture.number_of_cols(nm)
+    - klass = Picture.hidden_class(nm)
+    %div{class: klass}
       %table{class: "table-center"}
         %tbody
           - pictures.each_slice(cols) do |row|

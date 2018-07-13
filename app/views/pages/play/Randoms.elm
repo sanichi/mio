@@ -25,7 +25,7 @@ view : Model -> Html Msg
 view rand =
     div []
         [ button [ class "btn btn-success btn-lg" ] [ text (toString rand) ]
-        , button [ class "btn btn-warning btn-xs pull-right", onClick RandomRequest ] [ text "↩︎" ]
+        , button [ class "btn btn-warning btn-sm float-right", onClick RandomRequest ] [ text "↩︎" ]
         ]
 
 

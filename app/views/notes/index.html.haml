@@ -1,7 +1,7 @@
 = render "utils/title", key: "vocab.note.notes"
 
 .text-center
-  = form_tag notes_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag notes_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true

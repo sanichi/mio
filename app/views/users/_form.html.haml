@@ -1,6 +1,6 @@
 .row
   .col-md-12
-    = form_for user, html: { class: "form-horizontal", role: "form" } do |f|
+    = form_for user, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: user, col: "md", pad: 4, width: 4 }
         = render "utils/select_for", shared.merge(param: :role, text: t("user.role"), menu: user_role_menu(user), width: 3)
@@ -8,8 +8,8 @@
         = render "utils/text_field_for", shared.merge(param: :password, text: t("session.password"), width: 5)
         = render "utils/select_for", shared.merge(param: :person_id, text: t("person.person"), menu: user_person_menu(user), width: 4)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), user.new_record?? users_path : user, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), user.new_record?? users_path : user, class: "btn btn-secondary"
           - unless user.new_record?
             = link_to t("delete"), user, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

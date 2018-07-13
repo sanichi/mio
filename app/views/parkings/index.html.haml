@@ -4,7 +4,7 @@
   = render "parkings.js"
 
 .text-center.top_margin
-  = form_tag parkings_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag parkings_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = text_field_tag :term, params[:term], class: "form-control", placeholder: t("vehicle.vehicle"), size: 10
     .form-group
@@ -19,7 +19,7 @@
 = render "bay_map"
 
 .row.top_margin
-  .col-xs-12.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+  .col-xs-12.col-sm-10.offset-sm-1.col-md-8.offset-md-2
     %table{id: "results", class: "table table-bordered table-striped"}
       = render "results", parkings: @parkings, extra: @extra
 

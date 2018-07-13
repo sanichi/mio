@@ -288,33 +288,27 @@ view model =
     in
         div []
             [ div [ class "row" ]
-                [ div [ class "col-xs-12" ]
-                    [ Html.form [ class "form-horizontal", attribute "role" "form" ]
-                        [ div [ class "form-group" ]
-                            [ div [ class "col-xs-1 col-sm-2 col-md-3" ] []
-                            , div [ class "col-xs-4 col-sm-3 col-md-2" ]
-                                [ select [ class "form-control input-sm", attribute "size" "1", onYearChange ] yearOptions ]
-                            , div [ class "col-xs-2 col-sm-2 col-md-2" ] []
-                            , div [ class "col-xs-4 col-sm-3 col-md-2" ]
-                                [ select [ class "form-control input-sm", attribute "size" "1", onDayChange ] dayOptions ]
-                            ]
+                [ div [ class "col" ]
+                    [ Html.form [ class "form-inline justify-content-around" ]
+                        [ select [ class "form-control", onYearChange ] yearOptions
+                        , select [ class "form-control", onDayChange ] dayOptions
                         ]
                     ]
                 ]
             , hr [] []
             , div [ class "row" ]
-                [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
+                [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
                     [ table [ class "table table-bordered" ]
-                        [ tbody []
-                            [ viewHeader
-                            , viewAnswer model 1
+                        [ thead [] [ viewHeader ]
+                        , tbody []
+                            [ viewAnswer model 1
                             , viewAnswer model 2
                             ]
                         ]
                     ]
                 ]
             , div [ class "row" ]
-                [ div [ class "col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" ]
+                [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
                     [ table [ class "table table-bordered" ]
                         [ tbody []
                             [ viewLinks model
@@ -327,7 +321,7 @@ view model =
             , viewHelp model.help
             , hr [] []
             , div [ class "row" ]
-                [ div [ class "col-xs-12" ]
+                [ div [ class "col" ]
                     [ pre [] [ text data ]
                     ]
                 ]
@@ -379,10 +373,10 @@ viewDayOption year chosen day =
 
 viewHeader : Html Msg
 viewHeader =
-    tr []
-        [ td [ class "col-xs-2 text-center" ]
+    tr [ class "d-flex" ]
+        [ td [ class "col-2 text-center" ]
             [ text "Part" ]
-        , td [ class "col-xs-10 text-center" ]
+        , td [ class "col-10 text-center" ]
             [ text "Answer" ]
         ]
 
@@ -428,7 +422,7 @@ viewAnswer model part =
                             symbol =
                                 speedIndicator time
                         in
-                            span [ class ("btn btn-" ++ colour ++ " btn-xs"), Events.onClick (Prepare part) ] [ text symbol ]
+                            span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (Prepare part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then
@@ -436,10 +430,10 @@ viewAnswer model part =
                         else
                             text ans
     in
-        tr []
-            [ td [ class "col-xs-2 text-center" ]
+        tr [ class "d-flex" ]
+            [ td [ class "col-2 text-center" ]
                 [ toString part |> text ]
-            , td [ class "col-xs-10 text-center" ]
+            , td [ class "col-10 text-center" ]
                 [ display ]
             ]
 
@@ -516,16 +510,16 @@ viewHelp show =
                     " Icon Descriptions"
             in
                 div [ class "row" ]
-                    [ div [ class "col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" ]
+                    [ div [ class "offset-1 col-10 offset-lg-2 col-lg-8" ]
                         [ p [ class "text-center" ]
-                            [ button [ type_ "button", class "btn btn-xs btn-default", Events.onClick HideHelp ] [ btnText "Hide" ] ]
+                            [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick HideHelp ] [ btnText "Hide" ] ]
                         , table [ class "table table-bordered" ]
                             [ tbody [] trows ]
                         ]
                     ]
         else
             p [ class "text-center" ]
-                [ button [ type_ "button", class "btn btn-xs btn-default", Events.onClick ShowHelp ] [ btnText "Show" ] ]
+                [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick ShowHelp ] [ btnText "Show" ] ]
 
 
 viewIcon : Int -> Html Msg
@@ -538,15 +532,15 @@ viewIcon time =
             speedIndicator time
 
         klass =
-            "btn btn-xs btn-" ++ colour
+            "btn btn-sm btn-" ++ colour
 
         description =
             speedDescription time
     in
-        tr []
-            [ td [ class "col-xs-1 text-center" ]
+        tr [ class "d-flex" ]
+            [ td [ class "col-2 text-center" ]
                 [ span [ class klass ] [ text symbol ] ]
-            , td [ class "col-xs-11" ]
+            , td [ class "col-10" ]
                 [ text description ]
             ]
 

@@ -1,14 +1,14 @@
 = render "utils/title", key: "interface.interfaces"
 
 .text-center
-  = form_tag interfaces_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag interfaces_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("interface.interface")
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-10.col-md-offset-1
+  .col-xs-12.col-md-10.offset-md-1
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

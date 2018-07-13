@@ -1,7 +1,7 @@
 = render "utils/title", key: "fund.funds"
 
 .text-center
-  = form_tag funds_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag funds_path, method: :get, remote: true, class: "form-inline" do
     - width = 7
     .form-group
       = label_tag :name, t("name"), class: "sr-only"

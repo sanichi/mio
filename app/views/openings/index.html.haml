@@ -1,7 +1,7 @@
 = render "utils/title", key: "opening.openings"
 
 .text-center
-  = form_tag openings_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag openings_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", placeholder: t("query"), size: 16

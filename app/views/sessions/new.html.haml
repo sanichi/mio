@@ -1,8 +1,8 @@
 = render "utils/title", key: "session.sign_in"
 
 .row
-  .col-md-8.col-md-offset-2
-    = form_tag sessions_path, class: "form-horizontal", role: "form" do
+  .col-md-8.offset-md-2
+    = form_tag sessions_path, class: "form-horizontal" do
       %fieldset
         .form-group
           = label_tag :email, t("email"), class: "control-label col-md-4"
@@ -10,5 +10,5 @@
         .form-group
           = label_tag :password, t("session.password"), class: "control-label col-md-4"
           .col-md-4= text_field_tag :password, params[:password], class: "form-control", type: "password"
-        .col-md-8.col-md-offset-2.text-center
+        .col-md-8.offset-md-2.text-center
           = submit_tag t("session.sign_in"), class: "btn btn-success"

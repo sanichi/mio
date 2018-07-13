@@ -1,14 +1,14 @@
 .row
-  .col-md-offset-2.col-md-8
-    = form_for mass, html: { class: "form-horizontal", role: "form" } do |f|
+  .offset-md-2.col-md-8
+    = form_for mass, html: { class: "form-horizontal" } do |f|
       %fieldset
         - shared = { form: f, object: mass, col: "md", pad: 4 }
         = render "utils/text_field_for", shared.merge(param: :date, text: t("mass.date"), width: 3)
         = render "utils/text_field_for", shared.merge(param: :start, text: t("mass.start"), width: 2)
         = render "utils/text_field_for", shared.merge(param: :finish, text: t("mass.finish"), width: 2)
       .row
-        .col-md-offset-4.col-md-8
-          = f.submit t("save"), class: "btn btn-info"
-          = link_to t("cancel"), masses_path, class: "btn btn-default"
+        .offset-md-4.col-md-8
+          = f.submit t("save"), class: "btn btn-primary"
+          = link_to t("cancel"), masses_path, class: "btn btn-secondary"
           - unless mass.new_record?
             = link_to t("delete"), mass, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

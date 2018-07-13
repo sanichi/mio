@@ -66,16 +66,16 @@ view : Model -> Html Msg
 view model =
     div []
         [ panel "Counter" (Counter.view model.counter)
-        , panel "Checker" (Checker.view model.checker)
         , panel "Randoms" (Randoms.view model.randoms)
+        , panel "Checker" (Checker.view model.checker)
         ]
 
 
 panel : String -> Html Msg -> Html Msg
 panel title body =
-    div [ class "panel panel-default" ]
-        [ div [ class "panel-heading" ] [ div [ class "panel-title" ] [ text title ] ]
-        , div [ class "panel-body" ] [ body ]
+    div [ class "card mt-3" ]
+        [ div [ class "card-header" ] [ text title ]
+        , div [ class "card-body" ] [ body ]
         ]
 
 

@@ -7,9 +7,7 @@
 
 #chart{style: "height: #{@mgd.full_height}px"}
 
-%p
-
-.text-center
+.text-center.mt-3
   %span{id: "control_buttons"}= render "control_buttons", unit: @unit, mgd: @mgd
   - if can?(:create, Mass)
     = link_to t("mass.new"), new_mass_path, class: "btn btn-info"

@@ -1,7 +1,7 @@
 = render "utils/title", key: "vocab.kanji_test.tests"
 
 .text-center
-  = form_tag kanji_tests_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag kanji_tests_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :level, t("vocab.level"), class: "sr-only"
       = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
@@ -11,7 +11,7 @@
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-offset-2.col-md-8
+  .col-xs-12.offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

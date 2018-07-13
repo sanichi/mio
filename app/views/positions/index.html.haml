@@ -4,7 +4,7 @@
   = render "positions.js"
 
 .text-center
-  = form_tag positions_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag positions_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :name, t("name"), class: "sr-only"
       = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 16
@@ -18,7 +18,7 @@
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
-  .col-xs-12.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8
+  .col-xs-12.offset-sm-1.col-sm-10.offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

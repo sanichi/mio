@@ -24,9 +24,9 @@ view : Model -> Html Msg
 view counter =
     div []
         [ button [ class "btn btn-success btn-lg" ] [ text (toString counter) ]
-        , div [ class "pull-right" ]
-            [ button [ class "btn btn-danger btn-xs", onClick CounterIncrement ] [ text "+" ]
+        , div [ class "float-right" ]
+            [ button [ class "btn btn-danger btn-sm", onClick CounterIncrement ] [ text "+" ]
             , span [] [ text " " ]
-            , button [ class "btn btn-warning btn-xs", onClick CounterReset ] [ text "↩︎" ]
+            , button [ class "btn btn-warning btn-sm", onClick CounterReset ] [ text "↩︎" ]
             ]
         ]

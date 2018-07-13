@@ -4,7 +4,7 @@
   = render "residents.js"
 
 .text-center.top_margin
-  = form_tag residents_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag residents_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :last_name, t("person.last_name"), class: "sr-only"
       = text_field_tag :last_name, params[:last_name], class: "form-control", placeholder: t("person.last_name"), size: 10
@@ -15,7 +15,7 @@
     = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
 
 .row.top_margin
-  .col-xs-12.col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+  .col-xs-12.col-sm-10.offset-sm-1.col-md-8.offset-md-2
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

@@ -1,38 +1,29 @@
-= render "utils/title", key: "person.people"
+= render "utils/title", key: "person.people", header: true
 
-.text-center
-  = form_tag people_path, method: :get, remote: true, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :name, t("name"), class: "sr-only"
-      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 14
-    .form-group
-      = label_tag :gender, t("person.gender"), class: "sr-only"
-      = select_tag :gender, person_gender_search_menu(params[:gender]), class: "form-control auto-submit"
-    .form-group
-      = label_tag :born, t("person.born"), class: "sr-only"
-      = text_field_tag :born, params[:born], class: "form-control", placeholder: t("person.born"), size: 10
-    .form-group
-      = label_tag :born, t("person.died"), class: "sr-only"
-      = text_field_tag :died, params[:died], class: "form-control", placeholder: t("person.died"), size: 10
-    .form-group
-      = label_tag :notes, t("person.notes"), class: "sr-only"
-      = text_field_tag :notes, params[:notes], class: "form-control", placeholder: t("person.notes"), size: 10
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, person_search_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag people_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :name, t("name"), class: "sr-only"
+  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 14
+  = label_tag :gender, t("person.gender"), class: "sr-only"
+  = select_tag :gender, person_gender_search_menu(params[:gender]), class: "form-control mr-1  mb-1 auto-submit"
+  = label_tag :born, t("person.born"), class: "sr-only"
+  = text_field_tag :born, params[:born], class: "form-control mr-1 mb-1", placeholder: t("person.born"), size: 10
+  = label_tag :born, t("person.died"), class: "sr-only"
+  = text_field_tag :died, params[:died], class: "form-control mr-1 mb-1", placeholder: t("person.died"), size: 10
+  = label_tag :notes, t("person.notes"), class: "sr-only"
+  = text_field_tag :notes, params[:notes], class: "form-control mr-1 mb-1", placeholder: t("person.notes"), size: 10
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, person_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mb-1"
 
-%p
-
-.row
-  .col-md-offset-2.col-md-8
+.row.mt-3
+  .col-12.col-lg-10.offset-lg-1.col-xl-8.offset-xl-2
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th= t("name")
-          %th.text-center.col-md-1= t("person.m_f")
-          %th.text-center.col-md-1= t("person.born")
-          %th.text-center.col-md-1= t("person.died")
+          %th.col-9= t("name")
+          %th.col-1.text-center= t("person.m_f")
+          %th.col-1.text-center= t("person.born")
+          %th.col-1.text-center= t("person.died")
       %tbody{id: "results"}
         = render "results", people: @people
 

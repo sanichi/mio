@@ -1,154 +1,93 @@
-%nav{class: "navbar navbar-default", role: "navigation"}
-  .navbar-header
-    %button{class: "navbar-toggle", type: "button", "data-toggle" => "collapse", "data-target" => ".navbar-ex1-collapse"}
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-  .collapse.navbar-collapse.navbar-ex1-collapse
-    %ul.nav.navbar-nav
+%nav{class: "navbar navbar-expand-lg navbar-light bg-light mb-3"}
+  %button{class: "navbar-toggler", type: "button", "data-toggle" => "collapse", "data-target" => "#navbarNav", "aria-controls" => "navbarNav", "aria-expanded" => "false", "aria-label" => "Toggle navigation"}
+    %span.navbar-toggler-icon
+  .collapse.navbar-collapse#navbarNav
+    .navbar-nav
 
-      - if can?(:read, Blog)
-        %li= link_to t("blog.blog"), blogs_path
+    - if can?(:read, Blog)
+      = link_to t("blog.blog"), blogs_path, class: "nav-item nav-link"
 
-      - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("family")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:tree, Person)
-              %li= link_to t("person.tree"), tree_people_path
-            - if can?(:read, Person)
-              %li= link_to t("person.people"), people_path
-            - if can?(:read, Picture)
-              %li= link_to t("picture.pictures"), pictures_path
-            - if can?(:read, Partnership)
-              %li= link_to t("partnership.partnerships"), partnerships_path
-            - if can?(:checks, Person)
-              %li= link_to t("person.checks.title"), checks_people_path
-            - if can?(:read, HistoricalEvent)
-              %li= link_to t("historical_event.events"), historical_events_path
+    - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("family"), id: "navbarFamilyMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarFamilyMenu"}
+          = render "layouts/dropdown_item", cond: can?(:tree, Person), text: t("person.tree"), path: tree_people_path
+          = render "layouts/dropdown_item", cond: can?(:read, Person), text: t("person.people"), path: people_path
+          = render "layouts/dropdown_item", cond: can?(:read, Picture), text: t("picture.pictures"), path: pictures_path
+          = render "layouts/dropdown_item", cond: can?(:read, Partnership), text: t("partnership.partnerships"), path: partnerships_path
+          = render "layouts/dropdown_item", cond: can?(:checks, Person), text: t("person.checks.title"), path: checks_people_path
+          = render "layouts/dropdown_item", cond: can?(:read, HistoricalEvent), text: t("historical_event.events"), path: historical_events_path
 
-      - if can?(:read, Todo)
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("todo.todos")
-            %b.caret
-          %ul.dropdown-menu
-            %li= link_to t("todo.elm.app"), elm_todos_path
-            %li= link_to t("todo.rails"), todos_path
+    - if can?(:read, Todo)
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("todo.todos"), id: "navbarTodoMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarTodoMenu"}
+          = render "layouts/dropdown_item", text: t("todo.elm.app"), path: elm_todos_path
+          = render "layouts/dropdown_item", text: t("todo.rails"), path: todos_path
 
-      - if [Resident, Flat, Vehicle, Parking].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, Page) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("pages.risle.name")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:risle, Page)
-              %li= link_to t("map"), risle_path
-            - if can?(:pam, Page)
-              %li= link_to t("pages.pam"), pam_path
-            - if can?(:read, Resident)
-              %li= link_to t("resident.residents"), residents_path
-            - if can?(:read, Flat)
-              %li= link_to t("flat.flats"), flats_path
-            - if can?(:read, Vehicle)
-              %li= link_to t("vehicle.vehicles"), vehicles_path
-            - if can?(:read, Parking)
-              %li= link_to t("parking.parkings"), parkings_path
-            - if can?(:deeds, Page)
-              %li= link_to t("flat.deeds"), deeds_path
+    - if [Resident, Flat, Vehicle, Parking].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, Page) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("pages.risle.name"), id: "navbarRisleMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarRisleMenu"}
+          = render "layouts/dropdown_item", cond: can?(:risle, Page), text: t("map"), path: risle_path
+          = render "layouts/dropdown_item", cond: can?(:pam, Page), text: t("pages.pam"), path: pam_path
+          = render "layouts/dropdown_item", cond: can?(:read, Resident), text: t("resident.residents"), path: residents_path
+          = render "layouts/dropdown_item", cond: can?(:read, Flat), text: t("flat.flats"), path: flats_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vehicle), text: t("vehicle.vehicles"), path: vehicles_path
+          = render "layouts/dropdown_item", cond: can?(:read, Parking), text: t("parking.parkings"), path: parkings_path
+          = render "layouts/dropdown_item", cond: can?(:deeds, Page), text: t("flat.deeds"), path: deeds_path
 
-      - if [Income, Trade, Fund, Transaction, Expense].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("money")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Income)
-              %li= link_to t("income.incomes"), graph_incomes_path
-            - if can?(:read, Trade)
-              %li= link_to t("trade.trades"), trades_path
-            - if can?(:read, Fund)
-              %li= link_to t("fund.funds"), funds_path
-            - if can?(:read, Transaction)
-              %li= link_to t("transaction.transactions"), summary_transactions_path
-            - if can?(:read, Expense)
-              %li= link_to t("expense.expenses"), expenses_path
+    - if [Income, Trade, Fund, Transaction, Expense].map{|c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("money"), id: "navbarMoneyMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarMoneyMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Income), text: t("income.incomes"), path: graph_incomes_path
+          = render "layouts/dropdown_item", cond: can?(:read, Trade), text: t("trade.trades"), path: trades_path
+          = render "layouts/dropdown_item", cond: can?(:read, Fund), text: t("fund.funds"), path: funds_path
+          = render "layouts/dropdown_item", cond: can?(:read, Transaction), text: t("transaction.transactions"), path: summary_transactions_path
+          = render "layouts/dropdown_item", cond: can?(:read, Expense), text: t("expense.expenses"), path: expenses_path
 
-      - if [Position, Opening].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("chess")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Position)
-              %li= link_to t("position.positions"), positions_path
-            - if can?(:read, Opening)
-              %li= link_to t("opening.openings"), openings_path
+    - if [Position, Opening].map{|c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("chess"), id: "navbarChessMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarChessMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Position), text: t("position.positions"), path: positions_path
+          = render "layouts/dropdown_item", cond: can?(:read, Opening), text: t("opening.openings"), path: openings_path
 
-      - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa].map{ |c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("vocab.japanese")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Vocab)
-              %li= link_to t("vocab.vocabs"), vocabs_path
-            - if can?(:read, Kanji)
-              %li= link_to t("vocab.kanjis"), kanjis_path
-            - if can?(:read, Reading)
-              %li= link_to t("vocab.readings"), readings_path
-            - if can?(:read, Vocab)
-              %li= link_to t("vocab.verb.verbs"), verbs_vocabs_path
-            - if can?(:read, VerbPair)
-              %li= link_to t("verb_pair.verb_pairs"), verb_pairs_path
-            - if can?(:read, VocabTest)
-              %li= link_to t("vocab.test.tests"), vocab_tests_path
-            - if can?(:read, KanjiTest)
-              %li= link_to t("vocab.kanji_test.tests"), kanji_tests_path
-            - if can?(:read, Vocab)
-              %li= link_to t("vocab.similar.words"), similar_words_path
-              %li= link_to t("vocab.similar.kanjis"), similar_kanjis_path
-              %li= link_to t("vocab.occupation.occupations"), occupations_path
-              %li= link_to t("vocab.homonyms"), homonyms_vocabs_path
-            - if can?(:read, Misa)
-              %li= link_to t("misa.misas"), misas_path
-            - if can?(:read, Note)
-              %li= link_to t("vocab.note.notes"), notes_path
-            - if can?(:read, Conversation)
-              %li= link_to t("conversation.conversations"), conversations_path
+    - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa].map{ |c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("vocab.japanese"), id: "navbarJapaneseMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.vocabs"), path: vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, Kanji), text: t("vocab.kanjis"), path: kanjis_path
+          = render "layouts/dropdown_item", cond: can?(:read, Reading), text: t("vocab.readings"), path: readings_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.verb.verbs"), path: verbs_vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, VerbPair), text: t("verb_pair.verb_pairs"), path: verb_pairs_path
+          = render "layouts/dropdown_item", cond: can?(:read, VocabTest), text: t("vocab.test.tests"), path: vocab_tests_path
+          = render "layouts/dropdown_item", cond: can?(:read, KanjiTest), text: t("vocab.kanji_test.tests"), path: kanji_tests_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.words"), path: similar_words_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.homonyms"), path: homonyms_vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
+          = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("vocab.note.notes"), path: notes_path
+          = render "layouts/dropdown_item", cond: can?(:read, Conversation), text: t("conversation.conversations"), path: conversations_path
 
-      - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to "#", class: "dropdown-toggle", data: { toggle: "dropdown" } do
-            = t("other")
-            %b.caret
-          %ul.dropdown-menu
-            - if can?(:read, Mass)
-              %li= link_to t("mass.mass"), graph_masses_path
-            - if can?(:read, Tapa)
-              %li= link_to t("tapa.tapas"), tapas_path
-            - if can?(:read, Bucket)
-              %li= link_to t("bucket.buckets"), buckets_path
-            - if can?(:read, Favourite)
-              %li= link_to t("favourite.favourites"), favourites_path
-            - if can?(:aoc, Page)
-              %li= link_to t("pages.aoc.short"), aoc_path
-            - if can?(:retina, Page)
-              %li= link_to t("pages.retina"), retina_path
-            - if can?(:magic, Page)
-              %li= link_to t("pages.magic"), magic_path
-            - if can?(:play, Page)
-              %li= link_to t("pages.play"), play_path
-            - if can?(:read, Device)
-              %li= link_to t("device.devices"), devices_path
-            - if can?(:read, Interface)
-              %li= link_to t("interface.interfaces"), interfaces_path
-            - if can?(:read, User)
-              %li= link_to t("user.users"), users_path
-            - if can?(:read, Login)
-              %li= link_to t("login.logins"), logins_path
+    - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("other"), id: "navbarOtherMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarOtherMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Mass), text: t("mass.mass"), path: graph_masses_path
+          = render "layouts/dropdown_item", cond: can?(:read, Tapa), text: t("tapa.tapas"), path: tapas_path
+          = render "layouts/dropdown_item", cond: can?(:read, Bucket), text: t("bucket.buckets"), path: buckets_path
+          = render "layouts/dropdown_item", cond: can?(:read, Favourite), text: t("favourite.favourites"), path: favourites_path
+          = render "layouts/dropdown_item", cond: can?(:aoc, Page), text: t("pages.aoc.short"), path: aoc_path
+          = render "layouts/dropdown_item", cond: can?(:retina, Page), text: t("pages.retina"), path: retina_path
+          = render "layouts/dropdown_item", cond: can?(:magic, Page), text: t("pages.magic"), path: magic_path
+          = render "layouts/dropdown_item", cond: can?(:play, Page), text: t("pages.play"), path: play_path
+          = render "layouts/dropdown_item", cond: can?(:read, Device), text: t("device.devices"), path: devices_path
+          = render "layouts/dropdown_item", cond: can?(:read, Interface), text: t("interface.interfaces"), path: interfaces_path
+          = render "layouts/dropdown_item", cond: can?(:read, User), text: t("user.users"), path: users_path
+          = render "layouts/dropdown_item", cond: can?(:read, Login), text: t("login.logins"), path: logins_path
 
-    %ul.nav.navbar-nav.navbar-right
       = render "layouts/sign_in_out"

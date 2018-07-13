@@ -8499,7 +8499,7 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6'),
+							_0: _elm_lang$html$Html_Attributes$class('col-xs-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6'),
 							_1: {ctor: '[]'}
 						},
 						{

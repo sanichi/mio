@@ -4,10 +4,10 @@
 - people = object.people
 - (0..number-1).each do |i|
   - person = people[i]
-  .form-group
-    = label_tag "picture_people_#{i}", t("picture.person", number: i + 1), class: "control-label col-#{col}-#{pad}"
+  .form-group.row
+    = label_tag "picture_people_#{i}", t("picture.person", number: i + 1), class: "col-form-label col-#{col}-#{pad}"
     %div{class: "col-#{col}-#{width}"}= select_tag "picture[people][]", picture_person_menu(object, i), class: "form-control", id: "picture_people_#{i}"
     %div{class: "col-#{col}-#{cwidth}"}
       .form-inline
-        .input-group.input-group-sm
+        .input-group
           = text_field_tag :term, "", id: "person_id_completer_#{i}", class: "form-control", size: "100%", placeholder: placeholder

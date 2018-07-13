@@ -21,20 +21,23 @@ nbsp =
 httpErr : Http.Error -> String
 httpErr err =
     case err of
+        BadUrl str ->
+            "url: " ++ str
+
         Timeout ->
             "timeout"
 
         NetworkError ->
             "network"
 
-        UnexpectedPayload str ->
-            "payload: " ++ str
+        BadPayload str rsp ->
+            "payload: " ++ str ++ " (" ++ toString rsp ++ ")"
 
-        BadResponse int str ->
-            "bad response (" ++ (toString int) ++ "): " ++ str
+        BadStatus rsp ->
+            "bad response: " ++ toString rsp
 
 
-postRequest : String -> Http.Body -> Http.Request
+postRequest : String -> Http.Body -> Http.Request ( Bool, String )
 postRequest url body =
     { verb = "POST"
     , headers = formContentType

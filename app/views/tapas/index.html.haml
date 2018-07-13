@@ -3,35 +3,31 @@
 = content_for :javascript do
   = render "tapas.js"
 
-.text-center.top_margin
-  = form_tag tapas_path, method: :get, remote: true, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :number, t("tapa.number"), class: "sr-only"
-      = text_field_tag :number, params[:number], class: "form-control", placeholder: t("tapa.number"), size: 10
-    .form-group
-      = label_tag :query, t("tapa.query"), class: "sr-only"
-      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("tapa.query"), size: 30
-    .form-group
-      = label_tag :other, t("other"), class: "sr-only"
-      = select_tag :other, tapa_other_search_menu(params[:other]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
-    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+= form_tag tapas_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :number, t("tapa.number"), class: "sr-only"
+  = text_field_tag :number, params[:number], class: "form-control mr-1 mb-1", placeholder: t("tapa.number"), size: 10
+  = label_tag :query, t("tapa.query"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("tapa.query"), size: 30
+  = label_tag :other, t("other"), class: "sr-only"
+  = select_tag :other, tapa_other_search_menu(params[:other]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+  = link_to t("reset"), "#", class: "btn btn-secondary mr-1 mb-1", id: "reset"
 
-.row.top_margin
-  .col-xs-12.col-md-10.col-md-offset-1
+.row.mt-3
+  .col-lg-10.offset-lg-1
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center.col-xs-1= t("tapa.short.number")
+          %th.text-center= t("tapa.short.number")
           %th= t("tapa.title")
           %th= t("tapa.keywords")
-          %th.text-center.col-xs-1= t("notes")
+          %th.text-center= t("notes")
           - if can?(:edit, Tapa)
-            %th.col-xs-1
+            %th
       %tbody{id: "results"}
         = render "results", tapas: @tapas
 
-.text-center.top_margin
+.text-center.mt-3
   - if can?(:create, Tapa)
     = link_to t("tapa.new"), new_tapa_path, class: "btn btn-info"
   = render "utils/help_button"

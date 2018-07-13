@@ -1,38 +1,31 @@
 = render "utils/title", key: "favourite.favourites"
 
-.text-center
-  = form_tag favourites_path, method: :get, remote: true, class: "form-inline", role: "form" do
-    .form-group
-      = label_tag :name, t("query"), class: "sr-only"
-      = text_field_tag :query, params[:query], class: "form-control", placeholder: t("query"), size: 20
-    .form-group
-      = label_tag :year, t("year"), class: "sr-only"
-      = text_field_tag :year, params[:year], class: "form-control", placeholder: t("year"), size: 7
-    .form-group
-      = label_tag :category, t("favourite.category"), class: "sr-only"
-      = select_tag :category, favourite_category_search_menu(params[:category]), class: "form-control auto-submit"
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, favourite_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag favourites_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :name, t("query"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("query"), size: 20
+  = label_tag :year, t("year"), class: "sr-only"
+  = text_field_tag :year, params[:year], class: "form-control mr-1 mb-1", placeholder: t("year"), size: 7
+  = label_tag :category, t("favourite.category"), class: "sr-only"
+  = select_tag :category, favourite_category_search_menu(params[:category]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, favourite_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-%p
-
-.row
-  .col-xs-12
+.row.mt-3
+  .col-12
     %table{class: "table table-bordered table-striped"}
       %thead
-        %tr
-          %th= t("name")
-          %th= t("note")
-          %th.text-center.col-xs-1= t("favourite.category")
-          %th.text-center.col-xs-1= t("year")
-          %th.text-center.col-xs-1= t("favourite.sandra")
-          %th.text-center.col-xs-1= t("favourite.mark")
-          %th.text-center.col-xs-1= t("total")
+        %tr.d-flex
+          %th.col-4= t("name")
+          %th.col-3= t("note")
+          %th.col-1.text-center= t("favourite.category")
+          %th.col-1.text-center= t("year")
+          %th.col-1.text-center= t("favourite.sandra")
+          %th.col-1.text-center= t("favourite.mark")
+          %th.col-1.text-center= t("total")
       %tbody{id: "results"}
         = render "results", favourites: @favourites
 
-.text-center
-  - if can?(:create, Favourite)
+- if can?(:create, Favourite)
+  .text-center.mt-3
     = link_to t("favourite.new"), new_favourite_path, class: "btn btn-info"

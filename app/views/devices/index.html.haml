@@ -1,14 +1,14 @@
 = render "utils/title", key: "device.devices"
 
 .text-center
-  = form_tag devices_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag devices_path, method: :get, remote: true, class: "form-inline" do
     .form-group
       = label_tag :q, t("query"), class: "sr-only"
       = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("device.device")
     = button_tag t("search"), type: "submit", class: "btn btn-success"
 
 .row.top_margin
-  .col-xs-12.col-md-6.col-md-offset-3
+  .col-xs-12.col-md-6.offset-md-3
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr

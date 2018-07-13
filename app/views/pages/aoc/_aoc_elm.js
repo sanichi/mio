@@ -18286,17 +18286,21 @@ var _user$project$Main$viewIcon = function (time) {
 	var description = _user$project$Main$speedDescription(time);
 	var symbol = _user$project$Main$speedIndicator(time);
 	var colour = _user$project$Main$speedColour(time);
-	var klass = A2(_elm_lang$core$Basics_ops['++'], 'btn btn-xs btn-', colour);
+	var klass = A2(_elm_lang$core$Basics_ops['++'], 'btn btn-sm btn-', colour);
 	return A2(
 		_elm_lang$html$Html$tr,
-		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('d-flex'),
+			_1: {ctor: '[]'}
+		},
 		{
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$td,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('col-xs-1 text-center'),
+					_0: _elm_lang$html$Html_Attributes$class('col-2 text-center'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -18321,7 +18325,7 @@ var _user$project$Main$viewIcon = function (time) {
 					_elm_lang$html$Html$td,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col-xs-11'),
+						_0: _elm_lang$html$Html_Attributes$class('col-10'),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -18335,14 +18339,18 @@ var _user$project$Main$viewIcon = function (time) {
 };
 var _user$project$Main$viewHeader = A2(
 	_elm_lang$html$Html$tr,
-	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('d-flex'),
+		_1: {ctor: '[]'}
+	},
 	{
 		ctor: '::',
 		_0: A2(
 			_elm_lang$html$Html$td,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('col-xs-2 text-center'),
+				_0: _elm_lang$html$Html_Attributes$class('col-2 text-center'),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -18356,7 +18364,7 @@ var _user$project$Main$viewHeader = A2(
 				_elm_lang$html$Html$td,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('col-xs-10 text-center'),
+					_0: _elm_lang$html$Html_Attributes$class('col-10 text-center'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -18717,7 +18725,7 @@ var _user$project$Main$viewHelp = function (show) {
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4'),
+						_0: _elm_lang$html$Html_Attributes$class('offset-1 col-10 offset-lg-2 col-lg-8'),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -18738,7 +18746,7 @@ var _user$project$Main$viewHelp = function (show) {
 										_0: _elm_lang$html$Html_Attributes$type_('button'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('btn btn-xs btn-default'),
+											_0: _elm_lang$html$Html_Attributes$class('btn btn-sm btn-secondary'),
 											_1: {
 												ctor: '::',
 												_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$HideHelp),
@@ -18792,7 +18800,7 @@ var _user$project$Main$viewHelp = function (show) {
 						_0: _elm_lang$html$Html_Attributes$type_('button'),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('btn btn-xs btn-default'),
+							_0: _elm_lang$html$Html_Attributes$class('btn btn-sm btn-secondary'),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$ShowHelp),
@@ -18846,7 +18854,7 @@ var _user$project$Main$viewAnswer = F2(
 									A2(
 										_elm_lang$core$Basics_ops['++'],
 										'btn btn-',
-										A2(_elm_lang$core$Basics_ops['++'], colour, ' btn-xs'))),
+										A2(_elm_lang$core$Basics_ops['++'], colour, ' btn-sm'))),
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html_Events$onClick(
@@ -18877,14 +18885,18 @@ var _user$project$Main$viewAnswer = F2(
 		}();
 		return A2(
 			_elm_lang$html$Html$tr,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('d-flex'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$td,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('col-xs-2 text-center'),
+						_0: _elm_lang$html$Html_Attributes$class('col-2 text-center'),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -18899,7 +18911,7 @@ var _user$project$Main$viewAnswer = F2(
 						_elm_lang$html$Html$td,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col-xs-10 text-center'),
+							_0: _elm_lang$html$Html_Attributes$class('col-10 text-center'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -18992,7 +19004,7 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+							_0: _elm_lang$html$Html_Attributes$class('col'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -19001,106 +19013,39 @@ var _user$project$Main$view = function (model) {
 								_elm_lang$html$Html$form,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-horizontal'),
-									_1: {
-										ctor: '::',
-										_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'form'),
-										_1: {ctor: '[]'}
-									}
+									_0: _elm_lang$html$Html_Attributes$class('form-inline justify-content-around'),
+									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$div,
+										_elm_lang$html$Html$select,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-group'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('col-xs-1 col-sm-2 col-md-3'),
-													_1: {ctor: '[]'}
-												},
-												{ctor: '[]'}),
+											_0: _elm_lang$html$Html_Attributes$class('form-control'),
 											_1: {
 												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$div,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('col-xs-4 col-sm-3 col-md-2'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$select,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('form-control input-sm'),
-																_1: {
-																	ctor: '::',
-																	_0: A2(_elm_lang$html$Html_Attributes$attribute, 'size', '1'),
-																	_1: {
-																		ctor: '::',
-																		_0: onYearChange,
-																		_1: {ctor: '[]'}
-																	}
-																}
-															},
-															yearOptions),
-														_1: {ctor: '[]'}
-													}),
+												_0: onYearChange,
+												_1: {ctor: '[]'}
+											}
+										},
+										yearOptions),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$select,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('form-control'),
 												_1: {
 													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('col-xs-2 col-sm-2 col-md-2'),
-															_1: {ctor: '[]'}
-														},
-														{ctor: '[]'}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$div,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('col-xs-4 col-sm-3 col-md-2'),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$select,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('form-control input-sm'),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(_elm_lang$html$Html_Attributes$attribute, 'size', '1'),
-																			_1: {
-																				ctor: '::',
-																				_0: onDayChange,
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	},
-																	dayOptions),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}
+													_0: onDayChange,
+													_1: {ctor: '[]'}
 												}
-											}
-										}),
-									_1: {ctor: '[]'}
+											},
+											dayOptions),
+										_1: {ctor: '[]'}
+									}
 								}),
 							_1: {ctor: '[]'}
 						}),
@@ -19127,7 +19072,7 @@ var _user$project$Main$view = function (model) {
 								_elm_lang$html$Html$div,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6'),
+									_0: _elm_lang$html$Html_Attributes$class('offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6'),
 									_1: {ctor: '[]'}
 								},
 								{
@@ -19142,12 +19087,19 @@ var _user$project$Main$view = function (model) {
 										{
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$tbody,
+												_elm_lang$html$Html$thead,
 												{ctor: '[]'},
 												{
 													ctor: '::',
 													_0: _user$project$Main$viewHeader,
-													_1: {
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$tbody,
+													{ctor: '[]'},
+													{
 														ctor: '::',
 														_0: A2(_user$project$Main$viewAnswer, model, 1),
 														_1: {
@@ -19155,9 +19107,9 @@ var _user$project$Main$view = function (model) {
 															_0: A2(_user$project$Main$viewAnswer, model, 2),
 															_1: {ctor: '[]'}
 														}
-													}
-												}),
-											_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}),
 									_1: {ctor: '[]'}
 								}),
@@ -19178,7 +19130,7 @@ var _user$project$Main$view = function (model) {
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6'),
+										_0: _elm_lang$html$Html_Attributes$class('offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6'),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -19240,7 +19192,7 @@ var _user$project$Main$view = function (model) {
 													_elm_lang$html$Html$div,
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('col-xs-12'),
+														_0: _elm_lang$html$Html_Attributes$class('col'),
 														_1: {ctor: '[]'}
 													},
 													{

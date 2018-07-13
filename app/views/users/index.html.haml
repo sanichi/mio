@@ -1,7 +1,7 @@
 = render "utils/title", key: "user.users"
 
 .text-center
-  = form_tag users_path, method: :get, remote: true, class: "form-inline", role: "form" do
+  = form_tag users_path, method: :get, remote: true, class: "form-inline" do
     - width = 10
     .form-group
       = label_tag :email, t("email"), class: "sr-only"
@@ -17,7 +17,7 @@
 %p
 
 .row
-  .col-md-offset-2.col-md-8
+  .offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
