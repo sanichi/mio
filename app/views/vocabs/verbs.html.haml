@@ -1,34 +1,26 @@
 = render "utils/title", key: "vocab.verb.verbs"
 
-.text-center
-  = form_tag verbs_vocabs_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("search"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
-    .form-group
-      = label_tag :type, t("vocab.verb.type"), class: "sr-only"
-      = select_tag :type, vocab_verb_type_menu(params[:type]), class: "form-control auto-submit"
-    .form-group
-      = label_tag :trans, t("vocab.trans.transitivity"), class: "sr-only"
-      = select_tag :trans, vocab_verb_trans_menu(params[:trans]), class: "form-control auto-submit"
-    .form-group
-      = label_tag :level, t("vocab.level"), class: "sr-only"
-      = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, vocab_search_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag verbs_vocabs_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("search"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :type, t("vocab.verb.type"), class: "sr-only"
+  = select_tag :type, vocab_verb_type_menu(params[:type]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :trans, t("vocab.trans.transitivity"), class: "sr-only"
+  = select_tag :trans, vocab_verb_trans_menu(params[:trans]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :level, t("vocab.level"), class: "sr-only"
+  = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, vocab_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-1= t("vocab.kanji")
-          %th.col-xs-2= t("vocab.reading")
-          %th.col-xs-4= t("vocab.meaning")
-          %th.col-xs-3= t("vocab.category")
-          %th.col-xs-1.text-center= t("vocab.level")
-          %th.col-xs-1.text-center= t("vocab.audio")
-      %tbody{id: "results"}
-        = render "verb_results", verbs: @verbs
+%table{class: "table table-bordered table-striped mt-3"}
+  %thead
+    %tr.d-flex
+      %th.col-1= t("vocab.kanji")
+      %th.col-2= t("vocab.reading")
+      %th.col-4= t("vocab.meaning")
+      %th.col-3= t("vocab.category")
+      %th.col-1.text-center= t("vocab.level")
+      %th.col-1.text-center= t("vocab.audio")
+  %tbody{id: "results"}
+    = render "verb_results", verbs: @verbs

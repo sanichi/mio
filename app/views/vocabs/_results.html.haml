@@ -1,11 +1,11 @@
 - vocabs.matches.each do |vocab|
-  %tr
-    %td= link_to vocab.kanji, vocab
-    %td
+  %tr.d-flex
+    %td.col-1= link_to vocab.kanji, vocab
+    %td.col-2
       = render "accent_pattern", vocab: vocab
       = vocab.reading
-    %td= vocab.meaning
-    %td= vocab.category
-    %td.text-center= vocab.level
-    %td.text-center= render "audio", vocab: vocab, ojad: true
+    %td.col-4= vocab.meaning
+    %td.col-3= vocab.category
+    %td.col-1.text-center= vocab.level
+    %td.col-1.text-center= render "audio", vocab: vocab, ojad: true
 = render "utils/pagination_links", pager: vocabs, columns: 6

@@ -4,7 +4,7 @@
 
 %h1.text-center= @vocab.linked_kanji
 
-.row
+.row.mt-3
   .offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %tbody
@@ -16,7 +16,9 @@
           %td= @vocab.reading
         %tr
           %th= t("vocab.accent")
-          %td= render "accent_pattern", vocab: @vocab
+          %td
+            = render "accent_pattern", vocab: @vocab
+            = link_to t("vocab.ojad"), @vocab.ojad, class: "btn btn-info btn-sm", target: "ojad"
         %tr
           %th= t("vocab.kanji")
           %td= link_to_if @kanji, @vocab.kanji, @kanji
@@ -30,14 +32,14 @@
           %th= t("vocab.level")
           %td= @vocab.level
 
-.row.top_margin.bottom_margin
-  .col-xs-12.text-center
-    = render "external_links", kanji: @vocab.kanji
+.text-center
+  = render "external_links", kanji: @vocab.kanji
 
 - if @vocab.verb?
-  = render "conjugate", verb: @vocab
+  .mt-3
+    = render "conjugate", verb: @vocab
 
-.text-center
+.text-center.mt-3
   = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"
   - if can?(:manage, Vocab)
     = link_to t("edit"), edit_vocab_path(@vocab), class: "btn btn-info"
