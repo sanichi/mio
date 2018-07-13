@@ -39,7 +39,7 @@ describe KanjiTest do
   end
 
   it "destroy" do
-    click_link ktest.updated_date
+    click_link ktest.short_updated_date
     click_link t(:delete)
 
     expect(page).to have_title t(:vocab_kanji__test_tests)

@@ -9,7 +9,7 @@
   %div.text-center
     = render "kanjis/external_links", symbol: kanji.symbol
 
-.row.top_margin
+.row.mt-3
   .offset-xs-0.col-xs-12.offset-sm-1.col-sm-10.offset-md-2.col-md-8
     %table{class: "table table-bordered"}
       %tbody
@@ -22,35 +22,34 @@
         %tr
           %th= t("vocab.kunyomi")
           %td= render "kanas", yomis: kanji.kun_yomis
-.row.top_margin
-  .col-xs-12.text-center
-    %button.btn.btn-sm.btn-primary{id: "reveal-button"}= t("vocab.kanji_test.reveal")
-    = link_to t("skip"), question.kanji_test, class: "btn btn-default btn-sm", id: "skip-button"
-    - last_question = question.kanji_test.kanji_questions.first
-    - if last_question && !last_question.answer
-      = link_to t("vocab.test.redo"), kanji_test_path(question.kanji_test, redo_last: "true"), class: "btn btn-danger btn-sm", id: "redo-button"
-    %button.btn.btn-sm.btn-success{id: "success-button", style: "display:none"}= t("vocab.kanji_test.success")
-    %button.btn.btn-sm.btn-danger{id: "failure-button", style: "display:none"}= t("vocab.kanji_test.failure")
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-1= t("vocab.kanji")
-          %th.col-xs-2= t("vocab.reading")
-          %th.col-xs-4= t("vocab.meaning")
-          %th.col-xs-3= t("vocab.category")
-          %th.col-xs-1.text-center= t("vocab.level")
-          %th.col-xs-1.text-center= t("vocab.audio")
-      %tbody
-        - @vocabs.each do |vocab|
-          %tr
-            %td= render "masked", text: vocab.kanji, secret: kanji.symbol
-            %td= vocab.reading
-            %td= vocab.meaning
-            %td= vocab.category
-            %td.text-center= vocab.level
-            %td.text-center= render "vocabs/audio", vocab: vocab
+
+.text-center.mt3
+  %button.btn.btn-sm.btn-primary{id: "reveal-button"}= t("vocab.kanji_test.reveal")
+  = link_to t("skip"), question.kanji_test, class: "btn btn-secondary btn-sm", id: "skip-button"
+  - last_question = question.kanji_test.kanji_questions.first
+  - if last_question && !last_question.answer
+    = link_to t("vocab.test.redo"), kanji_test_path(question.kanji_test, redo_last: "true"), class: "btn btn-danger btn-sm", id: "redo-button"
+  %button.btn.btn-sm.btn-success{id: "success-button", style: "display:none"}= t("vocab.kanji_test.success")
+  %button.btn.btn-sm.btn-danger{id: "failure-button", style: "display:none"}= t("vocab.kanji_test.failure")
+
+%table{class: "table table-bordered table-striped mt-3"}
+  %thead
+    %tr
+      %th= t("vocab.kanji")
+      %th= t("vocab.reading")
+      %th= t("vocab.meaning")
+      %th= t("vocab.category")
+      %th.text-center= t("vocab.level")
+      %th.text-center= t("vocab.audio")
+  %tbody
+    - @vocabs.each do |vocab|
+      %tr
+        %td= render "masked", text: vocab.kanji, secret: kanji.symbol
+        %td= vocab.reading
+        %td= vocab.meaning
+        %td= vocab.category
+        %td.text-center= vocab.level
+        %td.text-center= render "vocabs/audio", vocab: vocab
 
 = form_for question, html: { id: "question-form" } do |f|
   = f.hidden_field(:kanji_id, value: kanji.id)

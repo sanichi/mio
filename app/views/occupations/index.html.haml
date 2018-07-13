@@ -1,30 +1,26 @@
 = render "utils/title", key: "vocab.occupation.occupations"
 
-.text-center
-  = form_tag occupations_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("search"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, occupation_search_order_menu(params[:order]), class: "form-control auto-submit"
-    .form-group
-      = label_tag :ending, t("vocab.ending"), class: "sr-only"
-      = select_tag :ending, occupation_ending_menu(params[:ending]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag occupations_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("search"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, occupation_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :ending, t("vocab.ending"), class: "sr-only"
+  = select_tag :ending, occupation_ending_menu(params[:ending]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
+.row
+  .offset-md-1.col-md-10.offset-xl-2.col-xl-8
+    %table{class: "table table-bordered table-striped mt-3"}
       %thead
         %tr
-          %th.col-xs-2= t("vocab.kanji")
-          %th.col-xs-4= t("vocab.reading")
-          %th.col-xs-5= t("vocab.meaning")
-          %th.col-xs-1.text-center= t("vocab.audio")
+          %th= t("vocab.kanji")
+          %th= t("vocab.reading")
+          %th= t("vocab.meaning")
+          %th.text-center= t("vocab.audio")
       %tbody{id: "results"}
         = render "results", occupations: @occupations
 
-.text-center
-  - if can?(:create, Occupation)
+- if can?(:create, Occupation)
+  .text-center
     = link_to t("vocab.occupation.new"), new_occupation_path, class: "btn btn-info"

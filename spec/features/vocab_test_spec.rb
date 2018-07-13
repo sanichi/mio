@@ -42,7 +42,7 @@ describe VocabTest do
   end
 
   it "destroy" do
-    click_link vtest.updated_date
+    click_link vtest.short_updated_date
     click_link t(:delete)
 
     expect(page).to have_title t(:vocab_test_tests)

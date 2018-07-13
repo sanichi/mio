@@ -1,21 +1,18 @@
 = render "utils/title", key: "vocab.kanji_test.tests"
 
-.text-center
-  = form_tag kanji_tests_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :level, t("vocab.level"), class: "sr-only"
-      = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control auto-submit"
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, vocab_test_search_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag kanji_tests_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :level, t("vocab.level"), class: "sr-only"
+  = select_tag :level, vocab_level_menu(params[:level], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, vocab_test_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12.offset-md-2.col-md-8
+.row.mt-3
+  .offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.text-center= t("updated_at")
+          %th.text-center= t("updated")
           %th.text-center= t("vocab.level")
           %th.text-center= t("total")
           %th.text-center= t("vocab.test.progress_rate")
@@ -23,6 +20,6 @@
       %tbody{id: "results"}
         = render "results", tests: @tests
 
-.text-center
-  - if can?(:create, KanjiTest)
+- if can?(:create, KanjiTest)
+  .text-center
     = link_to t("vocab.kanji_test.new"), new_kanji_test_path, class: "btn btn-info"

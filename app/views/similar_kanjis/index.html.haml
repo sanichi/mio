@@ -1,25 +1,22 @@
 = render "utils/title", key: "vocab.similar.kanjis"
 
-.text-center
-  = form_tag similar_kanjis_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("vocab.kanjis"), autofocus: true
-    .form-group
-      = label_tag :category, t("vocab.similar.kanji.category.category"), class: "sr-only"
-      = select_tag :category, similar_kanjis_category_menu(params[:category], any: true), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag similar_kanjis_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", size: 16, placeholder: t("vocab.kanjis"), autofocus: true
+  = label_tag :category, t("vocab.similar.kanji.category.category"), class: "sr-only"
+  = select_tag :category, similar_kanjis_category_menu(params[:category], any: true), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-8.offset-xs-2.col-sm-6.offset-sm-3.col-md-4.offset-md-4
+.row.mt-3
+  .col-10.offset-1.col-md-8.offset-md-2.col-xl-6.offset-xl-3
     %table{class: "table table-bordered"}
       %thead
         %tr
-          %th.col-xs-8= t("vocab.kanjis")
-          %th.col-xs-4= t("vocab.similar.kanji.category.category")
+          %th= t("vocab.kanjis")
+          %th= t("vocab.similar.kanji.category.category")
       %tbody{id: "results"}
         = render "results", similar_kanjis: @similar_kanjis
 
-.text-center.top_margin
-  - if can?(:create, SimilarKanji)
+- if can?(:create, SimilarKanji)
+  .text-center.mt-3
     = link_to t("vocab.similar.kanji.new"), new_similar_kanji_path, class: "btn btn-info"

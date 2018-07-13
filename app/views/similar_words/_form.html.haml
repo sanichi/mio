@@ -1,11 +1,9 @@
 .row
-  .col-xs-12
+  .offset-md-1.col-md-11
     = form_for similar_word, html: { class: "form-horizontal" } do |f|
-      %fieldset
-        - shared = { form: f, object: similar_word, col: "xs", pad: 4, width: 4}
-        = render "utils/text_field_for", shared.merge(param: :readings, text: t("vocab.readings"))
-
+      - shared = { form: f, object: similar_word, col: "sm", pad: 4, width: 4}
+      = render "utils/text_field_for", shared.merge(param: :readings, text: t("vocab.readings"))
       .row
-        .offset-xs-4.col-xs-8
+        .offset-sm-4.col-sm-8
           = f.submit t("save"), class: "btn btn-primary"
           = link_to t("cancel"), similar_word.new_record?? similar_words_path : similar_word, class: "btn btn-secondary"

@@ -1,23 +1,21 @@
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-2= t("vocab.kanji")
-          %th.col-xs-6= t("vocab.meaning")
-          %th.col-xs-2= t("vocab.reading")
-          %th.col-xs-1.text-center= t("vocab.audio")
-          %th.col-xs-1
-      %tbody
-        - test.vocab_questions.each_with_index do |q, i|
-          - if !(test_finished && q.answered_correctly?)
-            %tr
-              %td= q.vocab.kanji
-              %td= q.meaning_plus
-              %td= q.reading
-              %td.text-center
-                - if q.reading_correct || test_finished
-                  = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && !test_finished
-              %td.text-center
-                = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
-                = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")
+%table{class: "table table-bordered table-striped"}
+  %thead
+    %tr.d-flex
+      %th.col-2= t("vocab.kanji")
+      %th.col-6= t("vocab.meaning")
+      %th.col-2= t("vocab.reading")
+      %th.col-1.text-center= t("vocab.audio")
+      %th.col-1
+  %tbody
+    - test.vocab_questions.each_with_index do |q, i|
+      - if !(test_finished && q.answered_correctly?)
+        %tr.d-flex
+          %td.col-2= q.vocab.kanji
+          %td.col-6= q.meaning_plus
+          %td.col-2= q.reading
+          %td.col-1.text-center
+            - if q.reading_correct || test_finished
+              = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && !test_finished
+          %td.col-1.text-center
+            = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
+            = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")

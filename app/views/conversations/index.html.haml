@@ -1,23 +1,21 @@
 = render "utils/title", key: "conversation.conversations"
 
-.text-center
-  = form_tag conversations_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag conversations_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .offset-xs-1.col-xs-10
+.row.mt-3
+  .offset-1.col-10.offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
-          %th.col-xs-4= t("conversation.title")
-          %th.col-xs-7= t("conversation.story")
-          %th.col-xs-1.text-center= t("conversation.audio")
+          %th= t("conversation.title")
+          %th= t("conversation.story")
+          %th.text-center= t("conversation.audio")
       %tbody{id: "results"}
         = render "results", conversations: @conversations
 
-.text-center.top_margin
-  - if can?(:create, Conversation)
+- if can?(:create, Conversation)
+  .text-center
     = link_to t("conversation.new"), new_conversation_path, class: "btn btn-info"

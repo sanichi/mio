@@ -1,18 +1,18 @@
 = render "utils/title", text: @conversation.title
 
-.panel{class: "panel-default"}
-  .panel-heading
+.card{class: "panel-default"}
+  .card-header
     %b= @conversation.title
-    .pull-right
+    .float-right
       = render "audio", conversation: @conversation
-  .panel-body
+  .card-body
     ~ @conversation.story_html
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("conversation.conversations"), conversations_path, class: "btn btn-success"
-  - if can?(:edit, Blog)
+  - if can?(:edit, Conversation)
     = link_to t("edit"), edit_conversation_path(@conversation), class: "btn btn-info"
-  - if can?(:delete, Blog)
+  - if can?(:delete, Conversation)
     = link_to t("delete"), @conversation, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
   - if @prev
     = link_to t("symbol.prev"), @prev, class: "btn btn-success"

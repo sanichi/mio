@@ -1,32 +1,26 @@
 = render "utils/title", key: "misa.misas"
 
-.text-center
-  = form_tag misas_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
-    .form-group
-      = label_tag :category, t("misa.category"), class: "sr-only"
-      = select_tag :category, misa_category_menu(params[:category], search: true), class: "form-control auto-submit"
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, misa_search_order_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag misas_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :category, t("misa.category"), class: "sr-only"
+  = select_tag :category, misa_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, misa_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.col-xs-6= t("misa.title")
-          %th.col-xs-2= t("misa.category")
-          %th.col-xs-1.text-center= t("misa.abbrev.lines")
-          %th.col-xs-1.text-center= t("misa.abbrev.minutes")
-          %th.col-xs-1.text-center= t("misa.abbrev.published")
-          %th.col-xs-1.text-center= t("misa.abbrev.short")
-      %tbody{id: "results"}
-        = render "results", misas: @misas
+%table{class: "table table-bordered table-striped mt-3"}
+  %thead
+    %tr
+      %th= t("misa.title")
+      %th= t("misa.category")
+      %th.text-center= t("misa.abbrev.lines")
+      %th.text-center= t("misa.abbrev.minutes")
+      %th.text-center= t("misa.abbrev.published")
+      %th.text-center= t("misa.abbrev.short")
+  %tbody{id: "results"}
+    = render "results", misas: @misas
 
-.text-center.top_margin
-  - if can?(:create, Misa)
+- if can?(:create, Misa)
+  .text-center.mt3
     = link_to t("misa.new"), new_misa_path, class: "btn btn-info"

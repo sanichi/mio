@@ -1,14 +1,12 @@
 = render "utils/title", key: "vocab.similar.words"
 
-.text-center
-  = form_tag similar_words_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("vocab.readings"), autofocus: true
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag similar_words_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", size: 16, placeholder: t("vocab.readings"), autofocus: true
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-8.offset-xs-2.col-sm-6.offset-sm-3.col-md-4.offset-md-4
+.row.mt-3
+  .col-10.offset-1.col-md-8.offset-md-2.col-xl-6.offset-xl-3
     %table{class: "table table-bordered"}
       %thead
         %tr
@@ -16,6 +14,6 @@
       %tbody{id: "results"}
         = render "results", similar_words: @similar_words
 
-.text-center.top_margin
-  - if can?(:create, SimilarWord)
+- if can?(:create, SimilarWord)
+  .text-center.mt-3
     = link_to t("vocab.similar.word.new"), new_similar_word_path, class: "btn btn-info"

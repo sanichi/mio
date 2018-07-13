@@ -1,9 +1,9 @@
 = render "utils/title", text: t("misa.misa")
 
-.panel.panel-default.top_margin
-  .panel-heading
+.card
+  .card-header
     = @misa.full_title
-    .pull-right
+    .float-right
       .small
         = @misa.published
         - if @misa.long
@@ -14,9 +14,9 @@
         - if @misa.japanese
           = t("misa.abbrev.japanese")
   - if @misa.note.present?
-    .panel-body= @misa.note_html
+    .card-body= @misa.note_html
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("misa.misas"), misas_path, class: "btn btn-success"
   - if can?(:edit, Misa)
     = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-info"

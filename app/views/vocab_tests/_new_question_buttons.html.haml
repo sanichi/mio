@@ -1,7 +1,7 @@
 .row
-  .offset-md-4.col-md-8
+  .offset-4.col-8
     = f.submit t("submit"), class: "btn btn-info"
-    = link_to t("skip"), question.vocab_test, class: "btn btn-default"
+    = link_to t("skip"), question.vocab_test, class: "btn btn-secondary"
     - last_question = question.vocab_test.vocab_questions.first
     - if last_question && !last_question.answered_correctly?
       = link_to t("vocab.test.redo"), vocab_test_path(question.vocab_test, redo_last: "true"), class: "btn btn-danger"

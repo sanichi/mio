@@ -71,6 +71,10 @@ class VocabTest < ApplicationRecord
     updated_at.to_date
   end
 
+  def short_updated_date
+    updated_at.to_date.strftime("%y-%m-%d")
+  end
+
   def self.search(params, path, opt={})
     matches = case params[:order]
     when "level"    then by_level

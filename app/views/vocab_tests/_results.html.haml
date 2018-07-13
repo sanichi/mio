@@ -1,9 +1,9 @@
 - tests.matches.each do |t|
-  %tr
-    %td.text-center= link_to t.updated_date, t
-    %td.text-center= t.level
-    %td= t("vocab.test.#{t.category}")
-    %td.text-center= t.total
-    %td.text-center= "#{t.progress_rate}%"
-    %td.text-center= "#{t.hit_rate}%"
+  %tr.d-flex
+    %td.col-2.text-center= link_to t.updated_date.strftime("%y-%m-%d"), t
+    %td.col-1.text-center= t.level
+    %td.col-4= t("vocab.test.#{t.category}")
+    %td.col-1.text-center= t.total
+    %td.col-2.text-center= "#{t.progress_rate}%"
+    %td.col-2.text-center= "#{t.hit_rate}%"
 = render "utils/pagination_links", pager: tests, columns: 6

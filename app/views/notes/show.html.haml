@@ -1,11 +1,11 @@
 = render "utils/title", text: @note.title
 
-.panel.panel-default.top_margin
-  .panel-heading
+.card
+  .card-header
     = @note.title
-  .panel-body= @note.stuff_html
+  .card-body= @note.stuff_html
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("vocab.note.notes"), notes_path, class: "btn btn-success"
   - if can?(:edit, Note)
     = link_to t("edit"), edit_note_path(@note), class: "btn btn-info"

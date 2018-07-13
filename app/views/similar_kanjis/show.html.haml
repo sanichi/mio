@@ -1,23 +1,23 @@
 = render "utils/title", text: @similar_kanji.kanjis, header: true
 
-.row.top_margin
-  .col-xs-12
+.row.mt-3
+  .offset-md-1.col-md-10.offset-xl-2.col-xl-8
     %table{class: "table table-bordered"}
       %thead
         %tr
-          %th.col-xs-1.text-center= t("vocab.kanji")
-          %th.col-xs-5= t("vocab.meaning")
-          %th.col-xs-3= t("vocab.onyomi")
-          %th.col-xs-3= t("vocab.kunyomi")
+          %th.text-center= t("vocab.kanji")
+          %th= t("vocab.meaning")
+          %th= t("vocab.onyomi")
+          %th= t("vocab.kunyomi")
       %tbody
         - @kanjis.each do |kanji|
           %tr
-            %td.col-xs-1.text-center= link_to kanji.symbol, kanji
-            %td.col-xs-5= kanji.meaning
-            %td.col-xs-3= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| y.on }
-            %td.col-xs-3= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| !y.on }
+            %td.text-center= link_to kanji.symbol, kanji
+            %td= kanji.meaning
+            %td= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| y.on }
+            %td= render "kanjis/kanas", yomis: kanji.yomis.select{ |y| !y.on }
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("vocab.similar.kanjis"), similar_kanjis_path, class: "btn btn-success"
   - if can?(:update, @similar_kanji)
     = link_to t("edit"), edit_similar_kanji_path(@similar_kanji), class: "btn btn-info"
