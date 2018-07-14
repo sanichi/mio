@@ -185,7 +185,7 @@ class Vocab < ApplicationRecord
 
   def self.count_morae(reading)
     # get a throwaway copy of the reading and handle the nil case
-    string = reading.to_s
+    string = reading.dup
     # make sure to get only the first reading if there's more than one
     string.sub!(/,.*/, "")
     # count 1 for all hiragana, katakana and the katakana elongation symbol
