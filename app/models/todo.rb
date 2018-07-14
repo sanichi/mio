@@ -9,8 +9,12 @@ class Todo < ApplicationRecord
 
   scope :ordered, -> { order(:done, :priority, :description) }
 
-  def to_json
-    as_json(except: [:created_at, :updated_at])
+  def highest_priority?
+    priority == PRIORITIES.first
+  end
+
+  def lowest_priority?
+    priority == PRIORITIES.last
   end
 
   private

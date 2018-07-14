@@ -58,6 +58,8 @@ Rails.application.routes.draw do
   end
   resources :todos, except: [:show] do
     get :toggle, on: :member
+    get :up, on: :member
+    get :down, on: :member
   end
   resources :transactions, only: [:index, :show] do
     get :summary, on: :collection

@@ -1,12 +1,14 @@
 en:
   todo:
-    done: Done
+    done: ✓
+    down: ⬇︎
     edit: Edit Todo
     new: New Todo
     priority: Priority
     rails: Rails
     todo: Todo
     todos: Todos
+    up: ⬆︎
     priorities:
       - Urgent
       - Important

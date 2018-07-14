@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   authorize_resource
-  before_action :find_todo, only: [:toggle, :edit, :update, :destroy]
+  before_action :find_todo, only: [:up, :down, :toggle, :edit, :update, :destroy]
 
   def index
     @todos = Todo.ordered
@@ -29,6 +29,16 @@ class TodosController < ApplicationController
 
   def toggle
     @todo.update_column(:done, !@todo.done)
+    redirect_to(todos_path)
+  end
+
+  def up
+    @todo.update_column(:priority, @todo.priority - 1) unless @todo.highest_priority?
+    redirect_to(todos_path)
+  end
+
+  def down
+    @todo.update_column(:priority, @todo.priority + 1) unless @todo.lowest_priority?
     redirect_to(todos_path)
   end
 

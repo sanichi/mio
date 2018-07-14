@@ -8,3 +8,11 @@
       %td.col-md-2.text-center
         = link_to t("edit"), edit_todo_path(todo), class: "btn btn-info btn-sm"
         = link_to t("todo.done"), toggle_todo_path(todo), class: "btn btn-success btn-sm", remote: true
+        - if !todo.highest_priority?
+          = link_to t("todo.up"), up_todo_path(todo), class: "btn btn-info btn-sm", remote: true
+        - else
+          %button.btn.btn-outline-info.btn-sm= t("todo.up")
+        - if !todo.lowest_priority?
+          = link_to t("todo.down"), down_todo_path(todo), class: "btn btn-warning btn-sm", remote: true
+        - else
+          %button.btn.btn-outline-warning.btn-sm= t("todo.down")
