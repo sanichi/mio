@@ -1,12 +1,12 @@
 = render "utils/title", text: t("vocab.kanji_test.test")
 
 %p.text-center
-  %button.btn.btn-md.btn-default
+  %button.btn.btn-md.btn-secondary
     = t("vocab.level")
     = @test.level
-  %button.btn.btn-md.btn-default
+  %button.btn.btn-md.btn-secondary
     = "#{@test.correct}/#{@test.total} (#{@test.progress_rate}%)"
-  %button.btn.btn-md.btn-default
+  %button.btn.btn-md.btn-secondary
     = "#{@test.correct}/#{@test.attempts} (#{@test.hit_rate}%)"
 
 - if @next_question

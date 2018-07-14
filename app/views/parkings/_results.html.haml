@@ -20,6 +20,6 @@
       - if extra
         %td.text-center
           - if parking.deletable?
-            = link_to t("symbol.cross"), parking, class: "btn btn-default btn-xs", method: :delete, data: { confirm: t("sure") }
+            = link_to t("symbol.cross"), parking, class: "btn btn-secondary btn-xs", method: :delete, data: { confirm: t("sure") }
 
   = render "utils/pagination_links", pager: parkings, columns: extra ? 7 : 6
