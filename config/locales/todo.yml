@@ -7,14 +7,6 @@ en:
     rails: Rails
     todo: Todo
     todos: Todos
-    elm:
-      app: Elm
-      cancel: Cancel
-      confirm: Confirm
-      delete: ✘
-      done: ✔︎
-      down: ⬇︎
-      up: ⬆︎
     priorities:
       - Urgent
       - Important

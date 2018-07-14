@@ -9,7 +9,7 @@ describe Todo do
 
   context "create" do
     before(:each) do
-      click_link t(:todo_rails)
+      click_link t(:todo_todos)
     end
 
     it "success" do
@@ -31,7 +31,7 @@ describe Todo do
 
   context "failure" do
     before(:each) do
-      click_link t(:todo_rails)
+      click_link t(:todo_todos)
     end
 
     it "no description" do
@@ -51,7 +51,7 @@ describe Todo do
     it "priority" do
       new_priority = (todo.priority + 1) % Todo::PRIORITIES.size
 
-      click_link t(:todo_rails)
+      click_link t(:todo_todos)
       click_link t(:edit)
 
       select t(:todo_priorities)[new_priority], from: t(:todo_priority)
@@ -61,11 +61,10 @@ describe Todo do
       expect(todo.priority).to eq new_priority
     end
 
-    it "done", js: true do
+    it "done" do
       expect(todo.done).to be false
 
       click_link t(:todo_todos)
-      click_link t(:todo_rails)
       click_link t(:todo_done)
       wait_a_while
 
@@ -86,7 +85,7 @@ describe Todo do
     it "delete" do
       expect(Todo.count).to eq 1
 
-      click_link t(:todo_rails)
+      click_link t(:todo_todos)
       click_link t(:edit)
       click_link t(:delete)
 

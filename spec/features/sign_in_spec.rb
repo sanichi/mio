@@ -47,9 +47,6 @@ describe "Authentication" do
       visit todos_path
       expect(page).to have_title t(:todo_todos)
 
-      visit elm_todos_path
-      expect(page).to have_title t(:todo_todos)
-
       visit users_path
       expect(page).to have_title t(:user_users)
 
@@ -68,9 +65,6 @@ describe "Authentication" do
       expect(page).to have_title t(:session_sign__in)
 
       visit todos_path
-      expect(page).to have_title t(:session_sign__in)
-
-      visit elm_todos_path
       expect(page).to have_title t(:session_sign__in)
 
       visit users_path

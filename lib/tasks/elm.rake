@@ -34,23 +34,6 @@ namespace :elm do
     end
   end
 
-  def todos_stuff
-    hash = {}
-    hash[:priority_high] = Todo::PRIORITIES.min
-    hash[:priority_low] = Todo::PRIORITIES.max
-    hash[:priority_desc] = Todo::PRIORITIES.reduce({}) { |d, p| d[p] = I18n.t("todo.priorities")[p]; d }
-    hash[:priority_first] = Todo::PRIORITIES[0]
-    hash
-  end
-
-  desc "make and minify the Elm JS file for Todos"
-  task todos: :environment do
-    Dir.chdir("app/views/todos/elm") do
-      generate %w/Misc/, todos_stuff
-      compile_and_minify "todos"
-    end
-  end
-
   desc "make and minify the Elm JS file for Family Tree"
   task :tree do
     Dir.chdir("app/views/people/elm") do
