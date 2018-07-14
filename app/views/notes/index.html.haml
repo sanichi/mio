@@ -7,14 +7,16 @@
   = select_tag :order, note_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-  %table{class: "table table-bordered table-striped mt-3"}
-    %thead
-      %tr
-        %th= t("vocab.note.title")
-        %th.text-center= t("vocab.note.created")
-        %th.text-center= t("vocab.note.updated")
-    %tbody{id: "results"}
-      = render "results", notes: @notes
+.row.mt-3
+  .offset-md-1.col-md-10.offset-lg-2.col-lg-8.offset-xl-3.col-xl-6
+    %table{class: "table table-bordered table-striped mt-3"}
+      %thead
+        %tr
+          %th= t("vocab.note.title")
+          %th.text-center= t("vocab.note.created")
+          %th.text-center= t("vocab.note.updated")
+      %tbody{id: "results"}
+        = render "results", notes: @notes
 
 - if can?(:create, Note)
   .text-center.mt-3

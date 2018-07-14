@@ -5,7 +5,7 @@
   = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16, autofocus: true
   = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-  %table{class: "table table-bordered table-striped mt-3"}
+  %table{class: "table table-bordered table-striped table-sm mt-3"}
     %thead
       %tr.d-flex
         %th.col-1= t("vocab.kanji")
