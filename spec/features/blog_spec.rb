@@ -5,7 +5,7 @@ describe Blog do
 
   before(:each) do
     login
-    click_link t(:blog_blog)
+    click_link t(:home)
   end
 
   context "create" do

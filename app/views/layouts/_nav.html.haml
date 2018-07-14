@@ -5,7 +5,7 @@
     .navbar-nav
 
     - if can?(:read, Blog)
-      = link_to t("blog.blog"), blogs_path, class: "nav-item nav-link"
+      = link_to t("home"), blogs_path, class: "nav-item nav-link"
 
     - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
       .nav-item.dropdown
