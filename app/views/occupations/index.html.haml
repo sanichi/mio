@@ -7,7 +7,7 @@
   = select_tag :order, occupation_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :ending, t("vocab.ending"), class: "sr-only"
   = select_tag :ending, occupation_ending_menu(params[:ending]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row
   .offset-md-1.col-md-10.offset-xl-2.col-xl-8

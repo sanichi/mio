@@ -1,7 +1,7 @@
 = form_tag pam_path, method: :get, class: "form-inline justify-content-center" do
   = label_tag :q, t("search"), class: "sr-only"
-  = text_field_tag :q, params[:q], class: "form-control", placeholder: t("search"), size: 16
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 - if @answer
   %h1.text-center.mt-3= @answer

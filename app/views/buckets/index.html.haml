@@ -5,7 +5,7 @@
   = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 20
   = label_tag :fan, t("bucket.fans"), class: "sr-only"
   = select_tag :fan, bucket_fan_search_menu(params[:fan]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row.mt-3
   .col-md-10.offset-md-1

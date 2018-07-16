@@ -3,7 +3,7 @@
 = form_tag conversations_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("query"), class: "sr-only"
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row.mt-3
   .offset-1.col-10.offset-md-2.col-md-8

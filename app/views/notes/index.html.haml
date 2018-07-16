@@ -5,7 +5,7 @@
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, note_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row.mt-3
   .offset-md-1.col-md-10.offset-lg-2.col-lg-8.offset-xl-3.col-xl-6

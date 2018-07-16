@@ -17,7 +17,7 @@
   = select_tag :special, vocab_special_search_menu(params[:special]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, vocab_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
   %table{class: "table table-bordered table-striped table-sm mt-3"}
     %thead

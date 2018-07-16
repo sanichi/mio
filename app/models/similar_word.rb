@@ -23,6 +23,10 @@ class SimilarWord < ApplicationRecord
     (alt || readings).gsub(" ", SEPARATOR)
   end
 
+  def kanji_display
+    Vocab.by_reading.where(reading: readings.split).pluck(:kanji).join(SEPARATOR)
+  end
+
   private
 
   def canonicalize
