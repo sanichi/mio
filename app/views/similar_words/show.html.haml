@@ -1,8 +1,8 @@
 = render "utils/title", text: @similar_word.display, header: true
 
 .row.mt-3
-  .offset-md-1.col-md-10.offset-xl-2.col-xl-8
-    %table{class: "table table-bordered mt-3"}
+  .offset-xl-1.col-xl-10
+    %table{class: "table table-bordered"}
       %thead
         %tr
           %th= t("vocab.kanji")
@@ -15,7 +15,9 @@
         - @vocabs.each do |vocab|
           %tr
             %td= link_to vocab.kanji, vocab
-            %td= vocab.reading
+            %td
+              = render "vocabs/accent_pattern", vocab: vocab
+              = vocab.reading
             %td= vocab.meaning
             %td= vocab.category
             %td.text-center= vocab.level
