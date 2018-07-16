@@ -5,7 +5,8 @@
     .navbar-nav
 
     - if can?(:read, Blog)
-      = link_to t("home"), blogs_path, class: "nav-item nav-link"
+      .nav-item
+        = link_to t("home"), blogs_path, class: "nav-link"
 
     - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
       .nav-item.dropdown
@@ -84,4 +85,8 @@
           = render "layouts/dropdown_item", cond: can?(:read, User), text: t("user.users"), path: users_path
           = render "layouts/dropdown_item", cond: can?(:read, Login), text: t("login.logins"), path: logins_path
 
-      = render "layouts/sign_in_out"
+    .nav-item.ml-auto
+      - if authenticated?
+        = link_to t("session.sign_out"), sign_out_path, class: "nav-link"
+      - else
+        = link_to t("session.sign_in"), sign_in_path, class: "nav-link"
