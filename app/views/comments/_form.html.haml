@@ -4,11 +4,10 @@
       - if comment.new_record?
         = f.hidden_field :commentable_type
         = f.hidden_field :commentable_id
-      %fieldset
-        - shared = { form: f, object: comment, col: "md", pad: 2 }
-        = render "utils/text_field_for", shared.merge(param: :date, text: t("date"), width: 3)
-        = render "utils/text_field_for", shared.merge(param: :source, text: t("comment.source"), width: 4)
-        = render "utils/text_area_for", shared.merge(param: :text, text: t("comment.text"), width: 8)
+      - shared = { form: f, object: comment, col: "md", pad: 2 }
+      = render "utils/text_field_for", shared.merge(param: :date, text: t("date"), width: 3)
+      = render "utils/text_field_for", shared.merge(param: :source, text: t("comment.source"), width: 4)
+      = render "utils/text_area_for", shared.merge(param: :text, text: t("comment.text"), width: 8)
       .row
         .offset-md-2.col-md-10
           = f.submit t("save"), class: "btn btn-primary"

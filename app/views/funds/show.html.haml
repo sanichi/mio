@@ -1,8 +1,8 @@
 = render "utils/title", text: @fund.name, header: true
 
 .row
-  .offset-md-2.col-md-8
-    %table{class: "table table-bordered table-striped"}
+  .offset-sm-1.col-sm-10.offset-md-2.col-md-8
+    %table{class: "table table-bordered table-striped table-sm"}
       %tbody
         %tr
           %th= t("fund.srri")
@@ -40,6 +40,8 @@
     = link_to t("comment.new"), new_fund_comment_path(@fund), class: "btn btn-info"
     = link_to t("link.new"), new_fund_link_path(@fund), class: "btn btn-info"
 
-= render "returns/index", returnable: @fund, returns: @fund.returns
+.mt-3
+  = render "returns/index", returnable: @fund, returns: @fund.returns
 = render "comments/index", commentable: @fund, comments: @fund.comments, date_format: "%b %Y"
-= render "links/index", linkable: @fund, links: @fund.links
+.mt-3
+  = render "links/index", linkable: @fund, links: @fund.links

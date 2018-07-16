@@ -157,7 +157,7 @@ describe Fund do
       fund.reload
       expect(fund.comments.length).to eq 2
 
-      first(".panel").click_link(t(:edit))
+      first(".card").click_link(t(:edit))
       expect(page).to have_title t(:comment_edit)
       fill_in t(:comment_text), with: data3.text
       click_button t(:save)
@@ -167,7 +167,7 @@ describe Fund do
       expect(fund.comments.where(text: data3.text).count).to eq 1
       expect(fund.comments.length).to eq 2
 
-      first(".panel").click_link(t(:edit))
+      first(".card").click_link(t(:edit))
       click_link t(:delete)
       expect(page).to have_title fund.name
 

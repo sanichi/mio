@@ -3,31 +3,27 @@
 = content_for :javascript do
   = render "positions.js"
 
-.text-center
-  = form_tag positions_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :name, t("name"), class: "sr-only"
-      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: 16
-      .form-group
-      = label_tag :notes, t("notes"), class: "sr-only"
-      = text_field_tag :notes, params[:notes], class: "form-control", placeholder: t("notes"), size: 16
-      .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, position_order_search_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
-    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+= form_tag positions_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :name, t("name"), class: "sr-only"
+  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 16
+  = label_tag :notes, t("notes"), class: "sr-only"
+  = text_field_tag :notes, params[:notes], class: "form-control mr-1 mb-1", placeholder: t("notes"), size: 16
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, position_order_search_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+  = link_to t("reset"), "#", class: "btn btn-success mr-1 mb-1", id: "reset"
 
-.row.top_margin
-  .col-xs-12.offset-sm-1.col-sm-10.offset-md-2.col-md-8
-    %table{class: "table table-bordered table-striped"}
+.row.mt-3
+  .offset-sm-1.col-sm-10.offset-md-2.col-md-8
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
-          %th.text-center.col-xs-10= t("position.name")
-          %th.text-center.col-xs-1= t("opening.code")
-          %th.text-center.col-xs-1
+          %th.text-center= t("position.name")
+          %th.text-center= t("opening.code")
+          %th.text-center
       %tbody{id: "results"}
         = render "results", positions: @positions
 
-.text-center
-  - if can?(:create, Position)
+- if can?(:create, Position)
+  .text-center
     = link_to t("position.new"), new_position_path, class: "btn btn-info"

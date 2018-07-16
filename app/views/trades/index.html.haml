@@ -1,31 +1,26 @@
 = render "utils/title", key: "trade.trades"
 
-.text-center
-  = form_tag trades_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :stock, t("trade.stock"), class: "sr-only"
-      = text_field_tag :stock, params[:stock], class: "form-control", size: 16, placeholder: t("trade.stock")
-    .form-group
-      = label_tag :order, t("order"), class: "sr-only"
-      = select_tag :order, trade_order_search_menu(params[:order]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag trades_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :stock, t("trade.stock"), class: "sr-only"
+  = text_field_tag :stock, params[:stock], class: "form-control mr-1 mb-1", size: 16, placeholder: t("trade.stock")
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, trade_order_search_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-.row.top_margin
-  .col-xs-12.col-md-10.offset-md-1
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th= t("trade.stock")
-          %th{class: "text-center"}= t("trade.sell_date")
-          %th{class: "text-center"}= t("trade.units")
-          %th{class: "text-center"}= t("trade.buy_price")
-          %th{class: "text-center"}= t("trade.sell_price")
-          %th{class: "text-center"}= t("trade.days_held")
-          %th{class: "text-center"}= t("trade.growth")
-          %th{class: "text-center"}= t("trade.profit")
-      %tbody{id: "results"}
-        = render "results", trades: @trades
+  %table{class: "table table-bordered table-striped mt-3"}
+    %thead
+      %tr.d-flex
+        %th.col-4= t("trade.stock")
+        %th.col-2.text-center= t("trade.sell_date")
+        %th.col-1.text-center= t("trade.units")
+        %th.col-1.text-center= t("trade.buy_price")
+        %th.col-1.text-center= t("trade.sell_price")
+        %th.col-1.text-center= t("trade.days_held")
+        %th.col-1.text-center= t("trade.growth")
+        %th.col-1.text-center= t("trade.profit")
+    %tbody{id: "results"}
+      = render "results", trades: @trades
 
-.text-center.top_margin
-  - if can?(:create, Trade)
+- if can?(:create, Trade)
+  .text-center
     = link_to t("trade.new"), new_trade_path, class: "btn btn-info"

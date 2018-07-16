@@ -1,20 +1,20 @@
 = render "utils/title", key: "expense.expenses"
 
-.text-center.bottom_margin
+.text-center
   = render "categories", category: @category
   - if can?(:create, Expense)
     = link_to t("expense.new"), new_expense_path, class: "btn btn-info"
 
-.row
+.row.mt-3
   .offset-md-1.col-md-10
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
-          %th.text-center.col-md-8= t("description")
-          %th.text-center.col-md-1= t("expense.category.category")
-          %th.text-center.col-md-1= t("expense.period.period")
-          %th.text-center.col-md-1= t("amount")
-          %th.text-center.col-md-1= t("annual")
+          %th.text-center= t("description")
+          %th.text-center= t("expense.category.category")
+          %th.text-center= t("expense.period.period")
+          %th.text-center= t("amount")
+          %th.text-center= t("annual")
           - if can?(:edit, Expense)
             %th
       %tbody
@@ -29,7 +29,7 @@
             %td.text-right= expense.annual
             - if can?(:edit, Expense)
               %td.text-center
-                = link_to t("edit"), edit_expense_path(expense), class: "btn btn-info btn-xs"
+                = link_to t("edit"), edit_expense_path(expense), class: "btn btn-info btn-sm"
         %tr
           %th.text-right{colspan: 4}= t("total")
           %th.text-right= total

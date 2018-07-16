@@ -1,22 +1,18 @@
 = render "utils/title", key: "opening.openings"
 
-.text-center
-  = form_tag openings_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", placeholder: t("query"), size: 16
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag openings_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("query"), size: 16
+  = button_tag t("search"), type: "submit", class: "btn btn-success"
 
-.row.top_margin
-  .col-xs-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th.text-center.col-xs-2= t("opening.code")
-          %th.col-xs-10= t("description")
-      %tbody{id: "results"}
-        = render "results", openings: @openings
+%table{class: "table table-bordered table-striped table-sm mt-3"}
+  %thead
+    %tr
+      %th.text-center= t("opening.code")
+      %th= t("description")
+  %tbody{id: "results"}
+    = render "results", openings: @openings
 
-.text-center
-  - if can?(:create, Opening)
+- if can?(:create, Opening)
+  .text-center
     = link_to t("opening.new"), new_opening_path, class: "btn btn-info"

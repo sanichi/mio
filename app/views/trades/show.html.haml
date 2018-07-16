@@ -38,7 +38,7 @@
           %th= t("trade.profit")
           %td= t("trade.pounds") + number_with_precision(@trade.profit, precision: 2)
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("trade.trades"), trades_path, class: "btn btn-success"
   - if can?(:update, @trade)
     = link_to t("edit"), edit_trade_path(@trade), class: "btn btn-info"

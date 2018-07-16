@@ -7,9 +7,7 @@
 
 #chart{style: "height: #{@igd.full_height}px"}
 
-%p
-
-.text-center
+.text-center.mt-3
   = link_to t("list"), incomes_path, class: "btn btn-success"
   - if @scope != "total"
     = link_to t("total"), graph_incomes_path(scope: "total"), class: "btn btn-success"

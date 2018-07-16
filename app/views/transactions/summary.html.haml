@@ -2,17 +2,17 @@
 
 .row
   .offset-md-1.col-md-10
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
-          %th.text-center.col-md-5= t("transaction.description")
-          %th.text-center.col-md-1= t("transaction.item.investment")
-          %th.text-center.col-md-1= t("transaction.value")
-          %th.text-center.col-md-1= t("transaction.quantity")
-          %th.text-center.col-md-1= t("transaction.item.performance")
-          %th.text-center.col-md-1= t("transaction.item.annual_performance")
-          %th.text-center.col-md-1= t("transaction.item.start")
-          %th.text-center.col-md-1= t("transaction.item.end")
+          %th.text-center= t("transaction.description")
+          %th.text-center= t("transaction.item.investment")
+          %th.text-center= t("transaction.value")
+          %th.text-center= t("transaction.quantity")
+          %th.text-center= t("transaction.item.performance")
+          %th.text-center= t("transaction.item.annual_performance")
+          %th.text-center= t("transaction.item.start")
+          %th.text-center= t("transaction.item.end")
       %tbody
         - @summary.items.each do |item|
           %tr

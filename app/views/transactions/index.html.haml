@@ -1,29 +1,23 @@
 = render "utils/title", key: "transaction.transactions"
 
-.text-center
-  = form_tag transactions_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :description, t("transaction.description"), class: "sr-only"
-      = text_field_tag :description, params[:description], class: "form-control", placeholder: t("transaction.description"), size: 20
-    .form-group
-      = label_tag :reference, t("transaction.reference"), class: "sr-only"
-      = text_field_tag :reference, params[:reference], class: "form-control", placeholder: t("transaction.reference"), size: 20
-    .form-group
-      = label_tag :reference, t("upload.id"), class: "sr-only"
-      = text_field_tag :upload_id, params[:upload_id], class: "form-control", placeholder: t("upload.id"), size: 10
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag transactions_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :description, t("transaction.description"), class: "sr-only"
+  = text_field_tag :description, params[:description], class: "form-control mr-1 mb-1", placeholder: t("transaction.description"), size: 20
+  = label_tag :reference, t("transaction.reference"), class: "sr-only"
+  = text_field_tag :reference, params[:reference], class: "form-control mr-1 mb-1", placeholder: t("transaction.reference"), size: 20
+  = label_tag :reference, t("upload.id"), class: "sr-only"
+  = text_field_tag :upload_id, params[:upload_id], class: "form-control mr-1 mb-1", placeholder: t("upload.id"), size: 10
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-%p
-
-.row
+.row.mt-3
   .offset-md-1.col-md-10
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
-        %tr
-          %th.col-md-2.text-center= t("transaction.trade_date")
-          %th.col-md-1.text-center= t("transaction.value")
-          %th.col-md-6= t("transaction.description")
-          %th.col-md-3= t("transaction.reference")
+        %tr.d-flex
+          %th.col-2.text-center= t("transaction.trade_date")
+          %th.col-2.text-center= t("transaction.value")
+          %th.col-6= t("transaction.description")
+          %th.col-2= t("transaction.reference")
       %tbody{id: "results"}
         = render "results", transactions: @transactions
 

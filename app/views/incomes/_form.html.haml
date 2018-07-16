@@ -1,15 +1,14 @@
 .row
   .offset-md-2.col-md-8
     = form_for income, html: { class: "form-horizontal" } do |f|
-      %fieldset
-        - shared = { form: f, object: income, col: "md", pad: 4 }
-        = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
-        = render "utils/select_for", shared.merge(param: :category, text: t("income.category"), width: 4, menu: income_category_menu(income))
-        = render "utils/select_for", shared.merge(param: :period, text: t("income.period"), width: 4, menu: income_period_menu(income))
-        = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
-        = render "utils/text_field_for", shared.merge(param: :joint, text: t("income.joint"), width: 3)
-        = render "utils/text_field_for", shared.merge(param: :start, text: t("income.start"), width: 5)
-        = render "utils/text_field_for", shared.merge(param: :finish, text: t("income.finish"), width: 5)
+      - shared = { form: f, object: income, col: "md", pad: 4 }
+      = render "utils/text_field_for", shared.merge(param: :description, text: t("description"), width: 5)
+      = render "utils/select_for", shared.merge(param: :category, text: t("income.category"), width: 4, menu: income_category_menu(income))
+      = render "utils/select_for", shared.merge(param: :period, text: t("income.period"), width: 4, menu: income_period_menu(income))
+      = render "utils/text_field_for", shared.merge(param: :amount, text: t("amount"), width: 3)
+      = render "utils/text_field_for", shared.merge(param: :joint, text: t("income.joint"), width: 3)
+      = render "utils/text_field_for", shared.merge(param: :start, text: t("income.start"), width: 5)
+      = render "utils/text_field_for", shared.merge(param: :finish, text: t("income.finish"), width: 5)
       .row
         .offset-md-4.col-md-8
           = f.submit t("save"), class: "btn btn-primary"

@@ -1,9 +1,9 @@
-.panel.panel-default
-  .panel-heading
+.card
+  .card-header
     = comment.date.strftime(date_format)
     = t("symbol.separator")
     = comment.source
     - if can?(:edit, comment)
-      .pull-right
-        = link_to t("edit"), edit_polymorphic_path([commentable, comment]), class: "btn btn-info btn-xs"
-  .panel-body= comment.html
+      .float-right
+        = link_to t("edit"), edit_polymorphic_path([commentable, comment]), class: "btn btn-info btn-sm"
+  .card-body= comment.html

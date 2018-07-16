@@ -1,16 +1,16 @@
 = render "utils/title", text: @position.name, header: true
 
-.row.top_margin
-  .col-xs-12.offset-sm-1.col-sm-10.offset-md-2.col-md-8.offset-lg-3.col-lg-6
+.row.mt-3
+  .offset-sm-1.col-sm-10.offset-md-2.col-md-8.offset-lg-3.col-lg-6
     = render "positions/svg/board", position: @position
 
-.panel.panel-default.top_margin
-  .panel-heading
+.card.mt-3
+  .card-header
     = t("notes")
-    .pull-right= @position.last_reviewed_in_days
-  .panel-body= @position.notes_html
+    .float-right= @position.last_reviewed_in_days
+  .card-body= @position.notes_html
 
-.text-center.top_margin
+.text-center.mt-3
   - if can?(:update, @position)
     = link_to t("edit"), edit_position_path(@position), class: "btn btn-info"
   = link_to t("position.positions"), positions_path, class: "btn btn-success"

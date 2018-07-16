@@ -1,54 +1,42 @@
 = render "utils/title", key: "fund.funds"
 
-.text-center
-  = form_tag funds_path, method: :get, remote: true, class: "form-inline" do
-    - width = 7
-    .form-group
-      = label_tag :name, t("name"), class: "sr-only"
-      = text_field_tag :name, params[:name], class: "form-control", placeholder: t("name"), size: width
-    .form-group
-      = label_tag :company, t("fund.company"), class: "sr-only"
-      = text_field_tag :company, params[:company], class: "form-control", placeholder: t("fund.company"), size: width
-    .form-group
-      = label_tag :srri, t("fund.srri"), class: "sr-only"
-      = text_field_tag :srri, params[:srri], class: "form-control", placeholder: t("fund.short.srri"), size: width
-    .form-group
-      = label_tag :annual_fee, t("fund.annual_fee"), class: "sr-only"
-      = text_field_tag :annual_fee, params[:annual_fee], class: "form-control", placeholder: t("fund.short.annual_fee"), size: width
-    .form-group
-      = label_tag :stars, t("fund.stars.stars"), class: "sr-only"
-      = text_field_tag :stars, params[:stars], class: "form-control", placeholder: t("fund.stars.stars"), size: width
-    .form-group
-      = label_tag :size, t("fund.size"), class: "sr-only"
-      = text_field_tag :size, params[:size], class: "form-control", placeholder: t("fund.short.size"), size: width
-    .form-group
-      = label_tag :size, t("fund.sector"), class: "sr-only"
-      = text_field_tag :sector, params[:sector], class: "form-control", placeholder: t("fund.sector"), size: width
-    .form-group
-      = label_tag :category, t("fund.category"), class: "sr-only"
-      = select_tag :category, fund_category_search_menu(params[:category]), class: "form-control auto-submit"
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag funds_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  - width = 7
+  = label_tag :name, t("name"), class: "sr-only"
+  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: width
+  = label_tag :company, t("fund.company"), class: "sr-only"
+  = text_field_tag :company, params[:company], class: "form-control mr-1 mb-1", placeholder: t("fund.company"), size: width
+  = label_tag :srri, t("fund.srri"), class: "sr-only"
+  = text_field_tag :srri, params[:srri], class: "form-control mr-1 mb-1", placeholder: t("fund.short.srri"), size: width
+  = label_tag :annual_fee, t("fund.annual_fee"), class: "sr-only"
+  = text_field_tag :annual_fee, params[:annual_fee], class: "form-control mr-1 mb-1", placeholder: t("fund.short.annual_fee"), size: width
+  = label_tag :stars, t("fund.stars.stars"), class: "sr-only"
+  = text_field_tag :stars, params[:stars], class: "form-control mr-1 mb-1", placeholder: t("fund.stars.stars"), size: width
+  = label_tag :size, t("fund.size"), class: "sr-only"
+  = text_field_tag :size, params[:size], class: "form-control mr-1 mb-1", placeholder: t("fund.short.size"), size: width
+  = label_tag :size, t("fund.sector"), class: "sr-only"
+  = text_field_tag :sector, params[:sector], class: "form-control mr-1 mb-1", placeholder: t("fund.sector"), size: width
+  = label_tag :category, t("fund.category"), class: "sr-only"
+  = select_tag :category, fund_category_search_menu(params[:category]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-%p
 
-.row
-  .col-md-12
-    %table{class: "table table-bordered table-striped"}
-      %thead
-        %tr
-          %th= t("name")
-          %th.text-center= t("fund.short.srri")
-          %th.text-center= t("return.short.average_return")
-          %th.text-center= t("fund.short.annual_fee")
-          %th.text-center= t("fund.stars.stars")
-          %th.text-center= t("fund.short.size")
-          %th= t("fund.sector")
-          %th= t("fund.category.category")
-          - if can?(:create, Fund)
-            %th
-      %tbody{id: "results"}
-        = render "results", funds: @funds
+  %table{class: "table table-bordered table-striped table-sm mt-3"}
+    %thead
+      %tr
+        %th= t("name")
+        %th.text-center= t("fund.short.srri")
+        %th.text-center= t("return.short.average_return")
+        %th.text-center= t("fund.short.annual_fee")
+        %th.text-center= t("fund.stars.stars")
+        %th.text-center= t("fund.short.size")
+        %th= t("fund.sector")
+        %th= t("fund.category.category")
+        - if can?(:create, Fund)
+          %th
+    %tbody{id: "results"}
+      = render "results", funds: @funds
 
-.text-center
-  - if can?(:create, Fund)
+- if can?(:create, Fund)
+  .text-center
     = link_to t("fund.new"), new_fund_path, class: "btn btn-info"
