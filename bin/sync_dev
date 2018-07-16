@@ -41,6 +41,7 @@ exit unless $ans =~ /^Y(es)?/i;
 # Install data locally.
 &run("psql -q $loc_db < $tmp_sql", "couldn't import SQL to development DB");
 &run("rm -rf $loc_img/*", "couldn't delete old images");
+&run("rm -rf $loc_aud/*", "couldn't delete old audio");
 &run("tar -zxf $tmp_img -C $loc_img", "couldn't extract images to $loc_img");
 &run("tar -zxf $tmp_aud -C $loc_aud", "couldn't extract audio to $loc_aud");
 
