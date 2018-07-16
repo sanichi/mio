@@ -3,7 +3,7 @@
   = select_tag :stat, pages_risle_stats_menu, class: "form-control mr-1 mb-1 auto-submit"
   = select_tag :months, pages_risle_months_menu, class: "form-control mr-1 mb-1 auto-submit"
 
-.top_margin
+.mt-3
   .col-lg-8.offset-lg-2
     %table{class: "table table-bordered table-striped", id: "results"}
       = render "pages/risle/stats_results", pstat: pstat

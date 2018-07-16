@@ -3,23 +3,19 @@
 = content_for :javascript do
   = render "vehicles.js"
 
-.text-center.top_margin
-  = form_tag vehicles_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :registration, t("vehicle.registration"), class: "sr-only"
-      = text_field_tag :registration, params[:registration], class: "form-control", placeholder: t("vehicle.registration"), size: 10
-    .form-group
-      = label_tag :description, t("description"), class: "sr-only"
-      = text_field_tag :description, params[:description], class: "form-control", placeholder: t("description"), size: 10
-    .form-group
-      = label_tag :owner, t("owner"), class: "sr-only"
-      = text_field_tag :owner, params[:owner], class: "form-control", placeholder: t("owner"), size: 10
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
-    = link_to t("reset"), "#", class: "btn btn-success", id: "reset"
+= form_tag vehicles_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :registration, t("vehicle.registration"), class: "sr-only"
+  = text_field_tag :registration, params[:registration], class: "form-control mr-1 mb-1", placeholder: t("vehicle.registration"), size: 10
+  = label_tag :description, t("description"), class: "sr-only"
+  = text_field_tag :description, params[:description], class: "form-control mr-1 mb-1", placeholder: t("description"), size: 10
+  = label_tag :owner, t("owner"), class: "sr-only"
+  = text_field_tag :owner, params[:owner], class: "form-control mr-1 mb-1", placeholder: t("owner"), size: 10
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+  = link_to t("reset"), "#", class: "btn btn-success mr-1 mb-1", id: "reset"
 
-.row.top_margin
-  .col-xs-12.col-md-8.offset-md-2
-    %table{class: "table table-bordered table-striped"}
+.row.mt-3
+  .col-md-8.offset-md-2
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
           %th= t("vehicle.registration")

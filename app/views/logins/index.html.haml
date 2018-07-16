@@ -1,23 +1,17 @@
 = render "utils/title", key: "login.logins"
 
-.text-center
-  = form_tag logins_path, method: :get, remote: true, class: "form-inline" do
-    - width = 16
-    .form-group
-      = label_tag :date, t("date"), class: "sr-only"
-      = text_field_tag :date, params[:date], class: "form-control", placeholder: t("date"), size: width
-    .form-group
-      = label_tag :email, t("email"), class: "sr-only"
-      = text_field_tag :email, params[:email], class: "form-control", placeholder: t("email"), size: width
-    .form-group
-      = label_tag :ip, t("login.ip"), class: "sr-only"
-      = text_field_tag :ip, params[:ip], class: "form-control", placeholder: t("login.ip"), size: width
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag logins_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  - width = 16
+  = label_tag :date, t("date"), class: "sr-only"
+  = text_field_tag :date, params[:date], class: "form-control mr-1 mb-1", placeholder: t("date"), size: width
+  = label_tag :email, t("email"), class: "sr-only"
+  = text_field_tag :email, params[:email], class: "form-control mr-1 mb-1", placeholder: t("email"), size: width
+  = label_tag :ip, t("login.ip"), class: "sr-only"
+  = text_field_tag :ip, params[:ip], class: "form-control mr-1 mb-1", placeholder: t("login.ip"), size: width
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-%p
-
-.row
-  .offset-md-2.col-md-8
-    %table{class: "table table-bordered table-striped"}
+.row.mt-3
+  .offset-lg-2.col-lg-8
+    %table{class: "table table-bordered table-striped table-sm"}
       %tbody{id: "results"}
         = render "results", logins: @logins

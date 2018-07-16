@@ -1,17 +1,13 @@
-.row
-  .col-md-12
-    = form_for resident, html: { class: "form-horizontal" } do |f|
-      %fieldset
-        - shared = { form: f, object: resident, col: "md", pad: 3 }
-        = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 4)
-        = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 4)
-        = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 4)
-        = render "utils/text_field_for", shared.merge(param: :address, text: t("resident.address"), width: 6)
-        = render "utils/text_field_for", shared.merge(param: :agent, text: t("resident.agent"), width: 6)
-
-      .row
-        .offset-md-4.col-md-8
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), resident.new_record?? residents_path : resident, class: "btn btn-secondary"
-          - unless resident.new_record?
-            = link_to t("delete"), resident, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+= form_for resident, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: resident, col: "md", pad: 3 }
+  = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 4)
+  = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 4)
+  = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 4)
+  = render "utils/text_field_for", shared.merge(param: :address, text: t("resident.address"), width: 6)
+  = render "utils/text_field_for", shared.merge(param: :agent, text: t("resident.agent"), width: 6)
+  .row
+    .offset-md-3.col-md-9
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), resident.new_record?? residents_path : resident, class: "btn btn-secondary"
+      - unless resident.new_record?
+        = link_to t("delete"), resident, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

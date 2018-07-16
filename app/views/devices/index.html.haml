@@ -1,14 +1,12 @@
 = render "utils/title", key: "device.devices"
 
-.text-center
-  = form_tag devices_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("device.device")
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag devices_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", size: 16, placeholder: t("device.device")
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-.row.top_margin
-  .col-xs-12.col-md-6.offset-md-3
+.row.mt-3
+  .col-10.offset-1.col-md-8.offset-md-2.col-xl-6.offset-xl-3
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
@@ -16,7 +14,7 @@
       %tbody{id: "results"}
         = render "results", devices: @devices
 
-.text-center.top_margin
+.text-center
   - if can?(:create, Device)
     = link_to t("device.new"), new_device_path, class: "btn btn-info"
   = link_to t("interface.interfaces"), interfaces_path, class: "btn btn-success"

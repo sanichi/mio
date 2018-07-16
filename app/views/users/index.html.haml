@@ -1,23 +1,17 @@
 = render "utils/title", key: "user.users"
 
-.text-center
-  = form_tag users_path, method: :get, remote: true, class: "form-inline" do
-    - width = 10
-    .form-group
-      = label_tag :email, t("email"), class: "sr-only"
-      = text_field_tag :email, params[:email], class: "form-control", placeholder: t("email"), size: width
-    .form-group
-      = label_tag :last_name, t("person.last_name"), class: "sr-only"
-      = text_field_tag :last_name, params[:last_name], class: "form-control", placeholder: t("person.last_name"), size: 10
-    .form-group
-      = label_tag :last_name, t("person.first_name"), class: "sr-only"
-      = text_field_tag :first_names, params[:first_names], class: "form-control", placeholder: t("person.first_name"), size: 10
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag users_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  - width = 10
+  = label_tag :email, t("email"), class: "sr-only"
+  = text_field_tag :email, params[:email], class: "form-control mr-1 mb-1", placeholder: t("email"), size: width
+  = label_tag :last_name, t("person.last_name"), class: "sr-only"
+  = text_field_tag :last_name, params[:last_name], class: "form-control mr-1 mb-1", placeholder: t("person.last_name"), size: 10
+  = label_tag :last_name, t("person.first_name"), class: "sr-only"
+  = text_field_tag :first_names, params[:first_names], class: "form-control mr-1 mb-1", placeholder: t("person.first_name"), size: 10
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-%p
-
-.row
-  .offset-md-2.col-md-8
+.row.mt-3
+  .offset-md-2.col-md-8.offset-xl-3.col-xl-6
     %table{class: "table table-bordered table-striped"}
       %thead
         %tr
@@ -27,6 +21,6 @@
       %tbody{id: "results"}
         = render "results", users: @users
 
-.text-center
-  - if can?(:create, User)
+- if can?(:create, User)
+  .text-center
     = link_to t("user.new"), new_user_path, class: "btn btn-info"

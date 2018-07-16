@@ -2,7 +2,7 @@
 
 .row
   .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %tbody
         %tr
           %th= t("interface.name")
@@ -20,7 +20,7 @@
           %th= t("device.device")
           %td= link_to @interface.device.name, @interface.device
 
-.text-center.top_margin
+.text-center.mt-3
   = link_to t("interface.interfaces"), interfaces_path, class: "btn btn-success"
   - if can?(:update, @interface)
     = link_to t("edit"), edit_interface_path(@interface), class: "btn btn-info"

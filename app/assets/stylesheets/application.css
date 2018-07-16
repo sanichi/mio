@@ -28,14 +28,6 @@
   color: red !important;
 }
 
-/* Vertical space. */
-.top_margin {
-  margin-top: 16px;
-}
-.bottom_margin {
-  margin-bottom: 16px;
-}
-
 /* Centered tables. */
 .table-center {
   border-style: none !important;

@@ -1,7 +1,7 @@
 = render "utils/title", text: @device.name
 
 .row
-  .offset-md-3.col-md-6
+  .offset-md-2.col-md-8.offset-xl-3.col-xl-6
     %table{class: "table table-bordered table-striped"}
       %tbody
         %tr
@@ -12,7 +12,7 @@
             %th= t("interface.interface")
             %td= link_to interface.name, interface
 
-.text-center.top_margin
+.text-center
   = link_to t("device.devices"), devices_path, class: "btn btn-success"
   - if can?(:update, @device)
     = link_to t("edit"), edit_device_path(@device), class: "btn btn-info"
@@ -24,7 +24,7 @@
     = link_to t("interface.new"), new_interface_path, class: "btn btn-info"
 
 - if @device.notes.present?
-  .panel.panel-default.top_margin
-    .panel-heading
+  .card.mt-3
+    .card-header
       = t("notes")
-    .panel-body= @device.notes_html
+    .card-body= @device.notes_html

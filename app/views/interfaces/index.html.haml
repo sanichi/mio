@@ -1,15 +1,13 @@
 = render "utils/title", key: "interface.interfaces"
 
-.text-center
-  = form_tag interfaces_path, method: :get, remote: true, class: "form-inline" do
-    .form-group
-      = label_tag :q, t("query"), class: "sr-only"
-      = text_field_tag :q, params[:q], class: "form-control", size: 16, placeholder: t("interface.interface")
-    = button_tag t("search"), type: "submit", class: "btn btn-success"
+= form_tag interfaces_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", size: 16, placeholder: t("interface.interface")
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-.row.top_margin
-  .col-xs-12.col-md-10.offset-md-1
-    %table{class: "table table-bordered table-striped"}
+.row.mt-3
+  .col-md-10.offset-md-1
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
           %th= t("interface.name")
@@ -20,7 +18,7 @@
       %tbody{id: "results"}
         = render "results", interfaces: @interfaces
 
-.text-center.top_margin
+.text-center
   - if can?(:create, Interface)
     = link_to t("interface.new"), new_interface_path, class: "btn btn-info"
   = link_to t("device.devices"), devices_path, class: "btn btn-success"

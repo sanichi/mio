@@ -2,7 +2,7 @@
 
 .row
   .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %tbody
         %tr
           %th= t("flat.building")
@@ -35,8 +35,7 @@
 = render "residents/bottom_links", focus: :flat, flat: @flat
 
 - if @flat.notes.present?
-  %p
-  .panel.panel-default
-    .panel-heading
+  .card.mt-3
+    .card-header
       = t("notes")
-    .panel-body= @flat.notes_html
+    .card-body= @flat.notes_html

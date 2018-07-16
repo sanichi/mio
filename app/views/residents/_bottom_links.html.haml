@@ -5,7 +5,7 @@
 - defined?(flat)     || flat     = nil
 - defined?(vehicle)  || vehicle  = nil
 
-.text-center.top_margin
+.text-center
   -# Edit button (not for parkings).
   - if resident && can?(:update, resident)
     = link_to t("edit"), edit_resident_path(resident), class: "btn btn-info"
