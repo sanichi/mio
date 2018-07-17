@@ -8,6 +8,25 @@
       .nav-item
         = link_to t("home"), blogs_path, class: "nav-link"
 
+    - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa].map{ |c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("vocab.japanese"), id: "navbarJapaneseMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.vocabs"), path: vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, Kanji), text: t("vocab.kanjis"), path: kanjis_path
+          = render "layouts/dropdown_item", cond: can?(:read, Reading), text: t("vocab.readings"), path: readings_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.verb.verbs"), path: verbs_vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, VerbPair), text: t("verb_pair.verb_pairs"), path: verb_pairs_path
+          = render "layouts/dropdown_item", cond: can?(:read, VocabTest), text: t("vocab.test.tests"), path: vocab_tests_path
+          = render "layouts/dropdown_item", cond: can?(:read, KanjiTest), text: t("vocab.kanji_test.tests"), path: kanji_tests_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.words"), path: similar_words_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
+          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.homonyms"), path: homonyms_vocabs_path
+          = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
+          = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("vocab.note.notes"), path: notes_path
+          = render "layouts/dropdown_item", cond: can?(:read, Conversation), text: t("conversation.conversations"), path: conversations_path
+
     - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("family"), id: "navbarFamilyMenu"
@@ -18,6 +37,13 @@
           = render "layouts/dropdown_item", cond: can?(:read, Partnership), text: t("partnership.partnerships"), path: partnerships_path
           = render "layouts/dropdown_item", cond: can?(:checks, Person), text: t("person.checks.title"), path: checks_people_path
           = render "layouts/dropdown_item", cond: can?(:read, HistoricalEvent), text: t("historical_event.events"), path: historical_events_path
+
+    - if [Position, Opening].map{|c| can?(:read, c) }.any?
+      .nav-item.dropdown
+        = render "layouts/dropdown_head", text: t("chess"), id: "navbarChessMenu"
+        %div{class: "dropdown-menu", "aria-labelledby" => "navbarChessMenu"}
+          = render "layouts/dropdown_item", cond: can?(:read, Position), text: t("position.positions"), path: positions_path
+          = render "layouts/dropdown_item", cond: can?(:read, Opening), text: t("opening.openings"), path: openings_path
 
     - if [Resident, Flat, Vehicle, Parking].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, Page) }.any?
       .nav-item.dropdown
@@ -40,32 +66,6 @@
           = render "layouts/dropdown_item", cond: can?(:read, Fund), text: t("fund.funds"), path: funds_path
           = render "layouts/dropdown_item", cond: can?(:read, Transaction), text: t("transaction.transactions"), path: summary_transactions_path
           = render "layouts/dropdown_item", cond: can?(:read, Expense), text: t("expense.expenses"), path: expenses_path
-
-    - if [Position, Opening].map{|c| can?(:read, c) }.any?
-      .nav-item.dropdown
-        = render "layouts/dropdown_head", text: t("chess"), id: "navbarChessMenu"
-        %div{class: "dropdown-menu", "aria-labelledby" => "navbarChessMenu"}
-          = render "layouts/dropdown_item", cond: can?(:read, Position), text: t("position.positions"), path: positions_path
-          = render "layouts/dropdown_item", cond: can?(:read, Opening), text: t("opening.openings"), path: openings_path
-
-    - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa].map{ |c| can?(:read, c) }.any?
-      .nav-item.dropdown
-        = render "layouts/dropdown_head", text: t("vocab.japanese"), id: "navbarJapaneseMenu"
-        %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.vocabs"), path: vocabs_path
-          = render "layouts/dropdown_item", cond: can?(:read, Kanji), text: t("vocab.kanjis"), path: kanjis_path
-          = render "layouts/dropdown_item", cond: can?(:read, Reading), text: t("vocab.readings"), path: readings_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.verb.verbs"), path: verbs_vocabs_path
-          = render "layouts/dropdown_item", cond: can?(:read, VerbPair), text: t("verb_pair.verb_pairs"), path: verb_pairs_path
-          = render "layouts/dropdown_item", cond: can?(:read, VocabTest), text: t("vocab.test.tests"), path: vocab_tests_path
-          = render "layouts/dropdown_item", cond: can?(:read, KanjiTest), text: t("vocab.kanji_test.tests"), path: kanji_tests_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.words"), path: similar_words_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.homonyms"), path: homonyms_vocabs_path
-          = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
-          = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("vocab.note.notes"), path: notes_path
-          = render "layouts/dropdown_item", cond: can?(:read, Conversation), text: t("conversation.conversations"), path: conversations_path
 
     - if [:aoc, :magic, :play, :retina].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
