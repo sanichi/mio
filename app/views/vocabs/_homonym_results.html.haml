@@ -1,11 +1,9 @@
 - homonyms.matches.each do |homonym|
   %tr.d-flex
     %td.col-1= link_to homonym.kanji, homonym
-    %td.col-2
-      = render "accent_pattern", vocab: homonym
-      = homonym.reading
+    %td.col-2= homonym.reading
+    %td.col-1.text-center= render "audio_accent", vocab: homonym
     %td.col-4= homonym.meaning
     %td.col-3= homonym.category
     %td.col-1.text-center= homonym.level
-    %td.col-1.text-center= render "audio", vocab: homonym, color_id: homonym.color_id
 = render "utils/pagination_links", pager: homonyms, columns: 6

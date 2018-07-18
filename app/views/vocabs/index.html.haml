@@ -24,10 +24,10 @@
       %tr.d-flex
         %th.col-1= t("vocab.kanji")
         %th.col-2= t("vocab.reading")
+        %th.col-1.text-center= t("vocab.audio")
         %th.col-4= t("vocab.meaning")
         %th.col-3= t("vocab.category")
         %th.col-1.text-center= t("vocab.level")
-        %th.col-1.text-center= t("vocab.audio")
     %tbody{id: "results"}
       = render "results", vocabs: @vocabs
 
