@@ -17,11 +17,12 @@ class VerbPair < ApplicationRecord
   scope :by_group, -> { order(:group, Arel.sql('tag COLLATE "C"')) }
 
   def self.search(params, path, opt={})
+    matches = includes(:transitive).includes(:intransitive)
     matches = case params[:order]
     when "tag"
-      by_tag
+      matches.by_tag
     else
-      by_group
+      matches.by_group
     end
     if params[:group].present? && (g = params[:group].to_i) >= 0 && g <= MAX_GROUP
       matches = matches.where(group: g)
