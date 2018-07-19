@@ -7,21 +7,19 @@
         %tr
           %th= t("vocab.kanji")
           %th= t("vocab.reading")
+          %th.text-center= t("vocab.audio")
           %th= t("vocab.meaning")
           %th= t("vocab.category")
           %th.text-center= t("vocab.level")
-          %th.text-center= t("vocab.audio")
       %tbody
         - @vocabs.each do |vocab|
           %tr
             %td= link_to vocab.kanji, vocab
-            %td
-              = render "vocabs/accent_pattern", vocab: vocab
-              = vocab.reading
+            %td= vocab.reading
+            %td.text-center= render "vocabs/audio_accent", vocab: vocab
             %td= vocab.meaning
             %td= vocab.category
             %td.text-center= vocab.level
-            %td.text-center= render "vocabs/audio", vocab: vocab
 
 .text-center.mt-3
   = link_to t("vocab.similar.words"), similar_words_path, class: "btn btn-success"

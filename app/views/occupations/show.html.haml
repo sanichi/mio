@@ -1,4 +1,6 @@
-= render "utils/title", text: @occupation.kanji, header: true
+= render "utils/title", text: @occupation.kanji
+
+%h1.text-center= @occupation.vocab ? @occupation.vocab.linked_kanji : @occupation.kanji
 
 .row
   .offset-md-2.col-md-8
@@ -16,7 +18,7 @@
             %td= link_to @occupation.kanji, @occupation.vocab
           %tr
             %th= t("vocab.audio")
-            %td= render "vocabs/audio", vocab: @occupation.vocab
+            %td= render "vocabs/audio_accent", vocab: @occupation.vocab
 
 .text-center
   = link_to t("vocab.occupation.occupations"), occupations_path, class: "btn btn-success"

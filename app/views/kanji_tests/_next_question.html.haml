@@ -49,7 +49,7 @@
         %td= vocab.meaning
         %td= vocab.category
         %td.text-center= vocab.level
-        %td.text-center= render "vocabs/audio", vocab: vocab
+        %td.text-center= render "vocabs/audio_accent", vocab: vocab
 
 = form_for question, html: { id: "question-form" } do |f|
   = f.hidden_field(:kanji_id, value: kanji.id)

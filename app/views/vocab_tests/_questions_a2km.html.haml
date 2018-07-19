@@ -9,7 +9,7 @@
     - test.vocab_questions.each do |q|
       - if !(test_finished && q.answered_correctly?)
         %tr.d-flex
-          %td.col-1.text-center= render "vocabs/audio", vocab: q.vocab
+          %td.col-1.text-center= render "vocabs/audio_accent", vocab: q.vocab
           %td.col-2= q.kanji
           %td.col-8= q.meaning_plus
           %td.col-1.text-center

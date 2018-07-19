@@ -1,6 +1,6 @@
 .row
   .col-4.text-right= t("vocab.audio")
-  .col-8= render "vocabs/audio", vocab: question.vocab, autoplay: true, title: question.vocab.reading
+  .col-8= render "vocabs/audio_accent", vocab: question.vocab, autoplay: true, title: question.vocab.reading
 .row.mt-3
   .col-12
     = form_for question, html: { class: "form-horizontal" } do |f|

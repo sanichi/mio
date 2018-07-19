@@ -11,7 +11,6 @@ class Vocab < ApplicationRecord
   MAX_PATTERN = I18n.t("vocab.patterns").size - 1
   MIN_LEVEL = 1
   MIN_PATTERN = 0
-  OJAD = "http://www.gavo.t.u-tokyo.ac.jp/ojad/eng/search/index/word:"
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
 
   has_many :vocab_questions, dependent: :destroy
@@ -177,10 +176,6 @@ class Vocab < ApplicationRecord
     when "prog" then te + "いる"
     else "invalid tense (#{tense})"
     end
-  end
-
-  def ojad
-    OJAD + kanji
   end
 
   def self.count_morae(reading)

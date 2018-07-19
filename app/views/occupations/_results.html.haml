@@ -2,6 +2,6 @@
   %tr
     %td= link_to occupation.kanji, occupation
     %td= occupation.reading
+    %td.text-center= render "vocabs/audio_accent", vocab: occupation.vocab if occupation.vocab
     %td= occupation.meaning
-    %td.text-center= render "vocabs/audio", vocab: occupation.vocab if occupation.vocab
 = render "utils/pagination_links", pager: occupations, columns: 4

@@ -16,8 +16,8 @@
         %tr
           %th= t("vocab.kanji")
           %th= t("vocab.reading")
-          %th= t("vocab.meaning")
           %th.text-center= t("vocab.audio")
+          %th= t("vocab.meaning")
       %tbody{id: "results"}
         = render "results", occupations: @occupations
 

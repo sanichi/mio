@@ -15,7 +15,7 @@
           %td.col-2= q.reading
           %td.col-1.text-center
             - if q.reading_correct || test_finished
-              = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && !test_finished
+              = render "vocabs/audio_accent", vocab: q.vocab, autoplay: i == 0 && !test_finished
           %td.col-1.text-center
             = t("symbol.#{q.meaning_correct ? 'tick' : 'cross'}")
             = t("symbol.#{q.reading_correct ? 'tick' : 'cross'}")

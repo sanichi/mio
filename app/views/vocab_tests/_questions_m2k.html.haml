@@ -13,5 +13,5 @@
           %td.col-2= q.kanji
           %td.col-1.text-center
             - if q.answered_correctly? || test_finished
-              = render "vocabs/audio", vocab: q.vocab, autoplay: i == 0 && !test_finished
+              = render "vocabs/audio_accent", vocab: q.vocab, autoplay: i == 0 && !test_finished
           %td.col-1text-center= t("symbol.#{q.kanji_correct ? 'tick' : 'cross'}")
