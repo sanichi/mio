@@ -10,10 +10,10 @@
         %tr
           %th{rowspan: 4}= t("verb_pair.transitive")
           %td
-            = render "vocabs/accent_pattern", vocab: v1
             = link_to v1.kanji, v1
+            = render "vocabs/audio_accent", vocab: v1
         %tr
-          %td= render "vocabs/audio", vocab: v1, text: v1.reading, color_id: v1.color_id
+          %td= render "vocabs/colored", vocab: v1
         %tr
           %td= v1.meaning
         %tr
@@ -21,10 +21,10 @@
         %tr
           %th{rowspan: 4}= t("verb_pair.intransitive")
           %td
-            = render "vocabs/accent_pattern", vocab: v2
             = link_to v2.kanji, v2
+            = render "vocabs/audio_accent", vocab: v2
         %tr
-          %td= render "vocabs/audio", vocab: v2, text: v2.reading, color_id: v2.color_id
+          %td= render "vocabs/colored", vocab: v2
         %tr
           %td= v2.meaning
         %tr

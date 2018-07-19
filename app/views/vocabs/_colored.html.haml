@@ -1,0 +1,6 @@
+- defined?(color_id) || color_id = vocab.color_id
+- defined?(text)     || text = vocab.reading
+
+- color = %w/info success warning danger secondary primary/[color_id] || "info"
+
+%span.btn.btn-sm{class: "btn-#{color}"}= text
