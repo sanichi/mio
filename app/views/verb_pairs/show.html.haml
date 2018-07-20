@@ -1,7 +1,7 @@
 = render "utils/title", text: @verb_pair.title, header: true
 
 = content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+  = render "vocabs/quick_accent_update.js", selector: "#accent_updates"
 
 - v1 = @verb_pair.transitive
 - v2 = @verb_pair.intransitive
@@ -9,7 +9,7 @@
 .row
   .offset-md-2.col-md-8
     %table{class: "table table-bordered"}
-      %tbody
+      %tbody#accent_updates
         %tr
           %th{rowspan: 4}= t("verb_pair.transitive")
           %td

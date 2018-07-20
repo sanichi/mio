@@ -1,5 +1,7 @@
+<% defined?(selector) || selector = "#results" %>
+
 $(function() {
-  $('.accent_updater').keypress(function(e) {
+  $('<%= selector %>').on('keypress', '.accent_updater', function(e) {
     var id = $(e.target).data('id');
     var code = e.keyCode;
     var accent = '';

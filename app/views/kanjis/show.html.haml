@@ -1,7 +1,7 @@
 = render "vocabs/multi_search"
 
 = content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+  = render "vocabs/quick_accent_update.js", selector: "#accent_updates"
 
 = render "utils/title", text: @kanji.symbol, header: true
 
@@ -34,7 +34,7 @@
       %th.col-4= t("vocab.meaning")
       %th.col-3= t("vocab.category")
       %th.col-1.text-center= t("vocab.level")
-  %tbody
+  %tbody#accent_updates
     - @vocabs.each do |vocab|
       %tr.d-flex
         %td.col-1= link_to vocab.kanji, vocab

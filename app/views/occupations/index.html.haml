@@ -21,7 +21,7 @@
           %th= t("vocab.reading")
           %th.text-center= t("vocab.audio")
           %th= t("vocab.meaning")
-      %tbody{id: "results"}
+      %tbody#results
         = render "results", occupations: @occupations
 
 - if can?(:create, Occupation)

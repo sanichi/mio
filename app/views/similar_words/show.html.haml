@@ -1,7 +1,7 @@
 = render "utils/title", text: @similar_word.display, header: true
 
 = content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+  = render "vocabs/quick_accent_update.js", selector: "#accent_updates"
 
 .row.mt-3
   .offset-xl-1.col-xl-10
@@ -14,7 +14,7 @@
           %th= t("vocab.meaning")
           %th= t("vocab.category")
           %th.text-center= t("vocab.level")
-      %tbody
+      %tbody#accent_updates
         - @vocabs.each do |vocab|
           %tr
             %td= link_to vocab.kanji, vocab

@@ -1,7 +1,7 @@
 = render "utils/title", text: @occupation.kanji
 
 = content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+  = render "vocabs/quick_accent_update.js", selector: "#accent_update"
 
 %h1.text-center= @occupation.vocab ? @occupation.vocab.linked_kanji : @occupation.kanji
 
@@ -19,7 +19,7 @@
           %tr
             %th= t("vocab.vocab")
             %td= link_to @occupation.kanji, @occupation.vocab
-          %tr
+          %tr#accent_update
             %th= t("vocab.audio")
             %td= render "vocabs/audio_accent", vocab: @occupation.vocab
 
