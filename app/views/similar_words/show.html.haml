@@ -1,5 +1,8 @@
 = render "utils/title", text: @similar_word.display, header: true
 
+= content_for :javascript do
+  = render "vocabs/quick_accent_update.js"
+
 .row.mt-3
   .offset-xl-1.col-xl-10
     %table{class: "table table-bordered"}

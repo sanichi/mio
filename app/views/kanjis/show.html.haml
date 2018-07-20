@@ -1,5 +1,8 @@
 = render "vocabs/multi_search"
 
+= content_for :javascript do
+  = render "vocabs/quick_accent_update.js"
+
 = render "utils/title", text: @kanji.symbol, header: true
 
 .row

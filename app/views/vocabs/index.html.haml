@@ -2,6 +2,9 @@
 
 = render "utils/title", key: "vocab.vocabs"
 
+= content_for :javascript do
+  = render "quick_accent_update.js"
+
 = form_tag vocabs_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("vocab.vocab"), class: "sr-only"
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("vocab.vocab"), size: 16, autofocus: true

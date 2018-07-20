@@ -75,5 +75,6 @@ Rails.application.routes.draw do
   resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
   resources :vocabs do
     get :homonyms, :verbs, on: :collection
+    patch :quick_accent_update, on: :member
   end
 end

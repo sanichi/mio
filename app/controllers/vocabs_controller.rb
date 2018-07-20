@@ -1,6 +1,6 @@
 class VocabsController < ApplicationController
   authorize_resource
-  before_action :find_vocab, only: [:destroy, :edit, :show, :update]
+  before_action :find_vocab, only: [:destroy, :edit, :show, :update, :quick_accent_update]
   before_action :lazy_accent, only: [:update]
   JDIGITS = "０１２３４５６７８９"
   EDIGITS = "0123456789"
@@ -40,6 +40,10 @@ class VocabsController < ApplicationController
     else
       render action: "edit"
     end
+  end
+
+  def quick_accent_update
+    @vocab.update_accent(params[:accent])
   end
 
   def destroy

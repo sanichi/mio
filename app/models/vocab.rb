@@ -191,6 +191,32 @@ class Vocab < ApplicationRecord
     full - tiny
   end
 
+  def update_accent(new_accent)
+    if new_accent == "?"
+      update_column(:accent, nil)
+    else
+      i = new_accent.to_i
+      update_column(:accent, i) if i >= 0 && i <= morae
+    end
+    deduce_pattern
+  end
+
+  # To set the text for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
+  def accent_button_text
+    accent ? accent.to_s : "?"
+  end
+
+  # To set a colour for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
+  def pattern_color
+    pattern_no ? (%w/secondary success warning info/[pattern_no] || "danger") : "outline-secondary"
+  end
+
+  # To be able to remove old color classes in vocabs/quick_accent_update.js.erb
+  # make sure all the possible colors in pattern_color (above) are listed here.
+  def pattern_colors
+    %w/secondary success warning info danger outline-secondary/
+  end
+
   private
 
   #
@@ -427,6 +453,10 @@ class Vocab < ApplicationRecord
 
   def set_morae_and_deduce_pattern
     self.morae = self.class.count_morae(reading)
+    deduce_pattern
+  end
+
+  def deduce_pattern
     self.pattern_no = case accent
     when nil
       nil

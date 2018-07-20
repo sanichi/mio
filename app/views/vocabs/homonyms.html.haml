@@ -1,5 +1,8 @@
 = render "utils/title", key: "vocab.homonyms"
 
+= content_for :javascript do
+  = render "quick_accent_update.js"
+
 = form_tag homonyms_vocabs_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("search"), class: "sr-only"
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
