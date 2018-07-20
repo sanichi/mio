@@ -1,7 +1,6 @@
 = render "utils/title", key: "verb_pair.verb_pairs"
 
-= content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+= render "vocabs/quick_accent_updates"
 
 = form_tag verb_pairs_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("search"), class: "sr-only"

@@ -1,0 +1,5 @@
+- defined?(selector) || selector = "#results"
+
+- if can?(:edit, Vocab)
+  = content_for :javascript do
+    = render "vocabs/quick_accent_updates.js", selector: selector

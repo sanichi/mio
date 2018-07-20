@@ -1,7 +1,6 @@
 = render "utils/title", key: "vocab.occupation.occupations"
 
-= content_for :javascript do
-  = render "vocabs/quick_accent_update.js"
+= render "vocabs/quick_accent_updates"
 
 = form_tag occupations_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("search"), class: "sr-only"

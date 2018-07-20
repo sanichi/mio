@@ -1,7 +1,6 @@
 = render "utils/title", text: @similar_word.display, header: true
 
-= content_for :javascript do
-  = render "vocabs/quick_accent_update.js", selector: "#accent_updates"
+= render "vocabs/quick_accent_updates", selector: "#accent_updates"
 
 .row.mt-3
   .offset-xl-1.col-xl-10
