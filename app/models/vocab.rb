@@ -198,7 +198,7 @@ class Vocab < ApplicationRecord
       i = new_accent.to_i
       update_column(:accent, i) if i >= 0 && i <= morae
     end
-    deduce_pattern
+    update_column(:pattern_no, new_pattern_no)
   end
 
   # To set the text for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
@@ -453,11 +453,11 @@ class Vocab < ApplicationRecord
 
   def set_morae_and_deduce_pattern
     self.morae = self.class.count_morae(reading)
-    deduce_pattern
+    self.pattern_no = new_pattern_no
   end
 
-  def deduce_pattern
-    self.pattern_no = case accent
+  def new_pattern_no
+    case accent
     when nil
       nil
     when 0
