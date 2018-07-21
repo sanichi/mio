@@ -9,6 +9,7 @@ class Vocab < ApplicationRecord
   MAX_LEVEL = 60
   MAX_MEANING = 100
   MAX_PATTERN = I18n.t("vocab.patterns").size - 1
+  MIN_ACCENT = -1
   MIN_LEVEL = 1
   MIN_PATTERN = 0
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
@@ -17,7 +18,7 @@ class Vocab < ApplicationRecord
 
   before_validation :truncate, :set_morae_and_deduce_pattern
 
-  validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_READING }, allow_nil: true
+  validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT, less_than_or_equal_to: MAX_READING }, allow_nil: true
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[^.]+\.(mp3|ogg)\z/ }, uniqueness: true
   validates :category, length: { maximum: MAX_CATEGORY }, presence: true
   validates :kanji, length: { maximum: MAX_KANJI }, presence: true, uniqueness: true
@@ -66,7 +67,7 @@ class Vocab < ApplicationRecord
         matches = matches.where.not(accent: nil)
       elsif accent =~ /\A(\d)p\z/
         matches = matches.where(pattern_no: $1.to_i)
-      elsif accent =~ /\A(\d+)a\z/
+      elsif accent =~ /\A(-?\d+)a\z/
         matches = matches.where(accent: $1.to_i)
       end
     end
@@ -194,6 +195,8 @@ class Vocab < ApplicationRecord
   def update_accent(new_accent)
     if new_accent == "?"
       update_column(:accent, nil)
+    elsif new_accent == "-"
+      update_column(:accent, MIN_ACCENT)
     else
       i = new_accent.to_i
       update_column(:accent, i) if i >= 0 && i <= morae
@@ -203,12 +206,18 @@ class Vocab < ApplicationRecord
 
   # To set the text for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
   def accent_button_text
-    accent ? accent.to_s : "?"
+    accent.present? && accent > MIN_ACCENT ? accent.to_s : "?"
   end
 
   # To set a colour for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
   def pattern_color
-    pattern_no ? (%w/secondary success warning info/[pattern_no] || "danger") : "outline-secondary"
+    if pattern_no.present?
+      %w/secondary success warning info/[pattern_no] || "danger"
+    elsif accent == MIN_ACCENT
+      "secondary"
+    else
+      "outline-secondary"
+    end
   end
 
   # To be able to remove old color classes in vocabs/quick_accent_update.js.erb
@@ -458,7 +467,7 @@ class Vocab < ApplicationRecord
 
   def new_pattern_no
     case accent
-    when nil
+    when nil, MIN_ACCENT
       nil
     when 0
       0

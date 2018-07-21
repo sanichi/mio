@@ -32,7 +32,7 @@ module VocabHelper
     opts = []
     unless max.nil?
       patterns = Vocab::MIN_PATTERN.upto(Vocab::MAX_PATTERN).map { |p| [ t("vocab.patterns")[p], "#{p}p"] }
-      accents = 0.upto(max).map { |a| [ a.to_s, "#{a}a"] }
+      accents = Vocab::MIN_ACCENT.upto(max).map { |a| [ a == Vocab::MIN_ACCENT ? t("unknown") : a.to_s, "#{a}a"] }
       opts = patterns.concat(accents)
     end
     opts.unshift [t("none"), "none"] unless opts.empty?
