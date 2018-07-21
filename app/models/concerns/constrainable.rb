@@ -27,7 +27,7 @@ module Constrainable
       cols = cols.map{ |c| "#{table}." + c } if table.present?
       if input&.match("\\A/([^'\\/]+)/?\\z")
         regex_constraint($1, cols)
-      elsif input&.match("[.+*|\\[($^]")
+      elsif input&.match("[.+*|\\[({$^]")
         regex_constraint(input, cols)
       else
         terms = plain_terms(input) + quoted_terms(input)
