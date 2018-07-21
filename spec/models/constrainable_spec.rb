@@ -45,7 +45,7 @@ describe Constrainable do
     it "no terms" do
       expect(Person.cross_constraint(nil, %w(c))).to be_nil
       expect(Person.cross_constraint("", %w(c))).to be_nil
-      expect(Person.cross_constraint("*£' &^%", %w(c))).to be_nil
+      expect(Person.cross_constraint("£' &%", %w(c))).to be_nil
     end
 
     it "one term" do
