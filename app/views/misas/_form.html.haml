@@ -1,18 +1,16 @@
-.row
-  .offset-md-1.col-md-11
-    = form_for misa, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: misa, col: "md", pad: 3, width: 5}
-      = render "utils/text_field_for", shared.merge(param: :title, text: t("misa.title"))
-      = render "utils/select_for", shared.merge(param: :category, text: t("misa.category"), menu: misa_category_menu(misa.category, new_record: misa.new_record?), width: 2)
-      = render "utils/text_field_for", shared.merge(param: :short, text: t("misa.short"), width: 2)
-      = render "utils/text_field_for", shared.merge(param: :long, text: t("misa.long"), width: 2)
-      = render "utils/text_field_for", shared.merge(param: :minutes, text: t("misa.minutes"), width: 2)
-      = render "utils/text_field_for", shared.merge(param: :published, text: t("misa.published"), width: 2)
-      = render "utils/check_box_for", shared.merge(param: :japanese, text: t("misa.japanese"), width: 1)
-      = render "utils/text_area_for", shared.merge(param: :note, text: t("misa.note"), rows: 30)
-      .row
-        .offset-md-3.col-md-9
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), misa.new_record?? misas_path : misa, class: "btn btn-secondary"
-          - unless misa.new_record?
-            = link_to t("delete"), misa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+= form_for misa, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: misa, col: "md", pad: 3, width: 8}
+  = render "utils/text_field_for", shared.merge(param: :title, text: t("misa.title"))
+  = render "utils/select_for", shared.merge(param: :category, text: t("misa.category"), menu: misa_category_menu(misa.category, new_record: misa.new_record?), width: 2)
+  = render "utils/text_field_for", shared.merge(param: :short, text: t("misa.short"), width: 2)
+  = render "utils/text_field_for", shared.merge(param: :long, text: t("misa.long"), width: 2)
+  = render "utils/text_field_for", shared.merge(param: :minutes, text: t("misa.minutes"), width: 2)
+  = render "utils/text_field_for", shared.merge(param: :published, text: t("misa.published"), width: 2)
+  = render "utils/check_box_for", shared.merge(param: :japanese, text: t("misa.japanese"), width: 1)
+  = render "utils/text_area_for", shared.merge(param: :note, text: t("misa.note"), rows: 30)
+  .row
+    .offset-md-3.col-md-9
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), misa.new_record?? misas_path : misa, class: "btn btn-secondary"
+      - unless misa.new_record?
+        = link_to t("delete"), misa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
