@@ -1,6 +1,8 @@
+= render "utils/title", text: @vocab.kanji
+
 = render "multi_search"
 
-= render "utils/title", text: @vocab.kanji
+= render "quick_accent_updates", selector: "#accent_updates"
 
 %h1.text-center= @vocab.linked_kanji
 
@@ -8,7 +10,7 @@
   .offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %tbody
-        %tr
+        %tr#accent_updates
           %th= t("vocab.audio")
           %td= render "audio_accent", vocab: @vocab
         %tr
