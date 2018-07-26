@@ -29,7 +29,7 @@ class Blog < ApplicationRecord
   end
 
   def story_html(short: false)
-    to_html(short ? first_paragraph : story)
+    to_html(short ? first_paragraph : story, images: !short)
   end
 
   def paragraphs
