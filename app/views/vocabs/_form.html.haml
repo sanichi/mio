@@ -10,6 +10,7 @@
         = render "utils/text_field_for", shared.merge(param: :accent, text: t("vocab.accent"), width: 2)
         = render "utils/text_field_for", shared.merge(param: :category, text: t("vocab.category"), width: 5)
         = render "utils/text_field_for", shared.merge(param: :level, text: t("vocab.level"), width: 2)
+        = render "utils/check_box_for", shared.merge(param: :burned, text: t("vocab.burned"), width: 1)
       .row
         .offset-md-2.col-md-10
           = f.submit t("save"), class: "btn btn-primary"

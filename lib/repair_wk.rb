@@ -46,6 +46,11 @@ def repair_vocabs(wk)
       puts "  meaning...... #{vocab.meaning} => #{data["meaning"]}"
       vocab.meaning = data["meaning"]
     end
+    if vocab.burned != data["user_specific"]["burned"]
+      puts headline unless vocab.changed?
+      puts "  burned....... #{vocab.burned} => #{data["user_specific"]["burned"]}"
+      vocab.burned = data["user_specific"]["burned"]
+    end
 
     # To save time, at the cost of not catching all changes, only scrape data
     # that isn't returned by the API for vocabs that have some other change.
@@ -81,8 +86,11 @@ def repair_vocabs(wk)
 end
 
 def permission_granted?(count=1)
-  print "  update [Ynq]? "
+  return true if @permission_granted
+  print "  update [Ynqc]? "
   case gets.chomp
+  when /\Ac(ontinue)?\z/i
+    @permission_granted = true
   when "", /\Ay(es)?\z/i
     true
   when /\Ano?\z/i

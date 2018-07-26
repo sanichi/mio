@@ -58,7 +58,7 @@ class VocabsController < ApplicationController
   end
 
   def strong_params
-    params.require(:vocab).permit(:accent, :audio, :category, :kanji, :level, :meaning, :reading)
+    params.require(:vocab).permit(:accent, :audio, :burned, :category, :kanji, :level, :meaning, :reading)
   end
 
   # Don't force the user to switch input language just to input a single digit.

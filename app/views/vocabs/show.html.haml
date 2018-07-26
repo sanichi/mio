@@ -28,6 +28,9 @@
         %tr
           %th= t("vocab.level")
           %td= @vocab.level
+        %tr
+          %th= t("vocab.burned")
+          %td= t("symbol.#{@vocab.burned ? 'tick' : 'cross'}")
 
 .text-center
   = render "external_links", kanji: @vocab.kanji

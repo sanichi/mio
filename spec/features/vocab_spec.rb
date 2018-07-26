@@ -13,6 +13,7 @@ describe Vocab do
     it "success" do
       click_link t(:vocab_new)
       fill_in t(:vocab_audio), with: data.audio
+      check t(:vocab_burned) if data.burned
       fill_in t(:vocab_category), with: data.category
       fill_in t(:vocab_reading), with: data.reading
       fill_in t(:vocab_kanji), with: data.kanji
@@ -26,6 +27,7 @@ describe Vocab do
       v = Vocab.last
 
       expect(v.audio).to eq data.audio
+      expect(v.burned).to eq data.burned
       expect(v.category).to eq data.category
       expect(v.reading).to eq data.reading
       expect(v.kanji).to eq data.kanji
@@ -36,6 +38,7 @@ describe Vocab do
 
     it "failure" do
       click_link t(:vocab_new)
+      check t(:vocab_burned) if data.burned
       fill_in t(:vocab_category), with: data.category
       fill_in t(:vocab_reading), with: data.reading
       fill_in t(:vocab_kanji), with: data.kanji
