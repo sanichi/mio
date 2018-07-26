@@ -31,22 +31,22 @@ def repair_vocabs(wk)
     headline = "#{kanji} (#{i+1} of #{vocabs.size})"
 
     # See if everything is the same.
-    if vocab.level != data["level"]
+    if data["level"].is_a?(Integer) && vocab.level != data["level"]
       puts headline unless vocab.changed?
       puts "  level........ #{vocab.level} => #{data["level"]}"
       vocab.level = data["level"]
     end
-    if vocab.reading != data["kana"]
+    if data["kana"].is_a?(String) && vocab.reading != data["kana"]
       puts headline unless vocab.changed?
       puts "  reading...... #{vocab.reading} => #{data["kana"]}"
       vocab.reading = data["kana"]
     end
-    if vocab.meaning != data["meaning"].truncate(Vocab::MAX_MEANING)
+    if data["meaning"].is_a?(String) && vocab.meaning != data["meaning"].truncate(Vocab::MAX_MEANING)
       puts headline unless vocab.changed?
       puts "  meaning...... #{vocab.meaning} => #{data["meaning"]}"
       vocab.meaning = data["meaning"]
     end
-    if vocab.burned != data["user_specific"]["burned"]
+    if data["user_specific"].is_a?(Hash) && [true, false].include?(data["user_specific"]["burned"]) && vocab.burned != data["user_specific"]["burned"]
       puts headline unless vocab.changed?
       puts "  burned....... #{vocab.burned} => #{data["user_specific"]["burned"]}"
       vocab.burned = data["user_specific"]["burned"]
