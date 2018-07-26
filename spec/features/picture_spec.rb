@@ -39,9 +39,9 @@ describe Picture do
         expect(p.people).to be_include(person1)
         expect(p.people).to be_include(person2)
         expect(p.title).to eq title
-        expect(p.image2.filename).to eq good_file
-        expect(p.image2.content_type).to eq "image/jpeg"
-        expect(p.image2.byte_size).to eq 13738
+        expect(p.image.filename).to eq good_file
+        expect(p.image.content_type).to eq "image/jpeg"
+        expect(p.image.byte_size).to eq 13738
       end
 
       it "without people" do
@@ -62,9 +62,9 @@ describe Picture do
         expect(p.portrait).to eq data.portrait
         expect(p.people.size).to eq 0
         expect(p.title).to eq title
-        expect(p.image2.filename).to eq good_file
-        expect(p.image2.content_type).to eq "image/jpeg"
-        expect(p.image2.byte_size).to eq 13738
+        expect(p.image.filename).to eq good_file
+        expect(p.image.content_type).to eq "image/jpeg"
+        expect(p.image.byte_size).to eq 13738
       end
     end
 
@@ -90,7 +90,7 @@ describe Picture do
   context "edit", type: :active_storage do
     let!(:picture) do
       p = Picture.new(people: [person1, person2], description: data.description)
-      p.image2.attach(io: File.open(test_file_path(good_file)), filename: good_file)
+      p.image.attach(io: File.open(test_file_path(good_file)), filename: good_file)
       p.save
       p
     end
@@ -135,9 +135,9 @@ describe Picture do
     end
 
     it "image" do
-      expect(picture.image2.filename).to eq good_file
-      expect(picture.image2.content_type).to eq "image/jpeg"
-      expect(picture.image2.byte_size).to eq 13738
+      expect(picture.image.filename).to eq good_file
+      expect(picture.image.content_type).to eq "image/jpeg"
+      expect(picture.image.byte_size).to eq 13738
 
       expect(page).to have_title t(:picture_edit)
       attach_file t(:picture_file), test_file_path(good_file2)
@@ -148,16 +148,16 @@ describe Picture do
       expect(PersonPicture.count).to eq 2
 
       picture.reload
-      expect(picture.image2.filename).to eq good_file2
-      expect(picture.image2.content_type).to eq "image/png"
-      expect(picture.image2.byte_size).to eq 8285
+      expect(picture.image.filename).to eq good_file2
+      expect(picture.image.content_type).to eq "image/png"
+      expect(picture.image.byte_size).to eq 8285
     end
   end
 
   context "delete" do
     let!(:picture) do
       p = Picture.new(people: [person1, person2, person3], description: data.description)
-      p.image2.attach(io: File.open(test_file_path(good_file)), filename: good_file)
+      p.image.attach(io: File.open(test_file_path(good_file)), filename: good_file)
       p.save
       p
     end

@@ -4,7 +4,7 @@
 
 .row.mt-3
   .offset-1.col-10.text-center
-    = image_tag @picture.image2.variant(Picture::STYLE[:lg]), class: "img-fluid"
+    = image_tag @picture.image.variant(Picture::STYLE[:lg]), class: "img-fluid"
     - if @picture.portrait
       %div{title: t("picture.portrait"), class: "text-center"}= "☐"
 

@@ -18,7 +18,7 @@ class Picture < ApplicationRecord
 
   before_destroy :cleanup_attachment
 
-  has_one_attached :image2, dependent: :purge
+  has_one_attached :image, dependent: :purge
 
   before_validation :normalize_attributes
 
@@ -28,7 +28,7 @@ class Picture < ApplicationRecord
 
   def self.search(params)
     sql = nil
-    matches = joins(:people).includes(:image2_attachment).includes(:image2_blob)
+    matches = joins(:people).includes(:image_attachment).includes(:image_blob)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name), table: :people)
     matches = matches.where(sql) if sql = cross_constraint(params[:description], %w{description})
     matches = matches.distinct
@@ -48,7 +48,7 @@ class Picture < ApplicationRecord
   end
 
   def thumbnail_path
-    Rails.application.routes.url_helpers.rails_representation_url(image2.variant(STYLE[:tn]), only_path: true)
+    Rails.application.routes.url_helpers.rails_representation_url(image.variant(STYLE[:tn]), only_path: true)
   end
 
   def self.hidden_class(nm)
@@ -93,12 +93,12 @@ class Picture < ApplicationRecord
   end
 
   def check_image_attachment
-    if image2.attached?
-      errors.add(:image2, "invalid content type (#{image2.content_type})") unless image2.content_type =~ /\Aimage\/(#{TYPES})\z/
-      errors.add(:image2, "invalid filename (#{image2.filename})")         unless image2.filename.to_s =~ /\.(#{TYPES})\z/i
-      errors.add(:image2, "too large an image size (#{image2.byte_size})") unless image2.byte_size < MAX_SIZE
+    if image.attached?
+      errors.add(:image, "invalid content type (#{image.content_type})") unless image.content_type =~ /\Aimage\/(#{TYPES})\z/
+      errors.add(:image, "invalid filename (#{image.filename})")         unless image.filename.to_s =~ /\.(#{TYPES})\z/i
+      errors.add(:image, "too large an image size (#{image.byte_size})") unless image.byte_size < MAX_SIZE
     else
-      errors.add(:image2, "no image attached")
+      errors.add(:image, "no image attached")
     end
   end
 
