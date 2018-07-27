@@ -1,6 +1,6 @@
 - homonyms.matches.each do |homonym|
   %tr.d-flex
-    %td.col-1{class: "table-#{vocab.burned ? 'dark' : 'default'}"}= link_to homonym.kanji, homonym
+    %td.col-1{class: vocab_table_class(homonym)}= link_to homonym.kanji, homonym
     %td.col-2= homonym.reading
     %td.col-1.text-center= render "audio_accent", vocab: homonym
     %td.col-4= homonym.meaning

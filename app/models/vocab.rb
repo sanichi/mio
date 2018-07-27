@@ -74,6 +74,7 @@ class Vocab < ApplicationRecord
     matches = case params[:special]
     when "verb"      then matches.tricky_verb
     when "adjective" then matches.tricky_adjective
+    when "burned"    then matches.where(burned: true)
     else matches
     end
     paginate(matches, params, path, opt)
