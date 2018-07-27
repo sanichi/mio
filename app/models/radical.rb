@@ -23,7 +23,7 @@ class Radical < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{symbol meaning})
       matches = matches.where(sql)
     end
-    if (l = params[:level].to_i) >= 0
+    if (l = params[:level].to_i) > 0
       matches = matches.where(level: l)
     end
     paginate(matches, params, path, opt)

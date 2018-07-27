@@ -6,7 +6,7 @@ require 'mechanize'
 class WaniKani
   DELAY = 3.0
 
-  attr_reader :api, :username, :password, :vocab, :kanji
+  attr_reader :api, :username, :password, :vocab, :kanji, :radical
 
   def initialize(credentials)
     raise "invalid WaniKani credentials" unless credentials.is_a?(Hash)
@@ -48,6 +48,22 @@ class WaniKani
     raise "array does not consist entirely of hashes with 'character' entries" unless data.all?{ |v| v.is_a?(Hash) && v.has_key?("character") }
     @kanji = data.each_with_object({}) { |v, h| h[v["character"]] = v }
     @kanji.keys
+  end
+
+  def radicals
+    uri = URI.parse("https://www.wanikani.com/api/user/#{api}/radicals")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    data = ActiveSupport::JSON.decode(response.body)
+    raise "radical data not a hash" unless data&.is_a?(Hash)
+    data = data["requested_information"]
+    raise "radical data has no 'requested_information' array" unless data&.is_a?(Array)
+    raise "array does not consist entirely of hashes with 'character' entries" unless data.all?{ |v| v.is_a?(Hash) && v.has_key?("character") }
+    @radical = data.each_with_object({}) { |v, h| h[v["character"]] = v unless v["character"].nil? }
+    @radical.keys
   end
 
   def agent

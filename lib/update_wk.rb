@@ -117,6 +117,49 @@ def update_kanjis(wk)
   puts "new yomi created: #{Yomi.count - yomi_count}"
 end
 
+def update_radicals(wk)
+  # Get the symbols of the current radicals from the DB.
+  db_radicals = Radical.pluck(:symbol)
+  puts "current count of radicals in #{Rails.env} DB: #{db_radicals.size}"
+
+  # Get the  user's radicals from WaniKani.
+  wk_radicals = wk.radicals
+  puts "current count of user radicals: #{wk_radicals.size}"
+
+  # Block any probelmatic radicals.
+  # wk_radicals -= ["半"]
+
+  # Warn about excess radicals.
+  excess_radicals = db_radicals - wk_radicals
+  puts "excess radicals (#{excess_radicals.size}): #{excess_radicals.join(', ')}" if excess_radicals.any?
+
+  # Get a list of radical we don't have yet.
+  new_radicals = wk_radicals - db_radicals
+  puts "new radicals to retreive: #{new_radicals.size}"
+  return unless new_radicals.any?
+
+  # Note the number of radicals now.
+  radical_count = Radical.count
+
+  # Get a progress bar.
+  progress = ProgressBar.create(title: "Radicals", total: new_radicals.size, output: STDOUT, format: "%t %c |%B|")
+
+  # Loop over the new radicals.
+  new_radicals.each do |radical|
+    # Get the API data for this radical.
+    data = wk.radical[radical]
+
+    # Store all the new data in the DB.
+    Radical.create!(symbol: radical, level: data["level"], meaning: data["meaning"], burned: data["burned"])
+
+    # Update progress.
+    progress.increment
+  end
+
+  # Feedback about number created.
+  puts "new radicals created: #{Radical.count - radical_count}"
+end
+
 begin
   # Give log messages a bit of context.
   puts Date.today
@@ -129,6 +172,9 @@ begin
 
   # Update kanjis, readings and yomis.
   update_kanjis(wk)
+
+  # Update radicals.
+  update_radicals(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}\n#{e.backtrace.join("\n")}"
