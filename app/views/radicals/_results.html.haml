@@ -1,0 +1,6 @@
+- radicals.matches.each do |radical|
+  %tr.d-flex
+    %td.col-1.text-center= radical.symbol
+    %td.col-10= radical.meaning
+    %td.col-1.text-center= radical.level
+= render "utils/pagination_links", pager: radicals, columns: 3

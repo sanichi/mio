@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   end
   resources :pictures
   resources :positions
+  resources :radicals, only: [:index]
   resources :readings, only: [:index, :show]
   resources :residents
   resources :sessions, only: [:create]

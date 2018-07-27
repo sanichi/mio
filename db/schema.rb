@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_210411) do
+ActiveRecord::Schema.define(version: 2018_07_27_103758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -323,6 +323,13 @@ ActiveRecord::Schema.define(version: 2018_07_26_210411) do
     t.integer "opening_id", limit: 2
     t.date "last_reviewed"
     t.string "opening_365", limit: 255
+  end
+
+  create_table "radicals", force: :cascade do |t|
+    t.boolean "burned", default: false
+    t.integer "level", limit: 2
+    t.string "meaning", limit: 100
+    t.string "symbol", limit: 1
   end
 
   create_table "readings", force: :cascade do |t|
