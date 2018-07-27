@@ -1,6 +1,6 @@
 - vocabs.matches.each do |vocab|
   %tr.d-flex
-    %td.col-1{class: vocab_table_class(vocab)}= link_to vocab.kanji, vocab
+    %td.col-1{class: vocab_table_class(vocab.burned)}= link_to vocab.kanji, vocab
     %td.col-2= vocab.reading
     %td.col-1.text-center= render "audio_accent", vocab: vocab
     %td.col-4= vocab.meaning

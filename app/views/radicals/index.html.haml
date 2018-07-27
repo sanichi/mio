@@ -15,7 +15,9 @@
   %thead
     %tr.d-flex
       %th.col-1.text-center= t("vocab.radical")
-      %th.col-10= t("vocab.meaning")
+      %th.col-3= t("vocab.meaning")
+      %th.col-1.text-center= t("vocab.kanji")
+      %th.col-6= t("vocab.meaning")
       %th.col-1.text-center= t("vocab.level")
   %tbody{id: "results"}
     = render "results", radicals: @radicals

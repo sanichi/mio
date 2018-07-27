@@ -67,7 +67,7 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
-  def vocab_table_class(vocab)
-    "table-#{vocab.burned ? 'dark' : 'default'}"
+  def vocab_table_class(burned)
+    "table-#{burned ? 'dark' : 'default'}"
   end
 end

@@ -1,6 +1,8 @@
 - radicals.matches.each do |radical|
   %tr.d-flex
-    %td.col-1.text-center= radical.symbol
-    %td.col-10= radical.meaning
+    %td.col-1.text-center{class: vocab_table_class(radical.burned)}= radical.symbol
+    %td.col-3= radical.meaning
+    %td.col-1.text-center= link_to(radical.kanji.symbol, radical.kanji) if radical.kanji
+    %td.col-6= radical.kanji.meaning if radical.kanji
     %td.col-1.text-center= radical.level
 = render "utils/pagination_links", pager: radicals, columns: 3

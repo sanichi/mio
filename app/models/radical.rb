@@ -5,6 +5,8 @@ class Radical < ApplicationRecord
   MAX_SYMBOL = 1
   MAX_MEANING = 100
 
+  belongs_to :kanji
+
   before_validation :truncate
 
   validates :symbol, presence: true, length: { maximum: MAX_SYMBOL }, uniqueness: true

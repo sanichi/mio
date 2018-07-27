@@ -149,8 +149,11 @@ def update_radicals(wk)
     # Get the API data for this radical.
     data = wk.radical[radical]
 
+    # Is there a matching kanji?
+    kanji = Kanji.find_by(symbol: radical)
+
     # Store all the new data in the DB.
-    Radical.create!(symbol: radical, level: data["level"], meaning: data["meaning"], burned: data["burned"])
+    Radical.create!(symbol: radical, level: data["level"], meaning: data["meaning"], kanji: kanji)
 
     # Update progress.
     progress.increment
