@@ -72,7 +72,7 @@ def repair_vocabs(wk)
       todo += 1
 
       # Do we want to save the changes?
-      if permission_granted?
+      if wk.permission_granted?
         vocab.save!
         done += 1
       end
@@ -83,28 +83,6 @@ def repair_vocabs(wk)
   todo = "no" if todo == 0
   done = "none" if done == 0
   puts "#{todo} potential repairs found, #{done} carried out"
-end
-
-def permission_granted?(count=1)
-  return true if @permission_granted
-  print "  update [Ynqc]? "
-  case gets.chomp
-  when /\Ac(ontinue)?\z/i
-    @permission_granted = true
-  when "", /\Ay(es)?\z/i
-    true
-  when /\Ano?\z/i
-    false
-  when /\A(q(uit)?|e?x(it)?)\z/i
-    puts "user chose to exit"
-    exit
-  else
-    if count < 3
-      permission_granted?(count + 1)
-    else
-      raise("too many invalid responses")
-    end
-  end
 end
 
 begin

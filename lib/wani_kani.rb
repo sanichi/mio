@@ -99,6 +99,28 @@ class WaniKani
     [audio_file, category]
   end
 
+  def permission_granted?(count=1)
+    return true if @permission_granted
+    print "  update [Ynqc]? "
+    case gets.chomp
+    when /\Ac(ontinue)?\z/i
+      @permission_granted = true
+    when "", /\Ay(es)?\z/i
+      true
+    when /\Ano?\z/i
+      false
+    when /\A(q(uit)?|e?x(it)?)\z/i
+      puts "user chose to exit"
+      exit
+    else
+      if count < 3
+        permission_granted?(count + 1)
+      else
+        raise("too many invalid responses")
+      end
+    end
+  end
+
   private
 
   def download_audio(source, file)
