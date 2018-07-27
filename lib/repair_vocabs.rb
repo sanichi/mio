@@ -1,6 +1,6 @@
 require 'wani_kani'
 
-def repair_vocabs(wk)
+def repair(wk)
   # Get the kanji of the current vocabs from the DB.
   db_vocabs = Vocab.pluck(:kanji)
   puts "current count of vocabs in #{Rails.env} DB: #{db_vocabs.size}"
@@ -93,7 +93,7 @@ begin
   wk = WaniKani.new(Rails.application.credentials.wani_kani)
 
   # Repair vocabs.
-  repair_vocabs(wk)
+  repair(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}"
