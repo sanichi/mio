@@ -22,6 +22,7 @@ class Radical < ApplicationRecord
     when "symbol"   then by_symbol
     else                 by_meaning
     end
+    matches = matches.includes(:kanji)
     if sql = cross_constraint(params[:q], %w{symbol meaning})
       matches = matches.where(sql)
     end

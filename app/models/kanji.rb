@@ -31,13 +31,13 @@ class Kanji < ApplicationRecord
     else                 by_total
     end
     matches = matches.includes(yomis: :reading)
+    if (l = params[:level].to_i) > 0
+      matches = matches.where(level: l)
+    end
     if sql = cross_constraint(params[:q], %w{symbol meaning readings.kana})
       # Note .uniq seems to work and is used in place of .distinct as the
       # latter runs into postgres problems with DISTINCT and ORDER BY.
       matches = matches.joins(:readings).where(sql).uniq
-    end
-    if (l = params[:level].to_i) > 0
-      matches = matches.where(level: l)
     end
     paginate(matches, params, path, opt)
   end

@@ -11,13 +11,16 @@
   = select_tag :order, radical_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    %tr.d-flex
-      %th.col-1.text-center= t("vocab.radical")
-      %th.col-2= t("vocab.meaning")
-      %th.col-1.text-center= t("vocab.kanji")
-      %th.col-7= t("vocab.meaning")
-      %th.col-1.text-center= t("vocab.level")
-  %tbody{id: "results"}
-    = render "results", radicals: @radicals
+.row
+  .offset-lg-1.col-lg-10.offset-xl-2.col-xl-8
+    %table{class: "table table-bordered table-striped table-sm mt-3"}
+      %thead
+        %tr.d-flex
+          %th.col-1.text-center= t("vocab.radical")
+          %th.col-3= t("vocab.meaning")
+          %th.col-1.text-center= t("vocab.level")
+          %th.col-1.text-center= t("vocab.kanji")
+          %th.col-5= t("vocab.meaning")
+          %th.col-1.text-center= t("vocab.level")
+      %tbody{id: "results"}
+        = render "results", radicals: @radicals
