@@ -80,32 +80,10 @@ def update_kanjis(wk)
     # Create a new kanji object.
     k = Kanji.create!(symbol: kanji, meaning: data["meaning"], level: data["level"])
 
-    # Organise the WaniKani reading data.
-    onyomi = data["onyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
-    kunyomi = data["kunyomi"].to_s.gsub(/[\sa-zA-Z\/.*]/, "").split(",")
-    die "no onyomi or kunyomi for kanji: #{kanji}" if onyomi.empty? && kunyomi.empty?
-
-    # Check the important readings.
-    important = data["important_reading"]
-    die "invalid value (#{important} for 'importent_reading' for kanji: #{kanji}" unless important == "onyomi" || important == "kunyomi"
-    message = "important readings for kanji #{kanji} are #{important} but there are none"
-    if important == "onyomi"
-      die message if onyomi.empty?
-    else
-      die message if kunyomi.empty?
-    end
-
-    # Store the new onyomi readings and their links to the kanji.
-    onyomi.each do |on|
-      r = Reading.find_or_create_by!(kana: on)
-      y = Yomi.create!(kanji: k, reading: r, on: true, important: important == "onyomi")
-    end
-
-    # Store the new kunyomi readings and their links to the kanji.
-    kunyomi.each do |kun|
-      r = Reading.find_or_create_by!(kana: kun)
-      y = Yomi.create!(kanji: k, reading: r, on: false, important: important == "kunyomi")
-    end
+    # Create readings (and yomis, which connect kanjis to their readings and vice-versa).
+    error = k.check_reading_data(data["onyomi"], data["kunyomi"], data["important_reading"])
+    error = k.create_readings unless error
+    die "kanji #{kanji} had a readings error: #{error}" if error
 
     # Update progress.
     progress.increment
@@ -171,13 +149,13 @@ begin
   wk = WaniKani.new(Rails.application.credentials.wani_kani)
 
   # Update vocabs.
-  update_vocabs(wk)
+  # update_vocabs(wk)
 
   # Update kanjis, readings and yomis.
   update_kanjis(wk)
 
   # Update radicals.
-  update_radicals(wk)
+  # update_radicals(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}\n#{e.backtrace.join("\n")}"

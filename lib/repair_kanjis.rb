@@ -47,15 +47,29 @@ def repair(wk)
       kanji.burned = data["user_specific"]["burned"]
     end
 
+    # Check if the readings have changed. This is more involved because of how the data is structured.
+    error = kanji.check_reading_data(data["onyomi"], data["kunyomi"], data["important_reading"])
+    die "kanji #{symbol} had a readings setup error: #{error}" if error
+    readings_change = kanji.readings_change
+
+    if readings_change
+      puts headline unless kanji.changed?
+      puts "  reading...... #{readings_change}"
+    end
+
     # To save time, at the cost of not catching all changes, only scrape data
     # that isn't returned by the API for kanjis that have some other change.
-    if kanji.changed?
+    if kanji.changed? || readings_change
       # Increment the number of potential repairs.
       todo += 1
 
       # Do we want to save the changes?
       if wk.permission_granted?
-        kanji.save!
+        kanji.save! unless !kanji.changed?
+        if readings_change
+          error = kanji.create_readings(update: true)
+          die "kanji #{symbol} had a readings processing error: #{error}" if error
+        end
         done += 1
       end
     end
