@@ -7,6 +7,7 @@ class Kanji < ApplicationRecord
 
   has_many :yomis, dependent: :destroy
   has_many :readings, through: :yomis
+  has_one :radical
 
   before_validation :truncate
 

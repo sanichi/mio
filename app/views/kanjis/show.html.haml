@@ -17,9 +17,18 @@
         %tr.d-flex
           %th.col-3= t("vocab.meaning")
           %td.col-9= @kanji.meaning
+        - if radical = @kanji.radical
+          %tr.d-flex
+            %th.col-3= t("vocab.radical")
+            %td.col-9{class: vocab_table_class(radical.burned)}
+              = radical.symbol
+              = surround("(", ")") { radical.meaning }
         %tr.d-flex
           %th.col-3= t("vocab.level")
           %td.col-9= @kanji.level
+        %tr.d-flex
+          %th.col-3= t("vocab.burned")
+          %td.col-9= t("symbol.#{@kanji.burned ? 'tick' : 'cross'}")
 
 .text-center
   = render "external_links", symbol: @kanji.symbol
