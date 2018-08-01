@@ -3,7 +3,7 @@ class SimilarWordsController < ApplicationController
   before_action :find_similar_word, only: [:show, :edit, :update, :destroy]
 
   def index
-    @similar_words = SimilarWord.search(params, similar_words_path)
+    @similar_words = SimilarWord.search(params, similar_words_path, per_page: 20)
   end
 
   def show

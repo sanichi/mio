@@ -3,7 +3,7 @@ class SimilarKanjisController < ApplicationController
   before_action :find_similar_kanji, only: [:show, :edit, :update, :destroy]
 
   def index
-    @similar_kanjis = SimilarKanji.search(params, similar_kanjis_path)
+    @similar_kanjis = SimilarKanji.search(params, similar_kanjis_path, per_page: 20)
   end
 
   def show
