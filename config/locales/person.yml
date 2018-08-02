@@ -5,7 +5,6 @@ en:
     children: Children
     died: Died
     died_guess: Died guess?
-    realm: Domain
     edit: Edit Person
     family: Family
     family_tree: Family Tree
@@ -25,6 +24,7 @@ en:
     partners: Partners
     people: People
     person: Person
+    realm: Realm
     relationship_to: Relationship To
     siblings: Siblings
     tree: Tree
@@ -42,9 +42,6 @@ en:
       pictures_with_no_people: Pictures with no People
       pictures_portraits_without_a_single_person: Portraits of More or Less than one Person
       title: Checklist
-    realms:
-      - Orr
-      - Melrose
     help:
       search: How to Search for People
       tree: How to Use the Family Tree
@@ -53,6 +50,9 @@ en:
       first: by first name
       known: by known as
       last: by last name
+    realms:
+      - Orr
+      - Melrose
     symbol:
       male: ♂
       female: ♀
