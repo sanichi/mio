@@ -4,7 +4,7 @@ FactoryBot.define do
     born_guess   { [true, false].sample }
     died         nil
     died_guess   false
-    domain       { Person::MIN_DOMAIN.upto(Person::MAX_DOMAIN).to_a.sample }
+    realm        { Person::MIN_REALM.upto(Person::MAX_REALM).to_a.sample }
     first_names  { (rand(3) + 1).times.map{ Faker::Name.first_name }.join(" ") }
     male         { [true, false].sample }
     known_as     { Faker::Name.first_name }

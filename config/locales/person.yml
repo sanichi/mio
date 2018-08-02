@@ -5,7 +5,7 @@ en:
     children: Children
     died: Died
     died_guess: Died guess?
-    domain: Domain
+    realm: Domain
     edit: Edit Person
     family: Family
     family_tree: Family Tree
@@ -42,7 +42,7 @@ en:
       pictures_with_no_people: Pictures with no People
       pictures_portraits_without_a_single_person: Portraits of More or Less than one Person
       title: Checklist
-    domains:
+    realms:
       - Orr
       - Melrose
     help:

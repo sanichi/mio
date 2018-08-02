@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Person do
   let(:data)    { build(:person) }
-  let!(:father) { create(:person, male: true, born: data.born - 26, domain: data.domain) }
-  let!(:mother) { create(:person, male: false, born: data.born - 24, domain: data.domain) }
+  let!(:father) { create(:person, male: true, born: data.born - 26, realm: data.realm) }
+  let!(:mother) { create(:person, male: false, born: data.born - 24, realm: data.realm) }
 
   let(:count)   { 2 }
 
@@ -23,7 +23,7 @@ describe Person do
       fill_in t(:person_died), with: data.died
       check t(:person_died__guess) if data.died_guess
       select father.name(reversed: true, with_years: true, with_married_name: true), from: t(:person_father)
-      select t(:person_domains)[data.domain], from: t(:person_domain)
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       select mother.name(reversed: true, with_years: true, with_married_name: true), from: t(:person_mother)
       fill_in t(:person_notes), with: data.notes
       check t(:person_male) if data.male
@@ -42,7 +42,7 @@ describe Person do
       expect(p.born_guess).to eq data.born_guess
       expect(p.died).to eq data.died
       expect(p.died_guess).to eq data.died_guess
-      expect(p.domain).to eq data.domain
+      expect(p.realm).to eq data.realm
       expect(p.male).to eq data.male
       expect(p.married_name).to eq data.married_name
       expect(p.father_id).to eq father.id

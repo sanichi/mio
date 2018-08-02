@@ -15,8 +15,8 @@ class Person < ApplicationRecord
   MAX_KA = 20
   MAX_LN = 50
   MIN_YR = 1600
-  MIN_DOMAIN = 0
-  MAX_DOMAIN = I18n.t("person.domains").size - 1
+  MIN_REALM = 0
+  MAX_REALM = I18n.t("person.realms").size - 1
 
   before_validation :tidy_text
 
@@ -27,7 +27,7 @@ class Person < ApplicationRecord
   validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
   validates :married_name, length: { maximum: MAX_LN }, allow_nil: true
-  validates :domain, numericality: { integer_only: true, greater_than_or_equal_to: MIN_DOMAIN, less_than_or_equal_to: MAX_DOMAIN }
+  validates :realm, numericality: { integer_only: true, greater_than_or_equal_to: MIN_REALM, less_than_or_equal_to: MAX_REALM }
 
   validate :years_must_make_sense, :parents_must_make_sense
 
@@ -77,7 +77,7 @@ class Person < ApplicationRecord
     matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
-    matches = matches.where(domain: params[:domain].to_i)
+    matches = matches.where(realm: params[:realm].to_i)
     paginate(matches, params, path, opt)
   end
 
@@ -87,6 +87,7 @@ class Person < ApplicationRecord
     matches = where(sql)
     matches = matches.where(male: true)  if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
+    matches = matches.where(realm: params[:realm].to_i) if params[:realm].present?
     matches = matches.where("born < #{params[:max_born].to_i}") if params[:max_born].to_i > 0
     matches.by_last_name.map do |person|
       { id: person.id, value: person.name(reversed: true, with_years: true, with_married_name: true) }
@@ -178,9 +179,9 @@ class Person < ApplicationRecord
 
   def parents_must_make_sense
     errors.add(:father_id, "can't be female") if father.present? && !father.male
-    errors.add(:father_id, "must be from same domain") if father.present? && father.domain != domain
+    errors.add(:father_id, "must be from same realm") if father.present? && father.realm != realm
     errors.add(:mother_id, "can't be male") if mother.present? && mother.male
-    errors.add(:mother_id, "must be from same domain") if mother.present? && mother.domain != domain
+    errors.add(:mother_id, "must be from same realm") if mother.present? && mother.realm != realm
   end
 
   def complete(ancestors)

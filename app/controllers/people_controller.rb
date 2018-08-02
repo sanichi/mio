@@ -71,6 +71,6 @@ class PeopleController < ApplicationController
   end
 
   def strong_params
-    params.require(:person).permit(:born, :born_guess, :died, :died_guess, :domain, :father_id, :first_names, :known_as, :last_name, :male, :married_name, :mother_id, :notes)
+    params.require(:person).permit(:born, :born_guess, :died, :died_guess, :father_id, :first_names, :known_as, :last_name, :male, :married_name, :mother_id, :notes, :realm)
   end
 end

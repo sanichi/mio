@@ -1,5 +1,5 @@
 - content_for :javascript do
-  = render "parent_completer.js", max_born: person.new_record?? 0 : person.born
+  = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.realm
 
 .row
   .offset-md-1.col-md-11
@@ -16,7 +16,7 @@
       = render "utils/check_box_for", shared.merge(param: :male, text: t("person.male"), width: 1)
       = render "utils/select_completer_for", shared.merge(param: :father_id, text: t("person.father"), menu: person_father_menu(person), width: 4)
       = render "utils/select_completer_for", shared.merge(param: :mother_id, text: t("person.mother"), menu: person_mother_menu(person), width: 4)
-      = render "utils/select_for", shared.merge(param: :domain, text: t("person.domain"), menu: person_domain_menu(person.domain), width: 2)
+      = render "utils/select_for", shared.merge(param: :realm, text: t("person.realm"), menu: person_realm_menu(person.realm), width: 2)
       = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
       .row
         .offset-md-3.col-md-9

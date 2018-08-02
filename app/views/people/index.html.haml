@@ -11,8 +11,8 @@
   = text_field_tag :died, params[:died], class: "form-control mr-1 mb-1", placeholder: t("person.died"), size: 10
   = label_tag :notes, t("person.notes"), class: "sr-only"
   = text_field_tag :notes, params[:notes], class: "form-control mr-1 mb-1", placeholder: t("person.notes"), size: 10
-  = label_tag :domain, t("person.domain"), class: "sr-only"
-  = select_tag :domain, person_domain_menu(params[:domain]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :realm, t("person.realm"), class: "sr-only"
+  = select_tag :realm, person_realm_menu(params[:realm]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, person_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mb-1"
