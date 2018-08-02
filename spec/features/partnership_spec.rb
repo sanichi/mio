@@ -5,7 +5,7 @@ describe Partnership do
   let(:data) { build(:partnership) }
 
   let!(:husband) { create(:person, male: true, born: data.wedding - 30) }
-  let!(:wife)    { create(:person, male: false, born: data.wedding - 25) }
+  let!(:wife)    { create(:person, male: false, born: data.wedding - 25, domain: husband.domain) }
 
   before(:each) do
     login

@@ -16,6 +16,7 @@
       = render "utils/check_box_for", shared.merge(param: :male, text: t("person.male"), width: 1)
       = render "utils/select_completer_for", shared.merge(param: :father_id, text: t("person.father"), menu: person_father_menu(person), width: 4)
       = render "utils/select_completer_for", shared.merge(param: :mother_id, text: t("person.mother"), menu: person_mother_menu(person), width: 4)
+      = render "utils/select_for", shared.merge(param: :domain, text: t("person.domain"), menu: person_domain_menu(person.domain), width: 2)
       = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
       .row
         .offset-md-3.col-md-9

@@ -12,6 +12,11 @@ module PersonHelper
     options_for_select(ords, selected)
   end
 
+  def person_domain_menu(selected)
+    opts = Person::MIN_DOMAIN.upto(Person::MAX_DOMAIN).map { |d| [ t("person.domains")[d], d.to_s ] }
+    options_for_select(opts, selected)
+  end
+
   def person_father_menu(person)
     person_parent_menu(person, true)
   end

@@ -7,6 +7,8 @@
   = text_field_tag :female, params[:female], class: "form-control mr-1 mb-1", placeholder: t("person.female"), size: 12
   = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
   = text_field_tag :wedding, params[:wedding], class: "form-control mr-1 mb-1", placeholder: t("partnership.wedding"), size: 12
+  = label_tag :domain, t("person.domain"), class: "sr-only"
+  = select_tag :domain, person_domain_menu(params[:domain]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row.mt-3

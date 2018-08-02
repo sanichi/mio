@@ -31,6 +31,7 @@ class Picture < ApplicationRecord
     matches = joins(:people).includes(:image_attachment).includes(:image_blob)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name), table: :people)
     matches = matches.where(sql) if sql = cross_constraint(params[:description], %w{description})
+    matches = matches.where(people: { domain: params[:domain].to_i })
     matches = matches.distinct
     matches
   end

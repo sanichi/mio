@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_27_153115) do
+ActiveRecord::Schema.define(version: 2018_08_02_101840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -289,6 +289,7 @@ ActiveRecord::Schema.define(version: 2018_07_27_153115) do
     t.string "married_name", limit: 50
     t.boolean "born_guess", default: false
     t.boolean "died_guess", default: false
+    t.integer "domain", limit: 2, default: 0
   end
 
   create_table "people_pictures", id: false, force: :cascade do |t|

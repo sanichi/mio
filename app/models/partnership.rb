@@ -13,6 +13,7 @@ class Partnership < ApplicationRecord
   validates :wedding, presence: true, numericality: { integer_only: true, greater_than_or_equal_to: MIN_YR }
 
   validate :years_must_make_sense
+  validate :must_be_in_same_domain
 
   def self.search(params, path, opt={})
     matches = includes(:husband).includes(:wife).order(:wedding)
@@ -25,6 +26,7 @@ class Partnership < ApplicationRecord
     if (constraint = cross_constraint(params[:female], %w(last_name first_names known_as married_name), table: "wives"))
       matches = matches.joins("INNER JOIN people AS wives ON wives.id = wife_id").where(constraint)
     end
+    matches = matches.where(people: { domain: params[:domain].to_i })
     paginate(matches, params, path, opt)
   end
 
@@ -54,6 +56,10 @@ class Partnership < ApplicationRecord
       errors.add(:wedding, "can't marry before husband born") if husband.present? && husband.born >= wedding
       errors.add(:born, "can't be marry before wife born") if wife.present? && wife.born >= wedding
     end
+  end
+
+  def must_be_in_same_domain
+    errors.add(:husband, "must be in same domain") if husband.present? && wife.present? && husband.domain != wife.domain
   end
 
   def year_plus(year, guess)

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Person do
   context "#name" do
-    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo", born: 1927, married_name: "Orr", male: false) }
-    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr", born: 1931, died: 2015, male: true) }
+    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo", born: 1927, married_name: "Orr", male: false, domain: 0) }
+    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr", born: 1931, died: 2015, male: true, domain: 0) }
 
     it "default" do
       expect(mum.name).to eq "Ruth Patricia Legard (Pat) Algeo"
@@ -62,31 +62,31 @@ describe Person do
   end
 
   context "#relationship" do
-    let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas") }
-    let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona") }
-    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat") }
-    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom") }
-    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June") }
-    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug") }
-    let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry") }
-    let!(:william) { create(:person, born: 1885, male: true, first_names: "William") }
-    let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene") }
-    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John") }
-    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe") }
-    let!(:lily)    { create(:person, born: 1935, male: false, first_names: "Lily") }
-    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth") }
-    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean") }
-    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark") }
-    let!(:sandra)  { create(:person, born: 1957, male: false, first_names: "Sandra") }
-    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc") }
-    let!(:al)      { create(:person, born: 1960, male: false, first_names: "Al") }
-    let!(:ross)    { create(:person, born: 1990, male: true, mother: al, first_names: "Ross") }
-    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk") }
-    let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula") }
-    let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny") }
-    let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye") }
-    let!(:tracey)  { create(:person, born: 1980, male: false, father: malc, first_names: "Tracey") }
-    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie") }
+    let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas", domain: 0) }
+    let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona", domain: 0) }
+    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat", domain: 0) }
+    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom", domain: 0) }
+    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June", domain: 0) }
+    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug", domain: 0) }
+    let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry", domain: 0) }
+    let!(:william) { create(:person, born: 1885, male: true, first_names: "William", domain: 0) }
+    let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene", domain: 0) }
+    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John", domain: 0) }
+    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe", domain: 0) }
+    let!(:lily)    { create(:person, born: 1935, male: false, first_names: "Lily", domain: 0) }
+    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth", domain: 0) }
+    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean", domain: 0) }
+    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark", domain: 0) }
+    let!(:sandra)  { create(:person, born: 1957, male: false, first_names: "Sandra", domain: 0) }
+    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc", domain: 0) }
+    let!(:al)      { create(:person, born: 1960, male: false, first_names: "Al", domain: 0) }
+    let!(:ross)    { create(:person, born: 1990, male: true, mother: al, first_names: "Ross", domain: 0) }
+    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk", domain: 0) }
+    let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula", domain: 0) }
+    let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny", domain: 0) }
+    let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye", domain: 0) }
+    let!(:tracey)  { create(:person, born: 1980, male: false, father: malc, first_names: "Tracey", domain: 0) }
+    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie", domain: 0) }
     let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june) }
     let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily) }
     let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat) }
@@ -208,10 +208,10 @@ describe Person do
   end
 
   context "#partners" do
-    let!(:mark)      { create(:person, born: 1955, male: true) }
-    let!(:lynda)     { create(:person, born: 1967, male: false) }
-    let!(:aphrodite) { create(:person, born: 1969, male: false) }
-    let!(:pat)       { create(:person, born: 1942, male: false) }
+    let!(:mark)      { create(:person, born: 1955, male: true, domain: 0) }
+    let!(:lynda)     { create(:person, born: 1967, male: false, domain: 0) }
+    let!(:aphrodite) { create(:person, born: 1969, male: false, domain: 0) }
+    let!(:pat)       { create(:person, born: 1942, male: false, domain: 0) }
     let!(:m_a)       { create(:partnership, husband: mark, wedding: 1988, marriage: false, wife: aphrodite) }
     let!(:m_p)       { create(:partnership, husband: mark, wedding: 1989, marriage: false, wife: pat) }
     let!(:m_l)       { create(:partnership, husband: mark, wedding: 1990, marriage: false, wife: lynda) }
@@ -222,13 +222,13 @@ describe Person do
   end
 
   context "#siblings" do
-    let!(:terry)     { create(:person, born: 1930, male: true) }
-    let!(:anne)      { create(:person, born: 1930, male: false) }
-    let!(:elma)      { create(:person, born: 1934, male: false) }
-    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne) }
-    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma) }
-    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma) }
-    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma) }
+    let!(:terry)     { create(:person, born: 1930, male: true, domain: 0) }
+    let!(:anne)      { create(:person, born: 1930, male: false, domain: 0) }
+    let!(:elma)      { create(:person, born: 1934, male: false, domain: 0) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, domain: 0) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, domain: 0) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, domain: 0) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, domain: 0) }
 
     it "all siblings" do
       expect(terry.siblings.map(&:id)).to eq []
@@ -277,15 +277,15 @@ describe Person do
   end
 
   context "destruction" do
-    let!(:terry)     { create(:person, born: 1930, male: true) }
-    let!(:anne)      { create(:person, born: 1930, male: false) }
-    let!(:elma)      { create(:person, born: 1934, male: false) }
+    let!(:terry)     { create(:person, born: 1930, male: true, domain: 0) }
+    let!(:anne)      { create(:person, born: 1930, male: false, domain: 0) }
+    let!(:elma)      { create(:person, born: 1934, male: false, domain: 0) }
     let!(:t_a)       { create(:partnership, husband: terry, wedding: 1959, wife: anne) }
     let!(:t_e)       { create(:partnership, husband: terry, wedding: 1965, wife: elma) }
-    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne) }
-    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma) }
-    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma) }
-    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, domain: 0) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, domain: 0) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, domain: 0) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, domain: 0) }
 
     it "husband => partnership" do
       expect(Partnership.count).to eq 2

@@ -15,6 +15,8 @@ class Person < ApplicationRecord
   MAX_KA = 20
   MAX_LN = 50
   MIN_YR = 1600
+  MIN_DOMAIN = 0
+  MAX_DOMAIN = I18n.t("person.domains").size - 1
 
   before_validation :tidy_text
 
@@ -25,6 +27,7 @@ class Person < ApplicationRecord
   validates :known_as, presence: true, length: { maximum: MAX_KA }
   validates :last_name, presence: true, length: { maximum: MAX_LN }
   validates :married_name, length: { maximum: MAX_LN }, allow_nil: true
+  validates :domain, numericality: { integer_only: true, greater_than_or_equal_to: MIN_DOMAIN, less_than_or_equal_to: MAX_DOMAIN }
 
   validate :years_must_make_sense, :parents_must_make_sense
 
@@ -74,6 +77,7 @@ class Person < ApplicationRecord
     matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
+    matches = matches.where(domain: params[:domain].to_i)
     paginate(matches, params, path, opt)
   end
 
@@ -174,7 +178,9 @@ class Person < ApplicationRecord
 
   def parents_must_make_sense
     errors.add(:father_id, "can't be female") if father.present? && !father.male
+    errors.add(:father_id, "must be from same domain") if father.present? && father.domain != domain
     errors.add(:mother_id, "can't be male") if mother.present? && mother.male
+    errors.add(:mother_id, "must be from same domain") if mother.present? && mother.domain != domain
   end
 
   def complete(ancestors)
