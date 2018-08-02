@@ -54,6 +54,9 @@
         = render "partners", partnerships: @person.partnerships, male: @person.male, label: t("person.partners")
         = render "people", people: @person.children, label: t("person.children")
         %tr
+          %th= t("person.realm")
+          %td= t("person.realms")[@person.realm]
+        %tr
           %th= t("person.relationship_to")
           %td.form-inline
             .input-group.input-group-sm
