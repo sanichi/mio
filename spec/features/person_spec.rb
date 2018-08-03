@@ -10,6 +10,8 @@ describe Person do
   before(:each) do
     login
     click_link t(:person_people)
+    select t(:person_realms)[data.realm], from: t(:person_realm)
+    click_button t(:search)
   end
 
   context "create" do
@@ -30,7 +32,7 @@ describe Person do
       fill_in t(:person_married__name), with: data.married_name
       click_button t(:save)
 
-      # expect(page).to have_title data.name(full: false)
+      expect(page).to have_title data.name(full: false)
 
       expect(Person.count).to eq count + 1
       p = Person.last

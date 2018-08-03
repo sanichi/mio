@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 describe Person do
+  let(:realm) { Person::MIN_REALM.upto(Person::MAX_REALM).to_a.sample }
+
   context "#name" do
-    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo", born: 1927, married_name: "Orr", male: false, realm: 0) }
-    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr", born: 1931, died: 2015, male: true, realm: 0) }
+    let(:mum) { create(:person, first_names: "Ruth Patricia Legard", known_as: "Pat", last_name: "Algeo", born: 1927, married_name: "Orr", male: false, realm: realm) }
+    let(:dad) { create(:person, first_names: "John", known_as: "John", last_name: "Orr", born: 1931, died: 2015, male: true, realm: realm) }
 
     it "default" do
       expect(mum.name).to eq "Ruth Patricia Legard (Pat) Algeo"
@@ -62,38 +64,38 @@ describe Person do
   end
 
   context "#relationship" do
-    let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas", realm: 0) }
-    let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona", realm: 0) }
-    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat", realm: 0) }
-    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom", realm: 0) }
-    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June", realm: 0) }
-    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug", realm: 0) }
-    let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry", realm: 0) }
-    let!(:william) { create(:person, born: 1885, male: true, first_names: "William", realm: 0) }
-    let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene", realm: 0) }
-    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John", realm: 0) }
-    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe", realm: 0) }
-    let!(:lily)    { create(:person, born: 1935, male: false, first_names: "Lily", realm: 0) }
-    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth", realm: 0) }
-    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean", realm: 0) }
-    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark", realm: 0) }
-    let!(:sandra)  { create(:person, born: 1957, male: false, first_names: "Sandra", realm: 0) }
-    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc", realm: 0) }
-    let!(:al)      { create(:person, born: 1960, male: false, first_names: "Al", realm: 0) }
-    let!(:ross)    { create(:person, born: 1990, male: true, mother: al, first_names: "Ross", realm: 0) }
-    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk", realm: 0) }
-    let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula", realm: 0) }
-    let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny", realm: 0) }
-    let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye", realm: 0) }
-    let!(:tracey)  { create(:person, born: 1980, male: false, father: malc, first_names: "Tracey", realm: 0) }
-    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie", realm: 0) }
-    let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june) }
-    let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily) }
-    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat) }
-    let!(:ma_al)   { create(:partnership, wedding: 1990, marriage: true, husband: malc, wife: al) }
-    let!(:ma_sa)   { create(:partnership, wedding: 1994, marriage: true, husband: mark, wife: sandra) }
-    let!(:th_mo)   { create(:partnership, wedding: 1925, marriage: true, husband: thomas, wife: mona) }
-    let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: true, husband: william, wife: marlene) }
+    let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas", realm: realm) }
+    let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona", realm: realm) }
+    let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat", realm: realm) }
+    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom", realm: realm) }
+    let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June", realm: realm) }
+    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug", realm: realm) }
+    let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry", realm: realm) }
+    let!(:william) { create(:person, born: 1885, male: true, first_names: "William", realm: realm) }
+    let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene", realm: realm) }
+    let!(:john)    { create(:person, born: 1930, male: true, father: william, mother: marlene, first_names: "John", realm: realm) }
+    let!(:joe)     { create(:person, born: 1940, male: true, father: william, mother: marlene, first_names: "Joe", realm: realm) }
+    let!(:lily)    { create(:person, born: 1935, male: false, first_names: "Lily", realm: realm) }
+    let!(:beth)    { create(:person, born: 1935, male: false, father: william, mother: marlene, first_names: "Beth", realm: realm) }
+    let!(:jean)    { create(:person, born: 1929, male: false, father: william, mother: marlene, first_names: "Jean", realm: realm) }
+    let!(:mark)    { create(:person, born: 1955, male: true, father: john, mother: pat, first_names: "Mark", realm: realm) }
+    let!(:sandra)  { create(:person, born: 1957, male: false, first_names: "Sandra", realm: realm) }
+    let!(:malc)    { create(:person, born: 1957, male: true, father: john, mother: pat, first_names: "Malc", realm: realm) }
+    let!(:al)      { create(:person, born: 1960, male: false, first_names: "Al", realm: realm) }
+    let!(:ross)    { create(:person, born: 1990, male: true, mother: al, first_names: "Ross", realm: realm) }
+    let!(:kirk)    { create(:person, born: 1967, male: true, father: gerry, mother: june, first_names: "Kirk", realm: realm) }
+    let!(:paula)   { create(:person, born: 1967, male: false, father: doug, first_names: "Paula", realm: realm) }
+    let!(:penny)   { create(:person, born: 1986, male: false, father: mark, first_names: "Penny", realm: realm) }
+    let!(:faye)    { create(:person, born: 1986, male: false, father: malc, first_names: "Faye", realm: realm) }
+    let!(:tracey)  { create(:person, born: 1980, male: false, father: malc, first_names: "Tracey", realm: realm) }
+    let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie", realm: realm) }
+    let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june, realm: realm) }
+    let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily, realm: realm) }
+    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat, realm: realm) }
+    let!(:ma_al)   { create(:partnership, wedding: 1990, marriage: true, husband: malc, wife: al, realm: realm) }
+    let!(:ma_sa)   { create(:partnership, wedding: 1994, marriage: true, husband: mark, wife: sandra, realm: realm) }
+    let!(:th_mo)   { create(:partnership, wedding: 1925, marriage: true, husband: thomas, wife: mona, realm: realm) }
+    let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: true, husband: william, wife: marlene, realm: realm) }
 
     it "self" do
       expect(thomas.relationship(thomas).to_s).to eq "self"
@@ -208,13 +210,13 @@ describe Person do
   end
 
   context "#partners" do
-    let!(:mark)      { create(:person, born: 1955, male: true, realm: 0) }
-    let!(:lynda)     { create(:person, born: 1967, male: false, realm: 0) }
-    let!(:aphrodite) { create(:person, born: 1969, male: false, realm: 0) }
-    let!(:pat)       { create(:person, born: 1942, male: false, realm: 0) }
-    let!(:m_a)       { create(:partnership, husband: mark, wedding: 1988, marriage: false, wife: aphrodite) }
-    let!(:m_p)       { create(:partnership, husband: mark, wedding: 1989, marriage: false, wife: pat) }
-    let!(:m_l)       { create(:partnership, husband: mark, wedding: 1990, marriage: false, wife: lynda) }
+    let!(:mark)      { create(:person, born: 1955, male: true, realm: realm) }
+    let!(:lynda)     { create(:person, born: 1967, male: false, realm: realm) }
+    let!(:aphrodite) { create(:person, born: 1969, male: false, realm: realm) }
+    let!(:pat)       { create(:person, born: 1942, male: false, realm: realm) }
+    let!(:m_a)       { create(:partnership, husband: mark, wedding: 1988, marriage: false, wife: aphrodite, realm: realm) }
+    let!(:m_p)       { create(:partnership, husband: mark, wedding: 1989, marriage: false, wife: pat, realm: realm) }
+    let!(:m_l)       { create(:partnership, husband: mark, wedding: 1990, marriage: false, wife: lynda, realm: realm) }
 
     it "order by partnership start, not partner age" do
       expect(mark.partners.map(&:id)).to eq [aphrodite.id, pat.id, lynda.id]
@@ -222,13 +224,13 @@ describe Person do
   end
 
   context "#siblings" do
-    let!(:terry)     { create(:person, born: 1930, male: true, realm: 0) }
-    let!(:anne)      { create(:person, born: 1930, male: false, realm: 0) }
-    let!(:elma)      { create(:person, born: 1934, male: false, realm: 0) }
-    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, realm: 0) }
-    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, realm: 0) }
-    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, realm: 0) }
-    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, realm: 0) }
+    let!(:terry)     { create(:person, born: 1930, male: true, realm: realm) }
+    let!(:anne)      { create(:person, born: 1930, male: false, realm: realm) }
+    let!(:elma)      { create(:person, born: 1934, male: false, realm: realm) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, realm: realm) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, realm: realm) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, realm: realm) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, realm: realm) }
 
     it "all siblings" do
       expect(terry.siblings.map(&:id)).to eq []
@@ -277,15 +279,15 @@ describe Person do
   end
 
   context "destruction" do
-    let!(:terry)     { create(:person, born: 1930, male: true, realm: 0) }
-    let!(:anne)      { create(:person, born: 1930, male: false, realm: 0) }
-    let!(:elma)      { create(:person, born: 1934, male: false, realm: 0) }
-    let!(:t_a)       { create(:partnership, husband: terry, wedding: 1959, wife: anne) }
-    let!(:t_e)       { create(:partnership, husband: terry, wedding: 1965, wife: elma) }
-    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, realm: 0) }
-    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, realm: 0) }
-    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, realm: 0) }
-    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, realm: 0) }
+    let!(:terry)     { create(:person, born: 1930, male: true, realm: realm) }
+    let!(:anne)      { create(:person, born: 1930, male: false, realm: realm) }
+    let!(:elma)      { create(:person, born: 1934, male: false, realm: realm) }
+    let!(:t_a)       { create(:partnership, husband: terry, wedding: 1959, wife: anne, realm: realm) }
+    let!(:t_e)       { create(:partnership, husband: terry, wedding: 1965, wife: elma, realm: realm) }
+    let!(:jonathan)  { create(:person, born: 1960, male: true, father: terry, mother: anne, realm: realm) }
+    let!(:stuart)    { create(:person, born: 1966, male: true, father: terry, mother: elma, realm: realm) }
+    let!(:ishbel)    { create(:person, born: 1969, male: false, father: terry, mother: elma, realm: realm) }
+    let!(:helen)     { create(:person, born: 1971, male: false, father: terry, mother: elma, realm: realm) }
 
     it "husband => partnership" do
       expect(Partnership.count).to eq 2

@@ -20,6 +20,9 @@
         %tr
           %th= t("partnership.marriage")
           %td= t(@partnership.marriage ? "yes" : "no")
+        %tr
+          %th= t("person.realm")
+          %td= t("person.realms")[@partnership.realm]
 
 .text-center.margin_top
   - if can?(:manage, Partnership)

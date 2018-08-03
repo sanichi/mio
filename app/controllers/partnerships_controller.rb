@@ -3,11 +3,12 @@ class PartnershipsController < ApplicationController
   before_action :find_partnership, only: [:destroy, :edit, :show, :update]
 
   def index
-    @partnerships = Partnership.search(params, partnerships_path, remote: true)
+    @partnerships = Partnership.search(params, partnerships_path)
   end
 
   def new
     person_id = params[:person_id].to_i
+    realm = params[:realm].to_i
     if person_id > 0 && (person = Person.find_by(id: person_id))
       if person.male
         husband_id = person_id
@@ -15,7 +16,7 @@ class PartnershipsController < ApplicationController
         wife_id = person_id
       end
     end
-    @partnership = Partnership.new(husband_id: husband_id, wife_id: wife_id)
+    @partnership = Partnership.new(husband_id: husband_id, wife_id: wife_id, realm: realm)
   end
 
   def create
@@ -47,6 +48,6 @@ class PartnershipsController < ApplicationController
   end
 
   def strong_params
-    params.require(:partnership).permit(:divorce, :divorce_guess, :husband_id, :marriage, :wedding, :wedding_guess, :wife_id)
+    params.require(:partnership).permit(:divorce, :divorce_guess, :husband_id, :marriage, :realm, :wedding, :wedding_guess, :wife_id)
   end
 end

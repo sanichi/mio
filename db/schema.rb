@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_03_185408) do
+ActiveRecord::Schema.define(version: 2018_08_03_195938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(version: 2018_08_03_185408) do
     t.boolean "marriage", default: true
     t.boolean "wedding_guess", default: false
     t.boolean "divorce_guess", default: false
+    t.integer "realm", limit: 2, default: 0
   end
 
   create_table "people", id: :serial, force: :cascade do |t|

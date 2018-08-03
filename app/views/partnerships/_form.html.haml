@@ -1,5 +1,5 @@
 - content_for :javascript do
-  = render "couples_completer.js"
+  = render "couples_completer.js", realm: partnership.realm
 
 .row
   .offset-md-1.col-md-10
@@ -12,6 +12,8 @@
       = render "utils/text_field_for", shared.merge(param: :divorce, text: t("partnership.divorce"), width: 3)
       = render "utils/check_box_for", shared.merge(param: :divorce_guess, text: t("partnership.divorce_guess"), width: 1)
       = render "utils/check_box_for", shared.merge(param: :marriage, text: t("partnership.marriage"), width: 1)
+      = render "utils/select_for", shared.merge(param: :realm, text: t("person.realm"), menu: person_realm_menu(partnership.realm), width: 2)
+
       .row
         .offset-md-3.col-md-9
           = f.submit t("save"), class: "btn btn-primary"

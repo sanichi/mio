@@ -27,7 +27,7 @@ module PersonHelper
 
   def person_parent_menu(person, male)
     people = Person.order(:last_name, :first_names).where(male: male)
-    people = people.where(realm: person.realm) unless person.new_record?
+    people = people.where(realm: person.realm)
     people = people.where("born < ?", person.born) if person.born.present?
     people = people.where(last_name: person.last_name) if male && person.male && person.last_name.present?
     people = people.all.map{ |p| [p.name(reversed: true, with_years: true, with_married_name: true), p.id] }

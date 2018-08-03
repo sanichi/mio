@@ -13,7 +13,7 @@
     - if can?(:create, Picture)
       = link_to t("picture.new"), new_picture_path(person_id: @person.id, realm: @person.realm), class: "btn btn-info"
     - if can?(:create, Partnership)
-      = link_to t("partnership.new"), new_partnership_path(person_id: @person.id), class: "btn btn-info"
+      = link_to t("partnership.new"), new_partnership_path(person_id: @person.id, realm: @person.realm), class: "btn btn-info"
 
 .row.mt-3
   .col-sm-10.offset-sm-1.col-md-8.offset-md-2

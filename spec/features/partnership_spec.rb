@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 describe Partnership do
-  let(:atrs) { attributes_for(:partnership) }
-  let(:data) { build(:partnership) }
-
-  let!(:husband) { create(:person, male: true, born: data.wedding - 30) }
-  let!(:wife)    { create(:person, male: false, born: data.wedding - 25, realm: husband.realm) }
+  let(:data)     { build(:partnership) }
+  let!(:husband) { create(:person, male: true, born: data.wedding - 30, realm: data.realm) }
+  let!(:wife)    { create(:person, male: false, born: data.wedding - 25, realm: data.realm) }
 
   before(:each) do
     login
     click_link t(:partnership_partnerships)
+    select t(:person_realms)[data.realm], from: t(:person_realm)
+    click_button t(:search)
   end
 
   context "create" do
@@ -22,6 +22,7 @@ describe Partnership do
       fill_in t(:partnership_divorce), with: data.divorce if data.divorce
       check t(:partnership_divorce__guess) if data.divorce_guess
       uncheck t(:partnership_marriage) unless data.marriage
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       click_button t(:save)
 
       expect(page).to have_title t(:partnership_partnership)
@@ -36,6 +37,7 @@ describe Partnership do
       expect(p.divorce).to be_nil
       expect(p.divorce_guess).to eq data.divorce_guess
       expect(p.marriage).to be data.marriage
+      expect(p.realm).to be data.realm
     end
   end
 
@@ -44,6 +46,7 @@ describe Partnership do
       click_link t(:partnership_new)
       select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
       fill_in t(:partnership_wedding), with: data.wedding
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       click_button t(:save)
 
       expect(page).to have_title t(:partnership_new)
@@ -55,6 +58,7 @@ describe Partnership do
       click_link t(:partnership_new)
       select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
       select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       click_button t(:save)
 
       expect(page).to have_title t(:partnership_new)
@@ -66,7 +70,8 @@ describe Partnership do
       click_link t(:partnership_new)
       select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
       select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
-      fill_in t(:partnership_wedding), with: [data.husband.born, data.wife.born].min - 1
+      fill_in t(:partnership_wedding), with: [husband.born, wife.born].min - 1
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       click_button t(:save)
 
       expect(page).to have_title t(:partnership_new)
@@ -75,7 +80,7 @@ describe Partnership do
     end
 
     it "duplicate" do
-      Partnership.create!(husband_id: husband.id, wife_id: wife.id, wedding: data.wedding, marriage: data.marriage)
+      Partnership.create!(husband_id: husband.id, wife_id: wife.id, wedding: data.wedding, marriage: data.marriage, realm: data.realm)
       expect(Partnership.count).to eq 1
 
       click_link t(:partnership_new)
@@ -83,6 +88,7 @@ describe Partnership do
       select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
       fill_in t(:partnership_wedding), with: data.wedding
       uncheck t(:partnership_marriage) unless data.marriage
+      select t(:person_realms)[data.realm], from: t(:person_realm)
       click_button t(:save)
 
       expect(page).to have_title t(:partnership_new)
@@ -92,7 +98,7 @@ describe Partnership do
   end
 
   context "edit" do
-    let(:partnership) { create(:partnership) }
+    let!(:partnership) { create(:partnership, realm: data.realm, husband: husband, wife: wife, marriage: data.marriage) }
 
     it "divorce" do
       expect(partnership.divorce).to be_nil
@@ -116,7 +122,7 @@ describe Partnership do
   end
 
   context "delete" do
-    let!(:partnership) { create(:partnership) }
+    let!(:partnership) { create(:partnership, realm: data.realm, husband: husband, wife: wife, marriage: data.marriage) }
 
     it "success" do
       expect(Partnership.count).to eq 1

@@ -1,6 +1,6 @@
 $(function() {
   $('#husband_id_completer').autocomplete({
-    source: '/people/match.json?gender=male',
+    source: '/people/match.json?gender=male&realm=<%= realm %>',
     minLength: 2,
     select: function(event, ui) {
       $('#partnership_husband_id').val(ui.item ? ui.item.id : '');
@@ -10,7 +10,7 @@ $(function() {
     }
   });
   $('#wife_id_completer').autocomplete({
-    source: '/people/match.json?gender=female',
+    source: '/people/match.json?gender=female&realm=<%= realm %>',
     minLength: 2,
     select: function(event, ui) {
       $('#partnership_wife_id').val(ui.item ? ui.item.id : '');
