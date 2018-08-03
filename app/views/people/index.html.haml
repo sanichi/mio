@@ -1,6 +1,6 @@
 = render "utils/title", key: "person.people", header: true
 
-= form_tag people_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+= form_tag people_path, method: :get, class: "form-inline justify-content-center" do
   = label_tag :name, t("name"), class: "sr-only"
   = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 14
   = label_tag :gender, t("person.gender"), class: "sr-only"
@@ -31,10 +31,10 @@
 
 .text-center
   - if can?(:create, Person)
-    = link_to t("person.new"), new_person_path, class: "btn btn-info"
+    = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "btn btn-info"
   = render "utils/help_button"
-  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
-  = link_to t("person.tree"), tree_people_path, class: "btn btn-success"
+  = link_to t("picture.pictures"), pictures_path(realm: params[:realm].to_i), class: "btn btn-success"
+  = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "btn btn-success"
 
 - content_for :help_title do
   = t("person.help.search")

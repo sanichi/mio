@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Picture do
   let(:data)     { build(:picture) }
-  let!(:person1) { create(:person) }
-  let!(:person2) { create(:person) }
-  let!(:person3) { create(:person) }
+  let!(:person1) { create(:person, realm: data.realm) }
+  let!(:person2) { create(:person, realm: data.realm) }
+  let!(:person3) { create(:person, realm: data.realm) }
 
   let(:good_file)  { "malcolm.jpg" }
   let(:good_file2) { "malcolm.png" }
@@ -24,6 +24,7 @@ describe Picture do
         attach_file t(:picture_file), test_file_path(good_file)
         select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
         select person2.name(reversed: true, with_years: true), from: t(:picture_person, number: 2)
+        select t(:person_realms)[data.realm], from: t(:person_realm)
         click_button t(:save)
 
         expect(PersonPicture.count).to eq 2
@@ -49,6 +50,7 @@ describe Picture do
         fill_in t(:description), with: data.description
         check t(:picture_portrait) if data.portrait
         attach_file t(:picture_file), test_file_path(good_file)
+        select t(:person_realms)[data.realm], from: t(:person_realm)
         click_button t(:save)
 
         expect(PersonPicture.count).to eq 0
@@ -77,6 +79,7 @@ describe Picture do
         check t(:picture_portrait) if data.portrait
         attach_file t(:picture_file), test_file_path(bad_file)
         select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
+        select t(:person_realms)[data.realm], from: t(:person_realm)
         click_button t(:save)
 
         expect(page).to have_title t(:picture_new)
@@ -89,7 +92,7 @@ describe Picture do
 
   context "edit", type: :active_storage do
     let!(:picture) do
-      p = Picture.new(people: [person1, person2], description: data.description)
+      p = Picture.new(people: [person1, person2], description: data.description, realm: data.realm)
       p.image.attach(io: File.open(test_file_path(good_file)), filename: good_file)
       p.save
       p
@@ -156,7 +159,7 @@ describe Picture do
 
   context "delete" do
     let!(:picture) do
-      p = Picture.new(people: [person1, person2, person3], description: data.description)
+      p = Picture.new(people: [person1, person2, person3], description: data.description, realm: data.realm)
       p.image.attach(io: File.open(test_file_path(good_file)), filename: good_file)
       p.save
       p

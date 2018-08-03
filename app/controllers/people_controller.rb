@@ -3,7 +3,7 @@ class PeopleController < ApplicationController
   before_action :find_person, only: [:destroy, :edit, :show, :update]
 
   def index
-    @people = Person.search(params, people_path, remote: true)
+    @people = Person.search(params, people_path)
   end
 
   def match
@@ -14,7 +14,7 @@ class PeopleController < ApplicationController
   end
 
   def tree
-    @person = Person.find_by(id: params[:id]) || current_user.person || Person.offset(rand(Person.count)).first
+    @person = Person.find_by(id: params[:id]) || Person.where(realm: params[:realm].to_i).order(updated_at: :desc).first
     respond_to do |format|
       format.html
       format.json { render json: @person.tree_hash(true) }
@@ -35,7 +35,8 @@ class PeopleController < ApplicationController
   end
 
   def new
-    @person = Person.new
+    realm = params[:realm].to_i
+    @person = Person.new(realm: realm)
   end
 
   def show

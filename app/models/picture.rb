@@ -22,7 +22,9 @@ class Picture < ApplicationRecord
 
   before_validation :normalize_attributes
 
+  validates :realm, numericality: { integer_only: true, greater_than_or_equal_to: Person::MIN_REALM, less_than_or_equal_to: Person::MAX_REALM }
   validate :check_image_attachment
+  validate :check_people_realm
 
   default_scope { order(id: :desc) }
 
@@ -31,7 +33,7 @@ class Picture < ApplicationRecord
     matches = joins(:people).includes(:image_attachment).includes(:image_blob)
     matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name), table: :people)
     matches = matches.where(sql) if sql = cross_constraint(params[:description], %w{description})
-    matches = matches.where(people: { realm: params[:realm].to_i })
+    matches = matches.where(realm: params[:realm].to_i)
     matches = matches.distinct
     matches
   end
@@ -101,6 +103,10 @@ class Picture < ApplicationRecord
     else
       errors.add(:image, "no image attached")
     end
+  end
+
+  def check_people_realm
+    errors.add(:realm, "not all people from this realm") unless people.all? { |p| p.realm == realm }
   end
 
   def cleanup_attachment

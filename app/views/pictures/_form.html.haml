@@ -10,6 +10,7 @@
       = render "utils/file_field_for", shared.merge(param: :image, text: t("picture.file"), width: 4)
       = render "check_box_completers", shared.merge(param: :people, width: 4, number: number)
       = render "utils/check_box_for", shared.merge(param: :portrait, text: t("picture.portrait"), width: 1)
+      = render "utils/select_for", shared.merge(param: :realm, text: t("person.realm"), menu: person_realm_menu(picture.realm), width: 2)
       = render "utils/text_area_for", shared.merge(param: :description, text: t("description"), width: 10)
       .row
         .offset-md-2.col-md-10

@@ -11,7 +11,8 @@ class PicturesController < ApplicationController
     person_id = params[:person_id].to_i
     person = Person.find_by(id: person_id) if person_id > 0
     people = [person].compact
-    @picture = Picture.new(people: people)
+    realm = params[:realm].to_i
+    @picture = Picture.new(people: people, realm: realm)
   end
 
   def create
@@ -45,7 +46,7 @@ class PicturesController < ApplicationController
   end
 
   def strong_params
-    params.require(:picture).permit(:description, :image, :portrait)
+    params.require(:picture).permit(:description, :image, :portrait, :realm)
   end
 
   def update_people

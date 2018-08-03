@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_02_212325) do
+ActiveRecord::Schema.define(version: 2018_08_03_185408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(version: 2018_08_02_212325) do
     t.datetime "updated_at", null: false
     t.boolean "portrait", default: false
     t.string "title"
+    t.integer "realm", limit: 2, default: 0
   end
 
   create_table "positions", id: :serial, force: :cascade do |t|

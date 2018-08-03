@@ -1,6 +1,7 @@
+<% realm_param = realm < 0 ? "" : "&realm=#{realm}" %>
 $(function() {
   $('#father_id_completer').autocomplete({
-    source: '/people/match.json?gender=male&max_born=<%= max_born %>',
+    source: '/people/match.json?gender=male&max_born=<%= max_born %><% realm_param %>',
     minLength: 2,
     select: function(event, ui) {
       $('#person_father_id').val(ui.item ? ui.item.id : '');
