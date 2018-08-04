@@ -27,5 +27,5 @@
 .text-center.margin_top
   - if can?(:manage, Partnership)
     = link_to t("edit"), edit_partnership_path(@partnership), class: "btn btn-info"
-    = link_to t("person.people"), people_path, class: "btn btn-success"
-    = link_to t("partnership.partnerships"), partnerships_path, class: "btn btn-success"
+    = link_to t("person.people"), people_path(realm: @partnership.realm), class: "btn btn-success"
+    = link_to t("partnership.partnerships"), partnerships_path(realm: @partnership.realm), class: "btn btn-success"
