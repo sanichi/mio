@@ -10,7 +10,6 @@
 !/log/.keep
 !/tmp/.keep
 /config/database.yml
-/config/secrets.yml
 /config/master.key
 /public/assets/
 /public/system/
