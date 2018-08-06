@@ -22,7 +22,7 @@ $(function() {
     document.location.href = "/people/" +id;
   });
   $('#term').autocomplete({
-    source: '/people/match.json',
+    source: '/people/match.json?realm=<%= person.realm %>',
     minLength: 2,
     select: function(event, ui) {
       if (ui.item) {
