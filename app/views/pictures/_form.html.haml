@@ -1,7 +1,7 @@
 
 - number = picture.people.size + 3
 - content_for :javascript do
-  = render "person_completer.js", number: number
+  = render "person_completer.js", number: number, realm: picture.realm
 
 .row
   .col-md-12

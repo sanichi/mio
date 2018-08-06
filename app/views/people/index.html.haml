@@ -29,7 +29,7 @@
       %tbody{id: "results"}
         = render "results", people: @people
 
-.text-center
+.text-center#buttons
   - if can?(:create, Person)
     = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "btn btn-info"
   = render "utils/help_button"

@@ -11,7 +11,12 @@ describe Picture do
 
   before(:each) do
     login
-    click_link t(:picture_pictures)
+    click_link t(:person_people)
+    select t(:person_realms)[data.realm], from: t(:person_realm)
+    click_button t(:search)
+    within("#buttons") do
+      click_link t(:picture_pictures)
+    end
   end
 
   context "create", type: :active_storage do

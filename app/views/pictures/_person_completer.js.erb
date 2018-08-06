@@ -1,7 +1,7 @@
 $(function() {
   <% (0..number-1).each do |i| %>
     $('#person_id_completer_<%= i %>').autocomplete({
-      source: '/people/match.json',
+      source: '/people/match.json?realm=<%= realm %>',
       minLength: 2,
       select: function(event, ui) {
         $('#picture_people_<%= i %>').val(ui.item ? ui.item.id : 0);
