@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2.0"
+gem "rails", "~> 5.2.1"
 gem "puma", "~> 3.11"
 gem "pg"
 gem "haml-rails"
