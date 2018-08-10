@@ -15,7 +15,7 @@
             = link_to v1.kanji, v1
             = render "vocabs/audio_accent", vocab: v1
         %tr
-          %td= render "vocabs/colored", vocab: v1
+          %td{class: "text-#{vocab_color(v1)}"}= v1.reading
         %tr
           %td= v1.meaning
         %tr
@@ -26,7 +26,7 @@
             = link_to v2.kanji, v2
             = render "vocabs/audio_accent", vocab: v2
         %tr
-          %td= render "vocabs/colored", vocab: v2
+          %td{class: "text-#{vocab_color(v2)}"}= v2.reading
         %tr
           %td= v2.meaning
         %tr

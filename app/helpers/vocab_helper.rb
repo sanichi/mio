@@ -70,4 +70,8 @@ module VocabHelper
   def vocab_table_class(burned)
     "table-#{burned ? 'dark' : 'default'}"
   end
+
+  def vocab_color(v)
+    %w/info success warning danger secondary primary/[v.color_id] || "info"
+  end
 end
