@@ -67,11 +67,11 @@ module VocabHelper
     options_for_select(opts, selected)
   end
 
-  def vocab_table_class(burned)
+  def vocab_table_bg(burned)
     "table-#{burned ? 'dark' : 'default'}"
   end
 
-  def vocab_color(v)
-    %w/info success warning danger secondary primary/[v.color_id] || "info"
+  def vocab_text_color(v)
+    "text-#{%w/body success warning danger info primary/[v.color_id] || 'body'}"
   end
 end

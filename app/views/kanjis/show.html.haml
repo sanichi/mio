@@ -20,7 +20,7 @@
         - if radical = @kanji.radical
           %tr.d-flex
             %th.col-3= t("vocab.radical")
-            %td.col-9{class: vocab_table_class(radical.burned)}
+            %td.col-9{class: vocab_table_bg(radical.burned)}
               = radical.symbol
               = surround("(", ")") { radical.meaning }
         %tr.d-flex
@@ -45,7 +45,7 @@
   %tbody#accent_updates
     - @vocabs.each do |vocab|
       %tr.d-flex
-        %td.col-1{class: vocab_table_class(vocab.burned)}= link_to vocab.kanji, vocab
+        %td.col-1{class: vocab_table_bg(vocab.burned)}= link_to vocab.kanji, vocab
         %td.col-2= vocab.reading
         %td.col-1.text-center= render "vocabs/audio_accent", vocab: vocab
         %td.col-4= vocab.meaning

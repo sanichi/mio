@@ -4,11 +4,11 @@
   %tr.d-flex
     %td.col-2.text-right= v1.meaning.truncate(15)
     %td.col-1.text-center= render "vocabs/audio_accent", vocab: v1
-    %td.col-1.text-right{class: "text-#{vocab_color(v1)}"}= v1.reading
+    %td.col-1.text-right{class: vocab_text_color(v1)}= v1.reading
     %td.col-1.text-right= link_to v1.kanji, v1
     %td.col-2.text-center= link_to t("verb_pair.groups")[pair.group], pair
     %td.col-1= link_to v2.kanji, v2
-    %td.col-1{class: "text-#{vocab_color(v2)}"}= v2.reading
+    %td.col-1{class: vocab_text_color(v2)}= v2.reading
     %td.col-1.text-center= render "vocabs/audio_accent", vocab: v2
     %td.col-2= v2.meaning.truncate(15)
 = render "utils/pagination_links", pager: pairs, columns: 7

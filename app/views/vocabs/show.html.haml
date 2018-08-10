@@ -15,7 +15,7 @@
           %td= render "audio_accent", vocab: @vocab
         %tr
           %th= t("vocab.reading")
-          %td= @vocab.reading
+          %td{class: vocab_text_color(@vocab)}= @vocab.reading
         %tr
           %th= t("vocab.kanji")
           %td= link_to_if @kanji, @vocab.kanji, @kanji

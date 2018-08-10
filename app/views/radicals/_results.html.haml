@@ -1,10 +1,10 @@
 - radicals.matches.each do |radical|
   - kanji = radical.kanji
   %tr.d-flex
-    %td.col-1.text-center{class: vocab_table_class(radical.burned)}= radical.symbol
+    %td.col-1.text-center{class: vocab_table_bg(radical.burned)}= radical.symbol
     %td.col-3= radical.meaning
     %td.col-1.text-center= radical.level
-    %td.col-1.text-center{class: vocab_table_class(kanji ? kanji.burned : false)}= link_to(kanji.symbol, kanji) if kanji
+    %td.col-1.text-center{class: vocab_table_bg(kanji ? kanji.burned : false)}= link_to(kanji.symbol, kanji) if kanji
     %td.col-5= kanji.meaning if kanji
     %td.col-1.text-center= kanji.level if kanji
 = render "utils/pagination_links", pager: radicals, columns: 3
