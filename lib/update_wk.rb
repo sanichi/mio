@@ -149,13 +149,13 @@ begin
   wk = WaniKani.new(Rails.application.credentials.wani_kani)
 
   # Update vocabs.
-  # update_vocabs(wk)
+  update_vocabs(wk)
 
   # Update kanjis, readings and yomis.
   update_kanjis(wk)
 
   # Update radicals.
-  # update_radicals(wk)
+  update_radicals(wk)
 rescue => e
   # Feedback if there is an error.
   puts "exception: #{e.message}\n#{e.backtrace.join("\n")}"
