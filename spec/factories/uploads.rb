@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :upload do
-    account      "cap"
-    content      <<-EOC
+    account      { "cap" }
+    content      { <<-EOC
 Portfolio Summary, , , ,
 Client Name:,Dr Mark Orr, , ,
 Client Number:,1412732, , ,
@@ -14,9 +14,10 @@ Trade date,Settle date,Reference,Description,Unit cost (p),Quantity,Value (£),
 "10/11/2014","10/11/2014","Transfer","Transfer from Income Account","","","7.24"
 "02/10/2014","02/10/2014","MANAGE FEE","HL Vantage Stocks & Shares NISA","","","-2.47"
 EOC
-    content_type "text/csv"
-    error        nil
-    name         "transactions.csv"
+                 }
+    content_type { "text/csv" }
+    error        { nil }
+    name         { "transactions.csv" }
     size         { content.length }
   end
 end
