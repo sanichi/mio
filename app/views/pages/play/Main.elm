@@ -1,24 +1,25 @@
-module Main exposing (..)
-
-import Html exposing (..)
-import Html.Attributes exposing (..)
-
+module Main exposing (Model, initModel, initTasks, main, panel, subscriptions, update, view)
 
 -- local modules
 
-import Messages exposing (Msg(..))
-import Counter
+import Browser
 import Checker
+import Counter
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Json.Encode exposing (Value)
+import Messages exposing (Msg(..))
 import Randoms
+
 
 
 -- main program
 
 
-main : Program Never Model Msg
+main : Program Value Model Msg
 main =
-    Html.program
-        { init = ( initModel, initTasks )
+    Browser.element
+        { init = \_ -> ( initModel, initTasks )
         , view = view
         , update = update
         , subscriptions = subscriptions
@@ -96,10 +97,10 @@ update msg model =
             ( model, Checker.check )
 
         CheckFail err ->
-            ( { model | checker = (Checker.fail model.checker err) }, Cmd.none )
+            ( { model | checker = Checker.fail model.checker err }, Cmd.none )
 
         CheckSucceed ( ok, message ) ->
-            ( { model | checker = (Checker.succeed model.checker ok message) }, Cmd.none )
+            ( { model | checker = Checker.succeed model.checker ok message }, Cmd.none )
 
         RandomRequest ->
             ( model, Randoms.request )

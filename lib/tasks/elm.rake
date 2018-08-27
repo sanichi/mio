@@ -26,7 +26,7 @@ namespace :elm do
   def compile_and_minify(name)
     js = "_#{name}_elm.js"
     min = "../_#{name}_elm.min.js"
-    if system("elm-make Main.elm --output #{js}")
+    if system("elm make Main.elm --optimize --output #{js}")
       File.open(min, "w") do |file|
         file.write(Uglifier.compile(File.read(js)))
       end

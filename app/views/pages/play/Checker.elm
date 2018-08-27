@@ -35,9 +35,9 @@ toText checker =
                     ""
 
                 Just n ->
-                    " (" ++ (toString n) ++ ")"
+                    " (" ++ String.fromInt n ++ ")"
     in
-        checker.lastMessage ++ count
+    checker.lastMessage ++ count
 
 
 view : Model -> Html Msg
@@ -70,7 +70,7 @@ testResponse response =
 
 decoder : Json.Decoder ( Bool, String )
 decoder =
-    Json.map2 (,)
+    Json.map2 Tuple.pair
         (Json.field "ok" Json.bool)
         (Json.field "message" Json.string)
 
@@ -81,13 +81,14 @@ succeed checker ok message =
         nextMessage =
             if ok then
                 message
+
             else
                 "Ruby request error: " ++ message
     in
-        { checker
-            | lastMessage = nextMessage
-            , history = updateHistory nextMessage checker.history
-        }
+    { checker
+        | lastMessage = nextMessage
+        , history = updateHistory nextMessage checker.history
+    }
 
 
 fail : Model -> Http.Error -> Model
@@ -105,18 +106,18 @@ fail checker err =
                     "network"
 
                 BadPayload str rsp ->
-                    "(payload) " ++ str ++ " (" ++ toString rsp ++ ")"
+                    "(payload) " ++ str ++ " (" ++ rsp.status.message ++ ")"
 
                 BadStatus rsp ->
-                    "(response) " ++ toString rsp
+                    "(response) " ++ rsp.status.message
 
         nextMessage =
             "Elm request error: " ++ details
     in
-        { checker
-            | lastMessage = nextMessage
-            , history = updateHistory nextMessage checker.history
-        }
+    { checker
+        | lastMessage = nextMessage
+        , history = updateHistory nextMessage checker.history
+    }
 
 
 updateHistory : String -> History -> History
@@ -130,4 +131,4 @@ updateHistory message history =
                 Just n ->
                     Just (n + 1)
     in
-        Dict.update message update history
+    Dict.update message update history
