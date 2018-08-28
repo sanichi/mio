@@ -1,18 +1,20 @@
-module Main exposing (..)
+module Main exposing (Model, Msg(..), hexToInt, init, initModel, isMagic, main, nextNumber, reverse, subscriptions, update, view, viewButtonRow, viewNumberRow, viewRows, waitAMoment)
 
-import Char
+import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Json.Encode exposing (Value)
 import Ports
+
 
 
 -- MAIN
 
 
-main : Program Never Model Msg
+main : Program Value Model Msg
 main =
-    Html.program
+    Browser.element
         { init = init
         , update = update
         , view = view
@@ -39,8 +41,8 @@ initModel =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Value -> ( Model, Cmd Msg )
+init _ =
     ( initModel, Cmd.none )
 
 
@@ -61,7 +63,7 @@ update msg model =
                 newModel =
                     { model | thinking = True }
             in
-                newModel ! [ waitAMoment ]
+            ( newModel, waitAMoment )
 
         Continue _ ->
             let
@@ -71,7 +73,7 @@ update msg model =
                 newModel =
                     { model | current = num + 1, computed = num :: model.computed, thinking = False }
             in
-                newModel ! []
+            ( newModel, Cmd.none )
 
 
 
@@ -117,14 +119,14 @@ viewRows model =
         buttonRow =
             viewButtonRow model
     in
-        numberRows ++ [ buttonRow ]
+    numberRows ++ [ buttonRow ]
 
 
 viewNumberRow : Int -> Html Msg
 viewNumberRow number =
     tr []
         [ th [ class "col-xs-6 text-center" ]
-            [ number |> toString |> text ]
+            [ number |> String.fromInt |> text ]
         , th [ class "col-xs-6 text-center" ]
             [ number |> reverse |> text ]
         ]
@@ -136,20 +138,22 @@ viewButtonRow model =
         display =
             if List.length model.computed >= 5 then
                 "none"
+
             else
                 "table-row"
 
         rowStyle =
-            [ ( "display", display ) ]
+            style "display" display
 
         node =
             if model.thinking then
                 img [ src "/images/loader.gif" ] []
+
             else
                 button [ type_ "button", class "btn btn-success btn-sm", onClick NextNumber ] [ text "Next" ]
     in
-        tr [ style rowStyle ]
-            [ td [ class "text-center", colspan 2 ] [ node ] ]
+    tr [ rowStyle ]
+        [ td [ class "text-center", colspan 2 ] [ node ] ]
 
 
 
@@ -160,6 +164,7 @@ nextNumber : Int -> Int
 nextNumber num =
     if isMagic num then
         num
+
     else
         nextNumber (num + 1)
 
@@ -167,7 +172,7 @@ nextNumber num =
 reverse : Int -> String
 reverse number =
     number
-        |> toString
+        |> String.fromInt
         |> String.reverse
 
 
@@ -183,11 +188,11 @@ hexToInt hex =
                 |> (\code -> code - zero)
                 |> (*) (16 ^ index)
     in
-        hex
-            |> String.reverse
-            |> String.toList
-            |> List.indexedMap digitToInt
-            |> List.sum
+    hex
+        |> String.reverse
+        |> String.toList
+        |> List.indexedMap digitToInt
+        |> List.sum
 
 
 isMagic : Int -> Bool
@@ -198,4 +203,4 @@ isMagic number =
                 |> reverse
                 |> hexToInt
     in
-        number == number_
+    number == number_
