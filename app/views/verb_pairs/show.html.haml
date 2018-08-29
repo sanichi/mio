@@ -33,7 +33,7 @@
           %td= v2.category
         %tr
           %th= t("verb_pair.group")
-          %td= t("verb_pair.groups")[@verb_pair.group]
+          %td= link_to t("verb_pair.groups")[@verb_pair.group], verb_pairs_path(group: @verb_pair.group)
 
 .text-center
   = link_to t("verb_pair.verb_pairs"), verb_pairs_path, class: "btn btn-success"
