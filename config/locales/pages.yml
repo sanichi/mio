@@ -3,7 +3,6 @@ en:
     magic: Magic Numbers
     pam: Pam
     play: Elm Play
-    retina: Retina
     aoc:
       answers: Answers
       code: Elm code
