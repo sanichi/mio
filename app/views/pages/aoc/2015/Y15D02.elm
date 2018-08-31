@@ -1,33 +1,38 @@
 module Y15D02 exposing (answer)
 
 import Regex
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
 answer part input =
     if part == 1 then
-        sumInput wrapping input |> toString
+        sumInput wrapping input |> String.fromInt
+
     else
-        sumInput ribbon input |> toString
+        sumInput ribbon input |> String.fromInt
 
 
 sumInput : (Int -> Int -> Int -> Int) -> String -> Int
 sumInput counter input =
     let
         lines =
-            Regex.split Regex.All (Regex.regex "\n") input
+            Regex.split (regex "\n") input
     in
-        List.foldl (sumLine counter) 0 lines
+    List.foldl (sumLine counter) 0 lines
 
 
 sumLine : (Int -> Int -> Int -> Int) -> String -> Int -> Int
 sumLine counter line count =
     let
+        number =
+            regex "[1-9]\\d*"
+
         dimensions =
-            Regex.find Regex.All (Regex.regex "[1-9]\\d*") line
+            Regex.find number line
                 |> List.map .match
                 |> List.map String.toInt
-                |> List.map (Result.withDefault 0)
+                |> List.map (Maybe.withDefault 0)
 
         extra =
             case dimensions of
@@ -37,7 +42,7 @@ sumLine counter line count =
                 _ ->
                     0
     in
-        count + extra
+    count + extra
 
 
 wrapping : Int -> Int -> Int -> Int
@@ -52,7 +57,7 @@ wrapping l w h =
         slack =
             List.minimum sides |> Maybe.withDefault 0
     in
-        paper + slack
+    paper + slack
 
 
 ribbon : Int -> Int -> Int -> Int
@@ -67,4 +72,4 @@ ribbon l w h =
         volume =
             l * w * h
     in
-        2 * perimeter + volume
+    2 * perimeter + volume

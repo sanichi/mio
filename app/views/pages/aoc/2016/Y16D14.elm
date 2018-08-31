@@ -2,7 +2,8 @@ module Y16D14 exposing (answer)
 
 import Dict exposing (Dict)
 import MD5
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -11,13 +12,14 @@ answer part input =
         salt =
             parse input
     in
-        search part salt 0 0 Dict.empty
+    search part salt 0 0 Dict.empty
 
 
 search : Int -> String -> Int -> Int -> Cache -> String
 search part salt keys index cache =
     if keys >= 64 then
-        toString (index - 1)
+        String.fromInt (index - 1)
+
     else
         let
             hash =
@@ -25,39 +27,40 @@ search part salt keys index cache =
 
             maybeMatch3 =
                 hash
-                    |> Regex.find (Regex.AtMost 1) (Regex.regex "(.)\\1\\1")
+                    |> findAtMost 1 (regex "(.)\\1\\1")
                     |> List.map .match
                     |> List.head
 
             newIndex =
                 index + 1
         in
-            case maybeMatch3 of
-                Nothing ->
-                    search part salt keys newIndex cache
+        case maybeMatch3 of
+            Nothing ->
+                search part salt keys newIndex cache
 
-                Just match3 ->
-                    let
-                        match5 =
-                            match3
-                                |> String.repeat 2
-                                |> String.left 5
+            Just match3 ->
+                let
+                    match5 =
+                        match3
+                            |> String.repeat 2
+                            |> String.left 5
 
-                        newCache =
-                            buildCache part salt (index + 1000) newIndex cache Dict.empty
+                    newCache =
+                        buildCache part salt (index + 1000) newIndex cache Dict.empty
 
-                        foundSome =
-                            newCache
-                                |> Dict.values
-                                |> List.any (String.contains match5)
+                    foundSome =
+                        newCache
+                            |> Dict.values
+                            |> List.any (String.contains match5)
 
-                        newKeys =
-                            if foundSome then
-                                keys + 1
-                            else
-                                keys
-                    in
-                        search part salt newKeys newIndex newCache
+                    newKeys =
+                        if foundSome then
+                            keys + 1
+
+                        else
+                            keys
+                in
+                search part salt newKeys newIndex newCache
 
 
 type alias Cache =
@@ -68,6 +71,7 @@ buildCache : Int -> String -> Int -> Int -> Cache -> Cache -> Cache
 buildCache part salt upto index oldCache cache =
     if index > upto then
         cache
+
     else
         let
             hash =
@@ -79,7 +83,7 @@ buildCache part salt upto index oldCache cache =
             newIndex =
                 index + 1
         in
-            buildCache part salt upto newIndex oldCache newCache
+        buildCache part salt upto newIndex oldCache newCache
 
 
 getHash : Int -> String -> Int -> Cache -> String
@@ -90,25 +94,27 @@ getHash part salt index cache =
 
         hash =
             case maybeHash of
-                Just hash ->
-                    hash
+                Just h ->
+                    h
 
                 Nothing ->
-                    MD5.hex (salt ++ (toString index))
+                    MD5.hex (salt ++ String.fromInt index)
 
         iterations =
             if part == 1 then
                 0
+
             else
                 2016
     in
-        repeatHash iterations hash
+    repeatHash iterations hash
 
 
 repeatHash : Int -> String -> String
 repeatHash iterations hash =
     if iterations <= 0 then
         hash
+
     else
         hash
             |> MD5.hex
@@ -118,7 +124,7 @@ repeatHash iterations hash =
 parse : String -> String
 parse input =
     input
-        |> Regex.find (Regex.AtMost 1) (Regex.regex "[a-z]+")
+        |> findAtMost 1 (regex "[a-z]+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault ""

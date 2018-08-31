@@ -7,12 +7,13 @@ answer part input =
         input
             |> parse
             |> stealLeft
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
             |> stealAcross
-            |> toString
+            |> String.fromInt
 
 
 stealLeft : Int -> Int
@@ -25,7 +26,7 @@ stealLeft num =
                 |> floor
                 |> (^) 2
     in
-        2 * (num - thresh) + 1
+    2 * (num - thresh) + 1
 
 
 stealAcross : Int -> Int
@@ -38,12 +39,14 @@ stealAcross num =
                 |> floor
                 |> (^) 3
     in
-        if num == thresh then
-            num
-        else if num <= 2 * thresh then
-            num - thresh
-        else
-            2 * num - 3 * thresh
+    if num == thresh then
+        num
+
+    else if num <= 2 * thresh then
+        num - thresh
+
+    else
+        2 * num - 3 * thresh
 
 
 parse : String -> Int
@@ -51,4 +54,4 @@ parse input =
     input
         |> String.dropRight 1
         |> String.toInt
-        |> Result.withDefault 1
+        |> Maybe.withDefault 1

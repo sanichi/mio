@@ -1,7 +1,8 @@
 module Y15D11 exposing (answer)
 
 import Char
-import Regex exposing (HowMany(All, AtMost), contains, find, regex)
+import Regex exposing (contains, findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,6 +11,7 @@ answer part input =
         input
             |> parse
             |> next
+
     else
         input
             |> parse
@@ -19,7 +21,7 @@ answer part input =
 
 parse : String -> String
 parse input =
-    find (AtMost 1) (regex "[a-z]{8}") input
+    findAtMost 1 (regex "[a-z]{8}") input
         |> List.map .match
         |> List.head
         |> Maybe.withDefault "no password found"
@@ -31,49 +33,77 @@ next q =
         p =
             increment q
     in
-        if String.startsWith "invalid" p then
-            p
-        else if is_not_confusing p && has_a_straight p && has_enough_pairs p then
-            p
-        else
-            next p
+    if String.startsWith "invalid" p then
+        p
+
+    else if is_not_confusing p && has_a_straight p && has_enough_pairs p then
+        p
+
+    else
+        next p
 
 
 increment : String -> String
 increment p =
     let
         parts =
-            find (AtMost 1) (regex "^([a-z]*)([a-y])(z*)$") p
+            findAtMost 1 (regex "^([a-z]*)([a-y])(z*)$") p
                 |> List.map .submatches
                 |> List.head
     in
-        case parts of
-            Just [ Just a, Just b, Just c ] ->
-                let
-                    b1 =
-                        String.uncons b
+    case parts of
+        Just [ Just a, Just b, Just c ] ->
+            let
+                b1 =
+                    String.uncons b
 
-                    b2 =
-                        case b1 of
-                            Just ( char, string ) ->
-                                Char.toCode char
-                                    |> (+) 1
-                                    |> Char.fromCode
-                                    |> String.fromChar
+                b2 =
+                    case b1 of
+                        Just ( char, string ) ->
+                            Char.toCode char
+                                |> (+) 1
+                                |> Char.fromCode
+                                |> String.fromChar
 
-                            _ ->
-                                ""
+                        _ ->
+                            ""
 
-                    c1 =
-                        String.repeat (String.length c) "a"
-                in
-                    if contains (regex "^[b-z]$") b2 then
-                        a ++ b2 ++ c1
-                    else
-                        "invalid (" ++ p ++ ")"
+                c1 =
+                    String.repeat (String.length c) "a"
+            in
+            if contains (regex "^[b-z]$") b2 then
+                a ++ b2 ++ c1
 
-            _ ->
+            else
                 "invalid (" ++ p ++ ")"
+
+        Just [ Just a, Just b, Nothing ] ->
+            let
+                b1 =
+                    String.uncons b
+
+                b2 =
+                    case b1 of
+                        Just ( char, string ) ->
+                            Char.toCode char
+                                |> (+) 1
+                                |> Char.fromCode
+                                |> String.fromChar
+
+                        _ ->
+                            ""
+
+                c1 =
+                    ""
+            in
+            if contains (regex "^[b-z]$") b2 then
+                a ++ b2 ++ c1
+
+            else
+                "invalid (" ++ p ++ ")"
+
+        _ ->
+            "invalid (" ++ p ++ ")"
 
 
 is_not_confusing : String -> Bool

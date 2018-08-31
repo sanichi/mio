@@ -1,6 +1,7 @@
 module Y16D18 exposing (answer)
 
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,13 +10,14 @@ answer part input =
         num =
             if part == 1 then
                 40
+
             else
                 400000
     in
-        input
-            |> parse
-            |> count num 0
-            |> toString
+    input
+        |> parse
+        |> count num 0
+        |> String.fromInt
 
 
 count : Int -> Int -> Row -> Int
@@ -29,17 +31,18 @@ count num total row =
         newTotal =
             total + rowCount
     in
-        if num <= 1 then
-            newTotal
-        else
-            let
-                newRow =
-                    nextRow True row
+    if num <= 1 then
+        newTotal
 
-                newNum =
-                    num - 1
-            in
-                count newNum newTotal newRow
+    else
+        let
+            newRow =
+                nextRow True row
+
+            newNum =
+                num - 1
+        in
+        count newNum newTotal newRow
 
 
 nextRow : Bool -> Row -> Row
@@ -53,7 +56,7 @@ nextRow start row =
                 t =
                     isTrap False t1 False
             in
-                [ t ]
+            [ t ]
 
         [ t1, t2 ] ->
             if start then
@@ -61,13 +64,14 @@ nextRow start row =
                     t =
                         isTrap False t1 t2
                 in
-                    t :: nextRow False row
+                t :: nextRow False row
+
             else
                 let
                     t =
                         isTrap t1 t2 False
                 in
-                    [ t ]
+                [ t ]
 
         t1 :: t2 :: t3 :: rest ->
             if start then
@@ -75,13 +79,14 @@ nextRow start row =
                     t =
                         isTrap False t1 t2
                 in
-                    t :: nextRow False row
+                t :: nextRow False row
+
             else
                 let
                     t =
                         isTrap t1 t2 t3
                 in
-                    t :: nextRow start (t2 :: t3 :: rest)
+                t :: nextRow start (t2 :: t3 :: rest)
 
 
 isTrap : Bool -> Bool -> Bool -> Bool
@@ -110,7 +115,7 @@ type alias Row =
 parse : String -> Row
 parse input =
     input
-        |> Regex.find (Regex.AtMost 1) (Regex.regex "\\S+")
+        |> findAtMost 1 (regex "\\S+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault ""
@@ -119,6 +124,7 @@ parse input =
             (\c ->
                 if c == '^' then
                     True
+
                 else
                     False
             )

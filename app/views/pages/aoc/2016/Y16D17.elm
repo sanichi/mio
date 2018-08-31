@@ -1,8 +1,8 @@
 module Y16D17 exposing (answer)
 
-import Char exposing (KeyCode)
 import MD5
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -18,8 +18,9 @@ search part len queue passcode =
         [] ->
             if part == 1 then
                 "none"
+
             else
-                toString len
+                String.fromInt len
 
         location :: rest ->
             let
@@ -31,22 +32,23 @@ search part len queue passcode =
                         |> List.filter found
                         |> List.head
             in
-                case maybeGoal of
-                    Nothing ->
-                        search part len (rest ++ locations) passcode
+            case maybeGoal of
+                Nothing ->
+                    search part len (rest ++ locations) passcode
 
-                    Just goal ->
-                        if part == 1 then
-                            goal.path
-                        else
-                            let
-                                newLen =
-                                    String.length goal.path
+                Just goal ->
+                    if part == 1 then
+                        goal.path
 
-                                notGoals =
-                                    List.filter (not << found) locations
-                            in
-                                search part newLen (rest ++ notGoals) passcode
+                    else
+                        let
+                            newLen =
+                                String.length goal.path
+
+                            notGoals =
+                                List.filter (not << found) locations
+                        in
+                        search part newLen (rest ++ notGoals) passcode
 
 
 newLocations : String -> Location -> List Location
@@ -61,10 +63,11 @@ newLocations passcode location =
         |> List.filterMap (newLocation location)
 
 
-newLocation : Location -> ( Int, KeyCode ) -> Maybe Location
+newLocation : Location -> ( Int, Int ) -> Maybe Location
 newLocation location ( index, code ) =
     if code < bCode || code > fCode then
         Nothing
+
     else
         let
             ( x, y, step ) =
@@ -81,13 +84,14 @@ newLocation location ( index, code ) =
                     _ ->
                         ( location.x + 1, location.y, "R" )
         in
-            if x < 0 || y < 0 || x > 3 || y > 3 then
-                Nothing
-            else
-                location.path
-                    ++ step
-                    |> Location x y
-                    |> Just
+        if x < 0 || y < 0 || x > 3 || y > 3 then
+            Nothing
+
+        else
+            location.path
+                ++ step
+                |> Location x y
+                |> Just
 
 
 found : Location -> Bool
@@ -107,12 +111,12 @@ start =
     Location 0 0 ""
 
 
-bCode : KeyCode
+bCode : Int
 bCode =
     Char.toCode 'b'
 
 
-fCode : KeyCode
+fCode : Int
 fCode =
     Char.toCode 'f'
 
@@ -120,7 +124,7 @@ fCode =
 parse : String -> String
 parse input =
     input
-        |> Regex.find (Regex.AtMost 1) (Regex.regex "\\S+")
+        |> findAtMost 1 (regex "\\S+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault ""

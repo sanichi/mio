@@ -1,7 +1,8 @@
 module Y16D10 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -13,14 +14,15 @@ answer part input =
         state =
             process matches init
     in
-        if part == 1 then
-            state
-                |> Dict.toList
-                |> lookfor "17-61"
-        else
-            [ 0, 1, 2 ]
-                |> multiply 1 state
-                |> toString
+    if part == 1 then
+        state
+            |> Dict.toList
+            |> lookfor "17-61"
+
+    else
+        [ 0, 1, 2 ]
+            |> multiply 1 state
+            |> String.fromInt
 
 
 lookfor : String -> List ( String, List Int ) -> String
@@ -30,8 +32,9 @@ lookfor match idLists =
             "none"
 
         ( id, list ) :: rest ->
-            if String.join "-" (List.map toString list) == match && String.startsWith "bot " id then
+            if String.join "-" (List.map String.fromInt list) == match && String.startsWith "bot " id then
                 id
+
             else
                 lookfor match rest
 
@@ -46,7 +49,7 @@ multiply num state ids =
             let
                 output =
                     id
-                        |> toString
+                        |> String.fromInt
                         |> (++) "output "
 
                 chips =
@@ -54,13 +57,13 @@ multiply num state ids =
                         |> Dict.get output
                         |> Maybe.withDefault []
             in
-                let
-                    newNum =
-                        chips
-                            |> List.product
-                            |> (*) num
-                in
-                    multiply newNum state rest
+            let
+                newNum =
+                    chips
+                        |> List.product
+                        |> (*) num
+            in
+            multiply newNum state rest
 
 
 type alias Instruction =
@@ -105,9 +108,9 @@ process matches state =
                                                 |> Dict.get highTarget
                                                 |> Maybe.withDefault []
                                     in
-                                        state
-                                            |> Dict.insert lowTarget (List.sort (low :: lowChips))
-                                            |> Dict.insert highTarget (List.sort (high :: highChips))
+                                    state
+                                        |> Dict.insert lowTarget (List.sort (low :: lowChips))
+                                        |> Dict.insert highTarget (List.sort (high :: highChips))
 
                                 _ ->
                                     state
@@ -123,7 +126,7 @@ process matches state =
                                         |> (::) match
                                         |> List.reverse
                     in
-                        process newMatches newState
+                    process newMatches newState
 
                 [ Nothing, Nothing, Nothing, Just value, Just target ] ->
                     let
@@ -135,7 +138,7 @@ process matches state =
                         newChips =
                             value
                                 |> String.toInt
-                                |> Result.withDefault 0
+                                |> Maybe.withDefault 0
                                 |> (\i -> i :: chips)
                                 |> List.sort
 
@@ -143,7 +146,7 @@ process matches state =
                             state
                                 |> Dict.insert target newChips
                     in
-                        process rest newState
+                    process rest newState
 
                 _ ->
                     process rest state
@@ -161,6 +164,6 @@ parse input =
         pattern =
             highLow ++ "|" ++ specific
     in
-        input
-            |> Regex.find Regex.All (Regex.regex pattern)
-            |> List.map .submatches
+    input
+        |> find (regex pattern)
+        |> List.map .submatches

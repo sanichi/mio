@@ -1,6 +1,7 @@
 module Y15D15 exposing (answer)
 
-import Regex exposing (HowMany(AtMost), find, regex)
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -12,10 +13,11 @@ answer part input =
         cookie =
             initCookie model 100
     in
-        if part == 1 then
-            highScore model Nothing 0 cookie |> toString
-        else
-            highScore model (Just 500) 0 cookie |> toString
+    if part == 1 then
+        highScore model Nothing 0 cookie |> String.fromInt
+
+    else
+        highScore model (Just 500) 0 cookie |> String.fromInt
 
 
 highScore : Model -> Maybe Int -> Int -> Cookie -> Int
@@ -27,12 +29,12 @@ highScore model calories oldHigh oldCookie =
         newCookie =
             next oldCookie
     in
-        case newCookie of
-            Just cookie ->
-                highScore model calories newHigh cookie
+    case newCookie of
+        Just cookie ->
+            highScore model calories newHigh cookie
 
-            Nothing ->
-                newHigh
+        Nothing ->
+            newHigh
 
 
 next : Cookie -> Maybe Cookie
@@ -46,14 +48,15 @@ next c =
                 ( n, l ) =
                     rollover rest
             in
-                if n == 0 then
-                    Nothing
-                else
-                    let
-                        ones =
-                            List.repeat (List.length c - List.length l - 1) 1
-                    in
-                        Just (n :: ones ++ l)
+            if n == 0 then
+                Nothing
+
+            else
+                let
+                    ones =
+                        List.repeat (List.length c - List.length l - 1) 1
+                in
+                Just (n :: ones ++ l)
 
         n :: rest ->
             Just (n - 1 :: increment rest)
@@ -93,31 +96,33 @@ score m calories cookie =
                 Nothing ->
                     False
     in
-        if excluded then
-            0
-        else
-            let
-                cp =
-                    List.map2 (*) (List.map .capacity m) cookie |> List.sum
+    if excluded then
+        0
 
-                du =
-                    List.map2 (*) (List.map .durability m) cookie |> List.sum
+    else
+        let
+            cp =
+                List.map2 (*) (List.map .capacity m) cookie |> List.sum
 
-                fl =
-                    List.map2 (*) (List.map .flavor m) cookie |> List.sum
+            du =
+                List.map2 (*) (List.map .durability m) cookie |> List.sum
 
-                tx =
-                    List.map2 (*) (List.map .texture m) cookie |> List.sum
-            in
-                [ cp, du, fl, tx ]
-                    |> List.map
-                        (\s ->
-                            if s < 0 then
-                                0
-                            else
-                                s
-                        )
-                    |> List.product
+            fl =
+                List.map2 (*) (List.map .flavor m) cookie |> List.sum
+
+            tx =
+                List.map2 (*) (List.map .texture m) cookie |> List.sum
+        in
+        [ cp, du, fl, tx ]
+            |> List.map
+                (\s ->
+                    if s < 0 then
+                        0
+
+                    else
+                        s
+                )
+            |> List.product
 
 
 parseInput : String -> Model
@@ -139,35 +144,35 @@ parseLine line model =
                 ++ "calories (-?\\d+)$"
 
         matches =
-            find (AtMost 1) (regex rgx) line |> List.map .submatches
+            findAtMost 1 (regex rgx) line |> List.map .submatches
     in
-        case matches of
-            [ [ Just nm, Just cp1, Just du1, Just fl1, Just tx1, Just cl1 ] ] ->
-                let
-                    cp2 =
-                        parseInt cp1
+    case matches of
+        [ [ Just nm, Just cp1, Just du1, Just fl1, Just tx1, Just cl1 ] ] ->
+            let
+                cp2 =
+                    parseInt cp1
 
-                    du2 =
-                        parseInt du1
+                du2 =
+                    parseInt du1
 
-                    fl2 =
-                        parseInt fl1
+                fl2 =
+                    parseInt fl1
 
-                    tx2 =
-                        parseInt tx1
+                tx2 =
+                    parseInt tx1
 
-                    cl2 =
-                        parseInt cl1
-                in
-                    Ingredient nm cp2 du2 fl2 tx2 cl2 :: model
+                cl2 =
+                    parseInt cl1
+            in
+            Ingredient nm cp2 du2 fl2 tx2 cl2 :: model
 
-            _ ->
-                model
+        _ ->
+            model
 
 
 parseInt : String -> Int
 parseInt s =
-    String.toInt s |> Result.withDefault 0
+    String.toInt s |> Maybe.withDefault 0
 
 
 type alias Model =
@@ -200,4 +205,4 @@ initCookie model total =
         ones =
             List.repeat (size - 1) 1
     in
-        first :: ones
+    first :: ones

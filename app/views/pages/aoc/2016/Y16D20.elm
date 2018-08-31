@@ -1,6 +1,7 @@
 module Y16D20 exposing (answer)
 
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,12 +10,13 @@ answer part input =
         input
             |> parse
             |> lowest 0
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
             |> allowed 4294967296
-            |> toString
+            |> String.fromInt
 
 
 lowest : Int -> List Block -> Int
@@ -26,6 +28,7 @@ lowest num blocks =
         block :: rest ->
             if num < block.lower then
                 num
+
             else
                 lowest (block.upper + 1) rest
 
@@ -39,9 +42,9 @@ allowed remaining blocks =
         block :: rest ->
             let
                 newRemaining =
-                    remaining - (size block)
+                    remaining - size block
             in
-                allowed newRemaining rest
+            allowed newRemaining rest
 
 
 type alias Block =
@@ -63,11 +66,11 @@ notInvalid block =
 parse : String -> List Block
 parse input =
     input
-        |> Regex.find Regex.All (Regex.regex "(\\d+)-(\\d+)")
+        |> find (regex "(\\d+)-(\\d+)")
         |> List.map .submatches
         |> List.map (List.map (Maybe.withDefault ""))
         |> List.map (List.map String.toInt)
-        |> List.map (List.map (Result.withDefault 0))
+        |> List.map (List.map (Maybe.withDefault 0))
         |> List.map toBlock
         |> List.filter notInvalid
         |> List.sortBy .lower
@@ -80,6 +83,7 @@ toBlock list =
         [ l, u ] ->
             if l <= u then
                 Block l u
+
             else
                 invalid
 
@@ -102,7 +106,8 @@ compact blocks =
                     b =
                         merge b1 b2
                 in
-                    compact (b :: rest)
+                compact (b :: rest)
+
             else
                 b1 :: compact (b2 :: rest)
 
@@ -116,6 +121,7 @@ merge : Block -> Block -> Block
 merge b1 b2 =
     if b2.upper <= b1.upper then
         b1
+
     else
         Block b1.lower b2.upper
 

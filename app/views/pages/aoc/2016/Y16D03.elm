@@ -1,6 +1,7 @@
 module Y16D03 exposing (answer)
 
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,14 +10,15 @@ answer part input =
         horizontals =
             parse input
     in
-        if part == 1 then
-            process horizontals
-        else
-            let
-                verticals =
-                    rearrange [] [] [] horizontals
-            in
-                process verticals
+    if part == 1 then
+        process horizontals
+
+    else
+        let
+            verticals =
+                rearrange [] [] [] horizontals
+        in
+        process verticals
 
 
 process : List Triangle -> String
@@ -24,7 +26,7 @@ process triangles =
     triangles
         |> List.map List.sort
         |> count
-        |> toString
+        |> String.fromInt
 
 
 count : List Triangle -> Int
@@ -43,6 +45,7 @@ ok triangle =
         [ s1, s2, s3 ] ->
             if s1 + s2 > s3 then
                 1
+
             else
                 0
 
@@ -54,6 +57,7 @@ rearrange : Triangle -> Triangle -> Triangle -> List Triangle -> List Triangle
 rearrange a1 a2 a3 horizontals =
     if List.length a1 >= 3 then
         [ a1, a2, a3 ] ++ rearrange [] [] [] horizontals
+
     else
         case horizontals of
             [] ->
@@ -70,7 +74,7 @@ rearrange a1 a2 a3 horizontals =
                     b3 =
                         s3 :: a3
                 in
-                    rearrange b1 b2 b3 rest
+                rearrange b1 b2 b3 rest
 
             _ :: rest ->
                 rearrange a1 a2 a3 rest
@@ -82,7 +86,8 @@ type alias Triangle =
 
 parse : String -> List Triangle
 parse input =
-    Regex.find Regex.All (Regex.regex "(\\d+) +(\\d+) +(\\d+)") input
+    input
+        |> find (regex "(\\d+) +(\\d+) +(\\d+)")
         |> List.map .submatches
         |> List.map (List.map convertToInt)
 
@@ -91,4 +96,4 @@ convertToInt : Maybe String -> Int
 convertToInt item =
     Maybe.withDefault "0" item
         |> String.toInt
-        |> Result.withDefault 0
+        |> Maybe.withDefault 0

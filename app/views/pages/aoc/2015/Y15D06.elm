@@ -3,6 +3,7 @@ module Y15D06 exposing (answer)
 import Array exposing (Array)
 import Regex
 import Tuple exposing (first, second)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -14,29 +15,30 @@ answer part input =
         model =
             process instructions initModel
     in
-        if part == 1 then
-            first model
-                |> Array.toList
-                |> List.filter (\l -> l == 1)
-                |> List.length
-                |> toString
-        else
-            second model
-                |> Array.toList
-                |> List.sum
-                |> toString
+    if part == 1 then
+        first model
+            |> Array.toList
+            |> List.filter (\l -> l == 1)
+            |> List.length
+            |> String.fromInt
+
+    else
+        second model
+            |> Array.toList
+            |> List.sum
+            |> String.fromInt
 
 
 parse : String -> List Instruction
 parse input =
     let
         rgx =
-            Regex.regex "(toggle|turn (?:on|off)) (\\d+),(\\d+) through (\\d+),(\\d+)"
+            regex "(toggle|turn (?:on|off)) (\\d+),(\\d+) through (\\d+),(\\d+)"
     in
-        Regex.find Regex.All rgx input
-            |> List.map .submatches
-            |> List.map parseInstruction
-            |> List.filter (\i -> i /= badInstruction)
+    Regex.find rgx input
+        |> List.map .submatches
+        |> List.map parseInstruction
+        |> List.filter (\i -> i /= badInstruction)
 
 
 process : List Instruction -> Model -> Model
@@ -50,7 +52,7 @@ process instructions lights =
                 lights_ =
                     updateRow instruction lights
             in
-                process rest lights_
+            process rest lights_
 
 
 updateRow : Instruction -> Model -> Model
@@ -65,23 +67,24 @@ updateRow instruction lights =
         tx =
             first instruction.to
     in
-        if fx == tx then
-            lights_
-        else
-            let
-                fy =
-                    second instruction.from
+    if fx == tx then
+        lights_
 
-                ty =
-                    second instruction.to
+    else
+        let
+            fy =
+                second instruction.from
 
-                instruction_ =
-                    { instruction
-                        | from = ( fx + 1, fy )
-                        , to = ( tx, ty )
-                    }
-            in
-                updateRow instruction_ lights_
+            ty =
+                second instruction.to
+
+            instruction_ =
+                { instruction
+                    | from = ( fx + 1, fy )
+                    , to = ( tx, ty )
+                }
+        in
+        updateRow instruction_ lights_
 
 
 updateCol : Instruction -> Model -> Model
@@ -96,23 +99,24 @@ updateCol instruction lights =
         ty =
             second instruction.to
     in
-        if fy == ty then
-            lights_
-        else
-            let
-                fx =
-                    first instruction.from
+    if fy == ty then
+        lights_
 
-                tx =
-                    first instruction.to
+    else
+        let
+            fx =
+                first instruction.from
 
-                instruction_ =
-                    { instruction
-                        | from = ( fx, fy + 1 )
-                        , to = ( tx, ty )
-                    }
-            in
-                updateCol instruction_ lights_
+            tx =
+                first instruction.to
+
+            instruction_ =
+                { instruction
+                    | from = ( fx, fy + 1 )
+                    , to = ( tx, ty )
+                }
+        in
+        updateCol instruction_ lights_
 
 
 updateCell : Instruction -> Model -> Model
@@ -138,6 +142,7 @@ updateCell instruction lights =
                 Toggle ->
                     if v1 == 1 then
                         0
+
                     else
                         1
 
@@ -158,10 +163,11 @@ updateCell instruction lights =
                 Off ->
                     if v2 == 0 then
                         0
+
                     else
                         v2 - 1
     in
-        ( Array.set k v1_ l1, Array.set k v2_ l2 )
+    ( Array.set k v1_ l1, Array.set k v2_ l2 )
 
 
 index : Instruction -> Int
@@ -173,7 +179,7 @@ index instruction =
         y =
             second instruction.from
     in
-        x + 1000 * y
+    x + 1000 * y
 
 
 parseInstruction : List (Maybe String) -> Instruction
@@ -207,15 +213,21 @@ parseInstruction submatches =
                 ty_ =
                     String.toInt ty__
             in
-                case ( a_, fx_, fy_, tx_, ty_ ) of
-                    ( Just a, Ok fx, Ok fy, Ok tx, Ok ty ) ->
-                        if fx >= 0 && fy >= 0 && fx <= tx && fy <= ty && tx < 1000 && ty < 1000 then
-                            { action = a, from = ( fx, fy ), to = ( tx, ty ) }
-                        else
+            case a_ of
+                Just a ->
+                    case [ fx_, fy_, tx_, ty_ ] of
+                        [ Just fx, Just fy, Just tx, Just ty ] ->
+                            if fx >= 0 && fy >= 0 && fx <= tx && fy <= ty && tx < 1000 && ty < 1000 then
+                                { action = a, from = ( fx, fy ), to = ( tx, ty ) }
+
+                            else
+                                badInstruction
+
+                        _ ->
                             badInstruction
 
-                    _ ->
-                        badInstruction
+                _ ->
+                    badInstruction
 
         _ ->
             badInstruction

@@ -2,7 +2,8 @@ module Y16D05 exposing (answer)
 
 import Array exposing (Array)
 import MD5
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -11,20 +12,22 @@ answer part input =
         doorId =
             parse input
     in
-        if part == 1 then
-            password1 doorId 0 ""
-        else
-            password2 doorId 0 (Array.repeat 8 Nothing)
+    if part == 1 then
+        password1 doorId 0 ""
+
+    else
+        password2 doorId 0 (Array.repeat 8 Nothing)
 
 
 password1 : String -> Int -> String -> String
 password1 doorId index accum =
     if String.length accum >= 8 then
         String.reverse accum
+
     else
         let
             digest =
-                MD5.hex (doorId ++ (toString index))
+                MD5.hex (doorId ++ String.fromInt index)
 
             newAccum =
                 if String.startsWith zeros digest then
@@ -34,13 +37,14 @@ password1 doorId index accum =
 
                         Nothing ->
                             String.cons '-' accum
+
                 else
                     accum
 
             newIndex =
                 index + 1
         in
-            password1 doorId newIndex newAccum
+        password1 doorId newIndex newAccum
 
 
 password2 : String -> Int -> Array (Maybe String) -> String
@@ -50,10 +54,11 @@ password2 doorId index accum =
             |> Array.toList
             |> List.map (Maybe.withDefault "-")
             |> String.join ""
+
     else
         let
             digest =
-                MD5.hex (doorId ++ (toString index))
+                MD5.hex (doorId ++ String.fromInt index)
 
             newAccum =
                 if String.startsWith zeros digest then
@@ -69,37 +74,39 @@ password2 doorId index accum =
                                 Nothing ->
                                     '-'
 
-                        index =
+                        ind =
                             char
                                 |> String.fromChar
                                 |> String.toInt
-                                |> Result.withDefault -1
+                                |> Maybe.withDefault -1
                     in
-                        if index >= 0 && index < 8 then
-                            case Array.get index accum of
-                                Just Nothing ->
-                                    let
-                                        item =
-                                            case String.uncons <| String.dropLeft 1 rest of
-                                                Just ( c, _ ) ->
-                                                    Just <| String.fromChar c
+                    if ind >= 0 && ind < 8 then
+                        case Array.get ind accum of
+                            Just Nothing ->
+                                let
+                                    item =
+                                        case String.uncons <| String.dropLeft 1 rest of
+                                            Just ( c, _ ) ->
+                                                Just <| String.fromChar c
 
-                                                Nothing ->
-                                                    Just "-"
-                                    in
-                                        Array.set index item accum
+                                            Nothing ->
+                                                Just "-"
+                                in
+                                Array.set ind item accum
 
-                                _ ->
-                                    accum
-                        else
-                            accum
+                            _ ->
+                                accum
+
+                    else
+                        accum
+
                 else
                     accum
 
             newIndex =
                 index + 1
         in
-            password2 doorId newIndex newAccum
+        password2 doorId newIndex newAccum
 
 
 zeros : String
@@ -115,7 +122,7 @@ zLen =
 parse : String -> String
 parse input =
     input
-        |> Regex.find (Regex.AtMost 1) (Regex.regex "[a-z]+")
+        |> findAtMost 1 (regex "[a-z]+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault "error"

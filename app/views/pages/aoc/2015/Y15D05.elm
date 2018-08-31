@@ -1,23 +1,25 @@
 module Y15D05 exposing (answer)
 
-import Regex exposing (HowMany(All), Regex, find, regex)
+import Regex exposing (Regex)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
 answer part input =
     let
         strings =
-            find All stringRgx input |> List.map .match
+            Regex.find stringRgx input |> List.map .match
     in
-        if part == 1 then
-            countNice nice1 strings
-        else
-            countNice nice2 strings
+    if part == 1 then
+        countNice nice1 strings
+
+    else
+        countNice nice2 strings
 
 
 countNice : (String -> Bool) -> List String -> String
 countNice nice strings =
-    strings |> List.filter nice |> List.length |> toString
+    strings |> List.filter nice |> List.length |> String.fromInt
 
 
 nice1 : String -> Bool
@@ -32,7 +34,7 @@ nice1 string =
         badies =
             count badieRgx string
     in
-        vowels >= 3 && dubles > 0 && badies == 0
+    vowels >= 3 && dubles > 0 && badies == 0
 
 
 nice2 : String -> Bool
@@ -44,12 +46,12 @@ nice2 string =
         twips =
             count twipsRgx string
     in
-        pairs > 0 && twips > 0
+    pairs > 0 && twips > 0
 
 
 count : Regex -> String -> Int
 count rgx string =
-    find All rgx string |> List.length
+    Regex.find rgx string |> List.length
 
 
 stringRgx =

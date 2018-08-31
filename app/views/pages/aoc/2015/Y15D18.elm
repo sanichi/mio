@@ -1,7 +1,8 @@
 module Y15D18 exposing (answer)
 
 import Array exposing (Array)
-import Regex exposing (HowMany(All), find, regex)
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -11,20 +12,22 @@ answer part input =
             |> parse
             |> steps 100
             |> count
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
             |> stick
             |> steps 100
             |> count
-            |> toString
+            |> String.fromInt
 
 
 steps : Int -> Model -> Model
 steps n model =
     if n <= 0 then
         model
+
     else
         step model |> steps (n - 1)
 
@@ -38,13 +41,14 @@ step model =
         oldModel =
             model
     in
-        sweep oldModel model start
+    sweep oldModel model start
 
 
 sweep : Model -> Model -> Cell -> Model
 sweep oldModel model cell =
     if outside model cell then
         model
+
     else
         let
             v =
@@ -56,22 +60,24 @@ sweep oldModel model cell =
             nextCell =
                 next model_ cell
         in
-            sweep oldModel model_ nextCell
+        sweep oldModel model_ nextCell
 
 
 newVal : Model -> Cell -> Bool
 newVal model cell =
     if model.stuck && corner model cell then
         True
+
     else
         let
             n =
                 neighbours model cell
         in
-            if query model cell then
-                n == 2 || n == 3
-            else
-                n == 3
+        if query model cell then
+            n == 2 || n == 3
+
+        else
+            n == 3
 
 
 neighbours : Model -> Cell -> Int
@@ -88,16 +94,17 @@ neighbours model ( r, c ) =
             , ( 1, 1 )
             ]
     in
-        List.map (\( dr, dc ) -> ( r + dr, c + dc )) ds
-            |> List.map (query model)
-            |> List.filter identity
-            |> List.length
+    List.map (\( dr, dc ) -> ( r + dr, c + dc )) ds
+        |> List.map (query model)
+        |> List.filter identity
+        |> List.length
 
 
 query : Model -> Cell -> Bool
 query model cell =
     if outside model cell then
         False
+
     else
         Array.get (index model cell) model.lights |> Maybe.withDefault False
 
@@ -116,6 +123,7 @@ next : Model -> Cell -> Cell
 next model ( r, c ) =
     if c >= model.maxIndex then
         ( r + 1, 0 )
+
     else
         ( r, c + 1 )
 
@@ -142,16 +150,16 @@ stick model =
                 |> Array.set (index model ( model.maxIndex, 0 )) True
                 |> Array.set (index model ( model.maxIndex, model.maxIndex )) True
     in
-        { model | lights = a, stuck = True }
+    { model | lights = a, stuck = True }
 
 
 parse : String -> Model
 parse input =
     let
         a =
-            find All (regex "[#.]") input
+            find (regex "[#.]") input
                 |> List.map .match
-                |> List.map (\s -> s == "#")
+                |> List.map (\t -> t == "#")
                 |> List.foldl Array.push Array.empty
 
         s =
@@ -160,7 +168,7 @@ parse input =
         m =
             s - 1
     in
-        Model a s m False
+    Model a s m False
 
 
 type alias Model =

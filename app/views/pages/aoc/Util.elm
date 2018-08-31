@@ -1,11 +1,13 @@
-module Util
-    exposing
-        ( combinations
-        , failed
-        , join
-        , onlyOnePart
-        , permutations
-        )
+module Util exposing
+    ( combinations
+    , failed
+    , join
+    , onlyOnePart
+    , permutations
+    , regex
+    )
+
+import Regex exposing (Regex)
 
 
 join : String -> String -> String
@@ -15,8 +17,9 @@ join p1 p2 =
 
 combinations : Int -> List a -> List (List a)
 combinations n list =
-    if n < 0 || n > (List.length list) then
+    if n < 0 || n > List.length list then
         []
+
     else
         combo n list
 
@@ -25,8 +28,10 @@ combo : Int -> List a -> List (List a)
 combo n list =
     if n == 0 then
         [ [] ]
-    else if n == (List.length list) then
+
+    else if n == List.length list then
         [ list ]
+
     else
         case list of
             [] ->
@@ -40,7 +45,7 @@ combo n list =
                     c2 =
                         combinations n xs
                 in
-                    c1 ++ c2
+                c1 ++ c2
 
 
 failed : String
@@ -51,6 +56,11 @@ failed =
 onlyOnePart : String
 onlyOnePart =
     "no part two for this day"
+
+
+regex : String -> Regex
+regex str =
+    Regex.fromString str |> Maybe.withDefault Regex.never
 
 
 
@@ -68,12 +78,12 @@ permutations xs =
                 f ( y, ys ) =
                     List.map ((::) y) (permutations ys)
             in
-                List.concatMap f (select xss)
+            List.concatMap f (select xss)
 
 
 select : List a -> List ( a, List a )
-select xs =
-    case xs of
+select s =
+    case s of
         [] ->
             []
 

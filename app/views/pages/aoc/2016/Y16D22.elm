@@ -1,7 +1,8 @@
 module Y16D22 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,7 +11,8 @@ answer part input =
         input
             |> parse
             |> viable
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
@@ -26,8 +28,10 @@ viable1 : Int -> Int -> Int -> Cluster -> Int
 viable1 x y total cluster =
     if x >= cluster.width then
         total
+
     else if y >= cluster.height then
         viable1 (x + 1) 0 total cluster
+
     else
         viable2 x y x (y + 1) total cluster
 
@@ -36,8 +40,10 @@ viable2 : Int -> Int -> Int -> Int -> Int -> Cluster -> Int
 viable2 x1 y1 x2 y2 total cluster =
     if x2 >= cluster.width then
         viable1 x1 (y1 + 1) total cluster
+
     else if y2 >= cluster.height then
         viable2 x1 y1 (x2 + 1) 0 total cluster
+
     else
         let
             node1 =
@@ -53,19 +59,21 @@ viable2 x1 y1 x2 y2 total cluster =
             add12 =
                 if node1.used > 0 && node1.used <= node2.avail then
                     1
+
                 else
                     0
 
             add21 =
                 if node2.used > 0 && node2.used <= node1.avail then
                     1
+
                 else
                     0
 
             newTotal =
                 total + add12 + add21
         in
-            viable2 x1 y1 x2 (y2 + 1) newTotal cluster
+        viable2 x1 y1 x2 (y2 + 1) newTotal cluster
 
 
 print : Cluster -> String
@@ -90,8 +98,10 @@ printNode : Cluster -> Int -> Int -> Char
 printNode cluster y x =
     if y == 0 && x == 0 then
         '0'
+
     else if y == 0 && x == cluster.width - 1 then
         'G'
+
     else
         let
             node =
@@ -99,14 +109,17 @@ printNode cluster y x =
                     |> Dict.get ( x, y )
                     |> Maybe.withDefault invalidNode
         in
-            if node == invalidNode then
-                ' '
-            else if node.used == 0 then
-                '_'
-            else if node.size >= 500 then
-                '#'
-            else
-                '.'
+        if node == invalidNode then
+            ' '
+
+        else if node.used == 0 then
+            '_'
+
+        else if node.size >= 500 then
+            '#'
+
+        else
+            '.'
 
 
 type alias Node =
@@ -138,11 +151,11 @@ emptyCluster =
 parse : String -> Cluster
 parse input =
     input
-        |> Regex.find Regex.All (Regex.regex "/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+\\d+%")
+        |> find (regex "/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+\\d+%")
         |> List.map .submatches
         |> List.map (List.map (Maybe.withDefault ""))
         |> List.map (List.map String.toInt)
-        |> List.map (List.map (Result.withDefault 0))
+        |> List.map (List.map (Maybe.withDefault 0))
         |> List.map toNode
         |> toCluster emptyCluster
 
@@ -168,12 +181,14 @@ toCluster cluster nodes =
                 newWidth =
                     if node.x + 1 > cluster.width then
                         node.x + 1
+
                     else
                         cluster.width
 
                 newHeight =
                     if node.y + 1 > cluster.height then
                         node.y + 1
+
                     else
                         cluster.height
 
@@ -183,4 +198,4 @@ toCluster cluster nodes =
                 newCluster =
                     Cluster newWidth newHeight newNodes
             in
-                toCluster newCluster remainingNodes
+            toCluster newCluster remainingNodes

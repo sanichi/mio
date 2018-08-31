@@ -1,7 +1,8 @@
 module Y15D20 exposing (answer)
 
 import Dict
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,12 +11,13 @@ answer part input =
         input
             |> parse
             |> house1 1
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
             |> house2 1
-            |> toString
+            |> String.fromInt
 
 
 house1 : Int -> Int -> Int
@@ -26,10 +28,11 @@ house1 house goal =
                 |> List.map ((*) 10)
                 |> List.sum
     in
-        if presents >= goal then
-            house
-        else
-            house1 (house + 1) goal
+    if presents >= goal then
+        house
+
+    else
+        house1 (house + 1) goal
 
 
 house2 : Int -> Int -> Int
@@ -41,10 +44,11 @@ house2 house goal =
                 |> List.map ((*) 11)
                 |> List.sum
     in
-        if presents >= goal then
-            house
-        else
-            house2 (house + 1) goal
+    if presents >= goal then
+        house
+
+    else
+        house2 (house + 1) goal
 
 
 factors : Int -> List Int
@@ -54,13 +58,15 @@ factors n =
 
 fac : Int -> Int -> Float -> List Int -> List Int
 fac n i l fs =
-    if (toFloat i) > l then
+    if toFloat i > l then
         fs
+
     else
         let
             fs1 =
-                if rem n i /= 0 then
+                if remainderBy i n /= 0 then
                     fs
+
                 else
                     let
                         fs2 =
@@ -69,19 +75,21 @@ fac n i l fs =
                         j =
                             n // i
                     in
-                        if j == i then
-                            fs2
-                        else
-                            j :: fs2
+                    if j == i then
+                        fs2
+
+                    else
+                        j :: fs2
         in
-            fs1 ++ fac n (i + 1) l fs
+        fs1 ++ fac n (i + 1) l fs
 
 
 parse : String -> Int
 parse input =
-    Regex.find (Regex.AtMost 1) (Regex.regex "\\d+") input
+    input
+        |> findAtMost 1 (regex "\\d+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault "0"
         |> String.toInt
-        |> Result.withDefault 0
+        |> Maybe.withDefault 0

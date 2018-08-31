@@ -1,7 +1,8 @@
 module Y15D16 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,12 +11,13 @@ answer part input =
         match =
             if part == 1 then
                 match1
+
             else
                 match2
     in
-        input
-            |> parse
-            |> sue match
+    input
+        |> parse
+        |> sue match
 
 
 sue : (String -> Int -> Bool -> Bool) -> Model -> String
@@ -24,21 +26,22 @@ sue hit model =
         sues =
             List.filter (\s -> Dict.foldl hit True s.props) model
     in
-        case List.length sues of
-            0 ->
-                "none"
+    case List.length sues of
+        0 ->
+            "none"
 
-            1 ->
-                List.map .number sues |> List.head |> Maybe.withDefault 0 |> toString
+        1 ->
+            List.map .number sues |> List.head |> Maybe.withDefault 0 |> String.fromInt
 
-            _ ->
-                "too many"
+        _ ->
+            "too many"
 
 
 match1 : String -> Int -> Bool -> Bool
 match1 prop val prevProp =
     if not prevProp then
         False
+
     else
         case prop of
             "akitas" ->
@@ -79,6 +82,7 @@ match2 : String -> Int -> Bool -> Bool
 match2 prop val prevProp =
     if not prevProp then
         False
+
     else
         case prop of
             "akitas" ->
@@ -132,29 +136,29 @@ parseLine line model =
             "Sue ([1-9]\\d*): " ++ (List.repeat 3 cs |> String.join ", ")
 
         ms =
-            Regex.find (Regex.AtMost 1) (Regex.regex rx) line |> List.map .submatches
+            findAtMost 1 (regex rx) line |> List.map .submatches
     in
-        case ms of
-            [ [ Just n, Just p1, Just n1, Just p2, Just n2, Just p3, Just n3 ] ] ->
-                let
-                    i =
-                        parseInt n
+    case ms of
+        [ [ Just n, Just p1, Just n1, Just p2, Just n2, Just p3, Just n3 ] ] ->
+            let
+                i =
+                    parseInt n
 
-                    d =
-                        Dict.empty
-                            |> Dict.insert p1 (parseInt n1)
-                            |> Dict.insert p2 (parseInt n2)
-                            |> Dict.insert p3 (parseInt n3)
-                in
-                    Sue i d :: model
+                d =
+                    Dict.empty
+                        |> Dict.insert p1 (parseInt n1)
+                        |> Dict.insert p2 (parseInt n2)
+                        |> Dict.insert p3 (parseInt n3)
+            in
+            Sue i d :: model
 
-            _ ->
-                model
+        _ ->
+            model
 
 
 parseInt : String -> Int
 parseInt s =
-    String.toInt s |> Result.withDefault 0
+    String.toInt s |> Maybe.withDefault 0
 
 
 type alias Model =

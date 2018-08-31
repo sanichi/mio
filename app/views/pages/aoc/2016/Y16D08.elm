@@ -1,7 +1,8 @@
 module Y16D08 exposing (answer)
 
 import Array exposing (Array)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -13,10 +14,11 @@ answer part input =
         screen =
             decode instructions initialScreen
     in
-        if part == 1 then
-            count screen
-        else
-            display screen
+    if part == 1 then
+        count screen
+
+    else
+        display screen
 
 
 decode : List Instruction -> Screen -> Screen
@@ -51,6 +53,7 @@ rect : Int -> Int -> Screen -> Screen
 rect x y screen =
     if y <= 0 then
         screen
+
     else
         let
             newRow =
@@ -65,7 +68,7 @@ rect x y screen =
             newScreen =
                 Array.set (y - 1) newRow screen
         in
-            rect x (y - 1) newScreen
+        rect x (y - 1) newScreen
 
 
 rotateRow : Int -> Int -> Screen -> Screen
@@ -81,7 +84,7 @@ rotateRow y r screen =
             List.length oldRow
 
         x =
-            r % len
+            modBy len r
 
         newRight =
             List.take (len - x) oldRow
@@ -92,7 +95,7 @@ rotateRow y r screen =
         newRow =
             Array.fromList (newLeft ++ newRight)
     in
-        Array.set y newRow screen
+    Array.set y newRow screen
 
 
 rotateCol : Int -> Int -> Screen -> Screen
@@ -112,9 +115,9 @@ flipScreen screen =
                 |> Maybe.withDefault Array.empty
                 |> Array.length
     in
-        List.range 0 (newRowLen - 1)
-            |> List.map (flipRow screen)
-            |> Array.fromList
+    List.range 0 (newRowLen - 1)
+        |> List.map (flipRow screen)
+        |> Array.fromList
 
 
 flipRow : Screen -> Int -> Array Bool
@@ -127,17 +130,17 @@ flipRow screen y =
 count : Screen -> String
 count screen =
     let
-        count row =
+        cnt row =
             row
                 |> Array.toList
                 |> List.filter identity
                 |> List.length
     in
-        screen
-            |> Array.toList
-            |> List.map count
-            |> List.sum
-            |> toString
+    screen
+        |> Array.toList
+        |> List.map cnt
+        |> List.sum
+        |> String.fromInt
 
 
 display : Screen -> String
@@ -146,6 +149,7 @@ display screen =
         boolToString bool =
             if bool then
                 "#"
+
             else
                 "."
 
@@ -155,10 +159,10 @@ display screen =
                 |> Array.toList
                 |> String.concat
     in
-        screen
-            |> Array.toList
-            |> List.map rowToString
-            |> String.join "\n"
+    screen
+        |> Array.toList
+        |> List.map rowToString
+        |> String.join "\n"
 
 
 type alias Screen =
@@ -180,7 +184,7 @@ type Instruction
 parse : String -> List Instruction
 parse input =
     input
-        |> Regex.find Regex.All (Regex.regex "(rect |rotate (?:row y|column x)=)(\\d+)(?:x| by )(\\d+)")
+        |> find (regex "(rect |rotate (?:row y|column x)=)(\\d+)(?:x| by )(\\d+)")
         |> List.map .submatches
         |> List.map parseInstruction
 
@@ -191,20 +195,20 @@ parseInstruction submatches =
         ( string, i, j ) =
             case submatches of
                 [ Just s, Just p, Just q ] ->
-                    ( s, (String.toInt p |> Result.withDefault 0), (String.toInt q |> Result.withDefault 0) )
+                    ( s, String.toInt p |> Maybe.withDefault 0, String.toInt q |> Maybe.withDefault 0 )
 
                 _ ->
                     ( "", 0, 0 )
     in
-        case string of
-            "rect " ->
-                Rect i j
+    case string of
+        "rect " ->
+            Rect i j
 
-            "rotate row y=" ->
-                Row i j
+        "rotate row y=" ->
+            Row i j
 
-            "rotate column x=" ->
-                Col i j
+        "rotate column x=" ->
+            Col i j
 
-            _ ->
-                Invalid
+        _ ->
+            Invalid

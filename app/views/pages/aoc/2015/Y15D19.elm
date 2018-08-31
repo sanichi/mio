@@ -1,7 +1,8 @@
 module Y15D19 exposing (answer)
 
-import Regex exposing (HowMany(All), Match, Regex, find, regex, replace)
+import Regex exposing (Match, Regex, find)
 import Set exposing (Set)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,6 +11,7 @@ answer part input =
         input
             |> parse
             |> molecules
+
     else
         input
             |> parse
@@ -33,7 +35,7 @@ molecules model =
         model_ =
             iterateRules model
     in
-        Set.size model_.replacements |> toString
+    Set.size model_.replacements |> String.fromInt
 
 
 askalski : Model -> String
@@ -48,27 +50,27 @@ askalski model =
         comas =
             count comaRgx model
     in
-        atoms - bracs - 2 * comas - 1 |> toString
+    atoms - bracs - 2 * comas - 1 |> String.fromInt
 
 
 parse : String -> Model
 parse input =
     let
         rules =
-            find All ruleRgx input
+            find ruleRgx input
                 |> List.map .submatches
                 |> List.map extractRule
 
         molecule =
-            find All moleRgx input
+            find moleRgx input
                 |> List.map .submatches
                 |> List.head
                 |> extractMolecule
     in
-        { rules = rules
-        , molecule = molecule
-        , replacements = Set.empty
-        }
+    { rules = rules
+    , molecule = molecule
+    , replacements = Set.empty
+    }
 
 
 extractRule : List (Maybe String) -> Rule
@@ -111,7 +113,7 @@ iterateRules model =
                     Tuple.second rule
 
                 matches =
-                    find All (regex from) model.molecule
+                    find (regex from) model.molecule
 
                 replacements_ =
                     addToReplacements matches from to model.molecule model.replacements
@@ -122,7 +124,7 @@ iterateRules model =
                     , replacements = replacements_
                     }
             in
-                iterateRules model_
+            iterateRules model_
 
 
 addToReplacements : List Match -> String -> String -> String -> Set String -> Set String
@@ -145,12 +147,12 @@ addToReplacements matches from to molecule replacements =
                 replacements_ =
                     Set.insert replacement replacements
             in
-                addToReplacements rest from to molecule replacements_
+            addToReplacements rest from to molecule replacements_
 
 
 count : Regex -> Model -> Int
 count rgx model =
-    find All rgx model.molecule |> List.length
+    find rgx model.molecule |> List.length
 
 
 ruleRgx =

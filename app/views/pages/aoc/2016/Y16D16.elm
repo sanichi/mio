@@ -1,6 +1,7 @@
 module Y16D16 exposing (answer)
 
-import Regex
+import Regex exposing (find, findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,6 +10,7 @@ answer part input =
         input
             |> parse
             |> generateAndChecksum 272
+
     else
         input
             |> parse
@@ -26,6 +28,7 @@ generate : Int -> String -> String
 generate len data =
     if String.length data >= len then
         data
+
     else
         let
             copy =
@@ -40,7 +43,7 @@ generate len data =
                     ++ "0"
                     ++ copy
         in
-            generate len newData
+        generate len newData
 
 
 checksum : Int -> String -> String
@@ -50,11 +53,12 @@ checksum len data =
 
 checksum_ : String -> String
 checksum_ data =
-    if (String.length data) % 2 == 1 then
+    if (String.length data |> modBy 2) == 1 then
         data
+
     else
         data
-            |> Regex.find Regex.All (Regex.regex "..")
+            |> find (regex "..")
             |> List.map .match
             |> List.map twoToOne
             |> String.concat
@@ -65,6 +69,7 @@ swap : Char -> Char
 swap c =
     if c == '0' then
         '1'
+
     else
         '0'
 
@@ -88,7 +93,7 @@ twoToOne pair =
 parse : String -> String
 parse input =
     input
-        |> Regex.find (Regex.AtMost 1) (Regex.regex "[01]+")
+        |> findAtMost 1 (regex "[01]+")
         |> List.map .match
         |> List.head
         |> Maybe.withDefault ""

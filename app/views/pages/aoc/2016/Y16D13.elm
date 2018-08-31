@@ -10,7 +10,7 @@ answer part input =
         finish =
             Cell 31 39 0
     in
-        search part fav finish [ start ] [ start ] |> toString
+    search part fav finish [ start ] [ start ] |> String.fromInt
 
 
 search : Int -> Int -> Cell -> List Cell -> List Cell -> Int
@@ -22,6 +22,7 @@ search part fav finish visited queue =
         cell :: rest ->
             if part == 2 && cell.d == 50 then
                 List.length visited
+
             else
                 let
                     neighbours =
@@ -33,10 +34,11 @@ search part fav finish visited queue =
                             |> List.head
                             |> Maybe.withDefault start
                 in
-                    if part == 1 && goal.d > 0 then
-                        goal.d
-                    else
-                        search part fav finish (visited ++ neighbours) (rest ++ neighbours)
+                if part == 1 && goal.d > 0 then
+                    goal.d
+
+                else
+                    search part fav finish (visited ++ neighbours) (rest ++ neighbours)
 
 
 type alias Cell =
@@ -53,7 +55,7 @@ getNeighbours fav visited cell =
             [ ( 1, 0 ), ( 0, 1 ), ( -1, 0 ), ( 0, -1 ) ]
 
         new old move =
-            Cell (old.x + (Tuple.first move)) (old.y + (Tuple.second move)) (old.d + 1)
+            Cell (old.x + Tuple.first move) (old.y + Tuple.second move) (old.d + 1)
 
         inBounds neighbour =
             neighbour.x >= 0 && neighbour.y >= 0
@@ -63,11 +65,11 @@ getNeighbours fav visited cell =
                 |> List.any (same neighbour)
                 |> not
     in
-        moves
-            |> List.map (new cell)
-            |> List.filter inBounds
-            |> List.filter (open fav)
-            |> List.filter notSeenBefore
+    moves
+        |> List.map (new cell)
+        |> List.filter inBounds
+        |> List.filter (open fav)
+        |> List.filter notSeenBefore
 
 
 start : Cell
@@ -97,7 +99,7 @@ open fav cell =
                 |> List.filter (\c -> c == '1')
                 |> List.length
     in
-        ones % 2 == 0
+    modBy 2 ones == 0
 
 
 toBinary : Int -> String
@@ -115,9 +117,9 @@ toBinary num =
                     num // 2
 
                 r =
-                    num % 2
+                    modBy 2 num
             in
-                toBinary q ++ toBinary r
+            toBinary q ++ toBinary r
 
 
 same : Cell -> Cell -> Bool
@@ -130,4 +132,4 @@ parse input =
     input
         |> String.dropRight 1
         |> String.toInt
-        |> Result.withDefault 0
+        |> Maybe.withDefault 0

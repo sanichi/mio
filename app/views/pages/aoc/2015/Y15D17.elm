@@ -1,7 +1,7 @@
 module Y15D17 exposing (answer)
 
-import Regex exposing (HowMany(All), find, regex)
-import Util
+import Regex exposing (find)
+import Util exposing (combinations, regex)
 
 
 answer : Int -> String -> String
@@ -16,42 +16,45 @@ answer part input =
         select =
             if part == 1 then
                 Tuple.first
+
             else
                 Tuple.second
     in
-        number
-            |> select
-            |> toString
+    number
+        |> select
+        |> String.fromInt
 
 
 combos : Int -> Int -> Model -> ( Int, Int )
 combos n total model =
     if n == 0 then
         ( 0, 0 )
+
     else
         let
             p =
-                Util.combinations n model
+                combinations n model
                     |> List.filter (\c -> List.sum c == total)
                     |> List.length
 
             ( q, r ) =
                 combos (n - 1) total model
         in
-            ( p + q
-            , if r == 0 then
-                p
-              else
-                r
-            )
+        ( p + q
+        , if r == 0 then
+            p
+
+          else
+            r
+        )
 
 
 parse : String -> Model
 parse input =
-    find All (regex "[1-9]\\d*") input
+    find (regex "[1-9]\\d*") input
         |> List.map .match
         |> List.map String.toInt
-        |> List.map (Result.withDefault 0)
+        |> List.map (Maybe.withDefault 0)
         |> List.filter (\i -> i > 0)
 
 

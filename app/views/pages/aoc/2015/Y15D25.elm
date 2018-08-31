@@ -1,7 +1,7 @@
 module Y15D25 exposing (answer)
 
-import Regex exposing (HowMany(AtMost), find, regex)
-import Util
+import Regex exposing (findAtMost)
+import Util exposing (onlyOnePart, regex)
 
 
 answer : Int -> String -> String
@@ -14,7 +14,8 @@ answer part input =
             model =
                 search target start
         in
-            toString model.code
+        String.fromInt model.code
+
     else
         Util.onlyOnePart
 
@@ -23,7 +24,8 @@ parse : String -> Target
 parse input =
     let
         numbers =
-            find (AtMost 1) (regex "code at row (\\d+), column (\\d+)") input
+            input
+                |> findAtMost 1 (regex "code at row (\\d+), column (\\d+)")
                 |> List.map .submatches
                 |> List.head
                 |> Maybe.withDefault [ Just "1", Just "1" ]
@@ -32,31 +34,33 @@ parse input =
 
         ( row, col ) =
             case numbers of
-                [ Ok r, Ok c ] ->
+                [ Just r, Just c ] ->
                     ( r, c )
 
                 _ ->
                     ( 1, 1 )
     in
-        ( row, col )
+    ( row, col )
 
 
 search : Target -> Model -> Model
 search ( row, col ) model =
     if row == model.row && col == model.col then
         model
+
     else
         let
             ( row_, col_ ) =
                 if model.row > 1 then
                     ( model.row - 1, model.col + 1 )
+
                 else
                     ( model.col + 1, 1 )
 
             code_ =
-                model.code * 252533 % 33554393
+                model.code * 252533 |> modBy 33554393
         in
-            search ( row, col ) { code = code_, row = row_, col = col_ }
+        search ( row, col ) { code = code_, row = row_, col = col_ }
 
 
 type alias Target =

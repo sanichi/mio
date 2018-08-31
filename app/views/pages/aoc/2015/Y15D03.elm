@@ -8,6 +8,7 @@ answer : Int -> String -> String
 answer part input =
     if part == 1 then
         christmas 1 input
+
     else
         christmas 2 input
 
@@ -18,12 +19,12 @@ christmas n input =
         model =
             deliver (initModel n) input
     in
-        case model.err of
-            Just err ->
-                err
+    case model.err of
+        Just err ->
+            err
 
-            Nothing ->
-                Dict.keys model.visited |> List.length |> toString
+        Nothing ->
+            Dict.keys model.visited |> List.length |> String.fromInt
 
 
 type alias Santa =
@@ -77,6 +78,7 @@ deliver : Model -> String -> Model
 deliver model instructions =
     if String.isEmpty instructions then
         model
+
     else
         let
             next =
@@ -91,26 +93,27 @@ deliver model instructions =
                         ( '*', "" )
 
             index =
-                Array.length model.santas |> rem model.turn
+                remainderBy (Array.length model.santas) model.turn
 
             santa =
-                Array.get index model.santas |> Maybe.withDefault (errorSanta ("illegal index [" ++ (toString index) ++ "]"))
+                Array.get index model.santas |> Maybe.withDefault (errorSanta ("illegal index [" ++ String.fromInt index ++ "]"))
 
             santa_ =
                 updateSanta char santa
         in
-            if santa_.stop then
-                { model | err = santa.err }
-            else
-                let
-                    model_ =
-                        { model
-                            | visited = visit santa_.x santa_.y model.visited
-                            , turn = model.turn + 1
-                            , santas = Array.set index santa_ model.santas
-                        }
-                in
-                    deliver model_ remaining
+        if santa_.stop then
+            { model | err = santa.err }
+
+        else
+            let
+                model_ =
+                    { model
+                        | visited = visit santa_.x santa_.y model.visited
+                        , turn = model.turn + 1
+                        , santas = Array.set index santa_ model.santas
+                    }
+            in
+            deliver model_ remaining
 
 
 updateSanta : Char -> Santa -> Santa
@@ -132,13 +135,13 @@ updateSanta char santa =
             { santa | stop = True }
 
         _ ->
-            errorSanta ("illegal instruction [" ++ (toString char) ++ "]")
+            errorSanta ("illegal instruction [" ++ String.fromChar char ++ "]")
 
 
 visit : Int -> Int -> Visited -> Visited
 visit x y visited =
     let
         key =
-            (toString x) ++ "|" ++ (toString y)
+            String.fromInt x ++ "|" ++ String.fromInt y
     in
-        Dict.insert key True visited
+    Dict.insert key True visited

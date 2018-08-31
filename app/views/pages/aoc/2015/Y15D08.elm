@@ -1,6 +1,7 @@
 module Y15D08 exposing (answer)
 
-import Regex exposing (HowMany(All), replace, regex)
+import Regex
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,10 +10,11 @@ answer part input =
         strings =
             parseInput input
     in
-        if part == 1 then
-            (chrLength strings) - (memLength strings) |> toString
-        else
-            (escLength strings) - (chrLength strings) |> toString
+    if part == 1 then
+        chrLength strings - memLength strings |> String.fromInt
+
+    else
+        escLength strings - chrLength strings |> String.fromInt
 
 
 parseInput : String -> List String
@@ -46,30 +48,30 @@ unescape : String -> String
 unescape line =
     let
         r1 =
-            replace All (regex "(^\"|\"$)") (\_ -> "") line
+            Regex.replace (regex "(^\"|\"$)") (\_ -> "") line
 
         r2 =
-            replace All (regex "\\\\\"") (\_ -> "_") r1
+            Regex.replace (regex "\\\\\"") (\_ -> "_") r1
 
         r3 =
-            replace All (regex "\\\\\\\\") (\_ -> ".") r2
+            Regex.replace (regex "\\\\\\\\") (\_ -> ".") r2
 
         r4 =
-            replace All (regex "\\\\x[0-9a-f]{2}") (\_ -> "-") r3
+            Regex.replace (regex "\\\\x[0-9a-f]{2}") (\_ -> "-") r3
     in
-        r4
+    r4
 
 
 escape : String -> String
 escape line =
     let
         r1 =
-            replace All (regex "\\\\") (\_ -> "\\\\") line
+            Regex.replace (regex "\\\\") (\_ -> "\\\\") line
 
         r2 =
-            replace All (regex "\"") (\_ -> "\\\"") r1
+            Regex.replace (regex "\"") (\_ -> "\\\"") r1
 
         r3 =
             "\"" ++ r2 ++ "\""
     in
-        r3
+    r3

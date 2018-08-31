@@ -2,7 +2,8 @@ module Y16D12 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -11,15 +12,16 @@ answer part input =
         c =
             if part == 1 then
                 0
+
             else
                 1
     in
-        input
-            |> parse
-            |> initState c
-            |> process
-            |> get "a"
-            |> toString
+    input
+        |> parse
+        |> initState c
+        |> process
+        |> get "a"
+        |> String.fromInt
 
 
 process : State -> State
@@ -30,54 +32,57 @@ process state =
                 |> Array.get state.index
                 |> Maybe.withDefault Invalid
     in
-        if instruction == Invalid then
-            state
-        else
-            let
-                registers =
-                    case instruction of
-                        CpyI int reg ->
-                            set reg state int
+    if instruction == Invalid then
+        state
 
-                        CpyR reg1 reg2 ->
-                            get reg1 state
-                                |> set reg2 state
+    else
+        let
+            registers =
+                case instruction of
+                    CpyI int reg ->
+                        set reg state int
 
-                        Inc reg ->
-                            get reg state
-                                |> (+) 1
-                                |> set reg state
+                    CpyR reg1 reg2 ->
+                        get reg1 state
+                            |> set reg2 state
 
-                        Dec reg ->
-                            get reg state
-                                |> (+) -1
-                                |> set reg state
+                    Inc reg ->
+                        get reg state
+                            |> (+) 1
+                            |> set reg state
 
-                        _ ->
-                            state.registers
+                    Dec reg ->
+                        get reg state
+                            |> (+) -1
+                            |> set reg state
 
-                index =
-                    let
-                        default =
-                            state.index + 1
-                    in
-                        case instruction of
-                            JnzR reg jmp ->
-                                if get reg state == 0 || jmp == 0 then
-                                    default
-                                else
-                                    state.index + jmp
+                    _ ->
+                        state.registers
 
-                            JnzI int jmp ->
-                                if int == 0 || jmp == 0 then
-                                    default
-                                else
-                                    state.index + jmp
+            index =
+                let
+                    default =
+                        state.index + 1
+                in
+                case instruction of
+                    JnzR reg jmp ->
+                        if get reg state == 0 || jmp == 0 then
+                            default
 
-                            _ ->
-                                default
-            in
-                process { state | registers = registers, index = index }
+                        else
+                            state.index + jmp
+
+                    JnzI int jmp ->
+                        if int == 0 || jmp == 0 then
+                            default
+
+                        else
+                            state.index + jmp
+
+                    _ ->
+                        default
+        in
+        process { state | registers = registers, index = index }
 
 
 get : String -> State -> Int
@@ -121,7 +126,7 @@ type Instruction
 parse : String -> Array Instruction
 parse input =
     input
-        |> Regex.find Regex.All (Regex.regex "cpy ([abcd]|-?\\d+) ([abcd])|inc ([abcd])|dec ([abcd])|jnz ([abcd]|-?\\d+) (-?\\d+)")
+        |> find (regex "cpy ([abcd]|-?\\d+) ([abcd])|inc ([abcd])|dec ([abcd])|jnz ([abcd]|-?\\d+) (-?\\d+)")
         |> List.map .submatches
         |> List.map parseMatches
         |> Array.fromList
@@ -132,10 +137,10 @@ parseMatches matches =
     case matches of
         [ Just numOrReg, Just reg, Nothing, Nothing, Nothing, Nothing ] ->
             case String.toInt numOrReg of
-                Ok num ->
+                Just num ->
                     CpyI num reg
 
-                Err _ ->
+                Nothing ->
                     CpyR numOrReg reg
 
         [ Nothing, Nothing, Just reg, Nothing, Nothing, Nothing ] ->
@@ -149,14 +154,14 @@ parseMatches matches =
                 jmp =
                     num
                         |> String.toInt
-                        |> Result.withDefault 0
+                        |> Maybe.withDefault 0
             in
-                case String.toInt numOrReg of
-                    Ok num ->
-                        JnzI num jmp
+            case String.toInt numOrReg of
+                Just nm ->
+                    JnzI nm jmp
 
-                    Err _ ->
-                        JnzR numOrReg jmp
+                Nothing ->
+                    JnzR numOrReg jmp
 
         _ ->
             Invalid

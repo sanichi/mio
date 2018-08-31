@@ -1,6 +1,7 @@
 module Y15D14 exposing (answer)
 
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -12,10 +13,11 @@ answer part input =
         time =
             2503
     in
-        if part == 1 then
-            maxDistance time model
-        else
-            bestScore time model
+    if part == 1 then
+        maxDistance time model
+
+    else
+        bestScore time model
 
 
 maxDistance : Int -> Model -> String
@@ -23,7 +25,7 @@ maxDistance time model =
     List.map (distance time) model
         |> List.maximum
         |> Maybe.withDefault 0
-        |> toString
+        |> String.fromInt
 
 
 bestScore : Int -> Model -> String
@@ -32,7 +34,7 @@ bestScore time model =
         |> List.map .score
         |> List.maximum
         |> Maybe.withDefault 0
-        |> toString
+        |> String.fromInt
 
 
 distance : Int -> Reindeer -> Int
@@ -42,21 +44,23 @@ distance t r =
             r.time + r.rest
 
         tmp =
-            rem t cyc
+            remainderBy cyc t
 
         rdr =
             if tmp > r.time then
                 r.time
+
             else
                 tmp
     in
-        ((t // cyc) * r.time + rdr) * r.speed
+    ((t // cyc) * r.time + rdr) * r.speed
 
 
 score : Int -> Int -> Model -> Model
 score t time model =
     if t >= time then
         model
+
     else
         let
             t_ =
@@ -76,6 +80,7 @@ score t time model =
                                 r.score
                                     + (if r.km == maxDst then
                                         1
+
                                        else
                                         0
                                       )
@@ -83,7 +88,7 @@ score t time model =
                     )
                     model1
         in
-            score t_ time model2
+        score t_ time model2
 
 
 parse : String -> Model
@@ -97,27 +102,27 @@ parseLine : String -> Model -> Model
 parseLine line model =
     let
         matches =
-            Regex.find (Regex.AtMost 1) (Regex.regex "^(\\w+) can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds\\.$") line |> List.map .submatches
+            findAtMost 1 (regex "^(\\w+) can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds\\.$") line |> List.map .submatches
     in
-        case matches of
-            [ [ Just n1, Just s1, Just t1, Just r1 ] ] ->
-                let
-                    s2 =
-                        String.toInt s1 |> Result.withDefault 0
+    case matches of
+        [ [ Just n1, Just s1, Just t1, Just r1 ] ] ->
+            let
+                s2 =
+                    String.toInt s1 |> Maybe.withDefault 0
 
-                    t2 =
-                        String.toInt t1 |> Result.withDefault 0
+                t2 =
+                    String.toInt t1 |> Maybe.withDefault 0
 
-                    r2 =
-                        String.toInt r1 |> Result.withDefault 0
+                r2 =
+                    String.toInt r1 |> Maybe.withDefault 0
 
-                    reindeer =
-                        { name = n1, speed = s2, time = t2, rest = r2, km = 0, score = 0 }
-                in
-                    reindeer :: model
+                reindeer =
+                    { name = n1, speed = s2, time = t2, rest = r2, km = 0, score = 0 }
+            in
+            reindeer :: model
 
-            _ ->
-                model
+        _ ->
+            model
 
 
 type alias Model =

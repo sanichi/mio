@@ -1,9 +1,9 @@
 module Y15D13 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex exposing (HowMany(AtMost), find, regex)
+import Regex exposing (findAtMost)
 import Set exposing (Set)
-import Util
+import Util exposing (permutations, regex)
 
 
 answer : Int -> String -> String
@@ -14,7 +14,8 @@ answer part input =
             |> happinesses
             |> List.maximum
             |> Maybe.withDefault 0
-            |> toString
+            |> String.fromInt
+
     else
         input
             |> parse
@@ -22,7 +23,7 @@ answer part input =
             |> happinesses
             |> List.maximum
             |> Maybe.withDefault 0
-            |> toString
+            |> String.fromInt
 
 
 happinesses : Model -> List Int
@@ -31,9 +32,9 @@ happinesses model =
         f ( p1, p2 ) =
             pairValue p1 p2 model.happiness
     in
-        Util.permutations (Set.toList model.people)
-            |> List.map (\perm -> pairup perm)
-            |> List.map (\pairs -> List.map f pairs |> List.sum)
+    permutations (Set.toList model.people)
+        |> List.map (\perm -> pairup perm)
+        |> List.map (\pairs -> List.map f pairs |> List.sum)
 
 
 pairValue : String -> String -> Dict String Int -> Int
@@ -45,7 +46,7 @@ pairValue p1 p2 h =
         v2 =
             Dict.get (key p2 p1) h |> Maybe.withDefault 0
     in
-        v1 + v2
+    v1 + v2
 
 
 addMe : Model -> Model
@@ -64,12 +65,12 @@ addMe model =
             model.happiness
 
         h1 =
-            List.foldl (\p h -> Dict.insert (key me p) 0 h) h0 a
+            List.foldl (\q h -> Dict.insert (key me q) 0 h) h0 a
 
         h2 =
-            List.foldl (\p h -> Dict.insert (key p me) 0 h) h1 a
+            List.foldl (\q h -> Dict.insert (key q me) 0 h) h1 a
     in
-        { happiness = h2, people = p }
+    { happiness = h2, people = p }
 
 
 parse : String -> Model
@@ -83,30 +84,31 @@ parseLine : String -> Model -> Model
 parseLine line model =
     let
         matches =
-            find (AtMost 1) (regex "^(\\w+) would (gain|lose) (\\d+) happiness units by sitting next to (\\w+)\\.$") line |> List.map .submatches
+            findAtMost 1 (regex "^(\\w+) would (gain|lose) (\\d+) happiness units by sitting next to (\\w+)\\.$") line |> List.map .submatches
     in
-        case matches of
-            [ [ Just p1, Just gl, Just i, Just p2 ] ] ->
-                let
-                    j =
-                        String.toInt i |> Result.withDefault 0
+    case matches of
+        [ [ Just p1, Just gl, Just i, Just p2 ] ] ->
+            let
+                j =
+                    String.toInt i |> Maybe.withDefault 0
 
-                    k =
-                        if gl == "gain" then
-                            j
-                        else
-                            -j
+                k =
+                    if gl == "gain" then
+                        j
 
-                    h =
-                        Dict.insert (key p1 p2) k model.happiness
+                    else
+                        -j
 
-                    p =
-                        model.people |> Set.insert p1 |> Set.insert p2
-                in
-                    { happiness = h, people = p }
+                h =
+                    Dict.insert (key p1 p2) k model.happiness
 
-            _ ->
-                model
+                p =
+                    model.people |> Set.insert p1 |> Set.insert p2
+            in
+            { happiness = h, people = p }
+
+        _ ->
+            model
 
 
 key : String -> String -> String
@@ -123,12 +125,12 @@ pairup list =
         pair =
             outer list
     in
-        case pair of
-            Just ( l, f ) ->
-                ( l, f ) :: pairs
+    case pair of
+        Just ( l, f ) ->
+            ( l, f ) :: pairs
 
-            _ ->
-                pairs
+        _ ->
+            pairs
 
 
 inner : List a -> List ( a, a )
@@ -150,12 +152,12 @@ outer list =
         last =
             List.reverse list |> List.head
     in
-        case ( first, last ) of
-            ( Just f, Just l ) ->
-                Just ( l, f )
+    case ( first, last ) of
+        ( Just f, Just l ) ->
+            Just ( l, f )
 
-            _ ->
-                Nothing
+        _ ->
+            Nothing
 
 
 type alias Model =

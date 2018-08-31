@@ -2,7 +2,8 @@ module Y16D06 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -11,10 +12,11 @@ answer part input =
         messages =
             parse input
     in
-        if part == 1 then
-            decrypt messages Most
-        else
-            decrypt messages Least
+    if part == 1 then
+        decrypt messages Most
+
+    else
+        decrypt messages Least
 
 
 type Frequency
@@ -34,7 +36,7 @@ decrypt messages frequency =
         dicts =
             Array.repeat width Dict.empty
     in
-        decrypt_ messages frequency dicts
+    decrypt_ messages frequency dicts
 
 
 decrypt_ : List String -> Frequency -> Array (Dict Char Int) -> String
@@ -51,7 +53,7 @@ decrypt_ messages frequency dicts =
                 newDicts =
                     addToDicts message 0 dicts
             in
-                decrypt_ rest frequency newDicts
+            decrypt_ rest frequency newDicts
 
 
 pick : Frequency -> Dict Char Int -> String
@@ -80,6 +82,7 @@ addToDicts : String -> Int -> Array (Dict Char Int) -> Array (Dict Char Int)
 addToDicts message index dicts =
     if message == "" then
         dicts
+
     else
         let
             ( char, rest ) =
@@ -103,11 +106,11 @@ addToDicts message index dicts =
                                     Just n ->
                                         Dict.insert char (n + 1) dict
                         in
-                            Array.set index newDict dicts
+                        Array.set index newDict dicts
         in
-            addToDicts rest (index + 1) newDicts
+        addToDicts rest (index + 1) newDicts
 
 
 parse : String -> List String
 parse input =
-    Regex.find Regex.All (Regex.regex "[a-z]+") input |> List.map .match
+    find (regex "[a-z]+") input |> List.map .match

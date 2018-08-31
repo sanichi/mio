@@ -1,13 +1,15 @@
-module Main exposing (..)
+module Main exposing (Answers, Flags, Model, Msg(..), Thinks, Year, codeLink, defaultDay, defaultYear, failed, failedIndicator, getAnswer, getData, getNote, init, initAnswers, initModel, initThinks, main, newProblem, prepareAnswer, probLink, speed, speedColour, speedDescription, speedIndicator, subscriptions, thinking, toInt, update, view, viewAnswer, viewDayOption, viewHeader, viewHelp, viewIcon, viewLinks, viewNote, viewYearOption)
 
+import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
+import Platform.Cmd exposing (batch, none)
 import Platform.Sub
 import Ports
 import Y15
 import Y16
-import Y17
+
 
 
 -- MAIN
@@ -15,7 +17,7 @@ import Y17
 
 main : Program Flags Model Msg
 main =
-    Html.programWithFlags
+    Browser.element
         { init = init
         , update = update
         , view = view
@@ -60,12 +62,12 @@ type alias Flags =
 
 defaultYear : Int
 defaultYear =
-    2017
+    2016
 
 
 defaultDay : Int
 defaultDay =
-    3
+    25
 
 
 initModel : Model
@@ -73,7 +75,6 @@ initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 25 }
-        , { year = 2017, days = List.range 1 3 }
         ]
     , year = defaultYear
     , day = defaultDay
@@ -100,17 +101,17 @@ init flags =
         year =
             flags.year
                 |> String.toInt
-                |> Result.withDefault defaultYear
+                |> Maybe.withDefault defaultYear
 
         day =
             flags.day
                 |> String.toInt
-                |> Result.withDefault defaultDay
+                |> Maybe.withDefault defaultDay
 
         model =
             newProblem year day
     in
-        ( model, getData model )
+    ( model, getData model )
 
 
 
@@ -135,20 +136,20 @@ update msg model =
                 newModel =
                     newProblem year model.day
             in
-                newModel ! [ getData newModel ]
+            ( newModel, batch [ getData newModel ] )
 
         SelectDay day ->
             let
                 newModel =
                     newProblem model.year day
             in
-                newModel ! [ getData newModel ]
+            ( newModel, batch [ getData newModel ] )
 
         NewData data ->
-            { model | data = Just data } ! []
+            ( { model | data = Just data }, none )
 
         Prepare part ->
-            { model | thinks = thinking part } ! [ prepareAnswer part ]
+            ( { model | thinks = thinking part }, batch [ prepareAnswer part ] )
 
         Answer part ->
             let
@@ -161,16 +162,17 @@ update msg model =
                 answers =
                     if part == 1 then
                         ( Just answer, model.answers |> Tuple.second )
+
                     else
                         ( model.answers |> Tuple.first, Just answer )
             in
-                { model | answers = answers, thinks = initThinks } ! []
+            ( { model | answers = answers, thinks = initThinks }, none )
 
         ShowHelp ->
-            { model | help = True } ! []
+            ( { model | help = True }, none )
 
         HideHelp ->
-            { model | help = False } ! []
+            ( { model | help = False }, none )
 
 
 newProblem : Int -> Int -> Model
@@ -199,6 +201,7 @@ newProblem year day =
                 Just y ->
                     if List.member day y.days then
                         day
+
                     else
                         y.days
                             |> List.head
@@ -207,13 +210,14 @@ newProblem year day =
                 Nothing ->
                     defaultDay
     in
-        { initModel | year = newYear, day = newDay }
+    { initModel | year = newYear, day = newDay }
 
 
 thinking : Int -> Thinks
 thinking part =
     if part == 1 then
         ( True, False )
+
     else
         ( False, True )
 
@@ -226,9 +230,6 @@ getAnswer model part data =
 
         2016 ->
             Y16.answer model.day part data
-
-        2017 ->
-            Y17.answer model.day part data
 
         _ ->
             ""
@@ -286,69 +287,70 @@ view model =
             model.data
                 |> Maybe.withDefault ""
     in
-        div []
-            [ div [ class "row" ]
-                [ div [ class "col" ]
-                    [ Html.form [ class "form-inline justify-content-around" ]
-                        [ select [ class "form-control", onYearChange ] yearOptions
-                        , select [ class "form-control", onDayChange ] dayOptions
-                        ]
-                    ]
-                ]
-            , hr [] []
-            , div [ class "row" ]
-                [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
-                    [ table [ class "table table-bordered" ]
-                        [ thead [] [ viewHeader ]
-                        , tbody []
-                            [ viewAnswer model 1
-                            , viewAnswer model 2
-                            ]
-                        ]
-                    ]
-                ]
-            , div [ class "row" ]
-                [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
-                    [ table [ class "table table-bordered" ]
-                        [ tbody []
-                            [ viewLinks model
-                            , viewNote model
-                            ]
-                        ]
-                    ]
-                ]
-            , hr [] []
-            , viewHelp model.help
-            , hr [] []
-            , div [ class "row" ]
-                [ div [ class "col" ]
-                    [ pre [] [ text data ]
+    div []
+        [ div [ class "row" ]
+            [ div [ class "col" ]
+                [ Html.form [ class "form-inline justify-content-around" ]
+                    [ select [ class "form-control", onYearChange ] yearOptions
+                    , select [ class "form-control", onDayChange ] dayOptions
                     ]
                 ]
             ]
+        , hr [] []
+        , div [ class "row" ]
+            [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
+                [ table [ class "table table-bordered" ]
+                    [ thead [] [ viewHeader ]
+                    , tbody []
+                        [ viewAnswer model 1
+                        , viewAnswer model 2
+                        ]
+                    ]
+                ]
+            ]
+        , div [ class "row" ]
+            [ div [ class "offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6" ]
+                [ table [ class "table table-bordered" ]
+                    [ tbody []
+                        [ viewLinks model
+                        , viewNote model
+                        ]
+                    ]
+                ]
+            ]
+        , hr [] []
+        , viewHelp model.help
+        , hr [] []
+        , div [ class "row" ]
+            [ div [ class "col" ]
+                [ pre [] [ text data ]
+                ]
+            ]
+        ]
 
 
 viewYearOption : Int -> Int -> Html Msg
 viewYearOption chosen year =
     let
         str =
-            toString year
+            String.fromInt year
 
         txt =
             "Year " ++ str
     in
-        option [ value str, chosen == year |> selected ] [ text txt ]
+    option [ value str, chosen == year |> selected ] [ text txt ]
 
 
 viewDayOption : Int -> Int -> Int -> Html Msg
 viewDayOption year chosen day =
     let
         str =
-            toString day
+            String.fromInt day
 
         pad =
             if String.length str == 1 then
                 "0" ++ str
+
             else
                 str
 
@@ -368,7 +370,7 @@ viewDayOption year chosen day =
         txt =
             "Day " ++ pad ++ " " ++ failedSymbol ++ " " ++ speedSymbol
     in
-        option [ value str, chosen == day |> selected ] [ text txt ]
+    option [ value str, chosen == day |> selected ] [ text txt ]
 
 
 viewHeader : Html Msg
@@ -387,12 +389,14 @@ viewAnswer model part =
         answer =
             if part == 1 then
                 Tuple.first model.answers
+
             else
                 Tuple.second model.answers
 
-        thinking =
+        busy =
             if part == 1 then
                 Tuple.first model.thinks
+
             else
                 Tuple.second model.thinks
 
@@ -406,9 +410,11 @@ viewAnswer model part =
                         model.data
                             |> Maybe.withDefault ""
                 in
-                    getAnswer model part data |> text
-            else if thinking then
+                getAnswer model part data |> text
+
+            else if busy then
                 img [ src "/images/loader.gif" ] []
+
             else
                 case answer of
                     Nothing ->
@@ -422,20 +428,21 @@ viewAnswer model part =
                             symbol =
                                 speedIndicator time
                         in
-                            span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (Prepare part) ] [ text symbol ]
+                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (Prepare part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then
                             pre [] [ text ans ]
+
                         else
                             text ans
     in
-        tr [ class "d-flex" ]
-            [ td [ class "col-2 text-center" ]
-                [ toString part |> text ]
-            , td [ class "col-10 text-center" ]
-                [ display ]
-            ]
+    tr [ class "d-flex" ]
+        [ td [ class "col-2 text-center" ]
+            [ String.fromInt part |> text ]
+        , td [ class "col-10 text-center" ]
+            [ display ]
+        ]
 
 
 speedIndicator : Int -> String
@@ -501,25 +508,26 @@ viewHelp show =
         btnText txt =
             txt ++ " Button Decriptions" |> text
     in
-        if show then
-            let
-                trows =
-                    List.map viewIcon [ 0, 1, 2, 3, 4 ]
+    if show then
+        let
+            trows =
+                List.map viewIcon [ 0, 1, 2, 3, 4 ]
 
-                help =
-                    " Icon Descriptions"
-            in
-                div [ class "row" ]
-                    [ div [ class "offset-1 col-10 offset-lg-2 col-lg-8" ]
-                        [ p [ class "text-center" ]
-                            [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick HideHelp ] [ btnText "Hide" ] ]
-                        , table [ class "table table-bordered" ]
-                            [ tbody [] trows ]
-                        ]
-                    ]
-        else
-            p [ class "text-center" ]
-                [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick ShowHelp ] [ btnText "Show" ] ]
+            help =
+                " Icon Descriptions"
+        in
+        div [ class "row" ]
+            [ div [ class "offset-1 col-10 offset-lg-2 col-lg-8" ]
+                [ p [ class "text-center" ]
+                    [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick HideHelp ] [ btnText "Hide" ] ]
+                , table [ class "table table-bordered" ]
+                    [ tbody [] trows ]
+                ]
+            ]
+
+    else
+        p [ class "text-center" ]
+            [ button [ type_ "button", class "btn btn-sm btn-secondary", Events.onClick ShowHelp ] [ btnText "Show" ] ]
 
 
 viewIcon : Int -> Html Msg
@@ -537,18 +545,19 @@ viewIcon time =
         description =
             speedDescription time
     in
-        tr [ class "d-flex" ]
-            [ td [ class "col-2 text-center" ]
-                [ span [ class klass ] [ text symbol ] ]
-            , td [ class "col-10" ]
-                [ text description ]
-            ]
+    tr [ class "d-flex" ]
+        [ td [ class "col-2 text-center" ]
+            [ span [ class klass ] [ text symbol ] ]
+        , td [ class "col-10" ]
+            [ text description ]
+        ]
 
 
 failedIndicator : Bool -> String
-failedIndicator failed =
-    if failed then
+failedIndicator failedFlag =
+    if failedFlag then
         "✘"
+
     else
         "✔︎"
 
@@ -558,7 +567,7 @@ viewLinks model =
     tr []
         [ td [ class "text-center" ]
             [ probLink model
-            , (text " • ")
+            , text " • "
             , codeLink model
             ]
         ]
@@ -568,10 +577,10 @@ probLink : Model -> Html Msg
 probLink model =
     let
         year =
-            model.year |> toString
+            model.year |> String.fromInt
 
         day =
-            model.day |> toString
+            model.day |> String.fromInt
 
         scheme =
             "https://"
@@ -588,24 +597,25 @@ probLink model =
         link =
             scheme ++ domain ++ path ++ file
     in
-        a [ href link, target "external" ] [ text "Problem" ]
+    a [ href link, target "external" ] [ text "Problem" ]
 
 
 codeLink : Model -> Html Msg
 codeLink model =
     let
         year =
-            model.year |> toString
+            model.year |> String.fromInt
 
         shortYear =
             String.right 2 year
 
         day =
-            model.day |> toString
+            model.day |> String.fromInt
 
         paddedDay =
             if model.day > 9 then
                 day
+
             else
                 "0" ++ day
 
@@ -624,7 +634,7 @@ codeLink model =
         link =
             scheme ++ domain ++ path ++ file
     in
-        a [ href link, target "external2" ] [ text "Code" ]
+    a [ href link, target "external2" ] [ text "Code" ]
 
 
 viewNote : Model -> Html Msg
@@ -637,11 +647,12 @@ viewNote model =
         display =
             if note == "" then
                 "none"
+
             else
                 "table-row"
     in
-        tr [ style [ ( "display", display ) ] ]
-            [ td [] [ text note ] ]
+    tr [ style "display" display ]
+        [ td [] [ text note ] ]
 
 
 
@@ -652,7 +663,7 @@ toInt : String -> Int
 toInt str =
     str
         |> String.toInt
-        |> Result.withDefault 0
+        |> Maybe.withDefault 0
 
 
 speed : Int -> Int -> Int -> Int
@@ -660,120 +671,120 @@ speed year day part =
     let
         key =
             [ year, day, part ]
-                |> List.map toString
+                |> List.map String.fromInt
                 |> String.join "-"
     in
-        case key of
-            "2015-4-1" ->
-                2
+    case key of
+        "2015-4-1" ->
+            2
 
-            "2015-4-2" ->
-                3
+        "2015-4-2" ->
+            3
 
-            "2015-6-1" ->
-                2
+        "2015-6-1" ->
+            2
 
-            "2015-6-2" ->
-                3
+        "2015-6-2" ->
+            3
 
-            "2015-10-1" ->
-                1
+        "2015-10-1" ->
+            1
 
-            "2015-10-2" ->
-                2
+        "2015-10-2" ->
+            2
 
-            "2015-11-1" ->
-                1
+        "2015-11-1" ->
+            1
 
-            "2015-11-2" ->
-                2
+        "2015-11-2" ->
+            2
 
-            "2015-13-1" ->
-                1
+        "2015-13-1" ->
+            1
 
-            "2015-13-2" ->
-                2
+        "2015-13-2" ->
+            2
 
-            "2015-15-1" ->
-                2
+        "2015-15-1" ->
+            2
 
-            "2015-15-2" ->
-                2
+        "2015-15-2" ->
+            2
 
-            "2015-17-1" ->
-                2
+        "2015-17-1" ->
+            2
 
-            "2015-17-2" ->
-                2
+        "2015-17-2" ->
+            2
 
-            "2015-18-1" ->
-                2
+        "2015-18-1" ->
+            2
 
-            "2015-18-2" ->
-                2
+        "2015-18-2" ->
+            2
 
-            "2015-20-1" ->
-                2
+        "2015-20-1" ->
+            2
 
-            "2015-20-2" ->
-                2
+        "2015-20-2" ->
+            2
 
-            "2015-24-1" ->
-                2
+        "2015-24-1" ->
+            2
 
-            "2015-24-2" ->
-                1
+        "2015-24-2" ->
+            1
 
-            "2015-25-1" ->
-                1
+        "2015-25-1" ->
+            1
 
-            "2016-5-1" ->
-                3
+        "2016-5-1" ->
+            3
 
-            "2016-5-2" ->
-                3
+        "2016-5-2" ->
+            3
 
-            "2016-9-2" ->
-                3
+        "2016-9-2" ->
+            3
 
-            "2016-12-1" ->
-                1
+        "2016-12-1" ->
+            1
 
-            "2016-12-2" ->
-                2
+        "2016-12-2" ->
+            2
 
-            "2016-14-1" ->
-                2
+        "2016-14-1" ->
+            2
 
-            "2016-14-2" ->
-                4
+        "2016-14-2" ->
+            4
 
-            "2016-15-1" ->
-                1
+        "2016-15-1" ->
+            1
 
-            "2016-15-2" ->
-                2
+        "2016-15-2" ->
+            2
 
-            "2016-16-2" ->
-                4
+        "2016-16-2" ->
+            4
 
-            "2016-17-2" ->
-                2
+        "2016-17-2" ->
+            2
 
-            "2016-18-2" ->
-                1
+        "2016-18-2" ->
+            1
 
-            "2016-22-1" ->
-                1
+        "2016-22-1" ->
+            1
 
-            "2016-24-1" ->
-                2
+        "2016-24-1" ->
+            2
 
-            "2016-24-2" ->
-                2
+        "2016-24-2" ->
+            2
 
-            _ ->
-                0
+        _ ->
+            0
 
 
 failed : Int -> Int -> Int -> Bool
@@ -781,27 +792,33 @@ failed year day part =
     let
         key =
             [ year, day, part ]
-                |> List.map toString
+                |> List.map String.fromInt
                 |> String.join "-"
     in
-        case key of
-            "2015-12-2" ->
-                True
+    case key of
+        "2015-12-2" ->
+            True
 
-            "2015-22-1" ->
-                True
+        "2015-22-1" ->
+            True
 
-            "2015-22-2" ->
-                True
+        "2015-22-2" ->
+            True
 
-            "2016-11-1" ->
-                True
+        "2016-11-1" ->
+            True
 
-            "2016-11-2" ->
-                True
+        "2016-11-2" ->
+            True
 
-            _ ->
-                False
+        "2016-23-1" ->
+            True
+
+        "2016-23-2" ->
+            True
+
+        _ ->
+            False
 
 
 getNote : Int -> Int -> Maybe String
@@ -809,24 +826,27 @@ getNote year day =
     let
         key =
             [ year, day ]
-                |> List.map toString
+                |> List.map String.fromInt
                 |> String.join "-"
     in
-        case key of
-            "2015-12" ->
-                Just "For part 2 I couldn't see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead."
+    case key of
+        "2015-12" ->
+            Just "For part 2 I couldn't see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead."
 
-            "2015-22" ->
-                Just "I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn't face trying to redo it all in Elm."
+        "2015-22" ->
+            Just "I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn't face trying to redo it all in Elm."
 
-            "2016-11" ->
-                Just "I didn't have much of a clue about this one so quickly admitted defeat and spent my time on other things that day."
+        "2016-11" ->
+            Just "I didn't have much of a clue about this one so quickly admitted defeat and spent my time on other things that day."
 
-            "2016-14" ->
-                Just "I left part 2 running for nearly 24 hours and it still hadn't finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that's not the whole story since 100 times 20 seconds is only about half an hour."
+        "2016-14" ->
+            Just "I left part 2 running for nearly 24 hours and it still hadn't finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that's not the whole story since 100 times 20 seconds is only about half an hour."
 
-            "2016-16" ->
-                Just "The Elm program for part 2 crashed my browser window after a few minutes (presumably out of memory) so instead I wrote a Perl 5 program which got the answer in less than a minute while using almost 3GB of memory."
+        "2016-16" ->
+            Just "The Elm program for part 2 crashed my browser window after a few minutes (presumably out of memory) so instead I wrote a Perl 5 program which got the answer in less than a minute while using almost 3GB of memory."
 
-            _ ->
-                Nothing
+        "2016-23" ->
+            Just "There was a strange error after converting from 0.18 to 0.19 which I couldn't figure out so I abandoned this one even though it had been working."
+
+        _ ->
+            Nothing

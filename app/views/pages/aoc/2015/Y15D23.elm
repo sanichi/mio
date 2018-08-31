@@ -2,7 +2,8 @@ module Y15D23 exposing (answer)
 
 import Array exposing (Array)
 import Dict exposing (Dict)
-import Regex
+import Regex exposing (findAtMost)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -14,10 +15,11 @@ answer part input =
         model =
             if part == 1 then
                 init
+
             else
                 { init | registers = Dict.insert "a" 1 init.registers }
     in
-        run model |> get "b" |> toString
+    run model |> get "b" |> String.fromInt
 
 
 run : Model -> Model
@@ -26,63 +28,67 @@ run model =
         instruction =
             Array.get model.i model.instructions
     in
-        case instruction of
-            Nothing ->
-                model
+    case instruction of
+        Nothing ->
+            model
 
-            Just inst ->
-                let
-                    model_ =
-                        case inst of
-                            Inc r ->
-                                { model
-                                    | registers = update r (\v -> v + 1) model
-                                    , i = model.i + 1
-                                }
+        Just inst ->
+            let
+                model_ =
+                    case inst of
+                        Inc r ->
+                            { model
+                                | registers = update r (\v -> v + 1) model
+                                , i = model.i + 1
+                            }
 
-                            Hlf r ->
-                                { model
-                                    | registers = update r (\v -> v // 2) model
-                                    , i = model.i + 1
-                                }
+                        Hlf r ->
+                            { model
+                                | registers = update r (\v -> v // 2) model
+                                , i = model.i + 1
+                            }
 
-                            Tpl r ->
-                                { model
-                                    | registers = update r (\v -> v * 3) model
-                                    , i = model.i + 1
-                                }
+                        Tpl r ->
+                            { model
+                                | registers = update r (\v -> v * 3) model
+                                , i = model.i + 1
+                            }
 
-                            Jmp j ->
-                                { model
-                                    | i = model.i + j
-                                }
+                        Jmp j ->
+                            { model
+                                | i = model.i + j
+                            }
 
-                            Jie r j ->
-                                { model
-                                    | i =
-                                        model.i
-                                            + if rem (get r model) 2 == 0 then
-                                                j
-                                              else
-                                                1
-                                }
+                        Jie r j ->
+                            { model
+                                | i =
+                                    model.i
+                                        + (if remainderBy 2 (get r model) == 0 then
+                                            j
 
-                            Jio r j ->
-                                { model
-                                    | i =
-                                        model.i
-                                            + if (get r model) == 1 then
-                                                j
-                                              else
-                                                1
-                                }
+                                           else
+                                            1
+                                          )
+                            }
 
-                            NoOp ->
-                                { model
-                                    | i = model.i + 1
-                                }
-                in
-                    run model_
+                        Jio r j ->
+                            { model
+                                | i =
+                                    model.i
+                                        + (if get r model == 1 then
+                                            j
+
+                                           else
+                                            1
+                                          )
+                            }
+
+                        NoOp ->
+                            { model
+                                | i = model.i + 1
+                            }
+            in
+            run model_
 
 
 update : String -> (Int -> Int) -> Model -> Dict String Int
@@ -91,7 +97,7 @@ update name f model =
         value =
             get name model |> f
     in
-        Dict.insert name value model.registers
+    Dict.insert name value model.registers
 
 
 get : String -> Model -> Int
@@ -110,50 +116,50 @@ parseLine : String -> Model -> Model
 parseLine line model =
     let
         rx =
-            "^([a-z]{3})\\s+(a|b)?,?\\s*\\+?(-?\\d*)?"
+            regex "^([a-z]{3})\\s+(a|b)?,?\\s*\\+?(-?\\d*)?"
 
         sm =
-            Regex.find (Regex.AtMost 1) (Regex.regex rx) line |> List.map .submatches
+            findAtMost 1 rx line |> List.map .submatches
     in
-        case sm of
-            [ [ name, reg, jmp ] ] ->
-                let
-                    n =
-                        Maybe.withDefault "" name
+    case sm of
+        [ [ name, reg, jmp ] ] ->
+            let
+                n =
+                    Maybe.withDefault "" name
 
-                    r =
-                        Maybe.withDefault "" reg
+                r =
+                    Maybe.withDefault "" reg
 
-                    j =
-                        Maybe.withDefault "" jmp |> String.toInt |> Result.withDefault 0
+                j =
+                    Maybe.withDefault "" jmp |> String.toInt |> Maybe.withDefault 0
 
-                    i =
-                        case n of
-                            "inc" ->
-                                Inc r
+                i =
+                    case n of
+                        "inc" ->
+                            Inc r
 
-                            "hlf" ->
-                                Hlf r
+                        "hlf" ->
+                            Hlf r
 
-                            "tpl" ->
-                                Tpl r
+                        "tpl" ->
+                            Tpl r
 
-                            "jmp" ->
-                                Jmp j
+                        "jmp" ->
+                            Jmp j
 
-                            "jie" ->
-                                Jie r j
+                        "jie" ->
+                            Jie r j
 
-                            "jio" ->
-                                Jio r j
+                        "jio" ->
+                            Jio r j
 
-                            _ ->
-                                NoOp
-                in
-                    { model | instructions = Array.push i model.instructions }
+                        _ ->
+                            NoOp
+            in
+            { model | instructions = Array.push i model.instructions }
 
-            _ ->
-                model
+        _ ->
+            model
 
 
 initModel : Model

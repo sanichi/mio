@@ -10,17 +10,18 @@ answer part input =
         circuit =
             parseInput input
     in
-        if part == 1 then
-            circuit
-                |> reduce "a"
-                |> getVal "a"
-                |> toString
-        else
-            circuit
-                |> Dict.insert "b" (NoOp 3176)
-                |> reduce "a"
-                |> getVal "a"
-                |> toString
+    if part == 1 then
+        circuit
+            |> reduce "a"
+            |> getVal "a"
+            |> String.fromInt
+
+    else
+        circuit
+            |> Dict.insert "b" (NoOp 3176)
+            |> reduce "a"
+            |> getVal "a"
+            |> String.fromInt
 
 
 reduce : Wire -> Circuit -> Circuit
@@ -29,75 +30,77 @@ reduce wire circuit =
         val =
             Dict.get wire circuit
     in
-        case val of
-            Nothing ->
-                Dict.insert wire (NoOp 0) circuit
+    case val of
+        Nothing ->
+            Dict.insert wire (NoOp 0) circuit
 
-            Just action ->
-                let
-                    ( k, circuit_, insert ) =
-                        case action of
-                            NoOp i ->
-                                ( i, circuit, False )
+        Just action ->
+            let
+                ( k, circuit_, insert ) =
+                    case action of
+                        NoOp i ->
+                            ( i, circuit, False )
 
-                            Pass w ->
-                                let
-                                    ( i, c ) =
-                                        reduce1 w circuit
-                                in
-                                    ( i, c, True )
+                        Pass w ->
+                            let
+                                ( i, c ) =
+                                    reduce1 w circuit
+                            in
+                            ( i, c, True )
 
-                            And w1 w2 ->
-                                let
-                                    ( i, j, c ) =
-                                        reduce2 w1 w2 circuit
-                                in
-                                    ( Bitwise.and i j, c, True )
+                        And w1 w2 ->
+                            let
+                                ( i, j, c ) =
+                                    reduce2 w1 w2 circuit
+                            in
+                            ( Bitwise.and i j, c, True )
 
-                            Or w1 w2 ->
-                                let
-                                    ( i, j, c ) =
-                                        reduce2 w1 w2 circuit
-                                in
-                                    ( Bitwise.or i j, c, True )
+                        Or w1 w2 ->
+                            let
+                                ( i, j, c ) =
+                                    reduce2 w1 w2 circuit
+                            in
+                            ( Bitwise.or i j, c, True )
 
-                            Lshift w i ->
-                                let
-                                    ( j, c ) =
-                                        reduce1 w circuit
+                        Lshift w i ->
+                            let
+                                ( j, c ) =
+                                    reduce1 w circuit
 
-                                    k =
-                                        Bitwise.shiftLeftBy i j
-                                in
-                                    ( k, c, True )
+                                l =
+                                    Bitwise.shiftLeftBy i j
+                            in
+                            ( l, c, True )
 
-                            Rshift w i ->
-                                let
-                                    ( j, c ) =
-                                        reduce1 w circuit
-                                in
-                                    ( Bitwise.shiftRightBy i j, c, True )
+                        Rshift w i ->
+                            let
+                                ( j, c ) =
+                                    reduce1 w circuit
+                            in
+                            ( Bitwise.shiftRightBy i j, c, True )
 
-                            Not w ->
-                                let
-                                    ( i, c ) =
-                                        reduce1 w circuit
+                        Not w ->
+                            let
+                                ( i, c ) =
+                                    reduce1 w circuit
 
-                                    j =
-                                        Bitwise.complement i
+                                j =
+                                    Bitwise.complement i
 
-                                    k =
-                                        if j < 0 then
-                                            maxValue + j + 1
-                                        else
-                                            j
-                                in
-                                    ( k, c, True )
-                in
-                    if insert then
-                        Dict.insert wire (NoOp k) circuit_
-                    else
-                        circuit_
+                                l =
+                                    if j < 0 then
+                                        maxValue + j + 1
+
+                                    else
+                                        j
+                            in
+                            ( l, c, True )
+            in
+            if insert then
+                Dict.insert wire (NoOp k) circuit_
+
+            else
+                circuit_
 
 
 reduce1 : Wire -> Circuit -> ( Int, Circuit )
@@ -106,16 +109,16 @@ reduce1 w circuit =
         i =
             String.toInt w
     in
-        case i of
-            Ok j ->
-                ( j, circuit )
+    case i of
+        Just j ->
+            ( j, circuit )
 
-            _ ->
-                let
-                    circuit_ =
-                        reduce w circuit
-                in
-                    ( getVal w circuit_, circuit_ )
+        _ ->
+            let
+                circuit_ =
+                    reduce w circuit
+            in
+            ( getVal w circuit_, circuit_ )
 
 
 reduce2 : Wire -> Wire -> Circuit -> ( Int, Int, Circuit )
@@ -127,33 +130,33 @@ reduce2 w1 w2 circuit =
         i2 =
             String.toInt w2
     in
-        case ( i1, i2 ) of
-            ( Ok j1, Ok j2 ) ->
-                ( j1, j2, circuit )
+    case ( i1, i2 ) of
+        ( Just j1, Just j2 ) ->
+            ( j1, j2, circuit )
 
-            ( Ok j1, Err e2 ) ->
-                let
-                    circuit_ =
-                        reduce w2 circuit
-                in
-                    ( j1, getVal w2 circuit_, circuit_ )
+        ( Just j1, Nothing ) ->
+            let
+                circuit_ =
+                    reduce w2 circuit
+            in
+            ( j1, getVal w2 circuit_, circuit_ )
 
-            ( Err e1, Ok j2 ) ->
-                let
-                    circuit_ =
-                        reduce w1 circuit
-                in
-                    ( getVal w1 circuit_, j2, circuit_ )
+        ( Nothing, Just j2 ) ->
+            let
+                circuit_ =
+                    reduce w1 circuit
+            in
+            ( getVal w1 circuit_, j2, circuit_ )
 
-            ( Err e1, Err e2 ) ->
-                let
-                    circuit_ =
-                        reduce w1 circuit
+        ( Nothing, Nothing ) ->
+            let
+                circuit_ =
+                    reduce w1 circuit
 
-                    circuit__ =
-                        reduce w2 circuit_
-                in
-                    ( getVal w1 circuit_, getVal w2 circuit__, circuit__ )
+                circuit__ =
+                    reduce w2 circuit_
+            in
+            ( getVal w1 circuit_, getVal w2 circuit__, circuit__ )
 
 
 getVal : Wire -> Circuit -> Int
@@ -162,17 +165,17 @@ getVal wire circuit =
         val =
             Dict.get wire circuit
     in
-        case val of
-            Nothing ->
-                0
+    case val of
+        Nothing ->
+            0
 
-            Just action ->
-                case action of
-                    NoOp i ->
-                        i
+        Just action ->
+            case action of
+                NoOp i ->
+                    i
 
-                    _ ->
-                        0
+                _ ->
+                    0
 
 
 parseInput : String -> Circuit
@@ -194,10 +197,11 @@ parseLines lines circuit =
                 circuit_ =
                     Dict.insert wire action circuit
             in
-                if wire == "" && action == NoOp 0 then
-                    parseLines rest circuit
-                else
-                    parseLines rest circuit_
+            if wire == "" && action == NoOp 0 then
+                parseLines rest circuit
+
+            else
+                parseLines rest circuit_
 
 
 parseConnection : String -> ( Wire, Action )
@@ -206,32 +210,32 @@ parseConnection connection =
         words =
             String.split " " connection
     in
-        case words of
-            [ from, "->", to ] ->
-                ( to, Pass from )
+    case words of
+        [ from, "->", to ] ->
+            ( to, Pass from )
 
-            [ w1, "AND", w2, "->", to ] ->
-                ( to, And w1 w2 )
+        [ w1, "AND", w2, "->", to ] ->
+            ( to, And w1 w2 )
 
-            [ w1, "OR", w2, "->", to ] ->
-                ( to, Or w1 w2 )
+        [ w1, "OR", w2, "->", to ] ->
+            ( to, Or w1 w2 )
 
-            [ w, "LSHIFT", i, "->", to ] ->
-                ( to, Lshift w (parseInt i) )
+        [ w, "LSHIFT", i, "->", to ] ->
+            ( to, Lshift w (parseInt i) )
 
-            [ w, "RSHIFT", i, "->", to ] ->
-                ( to, Rshift w (parseInt i) )
+        [ w, "RSHIFT", i, "->", to ] ->
+            ( to, Rshift w (parseInt i) )
 
-            [ "NOT", w, "->", to ] ->
-                ( to, Not w )
+        [ "NOT", w, "->", to ] ->
+            ( to, Not w )
 
-            _ ->
-                ( connection, NoOp 0 )
+        _ ->
+            ( connection, NoOp 0 )
 
 
 parseInt : String -> Int
 parseInt i =
-    String.toInt i |> Result.withDefault 0
+    String.toInt i |> Maybe.withDefault 0
 
 
 maxValue : Int

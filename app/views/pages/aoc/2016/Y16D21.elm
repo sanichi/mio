@@ -1,7 +1,8 @@
 module Y16D21 exposing (answer)
 
 import Array exposing (Array)
-import Regex exposing (Regex)
+import Regex exposing (Regex, find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,10 +11,11 @@ answer part input =
         instructions =
             parse input
     in
-        if part == 1 then
-            scramble instructions "abcdefgh"
-        else
-            unscramble instructions "fbgdceah"
+    if part == 1 then
+        scramble instructions "abcdefgh"
+
+    else
+        unscramble instructions "fbgdceah"
 
 
 scramble : List Instruction -> String -> String
@@ -27,9 +29,9 @@ scramble instructions password =
         scrambledChars =
             process instructions chars
     in
-        scrambledChars
-            |> Array.toList
-            |> String.fromList
+    scrambledChars
+        |> Array.toList
+        |> String.fromList
 
 
 unscramble : List Instruction -> String -> String
@@ -48,9 +50,9 @@ unscramble instructions scrambled =
         chars =
             process newInstructions scrambledChars
     in
-        chars
-            |> Array.toList
-            |> String.fromList
+    chars
+        |> Array.toList
+        |> String.fromList
 
 
 process : List Instruction -> Chars -> Chars
@@ -64,7 +66,7 @@ process instructions chars =
                 newChars =
                     transform instruction chars
             in
-                process rest newChars
+            process rest newChars
 
 
 transform : Instruction -> Chars -> Chars
@@ -138,14 +140,14 @@ swapPosition i1 i2 chars =
         mc2 =
             Array.get i2 chars
     in
-        case ( mc1, mc2 ) of
-            ( Just c1, Just c2 ) ->
-                chars
-                    |> Array.set i1 c2
-                    |> Array.set i2 c1
+    case ( mc1, mc2 ) of
+        ( Just c1, Just c2 ) ->
+            chars
+                |> Array.set i1 c2
+                |> Array.set i2 c1
 
-            _ ->
-                chars
+        _ ->
+            chars
 
 
 swapLetter : Char -> Char -> Chars -> Chars
@@ -157,25 +159,26 @@ swapLetter c1 c2 chars =
         mi2 =
             indexOf c2 chars
     in
-        case ( mi1, mi2 ) of
-            ( Just i1, Just i2 ) ->
-                swapPosition i1 i2 chars
+    case ( mi1, mi2 ) of
+        ( Just i1, Just i2 ) ->
+            swapPosition i1 i2 chars
 
-            _ ->
-                chars
+        _ ->
+            chars
 
 
 rotateLeft : Int -> Chars -> Chars
 rotateLeft n chars =
     if n == 0 then
         chars
+
     else
         let
             len =
                 Array.length chars
 
             n_ =
-                n % len
+                modBy len n
 
             a1 =
                 Array.slice 0 n_ chars
@@ -183,22 +186,23 @@ rotateLeft n chars =
             a2 =
                 Array.slice n_ len chars
         in
-            Array.append a2 a1
+        Array.append a2 a1
 
 
 rotateRight : Int -> Chars -> Chars
 rotateRight n chars =
     if n == 0 then
         chars
+
     else
         let
             len =
                 Array.length chars
 
             n_ =
-                n % len
+                modBy len n
         in
-            rotateLeft (len - n_) chars
+        rotateLeft (len - n_) chars
 
 
 rotateBased : Char -> Chars -> Chars
@@ -207,22 +211,23 @@ rotateBased c chars =
         mi =
             indexOf c chars
     in
-        case mi of
-            Just i ->
-                let
-                    x =
-                        if i >= 4 then
-                            1
-                        else
-                            0
+    case mi of
+        Just i ->
+            let
+                x =
+                    if i >= 4 then
+                        1
 
-                    n =
-                        1 + i + x
-                in
-                    rotateRight n chars
+                    else
+                        0
 
-            Nothing ->
-                chars
+                n =
+                    1 + i + x
+            in
+            rotateRight n chars
+
+        Nothing ->
+            chars
 
 
 rotateBasedInverse : Char -> Chars -> Chars
@@ -260,7 +265,7 @@ rotateBasedInverse c chars =
                 _ ->
                     0
     in
-        rotateLeft n chars
+    rotateLeft n chars
 
 
 reversePosition : Int -> Int -> Chars -> Chars
@@ -269,26 +274,27 @@ reversePosition i1 i2 chars =
         len =
             Array.length chars
     in
-        if i1 < len && i2 < len then
-            let
-                a1 =
-                    Array.slice 0 i1 chars
+    if i1 < len && i2 < len then
+        let
+            a1 =
+                Array.slice 0 i1 chars
 
-                a2 =
-                    chars
-                        |> Array.slice i1 (i2 + 1)
-                        |> Array.toList
-                        |> List.reverse
-                        |> Array.fromList
+            a2 =
+                chars
+                    |> Array.slice i1 (i2 + 1)
+                    |> Array.toList
+                    |> List.reverse
+                    |> Array.fromList
 
-                a3 =
-                    Array.slice (i2 + 1) len chars
-            in
-                a3
-                    |> Array.append a2
-                    |> Array.append a1
-        else
-            chars
+            a3 =
+                Array.slice (i2 + 1) len chars
+        in
+        a3
+            |> Array.append a2
+            |> Array.append a1
+
+    else
+        chars
 
 
 movePosition : Int -> Int -> Chars -> Chars
@@ -297,31 +303,32 @@ movePosition i1 i2 chars =
         len =
             Array.length chars
     in
-        if i1 < len && i2 < len then
-            let
-                a1 =
-                    Array.slice 0 i1 chars
+    if i1 < len && i2 < len then
+        let
+            a1 =
+                Array.slice 0 i1 chars
 
-                a2 =
-                    Array.slice i1 (i1 + 1) chars
+            a2 =
+                Array.slice i1 (i1 + 1) chars
 
-                a3 =
-                    Array.slice (i1 + 1) len chars
+            a3 =
+                Array.slice (i1 + 1) len chars
 
-                a4 =
-                    Array.append a1 a3
+            a4 =
+                Array.append a1 a3
 
-                a5 =
-                    Array.slice 0 i2 a4
+            a5 =
+                Array.slice 0 i2 a4
 
-                a6 =
-                    Array.slice i2 (len - 1) a4
-            in
-                a6
-                    |> Array.append a2
-                    |> Array.append a5
-        else
-            chars
+            a6 =
+                Array.slice i2 (len - 1) a4
+        in
+        a6
+            |> Array.append a2
+            |> Array.append a5
+
+    else
+        chars
 
 
 type Instruction
@@ -343,7 +350,7 @@ type alias Chars =
 parse : String -> List Instruction
 parse input =
     input
-        |> Regex.find Regex.All instructionPattern
+        |> find instructionPattern
         |> List.map .submatches
         |> List.map (List.map (Maybe.withDefault ""))
         |> List.map (List.filter (not << String.isEmpty))
@@ -363,9 +370,9 @@ instructionPattern =
             , "(move position) ([0-9]) to position ([0-9])"
             ]
     in
-        list
-            |> String.join "|"
-            |> Regex.regex
+    list
+        |> String.join "|"
+        |> regex
 
 
 toInstruction : List String -> Instruction
@@ -379,10 +386,11 @@ toInstruction words =
                 i2 =
                     toInt b
             in
-                if i1 /= i2 then
-                    SwapPosition i1 i2
-                else
-                    NoOp
+            if i1 /= i2 then
+                SwapPosition i1 i2
+
+            else
+                NoOp
 
         [ "swap letter", a, b ] ->
             let
@@ -392,37 +400,40 @@ toInstruction words =
                 c2 =
                     toChar b
             in
-                if c1 /= c2 then
-                    SwapLetter c1 c2
-                else
-                    NoOp
+            if c1 /= c2 then
+                SwapLetter c1 c2
+
+            else
+                NoOp
 
         [ "rotate left", a ] ->
             let
                 n =
                     toInt a
             in
-                if n > 0 then
-                    RotateLeft n
-                else
-                    NoOp
+            if n > 0 then
+                RotateLeft n
+
+            else
+                NoOp
 
         [ "rotate right", a ] ->
             let
                 n =
                     toInt a
             in
-                if n > 0 then
-                    RotateRight n
-                else
-                    NoOp
+            if n > 0 then
+                RotateRight n
+
+            else
+                NoOp
 
         [ "rotate based", a ] ->
             let
                 c =
                     toChar a
             in
-                RotateBased c
+            RotateBased c
 
         [ "reverse positions", a, b ] ->
             let
@@ -432,10 +443,11 @@ toInstruction words =
                 i2 =
                     toInt b
             in
-                if i1 < i2 then
-                    ReversePosition i1 i2
-                else
-                    NoOp
+            if i1 < i2 then
+                ReversePosition i1 i2
+
+            else
+                NoOp
 
         [ "move position", a, b ] ->
             let
@@ -445,10 +457,11 @@ toInstruction words =
                 i2 =
                     toInt b
             in
-                if i1 /= i2 then
-                    MovePosition i1 i2
-                else
-                    NoOp
+            if i1 /= i2 then
+                MovePosition i1 i2
+
+            else
+                NoOp
 
         _ ->
             NoOp
@@ -458,7 +471,7 @@ toInt : String -> Int
 toInt str =
     str
         |> String.toInt
-        |> Result.withDefault 0
+        |> Maybe.withDefault 0
 
 
 toChar : String -> Char

@@ -1,6 +1,7 @@
 module Y16D02 exposing (answer)
 
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -9,14 +10,15 @@ answer part input =
         instructions =
             parse input
     in
-        if part == 1 then
-            instructions
-                |> translate init [] move1
-                |> String.fromList
-        else
-            instructions
-                |> translate init [] move2
-                |> String.fromList
+    if part == 1 then
+        instructions
+            |> translate init [] move1
+            |> String.fromList
+
+    else
+        instructions
+            |> translate init [] move2
+            |> String.fromList
 
 
 translate : Char -> List Char -> (Char -> Char -> Char) -> List String -> List Char
@@ -30,7 +32,7 @@ translate current buttons mover instructions =
                 newButtons =
                     button :: buttons
             in
-                translate button newButtons mover remainingInstructions
+            translate button newButtons mover remainingInstructions
 
         _ ->
             List.reverse buttons
@@ -44,7 +46,7 @@ follow current mover instruction =
                 button =
                     mover current letter
             in
-                follow button mover rest
+            follow button mover rest
 
         Nothing ->
             current
@@ -349,5 +351,6 @@ init =
 
 parse : String -> List String
 parse input =
-    Regex.find Regex.All (Regex.regex "([RLUD]+)") input
+    input
+        |> find (regex "([RLUD]+)")
         |> List.map .match

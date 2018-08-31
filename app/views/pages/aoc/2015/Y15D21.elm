@@ -1,7 +1,8 @@
 module Y15D21 exposing (answer)
 
 import Array exposing (Array)
-import Regex
+import Regex exposing (find)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String
@@ -10,10 +11,11 @@ answer part input =
         boss =
             parse input
     in
-        if part == 1 then
-            search boss lowest 0 initIndex |> toString
-        else
-            search boss highest 0 initIndex |> toString
+    if part == 1 then
+        search boss lowest 0 initIndex |> String.fromInt
+
+    else
+        search boss highest 0 initIndex |> String.fromInt
 
 
 search : Fighter -> (Bool -> Int -> Int -> Bool) -> Int -> Maybe Index -> Int
@@ -30,10 +32,11 @@ search boss candidate best index =
                 nextBest =
                     if candidate (winner player boss) player.cost best then
                         player.cost
+
                     else
                         best
             in
-                search boss candidate nextBest (nextIndex i)
+            search boss candidate nextBest (nextIndex i)
 
 
 lowest : Bool -> Int -> Int -> Bool
@@ -61,28 +64,32 @@ fighterFromIndex i =
         ring2 =
             Array.get i.r2 rings |> Maybe.withDefault [ 0, 0, 0 ]
     in
-        let
-            totals =
-                List.map4 (\w a r1 r2 -> w + a + r1 + r2) weapon armor ring1 ring2
-        in
-            case totals of
-                [ c, d, a ] ->
-                    Fighter 100 d a c True
+    let
+        totals =
+            List.map4 (\w a r1 r2 -> w + a + r1 + r2) weapon armor ring1 ring2
+    in
+    case totals of
+        [ c, d, a ] ->
+            Fighter 100 d a c True
 
-                _ ->
-                    Fighter 0 0 0 0 True
+        _ ->
+            Fighter 0 0 0 0 True
 
 
 nextIndex : Index -> Maybe Index
 nextIndex i =
     if i.r2 < 7 then
         Just { i | r2 = i.r2 + 1 }
+
     else if i.r1 < 6 then
         Just { i | r1 = i.r1 + 1, r2 = i.r1 + 2 }
+
     else if i.a < 5 then
         Just { i | a = i.a + 1, r1 = 0, r2 = 1 }
+
     else if i.w < 4 then
         Just { i | w = i.w + 1, a = 0, r1 = 0, r2 = 1 }
+
     else
         Nothing
 
@@ -91,6 +98,7 @@ winner : Fighter -> Fighter -> Bool
 winner attacker defender =
     if attacker.hitp <= 0 then
         defender.player
+
     else
         let
             damage =
@@ -98,15 +106,17 @@ winner attacker defender =
 
             hitp =
                 defender.hitp
-                    - if damage < 1 then
+                    - (if damage < 1 then
                         1
-                      else
+
+                       else
                         damage
+                      )
 
             damaged =
                 { defender | hitp = hitp }
         in
-            winner damaged attacker
+        winner damaged attacker
 
 
 weapons : Array (List Int)
@@ -150,16 +160,17 @@ parse : String -> Fighter
 parse input =
     let
         ns =
-            Regex.find (Regex.All) (Regex.regex "\\d+") input
+            input
+                |> find (regex "\\d+")
                 |> List.map .match
                 |> List.map String.toInt
     in
-        case ns of
-            [ Ok h, Ok d, Ok a ] ->
-                Fighter h d a 0 False
+    case ns of
+        [ Just h, Just d, Just a ] ->
+            Fighter h d a 0 False
 
-            _ ->
-                Fighter 0 0 0 0 False
+        _ ->
+            Fighter 0 0 0 0 False
 
 
 type alias Fighter =

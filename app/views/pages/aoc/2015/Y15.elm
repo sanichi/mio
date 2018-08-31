@@ -106,4 +106,4 @@ answer day part input =
             Y15D25.answer part input
 
         _ ->
-            "year 2015, day " ++ (toString day) ++ ": not available"
+            "year 2015, day " ++ String.fromInt day ++ ": not available"

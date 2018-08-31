@@ -1,8 +1,8 @@
 module Y15D09 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex exposing (HowMany(AtMost), find, regex)
-import Util
+import Regex
+import Util exposing (permutations, regex)
 
 
 answer : Int -> String -> String
@@ -14,10 +14,11 @@ answer part input =
         extremes =
             extreme model
     in
-        if part == 1 then
-            List.minimum extremes |> Maybe.withDefault 0 |> toString
-        else
-            List.maximum extremes |> Maybe.withDefault 0 |> toString
+    if part == 1 then
+        List.minimum extremes |> Maybe.withDefault 0 |> String.fromInt
+
+    else
+        List.maximum extremes |> Maybe.withDefault 0 |> String.fromInt
 
 
 extreme : Model -> List Int
@@ -26,9 +27,9 @@ extreme model =
         f ( c1, c2 ) =
             Dict.get (key c1 c2) model.distances |> Maybe.withDefault 0
     in
-        Util.permutations model.cities
-            |> List.map (\perm -> pairs perm)
-            |> List.map (\p -> List.map f p |> List.sum)
+    permutations model.cities
+        |> List.map (\perm -> pairs perm)
+        |> List.map (\p -> List.map f p |> List.sum)
 
 
 parseInput : String -> Model
@@ -42,38 +43,40 @@ parseLine : String -> Model -> Model
 parseLine line model =
     let
         matches =
-            find (AtMost 1) (regex "^(\\w+) to (\\w+) = (\\d+)$") line |> List.map .submatches
+            Regex.findAtMost 1 (regex "^(\\w+) to (\\w+) = (\\d+)$") line |> List.map .submatches
     in
-        case matches of
-            [ [ Just c1, Just c2, Just d ] ] ->
-                let
-                    di =
-                        String.toInt d |> Result.withDefault 0
+    case matches of
+        [ [ Just c1, Just c2, Just d ] ] ->
+            let
+                di =
+                    String.toInt d |> Maybe.withDefault 0
 
-                    distances =
-                        model.distances
-                            |> Dict.insert (key c1 c2) di
-                            |> Dict.insert (key c2 c1) di
+                distances =
+                    model.distances
+                        |> Dict.insert (key c1 c2) di
+                        |> Dict.insert (key c2 c1) di
 
-                    cities_ =
-                        if List.member c1 model.cities then
-                            model.cities
-                        else
-                            c1 :: model.cities
+                cities_ =
+                    if List.member c1 model.cities then
+                        model.cities
 
-                    cities =
-                        if List.member c2 cities_ then
-                            cities_
-                        else
-                            c2 :: cities_
-                in
-                    { model
-                        | distances = distances
-                        , cities = cities
-                    }
+                    else
+                        c1 :: model.cities
 
-            _ ->
-                model
+                cities =
+                    if List.member c2 cities_ then
+                        cities_
+
+                    else
+                        c2 :: cities_
+            in
+            { model
+                | distances = distances
+                , cities = cities
+            }
+
+        _ ->
+            model
 
 
 pairs : List a -> List ( a, a )

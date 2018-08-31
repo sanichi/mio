@@ -1,8 +1,8 @@
 module Y16D24 exposing (answer)
 
 import Dict exposing (Dict)
-import Regex
-import Util
+import Regex exposing (find)
+import Util exposing (combinations, permutations, regex)
 
 
 answer : Int -> String -> String
@@ -19,29 +19,30 @@ answer part input =
                 |> Util.permutations
                 |> List.map ((::) '0')
     in
-        if part == 1 then
-            paths
-                |> List.map (pathCost costs 0)
-                |> List.minimum
-                |> Maybe.withDefault 0
-                |> toString
-        else
-            paths
-                |> List.map (\path -> path ++ [ '0' ])
-                |> List.map (pathCost costs 0)
-                |> List.minimum
-                |> Maybe.withDefault 0
-                |> toString
+    if part == 1 then
+        paths
+            |> List.map (pathCost costs 0)
+            |> List.minimum
+            |> Maybe.withDefault 0
+            |> String.fromInt
+
+    else
+        paths
+            |> List.map (\path -> path ++ [ '0' ])
+            |> List.map (pathCost costs 0)
+            |> List.minimum
+            |> Maybe.withDefault 0
+            |> String.fromInt
 
 
 pathCost : Costs -> Int -> Path -> Int
-pathCost costs cost path =
+pathCost costs cst path =
     case path of
         [] ->
-            cost
+            cst
 
         [ _ ] ->
-            cost
+            cst
 
         v1 :: v2 :: rest ->
             let
@@ -49,9 +50,9 @@ pathCost costs cost path =
                     costs
                         |> Dict.get ( v1, v2 )
                         |> Maybe.withDefault 0
-                        |> (+) cost
+                        |> (+) cst
             in
-                pathCost costs newCost (v2 :: rest)
+            pathCost costs newCost (v2 :: rest)
 
 
 getDistances : State -> Costs
@@ -71,7 +72,7 @@ getDistances state =
                 |> Util.combinations 2
                 |> List.map toPair
     in
-        getDistances_ pairs state Dict.empty
+    getDistances_ pairs state Dict.empty
 
 
 getDistances_ : List Pair -> State -> Costs -> Costs
@@ -90,13 +91,14 @@ getDistances_ pairs state distances =
                         |> Dict.insert pair newCost
                         |> Dict.insert (swap pair) newCost
             in
-                getDistances_ rest state newDistances
+            getDistances_ rest state newDistances
 
 
 cost : Pair -> State -> Int
 cost ( source, target ) state =
     if source == target then
         0
+
     else
         let
             newCurrent =
@@ -117,7 +119,7 @@ cost ( source, target ) state =
             newState =
                 { state | current = newCurrent, nodes = newNodes }
         in
-            cost_ target newState
+        cost_ target newState
 
 
 cost_ : Char -> State -> Int
@@ -131,6 +133,7 @@ cost_ target state =
                 update node =
                     if node.distance == 0 || node.distance > current.distance + 1 then
                         { node | distance = current.distance + 1 }
+
                     else
                         node
 
@@ -144,41 +147,41 @@ cost_ target state =
                         |> List.filter (\n -> n.v == target)
                         |> List.head
             in
-                case maybeTarget of
-                    Just node ->
-                        node.distance
+            case maybeTarget of
+                Just node ->
+                    node.distance
 
-                    Nothing ->
-                        let
-                            newUpdatedNodes =
-                                updatedNeighboursList
-                                    |> List.map toEntry
-                                    |> Dict.fromList
+                Nothing ->
+                    let
+                        newUpdatedNodes =
+                            updatedNeighboursList
+                                |> List.map toEntry
+                                |> Dict.fromList
 
-                            tmpNodes =
-                                Dict.union newUpdatedNodes state.nodes
+                        tmpNodes =
+                            Dict.union newUpdatedNodes state.nodes
 
-                            newCurrent =
-                                tmpNodes
-                                    |> Dict.values
-                                    |> List.filter (\n -> n.distance > 0)
-                                    |> List.map (\n -> ( n.distance, n ))
-                                    |> List.sortBy Tuple.first
-                                    |> List.map Tuple.second
-                                    |> List.head
+                        newCurrent =
+                            tmpNodes
+                                |> Dict.values
+                                |> List.filter (\n -> n.distance > 0)
+                                |> List.map (\n -> ( n.distance, n ))
+                                |> List.sortBy Tuple.first
+                                |> List.map Tuple.second
+                                |> List.head
 
-                            newNodes =
-                                case newCurrent of
-                                    Nothing ->
-                                        tmpNodes
+                        newNodes =
+                            case newCurrent of
+                                Nothing ->
+                                    tmpNodes
 
-                                    Just node ->
-                                        Dict.remove ( node.x, node.y ) tmpNodes
+                                Just node ->
+                                    Dict.remove ( node.x, node.y ) tmpNodes
 
-                            newState =
-                                { state | current = newCurrent, nodes = newNodes }
-                        in
-                            cost_ target newState
+                        newState =
+                            { state | current = newCurrent, nodes = newNodes }
+                    in
+                    cost_ target newState
 
 
 neighbours : Int -> Int -> Dict Location Node -> List Node
@@ -196,9 +199,9 @@ neighbours x y nodes =
         u =
             ( x, y - 1 )
     in
-        [ r, d, l, u ]
-            |> List.map (\loc -> Dict.get loc nodes)
-            |> List.filterMap identity
+    [ r, d, l, u ]
+        |> List.map (\loc -> Dict.get loc nodes)
+        |> List.filterMap identity
 
 
 type alias State =
@@ -240,7 +243,7 @@ parse input =
 
         nodeList =
             input
-                |> Regex.find Regex.All (Regex.regex "[#.0-9]+")
+                |> find (regex "[#.0-9]+")
                 |> List.map .match
                 |> List.map String.toList
                 |> List.indexedMap parseYthRow
@@ -261,7 +264,7 @@ parse input =
                 |> List.filter (\v -> v > '0' && v <= '9')
                 |> List.sort
     in
-        State current nodes targets
+    State current nodes targets
 
 
 toEntry : Node -> ( Location, Node )

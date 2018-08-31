@@ -1,8 +1,10 @@
 $(function() {
-  var node = $('#elm-app').get(0);
-  var app = Elm.Main.embed(node, {
-    year: '<%= year %>',
-    day: '<%= day %>',
+  var app = Elm.Main.init({
+    node: $('#elm-app').get(0),
+    flags: {
+      year: '<%= year %>',
+      day: '<%= day %>'
+    }
   });
   app.ports.getData.subscribe(function(year_day) {
     var year = year_day[0];
