@@ -123,7 +123,7 @@ class Vocab < ApplicationRecord
 
   def self.kanji_vocabs(kanji)
     return [] unless kanji.present?
-    Vocab.by_level.where("kanji ILIKE '%#{kanji.symbol}%'").to_a
+    Vocab.by_reading.where("kanji ILIKE '%#{kanji.symbol}%'").to_a
   end
 
   def kanji_reading
