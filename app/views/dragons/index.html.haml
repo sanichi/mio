@@ -18,6 +18,9 @@
       %tbody{id: "results"}
         = render "results", dragons: @dragons
 
-- if can?(:create, Dragon)
+- if can?(:create, Dragon) || can?(:tribute, Page)
   .text-center
-    = link_to t("dragon.new"), new_dragon_path, class: "btn btn-info"
+    - if can?(:create, Dragon)
+      = link_to t("dragon.new"), new_dragon_path, class: "btn btn-info"
+    - if can?(:tribute, Page)
+      = link_to t("dragon.tribute"), tribute_path, class: "btn btn-primary"

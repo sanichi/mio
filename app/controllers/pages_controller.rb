@@ -20,4 +20,9 @@ class PagesController < ApplicationController
   def pam
     @answer = Flat.pam(params[:q])
   end
+
+  def tribute
+    @dragons = Dragon.by_last_name.all
+    render "tribute", layout: "blank"
+  end
 end
