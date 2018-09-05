@@ -14,7 +14,9 @@ class Dragon < ApplicationRecord
   scope :by_first_name, -> { order(:first_name, :last_name) }
 
   def name(reversed = false)
-    reversed ? "#{last_name}, #{first_name}" : "#{first_name} #{last_name}"
+    nm = reversed ? "#{last_name}, #{first_name}" : "#{first_name} #{last_name}"
+    nm.gsub!(" ", "\u00a0")
+    nm
   end
 
   def self.search(params, path, opt={})

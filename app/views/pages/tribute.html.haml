@@ -1,11 +1,12 @@
 = render "utils/title", key: "dragon.tribute"
 
-%h1.text-center.mb-5.mt-5.tribute= t("dragon.title")
+%h1.text-center.mb-5.tribute= t("dragon.title")
 
-%p.tribute
-  - @dragons.each_with_index do |dragon, i|
-    - if i > 0
-      = t("dragon.separator")
-    %span= dragon.name
+%img.tribute.mt-5{src: "images/dragon.png", alt: t("dragon.tribute")}
 
-%p.text-center= t("dragon.subtitle")
+- sep = "\u00a0#{t('dragon.separator')} "
+
+%p.mt-5.tribute
+  = @dragons.map(&:name).join(sep)
+
+%p.mt-5.text-center= t("dragon.subtitle")
