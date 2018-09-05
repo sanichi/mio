@@ -1,5 +1,6 @@
 en:
   dragon:
+    duplicate: "no duplicates allowed"
     dragons: Dragons
     edit: Edit Dragon
     new: New Dragon

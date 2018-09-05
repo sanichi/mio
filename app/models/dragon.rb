@@ -9,7 +9,8 @@ class Dragon < ApplicationRecord
 
   before_validation :canonicalize
 
-  validates :first_name, presence: true, length: { maximum: MAX_FIRST_NAME, minimum: MIN_FIRST_NAME }
+  validates :first_name, presence: true, length: { maximum: MAX_FIRST_NAME, minimum: MIN_FIRST_NAME }, uniqueness: { scope: :last_name,
+    message: I18n.t("dragon.duplicate") }
   validates :last_name, presence: true, length: { maximum: MAX_LAST_NAME, minimum: MIN_LAST_NAME }
 
   scope :by_last_name,  -> { order(:last_name, :first_name) }

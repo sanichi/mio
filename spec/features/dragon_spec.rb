@@ -50,6 +50,22 @@ describe Dragon do
       expect(Dragon.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
+
+    it "duplicates" do
+      click_link t(:dragon_new)
+      fill_in t(:person_first__name), with: dragon.first_name
+      fill_in t(:person_last__name), with: dragon.last_name
+      if dragon.male
+        check t(:person_male)
+      else
+        uncheck t(:person_male)
+      end
+      click_button t(:save)
+
+      expect(page).to have_title t(:dragon_new)
+      expect(Dragon.count).to eq 1
+      expect(page).to have_css(error, text: t(:dragon_duplicate))
+    end
   end
 
   context "edit" do
