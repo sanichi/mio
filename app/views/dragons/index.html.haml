@@ -1,0 +1,23 @@
+= render "utils/title", key: "dragon.dragons"
+
+= form_tag dragons_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :q, t("query"), class: "sr-only"
+  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", size: 16, placeholder: t("name")
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, dragon_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :gender, t("person.gender"), class: "sr-only"
+  = select_tag :gender, dragon_search_gender_menu(params[:gender]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+
+.row.mt-3
+  .col-8.offset-2.col-lg-6.offset-lg-3.col-xl-4.offset-xl-4
+    %table{class: "table table-bordered table-striped"}
+      %thead
+        %tr
+          %th= t("name")
+      %tbody{id: "results"}
+        = render "results", dragons: @dragons
+
+- if can?(:create, Dragon)
+  .text-center
+    = link_to t("dragon.new"), new_dragon_path, class: "btn btn-info"

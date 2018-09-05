@@ -1,0 +1,4 @@
+- dragons.matches.each do |dragon|
+  %tr
+    %td= link_to_if can?(:edit, Dragon), dragon.name(params[:order] != "first"), edit_dragon_path(dragon)
+= render "utils/pagination_links", pager: dragons, columns: 1

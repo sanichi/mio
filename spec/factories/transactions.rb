@@ -9,6 +9,6 @@ FactoryBot.define do
     signature   { Digest::MD5.hexdigest([trade_date,settle_date,description,reference,cost,quantity,value].join("|")) }
     trade_date  { Date.today }
     upload
-    value       18.6
+    value       { 18.6 }
   end
 end

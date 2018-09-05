@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :buckets
   resources :conversations
   resources :devices
+  resources :dragons, except: [:show]
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats
