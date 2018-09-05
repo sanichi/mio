@@ -2,16 +2,13 @@ class Dragon < ApplicationRecord
   include Constrainable
   include Pageable
 
-  MIN_FIRST_NAME = 2
-  MIN_LAST_NAME = 3
   MAX_FIRST_NAME = 15
   MAX_LAST_NAME = 20
 
   before_validation :canonicalize
 
-  validates :first_name, presence: true, length: { maximum: MAX_FIRST_NAME, minimum: MIN_FIRST_NAME }, uniqueness: { scope: :last_name,
-    message: I18n.t("dragon.duplicate") }
-  validates :last_name, presence: true, length: { maximum: MAX_LAST_NAME, minimum: MIN_LAST_NAME }
+  validates :first_name, presence: true, length: { maximum: MAX_FIRST_NAME }, uniqueness: { scope: :last_name, message: I18n.t("dragon.duplicate") }, format: { with: /\A[A-Z][a-z]+\z/ }
+  validates :last_name, presence: true, length: { maximum: MAX_LAST_NAME }, format: { with: /\A(Mc|Mac|O')?[A-Z][a-z]+\z/ }
 
   scope :by_last_name,  -> { order(:last_name, :first_name) }
   scope :by_first_name, -> { order(:first_name, :last_name) }
