@@ -3,7 +3,7 @@ class DragonsController < ApplicationController
   before_action :find_dragon, only: [:edit, :update, :destroy]
 
   def index
-    @dragons = Dragon.search(params, dragons_path, per_page: 2, remote: true)
+    @dragons = Dragon.search(params, dragons_path, per_page: 20, remote: true)
   end
 
   def new
