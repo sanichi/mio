@@ -4,7 +4,7 @@ describe Dragon do
   let(:data)    { build(:dragon) }
   let!(:dragon) { create(:dragon) }
 
-  let(:table) { "//table/tbody/tr[td[.='%s, %s']]" }
+  let(:table) { "//table/tbody/tr/td/a[.='%s,\u00a0%s']" }
 
   before(:each) do
     login

@@ -1,4 +1,4 @@
-module Config exposing (..)
+module Config exposing (boxHeight, boxRadius, centerY, changePicture, defaultCenter, deltaShift, fontHeight, fontWidth, fontWidthToHeight, height, levelHeight, margin, missingPicturePath, padding, pictureSize, pointerFontHeight, pointerFontWidth, smallFontHeight, smallFontWidth, smallTextWidth, switchBoxHeight, switchBoxRadius, textWidth, viewBox, width)
 
 import String
 
@@ -20,7 +20,7 @@ centerY level =
 
 changePicture : Float
 changePicture =
-    4
+    4000
 
 
 defaultCenter : Int
@@ -44,8 +44,8 @@ fontWidth =
 
 
 fontWidthToHeight : Int -> Int
-fontWidthToHeight width =
-    width * 6 // 10
+fontWidthToHeight wid =
+    wid * 6 // 10
 
 
 height : Int
@@ -120,7 +120,7 @@ textWidth text minLen =
 
 viewBox : String
 viewBox =
-    String.join " " [ "0 0", toString width, toString height ]
+    String.join " " [ "0 0", String.fromInt width, String.fromInt height ]
 
 
 width : Int

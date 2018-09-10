@@ -1,17 +1,16 @@
 module Tree exposing (tree)
 
+-- local modules
+
 import Array exposing (Array)
+import Config
+import Messages exposing (Msg(..))
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
 import Tuple exposing (first, second)
-
-
--- local modules
-
-import Config
-import Messages exposing (Msg(..))
 import Types exposing (..)
+
 
 
 -- local types
@@ -57,7 +56,7 @@ tree model =
         ( oSibBoxes, oSibLinks ) =
             siblingBoxes focusBox focus.olderSiblings model.picture Nothing
 
-        ( partBoxes, partLinks, shiftRight, parentPoint ) =
+        ( ( partBoxes, partLinks ), ( shiftRight, parentPoint ) ) =
             partnerBoxes focusBox focus.families model.family model.picture
 
         ( ySibBoxes, ySibLinks ) =
@@ -78,7 +77,7 @@ tree model =
         pointerSvgs =
             pointers allBoxes
     in
-        boxSvgs ++ linkSvgs ++ pointerSvgs
+    boxSvgs ++ linkSvgs ++ pointerSvgs
 
 
 
@@ -94,6 +93,7 @@ box person pictureIndex centerX level focus =
         boxClass =
             if focus then
                 "focus"
+
             else
                 "box"
 
@@ -130,11 +130,11 @@ box person pictureIndex centerX level focus =
         maxWidth =
             Basics.max nameWidth yearsWidth
 
-        boxWidth =
+        bxWidth =
             maxWidth + 2 * Config.padding
 
         boxX =
-            centerX - boxWidth // 2
+            centerX - bxWidth // 2
 
         boxY =
             centerY - Config.boxHeight // 2
@@ -158,8 +158,10 @@ box person pictureIndex centerX level focus =
             if person.id > 0 then
                 if focus then
                     DisplayPerson person.id
+
                 else
                     GetFocus person.id
+
             else
                 NoOp
 
@@ -179,20 +181,20 @@ box person pictureIndex centerX level focus =
             { inner = ( boxX, leftRightY ), outer = ( Basics.min boxX pictureX - Config.margin, leftRightY ) }
 
         right =
-            { inner = ( boxX + boxWidth, leftRightY ), outer = ( Basics.max (boxX + boxWidth) (pictureX + pictureWidth) + Config.margin, leftRightY ) }
+            { inner = ( boxX + bxWidth, leftRightY ), outer = ( Basics.max (boxX + bxWidth) (pictureX + pictureWidth) + Config.margin, leftRightY ) }
 
         svgs =
-            [ rect (rectAttrs boxClass boxX boxY Config.boxRadius boxWidth Config.boxHeight handler) []
+            [ rect (rectAttrs boxClass boxX boxY Config.boxRadius bxWidth Config.boxHeight handler) []
             , text_ (textAttrs nameClass nameX nameY nameWidth handler) [ text name ]
             , text_ (textAttrs yearsClass yearsX yearsY yearsWidth handler) [ text years ]
             , image (imageAttrs picture pictureX pictureY pictureWidth pictureHeight handler) []
             ]
     in
-        { svgs = svgs
-        , top = top
-        , left = left
-        , right = right
-        }
+    { svgs = svgs
+    , top = top
+    , left = left
+    , right = right
+    }
 
 
 switcherBox : Families -> Int -> Int -> Maybe Box
@@ -201,90 +203,92 @@ switcherBox families index centerX =
         len =
             Array.length families
     in
-        if len < 2 then
-            Nothing
-        else
-            let
-                centerY =
-                    Config.centerY 2
+    if len < 2 then
+        Nothing
 
-                boxClass =
-                    "box"
+    else
+        let
+            centerY =
+                Config.centerY 2
 
-                label =
-                    toString (index + 1) ++ " of " ++ toString len
+            boxClass =
+                "box"
 
-                labelWidth =
-                    Config.textWidth label 40
+            label =
+                String.fromInt (index + 1) ++ " of " ++ String.fromInt len
 
-                labelX =
-                    centerX
+            labelWidth =
+                Config.textWidth label 40
 
-                labelY =
-                    centerY + Config.fontHeight // 3
+            labelX =
+                centerX
 
-                labelClass =
-                    "medium " ++ boxClass
+            labelY =
+                centerY + Config.fontHeight // 3
 
-                boxWidth =
-                    labelWidth + 2 * Config.padding
+            labelClass =
+                "medium " ++ boxClass
 
-                boxX =
-                    centerX - boxWidth // 2
+            bxWidth =
+                labelWidth + 2 * Config.padding
 
-                boxY =
-                    centerY - Config.switchBoxHeight // 2
+            boxX =
+                centerX - bxWidth // 2
 
-                nextIndex =
-                    if index + 1 >= len then
-                        0
-                    else
-                        index + 1
+            boxY =
+                centerY - Config.switchBoxHeight // 2
 
-                handler =
-                    SwitchFamily nextIndex |> onClick
+            nextIndex =
+                if index + 1 >= len then
+                    0
 
-                topX =
-                    centerX
+                else
+                    index + 1
 
-                top =
-                    { inner = ( topX, boxY ), outer = ( topX, boxY - Config.margin ) }
+            handler =
+                SwitchFamily nextIndex |> onClick
 
-                leftRightY =
-                    boxY + Config.switchBoxHeight // 2
+            topX =
+                centerX
 
-                left =
-                    { inner = ( boxX, leftRightY ), outer = ( boxX - Config.margin, leftRightY ) }
+            top =
+                { inner = ( topX, boxY ), outer = ( topX, boxY - Config.margin ) }
 
-                right =
-                    { inner = ( boxX + boxWidth, leftRightY ), outer = ( boxX + boxWidth + Config.margin, leftRightY ) }
+            leftRightY =
+                boxY + Config.switchBoxHeight // 2
 
-                svgs =
-                    [ rect (rectAttrs boxClass boxX boxY Config.switchBoxRadius boxWidth Config.switchBoxHeight handler) []
-                    , text_ (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
-                    ]
+            left =
+                { inner = ( boxX, leftRightY ), outer = ( boxX - Config.margin, leftRightY ) }
 
-                bx =
-                    { svgs = svgs
-                    , top = top
-                    , left = left
-                    , right = right
-                    }
-            in
-                Just bx
+            right =
+                { inner = ( boxX + bxWidth, leftRightY ), outer = ( boxX + bxWidth + Config.margin, leftRightY ) }
+
+            svgs =
+                [ rect (rectAttrs boxClass boxX boxY Config.switchBoxRadius bxWidth Config.switchBoxHeight handler) []
+                , text_ (textAttrs labelClass labelX labelY labelWidth handler) [ text label ]
+                ]
+
+            bx =
+                { svgs = svgs
+                , top = top
+                , left = left
+                , right = right
+                }
+        in
+        Just bx
 
 
 shiftBox : Int -> Box -> Box
 shiftBox deltaX bx =
     let
         transformX =
-            "translate(" ++ toString deltaX ++ ",0)"
+            "translate(" ++ String.fromInt deltaX ++ ",0)"
     in
-        { svgs = [ g [ transform transformX ] bx.svgs ]
-        , top = shiftHandle deltaX bx.top
-        , left = shiftHandle deltaX bx.left
-        , right = shiftHandle deltaX bx.right
-        }
+    { svgs = [ g [ transform transformX ] bx.svgs ]
+    , top = shiftHandle deltaX bx.top
+    , left = shiftHandle deltaX bx.left
+    , right = shiftHandle deltaX bx.right
+    }
 
 
 parentBoxes : Box -> Person -> Person -> Int -> ( Box, Box, List (Svg Msg) )
@@ -308,7 +312,7 @@ parentBoxes focusBox father mother picture =
         parentLinks =
             linkT leftFatherBox rightMotherBox focusBox
     in
-        ( leftFatherBox, rightMotherBox, parentLinks )
+    ( leftFatherBox, rightMotherBox, parentLinks )
 
 
 siblingBoxes : Box -> People -> Int -> Maybe Int -> ( List Box, List (Svg Msg) )
@@ -344,7 +348,7 @@ siblingBoxes focusBox people picture shift =
                         |> List.sum
                         |> (+) focusHalfWidth
                         |> (+) s
-                        |> \x -> x - w // 2
+                        |> (\x -> x - w // 2)
 
         shifts =
             Array.indexedMap widthsToShifts widths
@@ -366,97 +370,97 @@ siblingBoxes focusBox people picture shift =
         horizontalLinks =
             linkH focusBox furthestBox
     in
-        ( shiftedBoxes, verticalLinks ++ horizontalLinks )
+    ( shiftedBoxes, verticalLinks ++ horizontalLinks )
 
 
-partnerBoxes : Box -> Families -> Int -> Int -> ( List Box, List (Svg Msg), Int, Point )
+partnerBoxes : Box -> Families -> Int -> Int -> ( ( List Box, List (Svg Msg) ), ( Int, Point ) )
 partnerBoxes focusBox families index picture =
     let
         item =
             Array.get index families
     in
-        case item of
-            Nothing ->
-                ( [], [], 0, ( 0, 0 ) )
+    case item of
+        Nothing ->
+            ( ( [], [] ), ( 0, ( 0, 0 ) ) )
 
-            Just family ->
-                let
-                    center =
-                        middleBox focusBox
+        Just family ->
+            let
+                center =
+                    middleBox focusBox
 
-                    halfFocusWidth =
-                        boxWidth focusBox // 2
+                halfFocusWidth =
+                    boxWidth focusBox // 2
 
-                    partner =
-                        family.partner
+                partner =
+                    family.partner
 
-                    partnerBox =
-                        box partner picture center 2 False
+                partnerBox =
+                    box partner picture center 2 False
 
-                    partnerWidth =
-                        boxWidth partnerBox
+                partnerWidth =
+                    boxWidth partnerBox
 
-                    switchBox =
-                        switcherBox families index center
+                switchBox =
+                    switcherBox families index center
 
-                    switchWidth =
-                        case switchBox of
-                            Nothing ->
-                                0
+                switchWidth =
+                    case switchBox of
+                        Nothing ->
+                            0
 
-                            Just bx ->
-                                boxWidth bx
+                        Just bx ->
+                            boxWidth bx
 
-                    switchShift =
-                        case switchBox of
-                            Nothing ->
-                                0
+                switchShift =
+                    case switchBox of
+                        Nothing ->
+                            0
 
-                            Just bx ->
-                                halfFocusWidth + switchWidth // 2
+                        Just bx ->
+                            halfFocusWidth + switchWidth // 2
 
-                    shiftedSwitchBox =
-                        case switchBox of
-                            Nothing ->
-                                Nothing
+                shiftedSwitchBox =
+                    case switchBox of
+                        Nothing ->
+                            Nothing
 
-                            Just bx ->
-                                Just (shiftBox switchShift bx)
+                        Just bx ->
+                            Just (shiftBox switchShift bx)
 
-                    partnerShift =
-                        halfFocusWidth + switchWidth + partnerWidth // 2
+                partnerShift =
+                    halfFocusWidth + switchWidth + partnerWidth // 2
 
-                    shiftedPartnerBox =
-                        shiftBox partnerShift partnerBox
+                shiftedPartnerBox =
+                    shiftBox partnerShift partnerBox
 
-                    siblingShift =
-                        switchWidth + partnerWidth
+                siblingShift =
+                    switchWidth + partnerWidth
 
-                    boxes =
-                        case shiftedSwitchBox of
-                            Nothing ->
-                                [ shiftedPartnerBox ]
+                boxes =
+                    case shiftedSwitchBox of
+                        Nothing ->
+                            [ shiftedPartnerBox ]
 
-                            Just bx ->
-                                [ bx, shiftedPartnerBox ]
+                        Just bx ->
+                            [ bx, shiftedPartnerBox ]
 
-                    links =
-                        case shiftedSwitchBox of
-                            Nothing ->
-                                linkM focusBox shiftedPartnerBox
+                links =
+                    case shiftedSwitchBox of
+                        Nothing ->
+                            linkM focusBox shiftedPartnerBox
 
-                            Just bx ->
-                                linkM focusBox bx ++ linkM bx shiftedPartnerBox
+                        Just bx ->
+                            linkM focusBox bx ++ linkM bx shiftedPartnerBox
 
-                    parentPoint =
-                        case shiftedSwitchBox of
-                            Nothing ->
-                                focusBox.right.outer
+                parentPoint =
+                    case shiftedSwitchBox of
+                        Nothing ->
+                            focusBox.right.outer
 
-                            Just bx ->
-                                ( first bx.top.inner, second bx.top.inner + Config.switchBoxHeight )
-                in
-                    ( boxes, links, siblingShift, parentPoint )
+                        Just bx ->
+                            ( first bx.top.inner, second bx.top.inner + Config.switchBoxHeight )
+            in
+            ( ( boxes, links ), ( siblingShift, parentPoint ) )
 
 
 childrenBoxes : Box -> Families -> Int -> Int -> Point -> ( List Box, List (Svg Msg) )
@@ -465,54 +469,55 @@ childrenBoxes focusBox families index picture parentPoint =
         item =
             Array.get index families
     in
-        case item of
-            Nothing ->
+    case item of
+        Nothing ->
+            ( [], [] )
+
+        Just family ->
+            let
+                people =
+                    family.children
+            in
+            if Array.isEmpty people then
                 ( [], [] )
 
-            Just family ->
+            else
                 let
-                    people =
-                        family.children
+                    center =
+                        first parentPoint
+
+                    boxes =
+                        Array.map (\p -> box p picture center 3 False) people
+
+                    widths =
+                        Array.map boxWidth boxes
+
+                    len =
+                        Array.length widths
+
+                    halfWidth =
+                        (Array.toList widths |> List.sum) // 2
+
+                    widthsToShifts i w =
+                        Array.slice i len widths
+                            |> Array.toList
+                            |> List.sum
+                            |> (-) (w // 2)
+                            |> (\s -> s + halfWidth)
+
+                    shifts =
+                        Array.indexedMap widthsToShifts widths
+
+                    shiftedBoxes =
+                        Array.indexedMap (\i b -> shiftBox (getWithDefault i 0 shifts) b) boxes |> Array.toList
+
+                    verticalLinks =
+                        List.map .top shiftedBoxes |> List.map handleToLink
+
+                    otherLinks =
+                        linkO shiftedBoxes parentPoint
                 in
-                    if Array.isEmpty people then
-                        ( [], [] )
-                    else
-                        let
-                            center =
-                                first parentPoint
-
-                            boxes =
-                                Array.map (\p -> box p picture center 3 False) people
-
-                            widths =
-                                Array.map boxWidth boxes
-
-                            len =
-                                Array.length widths
-
-                            halfWidth =
-                                (Array.toList widths |> List.sum) // 2
-
-                            widthsToShifts i w =
-                                Array.slice i len widths
-                                    |> Array.toList
-                                    |> List.sum
-                                    |> (-) (w // 2)
-                                    |> \s -> s + halfWidth
-
-                            shifts =
-                                Array.indexedMap widthsToShifts widths
-
-                            shiftedBoxes =
-                                Array.indexedMap (\i b -> shiftBox (getWithDefault i 0 shifts) b) boxes |> Array.toList
-
-                            verticalLinks =
-                                List.map .top shiftedBoxes |> List.map handleToLink
-
-                            otherLinks =
-                                linkO shiftedBoxes parentPoint
-                        in
-                            ( shiftedBoxes, verticalLinks ++ otherLinks )
+                ( shiftedBoxes, verticalLinks ++ otherLinks )
 
 
 
@@ -521,22 +526,22 @@ childrenBoxes focusBox families index picture parentPoint =
 
 imageAttrs : String -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
 imageAttrs l i j w h handler =
-    [ xlinkHref l, x (toString i), y (toString j), width (toString w), height (toString h), handler ]
+    [ xlinkHref l, x (String.fromInt i), y (String.fromInt j), width (String.fromInt w), height (String.fromInt h), handler ]
 
 
 rectAttrs : String -> Int -> Int -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
 rectAttrs c i j r w h handler =
-    [ class c, x (toString i), y (toString j), rx (toString r), ry (toString r), width (toString w), height (toString h), handler ]
+    [ class c, x (String.fromInt i), y (String.fromInt j), rx (String.fromInt r), ry (String.fromInt r), width (String.fromInt w), height (String.fromInt h), handler ]
 
 
 textAttrs : String -> Int -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
 textAttrs c i j l handler =
-    [ class c, x (toString i), y (toString j), textLength (toString l), handler ]
+    [ class c, x (String.fromInt i), y (String.fromInt j), textLength (String.fromInt l), handler ]
 
 
 pointerAttrs : String -> Int -> Int -> Svg.Attribute Msg -> List (Svg.Attribute Msg)
 pointerAttrs c i j handler =
-    [ class c, x (toString i), y (toString j), handler ]
+    [ class c, x (String.fromInt i), y (String.fromInt j), handler ]
 
 
 
@@ -547,32 +552,32 @@ linkT : Box -> Box -> Box -> List (Svg Msg)
 linkT left right below =
     let
         ax1 =
-            first left.right.inner |> toString
+            first left.right.inner |> String.fromInt
 
         ay1 =
-            second left.right.inner |> toString
+            second left.right.inner |> String.fromInt
 
         ax2 =
-            first right.left.inner |> toString
+            first right.left.inner |> String.fromInt
 
         ay2 =
-            second right.left.inner |> toString
+            second right.left.inner |> String.fromInt
 
         bx1 =
-            (first left.right.outer + first right.left.outer) // 2 |> toString
+            (first left.right.outer + first right.left.outer) // 2 |> String.fromInt
 
         by1 =
-            (second left.right.outer + second right.left.outer) // 2 |> toString
+            (second left.right.outer + second right.left.outer) // 2 |> String.fromInt
 
         bx2 =
-            first below.top.inner |> toString
+            first below.top.inner |> String.fromInt
 
         by2 =
-            second below.top.inner |> toString
+            second below.top.inner |> String.fromInt
     in
-        [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
-        , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
-        ]
+    [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
+    , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
+    ]
 
 
 linkH : Box -> Maybe Box -> List (Svg Msg)
@@ -584,36 +589,36 @@ linkH bx1 mbx2 =
         Just bx2 ->
             let
                 i1 =
-                    first bx1.top.outer |> toString
+                    first bx1.top.outer |> String.fromInt
 
                 j1 =
-                    second bx1.top.outer |> toString
+                    second bx1.top.outer |> String.fromInt
 
                 i2 =
-                    first bx2.top.outer |> toString
+                    first bx2.top.outer |> String.fromInt
 
                 j2 =
-                    second bx2.top.outer |> toString
+                    second bx2.top.outer |> String.fromInt
             in
-                [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
+            [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
 
 
 linkM : Box -> Box -> List (Svg Msg)
 linkM bx1 bx2 =
     let
         i1 =
-            first bx1.right.inner |> toString
+            first bx1.right.inner |> String.fromInt
 
         j1 =
-            second bx1.right.inner |> toString
+            second bx1.right.inner |> String.fromInt
 
         i2 =
-            first bx2.left.inner |> toString
+            first bx2.left.inner |> String.fromInt
 
         j2 =
-            second bx2.left.inner |> toString
+            second bx2.left.inner |> String.fromInt
     in
-        [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
+    [ line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [] ]
 
 
 linkO : List Box -> Point -> List (Svg Msg)
@@ -630,18 +635,18 @@ linkO boxes point =
                 Just bx ->
                     let
                         i1 =
-                            first point |> toString
+                            first point |> String.fromInt
 
                         j1 =
-                            second point |> toString
+                            second point |> String.fromInt
 
                         i2 =
-                            first point |> toString
+                            first point |> String.fromInt
 
                         j2 =
-                            second bx.top.outer |> toString
+                            second bx.top.outer |> String.fromInt
                     in
-                        Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
+                    Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
 
                 _ ->
                     Nothing
@@ -651,28 +656,28 @@ linkO boxes point =
                 ( Just bx1, Just bx2 ) ->
                     let
                         i1 =
-                            first bx1.top.outer |> toString
+                            first bx1.top.outer |> String.fromInt
 
                         j1 =
-                            second bx1.top.outer |> toString
+                            second bx1.top.outer |> String.fromInt
 
                         i2 =
-                            first bx2.top.outer |> toString
+                            first bx2.top.outer |> String.fromInt
 
                         j2 =
-                            second bx2.top.outer |> toString
+                            second bx2.top.outer |> String.fromInt
                     in
-                        Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
+                    Just (line [ x1 i1, y1 j1, x2 i2, y2 j2 ] [])
 
                 _ ->
                     Nothing
     in
-        case ( vertical, horizontal ) of
-            ( Just v, Just h ) ->
-                [ v, h ]
+    case ( vertical, horizontal ) of
+        ( Just v, Just h ) ->
+            [ v, h ]
 
-            _ ->
-                []
+        _ ->
+            []
 
 
 
@@ -693,10 +698,11 @@ currentPicturePath person picture =
         index =
             if total < 1 then
                 0
+
             else
-                picture % total
+                modBy total picture
     in
-        Array.get index person.pictures |> Maybe.withDefault Config.missingPicturePath
+    Array.get index person.pictures |> Maybe.withDefault Config.missingPicturePath
 
 
 getWithDefault : Int -> a -> Array a -> a
@@ -705,30 +711,30 @@ getWithDefault index default array =
         notsure =
             Array.get index array
     in
-        case notsure of
-            Just value ->
-                value
+    case notsure of
+        Just value ->
+            value
 
-            Nothing ->
-                default
+        Nothing ->
+            default
 
 
 handleToLink : Handle -> Svg Msg
 handleToLink handle =
     let
         i1 =
-            first handle.inner |> toString
+            first handle.inner |> String.fromInt
 
         j1 =
-            second handle.inner |> toString
+            second handle.inner |> String.fromInt
 
         i2 =
-            first handle.outer |> toString
+            first handle.outer |> String.fromInt
 
         j2 =
-            second handle.outer |> toString
+            second handle.outer |> String.fromInt
     in
-        line [ x1 i1, y1 j1, x2 i2, y2 j2 ] []
+    line [ x1 i1, y1 j1, x2 i2, y2 j2 ] []
 
 
 middleBox : Box -> Int
@@ -756,7 +762,7 @@ pointers boxes =
                 h =
                     onClick ShiftLeft
             in
-                text_ (pointerAttrs "pointer" i j h) [ text "☜" ]
+            text_ (pointerAttrs "pointer" i j h) [ text "☜" ]
 
         rightPointer =
             let
@@ -769,20 +775,20 @@ pointers boxes =
                 h =
                     onClick ShiftRight
             in
-                text_ (pointerAttrs "pointer" i j h) [ text "☞" ]
+            text_ (pointerAttrs "pointer" i j h) [ text "☞" ]
     in
-        case ( leftMost < 0, rightMost > Config.width ) of
-            ( True, True ) ->
-                [ leftPointer, rightPointer ]
+    case ( leftMost < 0, rightMost > Config.width ) of
+        ( True, True ) ->
+            [ leftPointer, rightPointer ]
 
-            ( True, False ) ->
-                [ leftPointer ]
+        ( True, False ) ->
+            [ leftPointer ]
 
-            ( False, True ) ->
-                [ rightPointer ]
+        ( False, True ) ->
+            [ rightPointer ]
 
-            ( False, False ) ->
-                []
+        ( False, False ) ->
+            []
 
 
 shiftHandle : Int -> Handle -> Handle

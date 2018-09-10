@@ -1,7 +1,7 @@
-module Messages exposing (..)
+module Messages exposing (Msg(..))
 
+import Time exposing (Posix)
 import Types exposing (Focus)
-import Time exposing (Time)
 
 
 type Msg
@@ -12,4 +12,4 @@ type Msg
     | ShiftLeft
     | ShiftRight
     | SwitchFamily Int
-    | Tick Time
+    | Tick Posix

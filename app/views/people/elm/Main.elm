@@ -1,20 +1,19 @@
-module Main exposing (..)
-
-import Html exposing (Html)
-import Html exposing (programWithFlags)
-import Platform.Sub
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-import Time
-
+module Main exposing (initTasks, main, subscriptions, update, view)
 
 -- local modules
 
+import Browser
 import Config
+import Html exposing (Html)
 import Messages exposing (Msg(..))
+import Platform.Sub
 import Ports
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
+import Time
 import Tree
-import Types exposing (Model, Flags, Focus, initModel)
+import Types exposing (Flags, Focus, Model, initModel)
+
 
 
 -- main program
@@ -22,8 +21,8 @@ import Types exposing (Model, Flags, Focus, initModel)
 
 main : Program Flags Model Msg
 main =
-    programWithFlags
-        { init = (\flags -> ( initModel flags, initTasks ))
+    Browser.element
+        { init = \flags -> ( initModel flags, initTasks )
         , view = view
         , update = update
         , subscriptions = subscriptions
@@ -39,7 +38,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Platform.Sub.batch
         [ Ports.gotFocus GotFocus
-        , Time.every (Config.changePicture * Time.second) Tick
+        , Time.every Config.changePicture Tick
         ]
 
 
@@ -51,12 +50,12 @@ view : Model -> Html Msg
 view model =
     let
         background =
-            rect [ class "background", width (toString Config.width), height (toString Config.height) ] []
+            rect [ class "background", width (String.fromInt Config.width), height (String.fromInt Config.height) ] []
 
         tree =
             Tree.tree model
     in
-        svg [ id "family-tree", version "1.1", viewBox Config.viewBox ] (background :: tree)
+    svg [ id "family-tree", version "1.1", viewBox Config.viewBox ] (background :: tree)
 
 
 

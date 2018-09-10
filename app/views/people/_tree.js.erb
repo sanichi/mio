@@ -13,8 +13,10 @@ function get_focus(app, id) {
   });
 }
 $(function() {
-  var node = $('#elm').get(0);
-  var app = Elm.Main.embed(node, { focus: focus });
+  var app = Elm.Main.init({
+    node: $('#elm').get(0),
+    flags: { focus: focus }
+  });
   app.ports.getFocus.subscribe(function(id) {
     get_focus(app, id);
   });
