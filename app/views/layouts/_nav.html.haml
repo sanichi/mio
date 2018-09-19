@@ -68,7 +68,7 @@
           = render "layouts/dropdown_item", cond: can?(:read, Transaction), text: t("transaction.transactions"), path: summary_transactions_path
           = render "layouts/dropdown_item", cond: can?(:read, Expense), text: t("expense.expenses"), path: expenses_path
 
-    - if [:aoc, :magic, :play, :tribute].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Dragon, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+    - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Dragon, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("other"), id: "navbarOtherMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarOtherMenu"}
@@ -79,7 +79,6 @@
           = render "layouts/dropdown_item", cond: can?(:aoc, Page), text: t("pages.aoc.short"), path: aoc_path
           = render "layouts/dropdown_item", cond: can?(:read, Tapa), text: t("tapa.tapas"), path: tapas_path
           = render "layouts/dropdown_item", cond: can?(:read, Dragon), text: t("dragon.dragons"), path: dragons_path
-          = render "layouts/dropdown_item", cond: can?(:tribute, Page), text: t("dragon.tribute"), path: tribute_path
           = render "layouts/dropdown_item", cond: can?(:magic, Page), text: t("pages.magic"), path: magic_path
           = render "layouts/dropdown_item", cond: can?(:play, Page), text: t("pages.play"), path: play_path
           = render "layouts/dropdown_item", cond: can?(:read, Device), text: t("device.devices"), path: devices_path

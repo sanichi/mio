@@ -2,10 +2,7 @@
 
 %h1.text-center.mb-5.tribute= t("dragon.title")
 
-%img.tribute.mt-5{src: "images/dragon.png", alt: t("dragon.tribute")}
-
 - sep = "\u00a0#{t('dragon.separator')} "
-
 %p.mt-5.tribute
   = @dragons.map(&:name).join(sep)
 
