@@ -31,6 +31,7 @@ en:
       mistakes: Mistakes
       native: Native Way
       none: None
+      shadowing: Shadowing
     order:
       created: First Created
       published: First Published

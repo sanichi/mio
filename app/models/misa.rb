@@ -3,7 +3,7 @@ class Misa < ApplicationRecord
   include Pageable
   include Remarkable
 
-  CATEGORIES = %w/none beginners counters dajare difference dogen howto mistakes native/
+  CATEGORIES = %w/none beginners counters dajare difference dogen howto mistakes native shadowing/
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
   MAX_SHORT = 15
