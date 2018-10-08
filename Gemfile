@@ -27,10 +27,10 @@ group :development do
 end
 
 group :development, :test do
-  gem "rspec-rails", "~> 3.0"
-  gem "capybara", "~> 3.2"
+  gem "rspec-rails", "~> 3.8"
+  gem "capybara", "~> 3.8"
   gem "selenium-webdriver"
-  gem "factory_bot_rails", "~> 4.8"
+  gem "factory_bot_rails", "~> 4.11"
   gem "launchy"
   gem "faker"
   gem "database_cleaner"
