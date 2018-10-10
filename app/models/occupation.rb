@@ -2,7 +2,7 @@ class Occupation < ApplicationRecord
   include Constrainable
   include Pageable
 
-  ENDINGS = %w/者 手 師 家 官 士 人/
+  ENDINGS = %w/者 手 師 家 官 士 優 人/
 
   belongs_to :vocab
 
