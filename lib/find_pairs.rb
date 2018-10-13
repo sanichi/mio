@@ -20,22 +20,51 @@ hi = is.each_with_object(hi) do |i, h|
   h[kanji] << i
 end
 
+# the string representation for a pair
+def srep(t, i)
+  "#{t} => #{i}"
+end
+
+# create a list of pairs we don't want to include (ones that the method here is otherwise too simplistic to exclude)
+xa = [
+  ["出す", "出かける"],
+  ["見せる", "見える"],
+  ["足す", "足りない"],
+  ["行う", "行く"],
+  ["生む", "生える"],
+  ["生む", "生きる"],
+  ["交ぜる", "交わる"],
+  ["上げる", "上る"],
+  ["乗せる", "乗る"],
+  ["通す", "通う"],
+  ["放つ", "放れる"],
+  ["起こす", "起こる"],
+  ["混ぜる", "混じる"],
+  ["混ぜる", "混む"],
+]
+
+# from this create an exclusion hash keyed on the string representations for pairs
+xh = xa.each_with_object({}) { |a, h| h[srep(a[0], a[1])] = true; h }
+
+
 # create a single hash where:
 #   keys: pairs of vocab IDs (later used to eliminate duplicates)
-#   vals: string representation (to be printed later) of potential transitive-intransitive pair
+#   vals: string representation (to be printed later) of a transitive-intransitive pair
+# avoid adding any from the excusion hash
 hp = ht.keys.each_with_object({}) do |k, h|
   if hi[k]
     vt = ht[k]
     vi = hi[k]
     vt.each do |t|
       vi.each do |i|
-        h["#{t.id}_#{i.id}"] = "#{t.kanji} => #{i.kanji}"
+        rep = srep(t.kanji, i.kanji)
+        h["#{t.id}_#{i.id}"] = rep unless xh[rep]
       end
     end
   end
   h
 end
-puts "total pairs: #{hp.size}"
+puts "total pairs found: #{hp.size}"
 
 # to start the process of de-duplication, get the existing pairs
 ps = VerbPair.all
