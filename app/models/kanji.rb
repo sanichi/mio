@@ -25,7 +25,7 @@ class Kanji < ApplicationRecord
   end
 
   def self.search(params, path, opt={})
-    params[:q] = params[:qk] if params[:qk].present? # for views/vocabs/_multi_search
+    params[:q] = params[:qk] if params[:qk].present? # for views/kanjis/_dropdown_menu
     matches = case params[:order]
     when "onyomi"   then by_onyomi
     when "kunyomi"  then by_kunyomi

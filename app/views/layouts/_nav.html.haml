@@ -1,3 +1,5 @@
+- menu_size = 8
+
 %nav{class: "navbar navbar-expand-lg navbar-light bg-light mb-3"}
   %button{class: "navbar-toggler", type: "button", "data-toggle" => "collapse", "data-target" => "#navbarNav", "aria-controls" => "navbarNav", "aria-expanded" => "false", "aria-label" => "Toggle navigation"}
     %span.navbar-toggler-icon
@@ -13,9 +15,13 @@
         = render "layouts/dropdown_head", text: t("vocab.japanese"), id: "navbarJapaneseMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.vocabs"), path: vocabs_path
+          = render "vocabs/dropdown_menu", cond: can?(:read, Vocab), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, Kanji), text: t("vocab.kanjis"), path: kanjis_path
+          = render "kanjis/dropdown_menu", cond: can?(:read, Kanji), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, Reading), text: t("vocab.readings"), path: readings_path
+          = render "readings/dropdown_menu", cond: can?(:read, Reading), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, Radical), text: t("vocab.radicals"), path: radicals_path
+          = render "radicals/dropdown_menu", cond: can?(:read, Radical), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, VerbPair), text: t("verb_pair.verb_pairs"), path: verb_pairs_path
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
           = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path

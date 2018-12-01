@@ -18,7 +18,7 @@ class Reading < ApplicationRecord
   end
 
   def self.search(params, path, opt={})
-    params[:q] = params[:qr] if params[:qr].present? # for views/vocabs/_multi_search
+    params[:q] = params[:qr] if params[:qr].present? # for views/readings/_dropdown_menu
     matches = case params[:order]
     when "onyomi"   then by_onyomi
     when "kunyomi"  then by_kunyomi

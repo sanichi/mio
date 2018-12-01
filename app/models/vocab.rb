@@ -40,7 +40,7 @@ class Vocab < ApplicationRecord
   scope :tricky_adjective, -> { where("category ILIKE '%na adjective%' AND kanji ~* 'い$'") }
 
   def self.search(params, path, opt={})
-    params[:q] = params[:qv] if params[:qv].present? # for views/vocabs/_multi_search
+    params[:q] = params[:qv] if params[:qv].present? # for views/vocabs/_dropdown_menu
     matches = case params[:order]
     when "meaning" then by_meaning
     when "level"   then by_level

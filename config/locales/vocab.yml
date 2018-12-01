@@ -29,6 +29,11 @@ en:
     symbol: Symbol
     vocab: Vocab
     vocabs: Vocabs
+    dropdown:
+      vocab: vocab
+      kanji: kanji
+      reading: reading
+      radical: radical
     kanji_test:
       failure: No! I was wrong!
       new: New Kanji Test

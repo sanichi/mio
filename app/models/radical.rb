@@ -17,7 +17,7 @@ class Radical < ApplicationRecord
   scope :by_meaning, -> { order(:meaning) }
 
   def self.search(params, path, opt={})
-    params[:q] = params[:qk] if params[:qk].present? # for views/vocabs/_multi_search
+    params[:q] = params[:qr] if params[:qr].present? # for views/radicals/_dropdown_menu
     matches = case params[:order]
     when "symbol"   then by_symbol
     else                 by_meaning
