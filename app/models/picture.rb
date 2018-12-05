@@ -50,8 +50,16 @@ class Picture < ApplicationRecord
     self.people = new_ids.map{ |id| Person.find_by(id: id) }.compact
   end
 
+  # Not used anymore because the indirection makes it slow.
   def thumbnail_path
     Rails.application.routes.url_helpers.rails_representation_url(image.variant(STYLE[:tn]), only_path: true)
+  end
+
+  # This is better. Based on: https://stackoverflow.com/questions/50340043/get-path-to-activestorage-file-on-disk
+  def direct_thumbnail_path
+    root = Rails.root + "public"
+    path = Pathname.new(ActiveStorage::Blob.service.send(:path_for, image.variant(Picture::STYLE[:tn]).key))
+    "/#{path.relative_path_from(root)}"
   end
 
   def self.hidden_class(nm)
