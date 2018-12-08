@@ -5,6 +5,8 @@
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("vocab.radical"), size: 16, autofocus: true
   = label_tag :level, t("vocab.level"), class: "sr-only"
   = select_tag :level, radical_search_level_menu(params[:level]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :old, t("vocab.old_meaning"), class: "sr-only"
+  = select_tag :old, radical_old_meaning_menu(params[:old]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, radical_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_05_172021) do
+ActiveRecord::Schema.define(version: 2018_12_08_090323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -341,6 +341,7 @@ ActiveRecord::Schema.define(version: 2018_11_05_172021) do
     t.string "meaning", limit: 100
     t.string "symbol", limit: 1
     t.integer "kanji_id"
+    t.string "old_meaning", limit: 100
   end
 
   create_table "readings", force: :cascade do |t|
