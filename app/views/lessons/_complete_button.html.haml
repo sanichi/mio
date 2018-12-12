@@ -1,0 +1,3 @@
+- color = complete < 20 ? "danger" : (complete < 50 ? "warning" : (complete < 90 ? "info" : "success"))
+- klass = "btn-#{color}"
+%button.btn.btn-sm.small{type: "button", class: klass}= complete

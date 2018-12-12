@@ -45,6 +45,10 @@ class Lesson < ApplicationRecord
     [links, chapter_and_no].compact.join(" ").html_safe
   end
 
+  def complete_percent
+    "#{complete}#{I18n.t('lesson.abbrev.complete')}"
+  end
+
   def note_html
     to_html(note)
   end
