@@ -1,0 +1,22 @@
+= render "utils/title", text: @lesson.chapter
+
+.card
+  .card-header
+    = @lesson.chapter_and_links
+    .float-right
+      .small
+        = @lesson.series
+        = t("symbol.katakana_middle_dot")
+        = @lesson.section
+        = t("symbol.katakana_middle_dot")
+        = link_to t("lesson.abbrev.link"), @lesson.link, target: @lesson.target
+
+  - if @lesson.note.present?
+    .card-body= @lesson.note_html
+
+.text-center.mt-3
+  = link_to t("lesson.lessons"), lessons_path, class: "btn btn-success"
+  - if can?(:edit, Lesson)
+    = link_to t("edit"), edit_lesson_path(@lesson), class: "btn btn-info"
+  - if can?(:delete, Lesson)
+    = link_to t("delete"), @lesson, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

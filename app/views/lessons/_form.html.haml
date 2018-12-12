@@ -1,0 +1,15 @@
+= form_for lesson, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: lesson, col: "md", pad: 3, width: 4}
+  = render "utils/text_field_for", shared.merge(param: :series, text: t("lesson.series"))
+  = render "utils/text_field_for", shared.merge(param: :section, text: t("lesson.section"))
+  = render "utils/text_field_for", shared.merge(param: :chapter, text: t("lesson.chapter"), width: 5)
+  = render "utils/text_field_for", shared.merge(param: :chapter_no, text: t("lesson.chapter_no"), width: 2)
+  = render "utils/text_field_for", shared.merge(param: :link, text: t("lesson.link"), width: 8)
+  = render "utils/text_field_for", shared.merge(param: :complete, text: t("lesson.complete"), width: 2)
+  = render "utils/text_area_for", shared.merge(param: :note, text: t("lesson.note"), width: 8, rows: 30)
+  .row
+    .offset-md-3.col-md-9
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), lesson.new_record?? lessons_path : lesson, class: "btn btn-secondary"
+      - unless lesson.new_record?
+        = link_to t("delete"), lesson, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

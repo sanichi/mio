@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_08_090323) do
+ActiveRecord::Schema.define(version: 2018_12_12_163230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -196,6 +196,18 @@ ActiveRecord::Schema.define(version: 2018_12_08_090323) do
     t.boolean "burned", default: false
     t.index ["meaning"], name: "index_kanjis_on_meaning"
     t.index ["symbol"], name: "index_kanjis_on_symbol"
+  end
+
+  create_table "lessons", force: :cascade do |t|
+    t.string "chapter", limit: 60
+    t.integer "chapter_no", limit: 2
+    t.integer "complete", limit: 2, default: 0
+    t.string "link", limit: 200
+    t.text "note"
+    t.string "section", limit: 50
+    t.string "series", limit: 50
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "links", id: :serial, force: :cascade do |t|
