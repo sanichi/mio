@@ -3,7 +3,7 @@ class LessonsController < ApplicationController
   before_action :find_lesson, only: [ :show, :edit, :update, :destroy]
 
   def index
-    @lessons = Lesson.search(params, lessons_path, per_page: 10)
+    @lessons = Lesson.search(params, lessons_path, per_page: 20)
   end
 
   def new
