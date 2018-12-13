@@ -28,10 +28,6 @@ class Lesson < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def chapter_and_no
-    "#{chapter_no} #{chapter}"
-  end
-
   def chapter_and_links
     collection = Lesson.where(series: series).where(section: section).order(:chapter_no)
     prev_lesson = collection.where("chapter_no < ?", chapter_no).pluck(:id)
@@ -42,7 +38,7 @@ class Lesson < ApplicationRecord
     if prev_link || next_link
       links = [prev_link, next_link].compact.join(" ")
     end
-    [links, chapter_and_no].compact.join(" ").html_safe
+    [links, chapter].compact.join(" ").html_safe
   end
 
   def complete_percent
