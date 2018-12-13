@@ -12,6 +12,7 @@ en:
     prev: ◀️
     section: Section
     series: Series
+    target: lesson
     abbrev:
       complete: "%"
       link: 🔗

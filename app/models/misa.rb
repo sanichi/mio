@@ -71,10 +71,6 @@ class Misa < ApplicationRecord
     "https://youtu.be/#{long}"
   end
 
-  def target
-    "misa"
-  end
-
   private
 
   def normalize_attributes

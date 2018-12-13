@@ -10,7 +10,7 @@
     %td.text-center= misa.published&.strftime("%y-%m-%d")
     %td.text-center
       - if misa.long
-        = link_to t("misa.abbrev.long"), misa.long_url, target: misa.target
+        = link_to t("misa.abbrev.long"), misa.long_url, target: t("misa.target")
       - if misa.short
-        = link_to t("misa.abbrev.short"), misa.short_url, target: misa.target
+        = link_to t("misa.abbrev.short"), misa.short_url, target: t("misa.target")
 = render "utils/pagination_links", pager: misas, columns: 6

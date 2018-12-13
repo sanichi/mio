@@ -53,10 +53,6 @@ class Lesson < ApplicationRecord
     to_html(note)
   end
 
-  def target
-    "lesson"
-  end
-
   private
 
   def normalize_attributes

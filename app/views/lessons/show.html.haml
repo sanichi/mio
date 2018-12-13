@@ -11,7 +11,7 @@
         = t("symbol.katakana_middle_dot")
         = @lesson.complete_percent
         = t("symbol.katakana_middle_dot")
-        = link_to t("lesson.abbrev.link"), @lesson.link, target: @lesson.target
+        = link_to t("lesson.abbrev.link"), @lesson.link, target: t("lesson.target")
 
   - if @lesson.note.present?
     .card-body= @lesson.note_html
