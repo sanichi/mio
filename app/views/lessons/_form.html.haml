@@ -6,7 +6,7 @@
   = render "utils/text_field_for", shared.merge(param: :chapter_no, text: t("lesson.chapter_no"), width: 2)
   = render "utils/text_field_for", shared.merge(param: :link, text: t("lesson.link"), width: 8)
   = render "utils/text_field_for", shared.merge(param: :complete, text: t("lesson.complete"), width: 2)
-  = render "utils/text_area_for", shared.merge(param: :note, text: t("lesson.note"), width: 8, rows: 30)
+  = render "utils/text_area_for", shared.merge(param: :note, text: t("lesson.note"), width: 8, rows: lesson.new_record?? 5 : 30)
   .row
     .offset-md-3.col-md-9
       = f.submit t("save"), class: "btn btn-primary"
