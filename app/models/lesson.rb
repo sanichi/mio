@@ -58,5 +58,8 @@ class Lesson < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    if chapter_no.blank?
+      self.chapter_no = Lesson.where(series: series, section: section).pluck(:chapter_no).max.to_i + 1
+    end
   end
 end
