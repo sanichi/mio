@@ -78,6 +78,7 @@ class Misa < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.minutes = "#{$1}:00" if minutes.match(/\A(\d{1,3})(:0?)?\z/)
     self.short = nil if short.blank?
     self.long = nil if long.blank?
   end
