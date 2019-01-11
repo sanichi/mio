@@ -7,7 +7,7 @@ class SimilarWord < ApplicationRecord
 
   before_validation :canonicalize
 
-  validates :readings, length: { maximum: MAX_READINGS }, format: { with: /\A\S+( \S+)+\z/ }, uniqueness: true
+  validates :readings, length: { maximum: MAX_READINGS }, format: { with: /\A\S+( \S+)*\z/ }, uniqueness: true
 
   scope :by_readings, -> { order(Arel.sql('readings COLLATE "C"')) }
 
