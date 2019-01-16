@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_12_163230) do
+ActiveRecord::Schema.define(version: 2019_01_16_152916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(version: 2018_12_12_163230) do
     t.string "meaning", limit: 100
     t.integer "level", limit: 2
     t.boolean "burned", default: false
+    t.integer "frequency", limit: 2, default: 0
     t.index ["meaning"], name: "index_kanjis_on_meaning"
     t.index ["symbol"], name: "index_kanjis_on_symbol"
   end

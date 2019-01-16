@@ -15,10 +15,11 @@ class Kanji < ApplicationRecord
   validates :meaning, presence: true, length: { maximum: MAX_MEANING }
   validates :level, numericality: { integer_only: true, greater_than_or_equal_to: Vocab::MIN_LEVEL, less_than_or_equal_to: Vocab::MAX_LEVEL }
 
-  scope :by_onyomi,  -> { order("kanjis.onyomi DESC", Arel.sql('symbol COLLATE "C"')) }
-  scope :by_kunyomi, -> { order("kanjis.kunyomi DESC", 'symbol COLLATE "C"') }
-  scope :by_symbol,  -> { order(Arel.sql('symbol COLLATE "C"')) }
-  scope :by_total,   -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", Arel.sql('symbol COLLATE "C"')) }
+  scope :by_onyomi,    -> { order("kanjis.onyomi DESC", "kanjis.frequency DESC") }
+  scope :by_kunyomi,   -> { order("kanjis.kunyomi DESC", "kanjis.frequency DESC") }
+  scope :by_symbol,    -> { order(Arel.sql('symbol COLLATE "C"')) }
+  scope :by_total,     -> { order("(kanjis.onyomi + kanjis.kunyomi) DESC", "kanjis.frequency DESC") }
+  scope :by_frequency, -> { order("kanjis.frequency DESC", "(kanjis.onyomi + kanjis.kunyomi) DESC") }
 
   def total
     onyomi + kunyomi
@@ -27,9 +28,10 @@ class Kanji < ApplicationRecord
   def self.search(params, path, opt={})
     params[:q] = params[:qk] if params[:qk].present? # for views/kanjis/_dropdown_menu
     matches = case params[:order]
-    when "onyomi"   then by_onyomi
-    when "kunyomi"  then by_kunyomi
-    else                 by_total
+    when "onyomi"    then by_onyomi
+    when "kunyomi"   then by_kunyomi
+    when "total"     then by_total
+    else                  by_frequency
     end
     matches = matches.includes(yomis: :reading)
     if (l = params[:level].to_i) > 0

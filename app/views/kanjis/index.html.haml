@@ -13,8 +13,9 @@
   %thead
     %tr.d-flex
       %th.col-1.text-center= t("vocab.kanji")
+      %th.col-1.text-center= t("vocab.frequency")
       %th.col-1.text-center= t("total")
-      %th.col-5.text-center{colspan: 2}= t("vocab.onyomi")
+      %th.col-4.text-center{colspan: 2}= t("vocab.onyomi")
       %th.col-5.text-center{colspan: 2}= t("vocab.kunyomi")
   %tbody{id: "results"}
     = render "results", kanjis: @kanjis
