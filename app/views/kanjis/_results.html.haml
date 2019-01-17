@@ -1,10 +1,11 @@
 - kanjis.matches.each do |kanji|
   %tr.d-flex
     %td.col-1.text-center{class: vocab_table_bg(kanji.burned)}= link_to kanji.symbol, kanji
+    %td.col-3= kanji.meaning
     %td.col-1.text-center= kanji.frequency
     %td.col-1.text-center= kanji.total
-    %td.col-3= render "kanas", yomis: kanji.on_yomis
+    %td.col-2= render "kanas", yomis: kanji.on_yomis
     %td.col-1.text-center= kanji.onyomi
-    %td.col-4= render "kanas", yomis: kanji.kun_yomis
+    %td.col-2= render "kanas", yomis: kanji.kun_yomis
     %td.col-1.text-center= kanji.kunyomi
-= render "utils/pagination_links", pager: kanjis, columns: 7
+= render "utils/pagination_links", pager: kanjis, columns: 8
