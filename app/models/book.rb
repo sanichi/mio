@@ -50,5 +50,6 @@ class Book < ApplicationRecord
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.note = nil unless note.present?
   end
 end
