@@ -6,4 +6,5 @@ en:
     users: Users
     roles:
       admin: Administrator
+      books: Books
       none: None

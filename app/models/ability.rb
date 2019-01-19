@@ -7,7 +7,9 @@ class Ability
       return
     end
 
-    if !user.guest? # anyone else logged in
+    can :manage, Book if user.books?
+
+    if !user.guest? && !user.books? # anyone logged in except for book people
       can [:read, :tree, :checks, :match, :relative], Person
       can :read, [Picture, Partnership]
     end
