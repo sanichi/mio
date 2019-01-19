@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_152916) do
+ActiveRecord::Schema.define(version: 2019_01_19_160327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,17 @@ ActiveRecord::Schema.define(version: 2019_01_16_152916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "draft", default: true
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "author", limit: 60
+    t.string "category", limit: 10
+    t.string "medium", limit: 10
+    t.text "note"
+    t.string "title", limit: 100
+    t.integer "year", limit: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "buckets", id: :serial, force: :cascade do |t|

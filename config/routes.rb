@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
+  resources :books
   resources :buckets
   resources :conversations
   resources :devices

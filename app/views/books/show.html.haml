@@ -1,0 +1,29 @@
+= render "utils/title", text: @book.title, header: true
+
+.row
+  .offset-md-2.col-md-8.offset-xl-3.col-xl-6
+    %table{class: "table table-bordered"}
+      %tbody
+        %tr
+          %td= t("book.author")
+          %th= @book.author
+        %tr
+          %td= t("book.category")
+          %th= t("book.categories.#{@book.category}")
+        %tr
+          %td= t("book.medium")
+          %th= t("book.media.#{@book.medium}")
+        %tr
+          %td= t("book.year")
+          %th= @book.year
+
+.text-center
+  = link_to t("book.books"), books_path, class: "btn btn-success"
+  - if can?(:update, @book)
+    = link_to t("edit"), edit_book_path(@book), class: "btn btn-info"
+
+- if @book.note.present?
+  .card.mt-3
+    .card-header
+      = t("note")
+    .card-body= @book.note_html

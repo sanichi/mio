@@ -1,0 +1,23 @@
+en:
+  book:
+    author: Authors
+    category: Category
+    books: Books
+    edit: Edit Book
+    medium: Medium
+    new: New Book
+    title: Title
+    year: Year
+    categories:
+      biography: Biography
+      ending: Endings
+      game: Games
+      match: Matches
+      middle: Middlegames
+      opening: Openings
+      other: Other
+      tournament: Tournaments
+      training: Training
+    media:
+      book: Book
+      cd: CD

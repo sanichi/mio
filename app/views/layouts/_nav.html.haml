@@ -45,11 +45,12 @@
           = render "layouts/dropdown_item", cond: can?(:checks, Person), text: t("person.checks.title"), path: checks_people_path
           = render "layouts/dropdown_item", cond: can?(:read, HistoricalEvent), text: t("historical_event.events"), path: historical_events_path
 
-    - if [Position, Opening, Lesson].map{|c| can?(:read, c) }.any?
+    - if [Position, Opening, Lesson, Book].map{|c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("chess"), id: "navbarChessMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarChessMenu"}
           = render "layouts/dropdown_item", cond: can?(:read, Lesson), text: t("lesson.lessons"), path: lessons_path
+          = render "layouts/dropdown_item", cond: can?(:read, Book), text: t("book.books"), path: books_path
           = render "layouts/dropdown_item", cond: can?(:read, Position), text: t("position.positions"), path: positions_path
           = render "layouts/dropdown_item", cond: can?(:read, Opening), text: t("opening.openings"), path: openings_path
 

@@ -1,0 +1,14 @@
+= form_for book, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: book, col: "md", pad: 2}
+  = render "utils/text_field_for", shared.merge(param: :title, text: t("book.title"), width: 6)
+  = render "utils/text_field_for", shared.merge(param: :author, text: t("book.author"), width: 4)
+  = render "utils/select_for", shared.merge(param: :category, text: t("book.category"), width: 3, menu: book_category_menu(book.category))
+  = render "utils/select_for", shared.merge(param: :medium, text: t("book.medium"), width: 3, menu: book_medium_menu(book.medium))
+  = render "utils/text_field_for", shared.merge(param: :year, text: t("book.year"), width: 2)
+  = render "utils/text_area_for", shared.merge(param: :note, text: t("note"), width: 8, rows: book.new_record?? 5 : 30)
+  .row
+    .offset-md-2.col-md-10
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), book.new_record?? books_path : book, class: "btn btn-secondary"
+      - unless book.new_record?
+        = link_to t("delete"), book, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
