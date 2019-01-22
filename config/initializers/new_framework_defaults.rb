@@ -4,6 +4,7 @@
 #
 
 # Require `belongs_to` associations by default. Previous versions had false.
+# See https://blog.bigbinary.com/2016/02/15/rails-5-makes-belong-to-association-required-by-default.html
 Rails.application.config.active_record.belongs_to_required_by_default = false
 
 # See also the Rails config.load_defaults method (since 5.1). It does thigs like this:
