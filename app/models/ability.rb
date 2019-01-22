@@ -7,11 +7,13 @@ class Ability
       return
     end
 
-    can :manage, Book if user.books?
-
-    if !user.guest? && !user.books? # anyone logged in except for book people
+    if user.family?
       can [:read, :tree, :checks, :match, :relative], Person
       can :read, [Picture, Partnership]
+    end
+
+    if user.books?
+      can :manage, Book
     end
 
     can :read, [Blog, Book, Bucket, Dragon, Favourite, Tapa]

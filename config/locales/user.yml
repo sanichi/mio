@@ -7,4 +7,5 @@ en:
     roles:
       admin: Administrator
       books: Books
+      family: Family
       none: None
