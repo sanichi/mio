@@ -12,7 +12,7 @@ describe KanjiTest do
   context "create" do
     it "success" do
       click_link t(:vocab_kanji__test_new)
-      select data.level, from: t(:vocab_level)
+      select data.level.to_s, from: t(:vocab_level)
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_kanji__test_test)

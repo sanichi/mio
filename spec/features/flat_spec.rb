@@ -17,10 +17,10 @@ describe Flat do
     context "success" do
       it "maximum" do
         click_link t(:flat_new)
-        select data.building, from: t(:flat_building)
-        select data.number, from: t(:flat_number)
-        select data.block, from: t(:flat_block)
-        select data.bay, from: t(:flat_bay)
+        select data.building.to_s, from: t(:flat_building)
+        select data.number.to_s, from: t(:flat_number)
+        select data.block.to_s, from: t(:flat_block)
+        select data.bay.to_s, from: t(:flat_bay)
         select data.category, from: t(:flat_category)
         select data.name, from: t(:flat_name)
         select tenant.name, from: t(:flat_tenant)
@@ -47,9 +47,9 @@ describe Flat do
 
       it "minimum" do
         click_link t(:flat_new)
-        select data.building, from: t(:flat_building)
+        select data.building.to_s, from: t(:flat_building)
         select t(:none), from: t(:flat_number)
-        select data.block, from: t(:flat_block)
+        select data.block.to_s, from: t(:flat_block)
         select t(:none), from: t(:flat_bay)
         select data.category, from: t(:flat_category)
         select data.name, from: t(:flat_name)
@@ -76,8 +76,8 @@ describe Flat do
     context "failure" do
       it "no building" do
         click_link t(:flat_new)
-        select data.block, from: t(:flat_block)
-        select data.bay, from: t(:flat_bay)
+        select data.block.to_s, from: t(:flat_block)
+        select data.bay.to_s, from: t(:flat_bay)
         select data.category, from: t(:flat_category)
         select data.name, from: t(:flat_name)
         click_button t(:save)
@@ -97,7 +97,7 @@ describe Flat do
 
         expect(page).to have_title t(:flat_edit)
 
-        select data.number, from: t(:flat_number)
+        select data.number.to_s, from: t(:flat_number)
         click_button t(:save)
 
         expect(page).to have_title t(:flat_flat)
@@ -114,7 +114,7 @@ describe Flat do
         click_link flat.address
         click_link t(:edit)
 
-        select flat2.bay, from: t(:flat_bay)
+        select flat2.bay.to_s, from: t(:flat_bay)
         click_button t(:save)
 
         expect(page).to have_title t(:flat_edit)

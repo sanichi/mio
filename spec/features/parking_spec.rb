@@ -14,7 +14,7 @@ describe Parking do
     it "success" do
       click_link t(:parking_new)
       select vehicle.registration, from: t(:vehicle_vehicle)
-      select flat.bay, from: t(:flat_bay)
+      select flat.bay.to_s, from: t(:flat_bay)
       click_button t(:save)
 
       expect(page).to have_title t(:parking_parkings)
@@ -41,7 +41,7 @@ describe Parking do
     it "failure (invalid time)" do
       click_link t(:parking_new)
       select vehicle.registration, from: t(:vehicle_vehicle)
-      select flat.bay, from: t(:flat_bay)
+      select flat.bay.to_s, from: t(:flat_bay)
       fill_in t(:parking_noted__at), with: "tomorrow at 3pm"
       click_button t(:save)
 

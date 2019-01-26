@@ -13,7 +13,7 @@ describe VocabTest do
     it "success" do
       click_link t(:vocab_test_new)
       select t(:vocab_test)[data.category.to_sym], from: t(:vocab_test_category)
-      select data.level, from: t(:vocab_level)
+      select data.level.to_s, from: t(:vocab_level)
       click_button t(:save)
 
       expect(page).to have_title t(:vocab_test_test)

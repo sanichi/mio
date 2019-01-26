@@ -20,7 +20,7 @@ describe Fund do
       select data.sector, from: t(:fund_sector)
       stars.each { |star| select star, from: t(:fund_stars_stars) }
       fill_in t(:fund_size), with: data.size
-      select data.srri, from: t(:fund_srri)
+      select data.srri.to_s, from: t(:fund_srri)
       check t(:fund_srri__estimated) if data.srri_estimated
       fill_in t(:fund_annual__fee), with: data.annual_fee
       check t(:fund_performance__fee) if data.performance_fee
@@ -52,7 +52,7 @@ describe Fund do
       select data.sector, from: t(:fund_sector)
       stars.each { |star| select star, from: t(:fund_stars_stars) }
       fill_in t(:fund_size), with: data.size
-      select data.srri, from: t(:fund_srri)
+      select data.srri.to_s, from: t(:fund_srri)
       check t(:fund_srri__estimated) if data.srri_estimated
       fill_in t(:fund_annual__fee), with: data.annual_fee
       check t(:fund_performance__fee) if data.performance_fee
@@ -74,7 +74,7 @@ describe Fund do
       select data.sector, from: t(:fund_sector)
       stars.each { |star| select star, from: t(:fund_stars_stars) }
       fill_in t(:fund_size), with: data.size
-      select data.srri, from: t(:fund_srri)
+      select data.srri.to_s, from: t(:fund_srri)
       check t(:fund_srri__estimated) if data.srri_estimated
       fill_in t(:fund_annual__fee), with: data.annual_fee
       check t(:fund_performance__fee) if data.performance_fee
