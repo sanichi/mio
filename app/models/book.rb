@@ -3,7 +3,7 @@ class Book < ApplicationRecord
   include Pageable
   include Remarkable
 
-  CATEGORIES = %w{opening ending middle tournament match game biography training other}
+  CATEGORIES = %w{opening ending middle tournament match game biography puzzle training other}
   MAX_AUTHOR = 60
   MAX_CATEGORY = 10
   MAX_MEDIUM = 10
