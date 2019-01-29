@@ -21,6 +21,9 @@
   = link_to t("book.books"), books_path, class: "btn btn-success"
   - if can?(:update, @book)
     = link_to t("edit"), edit_book_path(@book), class: "btn btn-info"
+  - if can?(:create, Book)
+    = link_to t("book.new"), new_book_path, class: "btn btn-info"
+
 
 - if @book.note.present?
   .card.mt-3
