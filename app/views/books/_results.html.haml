@@ -6,6 +6,8 @@
           = book.title
         - else
           %del= book.title
+      - if book.note.present?
+        = t("book.note_symbol")
     %td.col-3= book.author
     %td.col-2= t("book.categories.#{book.category}")
     %td.col-1= t("book.media.#{book.medium}")

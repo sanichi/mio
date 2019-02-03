@@ -1,13 +1,15 @@
 en:
   book:
     author: Authors
-    available: Available
+    available: Availability
     category: Category
     books: Books
     edit: Edit Book
     library: The Eoin Campbell Library
     medium: Medium
     new: New Book
+    note: Notes
+    note_symbol: 🗒
     title: Title
     year: Year
     categories:

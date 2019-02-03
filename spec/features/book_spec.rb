@@ -18,7 +18,7 @@ describe Book do
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
       data.available ? check(t(:book_available)) : uncheck(t(:book_available))
-      fill_in t(:note), with: data.note
+      fill_in t(:book_note), with: data.note
       click_button t(:save)
 
       expect(page).to have_title data.title
@@ -42,7 +42,7 @@ describe Book do
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
       data.available ? check(t(:book_available)) : uncheck(t(:book_available))
-      fill_in t(:note), with: data.note
+      fill_in t(:book_note), with: data.note
       click_button t(:save)
 
       expect(page).to have_title t(:book_new)
