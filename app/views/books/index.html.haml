@@ -40,10 +40,10 @@
         %strong= t("book.title")
       = succeed(":") do
         %strong= t("book.author")
-      Enter one or more search terms separated by spaces for them all to be matched.
-      For example "Defence Grunfeld" will only match titles containing both "Grunfeld"
-      and "Defence". Separate with pipes ("|") to match at least one term. For example
-      "Gruenfeld|Grunfeld" will match titles which contain either "Grunfeld" or "Gruenfeld".
+      Enter one or more search terms separated by spaces for them all to be matched (case insensitively).
+      For example "defence grunfeld" will match titles containing both "Grunfeld" and "Defence". Separate
+      with pipes ("|") to match at least one term. For example "gruenfeld|grunfeld" will match titles which
+      contain either "Grunfeld" or "Gruenfeld".
     %li
       = succeed(":") do
         %strong= t("book.year")
@@ -67,3 +67,10 @@
       = succeed(":") do
         %strong= t("order")
       Select one of the options to order the matching items.
+    %li
+      = succeed(":") do
+        %strong= "Availability"
+      The titles of items which are currently unavailable to borrow are displayed in strike-through font.
+      To find out who is currently borrowing an unavailable item, click the item title and look in the
+      = t("note")
+      section.

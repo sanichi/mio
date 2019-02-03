@@ -17,6 +17,7 @@ describe Book do
       fill_in t(:book_year), with: data.year
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
+      data.available ? check(t(:book_available)) : uncheck(t(:book_available))
       fill_in t(:note), with: data.note
       click_button t(:save)
 
@@ -30,6 +31,7 @@ describe Book do
       expect(b.year).to eq data.year
       expect(b.category).to eq data.category
       expect(b.medium).to eq data.medium
+      expect(b.available).to eq data.available
       expect(b.note).to eq data.note
     end
 
@@ -39,6 +41,7 @@ describe Book do
       fill_in t(:book_year), with: data.year
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
+      data.available ? check(t(:book_available)) : uncheck(t(:book_available))
       fill_in t(:note), with: data.note
       click_button t(:save)
 

@@ -16,6 +16,9 @@
         %tr
           %td= t("book.year")
           %th= @book.year
+        %tr
+          %td= t("book.available")
+          %th= t(@book.available ? "yes" : "no")
 
 .text-center
   = link_to t("book.books"), books_path, class: "btn btn-success"
@@ -24,9 +27,7 @@
   - if can?(:create, Book)
     = link_to t("book.new"), new_book_path, class: "btn btn-info"
 
-
-- if @book.note.present?
-  .card.mt-3
-    .card-header
-      = t("note")
-    .card-body= @book.note_html
+.card.mt-3
+  .card-header
+    = t("note")
+  .card-body= @book.note_html

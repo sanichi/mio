@@ -1,6 +1,7 @@
 en:
   book:
     author: Authors
+    available: Available
     category: Category
     books: Books
     edit: Edit Book

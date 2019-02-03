@@ -1,6 +1,11 @@
 - @books.matches.each do |book|
   %tr.d-flex
-    %td.col-5= link_to book.title, book
+    %td.col-5
+      = link_to book do
+        - if book.available
+          = book.title
+        - else
+          %del= book.title
     %td.col-3= book.author
     %td.col-2= t("book.categories.#{book.category}")
     %td.col-1= t("book.media.#{book.medium}")
