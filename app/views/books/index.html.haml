@@ -1,6 +1,11 @@
-= render "utils/title", key: "book.books"
+= render "utils/title", key: "book.library", header: true
 
-= form_tag books_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+.text-center
+  - if can?(:create, Book)
+    = link_to t("book.new"), new_book_path, class: "btn btn-info"
+  = render "utils/help_button"
+
+= form_tag books_path, method: :get, remote: true, class: "form-inline justify-content-center mt-3" do
   = label_tag :title, t("book.title"), class: "sr-only"
   = text_field_tag :title, params[:title], class: "form-control mr-1 mb-1", placeholder: t("book.title"), size: 16
   = label_tag :author, t("book.author"), class: "sr-only"
@@ -26,6 +31,39 @@
   %tbody{id: "results"}
     = render "results", books: @books
 
-- if can?(:create, Book)
-  .text-center.mt3
-    = link_to t("book.new"), new_book_path, class: "btn btn-info"
+- content_for :help_title do
+  = "How to Search for Books or CDs"
+- content_for :help do
+  %ul
+    %li
+      = succeed(",") do
+        %strong= t("book.title")
+      = succeed(":") do
+        %strong= t("book.author")
+      Enter one or more search terms separated by spaces for them all to be matched.
+      For example "Defence Grunfeld" will only match titles containing both "Grunfeld"
+      and "Defence". Separate with pipes ("|") to match at least one term. For example
+      "Gruenfeld|Grunfeld" will match titles which contain either "Grunfeld" or "Gruenfeld".
+    %li
+      = succeed(":") do
+        %strong= t("book.year")
+      Match on exact year of first publication (e.g. "2000"), or minimum (e.g. ">=1972"),
+      or maximum (e.g. "<=2010"), or greater than (e.g. ">1986") or less than (e.g. "<1955")
+      or in an inclusive range (e.g. "2000-2010").
+    %li
+      = succeed(":") do
+        %strong= t("book.category")
+      Select a category to constrain matches to items belonging to that category only
+      (each item is assigned to exactly one category).
+    %li
+      = succeed(":") do
+        %strong= t("book.medium")
+      Select
+      = t("book.media.book")
+      or
+      = t("book.media.cd")
+      to constrain matches to items of that type only.
+    %li
+      = succeed(":") do
+        %strong= t("order")
+      Select one of the options to order the matching items.

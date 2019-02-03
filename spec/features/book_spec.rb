@@ -85,7 +85,7 @@ describe Book do
       click_link t(:edit)
       click_link t(:delete)
 
-      expect(page).to have_title t(:book_books)
+      expect(page).to have_title t(:book_library)
       expect(Book.count).to eq 0
     end
   end
