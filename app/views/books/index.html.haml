@@ -55,10 +55,10 @@
     %li
       = succeed(":") do
         %strong= t("book.borrower")
-      Search for items currently on loan by matching the name of the person who has loaned them.
+      Search for items currently on loan by matching the name of the person who has borrowed them.
       The titles of loaned items are displayed in strike-through font and the borrower's name is
-      appended in parenthesis. If you insert the word "ALL" (in capitals) here, then all loaned
-      items will be listed.
+      appended in parenthesis. As a special case, if you want to see all currently borrowed items,
+      no matter who has borrowed them, then type the single word "ALL" (in capitals).
     %li
       = succeed(":") do
         %strong= t("book.category")
