@@ -5,6 +5,7 @@ class Book < ApplicationRecord
 
   CATEGORIES = %w{opening ending middle tournament match game biography puzzle training other}
   MAX_AUTHOR = 60
+  MAX_BORROWER = 30
   MAX_CATEGORY = 10
   MAX_MEDIUM = 10
   MAX_TITLE = 100
@@ -13,7 +14,8 @@ class Book < ApplicationRecord
 
   before_validation :normalize_attributes
 
-  validates :author, presence: true, length: { maximum: MAX_AUTHOR }
+  validates :author, length: { maximum: MAX_AUTHOR }, presence: true
+  validates :borrower, length: { maximum: MAX_BORROWER }, allow_nil: true
   validates :category, inclusion: { in: CATEGORIES }
   validates :medium, inclusion: { in: MEDIA }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: { scope: :author }
@@ -32,6 +34,11 @@ class Book < ApplicationRecord
     sql = nil
     matches = matches.where(sql) if sql = cross_constraint(params[:title], [:title])
     matches = matches.where(sql) if sql = cross_constraint(params[:author], [:author])
+    if params[:borrower]&.match?(/\A\s*ALL\s*\z/)
+      matches = matches.where.not(borrower: nil)
+    else
+      matches = matches.where(sql) if sql = cross_constraint(params[:borrower], [:borrower])
+    end
     matches = matches.where(sql) if sql = numerical_constraint(params[:year], :year)
     matches = matches.where(medium: params[:medium]) if params[:medium].present?
     matches = matches.where(category: params[:category]) if params[:category].present?
@@ -45,8 +52,10 @@ class Book < ApplicationRecord
   private
 
   def normalize_attributes
-    title.squish!
-    author.squish!
+    title&.squish!
+    author&.squish!
+    borrower&.squish!
+    self.borrower = nil unless borrower.present?
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")

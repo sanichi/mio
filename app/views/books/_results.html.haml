@@ -6,6 +6,8 @@
           = book.title
         - else
           %del= book.title
+      - if book.borrower.present?
+        = "(#{book.borrower})"
       - if book.note.present?
         = t("book.note_symbol")
     %td.col-3= book.author

@@ -40,6 +40,6 @@ class BooksController < ApplicationController
   end
 
   def strong_params
-    params.require(:book).permit(:author, :available, :category, :medium, :note, :title, :year)
+    params.require(:book).permit(:author, :available, :borrower, :category, :medium, :note, :title, :year)
   end
 end

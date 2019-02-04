@@ -17,8 +17,8 @@
           %td= t("book.year")
           %th= @book.year
         %tr
-          %td= t("book.available")
-          %th= t(@book.available ? "yes" : "no")
+          %td= t("book.borrower")
+          %th= @book.borrower
 
 .text-center
   = link_to t("book.books"), books_path, class: "btn btn-success"

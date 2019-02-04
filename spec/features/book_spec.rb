@@ -15,6 +15,7 @@ describe Book do
       fill_in t(:book_title), with: data.title
       fill_in t(:book_author), with: data.author
       fill_in t(:book_year), with: data.year
+      fill_in t(:book_borrower), with: data.borrower
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
       data.available ? check(t(:book_available)) : uncheck(t(:book_available))
@@ -29,6 +30,7 @@ describe Book do
       expect(b.title).to eq data.title
       expect(b.author).to eq data.author
       expect(b.year).to eq data.year
+      expect(b.borrower).to eq data.borrower
       expect(b.category).to eq data.category
       expect(b.medium).to eq data.medium
       expect(b.available).to eq data.available
@@ -39,6 +41,7 @@ describe Book do
       click_link t(:book_new)
       fill_in t(:book_author), with: data.author
       fill_in t(:book_year), with: data.year
+      fill_in t(:book_borrower), with: data.borrower
       select I18n.t("book.categories.#{data.category}"), from: t(:book_category)
       select I18n.t("book.media.#{data.medium}"), from: t(:book_medium)
       data.available ? check(t(:book_available)) : uncheck(t(:book_available))

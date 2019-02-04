@@ -12,6 +12,8 @@
   = text_field_tag :author, params[:author], class: "form-control mr-1 mb-1", placeholder: t("book.author"), size: 16
   = label_tag :year, t("book.year"), class: "sr-only"
   = text_field_tag :year, params[:year], class: "form-control mr-1 mb-1", placeholder: t("book.year"), size: 10
+  = label_tag :borrower, t("book.borrower"), class: "sr-only"
+  = text_field_tag :borrower, params[:borrower], class: "form-control mr-1 mb-1", placeholder: t("book.borrower"), size: 10
   = label_tag :category, t("book.category"), class: "sr-only"
   = select_tag :category, book_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :medium, t("book.medium"), class: "sr-only"

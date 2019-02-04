@@ -2,6 +2,7 @@ en:
   book:
     author: Authors
     available: Availability
+    borrower: Borrower
     category: Category
     books: Books
     edit: Edit Book
