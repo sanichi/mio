@@ -54,6 +54,13 @@
       or in an inclusive range (e.g. "2000-2010").
     %li
       = succeed(":") do
+        %strong= t("book.borrower")
+      Search for items currently on loan by matching the name of the person who has loaned them.
+      The titles of loaned items are displayed in strike-through font and the borrower's name is
+      appended in parenthesis. If you insert the word "ALL" (in capitals) here, then all loaned
+      items will be listed.
+    %li
+      = succeed(":") do
         %strong= t("book.category")
       Select a category to constrain matches to items belonging to that category only
       (each item is assigned to exactly one category).
@@ -69,13 +76,6 @@
       = succeed(":") do
         %strong= t("order")
       Select one of the options to order the matching items.
-    %li
-      = succeed(":") do
-        %strong= t("book.available")
-      The titles of items which are currently unavailable to borrow are displayed in strike-through font.
-      To find out who is currently borrowing an unavailable item, click the item title and look in the
-      = t("book.note")
-      section.
     %li
       = succeed(":") do
         %strong= t("book.note")

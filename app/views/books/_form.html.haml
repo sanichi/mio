@@ -6,7 +6,6 @@
   = render "utils/select_for", shared.merge(param: :medium, text: t("book.medium"), width: 3, menu: book_medium_menu(book.medium))
   = render "utils/text_field_for", shared.merge(param: :year, text: t("book.year"), width: 2)
   = render "utils/text_field_for", shared.merge(param: :borrower, text: t("book.borrower"), width: 3)
-  = render "utils/check_box_for", shared.merge(param: :available, text: t("book.available"), width: 1)
   = render "utils/text_area_for", shared.merge(param: :note, text: t("book.note"), width: 8, rows: book.new_record?? 5 : 30)
   .row
     .offset-md-2.col-md-10

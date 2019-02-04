@@ -2,10 +2,10 @@
   %tr.d-flex
     %td.col-5
       = link_to book do
-        - if book.available
-          = book.title
-        - else
+        - if book.borrower.present?
           %del= book.title
+        - else
+          = book.title
       - if book.borrower.present?
         = "(#{book.borrower})"
       - if book.note.present?
