@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   class << self
     def search(params, path, opt={})
-      matches = joins(:person).includes(:person).order(:email)
+      matches = left_joins(:person).includes(:person).order(:email)
       matches = matches.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
       matches = matches.where("people.last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
       if params[:first_names].present?

@@ -17,7 +17,7 @@ class Vehicle < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = by_registration
-    matches = matches.includes(:resident).joins("LEFT JOIN residents ON vehicles.resident_id = residents.id")
+    matches = matches.left_joins(:resident).includes(:resident)
     if (q = params[:description]).present?
       matches = matches.where("description ILIKE ?", "%#{q}%")
     end
