@@ -38,7 +38,12 @@ module Constrainable
     private
 
     def regex_constraint(regex, cols)
-      cols.map{ |c| "#{c} ~* '#{regex}'"}.join(" OR ")
+      begin
+        "check regex".match(/#{regex}/)
+        cols.map{ |c| "#{c} ~* '#{regex}'"}.join(" OR ")
+      rescue RegexpError
+        nil
+      end
     end
 
     def like_constraint(terms, cols)
