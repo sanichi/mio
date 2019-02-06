@@ -30,7 +30,7 @@ group :development, :test do
   gem "rspec-rails", "~> 3.8"
   gem "capybara", "~> 3.8"
   gem "selenium-webdriver"
-  gem "factory_bot_rails", "~> 4.11"
+  gem "factory_bot_rails", "~> 5.0"
   gem "launchy"
   gem "faker"
   gem "database_cleaner"
