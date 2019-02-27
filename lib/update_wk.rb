@@ -10,7 +10,7 @@ def update_vocabs(wk)
   puts "current count of user vocabulary: #{wk_vocabs.size}"
 
   # Block any probelmatic kanji (e.g. the sound files returning "access denied").
-  wk_vocabs -= ["〜氏"]
+  # wk_vocabs -= ["〜氏"]
 
   # Warn about excess vocabs.
   excess_vocabs = db_vocabs - wk_vocabs
