@@ -34,7 +34,7 @@ class Vocab < ApplicationRecord
   scope :by_reading,       -> { order(Arel.sql('reading COLLATE "C"'), :level) }
   scope :by_accent,        -> { order(:accent, :pattern_no, Arel.sql('reading COLLATE "C"'), :level) }
   scope :by_pattern,       -> { order(:pattern_no, :accent, Arel.sql('reading COLLATE "C"'), :level) }
-  scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") } # postgres version 9.2 on tsukuba does not have negative lookbehind, though 9.6 on montauk does
+  scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") }
   scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
   scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
   scope :tricky_adjective, -> { where("category ILIKE '%na adjective%' AND kanji ~* 'い$'") }
@@ -225,6 +225,23 @@ class Vocab < ApplicationRecord
   # make sure all the possible colors in pattern_color (above) are listed here.
   def pattern_colors
     %w/secondary success warning info danger outline-secondary/
+  end
+
+  # In case this is one half of a verb pair.
+  def pair
+    pair = nil
+    twin = nil
+    if verb? && !suru_verb?
+      case
+      when category.match(/(?<!in)transitive/i)
+        pair = VerbPair.find_by(transitive_id: id)
+        twin = pair&.intransitive
+      when category.match(/intransitive/i)
+        pair = VerbPair.find_by(intransitive_id: id)
+        twin = pair&.transitive
+      end
+    end
+    [pair, twin]
   end
 
   private

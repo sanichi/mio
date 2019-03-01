@@ -26,6 +26,15 @@
         %tr
           %th= t("vocab.level")
           %td= @vocab.level
+        - pair, twin = @vocab.pair
+        - if pair && twin
+          %tr
+            %th= t("verb_pair.twin")
+            %td
+              = link_to twin.kanji, twin
+              = precede("(") do
+                = succeed(")") do
+                  = link_to t("verb_pair.groups")[pair.group], verb_pairs_path(group: pair.group)
         %tr
           %th= t("vocab.burned")
           %td= t("symbol.#{@vocab.burned ? 'tick' : 'cross'}")
