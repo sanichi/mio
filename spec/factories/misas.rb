@@ -7,6 +7,6 @@ FactoryBot.define do
     note      { Faker::Lorem.paragraph(3) }
     published { Faker::Date.between(5.years.ago, Date.today) }
     short     { Faker::Blockchain::Bitcoin.address.truncate(11, omission: "") }
-    title     { Faker::Lorem.paragraph.truncate(Note::MAX_TITLE) }
+    title     { Faker::Lorem.paragraph.truncate(Misa::MAX_TITLE) }
   end
 end

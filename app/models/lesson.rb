@@ -5,6 +5,7 @@ class Lesson < ApplicationRecord
 
   MAX_CHAPTER = 60
   MAX_CHAPTER_NO = 127
+  MAX_COMPLETE = 100
   MAX_LINK = 200
   MAX_SECTION = 50
   MAX_SERIES = 50
@@ -13,7 +14,7 @@ class Lesson < ApplicationRecord
 
   validates :chapter, presence: true, length: { maximum: MAX_CHAPTER }, uniqueness: { scope: [:section, :series] }
   validates :chapter_no, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_CHAPTER_NO }, uniqueness: { scope: [:section, :series] }
-  validates :complete, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+  validates :complete, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_COMPLETE }
   validates :link, presence: true, length: { maximum: MAX_LINK }, format: { with: /\Ahttps?:\/\/\S+\z/ }
   validates :section, presence: true, length: { maximum: MAX_SECTION }
   validates :series, presence: true, length: { maximum: MAX_SERIES }

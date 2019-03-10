@@ -38,10 +38,8 @@ describe Misa do
       expect(m.short).to eq data.short
       expect(m.title).to eq data.title
     end
-  end
 
-  context "failure" do
-    it "no title" do
+    it "failure" do
       click_link t(:misa_new)
       select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
@@ -61,7 +59,7 @@ describe Misa do
   end
 
   context "edit" do
-    it "change title" do
+    it "success" do
       visit misa_path(misa)
       click_link t(:edit)
 
