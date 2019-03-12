@@ -10,7 +10,7 @@
       .nav-item
         = link_to t("home"), blogs_path, class: "nav-link"
 
-    - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Radical, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa].map{ |c| can?(:read, c) }.any?
+    - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Radical, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Note, Misa, Problem].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("vocab.japanese"), id: "navbarJapaneseMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
@@ -22,6 +22,7 @@
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
           = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
           = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("vocab.note.notes"), path: notes_path
+          = render "layouts/dropdown_item", cond: can?(:read, Problem), text: t("problem.problems"), path: problems_path
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.words"), path: similar_words_path
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
           = render "layouts/dropdown_item", cond: can?(:read, VocabTest), text: t("vocab.test.tests"), path: vocab_tests_path

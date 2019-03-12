@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   authorize_resource
-  before_action :find_book, only: [ :show, :edit, :update, :destroy]
+  before_action :find_book, only: [:show, :edit, :update, :destroy]
 
   def index
     @books = Book.search(params, books_path, per_page: 20)

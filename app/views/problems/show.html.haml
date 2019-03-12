@@ -1,0 +1,12 @@
+= render "utils/title", text: @problem.description
+
+.card
+  .card-header= @problem.description
+  .card-body= @problem.note_html
+
+.text-center.mt-3
+  = link_to t("problem.problems"), problems_path, class: "btn btn-success"
+  - if can?(:edit, Problem)
+    = link_to t("edit"), edit_problem_path(@problem), class: "btn btn-info"
+  - if can?(:delete, Problem)
+    = link_to t("delete"), @problem, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

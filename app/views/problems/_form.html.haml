@@ -1,0 +1,12 @@
+= form_for problem, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: problem, col: "md", pad: 2, width: 3}
+  = render "utils/select_for", shared.merge(param: :level, text: t("problem.level"), menu: problem_level_menu(problem.level, new_record: problem.new_record?), width: 2)
+  = render "utils/select_for", shared.merge(param: :category, text: t("problem.category"), menu: problem_category_menu(problem.category, new_record: problem.new_record?))
+  = render "utils/select_for", shared.merge(param: :subcategory, text: t("problem.subcategory"), menu: problem_subcategory_menu(problem.subcategory, new_record: problem.new_record?))
+  = render "utils/text_area_for", shared.merge(param: :note, text: t("problem.note"), width: 10, rows: 15)
+  .row
+    .offset-md-2.col-md-10
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), problem.new_record?? problems_path : problem, class: "btn btn-secondary"
+      - unless problem.new_record?
+        = link_to t("delete"), problem, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

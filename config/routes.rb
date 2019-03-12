@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   end
   resources :pictures
   resources :positions
+  resources :problems
   resources :radicals, only: [:index]
   resources :readings, only: [:index, :show]
   resources :residents

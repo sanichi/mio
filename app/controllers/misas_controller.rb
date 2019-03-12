@@ -1,6 +1,6 @@
 class MisasController < ApplicationController
   authorize_resource
-  before_action :find_misa, only: [ :show, :edit, :update, :destroy]
+  before_action :find_misa, only: [:show, :edit, :update, :destroy]
 
   def index
     @misas = Misa.search(params, misas_path, per_page: 20)

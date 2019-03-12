@@ -1,0 +1,33 @@
+en:
+  problem:
+    category: Category
+    description: Description
+    edit: Edit Problem
+    level: Level
+    new: New Problem
+    note: Note
+    problems: Test Problems
+    subcategory: Subcategory
+    levels:
+      - N1
+      - N2
+      - N3
+      - N4
+      - N5
+    categories:
+      - Language Knowledge (Characters, Vocabulary)
+      - Language Knowledge (Grammar)
+      - Reading Comprehension
+      - Listening Comprehension
+    subcategories:
+      - Kanji Reading
+      - Written Expressions
+      - Contextual Understanding
+      - Equivalent Meaning
+      - Grammatical Form
+      - Sentence Construction
+      - Written Grammar
+      - Short Sentence Understanding
+      - Medium Piece Understanding
+      - Information Retrieval
+      - Subject Comprehension

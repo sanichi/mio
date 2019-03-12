@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
   authorize_resource
-  before_action :find_lesson, only: [ :show, :edit, :update, :destroy]
+  before_action :find_lesson, only: [:show, :edit, :update, :destroy]
 
   def index
     @lessons = Lesson.search(params, lessons_path, per_page: 20)
