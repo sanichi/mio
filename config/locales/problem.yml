@@ -6,7 +6,7 @@ en:
     level: Level
     new: New Problem
     note: Note
-    problems: Test Problems
+    problems: Problems
     subcategory: Subcategory
     levels:
       - N1
@@ -31,3 +31,6 @@ en:
       - Medium Piece Understanding
       - Information Retrieval
       - Subject Comprehension
+    icons:
+      last: ◀︎
+      next: ▶︎

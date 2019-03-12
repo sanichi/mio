@@ -19,6 +19,13 @@ class ProblemsController < ApplicationController
     end
   end
 
+  def show
+    all = Problem.natural_order.to_a
+    ind = all.find_index(@problem)
+    @last = all[ind - 1] if ind && ind > 0
+    @next = all[ind + 1] if ind && ind < all.size
+  end
+
   def update
     if @problem.update(strong_params)
       redirect_to @problem

@@ -1,7 +1,13 @@
 = render "utils/title", text: @problem.description
 
 .card
-  .card-header= @problem.description
+  .card-header
+    = @problem.description
+    .float-right
+      - if @last
+        = link_to t("problem.icons.last"), @last
+      - if @next
+        = link_to t("problem.icons.next"), @next
   .card-body= @problem.note_html
 
 .text-center.mt-3

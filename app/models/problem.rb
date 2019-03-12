@@ -10,11 +10,13 @@ class Problem < ApplicationRecord
 
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_LEVEL }
   validates :category, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_CATEGORY }
-  validates :subcategory, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_SUBCATEGORY }
+  validates :subcategory, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_SUBCATEGORY }, uniqueness: { scope: [:level, :category] }
   validates :note, presence: true
 
+  scope :natural_order, -> { order(:level, :category, :subcategory) }
+
   def self.search(params, path, opt={})
-    matches = order(:level, :category, :subcategory)
+    matches = natural_order
     matches = filter(matches, params, :level, MAX_LEVEL)
     matches = filter(matches, params, :category, MAX_CATEGORY)
     matches = filter(matches, params, :subcategory, MAX_SUBCATEGORY)
