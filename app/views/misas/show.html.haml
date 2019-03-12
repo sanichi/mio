@@ -20,5 +20,3 @@
   = link_to t("misa.misas"), misas_path, class: "btn btn-success"
   - if can?(:edit, Misa)
     = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-info"
-  - if can?(:delete, Misa)
-    = link_to t("delete"), @misa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
