@@ -8,6 +8,10 @@
     - if @picture.portrait
       %div{title: t("picture.portrait"), class: "text-center"}= "☐"
 
+.row.mt-3
+  .offset-2.col-8.text-center
+    = image_tag @picture.image.variant(Picture::STYLE[:tn])
+
 - people = @picture.people.by_last_name
 - if @picture.description.present? || !people.empty?
   .card.mt-3

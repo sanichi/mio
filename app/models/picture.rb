@@ -55,10 +55,12 @@ class Picture < ApplicationRecord
     Rails.application.routes.url_helpers.rails_representation_url(image.variant(STYLE[:tn]), only_path: true)
   end
 
-  # This is better. Based on: https://stackoverflow.com/questions/50340043/get-path-to-activestorage-file-on-disk
+  # This is faster. Based on: https://stackoverflow.com/questions/50340043/get-path-to-activestorage-file-on-disk.
+  # However, it doesn't create the variant file - so it's necessary to use a more standard path to do the creation.
+  # That's why the thumbnail variant is now included in show.html.
   def direct_thumbnail_path
     root = Rails.root + "public"
-    path = Pathname.new(ActiveStorage::Blob.service.send(:path_for, image.variant(Picture::STYLE[:tn]).key))
+    path = Pathname.new(ActiveStorage::Blob.service.send(:path_for, image.variant(STYLE[:tn]).key))
     "/#{path.relative_path_from(root)}"
   end
 
