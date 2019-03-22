@@ -24,6 +24,8 @@ class ProblemsController < ApplicationController
     ind = all.find_index(@problem)
     @last = all[ind - 1] if ind && ind > 0
     @next = all[ind + 1] if ind && ind < all.size
+    @question = Question.find_by(id: params[:question_id]&.to_i)
+    @question = @problem.questions.first unless @question && @question.problem.id == @problem.id
   end
 
   def update

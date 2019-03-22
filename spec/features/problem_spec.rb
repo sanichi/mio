@@ -45,7 +45,7 @@ describe Problem do
   context "edit" do
     it "success" do
       visit problem_path(problem)
-      click_link t(:edit)
+      click_link t(:problem_icons_edit)
 
       expect(page).to have_title t(:problem_edit)
       select I18n.t("problem.subcategories", locale: "jp")[data.subcategory], from: t(:problem_subcategory)
@@ -65,7 +65,7 @@ describe Problem do
       expect(Problem.count).to eq 1
 
       visit problem_path(problem)
-      click_link t(:edit)
+      click_link t(:problem_icons_edit)
       click_link t(:delete)
 
       expect(page).to have_title t(:problem_problems)

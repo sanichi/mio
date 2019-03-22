@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_151358) do
+ActiveRecord::Schema.define(version: 2019_03_22_114727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -367,6 +367,20 @@ ActiveRecord::Schema.define(version: 2019_03_11_151358) do
     t.integer "subcategory", limit: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string "question", limit: 255
+    t.string "answer1", limit: 100
+    t.string "answer2", limit: 100
+    t.string "answer3", limit: 100
+    t.string "answer4", limit: 100
+    t.integer "solution", limit: 2
+    t.text "note"
+    t.integer "problem_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["problem_id"], name: "index_questions_on_problem_id"
   end
 
   create_table "radicals", force: :cascade do |t|

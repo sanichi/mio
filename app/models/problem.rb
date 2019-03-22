@@ -6,6 +6,8 @@ class Problem < ApplicationRecord
   MAX_CATEGORY = I18n.t("problem.categories").size - 1
   MAX_SUBCATEGORY = I18n.t("problem.subcategories").size - 1
 
+  has_many :questions, dependent: :destroy
+
   before_validation :normalize_attributes
 
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_LEVEL }

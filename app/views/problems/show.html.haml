@@ -4,13 +4,14 @@
   .card-header
     = @problem.description
     .float-right
-      - if @last
-        = link_to t("problem.icons.last"), @last
-      - if @next
-        = link_to t("problem.icons.next"), @next
+      = link_to_if @last, t("problem.icons.last"), @last
+      = link_to_if @next, t("problem.icons.next"), @next
+      - if can?(:create, Question)
+        = link_to t("question.icons.new"), new_question_path(problem_id: @problem.id), class: "badge badge-info"
+      - if can?(:edit, @problem)
+        = link_to t("problem.icons.edit"), edit_problem_path(@problem), class: "badge badge-info"
   .card-body= @problem.note_html
 
-.text-center.mt-3
-  = link_to t("problem.problems"), problems_path, class: "btn btn-success"
-  - if can?(:edit, Problem)
-    = link_to t("edit"), edit_problem_path(@problem), class: "btn btn-info"
+#question.mt-3
+  - if @question
+    = render "questions/show", question: @question

@@ -1,0 +1,21 @@
+- last = question.last
+- nect = question.next
+- count = question.count
+- number = question.number
+
+.card
+  .card-header
+    = question.question
+    .float-right
+      = link_to_if last, t("question.icons.last"), last, remote: true
+      = link_to_if nect, t("problem.icons.next"), nect, remote: true
+      = "#{number} of #{count}"
+      - if can?(:edit, @problem)
+        = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
+  %ul.list-group.list-group-flush
+    %li.list-group-item= question.answer1
+    %li.list-group-item= question.answer2
+    %li.list-group-item= question.answer3
+    - if question.answer4.present?
+      %li.list-group-item= question.answer4
+  .card-body= question.note_html

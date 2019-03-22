@@ -28,4 +28,10 @@ module ProblemHelper
     end
     options_for_select(opts, selected)
   end
+
+  def question_solution_menu(selected, new_record)
+    opts = [1, 2, 3, 4].map { |s| [s.to_s, s] }
+    opts.unshift [t("select"), ""] if new_record
+    options_for_select(opts, selected)
+  end
 end
