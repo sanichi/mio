@@ -34,4 +34,9 @@ module ProblemHelper
     opts.unshift [t("select"), ""] if new_record
     options_for_select(opts, selected)
   end
+
+  def problem_menu(selected)
+    opts = Problem.natural_order.all.map { |p| [p.description, p.id] }
+    options_for_select(opts, selected)
+  end
 end
