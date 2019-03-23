@@ -1,5 +1,8 @@
 = render "utils/title", text: @problem.description
 
+- content_for :javascript do
+  = render "questions/answers.js"
+
 .card
   .card-header
     = @problem.description

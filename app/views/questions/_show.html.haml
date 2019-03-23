@@ -13,9 +13,9 @@
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
   %ul.list-group.list-group-flush
-    %li.list-group-item= question.answer1
-    %li.list-group-item= question.answer2
-    %li.list-group-item= question.answer3
+    = render "questions/answer", question: question, number: 1
+    = render "questions/answer", question: question, number: 2
+    = render "questions/answer", question: question, number: 3
     - if question.answer4.present?
-      %li.list-group-item= question.answer4
+      = render "questions/answer", question: question, number: 4
   .card-body= question.note_html
