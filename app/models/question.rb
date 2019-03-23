@@ -42,13 +42,12 @@ class Question < ApplicationRecord
   private
 
   def normalize_attributes
-    question&.squish!
-    answer1&.squish!
-    answer2&.squish!
-    answer3&.squish!
-    answer4&.squish!
-    note&.lstrip!
-    note&.rstrip!
+    question&.strip!
+    answer1&.strip!
+    answer2&.strip!
+    answer3&.strip!
+    answer4&.strip!
+    note&.strip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
   end
 
