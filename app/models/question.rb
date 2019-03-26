@@ -35,10 +35,6 @@ class Question < ApplicationRecord
     problem.questions.where("id > ?", id).first
   end
 
-  def url_for_problem
-    ActionDispatch::Routing::UrlFor.url_for(controller: "problems", action: "show", id: problem.id, question_id: id, only_path: true)
-  end
-
   private
 
   def normalize_attributes

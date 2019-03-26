@@ -39,6 +39,6 @@ class QuestionsController < ApplicationController
   end
 
   def url_for_problem(question)
-    url_for(controller: "problems", action: "show", id: question.problem.id, question_id: question.id, only_path: true)
+    url_for(controller: "problems", action: "show", id: question.problem.id, question_id: question.id)
   end
 end

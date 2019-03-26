@@ -11,6 +11,6 @@
   .row
     .offset-md-2.col-md-10
       = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), question.problem, class: "btn btn-secondary"
+      = link_to t("cancel"), { controller: "problems", action: "show", id: question.problem.id, question_id: question.id }, class: "btn btn-secondary"
       - unless question.new_record?
         = link_to t("delete"), question, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
