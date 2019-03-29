@@ -16,8 +16,6 @@ class Picture < ApplicationRecord
 
   has_and_belongs_to_many :people
 
-  before_destroy :cleanup_attachment
-
   has_one_attached :image, dependent: :purge
 
   before_validation :normalize_attributes
@@ -117,9 +115,5 @@ class Picture < ApplicationRecord
 
   def check_people_realm
     errors.add(:realm, "not all people from this realm") unless people.all? { |p| p.realm == realm }
-  end
-
-  def cleanup_attachment
-    puts "cleanup attachment"
   end
 end

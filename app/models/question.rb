@@ -1,10 +1,15 @@
 class Question < ApplicationRecord
   include Remarkable
 
-  MAX_QUESTION = 255
   MAX_ANSWER = 100
+  MAX_QUESTION = 255
+  MAX_PIC_SIZE = 1.megabyte
+  PIC_TYPES = "jpe?g|gif|png"
+
 
   belongs_to :problem
+
+  has_one_attached :picture, dependent: :purge
 
   before_validation :normalize_attributes
 
@@ -12,6 +17,7 @@ class Question < ApplicationRecord
   validates :answer1, :answer2, :answer3, presence: true, length: { maximum: MAX_ANSWER }
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
   validate  :solution_cant_be_4_if_optional_answer4_is_blank
+  validate  :check_picture
 
   default_scope { order(:id) }
 
@@ -50,6 +56,14 @@ class Question < ApplicationRecord
   def solution_cant_be_4_if_optional_answer4_is_blank
     if solution == 4 && answer4.blank?
       errors.add(:solution, "solution corresponds to blank answer 4")
+    end
+  end
+
+  def check_picture
+    if picture.attached?
+      errors.add(:picture, "invalid content type (#{picture.content_type})") unless picture.content_type =~ /\Aimage\/(#{PIC_TYPES})\z/
+      errors.add(:picture, "invalid filename (#{picture.filename})")         unless picture.filename.to_s =~ /\.(#{PIC_TYPES})\z/i
+      errors.add(:picture, "too large an image size (#{picture.byte_size})") unless picture.byte_size < MAX_PIC_SIZE
     end
   end
 end

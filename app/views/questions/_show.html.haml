@@ -12,6 +12,10 @@
       = "#{number} of #{count}"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
+  - if @question.picture.attached?
+    .card-body
+      .offset-md-1.col-md-10.offset-lg-2.col-lg-8.text-center
+        = image_tag @question.picture, class: "img-fluid"
   %ul.list-group.list-group-flush
     = render "questions/answer", question: question, number: 1
     = render "questions/answer", question: question, number: 2
