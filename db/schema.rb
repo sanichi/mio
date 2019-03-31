@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_29_114902) do
+ActiveRecord::Schema.define(version: 2019_03_31_122034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -377,6 +377,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_114902) do
     t.integer "problem_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "audio", limit: 20
     t.index ["problem_id"], name: "index_questions_on_problem_id"
   end
 

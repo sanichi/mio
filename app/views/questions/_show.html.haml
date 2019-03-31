@@ -16,6 +16,10 @@
     .card-body
       .offset-md-1.col-md-10.offset-lg-2.col-lg-8.text-center
         = image_tag @question.picture, class: "img-fluid"
+  - if @question.audio.present?
+    .card-body.text-center
+      %audio{controls: "true"}
+        %source{src: question.audio_path, type: question.audio_type}
   %ul.list-group.list-group-flush
     = render "questions/answer", question: question, number: 1
     = render "questions/answer", question: question, number: 2

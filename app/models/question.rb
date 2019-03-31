@@ -2,10 +2,11 @@ class Question < ApplicationRecord
   include Remarkable
 
   MAX_ANSWER = 100
+  MAX_AUDIO = 20
   MAX_QUESTION = 255
   MAX_PIC_SIZE = 1.megabyte
   PIC_TYPES = "jpe?g|gif|png"
-
+  AUD_TYPES = "mp3|ogg|m4a|aiff"
 
   belongs_to :problem
 
@@ -16,6 +17,7 @@ class Question < ApplicationRecord
   validates :question, presence: true, length: { maximum: MAX_QUESTION }
   validates :answer1, :answer2, :answer3, presence: true, length: { maximum: MAX_ANSWER }
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(#{AUD_TYPES})\z/ }, allow_nil: true
   validate  :solution_cant_be_4_if_optional_answer4_is_blank
   validate  :check_picture
 
@@ -41,6 +43,16 @@ class Question < ApplicationRecord
     problem.questions.where("id > ?", id).first
   end
 
+  def audio_path
+    return nil unless audio.present?
+    "/system/audio/jlpt/n#{5 - problem.level}/#{audio}"
+  end
+
+  def audio_type
+    return nil unless audio.present?
+    "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : (audio =~ /\.m4a\z/ ? 'mp4' : (audio =~ /\.ogg\z/ ? 'ogg' : 'aiff'))}"
+  end
+
   private
 
   def normalize_attributes
@@ -49,6 +61,8 @@ class Question < ApplicationRecord
     answer2&.strip!
     answer3&.strip!
     answer4&.strip!
+    audio&.squish!
+    self.audio = nil if audio.blank?
     note&.strip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
   end

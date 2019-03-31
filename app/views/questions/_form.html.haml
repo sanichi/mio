@@ -8,6 +8,7 @@
   = render "utils/text_field_for", shared.merge(param: :answer4, text: t("question.answer4"))
   = render "utils/select_for", shared.merge(param: :solution, text: t("question.solution"), menu: question_solution_menu(question.solution, question.new_record?), width: 3)
   = render "utils/file_field_for", shared.merge(param: :picture, text: t("question.picture"))
+  = render "utils/text_field_for", shared.merge(param: :audio, text: t("question.audio"), width: 4)
   = render "utils/text_area_for", shared.merge(param: :note, text: t("question.note"), width: 10, rows: 15)
   .row
     .offset-md-2.col-md-10
