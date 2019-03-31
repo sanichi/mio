@@ -5,22 +5,26 @@
 
 .card
   .card-header
-    = question.question
+    - if question.question.present?
+      = question.question
+    - elsif question.audio.present?
+      %audio{controls: "true"}
+        %source{src: question.audio_path, type: question.audio_type}
     .float-right
       = link_to_if last, t("question.icons.last"), last, remote: true
       = link_to_if nect, t("problem.icons.next"), nect, remote: true
       = "#{number} of #{count}"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
-  - if @question.picture.attached?
+  - if question.picture.attached?
     .card-body
       .offset-md-1.col-md-10.offset-lg-2.col-lg-8.text-center
         = image_tag @question.picture, class: "img-fluid"
-  - if @question.audio.present?
+  - if question.audio.present? && question.question.present?
     .card-body.text-center
       %audio{controls: "true"}
         %source{src: question.audio_path, type: question.audio_type}
-  - if @question.any_answers?
+  - if question.any_answers?
     %ul.list-group.list-group-flush
       = render "questions/answer", question: question, number: 1
       = render "questions/answer", question: question, number: 2

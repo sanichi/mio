@@ -14,10 +14,11 @@ class Question < ApplicationRecord
 
   before_validation :normalize_attributes
 
-  validates :question, presence: true, length: { maximum: MAX_QUESTION }
-  validates :answer1, :answer2, :answer3, :answer4, length: { maximum: MAX_ANSWER }, allow_nil: true
+  validates :question, length: { minimum: 1, maximum: MAX_QUESTION }, allow_nil: true
+  validates :answer1, :answer2, :answer3, :answer4, length: { minimum: 1, maximum: MAX_ANSWER }, allow_nil: true
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(#{AUD_TYPES})\z/ }, allow_nil: true
+  validate  :must_either_be_a_question_or_an_audio
   validate  :must_either_be_answers_or_a_picture
   validate  :check_picture
 
@@ -45,7 +46,7 @@ class Question < ApplicationRecord
 
   def audio_path
     return nil unless audio.present?
-    "/system/audio/jlpt/n#{5 - problem.level}/#{audio}"
+    "/system/audio/jlpt/n#{1 + problem.level}/#{audio}"
   end
 
   def audio_type
@@ -66,6 +67,7 @@ class Question < ApplicationRecord
     answer3&.strip!
     answer4&.strip!
     audio&.squish!
+    self.question = nil if question.blank?
     self.answer1 = nil if answer1.blank?
     self.answer2 = nil if answer2.blank?
     self.answer3 = nil if answer3.blank?
@@ -81,6 +83,10 @@ class Question < ApplicationRecord
       errors.add(:picture, "invalid filename (#{picture.filename})")         unless picture.filename.to_s =~ /\.(#{PIC_TYPES})\z/i
       errors.add(:picture, "too large an image size (#{picture.byte_size})") unless picture.byte_size < MAX_PIC_SIZE
     end
+  end
+
+  def must_either_be_a_question_or_an_audio
+    errors.add(:question, "no question or audio") unless question.present? || audio.present?
   end
 
   def must_either_be_answers_or_a_picture
