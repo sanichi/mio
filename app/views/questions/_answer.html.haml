@@ -1,1 +1,6 @@
-%li.list-group-item{class: number == question.solution ? "correct-answer" : ""}= question.send("answer#{number}")
+- answer = question.send("answer#{number}")
+- if answer.present?
+  %li.list-group-item{class: number == question.solution ? "correct-answer" : ""}
+    = succeed(":") do
+      = number
+    = answer

@@ -20,10 +20,10 @@
     .card-body.text-center
       %audio{controls: "true"}
         %source{src: question.audio_path, type: question.audio_type}
-  %ul.list-group.list-group-flush
-    = render "questions/answer", question: question, number: 1
-    = render "questions/answer", question: question, number: 2
-    = render "questions/answer", question: question, number: 3
-    - if question.answer4.present?
+  - if @question.any_answers?
+    %ul.list-group.list-group-flush
+      = render "questions/answer", question: question, number: 1
+      = render "questions/answer", question: question, number: 2
+      = render "questions/answer", question: question, number: 3
       = render "questions/answer", question: question, number: 4
   .card-body= question.note_html

@@ -15,10 +15,10 @@ class Question < ApplicationRecord
   before_validation :normalize_attributes
 
   validates :question, presence: true, length: { maximum: MAX_QUESTION }
-  validates :answer1, :answer2, :answer3, presence: true, length: { maximum: MAX_ANSWER }
+  validates :answer1, :answer2, :answer3, :answer4, length: { maximum: MAX_ANSWER }, allow_nil: true
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(#{AUD_TYPES})\z/ }, allow_nil: true
-  validate  :solution_cant_be_4_if_optional_answer4_is_blank
+  validate  :must_either_be_answers_or_a_picture
   validate  :check_picture
 
   default_scope { order(:id) }
@@ -53,6 +53,10 @@ class Question < ApplicationRecord
     "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : (audio =~ /\.m4a\z/ ? 'mp4' : (audio =~ /\.ogg\z/ ? 'ogg' : 'aiff'))}"
   end
 
+  def any_answers?
+    answer1 || answer2 || answer3 || answer4
+  end
+
   private
 
   def normalize_attributes
@@ -62,15 +66,13 @@ class Question < ApplicationRecord
     answer3&.strip!
     answer4&.strip!
     audio&.squish!
+    self.answer1 = nil if answer1.blank?
+    self.answer2 = nil if answer2.blank?
+    self.answer3 = nil if answer3.blank?
+    self.answer4 = nil if answer4.blank?
     self.audio = nil if audio.blank?
     note&.strip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
-  end
-
-  def solution_cant_be_4_if_optional_answer4_is_blank
-    if solution == 4 && answer4.blank?
-      errors.add(:solution, "solution corresponds to blank answer 4")
-    end
   end
 
   def check_picture
@@ -79,5 +81,9 @@ class Question < ApplicationRecord
       errors.add(:picture, "invalid filename (#{picture.filename})")         unless picture.filename.to_s =~ /\.(#{PIC_TYPES})\z/i
       errors.add(:picture, "too large an image size (#{picture.byte_size})") unless picture.byte_size < MAX_PIC_SIZE
     end
+  end
+
+  def must_either_be_answers_or_a_picture
+    errors.add(:answer1, "no answers or picture") unless any_answers? || picture.attached?
   end
 end
