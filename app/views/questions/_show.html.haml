@@ -14,6 +14,7 @@
       = link_to_if last, t("question.icons.last"), last, remote: true
       = link_to_if nect, t("problem.icons.next"), nect, remote: true
       = "#{number} of #{count}"
+      #solution.badge.badge-info{"data-solution" => question.solution}= "?"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
   - if question.picture.attached?
