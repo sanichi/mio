@@ -13,7 +13,12 @@
         = link_to t("question.icons.new"), new_question_path(problem_id: @problem.id), class: "badge badge-info"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_problem_path(@problem), class: "badge badge-info"
-  .card-body= @problem.note_html
+  - if @problem.audio.present?
+    .card-body.text-center
+      %audio{controls: "true"}
+        %source{src: @problem.audio_path, type: @problem.audio_type}
+  - if @problem.note.present?
+    .card-body= @problem.note_html
 
 #question.mt-3
   - if @question

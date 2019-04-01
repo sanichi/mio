@@ -31,4 +31,5 @@
       = render "questions/answer", question: question, number: 2
       = render "questions/answer", question: question, number: 3
       = render "questions/answer", question: question, number: 4
-  .card-body= question.note_html
+  - if question.note.present?
+    .card-body= question.note_html

@@ -1,5 +1,6 @@
 en:
   problem:
+    audio: Audio
     category: Category
     description: Description
     edit: Edit Problem

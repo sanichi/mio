@@ -6,7 +6,6 @@ class Question < ApplicationRecord
   MAX_QUESTION = 255
   MAX_PIC_SIZE = 1.megabyte
   PIC_TYPES = "jpe?g|gif|png"
-  AUD_TYPES = "mp3|ogg|m4a|aiff"
 
   belongs_to :problem
 
@@ -17,10 +16,11 @@ class Question < ApplicationRecord
   validates :question, length: { minimum: 1, maximum: MAX_QUESTION }, allow_nil: true
   validates :answer1, :answer2, :answer3, :answer4, length: { minimum: 1, maximum: MAX_ANSWER }, allow_nil: true
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
-  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(#{AUD_TYPES})\z/ }, allow_nil: true
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, allow_nil: true
   validate  :must_either_be_a_question_or_an_audio
   validate  :must_either_be_answers_or_a_picture
   validate  :check_picture
+  validate  :check_audio
 
   default_scope { order(:id) }
 
@@ -44,14 +44,15 @@ class Question < ApplicationRecord
     problem.questions.where("id > ?", id).first
   end
 
-  def audio_path
+  def audio_path(abs: false)
     return nil unless audio.present?
-    "/system/audio/jlpt/n#{1 + problem.level}/#{audio}"
+    path = "system/audio/jlpt/n#{1 + problem.level}/#{audio}"
+    abs ? (Rails.root + "public" + path).to_s : "/#{path}"
   end
 
   def audio_type
     return nil unless audio.present?
-    "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : (audio =~ /\.m4a\z/ ? 'mp4' : (audio =~ /\.ogg\z/ ? 'ogg' : 'aiff'))}"
+    "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : 'mp4'}"
   end
 
   def any_answers?
@@ -82,6 +83,12 @@ class Question < ApplicationRecord
       errors.add(:picture, "invalid content type (#{picture.content_type})") unless picture.content_type =~ /\Aimage\/(#{PIC_TYPES})\z/
       errors.add(:picture, "invalid filename (#{picture.filename})")         unless picture.filename.to_s =~ /\.(#{PIC_TYPES})\z/i
       errors.add(:picture, "too large an image size (#{picture.byte_size})") unless picture.byte_size < MAX_PIC_SIZE
+    end
+  end
+
+  def check_audio
+    if audio.present?
+      errors.add(:audio, "file does not exist") unless File.file?(audio_path(abs: true))
     end
   end
 

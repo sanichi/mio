@@ -2,6 +2,7 @@ class Problem < ApplicationRecord
   include Pageable
   include Remarkable
 
+  MAX_AUDIO = 20
   MAX_LEVEL = I18n.t("problem.levels").size - 1
   MAX_CATEGORY = I18n.t("problem.categories").size - 1
   MAX_SUBCATEGORY = I18n.t("problem.subcategories").size - 1
@@ -13,7 +14,9 @@ class Problem < ApplicationRecord
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_LEVEL }
   validates :category, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_CATEGORY }
   validates :subcategory, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_SUBCATEGORY }, uniqueness: { scope: [:level, :category] }
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, allow_nil: true
   validates :note, presence: true
+  validate  :check_audio
 
   scope :natural_order, -> { order(:level, :category, :subcategory) }
 
@@ -36,12 +39,31 @@ class Problem < ApplicationRecord
     ("%s %s [%s]" % [lev, cat, sub]).html_safe
   end
 
+  def audio_path(abs: false)
+    return nil unless audio.present?
+    path = "system/audio/jlpt/n#{1 + level}/#{audio}"
+    abs ? (Rails.root + "public" + path).to_s : "/#{path}"
+  end
+
+  def audio_type
+    return nil unless audio.present?
+    "audio/#{audio =~ /\.mp3\z/ ? 'mpeg' : 'mp4'}"
+  end
+
   private
 
   def normalize_attributes
+    audio&.squish!
+    self.audio = nil if audio.blank?
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+  end
+
+  def check_audio
+    if audio.present?
+      errors.add(:audio, "file does not exist") unless File.file?(audio_path(abs: true))
+    end
   end
 
   class << self

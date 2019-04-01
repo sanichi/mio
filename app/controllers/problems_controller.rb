@@ -48,6 +48,6 @@ class ProblemsController < ApplicationController
   end
 
   def strong_params
-    params.require(:problem).permit(:category, :level, :note, :subcategory)
+    params.require(:problem).permit(:audio, :category, :level, :note, :subcategory)
   end
 end
