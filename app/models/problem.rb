@@ -14,7 +14,7 @@ class Problem < ApplicationRecord
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_LEVEL }
   validates :category, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_CATEGORY }
   validates :subcategory, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_SUBCATEGORY }, uniqueness: { scope: [:level, :category] }
-  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, allow_nil: true
+  validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, uniqueness: { scope: :level }, allow_nil: true
   validates :note, presence: true
   validate  :check_audio
 
