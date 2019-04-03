@@ -18,7 +18,6 @@ class Question < ApplicationRecord
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, allow_nil: true
   validate  :must_either_be_a_question_or_an_audio
-  validate  :must_either_be_answers_or_a_picture
   validate  :check_picture
   validate  :check_audio
 
@@ -94,9 +93,5 @@ class Question < ApplicationRecord
 
   def must_either_be_a_question_or_an_audio
     errors.add(:question, "no question or audio") unless question.present? || audio.present?
-  end
-
-  def must_either_be_answers_or_a_picture
-    errors.add(:answer1, "no answers or picture") unless any_answers? || picture.attached?
   end
 end
