@@ -49,15 +49,19 @@ class Misa < ApplicationRecord
       cat = "(#{cat})"
     end
     links = nil
-    if title =~ /^#([1-9]\d*) / && category != "none"
-      num = $1.to_i
-      collection = Misa.where(category: category).order(:published).where("title ~ '^#[1-9]\d*'")
-      prev_misa = collection.where("published < ?", published).pluck(:id)
-      next_misa = collection.where("published > ?", published).pluck(:id)
-      prev_link = %Q{<a href="/misas/#{prev_misa.last}">#{I18n.t("misa.prev")}</a>} unless prev_misa.empty?
-      next_link = %Q{<a href="/misas/#{next_misa.first}">#{I18n.t("misa.next")}</a>} unless next_misa.empty?
-      if prev_link || next_link
-        links = [prev_link, next_link].compact.join(" ")
+    if title =~ /^#([1-9]\d*)/ && category != "none"
+      sorted_ids = Misa.where(category: category).where("title ~ '^#[1-9]\d*'").to_a.sort_by! do |misa|
+        misa.title =~ /^#([1-9]\d*)/ ? $1.to_i : 0
+      end.pluck(:id)
+      index = sorted_ids.index { |i| i == id }
+      if index
+        prev_id = sorted_ids[index - 1] if index > 0
+        next_id = sorted_ids[index + 1] if index < sorted_ids.size - 1
+        prev_link = %Q{<a href="/misas/#{prev_id}">#{I18n.t("misa.prev")}</a>} if prev_id
+        next_link = %Q{<a href="/misas/#{next_id}">#{I18n.t("misa.next")}</a>} if next_id
+        if prev_link || next_link
+          links = [prev_link, next_link].compact.join(" ")
+        end
       end
     end
     [links, title, cat].compact.join(" ").html_safe
