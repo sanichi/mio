@@ -20,10 +20,13 @@ class ProblemsController < ApplicationController
   end
 
   def show
-    all = Problem.natural_order.to_a
-    ind = all.find_index(@problem)
-    @last = all[ind - 1] if ind && ind > 0
-    @next = all[ind + 1] if ind && ind < all.size
+    @pids = params[:pids]
+    pids = @pids&.match(/\A\d+(_\d+)*\z/) ? @pids.scan(/\d+/).map(&:to_i) : Problem.natural_order.pluck(:id)
+    indx = pids.find_index(@problem.id)
+    @last = pids[indx - 1] if indx && indx > 0
+    @next = pids[indx + 1] if indx && indx < pids.size - 1
+    @count = pids.size
+    @number = indx.to_i + 1
     @question = Question.find_by(id: params[:question_id]&.to_i)
     @question = @problem.questions.first unless @question && @question.problem.id == @problem.id
   end

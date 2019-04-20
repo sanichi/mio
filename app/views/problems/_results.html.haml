@@ -1,5 +1,7 @@
+- pids = problems.matches.to_a.pluck(:id).join("_") if problems.count < Problem.count
+
 - problems.matches.each do |problem|
   %tr
-    %td= link_to problem.description, problem
+    %td= link_to problem.description, controller: "problems", action: "show", id: problem.id, pids: pids
     %td.text-center= problem.questions.count
 = render "utils/pagination_links", pager: problems, columns: 2

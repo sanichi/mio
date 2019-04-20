@@ -7,8 +7,9 @@
   .card-header
     = @problem.description
     .float-right
-      = link_to_if @last, t("problem.icons.last"), @last
-      = link_to_if @next, t("problem.icons.next"), @next
+      = link_to_if @last, t("problem.icons.last"), controller: "problems", action: "show", id: @last, pids: @pids
+      = link_to_if @next, t("problem.icons.next"), controller: "problems", action: "show", id: @next, pids: @pids
+      = "#{@number} of #{@count}"
       - if can?(:create, Question)
         = link_to t("question.icons.new"), new_question_path(problem_id: @problem.id), class: "badge badge-info"
       - if can?(:edit, @problem)
