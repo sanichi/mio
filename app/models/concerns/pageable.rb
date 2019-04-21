@@ -15,14 +15,14 @@ module Pageable
       else
         matches = matches[per_page * (page - 1), per_page]
       end
-      Pager.new(matches, params, path, per_page, page, count, remote)
+      Pager.new(matches, params, path, per_page, page, count, remote, opt[:extra])
     end
   end
 
   class Pager
-    attr_reader :matches, :count, :remote
+    attr_reader :matches, :count, :remote, :extra
 
-    def initialize(matches, params, path, per_page, page, count, remote)
+    def initialize(matches, params, path, per_page, page, count, remote, extra)
       @matches  = matches
       @params   = params.reject{ |key,val| %w[action controller button utf8].include?(key) }
       @path     = path
@@ -30,6 +30,7 @@ module Pageable
       @page     = page
       @count    = count
       @remote   = remote
+      @extra    = extra
     end
 
     def multi_page?

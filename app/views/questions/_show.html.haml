@@ -1,7 +1,8 @@
-- last = question.last
-- nect = question.next
-- count = question.count
-- number = question.number
+- last = question.last(qids)
+- nixt = question.next(qids)
+- count = question.count(qids)
+- number = question.number(qids)
+- qids_param = qids ? JSON.generate(qids) : nil
 
 .card
   .card-header
@@ -11,8 +12,8 @@
       %audio{controls: "true"}
         %source{src: question.audio_path, type: question.audio_type}
     .float-right
-      = link_to_if last, t("question.icons.last"), last, remote: true
-      = link_to_if nect, t("problem.icons.next"), nect, remote: true
+      = link_to_if last, t("question.icons.last"), { controller: "questions", action: "show", id: last, qids: qids_param }, remote: true
+      = link_to_if nixt, t("question.icons.next"), { controller: "questions", action: "show", id: nixt, qids: qids_param }, remote: true
       = "#{number} of #{count}"
       #solution.badge.badge-info{"data-solution" => question.solution}= "?"
       - if can?(:edit, @problem)

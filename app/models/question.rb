@@ -1,4 +1,5 @@
 class Question < ApplicationRecord
+  include Constrainable
   include Remarkable
 
   MAX_ANSWER = 100
@@ -23,24 +24,46 @@ class Question < ApplicationRecord
 
   default_scope { order(:id) }
 
+  # Non-standard - returns a ProblemQuestion data object.
+  def self.search(text)
+    pq = ProblemQuestion.new
+    matches = all
+    if sql = cross_constraint(text, [:note])
+      matches = matches.where(sql)
+    end
+    if matches.count == count
+      # return an abbreviated form (to save long parameters) when all match
+      matches.to_a.each { |question| pq.add(question.problem_id) }
+    else
+      # populate with full data (possibly leading to long parameter values)
+      matches.to_a.each { |question| pq.add(question.problem_id, question.id) }
+    end
+    pq
+  end
+
   def note_html
     to_html(note)
   end
 
-  def count
-    problem.questions.count
+  def count(qids)
+    qids&.size || problem.questions.count
   end
 
-  def number
-    problem.questions.where("id <= ?", id).count
+  def number(qids)
+    qids ||= problem.questions.map(&:id)
+    qids.index(id).to_i + 1
   end
 
-  def last
-    problem.questions.where("id < ?", id).last
+  def last(qids)
+    qids ||= problem.questions.map(&:id)
+    indx = qids.index(id)
+    indx && indx > 0 ? qids[indx - 1] : nil
   end
 
-  def next
-    problem.questions.where("id > ?", id).first
+  def next(qids)
+    qids ||= problem.questions.map(&:id)
+    indx = qids.index(id)
+    indx && indx < qids.size - 1 ? qids[indx + 1] : nil
   end
 
   def audio_path(abs: false)

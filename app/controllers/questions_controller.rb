@@ -28,6 +28,10 @@ class QuestionsController < ApplicationController
     redirect_to @question.problem
   end
 
+  def show
+    @qids = JSON.parse(params[:qids]) if params[:qids]
+  end
+
   private
 
   def find_question

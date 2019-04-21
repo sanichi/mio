@@ -7,6 +7,8 @@
   = select_tag :category, problem_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :subcategory, t("problem.subcategory"), class: "sr-only"
   = select_tag :subcategory, problem_subcategory_menu(params[:subcategory], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :question, t("question.question"), class: "sr-only"
+  = text_field_tag :question, params[:question], class: "form-control mr-1 mb-1", placeholder: t("question.question"), size: 16
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row.mt-3
