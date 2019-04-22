@@ -25,19 +25,21 @@ class Problem < ApplicationRecord
     matches = filter(matches, params, :level, MAX_LEVEL)
     matches = filter(matches, params, :category, MAX_CATEGORY)
     matches = filter(matches, params, :subcategory, MAX_SUBCATEGORY)
-    pids = matches.pluck(:id)
-    unless pids.empty?
-      pq = Question.search(params[:question])
-      if pq.available?
-        # filter the problem matches (ActiveRecord_Relation) by the question matches
-        matches = matches.where(id: pq.pids)
-        # filter the question matches (ProblemQuestion) by the problem matches
-        pq.filter(pids)
-        # store the ProblemQuestion object for later
-        opt[:extra] = pq
-      else
-        # no question matches, so squash the problem matches
-        matches = matches.none
+    if params[:question].present?
+      pids = matches.pluck(:id)
+      unless pids.empty?
+        pq = Question.search(params[:question])
+        if pq.available?
+          # filter the problem matches (ActiveRecord_Relation) by the question matches
+          matches = matches.where(id: pq.pids)
+          # filter the question matches (ProblemQuestion) by the problem matches
+          pq.filter(pids)
+          # store the ProblemQuestion object for later
+          opt[:extra] = pq
+        else
+          # no question matches, so squash the problem matches
+          matches = matches.none
+        end
       end
     end
     paginate(matches, params, path, opt)
