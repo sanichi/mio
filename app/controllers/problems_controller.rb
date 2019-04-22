@@ -28,7 +28,7 @@ class ProblemsController < ApplicationController
     @count = pids.size
     @number = indx.to_i + 1
     @qids = @pq.qids(@problem.id) || Question.where(problem_id: @problem.id).pluck(:id)
-    question_id = params[:question].to_i
+    question_id = params[:question_id].to_i
     question_id = @qids.first unless question_id > 0
     @question = Question.find_by(id: question_id)
     @question = @problem.questions.first unless @question && @question.problem.id == @problem.id
