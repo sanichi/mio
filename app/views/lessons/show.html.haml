@@ -12,9 +12,9 @@
         = @lesson.complete_percent
         = t("symbol.katakana_middle_dot")
         - if @lesson.book.present?
-          = link_to t("lesson.abbrev.book"), @lesson.book, target: "lessonbook"
+          = link_to t("lesson.abbrev.book"), @lesson.book, target: "lesson_book"
           = t("symbol.katakana_middle_dot")
-        = link_to "##{@lesson.chapter_no}", @lesson.link, terget: "lessonlink"
+        = link_to "##{@lesson.chapter_no}", @lesson.link, target: "lesson_link"
 
   - if @lesson.note.present?
     .card-body= @lesson.note_html
