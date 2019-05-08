@@ -1,5 +1,6 @@
 en:
   lesson:
+    book: Book Link
     chapter: Chapter
     chapter_no: Chapter Number
     complete: Completed (%)
@@ -13,5 +14,7 @@ en:
     section: Section
     series: Series
     target: lesson
+    target2: lesson_book
     abbrev:
       complete: "%"
+      book: 📖

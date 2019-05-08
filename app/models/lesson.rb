@@ -3,6 +3,7 @@ class Lesson < ApplicationRecord
   include Pageable
   include Remarkable
 
+  MAX_BOOK = 200
   MAX_CHAPTER = 60
   MAX_CHAPTER_NO = 127
   MAX_COMPLETE = 100
@@ -12,6 +13,7 @@ class Lesson < ApplicationRecord
 
   before_validation :normalize_attributes
 
+  validates :book, format: { with: /\Ahttps?:\/\// }, length: { maximum: MAX_BOOK }, allow_nil: true
   validates :chapter, presence: true, length: { maximum: MAX_CHAPTER }, uniqueness: { scope: [:section, :series] }
   validates :chapter_no, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_CHAPTER_NO }, uniqueness: { scope: [:section, :series] }
   validates :complete, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_COMPLETE }
@@ -53,9 +55,11 @@ class Lesson < ApplicationRecord
   private
 
   def normalize_attributes
-    chapter.squish!
-    section.squish!
-    series.squish!
+    book&.squish!
+    self.book = nil if book.blank?
+    chapter&.squish!
+    section&.squish!
+    series&.squish!
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
