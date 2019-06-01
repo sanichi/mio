@@ -9,6 +9,9 @@
         = t("symbol.katakana_middle_dot")
         = @lesson.section
         = t("symbol.katakana_middle_dot")
+        - if @lesson.eco.present?
+          = @lesson.eco
+          = t("symbol.katakana_middle_dot")
         = @lesson.complete_percent
         = t("symbol.katakana_middle_dot")
         - if @lesson.book.present?

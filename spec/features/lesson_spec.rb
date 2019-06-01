@@ -19,6 +19,7 @@ describe Lesson do
       fill_in t(:lesson_book), with: data.book
       fill_in t(:lesson_section), with: data.section
       fill_in t(:lesson_series), with: data.series
+      fill_in t(:lesson_eco), with: data.eco
       click_button t(:save)
 
       expect(page).to have_title data.chapter
@@ -33,6 +34,7 @@ describe Lesson do
       expect(l.book).to eq data.book
       expect(l.section).to eq data.section
       expect(l.series).to eq data.series
+      expect(l.eco).to eq data.eco
     end
 
     it "failure" do
@@ -43,6 +45,7 @@ describe Lesson do
       fill_in t(:lesson_book), with: data.book
       fill_in t(:lesson_section), with: data.section
       fill_in t(:lesson_series), with: data.series
+      fill_in t(:lesson_eco), with: data.eco
       click_button t(:save)
 
       expect(page).to have_title t(:lesson_new)

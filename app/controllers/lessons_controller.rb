@@ -39,6 +39,6 @@ class LessonsController < ApplicationController
   end
 
   def strong_params
-    params.require(:lesson).permit(:book, :chapter, :chapter_no, :complete, :link, :note, :section, :series)
+    params.require(:lesson).permit(:book, :chapter, :chapter_no, :complete, :eco, :link, :note, :section, :series)
   end
 end
