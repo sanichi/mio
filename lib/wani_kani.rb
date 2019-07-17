@@ -143,7 +143,7 @@ class WaniKani
   end
 
   def audio_source(link)
-    "https://cdn.wanikani.com/subjects/audio/#{link}"
+    "https://cdn.wanikani.com/audios/#{link}"
   end
 
   def audio_target(file)
