@@ -37,7 +37,7 @@ class Vocab < ApplicationRecord
   scope :transitive,       -> { where("category ILIKE '%verb%' AND category ~* '(^|[^n])transitive'") }
   scope :intransitive,     -> { where("category ILIKE '%verb%' AND category ILIKE '%intransitive%'") }
   scope :tricky_verb,      -> { where("category ILIKE '%godan%' AND reading ~* '[#{IE}]る$'") }
-  scope :tricky_adjective, -> { where("category ILIKE '%na adjective%' AND kanji ~* 'い$'") }
+  scope :tricky_adjective, -> { where("category ~* 'n[ao] adjective' AND kanji ~* 'い$'") }
 
   def self.search(params, path, opt={})
     params[:q] = params[:qv] if params[:qv].present? # for views/vocabs/_dropdown_menu
