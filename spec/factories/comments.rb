@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
     source { Faker::Name.name.truncate(Comment::MAX_SOURCE) }
-    date   { Faker::Date.backward(365) }
-    text   { Faker::Lorem.paragraph(2) }
+    date   { Faker::Date.backward(days: 365) }
+    text   { Faker::Lorem.paragraphs(number: 2) }
   end
 end

@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2.3"
+gem "rails", "~> 6.0.0"
 gem "puma", "~> 3.11"
 gem "pg"
 gem "haml-rails"
@@ -32,7 +32,7 @@ group :development, :test do
   gem "selenium-webdriver"
   gem "factory_bot_rails", "~> 5.0"
   gem "launchy"
-  gem "faker"
+  gem "faker", "~> 2.1"
   gem "database_cleaner"
   gem "byebug", platform: :mri
 end

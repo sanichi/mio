@@ -7,8 +7,8 @@ FactoryBot.define do
     half_move              { 0 }
     last_reviewed          { nil }
     move                   { 1 }
-    name                   { Faker::Lorem.words(3).join(" ") }
-    notes                  { Faker::Lorem.paragraphs(3).join(" ") }
+    name                   { Faker::Lorem.words(number: 3).join(" ") }
+    notes                  { Faker::Lorem.paragraphs(number: 3).join(" ") }
     sequence(:opening_365) { |n| ["m=#{n}", nil].sample }
 
     factory :ending do
