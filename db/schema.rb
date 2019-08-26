@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_26_094902) do
+ActiveRecord::Schema.define(version: 2019_08_26_104614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,12 +256,10 @@ ActiveRecord::Schema.define(version: 2019_08_26_094902) do
     t.boolean "japanese", default: false
     t.string "minutes", limit: 6
     t.text "note"
-    t.string "short", limit: 15
     t.string "title", limit: 150
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "lines", limit: 2, default: 0
-    t.string "long", limit: 15
     t.date "published"
     t.string "url", limit: 256
     t.string "alt", limit: 256
