@@ -12,16 +12,16 @@ describe Misa do
   context "create" do
     it "success" do
       click_link t(:misa_new)
+      if data.alt
+        fill_in t(:misa_alt), with: data.alt
+      end
       select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
-      if data.long
-        fill_in t(:misa_long), with: data.long
-      end
       fill_in t(:misa_minutes), with: data.minutes
       fill_in t(:misa_note), with: data.note
       fill_in t(:misa_published), with: data.published
-      fill_in t(:misa_short), with: data.short
       fill_in t(:misa_title), with: data.title
+      fill_in t(:misa_url), with: data.url
       click_button t(:save)
 
       expect(page).to have_title t(:misa_misa)
@@ -29,27 +29,27 @@ describe Misa do
       expect(Misa.count).to eq 2
       m = Misa.last
 
+      expect(m.alt).to eq data.alt
       expect(m.category).to eq data.category
       expect(m.japanese).to eq data.japanese
-      expect(m.long).to eq data.long
       expect(m.minutes).to eq data.minutes
       expect(m.note).to eq data.note
       expect(m.published).to eq data.published
-      expect(m.short).to eq data.short
       expect(m.title).to eq data.title
+      expect(m.url).to eq data.url
     end
 
     it "failure" do
       click_link t(:misa_new)
+      if data.alt
+        fill_in t(:misa_alt), with: data.alt
+      end
       select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
-      if data.long
-        fill_in t(:misa_long), with: data.long
-      end
       fill_in t(:misa_minutes), with: data.minutes
       fill_in t(:misa_note), with: data.note
       fill_in t(:misa_published), with: data.published
-      fill_in t(:misa_short), with: data.short
+      fill_in t(:misa_url), with: data.url
       click_button t(:save)
 
       expect(page).to have_title t(:misa_new)

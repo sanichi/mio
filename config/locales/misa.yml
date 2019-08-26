@@ -1,9 +1,9 @@
 en:
   misa:
+    alt: Alternative URL
     category: Series
     edit: Edit Lesson
     japanese: 日本語
-    long: Long Video Code
     minutes: Minutes
     misa: Ammo Lesson
     misas: Ammo
@@ -12,16 +12,16 @@ en:
     note: Notes
     prev: ◀️
     published: Published
-    short: Short Video Code
     target: misa
     title: Title
+    url: Main URL
     abbrev:
+      alt: 📺
       japanese: 🇯🇵
       lines: 📖
-      long: 🎞
+      url: 🎞
       minutes: ⏱
       published: 🖨
-      short: 📺
     categories:
       beginners: Beginners
       counters: Counters
@@ -35,6 +35,7 @@ en:
       shadowing: Shadowing
       smile: Smile
       vocab: Vocab
+      yuta: Yuta
     order:
       created: First Created
       published: First Published

@@ -3,23 +3,21 @@ class Misa < ApplicationRecord
   include Pageable
   include Remarkable
 
-  CATEGORIES = %w/none beginners counters dajare difference dogen howto mistakes native shadowing smile vocab/
+  CATEGORIES = %w/none beginners counters dajare difference dogen howto mistakes native shadowing smile vocab yuta/
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
-  MAX_SHORT = 15
-  MAX_LONG = 15
   MAX_TITLE = 150
+  MAX_URL = 256
 
   before_validation :normalize_attributes
   after_save :count_lines
 
   validates :category, inclusion: { in: CATEGORIES }
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
-  validates :short, format: { with: /\A\S+\z/ }, length: { maximum: MAX_SHORT }, uniqueness: true, allow_nil: true
-  validates :long, format: { with: /\A\S+\z/ }, length: { maximum: MAX_LONG }, uniqueness: true, allow_nil: true
+  validates :url, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true
+  validates :alt, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true, allow_nil: true
   validates :published, date: { before_or_equal: Proc.new { Date.today } }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
-  validate :must_have_at_least_one_video
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -67,32 +65,20 @@ class Misa < ApplicationRecord
     [links, title, cat].compact.join(" ").html_safe
   end
 
-  def short_url
-    "https://www.youtube.com/watch?v=#{short}"
-  end
-
-  def long_url
-    "https://youtu.be/#{long}"
-  end
-
   private
 
   def normalize_attributes
-    title.squish!
+    title&.squish!
+    url&.squish!
     note&.lstrip!
     note&.rstrip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
     self.minutes = "#{$1}:00" if minutes.match(/\A(\d{1,3})(:0?)?\z/)
-    self.short = nil if short.blank?
-    self.long = nil if long.blank?
+    self.alt = nil if alt.blank?
   end
 
   def count_lines
     count = note ? note.split("\n").size : 0
     update_column(:lines, count) unless lines == count
-  end
-
-  def must_have_at_least_one_video
-    errors.add(:short, "must have at least one video") unless short.present? || long.present?
   end
 end
