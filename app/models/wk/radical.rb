@@ -3,7 +3,7 @@ module Wk
     include Constrainable
     include Pageable
 
-    MAX_NAME = 50
+    MAX_NAME = 32
 
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :name, presence: true, length: { maximum: MAX_NAME }
