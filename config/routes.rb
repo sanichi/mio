@@ -83,4 +83,7 @@ Rails.application.routes.draw do
     get :homonyms, :verbs, on: :collection
     patch :quick_accent_update, on: :member
   end
+  namespace :wk do
+    resources :radicals, only: [:index, :show]
+  end
 end

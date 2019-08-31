@@ -1,0 +1,10 @@
+en:
+  wk:
+    id: WaniKani ID
+    level: Level
+    radical:
+      name: Name
+      radical: Radical
+      radicals: Radicals
+    temporary:
+      header: WK2

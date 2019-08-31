@@ -1,0 +1,18 @@
+= render "utils/title", text: @radical.name, header: true
+
+.row
+  .offset-md-2.col-md-8.offset-lg-3.col-lg-6
+    %table{class: "table table-bordered table-striped"}
+      %tbody
+        %tr.d-flex
+          %th.col-3= t("wk.radical.name")
+          %td.col-9= @radical.name
+        %tr.d-flex
+          %th.col-3= t("wk.level")
+          %td.col-9= @radical.level
+        %tr.d-flex
+          %th.col-3= t("wk.id")
+          %td.col-9= @radical.wk_id
+
+.text-center
+  = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
