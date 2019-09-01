@@ -5,11 +5,11 @@ module Wk
 
     MAX_NAME = 32
 
-    validates :character, length: { is: 1 }, allow_nil: true
+    validates :character, length: { is: 1 }, uniqueness: true, allow_nil: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :mnemonic, presence: true
-    validates :name, presence: true, length: { maximum: MAX_NAME }
-    validates :wk_id, numericality: { integer_only: true, greater_than: 0 }
+    validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
+    validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
     scope :by_name,  -> { order(:name) }
     scope :by_level, -> { order(:level, :name) }

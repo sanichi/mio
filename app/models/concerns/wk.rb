@@ -31,6 +31,8 @@ module Wk
       raise "radical data is not a hash #{radical.class}" unless radical&.is_a?(Hash)
       wk_id = radical["id"]
       raise "radical doesn't have a positive integer ID (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id > 0
+      next if wk_id == 225 # old 225/亼/Roof duplicates 78/宀/Roof
+      next if wk_id == 401 # old 401/務/Task duplicates 71/用/Task
       rdata = radical["data"]
       raise "radical #{wk_id} doesn't have a data hash (#{rdata.class})" unless rdata.is_a?(Hash)
       level = rdata["level"]
