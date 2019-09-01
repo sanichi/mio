@@ -1,10 +1,14 @@
 en:
   wk:
+    character: Character
     id: WaniKani ID
     level: Level
+    mnemonic: Mnemonic
     radical:
       name: Name
       radical: Radical
       radicals: Radicals
+    short:
+      character: Char
     temporary:
       header: WK2

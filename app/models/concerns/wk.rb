@@ -25,7 +25,7 @@ module Wk
     raise "response didn't contain a positive integer total count (#{total_count})" unless total_count.is_a?(Integer) && total_count > 0
     data = hash["data"]
     raise "response has no data array (#{data.class})" unless data.is_a?(Array) && data.size > 0
-    max_name = 0
+    max_mnemonic = 0
     data.each do |radical|
       raise "radical has wrong type #{radical["object"]}" unless radical["object"] == type
       raise "radical data is not a hash #{radical.class}" unless radical&.is_a?(Hash)
@@ -36,17 +36,21 @@ module Wk
       level = rdata["level"]
       raise "radical #{wk_id} doesn't have a valid level (#{level})" unless level.is_a?(Integer) && level > 0 && level <= MAX_LEVEL
       meanings = rdata["meanings"]
-      raise "radical #{wk_id} doesn't have meanings array (#{meanings.class})" unless meanings.is_a?(Array) && meanings.size > 0
+      raise "radical #{wk_id} (#{level}) doesn't have meanings array (#{meanings.class})" unless meanings.is_a?(Array) && meanings.size > 0
       meanings.keep_if { |meaning| meaning.is_a?(Hash) && meaning["primary"] == true }
-      raise "radical #{wk_id} doesn't have any primary meanings (#{level})" unless meanings.is_a?(Array) && meanings.size > 0
+      raise "radical #{wk_id} (#{level}) doesn't have any primary meanings (#{level})" unless meanings.is_a?(Array) && meanings.size > 0
       name = meanings[0]["meaning"]
-      raise "radical #{wk_id} doesn't have a name (#{level})" unless name.present?
+      raise "radical #{wk_id} (#{level}) doesn't have a name (#{level})" unless name.present?
+      character = rdata["characters"]
+      character = nil unless character&.length == 1
+      mnemonic = rdata["meaning_mnemonic"]
+      raise "radical #{wk_id} (#{level}, #{name}) doesn't have a mnemonic (#{mnemonic})" unless mnemonic.present?
 
-      Wk::Radical.create!(name: name, level: level, wk_id: wk_id)
+      Wk::Radical.create!(character: character, level: level, mnemonic: mnemonic, name: name, wk_id: wk_id)
 
-      max_name = name.length if name.length > max_name
+      max_mnemonic = mnemonic.length if mnemonic.length > max_mnemonic
     end
 
-    puts "hello #{total_count} #{data.size} #{max_name}"
+    puts "hello #{total_count} #{data.size} #{max_mnemonic}"
   end
 end

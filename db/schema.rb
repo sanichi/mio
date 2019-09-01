@@ -567,7 +567,9 @@ ActiveRecord::Schema.define(version: 2019_08_30_151637) do
   create_table "wk_radicals", force: :cascade do |t|
     t.integer "wk_id"
     t.integer "level", limit: 2
+    t.text "mnemonic"
     t.string "name", limit: 32
+    t.string "character", limit: 1
   end
 
   create_table "yomis", force: :cascade do |t|

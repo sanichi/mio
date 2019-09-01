@@ -8,11 +8,17 @@
           %th.col-3= t("wk.radical.name")
           %td.col-9= @radical.name
         %tr.d-flex
+          %th.col-3= t("wk.character")
+          %td.col-9= @radical.character
+        %tr.d-flex
           %th.col-3= t("wk.level")
           %td.col-9= @radical.level
         %tr.d-flex
           %th.col-3= t("wk.id")
           %td.col-9= @radical.wk_id
+        %tr.d-flex
+          %th.col-3= t("wk.mnemonic")
+          %td.col-9= @radical.mnemonic.html_safe
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
