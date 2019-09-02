@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     patch :quick_accent_update, on: :member
   end
   namespace :wk do
+    resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]
   end
 end

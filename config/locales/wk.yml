@@ -4,6 +4,9 @@ en:
     id: WaniKani ID
     level: Level
     mnemonic: Mnemonic
+    kanji:
+      kanji: Kanji
+      kanjis: Kanjis
     radical:
       name: Name
       radical: Radical

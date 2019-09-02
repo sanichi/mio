@@ -9,4 +9,9 @@ module WkHelper
     opts = [[t("wk.radical.name"), "name"], [t("wk.level"), "level"]]
     options_for_select(opts, selected)
   end
+
+  def wk_kanji_order_menu(selected)
+    opts = [[t("wk.character"), "character"], [t("wk.level"), "level"]]
+    options_for_select(opts, selected)
+  end
 end

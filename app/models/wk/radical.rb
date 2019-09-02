@@ -31,51 +31,58 @@ module Wk
     end
 
     def self.update
-      data = get_data("radical")
       updates = 0
       creates = 0
+      url = start_url("radical")
+      puts "radicals"
+      puts "--------"
 
-      data.each do |record|
-        raise "radical data is not a hash #{record.class}" unless record&.is_a?(Hash)
-        wk_id = record["id"]
-        raise "radical doesn't have a positive integer ID (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id > 0
-        next if wk_id == 225 # old 225/亼/Roof duplicates 78/宀/Roof
-        next if wk_id == 401 # old 401/務/Task duplicates 71/用/Task
-        radical = Wk::Radical.find_or_initialize_by(wk_id: wk_id)
+      while url.present?
+        data, url = get_data(url)
+        puts "records: #{data.size}"
 
-        rdata = record["data"]
-        raise "radical #{wk_id} doesn't have a data hash (#{rdata.class})" unless rdata.is_a?(Hash)
+        data.each do |record|
+          raise "radical data is not a hash #{record.class}" unless record&.is_a?(Hash)
+          wk_id = record["id"]
+          raise "radical doesn't have a positive integer ID (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id > 0
+          next if wk_id == 225 # old 225/亼/Roof duplicates 78/宀/Roof
+          next if wk_id == 401 # old 401/務/Task duplicates 71/用/Task
+          radical = find_or_initialize_by(wk_id: wk_id)
 
-        level = rdata["level"]
-        raise "radical #{wk_id} doesn't have a valid level (#{level})" unless level.is_a?(Integer) && level > 0 && level <= MAX_LEVEL
-        radical.level = level
+          rdata = record["data"]
+          raise "radical #{wk_id} doesn't have a data hash (#{rdata.class})" unless rdata.is_a?(Hash)
 
-        meanings = rdata["meanings"]
-        raise "radical #{wk_id} (#{level}) doesn't have meanings array (#{meanings.class})" unless meanings.is_a?(Array) && meanings.size > 0
-        meanings.keep_if { |meaning| meaning.is_a?(Hash) && meaning["primary"] == true }
-        raise "radical #{wk_id} (#{level}) doesn't have any primary meanings" unless meanings.is_a?(Array) && meanings.size > 0
-        name = meanings[0]["meaning"]
-        raise "radical #{wk_id} (#{level}) first primary meaning is absent" unless name.present?
-        radical.name = name
+          level = rdata["level"]
+          raise "radical #{wk_id} doesn't have a valid level (#{level})" unless level.is_a?(Integer) && level > 0 && level <= MAX_LEVEL
+          radical.level = level
 
-        character = rdata["characters"]
-        character = nil unless character.present? && character.length == 1
-        radical.character = character
+          meanings = rdata["meanings"]
+          raise "radical #{wk_id} (#{level}) doesn't have meanings array (#{meanings.class})" unless meanings.is_a?(Array) && meanings.size > 0
+          meanings.keep_if { |meaning| meaning.is_a?(Hash) && meaning["primary"] == true }
+          raise "radical #{wk_id} (#{level}) doesn't have any primary meanings" unless meanings.is_a?(Array) && meanings.size > 0
+          name = meanings[0]["meaning"]
+          raise "radical #{wk_id} (#{level}) first primary meaning is absent" unless name.present?
+          radical.name = name
 
-        mnemonic = rdata["meaning_mnemonic"]
-        raise "radical #{wk_id} (#{level}, #{name}) doesn't have a mnemonic (#{mnemonic})" unless mnemonic.present?
-        radical.mnemonic = mnemonic
+          character = rdata["characters"]
+          character = nil unless character.present? && character.length == 1
+          radical.character = character
 
-        if radical.new_record?
-          Wk::Radical.create!(character: character, level: level, mnemonic: mnemonic, name: name, wk_id: wk_id)
-          creates += 1
-        else
-          updates += radical.check_update
+          mnemonic = rdata["meaning_mnemonic"]
+          raise "radical #{wk_id} (#{level}, #{name}) doesn't have a mnemonic (#{mnemonic})" unless mnemonic.present?
+          radical.mnemonic = mnemonic
+
+          if radical.new_record?
+            radical.save!
+            creates += 1
+          else
+            updates += radical.check_update
+          end
         end
       end
-      puts "radicals:"
-      puts "  updates: #{updates}"
-      puts "  creates: #{creates}"
+
+      puts "updates: #{updates}"
+      puts "creates: #{creates}"
     end
 
     def check_update
@@ -83,36 +90,39 @@ module Wk
       changes = self.changes
 
       puts "radical #{wk_id}:"
+
       print "  name........ "
       if change = changes["name"]
         puts "#{change.first} => #{change.last}"
       else
         puts name
       end
+
       print "  character... "
       if change = changes["character"]
         puts "#{change.first} => #{change.last}"
       else
         puts character
       end
+
       print "  level....... "
       if change = changes["level"]
         puts "#{change.first} => #{change.last}"
       else
         puts level
       end
+
       print "  mnemonic.... "
       if change = changes["mnemonic"]
         puts "#{change.first.truncate(25)} => #{change.last.truncate(25)}"
       else
         puts mnemonic.truncate(50)
       end
-      if permission_granted?
-        save!
-        return 1
-      else
-        return 0
-      end
+
+      return 0 unless permission_granted?
+
+      save!
+      return 1
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_30_151637) do
+ActiveRecord::Schema.define(version: 2019_09_02_155622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -562,6 +562,12 @@ ActiveRecord::Schema.define(version: 2019_08_30_151637) do
     t.boolean "burned", default: false
     t.index ["meaning"], name: "index_vocabs_on_meaning"
     t.index ["reading"], name: "index_vocabs_on_reading"
+  end
+
+  create_table "wk_kanjis", force: :cascade do |t|
+    t.integer "wk_id"
+    t.integer "level", limit: 2
+    t.string "character", limit: 1
   end
 
   create_table "wk_radicals", force: :cascade do |t|

@@ -2,10 +2,10 @@ module Wanikani
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def get_data(type)
-      sleep 0.1
+    def get_data(url)
+      sleep 1.1 # max is 60 requests per second
 
-      uri = URI.parse("https://api.wanikani.com/v2/subjects?types=#{type}")
+      uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -22,8 +22,15 @@ module Wanikani
       raise "response didn't contain a positive integer total count (#{total_count})" unless total_count.is_a?(Integer) && total_count > 0
       data = hash["data"]
       raise "response has no data array (#{data.class})" unless data.is_a?(Array) && data.size > 0
+      pages = hash["pages"]
+      raise "response has no pages hash (#{pages.class})" unless pages.is_a?(Hash)
+      next_url = pages["next_url"]
 
-      data
+      [data, next_url]
+    end
+
+    def start_url(type)
+      "https://api.wanikani.com/v2/subjects?types=#{type}"
     end
   end
 

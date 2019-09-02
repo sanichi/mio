@@ -35,11 +35,12 @@
           = render "layouts/dropdown_item", cond: can?(:read, Reading), text: t("vocab.readings"), path: readings_path
           = render "layouts/dropdown_item", cond: can?(:read, Radical), text: t("vocab.radicals"), path: radicals_path
 
-    - if [Wk::Radical].map{ |c| can?(:read, c) }.any?
+    - if [Wk::Radical, Wk::Kanji].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("wk.temporary.header"), id: "navbarWaniKani"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarWaniKani"}
           = render "layouts/dropdown_item", cond: can?(:read, Wk::Radical), text: t("wk.radical.radicals"), path: wk_radicals_path
+          = render "layouts/dropdown_item", cond: can?(:read, Wk::Kanji), text: t("wk.kanji.kanjis"), path: wk_kanjis_path
 
     - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
       .nav-item.dropdown
