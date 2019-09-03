@@ -42,35 +42,35 @@ module Wk
         puts "records: #{data.size}"
 
         data.each do |record|
-          raise "radical data is not a hash #{record.class}" unless record&.is_a?(Hash)
-          wk_id = record["id"]
-          raise "radical doesn't have a positive integer ID (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id > 0
+          check(record, "radical record is not a hash (#{record.class})") { |v| v.is_a?(Hash) }
+
+          wk_id = check(record["id"], "radical ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
+
+          # until there is a better way of removing old radicals, at least get rid of these two which cause non-unique names
           next if wk_id == 225 # old 225/亼/Roof duplicates 78/宀/Roof
           next if wk_id == 401 # old 401/務/Task duplicates 71/用/Task
+
           radical = find_or_initialize_by(wk_id: wk_id)
+          subject = "radical (#{wk_id})"
 
-          rdata = record["data"]
-          raise "radical #{wk_id} doesn't have a data hash (#{rdata.class})" unless rdata.is_a?(Hash)
+          rdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
-          level = rdata["level"]
-          raise "radical #{wk_id} doesn't have a valid level (#{level})" unless level.is_a?(Integer) && level > 0 && level <= MAX_LEVEL
-          radical.level = level
+          meanings = check(rdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+          meanings.keep_if { |m| m.is_a?(Hash) && m["primary"] == true }
+          check(meanings, "#{subject} doesn't have any primary meanings") { |v| v.size > 0 }
+          radical.name = check(meanings[0]["meaning"], "#{subject} first meaning has no name") { |v| v.is_a?(String) && v.present? }
+          subject[-1,1] = ", #{radical.name})"
 
-          meanings = rdata["meanings"]
-          raise "radical #{wk_id} (#{level}) doesn't have meanings array (#{meanings.class})" unless meanings.is_a?(Array) && meanings.size > 0
-          meanings.keep_if { |meaning| meaning.is_a?(Hash) && meaning["primary"] == true }
-          raise "radical #{wk_id} (#{level}) doesn't have any primary meanings" unless meanings.is_a?(Array) && meanings.size > 0
-          name = meanings[0]["meaning"]
-          raise "radical #{wk_id} (#{level}) first primary meaning is absent" unless name.present?
-          radical.name = name
-
+          # some radicals have no characters so we allow that
           character = rdata["characters"]
           character = nil unless character.present? && character.length == 1
           radical.character = character
+          subject[-1,1] = ", #{radical.character || 'none'})"
 
-          mnemonic = rdata["meaning_mnemonic"]
-          raise "radical #{wk_id} (#{level}, #{name}) doesn't have a mnemonic (#{mnemonic})" unless mnemonic.present?
-          radical.mnemonic = mnemonic
+          radical.level = check(rdata["level"], "#{subject} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
+          subject[-1,1] = ", #{radical.level})"
+
+          radical.mnemonic = check(rdata["meaning_mnemonic"], "#{subject} doesn't have a mnemonic") { |v| v.is_a?(String) && v.present? }
 
           if radical.new_record?
             radical.save!

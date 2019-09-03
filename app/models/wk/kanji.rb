@@ -40,29 +40,25 @@ module Wk
         puts "records: #{data.size}"
 
         data.each do |record|
-          raise "kanji data is not a hash #{record.class}" unless record&.is_a?(Hash)
-          wk_id = record["id"]
-          raise "kanji doesn't have a positive integer ID (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id > 0
+          check(record, "kanji record is not a hash #{record.class}") { |v| v.is_a?(Hash) }
+
+          wk_id = check(record["id"], "kanji ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
           kanji = find_or_initialize_by(wk_id: wk_id)
+          subject = "kanji (#{wk_id})"
 
-          kdata = record["data"]
-          raise "kanji #{wk_id} doesn't have a data hash (#{kdata.class})" unless kdata.is_a?(Hash)
+          kdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
-          level = kdata["level"]
-          raise "kanji #{wk_id} doesn't have a valid level (#{level})" unless level.is_a?(Integer) && level > 0 && level <= MAX_LEVEL
-          kanji.level = level
+          kanji.character = check(kdata["characters"], "#{subject} doesn't have a character") { |v| v.is_a?(String) && v.length == 1 }
+          subject[-1,1] = ", #{kanji.character})"
 
-          character = kdata["characters"]
-          raise "kanji #{wk_id} (#{level}) doesn't have a character (#{character})" unless character.is_a?(String) && character.length == 1
-          kanji.character = character
+          kanji.level = check(kdata["level"], "#{subject} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
+          subject[-1,1] = ", #{kanji.level})"
 
-          meaning_mnemonic = kdata["meaning_mnemonic"]
-          raise "kanji #{wk_id} (#{level}, #{character}) doesn't have a meaning mnemonic (#{meaning_mnemonic.class})" unless meaning_mnemonic.is_a?(String) && meaning_mnemonic.present?
+          meaning_mnemonic = check(kdata["meaning_mnemonic"], "#{subject} doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
           meaning_hint = kdata["meaning_hint"]
           kanji.meaning_mnemonic = meaning_hint ? "<p>#{meaning_mnemonic}</p><p>#{meaning_hint}</p>" : meaning_mnemonic
 
-          reading_mnemonic = kdata["reading_mnemonic"]
-          raise "kanji #{wk_id} (#{level}, #{character}) doesn't have a reading mnemonic (#{reading_mnemonic.class})" unless reading_mnemonic.is_a?(String) && reading_mnemonic.present?
+          reading_mnemonic = check(kdata["reading_mnemonic"], "#{subject} doesn't have a reading mnemonic") { |v| v.is_a?(String) && v.present? }
           reading_hint = kdata["reading_hint"]
           kanji.reading_mnemonic = reading_hint ? "<p>#{reading_mnemonic}</p><p>#{reading_hint}</p>" : reading_mnemonic
 

@@ -29,6 +29,11 @@ module Wanikani
       [data, next_url]
     end
 
+    def check(value, error)
+      raise error unless yield value
+      return value
+    end
+
     def start_url(type)
       "https://api.wanikani.com/v2/subjects?types=#{type}"
     end
