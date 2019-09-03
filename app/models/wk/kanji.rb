@@ -17,12 +17,14 @@ module Wk
 
     scope :by_character, -> { order(:character) }
     scope :by_level,     -> { order(:level, :character) }
+    scope :by_meaning,   -> { order(:meaning, :character) }
 
     def self.search(params, path, opt={})
-      matches = by_level
+      matches =
         case params[:order]
-        when "level" then by_level
-        else              by_character
+        when "meaning" then by_meaning
+        when "level"   then by_level
+        else                by_character
         end
       if sql = cross_constraint(params[:query], %w{character meaning})
         matches = matches.where(sql)
