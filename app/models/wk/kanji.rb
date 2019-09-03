@@ -6,6 +6,8 @@ module Wk
 
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
+    validates :meaning_mnemonic, presence: true
+    validates :reading_mnemonic, presence: true
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
     scope :by_character, -> { order(:character) }
@@ -54,6 +56,16 @@ module Wk
           raise "kanji #{wk_id} (#{level}) doesn't have a character (#{character})" unless character.is_a?(String) && character.length == 1
           kanji.character = character
 
+          meaning_mnemonic = kdata["meaning_mnemonic"]
+          raise "kanji #{wk_id} (#{level}, #{character}) doesn't have a meaning mnemonic (#{meaning_mnemonic.class})" unless meaning_mnemonic.is_a?(String) && meaning_mnemonic.present?
+          meaning_hint = kdata["meaning_hint"]
+          kanji.meaning_mnemonic = meaning_hint ? "<p>#{meaning_mnemonic}</p><p>#{meaning_hint}</p>" : meaning_mnemonic
+
+          reading_mnemonic = kdata["reading_mnemonic"]
+          raise "kanji #{wk_id} (#{level}, #{character}) doesn't have a reading mnemonic (#{reading_mnemonic.class})" unless reading_mnemonic.is_a?(String) && reading_mnemonic.present?
+          reading_hint = kdata["reading_hint"]
+          kanji.reading_mnemonic = reading_hint ? "<p>#{reading_mnemonic}</p><p>#{reading_hint}</p>" : reading_mnemonic
+
           if kanji.new_record?
             kanji.save!
             creates += 1
@@ -69,26 +81,16 @@ module Wk
 
     def check_update
       return 0 unless changed?
+
       changes = self.changes
 
       puts "kanji #{wk_id}:"
-
-      print "  character... "
-      if change = changes["character"]
-        puts "#{change.first} => #{change.last}"
-      else
-        puts character
-      end
-
-      print "  level....... "
-      if change = changes["level"]
-        puts "#{change.first} => #{change.last}"
-      else
-        puts level
-      end
+      show_change(changes, "character")
+      show_change(changes, "level")
+      show_change(changes, "meaning_mnemonic", max: 50)
+      show_change(changes, "reading_mnemonic", max: 50)
 
       return 0 unless permission_granted?
-
       save!
       return 1
     end

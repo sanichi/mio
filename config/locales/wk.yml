@@ -3,7 +3,10 @@ en:
     character: Character
     id: WaniKani ID
     level: Level
-    mnemonic: Mnemonic
+    hint:
+      meaning: Meaning Mnemonic
+      mnemonic: Mnemonic
+      reading: Reading Mnemonic
     kanji:
       kanji: Kanji
       kanjis: Kanjis

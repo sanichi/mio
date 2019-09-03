@@ -565,9 +565,11 @@ ActiveRecord::Schema.define(version: 2019_09_02_155622) do
   end
 
   create_table "wk_kanjis", force: :cascade do |t|
-    t.integer "wk_id"
-    t.integer "level", limit: 2
     t.string "character", limit: 1
+    t.integer "level", limit: 2
+    t.text "meaning_mnemonic"
+    t.text "reading_mnemonic"
+    t.integer "wk_id"
   end
 
   create_table "wk_radicals", force: :cascade do |t|

@@ -87,40 +87,16 @@ module Wk
 
     def check_update
       return 0 unless changed?
+
       changes = self.changes
 
       puts "radical #{wk_id}:"
-
-      print "  name........ "
-      if change = changes["name"]
-        puts "#{change.first} => #{change.last}"
-      else
-        puts name
-      end
-
-      print "  character... "
-      if change = changes["character"]
-        puts "#{change.first} => #{change.last}"
-      else
-        puts character
-      end
-
-      print "  level....... "
-      if change = changes["level"]
-        puts "#{change.first} => #{change.last}"
-      else
-        puts level
-      end
-
-      print "  mnemonic.... "
-      if change = changes["mnemonic"]
-        puts "#{change.first.truncate(25)} => #{change.last.truncate(25)}"
-      else
-        puts mnemonic.truncate(50)
-      end
+      show_change(changes, "name")
+      show_change(changes, "character")
+      show_change(changes, "level")
+      show_change(changes, "mnemonic", max: 50)
 
       return 0 unless permission_granted?
-
       save!
       return 1
     end

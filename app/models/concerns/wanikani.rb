@@ -34,6 +34,23 @@ module Wanikani
     end
   end
 
+  def show_change(changes, method, name: nil, width: 20, max: nil)
+    name = method.gsub("_", " ") unless name.present?
+    print "  %s%s " % [name, "." * (width - name.length)]
+    change = changes[method]
+    if change
+      before = change.first
+      before = before.truncate(max/2) if max
+      after = change.last
+      after = after.truncate(max/2) if max
+      puts "#{before} => #{after}"
+    else
+      value = public_send(method)
+      value = value.truncate(max) if max
+      puts value
+    end
+  end
+
   def permission_granted?(count=1)
     return true if @permission_granted
     print "  update [Ynqc]? "
