@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_02_155622) do
+ActiveRecord::Schema.define(version: 2019_09_03_130602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -570,6 +570,8 @@ ActiveRecord::Schema.define(version: 2019_09_02_155622) do
     t.text "meaning_mnemonic"
     t.text "reading_mnemonic"
     t.integer "wk_id"
+    t.string "meaning", limit: 128
+    t.index ["wk_id"], name: "index_wk_kanjis_on_wk_id", unique: true
   end
 
   create_table "wk_radicals", force: :cascade do |t|
@@ -578,6 +580,7 @@ ActiveRecord::Schema.define(version: 2019_09_02_155622) do
     t.text "mnemonic"
     t.string "name", limit: 32
     t.string "character", limit: 1
+    t.index ["wk_id"], name: "index_wk_radicals_on_wk_id", unique: true
   end
 
   create_table "yomis", force: :cascade do |t|

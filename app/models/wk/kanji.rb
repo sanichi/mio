@@ -4,8 +4,13 @@ module Wk
     include Pageable
     include Wanikani
 
+    MAX_MEANING = 128
+
+    before_validation :truncate
+
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
+    validates :meaning, presence: true, length: { maximum: MAX_MEANING }
     validates :meaning_mnemonic, presence: true
     validates :reading_mnemonic, presence: true
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
@@ -19,7 +24,7 @@ module Wk
         when "level" then by_level
         else              by_character
         end
-      if sql = cross_constraint(params[:query], %w{character})
+      if sql = cross_constraint(params[:query], %w{character meaning})
         matches = matches.where(sql)
       end
       if (level = params[:level].to_i) > 0
@@ -62,6 +67,13 @@ module Wk
           reading_hint = kdata["reading_hint"]
           kanji.reading_mnemonic = reading_hint ? "<p>#{reading_mnemonic}</p><p>#{reading_hint}</p>" : reading_mnemonic
 
+          meanings = check(kdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+          primary = meanings.map { |m| m["meaning"] if m.is_a?(Hash) && m["primary"] == true && m["meaning"].present? }.compact
+          check(primary, "#{subject} doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
+          alternative = meanings.map { |m| m["meaning"] if m.is_a?(Hash) && m["primary"] == false && m["meaning"].present? }.compact
+          kanji.meaning = primary.concat(alternative).join(", ")
+          subject[-1,1] = ", #{kanji.meaning})"
+
           if kanji.new_record?
             kanji.save!
             creates += 1
@@ -83,12 +95,19 @@ module Wk
       puts "kanji #{wk_id}:"
       show_change(changes, "character")
       show_change(changes, "level")
+      show_change(changes, "meaning")
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
 
       return 0 unless permission_granted?
       save!
       return 1
+    end
+
+    private
+
+    def truncate
+      self.meaning = meaning&.truncate(MAX_MEANING)
     end
   end
 end

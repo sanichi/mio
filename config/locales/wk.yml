@@ -3,6 +3,7 @@ en:
     character: Character
     id: WaniKani ID
     level: Level
+    meaning: Meaning
     hint:
       meaning: Meaning Mnemonic
       mnemonic: Mnemonic

@@ -15,6 +15,7 @@
       %thead
         %tr.d-flex
           %th.col-1.text-center= t("wk.short.character")
+          %th.col-10.text-center= t("wk.meaning")
           %th.col-1.text-center= t("wk.level")
       %tbody{id: "results"}
         = render "results", kanjis: @kanjis

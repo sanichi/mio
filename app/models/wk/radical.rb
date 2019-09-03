@@ -6,6 +6,8 @@ module Wk
 
     MAX_NAME = 32
 
+    before_validation :truncate
+
     validates :character, length: { is: 1 }, uniqueness: true, allow_nil: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :mnemonic, presence: true
@@ -99,6 +101,12 @@ module Wk
       return 0 unless permission_granted?
       save!
       return 1
+    end
+
+    private
+
+    def truncate
+      self.name = name&.truncate(MAX_NAME)
     end
   end
 end

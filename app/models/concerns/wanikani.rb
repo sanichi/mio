@@ -1,6 +1,8 @@
 module Wanikani
   extend ActiveSupport::Concern
 
+  @@continue = false
+
   module ClassMethods
     def get_data(url)
       sleep 1.1 # max is 60 requests per second
@@ -57,11 +59,12 @@ module Wanikani
   end
 
   def permission_granted?(count=1)
-    return true if @permission_granted
+    return true if @@continue
     print "  update [Ynqc]? "
     case gets.chomp
     when /\Ac(ontinue)?\z/i
-      @permission_granted = true
+      puts "setting permission_granted"
+      @@continue = true
     when "", /\Ay(es)?\z/i
       true
     when /\Ano?\z/i
