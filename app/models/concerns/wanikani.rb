@@ -37,7 +37,7 @@ module Wanikani
     end
 
     def start_url(type)
-      "https://api.wanikani.com/v2/subjects?types=#{type}"
+      "https://api.wanikani.com/v2/subjects?types=#{type}&hidden=false"
     end
   end
 

@@ -48,10 +48,6 @@ module Wk
 
           wk_id = check(record["id"], "radical ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
 
-          # until there is a better way of removing old radicals, at least get rid of these two which cause non-unique names
-          next if wk_id == 225 # old 225/亼/Roof duplicates 78/宀/Roof
-          next if wk_id == 401 # old 401/務/Task duplicates 71/用/Task
-
           radical = find_or_initialize_by(wk_id: wk_id)
           subject = "radical (#{wk_id})"
 
