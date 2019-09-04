@@ -26,6 +26,9 @@ module Wk
       if sql = cross_constraint(params[:query], %w{name character})
         matches = matches.where(sql)
       end
+      if sql = numerical_constraint(params[:id], :wk_id)
+        matches = matches.where(sql)
+      end
       if (level = params[:level].to_i) > 0
         matches = matches.where(level: level)
       end

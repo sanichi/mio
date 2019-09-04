@@ -17,5 +17,6 @@ en:
       radicals: Radicals
     short:
       character: Char
+      id: ID
     temporary:
       header: WK2
