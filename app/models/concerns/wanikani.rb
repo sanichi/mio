@@ -41,7 +41,7 @@ module Wanikani
     end
   end
 
-  def show_change(changes, method, name: nil, width: 20, max: nil)
+  def show_change(changes, method, name: nil, width: 20, max: nil, no_change: nil)
     name = method.gsub("_", " ") unless name.present?
     print "  %s%s " % [name, "." * (width - name.length)]
     change = changes[method]
@@ -52,7 +52,7 @@ module Wanikani
       after = after.truncate(max/2) if max
       puts "#{before} => #{after}"
     else
-      value = public_send(method)
+      value = no_change || public_send(method)
       value = value.truncate(max) if max
       puts value
     end

@@ -11,19 +11,22 @@ module Wk
     before_validation :truncate
 
     validates :character, length: { is: 1 }, uniqueness: true, allow_nil: true
+    validates :last_updated, presence: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :mnemonic, presence: true
     validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
-    scope :by_name,  -> { order(:name) }
-    scope :by_level, -> { order(:level, :name) }
+    scope :by_name,         -> { order(:name) }
+    scope :by_level,        -> { order(:level, :name) }
+    scope :by_last_updated, -> { order(last_updated: :desc, name: :asc) }
 
     def self.search(params, path, opt={})
       matches =
         case params[:order]
-        when "level" then by_level
-        else              by_name
+        when "last_updated" then by_last_updated
+        when "level"        then by_level
+        else                     by_name
         end
       if sql = cross_constraint(params[:query], %w{name character})
         matches = matches.where(sql)
@@ -55,6 +58,14 @@ module Wk
 
           radical = find_or_initialize_by(wk_id: wk_id)
           subject = "radical (#{wk_id})"
+
+          last_updated =
+            begin
+              Date.parse(record["data_updated_at"].to_s)
+            rescue ArgumentError
+              nil
+            end
+          radical.last_updated = check(last_updated, "#{subject} has no valid last update date") { |v| v.is_a?(Date) }
 
           rdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
@@ -102,6 +113,7 @@ module Wk
       show_change(changes, "character")
       show_change(changes, "level")
       show_change(changes, "mnemonic", max: 50)
+      show_change(changes, "last_updated")
 
       return 0 unless permission_granted?
       save!

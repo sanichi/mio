@@ -12,21 +12,24 @@ module Wk
 
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
+    validates :last_updated, presence: true
     validates :meaning, presence: true, length: { maximum: MAX_MEANING }
     validates :meaning_mnemonic, presence: true
     validates :reading_mnemonic, presence: true
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
-    scope :by_character, -> { order(:character) }
-    scope :by_level,     -> { order(:level, :character) }
-    scope :by_meaning,   -> { order(:meaning, :character) }
+    scope :by_character,    -> { order(:character) }
+    scope :by_level,        -> { order(:level, :character) }
+    scope :by_meaning,      -> { order(:meaning, :character) }
+    scope :by_last_updated, -> { order(last_updated: :desc, character: :asc) }
 
     def self.search(params, path, opt={})
       matches =
         case params[:order]
-        when "meaning" then by_meaning
-        when "level"   then by_level
-        else                by_character
+        when "meaning"      then by_meaning
+        when "last_updated" then by_last_updated
+        when "level"        then by_level
+        else                     by_character
         end
       if sql = cross_constraint(params[:query], %w{character meaning})
         matches = matches.where(sql)
@@ -59,6 +62,14 @@ module Wk
           wk_id = check(record["id"], "kanji ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
           kanji = find_or_initialize_by(wk_id: wk_id)
           subject = "kanji (#{wk_id})"
+
+          last_updated =
+            begin
+              Date.parse(record["data_updated_at"].to_s)
+            rescue ArgumentError
+              nil
+            end
+          kanji.last_updated = check(last_updated, "#{subject} has no valid last update date") { |v| v.is_a?(Date) }
 
           kdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
@@ -96,8 +107,12 @@ module Wk
             creates += 1
           else
             changes = kanji.changes
-            changes["radicals"] = [old_radical_ids.join(", "), new_radical_ids.join(", ")] unless old_radical_ids.to_set == new_radical_ids.to_set
-            updates += kanji.check_update(changes, radicals)
+            if old_radical_ids.to_set == new_radical_ids.to_set
+              updates += kanji.check_update(changes, old_radical_ids: old_radical_ids.join(", "))
+            else
+              changes["radicals"] = [old_radical_ids.join(", "), new_radical_ids.join(", ")]
+              updates += kanji.check_update(changes, new_radicals: radicals)
+            end
           end
         end
       end
@@ -106,7 +121,7 @@ module Wk
       puts "creates: #{creates}"
     end
 
-    def check_update(changes, radicals)
+    def check_update(changes, new_radicals: nil, old_radical_ids: nil)
       return 0 if changes.empty?
 
       puts "kanji #{wk_id}:"
@@ -115,11 +130,12 @@ module Wk
       show_change(changes, "meaning")
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
-      show_change(changes, "radicals")
+      show_change(changes, "radicals", no_change: old_radical_ids)
+      show_change(changes, "last_updated")
 
       return 0 unless permission_granted?
       save!
-      self.radicals = radicals if changes["radicals"]
+      self.radicals = new_radicals if new_radicals
       return 1
     end
 

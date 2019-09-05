@@ -6,12 +6,13 @@ module WkHelper
   end
 
   def wk_radical_order_menu(selected)
-    opts = [[t("wk.radical.name"), "name"], [t("wk.level"), "level"]]
+    opts = %w/level last_updated/.map { |i| [t("wk.#{i}"), i] }
+    opts.unshift [t("wk.radical.name"), "name"]
     options_for_select(opts, selected)
   end
 
   def wk_kanji_order_menu(selected)
-    opts = %w/character level meaning/.map { |i| [t("wk.#{i}"), i] }
+    opts = %w/character level meaning last_updated/.map { |i| [t("wk.#{i}"), i] }
     options_for_select(opts, selected)
   end
 end

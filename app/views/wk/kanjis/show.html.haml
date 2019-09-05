@@ -27,6 +27,9 @@
         %tr.d-flex
           %td.col-3= t("wk.id")
           %td.col-9= @kanji.wk_id
+        %tr.d-flex
+          %td.col-3= t("wk.last_updated")
+          %td.col-9= @kanji.last_updated
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"

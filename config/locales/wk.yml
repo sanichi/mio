@@ -2,6 +2,7 @@ en:
   wk:
     character: Character
     id: WaniKani ID
+    last_updated: Last Updated
     level: Level
     meaning: Meaning
     hint:
