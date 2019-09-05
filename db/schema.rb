@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_130602) do
+ActiveRecord::Schema.define(version: 2019_09_04_213953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -572,6 +572,13 @@ ActiveRecord::Schema.define(version: 2019_09_03_130602) do
     t.integer "wk_id"
     t.string "meaning", limit: 128
     t.index ["wk_id"], name: "index_wk_kanjis_on_wk_id", unique: true
+  end
+
+  create_table "wk_kanjis_radicals", id: false, force: :cascade do |t|
+    t.bigint "kanji_id", null: false
+    t.bigint "radical_id", null: false
+    t.index ["kanji_id"], name: "index_wk_kanjis_radicals_on_kanji_id"
+    t.index ["radical_id"], name: "index_wk_kanjis_radicals_on_radical_id"
   end
 
   create_table "wk_radicals", force: :cascade do |t|

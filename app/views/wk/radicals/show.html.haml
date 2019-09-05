@@ -4,9 +4,10 @@
   .offset-md-2.col-md-8.offset-lg-3.col-lg-6
     %table{class: "table table-bordered"}
       %tbody
-        %tr.d-flex
-          %td.col-3= t("wk.character")
-          %td.col-9= @radical.character
+        - if @radical.character.present?
+          %tr.d-flex
+            %td.col-3= t("wk.character")
+            %td.col-9= @radical.character
         %tr.d-flex
           %td.col-3= t("wk.hint.mnemonic")
           %td.col-9= @radical.mnemonic.html_safe
@@ -16,6 +17,20 @@
         %tr.d-flex
           %td.col-3= t("wk.id")
           %td.col-9= @radical.wk_id
+
+.row
+  .offset-lg-1.col-lg-10.offset-xl-2.col-xl-8
+    %table{class: "table table-bordered table-striped table-sm mt-3"}
+      %thead
+        %tr.d-flex
+          %th.col-1.text-center= t("wk.short.character")
+          %th.col-10.text-center= t("wk.meaning")
+          %th.col-1.text-center= t("wk.level")
+        - @radical.kanjis.by_level.each do |kanji|
+          %tr.d-flex
+            %td.col-1.text-center= link_to kanji.character, kanji
+            %td.col-10= kanji.meaning
+            %td.col-1.text-center= kanji.level
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"

@@ -6,6 +6,8 @@ module Wk
 
     MAX_NAME = 32
 
+    has_and_belongs_to_many :kanjis
+
     before_validation :truncate
 
     validates :character, length: { is: 1 }, uniqueness: true, allow_nil: true
@@ -84,6 +86,10 @@ module Wk
 
       puts "updates: #{updates}"
       puts "creates: #{creates}"
+    end
+
+    def character_name
+      "#{character}#{character.present? ? '-' : ''}#{name}"
     end
 
     def check_update

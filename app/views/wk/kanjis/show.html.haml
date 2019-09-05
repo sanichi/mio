@@ -8,6 +8,11 @@
           %td.col-3= t("wk.character")
           %td.col-9= @kanji.character
         %tr.d-flex
+          %td.col-3= t("wk.radical.radicals")
+          %td.col-9
+            - @kanji.radicals.each_with_index do |radical, i|
+              = link_to radical.character_name, radical
+        %tr.d-flex
           %td.col-3= t("wk.meaning")
           %td.col-9= @kanji.meaning
         %tr.d-flex

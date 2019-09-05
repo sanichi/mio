@@ -6,6 +6,8 @@ module Wk
 
     MAX_MEANING = 128
 
+    has_and_belongs_to_many :radicals
+
     before_validation :truncate
 
     validates :character, length: { is: 1 }, uniqueness: true
@@ -42,6 +44,8 @@ module Wk
       updates = 0
       creates = 0
       url = start_url("kanji")
+      radical_from_id = Wk::Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
+
       puts "kanjis"
       puts "------"
 
@@ -79,11 +83,21 @@ module Wk
           kanji.meaning = primary.concat(alternative).join(", ")
           subject[-1,1] = ", #{kanji.meaning})"
 
+          component_ids = check(kdata["component_subject_ids"], "#{subject} doesn't have a radicals array") { |v| v.is_a?(Array) && v.size > 0 }
+          old_radical_ids = kanji.new_record? ? [] : kanji.radicals.pluck(:wk_id)
+          new_radical_ids = component_ids.map do |v|
+            check(v, "#{subject} has invalid radical ID (#{v}) }") { |v| radical_from_id.has_key?(v) }
+          end
+          radicals = component_ids.map { |wk_id| radical_from_id[wk_id] }
+
           if kanji.new_record?
             kanji.save!
+            kanji.radicals = radicals
             creates += 1
           else
-            updates += kanji.check_update
+            changes = kanji.changes
+            changes["radicals"] = [old_radical_ids.join(", "), new_radical_ids.join(", ")] unless old_radical_ids.to_set == new_radical_ids.to_set
+            updates += kanji.check_update(changes, radicals)
           end
         end
       end
@@ -92,10 +106,8 @@ module Wk
       puts "creates: #{creates}"
     end
 
-    def check_update
-      return 0 unless changed?
-
-      changes = self.changes
+    def check_update(changes, radicals)
+      return 0 if changes.empty?
 
       puts "kanji #{wk_id}:"
       show_change(changes, "character")
@@ -103,9 +115,11 @@ module Wk
       show_change(changes, "meaning")
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
+      show_change(changes, "radicals")
 
       return 0 unless permission_granted?
       save!
+      self.radicals = radicals if changes["radicals"]
       return 1
     end
 
