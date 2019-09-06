@@ -27,12 +27,14 @@
       %thead
         %tr.d-flex
           %th.col-1.text-center= t("wk.short.character")
-          %th.col-10.text-center= t("wk.meaning")
+          %th.col-5.text-center= t("wk.meaning")
+          %th.col-5.text-center= t("wk.reading")
           %th.col-1.text-center= t("wk.level")
         - @radical.kanjis.by_level.each do |kanji|
           %tr.d-flex
             %td.col-1.text-center= link_to kanji.character, kanji
-            %td.col-10= kanji.meaning
+            %td.col-5= kanji.meaning
+            %td.col-5= kanji.reading
             %td.col-1.text-center= kanji.level
 
 .text-center
