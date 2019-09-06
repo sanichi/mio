@@ -8,6 +8,7 @@ module Wk
     MAX_READING = 128
 
     has_and_belongs_to_many :radicals
+    has_and_belongs_to_many :similar_kanjis, class_name: "Kanji", association_foreign_key: "similar_id"
 
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
@@ -48,6 +49,7 @@ module Wk
     def self.update
       updates = 0
       creates = 0
+      new_similarities = {}
       url = start_url("kanji")
       radical_from_id = Wk::Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
 
@@ -58,6 +60,7 @@ module Wk
         data, url = get_data(url)
         puts "records: #{data.size}"
 
+        # updates and creates that don't need all kanji present
         data.each do |record|
           check(record, "kanji record is not a hash #{record.class}") { |v| v.is_a?(Hash) }
 
@@ -131,7 +134,16 @@ module Wk
           new_radical_ids = component_ids.map do |v|
             check(v, "#{subject} has invalid radical ID (#{v}) }") { |v| radical_from_id.has_key?(v) }
           end
+          new_radical_ids.uniq! # just in case, although in this case (unlike similar kanjis) there seem to be no duplicates
+          same_radicals = new_radical_ids.size == old_radical_ids.size && new_radical_ids.to_set == old_radical_ids.to_set
           radicals = component_ids.map { |wk_id| radical_from_id[wk_id] }
+
+          old_similar_ids = kanji.new_record? ? [] : kanji.similar_kanjis.pluck(:wk_id)
+          new_similar_ids = kdata["visually_similar_subject_ids"]
+          new_similar_ids = [] unless new_similar_ids.is_a?(Array) && new_similar_ids.all? { |id| id.is_a?(Integer) && id > 0 }
+          new_similar_ids.uniq! # sadly, WK data is not always unique
+          new_similar_ids.reject! { |id| id == wk_id } # don't allow self-similarity just in case
+          same_similar_kanjis = new_similar_ids.size == old_similar_ids.size && new_similar_ids.to_set == old_similar_ids.to_set
 
           if kanji.new_record?
             kanji.save!
@@ -139,22 +151,46 @@ module Wk
             creates += 1
           else
             changes = kanji.changes
-            if old_radical_ids.to_set == new_radical_ids.to_set
-              updates += kanji.check_update(changes, old_radical_ids: old_radical_ids.join(", "))
+            options = {}
+            if same_radicals
+              options[:old_radical_ids] = old_radical_ids.join(", ")
             else
               changes["radicals"] = [old_radical_ids.join(", "), new_radical_ids.join(", ")]
-              updates += kanji.check_update(changes, new_radicals: radicals)
+              options[:new_radicals] = radicals
+            end
+            if same_similar_kanjis
+              options[:old_similar_ids] = old_similar_ids.join(", ")
+            else
+              changes["similar_kanjis"] = [old_similar_ids.join(", "), new_similar_ids.join(", ")]
+            end
+            if kanji.check_update(changes, options)
+              updates += 1
+            else
+              # if we don't update the other attributes, don't update similar kanjis either
+              same_similar_kanjis = true
             end
           end
+
+          # these updates will be done later after all kanji are in place
+          new_similarities[kanji] = new_similar_ids unless same_similar_kanjis
         end
+      end
+
+      # updates and creates that need all kanji present
+      kanji_from_id = Wk::Kanji.all.each_with_object({}) { |k, h| h[k.wk_id] = k }
+      new_similarities.each do |kanji, similar_ids|
+        similar_kanjis = similar_ids.map do |wk_id|
+          check(kanji_from_id[wk_id], "kanji (#{kanji.id} #{kanji.wk_id}, #{kanji.character}) is similar to a kanji with a non-existant ID (#{wk_id})") { |v| !v.nil? }
+        end
+        kanji.similar_kanjis = similar_kanjis
       end
 
       puts "updates: #{updates}"
       puts "creates: #{creates}"
     end
 
-    def check_update(changes, new_radicals: nil, old_radical_ids: nil)
-      return 0 if changes.empty?
+    def check_update(changes, new_radicals: nil, old_radical_ids: nil, old_similar_ids: nil)
+      return false if changes.empty?
 
       puts "kanji #{wk_id}:"
       show_change(changes, "character")
@@ -164,12 +200,13 @@ module Wk
       show_change(changes, "reading")
       show_change(changes, "reading_mnemonic", max: 50)
       show_change(changes, "radicals", no_change: old_radical_ids)
+      show_change(changes, "similar_kanjis", no_change: old_similar_ids)
       show_change(changes, "last_updated")
 
-      return 0 unless permission_granted?
+      return false unless permission_granted?
       save!
       self.radicals = new_radicals if new_radicals
-      return 1
+      return true
     end
   end
 end

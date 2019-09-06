@@ -5,19 +5,21 @@
     %table{class: "table table-bordered"}
       %tbody
         %tr.d-flex
-          %td.col-3= t("wk.character")
-          %td.col-9= @kanji.character
-        %tr.d-flex
-          %td.col-3= t("wk.radical.radicals")
-          %td.col-9
-            - @kanji.radicals.each_with_index do |radical, i|
-              = link_to radical.character_name, radical
-        %tr.d-flex
           %td.col-3= t("wk.meaning")
           %td.col-9= @kanji.meaning
         %tr.d-flex
           %td.col-3= t("wk.reading")
           %td.col-9= @kanji.reading
+        %tr.d-flex
+          %td.col-3= t("wk.radical.radicals")
+          %td.col-9
+            - @kanji.radicals.each do |radical|
+              = link_to radical.character_name, radical
+        %tr.d-flex
+          %td.col-3= t("wk.kanji.similar")
+          %td.col-9{style: "font-size: 2em"}
+            - @kanji.similar_kanjis.each do |kanji|
+              = link_to kanji.character, kanji
         %tr.d-flex
           %td.col-3= t("wk.hint.meaning")
           %td.col-9= @kanji.meaning_mnemonic.html_safe

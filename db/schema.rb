@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_115133) do
+ActiveRecord::Schema.define(version: 2019_09_06_193310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -574,6 +574,13 @@ ActiveRecord::Schema.define(version: 2019_09_06_115133) do
     t.date "last_updated"
     t.string "reading", limit: 128
     t.index ["wk_id"], name: "index_wk_kanjis_on_wk_id", unique: true
+  end
+
+  create_table "wk_kanjis_kanjis", id: false, force: :cascade do |t|
+    t.integer "kanji_id"
+    t.integer "similar_id"
+    t.index ["kanji_id"], name: "index_wk_kanjis_kanjis_on_kanji_id"
+    t.index ["similar_id"], name: "index_wk_kanjis_kanjis_on_similar_id"
   end
 
   create_table "wk_kanjis_radicals", id: false, force: :cascade do |t|
