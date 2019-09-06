@@ -12,15 +12,15 @@
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row
-  .offset-lg-1.col-lg-10.offset-xl-2.col-xl-8
-    %table{class: "table table-bordered table-striped table-sm mt-3"}
-      %thead
-        %tr.d-flex
-          %th.col-1.text-center= t("wk.short.character")
-          %th.col-10.text-center= t("wk.meaning")
-          %th.col-1.text-center= t("wk.level")
-      %tbody{id: "results"}
-        = render "results", kanjis: @kanjis
+  %table{class: "table table-bordered table-striped table-sm mt-3"}
+    %thead
+      %tr.d-flex
+        %th.col-1.text-center= t("wk.short.character")
+        %th.col-5.text-center= t("wk.meaning")
+        %th.col-5.text-center= t("wk.reading")
+        %th.col-1.text-center= t("wk.level")
+    %tbody{id: "results"}
+      = render "results", kanjis: @kanjis
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"

@@ -72,7 +72,8 @@ module Wk
           meanings = check(rdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
           meanings.keep_if { |m| m.is_a?(Hash) && m["primary"] == true }
           check(meanings, "#{subject} doesn't have any primary meanings") { |v| v.size > 0 }
-          radical.name = check(meanings[0]["meaning"], "#{subject} first meaning has no name") { |v| v.is_a?(String) && v.present? }
+          name = check(meanings[0]["meaning"], "#{subject} first meaning has no name") { |v| v.is_a?(String) && v.present? }
+          radical.name = check(name, "#{subject} name is too long (#{name.length})") { |v| v.length <= MAX_NAME }
           subject[-1,1] = ", #{radical.name})"
 
           # some radicals have no characters so we allow that

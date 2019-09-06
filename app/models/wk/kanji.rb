@@ -5,33 +5,35 @@ module Wk
     include Wanikani
 
     MAX_MEANING = 128
+    MAX_READING = 128
 
     has_and_belongs_to_many :radicals
-
-    before_validation :truncate
 
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :last_updated, presence: true
     validates :meaning, presence: true, length: { maximum: MAX_MEANING }
     validates :meaning_mnemonic, presence: true
+    validates :reading, presence: true, length: { maximum: MAX_READING }
     validates :reading_mnemonic, presence: true
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
     scope :by_character,    -> { order(:character) }
     scope :by_level,        -> { order(:level, :character) }
-    scope :by_meaning,      -> { order(:meaning, :character) }
-    scope :by_last_updated, -> { order(last_updated: :desc, character: :asc) }
+    scope :by_meaning,      -> { order(:meaning, :level) }
+    scope :by_reading,      -> { order(:reading, :level) }
+    scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
     def self.search(params, path, opt={})
       matches =
         case params[:order]
-        when "meaning"      then by_meaning
         when "last_updated" then by_last_updated
         when "level"        then by_level
+        when "meaning"      then by_meaning
+        when "reading"      then by_reading
         else                     by_character
         end
-      if sql = cross_constraint(params[:query], %w{character meaning})
+      if sql = cross_constraint(params[:query], %w{character meaning reading})
         matches = matches.where(sql)
       end
       if sql = numerical_constraint(params[:id], :wk_id)
@@ -79,6 +81,43 @@ module Wk
           kanji.level = check(kdata["level"], "#{subject} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
           subject[-1,1] = ", #{kanji.level})"
 
+          meanings = check(kdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+          primary = []
+          secondary = []
+          meanings.each do |m|
+            if m.is_a?(Hash) && m["meaning"].is_a?(String) && m["meaning"].present?
+              meaning = m["meaning"]
+              if m["primary"]
+                primary.push(meaning)
+              else
+                secondary.push(meaning)
+              end
+            end
+          end
+          check(primary, "#{subject} doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
+          meaning = primary.concat(secondary).join(", ")
+          kanji.meaning = check(meaning, "#{subject} meaning is too long (#{meaning.length})") { |v| v.length <= MAX_MEANING }
+          subject[-1,1] = ", #{kanji.meaning})"
+
+          readings = check(kdata["readings"], "#{subject} doesn't have a readings array") { |v| v.is_a?(Array) && v.size > 0 }
+          primary = []
+          secondary = []
+          readings.each do |r|
+            if r.is_a?(Hash) && r["reading"].is_a?(String) && r["reading"].present?
+              reading = r["reading"]
+              reading = reading.katakana if r["type"] == "onyomi"
+              if r["primary"]
+                primary.push(reading)
+              else
+                secondary.push(reading)
+              end
+            end
+          end
+          check(primary, "#{subject} doesn't have any primary readings") { |v| v.is_a?(Array) && v.size > 0 }
+          reading = primary.concat(secondary).join(", ")
+          kanji.reading = check(reading, "#{subject} reading is too long (#{reading.length})") { |v| v.length <= MAX_READING }
+          subject[-1,1] = ", #{kanji.reading})"
+
           meaning_mnemonic = check(kdata["meaning_mnemonic"], "#{subject} doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
           meaning_hint = kdata["meaning_hint"]
           kanji.meaning_mnemonic = meaning_hint ? "<p>#{meaning_mnemonic}</p><p>#{meaning_hint}</p>" : meaning_mnemonic
@@ -86,13 +125,6 @@ module Wk
           reading_mnemonic = check(kdata["reading_mnemonic"], "#{subject} doesn't have a reading mnemonic") { |v| v.is_a?(String) && v.present? }
           reading_hint = kdata["reading_hint"]
           kanji.reading_mnemonic = reading_hint ? "<p>#{reading_mnemonic}</p><p>#{reading_hint}</p>" : reading_mnemonic
-
-          meanings = check(kdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
-          primary = meanings.map { |m| m["meaning"] if m.is_a?(Hash) && m["primary"] == true && m["meaning"].present? }.compact
-          check(primary, "#{subject} doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
-          alternative = meanings.map { |m| m["meaning"] if m.is_a?(Hash) && m["primary"] == false && m["meaning"].present? }.compact
-          kanji.meaning = primary.concat(alternative).join(", ")
-          subject[-1,1] = ", #{kanji.meaning})"
 
           component_ids = check(kdata["component_subject_ids"], "#{subject} doesn't have a radicals array") { |v| v.is_a?(Array) && v.size > 0 }
           old_radical_ids = kanji.new_record? ? [] : kanji.radicals.pluck(:wk_id)
@@ -129,6 +161,7 @@ module Wk
       show_change(changes, "level")
       show_change(changes, "meaning")
       show_change(changes, "meaning_mnemonic", max: 50)
+      show_change(changes, "reading")
       show_change(changes, "reading_mnemonic", max: 50)
       show_change(changes, "radicals", no_change: old_radical_ids)
       show_change(changes, "last_updated")
@@ -137,12 +170,6 @@ module Wk
       save!
       self.radicals = new_radicals if new_radicals
       return 1
-    end
-
-    private
-
-    def truncate
-      self.meaning = meaning&.truncate(MAX_MEANING)
     end
   end
 end

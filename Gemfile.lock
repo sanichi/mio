@@ -166,6 +166,9 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    moji (1.6)
+    mojinizer (0.2.2)
+      moji (~> 1.6)
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
@@ -306,6 +309,7 @@ DEPENDENCIES
   launchy
   mechanize (~> 2.7)
   mini_magick (~> 4.8)
+  mojinizer (~> 0.2)
   oga (~> 2.5)
   pg
   puma (~> 3.11)

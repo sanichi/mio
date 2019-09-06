@@ -12,7 +12,7 @@ module WkHelper
   end
 
   def wk_kanji_order_menu(selected)
-    opts = %w/character level meaning last_updated/.map { |i| [t("wk.#{i}"), i] }
+    opts = %w/character level meaning reading last_updated/.map { |i| [t("wk.#{i}"), i] }
     options_for_select(opts, selected)
   end
 end
