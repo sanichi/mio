@@ -8,8 +8,6 @@ module Wk
 
     has_and_belongs_to_many :kanjis
 
-    before_validation :truncate
-
     validates :character, length: { is: 1 }, uniqueness: true, allow_nil: true
     validates :last_updated, presence: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
@@ -119,12 +117,6 @@ module Wk
       return 0 unless permission_granted?
       save!
       return 1
-    end
-
-    private
-
-    def truncate
-      self.name = name&.truncate(MAX_NAME)
     end
   end
 end
