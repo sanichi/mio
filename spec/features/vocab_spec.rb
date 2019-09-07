@@ -4,6 +4,8 @@ describe Vocab do
   let(:data)   { build(:vocab) }
   let!(:vocab) { create(:vocab) }
 
+  before { skip "scheduled for deprecation" }
+
   before(:each) do
     login
     click_link t(:vocab_vocabs)

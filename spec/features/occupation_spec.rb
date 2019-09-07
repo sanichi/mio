@@ -5,6 +5,8 @@ describe Occupation do
   let!(:occupation) { create(:occupation) }
   let!(:vocab)      { create(:vocab) }
 
+  before { skip "scheduled for deprecation" }
+
   before(:each) do
     login
     click_link t(:vocab_occupation_occupations)

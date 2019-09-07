@@ -4,6 +4,8 @@ describe SimilarKanji do
   let(:data)           { build(:similar_kanji) }
   let!(:similar_kanji) { create(:similar_kanji) }
 
+  before { skip "scheduled for deprecated" }
+
   before(:each) do
     login
     click_link t(:vocab_similar_kanjis)
