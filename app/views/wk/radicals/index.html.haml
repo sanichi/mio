@@ -1,6 +1,6 @@
 = render "utils/title", key: "wk.radical.radicals"
 
-= form_tag wk_radicals_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+= form_tag wk_radicals_path, method: :get, class: "form-inline justify-content-center" do
   = label_tag :query, t("wk.radical.radical"), class: "sr-only"
   = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.radical.radical"), size: 16, autofocus: true
   = label_tag :query, t("wk.id"), class: "sr-only"
@@ -20,7 +20,7 @@
           %th.col-1.text-center= t("wk.short.character")
           %th.col-8.text-center= t("wk.hint.mnemonic")
           %th.col-1.text-center= t("wk.level")
-      %tbody{id: "results"}
+      %tbody
         = render "results", radicals: @radicals
 
 .text-center

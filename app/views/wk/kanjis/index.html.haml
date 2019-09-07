@@ -1,6 +1,6 @@
 = render "utils/title", key: "wk.kanji.kanjis"
 
-= form_tag wk_kanjis_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+= form_tag wk_kanjis_path, method: :get, class: "form-inline justify-content-center" do
   = label_tag :query, t("wk.kanji.kanji"), class: "sr-only"
   = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.kanji.kanji"), size: 16, autofocus: true
   = label_tag :query, t("wk.id"), class: "sr-only"
@@ -19,7 +19,7 @@
         %th.col-5.text-center= t("wk.meaning")
         %th.col-5.text-center= t("wk.reading")
         %th.col-1.text-center= t("wk.level")
-    %tbody{id: "results"}
+    %tbody
       = render "results", kanjis: @kanjis
 
 .text-center

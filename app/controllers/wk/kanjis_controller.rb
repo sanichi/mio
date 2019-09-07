@@ -3,7 +3,10 @@ module Wk
     authorize_resource
 
     def index
-      @kanjis = Wk::Kanji.search(params, wk_kanjis_path, remote: true, per_page: 20)
+      @kanjis = Wk::Kanji.search(params, wk_kanjis_path, per_page: 20)
+      if @kanjis.count == 1
+        redirect_to @kanjis.matches.first
+      end
     end
 
     def show
