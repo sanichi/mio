@@ -19,10 +19,12 @@ en:
       radical: Radical
       radicals: Radicals
     vocab:
+      characters: Characters
       vocab: Vocab
       vocabs: Vocabs
     short:
       character: Char
+      characters: Chars
       id: ID
       last_updated: Last
     temporary:

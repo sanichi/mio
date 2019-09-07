@@ -4,18 +4,25 @@ module Wk
     include Pageable
     include Wanikani
 
+    MAX_CHARACTERS = 24
+
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
-    scope :by_level,        -> { order(:level) }
+    scope :by_characters,   -> { order(Arel.sql('characters COLLATE "C"')) }
+    scope :by_level,        -> { order(:level, Arel.sql('characters COLLATE "C"')) }
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
     def self.search(params, path, opt={})
       matches =
         case params[:order]
+        when "characters"   then by_characters
         when "last_updated" then by_last_updated
         else                     by_level
         end
+      if sql = cross_constraint(params[:vquery], %w{characters})
+        matches = matches.where(sql)
+      end
       if sql = numerical_constraint(params[:id], :wk_id)
         matches = matches.where(sql)
       end
@@ -29,6 +36,7 @@ module Wk
       updates = 0
       creates = 0
       url = start_url("vocabulary")
+      max = 0
 
       puts "vocabs"
       puts "------"
@@ -55,6 +63,9 @@ module Wk
 
           data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
+          vocab.characters = check(data["characters"], "#{context} doesn't have valid characters") { |v| v.is_a?(String) && v.present? && v.length <= MAX_CHARACTERS }
+          context[-1,1] = ", #{vocab.characters})"
+
           vocab.level = check(data["level"], "#{context} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
           context[-1,1] = ", #{vocab.level})"
 
@@ -70,6 +81,7 @@ module Wk
 
       puts "updates: #{updates}"
       puts "creates: #{creates}"
+      puts "max: #{max}"
     end
 
     def update_performed?(changes)

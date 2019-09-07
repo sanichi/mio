@@ -601,6 +601,7 @@ ActiveRecord::Schema.define(version: 2019_09_07_141418) do
   end
 
   create_table "wk_vocabs", force: :cascade do |t|
+    t.string "characters", limit: 24
     t.date "last_updated"
     t.integer "level", limit: 2
     t.integer "wk_id"

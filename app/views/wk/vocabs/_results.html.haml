@@ -1,6 +1,7 @@
 - vocabs.matches.each do |vocab|
   %tr.d-flex
-    %td.col-1.text-center= link_to vocab.level, vocab
+    %td.col-2= link_to vocab.characters, vocab
+    %td.col-1.text-center= vocab.level
     %td.col-1.text-center= vocab.last_updated.strftime("%y/%m")
-    %td.col-10.text-center
+    %td.col-6.text-center
 = render "utils/pagination_links", pager: vocabs, columns: 3

@@ -22,17 +22,17 @@ module Wk
     scope :by_character,    -> { order(:character) }
     scope :by_level,        -> { order(:level, :character) }
     scope :by_meaning,      -> { order(:meaning, :level) }
-    scope :by_reading,      -> { order(:reading, :level) }
+    scope :by_reading,      -> { order(Arel.sql('reading COLLATE "C"'), :level) }
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
     def self.search(params, path, opt={})
       matches =
         case params[:order]
+        when "character"    then by_character
         when "last_updated" then by_last_updated
-        when "level"        then by_level
         when "meaning"      then by_meaning
         when "reading"      then by_reading
-        else                     by_character
+        else                     by_level
         end
       if sql = cross_constraint(params[:kquery], %w{character meaning reading})
         matches = matches.where(sql)

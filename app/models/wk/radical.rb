@@ -23,8 +23,8 @@ module Wk
       matches =
         case params[:order]
         when "last_updated" then by_last_updated
-        when "level"        then by_level
-        else                     by_name
+        when "name"         then by_name
+        else                     by_level
         end
       if sql = cross_constraint(params[:rquery], %w{name character})
         matches = matches.where(sql)
