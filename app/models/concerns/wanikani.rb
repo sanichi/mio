@@ -63,7 +63,6 @@ module Wanikani
     print "  update [Ynqc]? "
     case gets.chomp
     when /\Ac(ontinue)?\z/i
-      puts "setting permission_granted"
       @@continue = true
     when "", /\Ay(es)?\z/i
       true
