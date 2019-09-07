@@ -89,7 +89,7 @@ module Wk
             radical.save!
             creates += 1
           else
-            updates += radical.check_update
+            updates += 1 if radical.update_performed?
           end
         end
       end
@@ -102,8 +102,8 @@ module Wk
       "#{character}#{character.present? ? '-' : ''}#{name}"
     end
 
-    def check_update
-      return 0 unless changed?
+    def update_performed?
+      return false unless changed?
 
       changes = self.changes
 
@@ -114,9 +114,9 @@ module Wk
       show_change(changes, "mnemonic", max: 50)
       show_change(changes, "last_updated")
 
-      return 0 unless permission_granted?
+      return false unless permission_granted?
       save!
-      return 1
+      return true
     end
   end
 end

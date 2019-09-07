@@ -163,7 +163,7 @@ module Wk
             else
               changes["similar_kanjis"] = [old_similar_ids.join(", "), new_similar_ids.join(", ")]
             end
-            if kanji.check_update(changes, options)
+            if kanji.update_performed?(changes, options)
               updates += 1
             else
               # if we don't update the other attributes, don't update similar kanjis either
@@ -176,11 +176,11 @@ module Wk
         end
       end
 
-      # updates and creates that need all kanji present
+      # updates that need all kanji present
       kanji_from_id = Wk::Kanji.all.each_with_object({}) { |k, h| h[k.wk_id] = k }
       new_similarities.each do |kanji, similar_ids|
         similar_kanjis = similar_ids.map do |wk_id|
-          check(kanji_from_id[wk_id], "kanji (#{kanji.id} #{kanji.wk_id}, #{kanji.character}) is similar to a kanji with a non-existant ID (#{wk_id})") { |v| !v.nil? }
+          check(kanji_from_id[wk_id], "kanji (#{kanji.id}, #{kanji.wk_id}, #{kanji.character}) is similar to a kanji with a non-existant ID (#{wk_id})") { |v| !v.nil? }
         end
         kanji.similar_kanjis = similar_kanjis
       end
@@ -189,7 +189,7 @@ module Wk
       puts "creates: #{creates}"
     end
 
-    def check_update(changes, new_radicals: nil, old_radical_ids: nil, old_similar_ids: nil)
+    def update_performed?(changes, new_radicals: nil, old_radical_ids: nil, old_similar_ids: nil)
       return false if changes.empty?
 
       puts "kanji #{wk_id}:"
