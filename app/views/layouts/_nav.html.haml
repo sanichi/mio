@@ -33,6 +33,7 @@
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("wk.temporary.header"), id: "navbarWaniKani"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarWaniKani"}
+          = render "wk/vocabs/dropdown_menu", cond: can?(:read, Wk::Vocab), size: menu_size
           = render "wk/kanjis/dropdown_menu", cond: can?(:read, Wk::Kanji), size: menu_size
           = render "wk/radicals/dropdown_menu", cond: can?(:read, Wk::Radical), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path

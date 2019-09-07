@@ -46,44 +46,44 @@ module Wk
       puts "--------"
 
       while url.present?
-        data, url = get_data(url)
-        puts "records: #{data.size}"
+        subjects, url = get_subjects(url)
+        puts "subjects: #{subjects.size}"
 
-        data.each do |record|
-          check(record, "radical record is not a hash (#{record.class})") { |v| v.is_a?(Hash) }
+        subjects.each do |subject|
+          check(subject, "radical subject is not a hash (#{subject.class})") { |v| v.is_a?(Hash) }
 
-          wk_id = check(record["id"], "radical ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
+          wk_id = check(subject["id"], "radical ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
 
           radical = find_or_initialize_by(wk_id: wk_id)
-          subject = "radical (#{wk_id})"
+          context = "radical (#{wk_id})"
 
           last_updated =
             begin
-              Date.parse(record["data_updated_at"].to_s)
+              Date.parse(subject["data_updated_at"].to_s)
             rescue ArgumentError
               nil
             end
-          radical.last_updated = check(last_updated, "#{subject} has no valid last update date") { |v| v.is_a?(Date) }
+          radical.last_updated = check(last_updated, "#{context} has no valid last update date") { |v| v.is_a?(Date) }
 
-          rdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
+          data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
-          meanings = check(rdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+          meanings = check(data["meanings"], "#{context} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
           meanings.keep_if { |m| m.is_a?(Hash) && m["primary"] == true }
-          check(meanings, "#{subject} doesn't have any primary meanings") { |v| v.size > 0 }
-          name = check(meanings[0]["meaning"], "#{subject} first meaning has no name") { |v| v.is_a?(String) && v.present? }
-          radical.name = check(name, "#{subject} name is too long (#{name.length})") { |v| v.length <= MAX_NAME }
-          subject[-1,1] = ", #{radical.name})"
+          check(meanings, "#{context} doesn't have any primary meanings") { |v| v.size > 0 }
+          name = check(meanings[0]["meaning"], "#{context} first meaning has no name") { |v| v.is_a?(String) && v.present? }
+          radical.name = check(name, "#{context} name is too long (#{name.length})") { |v| v.length <= MAX_NAME }
+          context[-1,1] = ", #{radical.name})"
 
           # some radicals have no characters so we allow that
-          character = rdata["characters"]
+          character = data["characters"]
           character = nil unless character.present? && character.length == 1
           radical.character = character
-          subject[-1,1] = ", #{radical.character || 'none'})"
+          context[-1,1] = ", #{radical.character || 'none'})"
 
-          radical.level = check(rdata["level"], "#{subject} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
-          subject[-1,1] = ", #{radical.level})"
+          radical.level = check(data["level"], "#{context} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
+          context[-1,1] = ", #{radical.level})"
 
-          radical.mnemonic = check(rdata["meaning_mnemonic"], "#{subject} doesn't have a mnemonic") { |v| v.is_a?(String) && v.present? }
+          radical.mnemonic = check(data["meaning_mnemonic"], "#{context} doesn't have a mnemonic") { |v| v.is_a?(String) && v.present? }
 
           if radical.new_record?
             radical.save!

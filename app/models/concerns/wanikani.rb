@@ -4,7 +4,7 @@ module Wanikani
   @@continue = false
 
   module ClassMethods
-    def get_data(url)
+    def get_subjects(url)
       sleep 1.1 # max is 60 requests per second
 
       uri = URI.parse(url)

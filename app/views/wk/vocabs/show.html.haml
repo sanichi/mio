@@ -1,0 +1,20 @@
+= render "utils/title", text: @vocab.wk_id, header: true
+
+.row
+  .offset-md-1.col-md-10
+    %table{class: "table table-bordered"}
+      %tbody
+        %tr.d-flex
+          %td.col-3= t("wk.level")
+          %td.col-9= @vocab.level
+        %tr.d-flex
+          %td.col-3= t("wk.id")
+          %td.col-9= @vocab.wk_id
+        %tr.d-flex
+          %td.col-3= t("wk.last_updated")
+          %td.col-9= @vocab.last_updated
+
+.text-center
+  = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
+  = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "btn btn-success"
+  = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"

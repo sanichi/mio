@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_193310) do
+ActiveRecord::Schema.define(version: 2019_09_07_141418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -598,6 +598,13 @@ ActiveRecord::Schema.define(version: 2019_09_06_193310) do
     t.string "character", limit: 1
     t.date "last_updated"
     t.index ["wk_id"], name: "index_wk_radicals_on_wk_id", unique: true
+  end
+
+  create_table "wk_vocabs", force: :cascade do |t|
+    t.date "last_updated"
+    t.integer "level", limit: 2
+    t.integer "wk_id"
+    t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end
 
   create_table "yomis", force: :cascade do |t|

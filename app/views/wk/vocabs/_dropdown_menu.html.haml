@@ -1,0 +1,4 @@
+- if cond
+  = form_tag wk_vocabs_path, method: :get, class: "form-inline dropdown-item nav-link" do
+    = label_tag :vquery, t("wk.vocab.vocab"), class: "sr-only"
+    = text_field_tag :vquery, params[:vquery], class: "form-control", placeholder: t("wk.vocab.vocab"), size: size

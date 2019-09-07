@@ -57,34 +57,34 @@ module Wk
       puts "------"
 
       while url.present? do
-        data, url = get_data(url)
-        puts "records: #{data.size}"
+        subjects, url = get_subjects(url)
+        puts "subjects: #{subjects.size}"
 
         # updates and creates that don't need all kanji present
-        data.each do |record|
-          check(record, "kanji record is not a hash #{record.class}") { |v| v.is_a?(Hash) }
+        subjects.each do |subject|
+          check(subject, "kanji subject is not a hash #{subject.class}") { |v| v.is_a?(Hash) }
 
-          wk_id = check(record["id"], "kanji ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
+          wk_id = check(subject["id"], "kanji ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
           kanji = find_or_initialize_by(wk_id: wk_id)
-          subject = "kanji (#{wk_id})"
+          context = "kanji (#{wk_id})"
 
           last_updated =
             begin
-              Date.parse(record["data_updated_at"].to_s)
+              Date.parse(subject["data_updated_at"].to_s)
             rescue ArgumentError
               nil
             end
-          kanji.last_updated = check(last_updated, "#{subject} has no valid last update date") { |v| v.is_a?(Date) }
+          kanji.last_updated = check(last_updated, "#{context} has no valid last update date") { |v| v.is_a?(Date) }
 
-          kdata = check(record["data"], "#{subject} doesn't have a data hash") { |v| v.is_a?(Hash) }
+          data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
-          kanji.character = check(kdata["characters"], "#{subject} doesn't have a character") { |v| v.is_a?(String) && v.length == 1 }
-          subject[-1,1] = ", #{kanji.character})"
+          kanji.character = check(data["characters"], "#{context} doesn't have a character") { |v| v.is_a?(String) && v.length == 1 }
+          context[-1,1] = ", #{kanji.character})"
 
-          kanji.level = check(kdata["level"], "#{subject} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
-          subject[-1,1] = ", #{kanji.level})"
+          kanji.level = check(data["level"], "#{context} doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
+          context[-1,1] = ", #{kanji.level})"
 
-          meanings = check(kdata["meanings"], "#{subject} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+          meanings = check(data["meanings"], "#{context} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
           primary = []
           secondary = []
           meanings.each do |m|
@@ -97,12 +97,12 @@ module Wk
               end
             end
           end
-          check(primary, "#{subject} doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
+          check(primary, "#{context} doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
           meaning = primary.concat(secondary).join(", ")
-          kanji.meaning = check(meaning, "#{subject} meaning is too long (#{meaning.length})") { |v| v.length <= MAX_MEANING }
-          subject[-1,1] = ", #{kanji.meaning})"
+          kanji.meaning = check(meaning, "#{context} meaning is too long (#{meaning.length})") { |v| v.length <= MAX_MEANING }
+          context[-1,1] = ", #{kanji.meaning})"
 
-          readings = check(kdata["readings"], "#{subject} doesn't have a readings array") { |v| v.is_a?(Array) && v.size > 0 }
+          readings = check(data["readings"], "#{context} doesn't have a readings array") { |v| v.is_a?(Array) && v.size > 0 }
           primary = []
           secondary = []
           readings.each do |r|
@@ -116,30 +116,30 @@ module Wk
               end
             end
           end
-          check(primary, "#{subject} doesn't have any primary readings") { |v| v.is_a?(Array) && v.size > 0 }
+          check(primary, "#{context} doesn't have any primary readings") { |v| v.is_a?(Array) && v.size > 0 }
           reading = primary.concat(secondary).join(", ")
-          kanji.reading = check(reading, "#{subject} reading is too long (#{reading.length})") { |v| v.length <= MAX_READING }
-          subject[-1,1] = ", #{kanji.reading})"
+          kanji.reading = check(reading, "#{context} reading is too long (#{reading.length})") { |v| v.length <= MAX_READING }
+          context[-1,1] = ", #{kanji.reading})"
 
-          meaning_mnemonic = check(kdata["meaning_mnemonic"], "#{subject} doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
-          meaning_hint = kdata["meaning_hint"]
+          meaning_mnemonic = check(data["meaning_mnemonic"], "#{context} doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
+          meaning_hint = data["meaning_hint"]
           kanji.meaning_mnemonic = meaning_hint ? "<p>#{meaning_mnemonic}</p><p>#{meaning_hint}</p>" : meaning_mnemonic
 
-          reading_mnemonic = check(kdata["reading_mnemonic"], "#{subject} doesn't have a reading mnemonic") { |v| v.is_a?(String) && v.present? }
-          reading_hint = kdata["reading_hint"]
+          reading_mnemonic = check(data["reading_mnemonic"], "#{context} doesn't have a reading mnemonic") { |v| v.is_a?(String) && v.present? }
+          reading_hint = data["reading_hint"]
           kanji.reading_mnemonic = reading_hint ? "<p>#{reading_mnemonic}</p><p>#{reading_hint}</p>" : reading_mnemonic
 
-          component_ids = check(kdata["component_subject_ids"], "#{subject} doesn't have a radicals array") { |v| v.is_a?(Array) && v.size > 0 }
+          component_ids = check(data["component_subject_ids"], "#{context} doesn't have a radicals array") { |v| v.is_a?(Array) && v.size > 0 }
           old_radical_ids = kanji.new_record? ? [] : kanji.radicals.pluck(:wk_id)
           new_radical_ids = component_ids.map do |v|
-            check(v, "#{subject} has invalid radical ID (#{v}) }") { |v| radical_from_id.has_key?(v) }
+            check(v, "#{context} has invalid radical ID (#{v}) }") { |v| radical_from_id.has_key?(v) }
           end
           new_radical_ids.uniq! # just in case, although in this case (unlike similar kanjis) there seem to be no duplicates
           same_radicals = new_radical_ids.size == old_radical_ids.size && new_radical_ids.to_set == old_radical_ids.to_set
           radicals = component_ids.map { |wk_id| radical_from_id[wk_id] }
 
           old_similar_ids = kanji.new_record? ? [] : kanji.similar_kanjis.pluck(:wk_id)
-          new_similar_ids = kdata["visually_similar_subject_ids"]
+          new_similar_ids = data["visually_similar_subject_ids"]
           new_similar_ids = [] unless new_similar_ids.is_a?(Array) && new_similar_ids.all? { |id| id.is_a?(Integer) && id > 0 }
           new_similar_ids.uniq! # sadly, WK data is not always unique
           new_similar_ids.reject! { |id| id == wk_id } # don't allow self-similarity just in case

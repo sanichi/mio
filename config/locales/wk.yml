@@ -18,8 +18,12 @@ en:
       name: Name
       radical: Radical
       radicals: Radicals
+    vocab:
+      vocab: Vocab
+      vocabs: Vocabs
     short:
       character: Char
       id: ID
+      last_updated: Last
     temporary:
       header: v2

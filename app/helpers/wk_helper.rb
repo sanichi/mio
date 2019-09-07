@@ -15,4 +15,9 @@ module WkHelper
     opts = %w/character level meaning reading last_updated/.map { |i| [t("wk.#{i}"), i] }
     options_for_select(opts, selected)
   end
+
+  def wk_vocab_order_menu(selected)
+    opts = %w/level last_updated/.map { |i| [t("wk.#{i}"), i] }
+    options_for_select(opts, selected)
+  end
 end
