@@ -1,0 +1,4 @@
+- if cond
+  = form_tag wk_radicals_path, method: :get, class: "form-inline dropdown-item nav-link" do
+    = label_tag :rquery, t("wk.radical.radical"), class: "sr-only"
+    = text_field_tag :rquery, params[:rquery], class: "form-control", placeholder: t("wk.radical.radical"), size: size

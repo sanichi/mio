@@ -26,7 +26,7 @@ module Wk
         when "level"        then by_level
         else                     by_name
         end
-      if sql = cross_constraint(params[:query], %w{name character})
+      if sql = cross_constraint(params[:rquery], %w{name character})
         matches = matches.where(sql)
       end
       if sql = numerical_constraint(params[:id], :wk_id)

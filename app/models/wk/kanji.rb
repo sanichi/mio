@@ -34,7 +34,7 @@ module Wk
         when "reading"      then by_reading
         else                     by_character
         end
-      if sql = cross_constraint(params[:query], %w{character meaning reading})
+      if sql = cross_constraint(params[:kquery], %w{character meaning reading})
         matches = matches.where(sql)
       end
       if sql = numerical_constraint(params[:id], :wk_id)
