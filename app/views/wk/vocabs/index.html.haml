@@ -13,17 +13,12 @@
   = text_field_tag :id, params[:id], class: "form-control mr-1 mb-1", placeholder: t("wk.short.id"), size: 5
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-.row
-  %table{class: "table table-bordered table-striped table-sm mt-3"}
-    %thead
-      %tr.d-flex
-        %th.col-1= t("wk.short.characters")
-        %th.col-2= t("wk.reading")
-        %th.col-5= t("wk.meaning")
-        %th.col-3= t("wk.vocab.parts")
-        %th.col-1.text-center= t("wk.level")
-    %tbody
-      = render "results", vocabs: @vocabs
+%table{class: "table table-bordered table-striped table-sm mt-3"}
+  %thead
+    = render "table_header"
+  %tbody
+    = render "table_rows", vocabs: @vocabs.matches
+    = render "utils/pagination_links", pager: @vocabs, columns: 4
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"

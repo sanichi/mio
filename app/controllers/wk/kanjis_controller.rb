@@ -11,6 +11,7 @@ module Wk
 
     def show
       @kanji = Wk::Kanji.find(params[:id])
+      @vocabs = Wk::Vocab.by_reading.where("characters LIKE '%#{@kanji.character}%'")
     end
   end
 end

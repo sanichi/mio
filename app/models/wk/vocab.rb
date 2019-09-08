@@ -77,6 +77,13 @@ module Wk
       parts.split(",").reject{ |p| SILENT_PARTS[p] }.map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
     end
 
+    def linked_characters
+      characters.split('').map do |c|
+        k = Wk::Kanji.find_by(character: c)
+        k ? %Q{<a href="/wk/kanjis/#{k.id}">#{c}</a>} : c
+      end.join('').html_safe
+    end
+
     def self.update
       updates = 0
       creates = 0

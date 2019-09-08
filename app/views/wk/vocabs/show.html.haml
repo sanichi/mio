@@ -1,33 +1,33 @@
-= render "utils/title", text: @vocab.characters, header: true
+= render "utils/title", text: @vocab.characters
 
-.row
-  .offset-md-1.col-md-10
-    %table{class: "table table-bordered"}
-      %tbody
-        %tr.d-flex
-          %td.col-3= t("wk.meaning")
-          %td.col-9= @vocab.meaning
-        %tr.d-flex
-          %td.col-3= t("wk.reading")
-          %td.col-9= @vocab.reading
-        %tr.d-flex
-          %td.col-3= t("wk.vocab.parts")
-          %td.col-9= @vocab.parts_of_speech
-        %tr.d-flex
-          %td.col-3= t("wk.hint.meaning")
-          %td.col-9= @vocab.meaning_mnemonic.html_safe
-        %tr.d-flex
-          %td.col-3= t("wk.hint.reading")
-          %td.col-9= @vocab.reading_mnemonic.html_safe
-        %tr.d-flex
-          %td.col-3= t("wk.level")
-          %td.col-9= @vocab.level
-        %tr.d-flex
-          %td.col-3= t("wk.id")
-          %td.col-9= @vocab.wk_id
-        %tr.d-flex
-          %td.col-3= t("wk.last_updated")
-          %td.col-9= @vocab.last_updated
+%h1.text-center= @vocab.linked_characters
+
+%table{class: "table table-bordered"}
+  %tbody
+    %tr.d-flex
+      %td.col-3= t("wk.meaning")
+      %td.col-9= @vocab.meaning
+    %tr.d-flex
+      %td.col-3= t("wk.reading")
+      %td.col-9= @vocab.reading
+    %tr.d-flex
+      %td.col-3= t("wk.vocab.parts")
+      %td.col-9= @vocab.parts_of_speech
+    %tr.d-flex
+      %td.col-3= t("wk.hint.meaning")
+      %td.col-9= @vocab.meaning_mnemonic.html_safe
+    %tr.d-flex
+      %td.col-3= t("wk.hint.reading")
+      %td.col-9= @vocab.reading_mnemonic.html_safe
+    %tr.d-flex
+      %td.col-3= t("wk.level")
+      %td.col-9= @vocab.level
+    %tr.d-flex
+      %td.col-3= t("wk.id")
+      %td.col-9= @vocab.wk_id
+    %tr.d-flex
+      %td.col-3= t("wk.last_updated")
+      %td.col-9= @vocab.last_updated
 
 .text-center
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
