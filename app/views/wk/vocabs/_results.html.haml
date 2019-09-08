@@ -1,8 +1,8 @@
 - vocabs.matches.each do |vocab|
   %tr.d-flex
-    %td.col-2= link_to vocab.characters, vocab
+    %td.col-1= link_to vocab.characters, vocab
     %td.col-2= vocab.reading
-    %td.col-4= vocab.meaning.truncate(100)
+    %td.col-5= vocab.meaning.truncate(100)
     %td.col-3= vocab.parts_of_speech.truncate(75)
     %td.col-1.text-center= vocab.level
 = render "utils/pagination_links", pager: vocabs, columns: 4
