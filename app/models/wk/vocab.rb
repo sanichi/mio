@@ -31,7 +31,6 @@ module Wk
       "suffix"            => "suf",
       "transitive verb"   => "tvb",
     }
-    SILENT_PARTS = { "iax" => true, "icx" => true }
 
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
@@ -62,8 +61,22 @@ module Wk
         matches = matches.where(sql)
       end
       if params[:parts].is_a?(Array)
-        parts = params[:parts].select{ |p| PARTS.has_value?(p) || SILENT_PARTS.has_key?(p) }.join(" ")
-        if sql = cross_constraint(parts, %w{parts})
+        parts = params[:parts].select{ |p| PARTS.has_value?(p) || p == "iax"  || p == "icx" }
+        if parts.reject! { |p| p == "icx" }
+          # search for godan verbs that look like ichidan verbs
+          parts.push("gov") unless parts.include?("gov")
+          if sql = cross_constraint("[#{IE}]る(,|$)", %w{reading})
+            matches = matches.where(sql)
+          end
+        end
+        if parts.reject! { |p| p == "iax" }
+          # search for anything which looks like an i-adjective but isn't
+          if sql = cross_constraint("い$", %w{characters})
+            matches = matches.where(sql)
+          end
+          matches = matches.where("parts NOT LIKE '%iad%'")
+        end
+        if sql = cross_constraint(parts.join(" "), %w{parts})
           matches = matches.where(sql)
         end
       end
@@ -74,7 +87,7 @@ module Wk
     end
 
     def parts_of_speech
-      parts.split(",").reject{ |p| SILENT_PARTS[p] }.map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
+      parts.split(",").map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
     end
 
     def linked_characters
@@ -164,9 +177,6 @@ module Wk
           data["parts_of_speech"].each do |part|
             parts.push(check(PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
           end
-          # add my own custom types
-          parts.push "icx" if vocab.reading.match(/[#{IE}]る(,|\z)/) && parts.include?("gov") # looks like an iru-eru verb but is actually godan
-          parts.push "iax" if vocab.characters.match(/い\z/) && !parts.include?("iad")        # looks like an i-adjective but isn't
           parts = parts.join(",")
           vocab.parts = check(parts, "#{context} parts of sppech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
 
