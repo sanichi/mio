@@ -12,7 +12,7 @@
 
     - if [Vocab, VocabTest, VerbPair, Kanji, Reading, Radical, Conversation, KanjiTest, SimilarWord, SimilarKanji, Occupation, Problem].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
-        = render "layouts/dropdown_head", text: t("vocab.japanese", locale: "jp"), id: "navbarJapaneseMenu"
+        = render "layouts/dropdown_head", text: t("vocab.temporary.header"), id: "navbarJapaneseMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
           = render "vocabs/dropdown_menu", cond: can?(:read, Vocab), size: menu_size
           = render "kanjis/dropdown_menu", cond: can?(:read, Kanji), size: menu_size
@@ -31,7 +31,7 @@
 
     - if [Wk::Radical, Wk::Kanji, Note, Misa].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
-        = render "layouts/dropdown_head", text: t("wk.temporary.header"), id: "navbarWaniKani"
+        = render "layouts/dropdown_head", text: t("wk.japanese", locale: "jp"), id: "navbarWaniKani"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarWaniKani"}
           = render "wk/vocabs/dropdown_menu", cond: can?(:read, Wk::Vocab), size: menu_size
           = render "wk/kanjis/dropdown_menu", cond: can?(:read, Wk::Kanji), size: menu_size

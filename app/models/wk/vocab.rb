@@ -74,7 +74,7 @@ module Wk
     end
 
     def parts_of_speech
-      parts.split(",").reject{ |p| SILENT_PARTS[p] }.map{ |p| I18n.t("wk.parts.#{p}") }.join(", ")
+      parts.split(",").reject{ |p| SILENT_PARTS[p] }.map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
     end
 
     def self.update

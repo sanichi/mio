@@ -51,5 +51,6 @@ en:
       characters: Chars
       id: ID
       last_updated: Last
-    temporary:
-      header: v2
+jp:
+  wk:
+    japanese: 日本語
