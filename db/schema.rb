@@ -604,6 +604,11 @@ ActiveRecord::Schema.define(version: 2019_09_07_141418) do
     t.string "characters", limit: 24
     t.date "last_updated"
     t.integer "level", limit: 2
+    t.string "meaning", limit: 256
+    t.text "meaning_mnemonic"
+    t.string "parts", limit: 80
+    t.string "reading", limit: 48
+    t.text "reading_mnemonic"
     t.integer "wk_id"
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end

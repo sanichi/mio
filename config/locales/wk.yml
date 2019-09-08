@@ -14,6 +14,29 @@ en:
       kanji: Kanji
       kanjis: Kanjis
       similar: Similar Kanjis
+    parts:
+      adj: Adjective
+      adv: Adverb
+      cnt: Counter
+      con: Conjunction
+      exp: Expression
+      gov: Godan
+      iad: い-Adjective
+      iax: い-Adjective-Like
+      icv: Ichidan
+      icx: Ichidan-Like
+      int: Interjection
+      ivb: Intransitive
+      nad: な-Adjective
+      noa: の-Adjective
+      num: Numeral
+      nun: Noun
+      pno: Proper Noun
+      pre: Prefix
+      pro: Pronoun
+      srv: する-Verb
+      suf: Suffix
+      tvb: Transitive
     radical:
       name: Name
       radical: Radical
@@ -22,6 +45,7 @@ en:
       characters: Characters
       vocab: Vocab
       vocabs: Vocabs
+      parts: Parts of Speech
     short:
       character: Char
       characters: Chars

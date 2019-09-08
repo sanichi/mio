@@ -5,6 +5,21 @@
     %table{class: "table table-bordered"}
       %tbody
         %tr.d-flex
+          %td.col-3= t("wk.meaning")
+          %td.col-9= @vocab.meaning
+        %tr.d-flex
+          %td.col-3= t("wk.reading")
+          %td.col-9= @vocab.reading
+        %tr.d-flex
+          %td.col-3= t("wk.vocab.parts")
+          %td.col-9= @vocab.parts_of_speech
+        %tr.d-flex
+          %td.col-3= t("wk.hint.meaning")
+          %td.col-9= @vocab.meaning_mnemonic.html_safe
+        %tr.d-flex
+          %td.col-3= t("wk.hint.reading")
+          %td.col-9= @vocab.reading_mnemonic.html_safe
+        %tr.d-flex
           %td.col-3= t("wk.level")
           %td.col-9= @vocab.level
         %tr.d-flex

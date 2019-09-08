@@ -3,12 +3,14 @@
 = form_tag wk_vocabs_path, method: :get, class: "form-inline justify-content-center" do
   = label_tag :vquery, t("wk.vocab.vocab"), class: "sr-only"
   = text_field_tag :vquery, params[:vquery], class: "form-control mr-1 mb-1", placeholder: t("wk.vocab.vocab"), size: 16, autofocus: true
-  = label_tag :id, t("wk.id"), class: "sr-only"
-  = text_field_tag :id, params[:id], class: "form-control mr-1 mb-1", placeholder: t("wk.short.id"), size: 5
   = label_tag :level, t("wk.level"), class: "sr-only"
   = select_tag :level, wk_level_menu(params[:level]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :parts, t("wk.vocab.parts"), class: "sr-only"
+  = select_tag :parts, wk_vocab_parts_menu(params[:parts]), class: "form-control mr-1 mb-1", multiple: true, size: 1
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, wk_vocab_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :id, t("wk.id"), class: "sr-only"
+  = text_field_tag :id, params[:id], class: "form-control mr-1 mb-1", placeholder: t("wk.short.id"), size: 5
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
 .row
@@ -16,9 +18,10 @@
     %thead
       %tr.d-flex
         %th.col-2= t("wk.short.characters")
+        %th.col-2= t("wk.reading")
+        %th.col-4= t("wk.meaning")
+        %th.col-3= t("wk.vocab.parts")
         %th.col-1.text-center= t("wk.level")
-        %th.col-1.text-center= t("wk.short.last_updated")
-        %th.col-6.text-center
     %tbody
       = render "results", vocabs: @vocabs
 
