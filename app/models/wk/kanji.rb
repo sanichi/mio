@@ -46,6 +46,15 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
+    def linked_character
+      radical = Wk::Radical.find_by(character: character)
+      if radical
+        %Q{<a href="/wk/radicals/#{radical.id}">#{character}</a>}.html_safe
+      else
+        character
+      end
+    end
+
     def self.update
       updates = 0
       creates = 0
