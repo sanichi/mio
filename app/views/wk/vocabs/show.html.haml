@@ -1,3 +1,4 @@
+= render "quick_accent_updates"
 = render "utils/title", text: @vocab.characters
 
 %h1.text-center= @vocab.linked_characters
@@ -10,7 +11,7 @@
     %tr.d-flex
       %td.col-3= t("wk.reading")
       %td.col-9= @vocab.reading
-    %tr.d-flex
+    %tr.d-flex#accent_updates
       %td.col-3= t("wk.vocab.audio")
       %td.col-9= render "audio", vocab: @vocab
     %tr.d-flex

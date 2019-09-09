@@ -1,0 +1,3 @@
+- if can?(:edit, Wk::Vocab)
+  = content_for :javascript do
+    = render "wk/vocabs/quick_accent_updates.js"

@@ -134,6 +134,25 @@ module Wk
       end
     end
 
+    # to be able to remove old color classes in wk/vocabs/quick_accent_update.js.erb
+    def pattern_colours
+      %w/secondary success warning info danger outline-secondary/
+    end
+
+    # this is what gets run when a quick_accent_update ajax request is procesed
+    # note that validation (see set_accent_pattern below) kicks in because of the save
+    def update_accent(new_accent)
+      if new_accent == "?"
+        self.accent_position = nil
+      elsif new_accent == "-"
+        self.accent_position = UNKNOWN
+      else
+        i = new_accent.to_i
+        self.accent_position = i if i >= 0
+      end
+      save
+    end
+
     def self.update
       updates = 0
       creates = 0

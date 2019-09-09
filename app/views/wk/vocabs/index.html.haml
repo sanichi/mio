@@ -1,3 +1,4 @@
+= render "quick_accent_updates"
 = render "utils/title", key: "wk.vocab.vocabs"
 
 = form_tag wk_vocabs_path, method: :get, class: "form-inline justify-content-center" do
@@ -16,7 +17,7 @@
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead
     = render "table_header"
-  %tbody
+  %tbody#accent_updates
     = render "table_rows", vocabs: @vocabs.matches
     = render "utils/pagination_links", pager: @vocabs, columns: 4
 

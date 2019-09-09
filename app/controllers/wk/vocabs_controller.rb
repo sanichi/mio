@@ -12,5 +12,10 @@ module Wk
     def show
       @vocab = Wk::Vocab.find(params[:id])
     end
+
+    def quick_accent_update
+      @vocab = Wk::Vocab.find(params[:id])
+      @vocab.update_accent(params[:accent])
+    end
   end
 end

@@ -1,0 +1,6 @@
+var button = $(".updates_<%= @vocab.id %>");
+button.text("<%= @vocab.accent_display %>");
+<% @vocab.pattern_colours.each do |color| %>
+  button.removeClass("btn-<%= color %>");
+<% end %>
+button.addClass("btn-<%= @vocab.pattern_colour %>");
