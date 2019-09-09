@@ -4,11 +4,24 @@ module Wk
     include Pageable
     include Wanikani
 
+    # pitch accent patterns
+    HEIBAN = 0
+    ATAMADAKA = 1
+    NAKADAKA = 2
+    ODAKA = 3
+
+    # special accent_position which means we've looked but can't find out what it should be
+    # when accent_position is nil, it means we haven't even tried to find out yet
+    UNKNOWN = -1
+
     IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
+    MAX_ACCENT_PATTERN = ODAKA
     MAX_CHARACTERS = 24
     MAX_MEANING = 256
     MAX_PARTS = 80
     MAX_READING = 48
+    MIN_ACCENT_PATTERN = HEIBAN
+    MIN_ACCENT_POSITION = UNKNOWN
     PARTS = {
       "adjective"         => "adj",
       "adverb"            => "adv",
@@ -34,6 +47,10 @@ module Wk
 
     has_many :audios, dependent: :destroy
 
+    before_validation :set_accent_pattern
+
+    validates :accent_position, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_POSITION, less_than_or_equal_to: MAX_READING }, allow_nil: true
+    validates :accent_pattern, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_PATTERN, less_than_or_equal_to: MAX_ACCENT_PATTERN }, allow_nil: true
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :meaning, presence: true, length: { maximum: MAX_MEANING }
@@ -99,10 +116,29 @@ module Wk
       end.join('').html_safe
     end
 
+    def accent_display
+      case accent_position
+      when nil     then "?"
+      when UNKNOWN then "?"
+      else accent_position.to_s
+      end
+    end
+
+    def pattern_colour
+      if accent_pattern.present?
+        %w/secondary success warning info/[accent_pattern] || "danger"
+      elsif accent_position == UNKNOWN
+        "secondary"
+      else
+        "outline-secondary"
+      end
+    end
+
     def self.update
       updates = 0
       creates = 0
       url = start_url("vocabulary")
+      legacy_accents = ::Vocab.all.where.not(accent: nil).pluck(:kanji, :accent).each_with_object({}) { |d, h| h[d[0]] = d[1] }
 
       puts "vocabs"
       puts "------"
@@ -205,6 +241,10 @@ module Wk
             end
           end
 
+          if vocab.accent_position.blank? && (legacy_position = legacy_accents[vocab.characters])
+            vocab.accent_position = legacy_position
+          end
+
           if vocab.new_record?
             vocab.save!
             creates += 1
@@ -231,15 +271,56 @@ module Wk
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
       show_change(changes, "audios", no_change: old_audio_ids)
+      show_change(changes, "accent_position")
       show_change(changes, "last_updated")
 
       return false unless permission_granted?
-      save! unless changes["audios"] && changes.size == 1
+      save!
       if changes["audios"]
         self.audios = []
         self.audios.create!(new_audios)
       end
       return true
+    end
+
+    private
+
+    def set_accent_pattern
+      if changes.has_key?("reading") || changes.has_key?("accent_position")
+        if accent_position.is_a?(Integer)
+          morae = count_morae
+          self.accent_position = morae if accent_position > morae
+          self.accent_position = UNKNOWN if accent_position < MIN_ACCENT_POSITION
+          self.accent_pattern =
+            case accent_position
+            when UNKNOWN
+              nil
+            when 0
+              HEIBAN
+            when 1
+              ATAMADAKA
+            when morae
+              ODAKA
+            else
+              NAKADAKA
+            end
+        else
+          self.accent_pattern = nil
+        end
+      end
+    end
+
+    def count_morae
+      # get a throwaway copy of the reading, handling the nil case
+      string = reading.to_s.dup
+      # make sure to get only the first reading if there's more than one
+      string.sub!(/,.*/, "")
+      # count 1 for all hiragana, katakana and the katakana elongation symbol
+      full = string.each_char.map{ |c| c =~ /\A[ぁ-んァ-ンー]\z/ ? 1 : 0 }.sum
+      # count 1 for all small hiragana and katakana (but not the っ or ッ)
+      tiny = string.each_char.map{ |c| c =~ /\A[ぁァぃィぅゥぇェぉォゃャゅュょョ]\z/ ? 1 : 0 }.sum
+      # the number of morae is the difference between these two
+      full - tiny
     end
   end
 end

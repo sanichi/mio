@@ -11,6 +11,9 @@
       %td.col-3= t("wk.reading")
       %td.col-9= @vocab.reading
     %tr.d-flex
+      %td.col-3= t("wk.vocab.audio")
+      %td.col-9= render "audio", vocab: @vocab
+    %tr.d-flex
       %td.col-3= t("wk.vocab.parts")
       %td.col-9= @vocab.parts_of_speech
     %tr.d-flex

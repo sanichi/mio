@@ -1,0 +1,12 @@
+- defined?(max) || max = nil
+
+- accent = vocab.accent_display
+- colour = vocab.pattern_colour
+- klass = "btn-#{colour}"
+
+- vocab.audios.each_with_index do |audio, i|
+  %button.btn.btn-sm{type: "button", class: klass, onclick: "document.getElementById('audio_#{audio.id}').play()"}= accent
+  %audio{id: "audio_#{audio.id}"}
+    %source{src: audio.url, type: "audio/mpeg"}
+
+  - break if max && max == i + 1

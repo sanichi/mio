@@ -42,10 +42,12 @@ en:
       radical: Radical
       radicals: Radicals
     vocab:
+      audio: Audio
       characters: Characters
       vocab: Vocab
       vocabs: Vocabs
       parts: Parts of Speech
+      patterns:
     short:
       character: Char
       characters: Chars

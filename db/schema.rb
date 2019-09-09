@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_080326) do
+ActiveRecord::Schema.define(version: 2019_09_09_105908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -617,6 +617,8 @@ ActiveRecord::Schema.define(version: 2019_09_09_080326) do
     t.string "reading", limit: 48
     t.text "reading_mnemonic"
     t.integer "wk_id"
+    t.integer "accent_position", limit: 2
+    t.integer "accent_pattern", limit: 2
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end
 
