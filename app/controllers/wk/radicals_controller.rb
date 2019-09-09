@@ -11,6 +11,7 @@ module Wk
 
     def show
       @radical = Wk::Radical.find(params[:id])
+      @kanji = Wk::Kanji.find_by(character: @radical.character) if @radical.character
     end
   end
 end

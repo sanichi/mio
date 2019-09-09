@@ -98,8 +98,17 @@ module Wk
       puts "creates: #{creates}"
     end
 
-    def character_name
-      "#{character}#{character.present? ? '-' : ''}#{name}"
+    def character_name(linked: false)
+      if character
+        kanji = Wk::Kanji.find_by(character: character) if linked
+        if kanji
+          %Q{<a href="/wk/kanjis/#{kanji.id}">#{character}</a>-#{name}}.html_safe
+        else
+          "#{character}-#{name}"
+        end
+      else
+        name
+      end
     end
 
     def update_performed?
