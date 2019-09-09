@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_07_141418) do
+ActiveRecord::Schema.define(version: 2019_09_09_080326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -562,6 +562,13 @@ ActiveRecord::Schema.define(version: 2019_09_07_141418) do
     t.boolean "burned", default: false
     t.index ["meaning"], name: "index_vocabs_on_meaning"
     t.index ["reading"], name: "index_vocabs_on_reading"
+  end
+
+  create_table "wk_audios", force: :cascade do |t|
+    t.string "file", limit: 64
+    t.integer "wk_id"
+    t.integer "vocab_id"
+    t.index ["vocab_id"], name: "index_wk_audios_on_vocab_id"
   end
 
   create_table "wk_kanjis", force: :cascade do |t|

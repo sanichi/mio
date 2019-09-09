@@ -32,6 +32,8 @@ module Wk
       "transitive verb"   => "tvb",
     }
 
+    has_many :audios, dependent: :destroy
+
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
     validates :meaning, presence: true, length: { maximum: MAX_MEANING }
@@ -178,14 +180,38 @@ module Wk
             parts.push(check(PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
           end
           parts = parts.join(",")
-          vocab.parts = check(parts, "#{context} parts of sppech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
+          vocab.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
+
+          audios = check(data["pronunciation_audios"], "#{context} doesn't have any audios") { |v| v.is_a?(Array) && v.size > 0 }
+          audios.map! do |audio|
+            if audio.is_a?(Hash) && audio["content_type"] == "audio/mpeg"
+              file = audio["url"]
+              meta = audio["metadata"]
+              id = meta["source_id"] if meta.is_a?(Hash)
+              if file.is_a?(String) && file.delete_prefix!(Wk::Audio::DEFAULT_BASE) && file.length <= Wk::Audio::MAX_FILE && id.is_a?(Integer) && id > 0
+                { file: file, wk_id: id }
+              end
+            end
+          end.compact!
+          check(audios, "#{context} has no valid mpeg audios") { |v| !v.empty? }
+          old_audio_ids = new_audio_ids = audio_changes = nil
+          if vocab.new_record?
+            vocab.audios.build(audios)
+          else
+            old_audio_ids = vocab.audios.pluck(:wk_id).sort.join(", ")
+            new_audio_ids = audios.map{ |a| a[:wk_id] }.sort.join(", ")
+            if old_audio_ids != new_audio_ids
+              audio_changes = [old_audio_ids, new_audio_ids]
+            end
+          end
 
           if vocab.new_record?
             vocab.save!
             creates += 1
           else
             changes = vocab.changes
-            updates += 1 if vocab.update_performed?(changes)
+            changes["audios"] = audio_changes if audio_changes
+            updates += 1 if vocab.update_performed?(changes, old_audio_ids: old_audio_ids, new_audios: audios)
           end
         end
       end
@@ -194,7 +220,7 @@ module Wk
       puts "creates: #{creates}"
     end
 
-    def update_performed?(changes)
+    def update_performed?(changes, old_audio_ids: nil, new_audios: nil)
       return false if changes.empty?
 
       puts "vocab #{wk_id}:"
@@ -204,10 +230,15 @@ module Wk
       show_change(changes, "parts")
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
+      show_change(changes, "audios", no_change: old_audio_ids)
       show_change(changes, "last_updated")
 
       return false unless permission_granted?
-      save!
+      save! unless changes["audios"] && changes.size == 1
+      if changes["audios"]
+        self.audios = []
+        self.audios.create!(new_audios)
+      end
       return true
     end
   end
