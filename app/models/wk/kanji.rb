@@ -55,15 +55,16 @@ module Wk
       end
     end
 
-    def self.update
+    def self.update(days=nil)
       updates = 0
       creates = 0
       new_similarities = {}
-      url = start_url("kanji")
       radical_from_id = Wk::Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
 
-      puts "kanjis"
-      puts "------"
+      url, since = start_url("kanji", days)
+      puts
+      puts "kanjis since #{since}"
+      puts "-----------------------"
 
       while url.present? do
         subjects, url = get_subjects(url)

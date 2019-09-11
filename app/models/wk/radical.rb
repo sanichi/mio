@@ -38,12 +38,14 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
-    def self.update
+    def self.update(days=nil)
       updates = 0
       creates = 0
-      url = start_url("radical")
-      puts "radicals"
-      puts "--------"
+
+      url, since = start_url("radical", days)
+      puts
+      puts "radicals since #{since}"
+      puts "-------------------------"
 
       while url.present?
         subjects, url = get_subjects(url)

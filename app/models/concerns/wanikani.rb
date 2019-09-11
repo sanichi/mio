@@ -21,7 +21,8 @@ module Wanikani
       error = hash["error"]
       raise "response indicates an error (#{error})" if error
       total_count = hash["total_count"]
-      raise "response didn't contain a positive integer total count (#{total_count})" unless total_count.is_a?(Integer) && total_count > 0
+      raise "response didn't contain an integer total count (#{total_count})" unless total_count.is_a?(Integer) || total_count < 0
+      return [{}, nil] if total_count == 0
       data = hash["data"]
       raise "response has no data array (#{data.class})" unless data.is_a?(Array) && data.size > 0
       pages = hash["pages"]
@@ -36,8 +37,26 @@ module Wanikani
       return value
     end
 
-    def start_url(type)
-      "https://api.wanikani.com/v2/subjects?types=#{type}&hidden=false"
+    def start_url(type, days)
+      params = { types: type, hidden: false }
+      if days.is_a?(Integer)
+        if days >= 0
+          since = Date.today.days_ago(days)
+        else
+          since = "forever"
+        end
+      else
+        klass = case type
+        when "radical"    then Wk::Radical
+        when "kanji"      then Wk::Kanji
+        when "vocabulary" then Wk::Vocab
+        else raise "invalid subject type (#{type})"
+        end
+        since = klass.maximum(:last_updated)
+      end
+      params[:updated_after] = "#{since.to_s}T00:00:00Z" if since.is_a?(Date)
+      params = params.map{ |k, v| "#{k}=#{v}" }.join("&")
+      ["https://api.wanikani.com/v2/subjects?#{params}", since]
     end
   end
 

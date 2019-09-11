@@ -153,17 +153,19 @@ module Wk
       save
     end
 
-    def self.update
+    def self.update(days=nil)
       updates = 0
       creates = 0
-      url = start_url("vocabulary")
       legacy_accents = ::Vocab.all.where.not(accent: nil).pluck(:kanji, :accent).each_with_object({}) { |d, h| h[d[0]] = d[1] }
 
-      puts "vocabs"
-      puts "------"
+      url, since = start_url("vocabulary", days)
+      puts
+      puts "vocabs since #{since}"
+      puts "-----------------------"
 
       while url.present? do
         subjects, url = get_subjects(url)
+        puts
         puts "subjects: #{subjects.size}"
 
         # updates and creates that don't need all vocab present
