@@ -1,5 +1,7 @@
 = render "wk/vocabs/quick_accent_updates"
-= render "utils/title", text: @kanji.linked_character, header: true
+= render "utils/title", text: @kanji.character
+
+%h1.text-center= @kanji.linked_character
 
 %table{class: "table table-bordered"}
   %tbody
