@@ -26,4 +26,15 @@ module WkHelper
     opts = t("wk.parts").map { |k, v| [v, k] }
     options_for_select(opts, selected)
   end
+
+  def wk_verb_pair_category_menu(selected)
+    opts = Wk::VerbPair::CATEGORIES.map { |c| [t("wk.verb_pair.categories.#{c}", locale: "jp"), c] }
+    opts.unshift [t("any", locale: "jp"), ""]
+    options_for_select(opts, selected)
+  end
+
+  def wk_verb_pair_order_menu(selected)
+    opts = %w/tag category/.map { |i| [t("wk.verb_pair.#{i}"), i] }
+    options_for_select(opts, selected)
+  end
 end

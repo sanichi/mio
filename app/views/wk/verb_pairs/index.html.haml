@@ -1,0 +1,17 @@
+= render "wk/vocabs/quick_accent_updates"
+= render "utils/title", key: "wk.verb_pair.verb_pairs"
+
+= render "vocabs/quick_accent_updates"
+
+= form_tag wk_verb_pairs_path, method: :get, class: "form-inline justify-content-center" do
+  = label_tag :query, t("search"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :category, t("wk.verb_pair.category"), class: "sr-only"
+  = select_tag :category, wk_verb_pair_category_menu(params[:category]), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :order, t("order"), class: "sr-only"
+  = select_tag :order, wk_verb_pair_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
+  = button_tag t("search"), type: "submit", class: "btn btn-succes mr-1 mb-1s"
+
+%table{class: "table table-bordered table-striped table-sm mt-3"}
+  %tbody#accent_updates
+    = render "results", pairs: @verb_pairs

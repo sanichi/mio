@@ -8,6 +8,8 @@ describe VerbPair do
   let!(:verb_pair) { create(:verb_pair, transitive: vt1, intransitive: vi1, group: 1) }
   let(:data)       { build(:verb_pair, transitive: vt2, intransitive: vi2, group: 3) }
 
+  before { skip "scheduled for deprecation" }
+
   before(:each) do
     login
     click_link t(:verb__pair_verb__pairs)

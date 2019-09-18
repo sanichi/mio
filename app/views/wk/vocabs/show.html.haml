@@ -23,6 +23,17 @@
     %tr.d-flex
       %td.col-3= t("wk.hint.reading")
       %td.col-9= @vocab.reading_mnemonic.html_safe
+    - pairs = @vocab.pairs
+    - unless pairs.empty?
+      %tr.d-flex
+        %td.col-3= [t("wk.verb_pair.#{@vocab.transitive? ? 'in' : ''}transitive"), t("wk.verb_pair.partner#{pairs.size > 1 ? 's' : ''}")].join(" ")
+        %td.col-9
+          - pairs.each do |pair|
+            - vocab = @vocab.transitive? ? pair.intransitive : pair.transitive
+            = link_to vocab.characters, vocab
+            = precede("(") do
+              = succeed(")") do
+                = t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
     %tr.d-flex
       %td.col-3= t("wk.level")
       %td.col-9= @vocab.level

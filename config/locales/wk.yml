@@ -41,6 +41,14 @@ en:
       name: Name
       radical: Radical
       radicals: Radicals
+    verb_pair:
+      category: Group
+      intransitive: Intransitive
+      partner: Partner
+      partners: Partners
+      tag: Tag
+      transitive: Transitive
+      verb_pairs: Verb Pairs
     vocab:
       audio: Audio
       characters: Characters
@@ -56,3 +64,14 @@ en:
 jp:
   wk:
     japanese: 日本語
+    verb_pair:
+      categories:
+        asu_eru: あす→える
+        asu_u: あす→う
+        eru_aru: える→ある
+        eru_u: える→う
+        irreg: 不規則
+        passive: 所相
+        su_ru: す→る
+        su_reru: す→れる
+        u_eru: う→える

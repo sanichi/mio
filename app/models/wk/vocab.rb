@@ -134,6 +134,24 @@ module Wk
       end
     end
 
+    def transitive?
+      parts.match?(/tvb/)
+    end
+
+    def intransitive?
+      parts.match?(/ivb/)
+    end
+
+    def pairs
+      if transitive?
+        Wk::VerbPair.where(transitive: self).to_a
+      elsif intransitive?
+        Wk::VerbPair.where(intransitive: self).to_a
+      else
+        []
+      end
+    end
+
     # to be able to remove old color classes in wk/vocabs/quick_accent_update.js.erb
     def pattern_colours
       %w/secondary success warning info danger outline-secondary/

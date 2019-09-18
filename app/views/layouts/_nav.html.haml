@@ -29,13 +29,14 @@
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.verb.verbs"), path: verbs_vocabs_path
           = render "layouts/dropdown_item", cond: can?(:read, Conversation), text: t("conversation.conversations"), path: conversations_path
 
-    - if [Wk::Radical, Wk::Kanji, Note, Misa].map{ |c| can?(:read, c) }.any?
+    - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Note, Misa].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("wk.japanese", locale: "jp"), id: "navbarWaniKani"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarWaniKani"}
           = render "wk/vocabs/dropdown_menu", cond: can?(:read, Wk::Vocab), size: menu_size
           = render "wk/kanjis/dropdown_menu", cond: can?(:read, Wk::Kanji), size: menu_size
           = render "wk/radicals/dropdown_menu", cond: can?(:read, Wk::Radical), size: menu_size
+          = render "layouts/dropdown_item", cond: can?(:read, Wk::VerbPair), text: t("wk.verb_pair.verb_pairs"), path: wk_verb_pairs_path
           = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
           = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("vocab.note.notes"), path: notes_path
 
