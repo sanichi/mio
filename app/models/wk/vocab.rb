@@ -183,7 +183,6 @@ module Wk
 
       while url.present? do
         subjects, url = get_subjects(url)
-        puts
         puts "subjects: #{subjects.size}"
 
         # updates and creates that don't need all vocab present
@@ -254,6 +253,7 @@ module Wk
           data["parts_of_speech"].each do |part|
             parts.push(check(PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
           end
+          parts.unshift("ivb") if vocab.characters == "向く" && !parts.include?("ivb") # correct WK data for this vocab
           parts = parts.join(",")
           vocab.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
 
