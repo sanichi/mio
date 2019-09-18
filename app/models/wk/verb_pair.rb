@@ -31,8 +31,8 @@ module Wk
     end
 
     def self.update
-      trn = Wk::Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb'").where.not("parts LIKE '%srv'").to_a
-      int = Wk::Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb'").where.not("parts LIKE '%srv'").to_a
+      trn = Wk::Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb%'").where.not("parts LIKE '%srv%'").to_a
+      int = Wk::Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb%'").where.not("parts LIKE '%srv%'").to_a
       puts "raw"
       puts "transitives......... #{trn.size}"
       puts "intransitives....... #{int.size}"
@@ -61,11 +61,11 @@ module Wk
 
       cats = Hash.new(0)
       pairs.each do |k, v|
-        trn = v[:trn]
-        int = v[:int]
-        trn.each do |t|
+        ts = v[:trn]
+        is = v[:int]
+        ts.each do |t|
           tv, th = t
-          int.each do |i|
+          is.each do |i|
             iv, ih = i
             pair = Wk::VerbPair.find_or_create_by(transitive_id: tv.id, intransitive_id: iv.id)
             pair.category = categorize(th, ih)
