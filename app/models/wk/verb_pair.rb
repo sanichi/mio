@@ -23,8 +23,8 @@ module Wk
     def self.search(params, path, opt={})
       matches =
       case params[:order]
-      when "tag" then by_tag
-      else            by_category
+      when "category" then by_category
+      else                 by_tag
       end
       matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
       paginate(matches, params, path, opt)
