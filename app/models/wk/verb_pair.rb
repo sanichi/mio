@@ -31,6 +31,10 @@ module Wk
     end
 
     def self.update
+      count = WK::VerbPair.count
+      Wk::VerbPair.delete_all
+      puts "old pairs deleted... #{count}"
+
       trn = Wk::Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb%'").where.not("parts LIKE '%srv%'").to_a
       int = Wk::Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb%'").where.not("parts LIKE '%srv%'").to_a
       puts "raw"
