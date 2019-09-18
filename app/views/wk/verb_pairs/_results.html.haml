@@ -8,5 +8,5 @@
       - if i == 0
         %td.col-1.text-center= t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
       - else
-        %td.col-1.text-center= pair.main_tag
+        %td.col-1.text-center= pair.suffixes
 = render "utils/pagination_links", pager: pairs, columns: 7

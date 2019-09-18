@@ -7,6 +7,7 @@ module Wk
     CAT_ORDER = CATEGORIES.map { |c| "category != '#{c}'" }.join(", ")
     FILTER = /\A(#{Moji.kanji})(#{Moji.hira}+)\z/
     MAX_CATEGORY = 10
+    MAX_SUFFIX = 6
     MAX_TAG = 500
     TAG_SEP = "|"
 
@@ -14,19 +15,25 @@ module Wk
     belongs_to :intransitive, class_name: "Vocab", foreign_key: :intransitive_id
 
     validates :category, inclusion: { in: CATEGORIES }
-    validates :transitive_id, numericality: { integer_only: true, greater_than: 0 }
     validates :intransitive_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: :transitive_id }
+    validates :transitive_id, numericality: { integer_only: true, greater_than: 0 }
+    validates :transitive_suffix, :intransitive_suffix, presence: true, length: { maximum: MAX_SUFFIX }
 
     after_save :set_tag
 
-    scope :by_tag,      -> { order(Arel.sql('tag COLLATE "C"'), Arel.sql(CAT_ORDER)) }
-    scope :by_category, -> { order(Arel.sql(CAT_ORDER), Arel.sql('tag COLLATE "C"')) }
+    scope :by_group_tsuffix, -> { order(Arel.sql(CAT_ORDER), Arel.sql('transitive_suffix COLLATE "C"')) }
+    scope :by_group_isuffix, -> { order(Arel.sql(CAT_ORDER), Arel.sql('intransitive_suffix COLLATE "C"')) }
+    scope :by_isuffix_group, -> { order(Arel.sql('intransitive_suffix COLLATE "C"'), Arel.sql(CAT_ORDER)) }
+    scope :by_tsuffix_group, -> { order(Arel.sql('transitive_suffix COLLATE "C"'), Arel.sql(CAT_ORDER)) }
 
     def self.search(params, path, opt={})
       matches =
       case params[:order]
-      when "category" then by_category
-      else                 by_tag
+      when "group_isuffix" then by_group_isuffix
+      when "group_tsuffix" then by_group_tsuffix
+      when "isuffix_group" then by_isuffix_group
+      when "tsuffix_group" then by_tsuffix_group
+      else                      by_tsuffix_group
       end
       if sql = cross_constraint(params[:query], %w{tag})
         matches = matches.where(sql)
@@ -35,8 +42,12 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
-    def main_tag
-      tag[0, tag.index(TAG_SEP) || tag.length]
+    def okay?
+      transitive.reading.delete_suffix(transitive_suffix) == intransitive.reading.delete_suffix(intransitive_suffix)
+    end
+
+    def suffixes
+      "#{transitive_suffix}→#{intransitive_suffix}"
     end
 
     def self.update
@@ -46,7 +57,6 @@ module Wk
 
       trn = Wk::Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb%'").where.not("parts LIKE '%srv%'").to_a
       int = Wk::Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb%'").where.not("parts LIKE '%srv%'").to_a
-      puts "raw"
       puts "transitives......... #{trn.size}"
       puts "intransitives....... #{int.size}"
 
@@ -80,20 +90,26 @@ module Wk
           tv, th = t
           is.each do |i|
             iv, ih = i
-            pair = Wk::VerbPair.create(transitive_id: tv.id, intransitive_id: iv.id)
-            pair.category = categorize(th, ih)
-            pair.save!
-            cats[pair.category] += 1
+            pair = Wk::VerbPair.create(transitive: tv, intransitive: iv, transitive_suffix: th, intransitive_suffix: ih)
+            if pair.okay?
+              pair.categorize!
+              pair.save!
+              cats[pair.category] += 1
+            else
+              cats["rejected"] += 1
+            end
           end
         end
       end
       cats.keys.sort.each do |c|
-        puts "#{c}#{'.' * (7 - c.length)}............. #{cats[c]}"
+        puts "#{c}#{'.' * (9 - c.length)}........... #{cats[c]}"
       end
     end
 
-    def self.categorize(t, i)
+    def categorize!
       cat = "irreg"
+      t = transitive_suffix
+      i = intransitive_suffix
       if t.length == i.length && i.match(/る\z/) # eru_aru su_ru asu_eru
         if t.match(/す\z/) # su_ru asu_eru
           if t.chop == i.chop
@@ -125,16 +141,13 @@ module Wk
           end
         end
       end
-      cat
+      self.category = cat
     end
 
     private
 
     def set_tag
-      t = transitive.characters.match(FILTER) ? $2 : "?"
-      i = intransitive.characters.match(FILTER) ? $2 : "?"
-      main_tag = "#{t}→#{i}"
-      update_column :tag, [main_tag, transitive.characters, intransitive.characters, transitive.reading, intransitive.reading, transitive.meaning, intransitive.meaning].join(TAG_SEP)
+      update_column :tag, [transitive.characters, intransitive.characters, transitive.reading, intransitive.reading, transitive.meaning, intransitive.meaning].join(TAG_SEP)
     end
   end
 end

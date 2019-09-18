@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_18_125455) do
+ActiveRecord::Schema.define(version: 2019_09_18_145252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -612,6 +612,8 @@ ActiveRecord::Schema.define(version: 2019_09_18_125455) do
     t.string "tag", limit: 5000
     t.integer "transitive_id"
     t.integer "intransitive_id"
+    t.string "transitive_suffix", limit: 6
+    t.string "intransitive_suffix", limit: 6
     t.index ["intransitive_id"], name: "index_wk_verb_pairs_on_intransitive_id"
     t.index ["tag"], name: "index_wk_verb_pairs_on_tag"
     t.index ["transitive_id", "intransitive_id"], name: "index_wk_verb_pairs_on_transitive_id_and_intransitive_id"

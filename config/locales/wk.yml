@@ -44,10 +44,11 @@ en:
     verb_pair:
       category: Group
       intransitive: Intransitive
+      intransitive_suffix: I-Suffix
       partner: Partner
       partners: Partners
-      tag: Tag
       transitive: Transitive
+      transitive_suffix: T-Suffix
       verb_pairs: Verb Pairs
     vocab:
       audio: Audio

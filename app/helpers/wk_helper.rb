@@ -34,7 +34,13 @@ module WkHelper
   end
 
   def wk_verb_pair_order_menu(selected)
-    opts = %w/tag category/.map { |i| [t("wk.verb_pair.#{i}"), i] }
+    opts = [
+      ["#{t('wk.verb_pair.transitive_suffix')}/#{t('wk.verb_pair.category')}",   "tsuffix_group"],
+      ["#{t('wk.verb_pair.intransitive_suffix')}/#{t('wk.verb_pair.category')}", "isuffix_group"],
+      ["#{t('wk.verb_pair.category')}/#{t('wk.verb_pair.transitive_suffix')}",   "group_tsuffix"],
+      ["#{t('wk.verb_pair.category')}/#{t('wk.verb_pair.intransitive_suffix')}", "group_isuffix"],
+    ]
+    %w/category transitive_suffix intransitive_suffix/.map { |i| [t("wk.verb_pair.#{i}"), i] }
     options_for_select(opts, selected)
   end
 end
