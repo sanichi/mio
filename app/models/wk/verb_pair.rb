@@ -31,7 +31,7 @@ module Wk
     end
 
     def self.update
-      count = WK::VerbPair.count
+      count = Wk::VerbPair.count
       Wk::VerbPair.delete_all
       puts "old pairs deleted... #{count}"
 
@@ -71,7 +71,7 @@ module Wk
           tv, th = t
           is.each do |i|
             iv, ih = i
-            pair = Wk::VerbPair.find_or_create_by(transitive_id: tv.id, intransitive_id: iv.id)
+            pair = Wk::VerbPair.create(transitive_id: tv.id, intransitive_id: iv.id)
             pair.category = categorize(th, ih)
             pair.save!
             cats[pair.category] += 1
