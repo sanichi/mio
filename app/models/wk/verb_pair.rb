@@ -1,12 +1,14 @@
 module Wk
   class VerbPair < ApplicationRecord
+    include Constrainable
     include Pageable
 
     CATEGORIES = %w/eru_aru u_eru eru_u su_ru su_reru asu_eru asu_u irreg passive/
     CAT_ORDER = CATEGORIES.map { |c| "category != '#{c}'" }.join(", ")
     FILTER = /\A(#{Moji.kanji})(#{Moji.hira}+)\z/
     MAX_CATEGORY = 10
-    MAX_TAG = 20
+    MAX_TAG = 500
+    TAG_SEP = "|"
 
     belongs_to :transitive, class_name: "Vocab", foreign_key: :transitive_id
     belongs_to :intransitive, class_name: "Vocab", foreign_key: :intransitive_id
@@ -26,8 +28,15 @@ module Wk
       when "category" then by_category
       else                 by_tag
       end
+      if sql = cross_constraint(params[:query], %w{tag})
+        matches = matches.where(sql)
+      end
       matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
       paginate(matches, params, path, opt)
+    end
+
+    def main_tag
+      tag[0, tag.index(TAG_SEP) || tag.length]
     end
 
     def self.update
@@ -124,7 +133,8 @@ module Wk
     def set_tag
       t = transitive.characters.match(FILTER) ? $2 : "?"
       i = intransitive.characters.match(FILTER) ? $2 : "?"
-      update_column :tag, "#{t}→#{i}"
+      main_tag = "#{t}→#{i}"
+      update_column :tag, [main_tag, transitive.characters, intransitive.characters, transitive.reading, intransitive.reading, transitive.meaning, intransitive.meaning].join(TAG_SEP)
     end
   end
 end

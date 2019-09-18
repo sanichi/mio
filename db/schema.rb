@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_090309) do
+ActiveRecord::Schema.define(version: 2019_09_18_125455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -609,7 +609,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_090309) do
 
   create_table "wk_verb_pairs", force: :cascade do |t|
     t.string "category", limit: 10
-    t.string "tag", limit: 20
+    t.string "tag", limit: 5000
     t.integer "transitive_id"
     t.integer "intransitive_id"
     t.index ["intransitive_id"], name: "index_wk_verb_pairs_on_intransitive_id"
