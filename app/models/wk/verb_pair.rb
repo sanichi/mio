@@ -47,7 +47,7 @@ module Wk
     end
 
     def suffixes
-      "#{transitive_suffix}→#{intransitive_suffix}"
+      "#{transitive_suffix}・#{intransitive_suffix}"
     end
 
     def self.update

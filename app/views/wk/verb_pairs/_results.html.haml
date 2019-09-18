@@ -2,11 +2,11 @@
   - [pair.transitive, pair.intransitive].each_with_index do |v, i|
     %tr.d-flex
       %td.col-1= link_to v.characters, v
-      %td.col-2= v.reading
+      %td.col-1= v.reading
       %td.col-1.text-center= render "wk/vocabs/audio", vocab: v, max: 1
       %td.col-7= v.meaning
       - if i == 0
-        %td.col-1.text-center= t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
+        %td.col-2.text-center= t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
       - else
-        %td.col-1.text-center= pair.suffixes
+        %td.col-2.text-center= pair.suffixes
 = render "utils/pagination_links", pager: pairs, columns: 7
