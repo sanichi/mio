@@ -39,6 +39,8 @@ module WkHelper
       ["#{t('wk.verb_pair.intransitive_suffix')}/#{t('wk.verb_pair.category')}", "isuffix_group"],
       ["#{t('wk.verb_pair.category')}/#{t('wk.verb_pair.transitive_suffix')}",   "group_tsuffix"],
       ["#{t('wk.verb_pair.category')}/#{t('wk.verb_pair.intransitive_suffix')}", "group_isuffix"],
+      [t('wk.verb_pair.transitive_reading'),                                          "treading"],
+      [t('wk.verb_pair.intransitive_reading'),                                        "ireading"],
     ]
     %w/category transitive_suffix intransitive_suffix/.map { |i| [t("wk.verb_pair.#{i}"), i] }
     options_for_select(opts, selected)

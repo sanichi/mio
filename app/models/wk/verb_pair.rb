@@ -25,6 +25,8 @@ module Wk
     scope :by_group_isuffix, -> { order(Arel.sql(CAT_ORDER), Arel.sql('intransitive_suffix COLLATE "C"')) }
     scope :by_isuffix_group, -> { order(Arel.sql('intransitive_suffix COLLATE "C"'), Arel.sql(CAT_ORDER)) }
     scope :by_tsuffix_group, -> { order(Arel.sql('transitive_suffix COLLATE "C"'), Arel.sql(CAT_ORDER)) }
+    scope :by_treading,      -> { includes(:transitive).order(Arel.sql('wk_vocabs.reading COLLATE "C"')) }
+    scope :by_ireading,      -> { includes(:intransitive).order(Arel.sql('wk_vocabs.reading COLLATE "C"')) }
 
     def self.search(params, path, opt={})
       matches =
@@ -33,6 +35,8 @@ module Wk
       when "group_tsuffix" then by_group_tsuffix
       when "isuffix_group" then by_isuffix_group
       when "tsuffix_group" then by_tsuffix_group
+      when "treading"      then by_treading
+      when "ireading"      then by_ireading
       else                      by_tsuffix_group
       end
       if sql = cross_constraint(params[:query], %w{tag})
@@ -119,6 +123,8 @@ module Wk
           end
         elsif t.match(/る\z/) # eru_aru
           if t.chop.is_row?("e") && t.chop.shift_row("a") == i.chop
+            cat = "eru_aru"
+          elsif t[-2] == "え" && i[-2] == "わ"
             cat = "eru_aru"
           end
         end

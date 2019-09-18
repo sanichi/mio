@@ -44,10 +44,12 @@ en:
     verb_pair:
       category: Group
       intransitive: Intransitive
+      intransitive_reading: I-Reading
       intransitive_suffix: I-Suffix
       partner: Partner
       partners: Partners
       transitive: Transitive
+      transitive_reading: T-Reading
       transitive_suffix: T-Suffix
       verb_pairs: Verb Pairs
     vocab:
