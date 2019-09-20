@@ -49,7 +49,7 @@
 
 .text-center
   - if can?(:manage, Wk::Vocab)
-    = link_to t("edit"), edit_wk_vocab_path(@vocab), class: "btn btn-info"
+    = link_to t("wk.vocab.edit"), edit_wk_vocab_path(@vocab), class: "btn btn-info"
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
   = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "btn btn-success"
   = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
