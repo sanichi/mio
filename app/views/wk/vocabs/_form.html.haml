@@ -1,9 +1,7 @@
-.row
-  .offset-md-1.col-md-11
-    = form_for vocab, html: { class: "form-horizontal" } do |f|
-      %fieldset
-        = render "utils/text_area_for", form: f, object: vocab, col: "md", pad: 1, param: :notes, text: t("notes"), rows: 20, width: 8
-      .row
-        .offset-md-1.col-md-11
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), vocab, class: "btn btn-secondary"
+= form_for vocab, html: { class: "form-horizontal" } do |f|
+  %fieldset
+    = render "utils/text_area_for", form: f, object: vocab, col: "md", pad: 1, param: :notes, text: t("notes"), rows: 20, width: 11
+  .row
+    .offset-md-1.col-md-11
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), vocab, class: "btn btn-secondary"
