@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_18_145252) do
+ActiveRecord::Schema.define(version: 2019_09_20_081027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -632,6 +632,7 @@ ActiveRecord::Schema.define(version: 2019_09_18_145252) do
     t.integer "wk_id"
     t.integer "accent_position", limit: 2
     t.integer "accent_pattern", limit: 2
+    t.text "notes"
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end
 

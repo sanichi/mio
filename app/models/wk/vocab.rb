@@ -2,6 +2,7 @@ module Wk
   class Vocab < ActiveRecord::Base
     include Constrainable
     include Pageable
+    include Remarkable
     include Wanikani
 
     # pitch accent patterns
@@ -105,8 +106,16 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
-    def parts_of_speech
-      parts.split(",").map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
+    def accent_display
+      case accent_position
+      when nil     then "?"
+      when UNKNOWN then "?"
+      else accent_position.to_s
+      end
+    end
+
+    def intransitive?
+      parts.match?(/ivb/)
     end
 
     def linked_characters
@@ -116,12 +125,12 @@ module Wk
       end.join('').html_safe
     end
 
-    def accent_display
-      case accent_position
-      when nil     then "?"
-      when UNKNOWN then "?"
-      else accent_position.to_s
-      end
+    def notes_html
+      to_html(notes)
+    end
+
+    def parts_of_speech
+      parts.split(",").map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
     end
 
     def pattern_colour
@@ -132,14 +141,6 @@ module Wk
       else
         "outline-secondary"
       end
-    end
-
-    def transitive?
-      parts.match?(/tvb/)
-    end
-
-    def intransitive?
-      parts.match?(/ivb/)
     end
 
     def pairs
@@ -155,6 +156,10 @@ module Wk
     # to be able to remove old color classes in wk/vocabs/quick_accent_update.js.erb
     def pattern_colours
       %w/secondary success warning info danger outline-secondary/
+    end
+
+    def transitive?
+      parts.match?(/tvb/)
     end
 
     # this is what gets run when a quick_accent_update ajax request is procesed

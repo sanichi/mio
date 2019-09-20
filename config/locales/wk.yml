@@ -55,10 +55,10 @@ en:
     vocab:
       audio: Audio
       characters: Characters
+      edit: Edit Vocab Note
+      parts: Parts of Speech
       vocab: Vocab
       vocabs: Vocabs
-      parts: Parts of Speech
-      patterns:
     short:
       character: Char
       characters: Chars
