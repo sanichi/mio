@@ -55,7 +55,8 @@ en:
     vocab:
       audio: Audio
       characters: Characters
-      edit: Edit Note
+      edit: Edit Notes
+      notes: Notes
       parts: Parts of Speech
       vocab: Vocab
       vocabs: Vocabs

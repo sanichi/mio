@@ -48,7 +48,7 @@ module Wk
 
     has_many :audios, dependent: :destroy
 
-    before_validation :set_accent_pattern
+    before_validation :set_accent_pattern, :clean_up
 
     validates :accent_position, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_POSITION, less_than_or_equal_to: MAX_READING }, allow_nil: true
     validates :accent_pattern, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_PATTERN, less_than_or_equal_to: MAX_ACCENT_PATTERN }, allow_nil: true
@@ -75,6 +75,9 @@ module Wk
         else                     by_level
         end
       if sql = cross_constraint(params[:vquery], %w{characters meaning reading})
+        matches = matches.where(sql)
+      end
+      if sql = cross_constraint(params[:notes], %w{notes})
         matches = matches.where(sql)
       end
       if sql = numerical_constraint(params[:id], :wk_id)
@@ -365,6 +368,10 @@ module Wk
       tiny = string.each_char.map{ |c| c =~ /\A[ぁァぃィぅゥぇェぉォゃャゅュょョ]\z/ ? 1 : 0 }.sum
       # the number of morae is the difference between these two
       full - tiny
+    end
+
+    def clean_up
+      self.notes = nil unless notes.present?
     end
   end
 end
