@@ -120,6 +120,8 @@ module Wk
             cat = "su_ru"
           elsif t.chop.is_row?("a") && t.chop.shift_row("e") == i.chop
             cat = "asu_eru"
+          elsif t[-2] == "や" && i[-2] == "え"
+            cat = "asu_eru"
           end
         elsif t.match(/る\z/) # eru_aru
           if t.chop.is_row?("e") && t.chop.shift_row("a") == i.chop
