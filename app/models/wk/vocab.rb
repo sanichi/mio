@@ -63,6 +63,7 @@ module Wk
 
     scope :by_characters,   -> { order(Arel.sql('characters COLLATE "C"')) }
     scope :by_level,        -> { order(:level, Arel.sql('characters COLLATE "C"')) }
+    scope :by_last_noted,   -> { order(last_noted: :desc, level: :asc) }
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
     scope :by_reading,      -> { order(Arel.sql('reading COLLATE "C"'), :level) }
 
@@ -71,6 +72,7 @@ module Wk
         case params[:order]
         when "reading"      then by_reading
         when "characters"   then by_characters
+        when "last_noted"   then by_last_noted
         when "last_updated" then by_last_updated
         else                     by_level
         end
