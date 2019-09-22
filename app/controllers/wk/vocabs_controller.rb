@@ -12,6 +12,7 @@ module Wk
 
     def update
       if @vocab.update(strong_params)
+        @vocab.update_column(:last_noted, Time.now)
         redirect_to @vocab
       else
         render action: "edit"
