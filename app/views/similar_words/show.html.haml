@@ -11,7 +11,7 @@
           %th= t("vocab.meaning")
           %th= t("vocab.category")
           %th.text-center= t("vocab.level")
-      %tbody#accent_updates
+      %tbody
         - @vocabs.each do |vocab|
           %tr
             %td= link_to vocab.kanji, vocab
@@ -23,7 +23,3 @@
 
 .text-center.mt-3
   = link_to t("vocab.similar.words"), similar_words_path, class: "btn btn-success"
-  - if can?(:update, @similar_word)
-    = link_to t("edit"), edit_similar_word_path(@similar_word), class: "btn btn-info"
-  - if can?(:delete, @similar_word)
-    = link_to t("delete"), @similar_word, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

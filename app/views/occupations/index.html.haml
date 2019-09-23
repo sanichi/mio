@@ -20,7 +20,3 @@
           %th= t("vocab.meaning")
       %tbody#results
         = render "results", occupations: @occupations
-
-- if can?(:create, Occupation)
-  .text-center
-    = link_to t("vocab.occupation.new"), new_occupation_path, class: "btn btn-info"

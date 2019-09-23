@@ -28,7 +28,3 @@
         %th.col-1.text-center= t("vocab.level")
     %tbody{id: "results"}
       = render "results", vocabs: @vocabs
-
-.text-center
-  - if can?(:create, Vocab)
-    = link_to t("vocab.new"), new_vocab_path, class: "btn btn-info"

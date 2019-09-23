@@ -6,7 +6,7 @@
   .offset-md-2.col-md-8
     %table{class: "table table-bordered table-striped"}
       %tbody
-        %tr#accent_updates
+        %tr
           %th= t("vocab.audio")
           %td= render "audio_accent", vocab: @vocab
         %tr
@@ -46,5 +46,3 @@
 
 .text-center.mt-3
   = link_to t("vocab.vocabs"), vocabs_path, class: "btn btn-success"
-  - if can?(:manage, Vocab)
-    = link_to t("edit"), edit_vocab_path(@vocab), class: "btn btn-info"

@@ -14,7 +14,3 @@
           %th= t("vocab.kanji")
       %tbody{id: "results"}
         = render "results", similar_words: @similar_words
-
-- if can?(:create, SimilarWord)
-  .text-center.mt-3
-    = link_to t("vocab.similar.word.new"), new_similar_word_path, class: "btn btn-info"

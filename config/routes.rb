@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   end
   resources :misas
   resources :notes
-  resources :occupations
+  resources :occupations, only: [:index, :show]
   resources :openings do
     get :match, on: :collection
   end
@@ -57,8 +57,8 @@ Rails.application.routes.draw do
   resources :readings, only: [:index, :show]
   resources :residents
   resources :sessions, only: [:create]
-  resources :similar_kanjis
-  resources :similar_words
+  resources :similar_kanjis, only: [:index, :show]
+  resources :similar_words, only: [:index, :show]
   resources :tapas, except: [:show] do
     get :notes, on: :member
   end
@@ -79,7 +79,7 @@ Rails.application.routes.draw do
   resources :verb_pairs
   resources :vocab_questions, only: [:create]
   resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
-  resources :vocabs
+  resources :vocabs, only: [:index, :show]
   namespace :wk do
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]

@@ -3,7 +3,6 @@
 
 - color = vocab.pattern_color
 - klass = "btn-#{color}"
-- klass += " accent_updater" unless vocab.accent
 
 %button.btn.btn-sm{type: "button", title: title, onclick: "document.getElementById('audio_#{vocab.id}').play()", id: "button_#{vocab.id}", class: klass, "data-id" => vocab.id}= vocab.accent_button_text
 %audio{autoplay: autoplay, id: "audio_#{vocab.id}"}

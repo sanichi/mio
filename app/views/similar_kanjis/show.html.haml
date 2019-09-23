@@ -19,7 +19,3 @@
 
 .text-center.mt-3
   = link_to t("vocab.similar.kanjis"), similar_kanjis_path, class: "btn btn-success"
-  - if can?(:update, @similar_kanji)
-    = link_to t("edit"), edit_similar_kanji_path(@similar_kanji), class: "btn btn-info"
-  - if can?(:delete, @similar_kanji)
-    = link_to t("delete"), @similar_kanji, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
