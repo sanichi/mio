@@ -35,5 +35,3 @@
 
 .text-center
   = link_to t("verb_pair.verb_pairs"), verb_pairs_path, class: "btn btn-success"
-  - if can?(:manage, VerbPair)
-    = link_to t("edit"), edit_verb_pair_path(@verb_pair), class: "btn btn-info"
