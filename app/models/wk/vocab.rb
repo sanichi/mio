@@ -263,7 +263,7 @@ module Wk
           data["parts_of_speech"].each do |part|
             parts.push(check(PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
           end
-          parts.unshift("ivb") if vocab.characters == "向く" && !parts.include?("ivb") # correct WK data for this vocab
+          correct_parts(vocab.characters, parts)
           parts = parts.join(",")
           vocab.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
 
@@ -332,6 +332,16 @@ module Wk
       return true
     end
 
+    # corrections to WK parts of speech data
+    def self.correct_parts(characters, parts)
+      if characters == "向く" && !parts.include?("ivb")
+        parts.unshift("ivb")
+      elsif characters == "足りない" && parts.include?("ivb")
+        parts.unshift("iad")
+        parts.delete("ivb")
+      end
+    end
+
     private
 
     def set_accent_pattern
@@ -375,5 +385,6 @@ module Wk
     def clean_up
       self.notes = nil unless notes.present?
     end
+
   end
 end
