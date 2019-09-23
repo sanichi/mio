@@ -79,10 +79,7 @@ Rails.application.routes.draw do
   resources :verb_pairs
   resources :vocab_questions, only: [:create]
   resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
-  resources :vocabs do
-    get :homonyms, :verbs, on: :collection
-    patch :quick_accent_update, on: :member
-  end
+  resources :vocabs
   namespace :wk do
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]

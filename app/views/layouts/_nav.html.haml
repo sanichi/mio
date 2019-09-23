@@ -25,8 +25,6 @@
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
           = render "layouts/dropdown_item", cond: can?(:read, VocabTest), text: t("vocab.test.tests"), path: vocab_tests_path
           = render "layouts/dropdown_item", cond: can?(:read, KanjiTest), text: t("vocab.kanji_test.tests"), path: kanji_tests_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.homonyms"), path: homonyms_vocabs_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.verb.verbs"), path: verbs_vocabs_path
           = render "layouts/dropdown_item", cond: can?(:read, Conversation), text: t("conversation.conversations"), path: conversations_path
 
     - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Note, Misa].map{ |c| can?(:read, c) }.any?

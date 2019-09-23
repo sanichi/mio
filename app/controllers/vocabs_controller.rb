@@ -1,6 +1,6 @@
 class VocabsController < ApplicationController
   authorize_resource
-  before_action :find_vocab, only: [:destroy, :edit, :show, :update, :quick_accent_update]
+  before_action :find_vocab, only: [:destroy, :edit, :show, :update]
   before_action :lazy_accent, only: [:update]
   JDIGITS = "０１２３４５６７８９"
   EDIGITS = "0123456789"
@@ -11,14 +11,6 @@ class VocabsController < ApplicationController
 
   def show
     @kanji = Kanji.find_by(symbol: @vocab.kanji) if @vocab.kanji.length == 1
-  end
-
-  def verbs
-    @verbs = Vocab.verb_search(params, verbs_vocabs_path, remote: true, per_page: 20)
-  end
-
-  def homonyms
-    @homonyms = Vocab.homonym_search(params, homonyms_vocabs_path, remote: true, per_page: 20)
   end
 
   def new
@@ -40,10 +32,6 @@ class VocabsController < ApplicationController
     else
       render action: "edit"
     end
-  end
-
-  def quick_accent_update
-    @vocab.update_accent(params[:accent])
   end
 
   def destroy

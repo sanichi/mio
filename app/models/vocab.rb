@@ -80,47 +80,6 @@ class Vocab < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def self.verb_search(params, path, opt={})
-    matches = where("category ~* '(^|[^d])verb'")
-    matches = case params[:order]
-    when "meaning" then matches.by_meaning
-    when "level"   then matches.by_level
-    when "accent"  then matches.by_accent
-    when "pattern" then matches.by_pattern
-    else                matches.by_reading
-    end
-    if sql = cross_constraint(params[:q], %w{kanji meaning reading})
-      matches = matches.where(sql)
-    end
-    if (level = params[:level].to_i) > 0
-      matches = matches.where(level: level)
-    end
-    if %w/godan ichidan suru/.include?(type = params[:type])
-      matches = matches.where("category ILIKE '%#{type}%'")
-    end
-    if params[:type] == "goichidan"
-      matches = matches.tricky_verb
-    end
-    matches = case params[:trans]
-    when "transitive"   then matches.where("category ~* '(^|[^n])transitive' AND category NOT ILIKE '%intransitive%'")
-    when "intransitive" then matches.where("category !~* '(^|[^n])transitive' AND category ILIKE '%intransitive%'")
-    when "both"         then matches.where("category ~* '(^|[^n])transitive' AND category ILIKE '%intransitive%'")
-    when "neither"      then matches.where("category NOT ILIKE '%transitive%' AND category NOT ILIKE '%suru%'")
-    else matches
-    end
-    paginate(matches, params, path, opt)
-  end
-
-  def self.homonym_search(params, path, opt={})
-    homonyms = Vocab.group(:reading).having('count(*) > 1').pluck(:reading)
-    matches = Vocab.where(reading: homonyms)
-    matches = matches.by_reading
-    if sql = cross_constraint(params[:q], %w{kanji meaning reading})
-      matches = matches.where(sql)
-    end
-    paginate(matches, params, path, opt)
-  end
-
   def self.kanji_vocabs(kanji)
     return [] unless kanji.present?
     Vocab.by_reading.where("kanji ILIKE '%#{kanji.symbol}%'").to_a
@@ -193,24 +152,12 @@ class Vocab < ApplicationRecord
     full - tiny
   end
 
-  def update_accent(new_accent)
-    if new_accent == "?"
-      update_column(:accent, nil)
-    elsif new_accent == "-"
-      update_column(:accent, MIN_ACCENT)
-    else
-      i = new_accent.to_i
-      update_column(:accent, i) if i >= 0 && i <= morae
-    end
-    update_column(:pattern_no, new_pattern_no)
-  end
-
-  # To set the text for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
+  # To set the text for the button in vocabs/_audio_accent.html.haml.
   def accent_button_text
     accent.present? && accent > MIN_ACCENT ? accent.to_s : "?"
   end
 
-  # To set a colour for the button in vocabs/_audio_accent.html.haml and vocabs/quick_accent_update.js.erb.
+  # To set a colour for the button in vocabs/_audio_accent.html.haml.
   def pattern_color
     if pattern_no.present?
       %w/secondary success warning info/[pattern_no] || "danger"
@@ -219,12 +166,6 @@ class Vocab < ApplicationRecord
     else
       "outline-secondary"
     end
-  end
-
-  # To be able to remove old color classes in vocabs/quick_accent_update.js.erb
-  # make sure all the possible colors in pattern_color (above) are listed here.
-  def pattern_colors
-    %w/secondary success warning info danger outline-secondary/
   end
 
   # In case this is one half of a verb pair.

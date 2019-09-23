@@ -1,7 +1,5 @@
 = render "utils/title", text: @occupation.kanji
 
-= render "vocabs/quick_accent_updates", selector: "#accent_update"
-
 %h1.text-center= @occupation.vocab ? @occupation.vocab.linked_kanji : @occupation.kanji
 
 .row
