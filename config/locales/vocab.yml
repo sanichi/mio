@@ -43,14 +43,6 @@ en:
       success: Yes! I was right!
       test: Kanji Test
       tests: Kanji Tests
-    note:
-      created: Created
-      edit: Edit Note
-      new: New Note
-      notes: Notes
-      stuff: Stuff
-      title: Title
-      updated: Updated
     occupation:
       edit: Edit Occupation
       new: New Occupation

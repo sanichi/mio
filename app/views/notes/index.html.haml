@@ -1,8 +1,10 @@
-= render "utils/title", key: "vocab.note.notes"
+= render "utils/title", key: "note.notes"
 
 = form_tag notes_path, method: :get, remote: true, class: "form-inline justify-content-center" do
   = label_tag :q, t("query"), class: "sr-only"
   = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :series, t("note.series"), class: "sr-only"
+  = select_tag :series, note_series_menu(params[:series]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, note_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
@@ -12,11 +14,12 @@
     %table{class: "table table-bordered table-striped table-sm mt-3"}
       %thead
         %tr
-          %th= t("vocab.note.title")
-          %th.text-center= t("vocab.note.updated")
+          %th= t("note.title")
+          %th= t("note.series")
+          %th.text-center= t("note.updated")
       %tbody{id: "results"}
         = render "results", notes: @notes
 
 - if can?(:create, Note)
   .text-center.mt-3
-    = link_to t("vocab.note.new"), new_note_path, class: "btn btn-info"
+    = link_to t("note.new"), new_note_path, class: "btn btn-info"

@@ -39,6 +39,6 @@ class NotesController < ApplicationController
   end
 
   def strong_params
-    params.require(:note).permit(:stuff, :title)
+    params.require(:note).permit(:number, :series, :stuff, :title)
   end
 end

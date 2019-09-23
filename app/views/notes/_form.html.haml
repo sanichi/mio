@@ -1,9 +1,11 @@
 .row
   .offset-md-1.col-md-11
     = form_for note, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: note, col: "md", pad: 2, width: 8}
-      = render "utils/text_field_for", shared.merge(param: :title, text: t("vocab.note.title"))
-      = render "utils/text_area_for", shared.merge(param: :stuff, text: t("vocab.note.stuff"), rows: 40)
+      - shared = { form: f, object: note, col: "md", pad: 2, width: 8 }
+      = render "utils/text_field_for", shared.merge(param: :title, text: t("note.title"))
+      = render "utils/text_field_for", shared.merge(param: :series, text: t("note.series"), width: 4)
+      = render "utils/text_field_for", shared.merge(param: :number, text: t("note.number"), width: 1)
+      = render "utils/text_area_for", shared.merge(param: :stuff, text: t("note.stuff"), rows: 40)
       .row
         .offset-md-2.col-md-10
           = f.submit t("save"), class: "btn btn-primary"

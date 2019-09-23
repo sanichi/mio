@@ -18,7 +18,7 @@ describe Favourite do
       select data.sandra.to_s, from: t(:favourite_sandra)
       fill_in t(:favourite_link), with: data.link
       select t(:favourite_categories)[data.category], from: t(:favourite_category)
-      fill_in t(:note), with: data.note
+      fill_in t(:favourite_note), with: data.note
       click_button t(:save)
 
       expect(page).to have_title data.name
@@ -42,7 +42,7 @@ describe Favourite do
       select data.sandra.to_s, from: t(:favourite_sandra)
       fill_in t(:favourite_link), with: data.link
       select t(:favourite_categories)[data.category], from: t(:favourite_category)
-      fill_in t(:note), with: data.note
+      fill_in t(:favourite_note), with: data.note
       click_button t(:save)
 
       expect(page).to have_title t(:favourite_new)
