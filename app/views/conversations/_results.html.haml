@@ -1,6 +1,0 @@
-- conversations.matches.each do |conversation|
-  %tr
-    %td= link_to conversation.short_title, conversation
-    %td= conversation.short_story
-    %td.text-center= render "audio", conversation: conversation
-= render "utils/pagination_links", pager: conversations, columns: 3
