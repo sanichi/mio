@@ -26,7 +26,6 @@ Rails.application.routes.draw do
     get :graph, on: :collection
   end
   resources :interfaces
-  resources :kanjis, only: [:index, :show]
   resources :lessons
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
@@ -49,8 +48,6 @@ Rails.application.routes.draw do
   resources :positions
   resources :problems
   resources :questions
-  resources :radicals, only: [:index]
-  resources :readings, only: [:index, :show]
   resources :residents
   resources :sessions, only: [:create]
   resources :tapas, except: [:show] do
@@ -70,7 +67,6 @@ Rails.application.routes.draw do
   resources :vehicles do
     get :match, on: :collection
   end
-  resources :vocabs, only: [:index, :show]
   namespace :wk do
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]

@@ -1,9 +1,0 @@
-- readings.matches.each do |reading|
-  %tr.d-flex
-    %td.col-1.text-center= link_to reading.kana, reading
-    %td.col-1.text-center= reading.total
-    %td.col-4= render "symbols", yomis: reading.on_yomis
-    %td.col-1.text-center= reading.onyomi
-    %td.col-4= render "symbols", yomis: reading.kun_yomis
-    %td.col-1.text-center= reading.kunyomi
-= render "utils/pagination_links", pager: readings, columns: 6

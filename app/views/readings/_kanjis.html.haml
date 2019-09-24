@@ -1,7 +1,0 @@
-- defined?(skip_link) || skip_link = ""
-
-- kanjis.each do |kanji|
-  %tr.d-flex
-    %td.col-2.col-lg-1.text-center= link_to kanji.symbol, kanji
-    %td.col-5.col-lg-5= render "kanjis/kanas", yomis: kanji.on_yomis, skip_link: skip_link
-    %td.col-5.col-lg-6= render "kanjis/kanas", yomis: kanji.kun_yomis, skip_link: skip_link

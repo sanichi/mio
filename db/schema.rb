@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_092334) do
+ActiveRecord::Schema.define(version: 2019_09_24_102901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,18 +169,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_092334) do
     t.datetime "updated_at", null: false
     t.string "ip_address", limit: 15
     t.string "manufacturer", limit: 50
-  end
-
-  create_table "kanjis", force: :cascade do |t|
-    t.string "symbol", limit: 1
-    t.integer "onyomi", default: 0
-    t.integer "kunyomi", default: 0
-    t.string "meaning", limit: 100
-    t.integer "level", limit: 2
-    t.boolean "burned", default: false
-    t.integer "frequency", limit: 2, default: 0
-    t.index ["meaning"], name: "index_kanjis_on_meaning"
-    t.index ["symbol"], name: "index_kanjis_on_symbol"
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -351,21 +339,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_092334) do
     t.index ["problem_id"], name: "index_questions_on_problem_id"
   end
 
-  create_table "radicals", force: :cascade do |t|
-    t.boolean "burned", default: false
-    t.integer "level", limit: 2
-    t.string "meaning", limit: 100
-    t.string "symbol", limit: 1
-    t.integer "kanji_id"
-    t.string "old_meaning", limit: 100
-  end
-
-  create_table "readings", force: :cascade do |t|
-    t.string "kana", limit: 5
-    t.integer "onyomi", default: 0
-    t.integer "kunyomi", default: 0
-  end
-
   create_table "residents", id: :serial, force: :cascade do |t|
     t.string "first_names", limit: 100
     t.string "last_name", limit: 50
@@ -384,19 +357,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_092334) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
-  end
-
-  create_table "similar_kanjis", force: :cascade do |t|
-    t.string "kanjis", limit: 20
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "category", limit: 10
-  end
-
-  create_table "similar_words", force: :cascade do |t|
-    t.string "readings", limit: 100
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "tapas", id: :serial, force: :cascade do |t|
@@ -472,23 +432,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_092334) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description", limit: 20
-  end
-
-  create_table "vocabs", id: :serial, force: :cascade do |t|
-    t.string "audio", limit: 100
-    t.string "reading", limit: 20
-    t.string "kanji", limit: 20
-    t.string "meaning", limit: 100
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "level", limit: 2
-    t.string "category", limit: 50
-    t.integer "accent", limit: 2
-    t.integer "pattern_no", limit: 2
-    t.integer "morae", limit: 2, default: 0
-    t.boolean "burned", default: false
-    t.index ["meaning"], name: "index_vocabs_on_meaning"
-    t.index ["reading"], name: "index_vocabs_on_reading"
   end
 
   create_table "wk_audios", force: :cascade do |t|

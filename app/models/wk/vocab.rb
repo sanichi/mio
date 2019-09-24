@@ -184,7 +184,6 @@ module Wk
     def self.update(days=nil)
       updates = 0
       creates = 0
-      legacy_accents = ::Vocab.all.where.not(accent: nil).pluck(:kanji, :accent).each_with_object({}) { |d, h| h[d[0]] = d[1] }
 
       url, since = start_url("vocabulary", days)
       puts
@@ -290,10 +289,6 @@ module Wk
             end
           end
 
-          if vocab.accent_position.blank? && (legacy_position = legacy_accents[vocab.characters])
-            vocab.accent_position = legacy_position
-          end
-
           if vocab.new_record?
             vocab.save!
             creates += 1
@@ -320,7 +315,6 @@ module Wk
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "reading_mnemonic", max: 50)
       show_change(changes, "audios", no_change: old_audio_ids)
-      show_change(changes, "accent_position")
       show_change(changes, "last_updated")
 
       return false unless permission_granted?
@@ -385,6 +379,5 @@ module Wk
     def clean_up
       self.notes = nil unless notes.present?
     end
-
   end
 end

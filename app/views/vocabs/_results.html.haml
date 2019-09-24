@@ -1,9 +1,0 @@
-- vocabs.matches.each do |vocab|
-  %tr.d-flex
-    %td.col-1{class: vocab_table_bg(vocab.burned)}= link_to vocab.kanji, vocab
-    %td.col-2= vocab.reading
-    %td.col-1.text-center= render "audio_accent", vocab: vocab
-    %td.col-4= vocab.meaning
-    %td.col-3= vocab.category
-    %td.col-1.text-center= vocab.level
-= render "utils/pagination_links", pager: vocabs, columns: 6
