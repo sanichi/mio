@@ -1,23 +1,19 @@
-= render "quick_accent_updates"
+= render "wk/readings/quick_accent_updates"
 = render "utils/title", text: @vocab.characters
 
 %h1.text-center= @vocab.linked_characters
 
 %table{class: "table table-bordered"}
-  %tbody
+  %tbody#accent_updates
     %tr.d-flex
       %td.col-3= t("wk.meaning")
       %td.col-9= @vocab.meaning
-    %tr.d-flex
-      %td.col-3= t("wk.reading")
-      %td.col-9= @vocab.reading
-    %tr.d-flex#accent_updates
-      %td.col-3= t("wk.vocab.audio")
-      %td.col-9= render "audio", vocab: @vocab
-    - @vocab.readings.each do |r|
+    - @vocab.readings.each do |reading|
       %tr.d-flex
         %td.col-3= t("wk.reading")
-        %td.col-9= r.characters
+        %td.col-9
+          = reading.characters
+          = render "wk/readings/audio", reading: reading
     %tr.d-flex
       %td.col-3= t("wk.vocab.parts")
       %td.col-9= @vocab.parts_of_speech

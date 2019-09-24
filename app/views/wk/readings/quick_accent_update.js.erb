@@ -1,0 +1,6 @@
+var button = $(".updates_<%= @reading.id %>");
+button.text("<%= @reading.accent_display %>");
+<% @reading.pattern_colours.each do |color| %>
+  button.removeClass("btn-<%= color %>");
+<% end %>
+button.addClass("btn-<%= @reading.pattern_colour %>");

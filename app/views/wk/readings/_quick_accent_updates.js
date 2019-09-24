@@ -21,7 +21,7 @@ $(function() {
     }
     if (accent.length == 1 || accent.length == 2) {
       $.ajax({
-        url: '/wk/vocabs/' + id + '/quick_accent_update',
+        url: '/wk/readings/' + id + '/quick_accent_update',
         type: 'patch',
         data: { accent: accent }
       });

@@ -1,0 +1,3 @@
+- if can?(:edit, Wk::Reading)
+  = content_for :javascript do
+    = render "wk/readings/quick_accent_updates.js"

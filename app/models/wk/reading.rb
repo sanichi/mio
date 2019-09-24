@@ -15,13 +15,14 @@ module Wk
     MIN_ACCENT_PATTERN = HEIBAN
     MIN_ACCENT_POSITION = UNKNOWN
 
-    # before_validation :set_accent_pattern
+    before_validation :set_accent_pattern
 
     validates :accent_position, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_POSITION, less_than_or_equal_to: MAX_CHARACTERS }, allow_nil: true
     validates :accent_pattern, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_PATTERN, less_than_or_equal_to: MAX_ACCENT_PATTERN }, allow_nil: true
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }
 
     has_one :vocab
+    has_many :audios, dependent: :destroy
 
     default_scope { order(primary: :desc) }
 

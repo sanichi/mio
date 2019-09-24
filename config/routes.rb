@@ -74,5 +74,8 @@ Rails.application.routes.draw do
     resources :vocabs, only: [:edit, :index, :show, :update] do
       patch :quick_accent_update, on: :member
     end
+    resources :readings, only: [] do
+      patch :quick_accent_update, on: :member
+    end
   end
 end
