@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_151805) do
+ActiveRecord::Schema.define(version: 2019_09_24_195937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -437,10 +437,8 @@ ActiveRecord::Schema.define(version: 2019_09_24_151805) do
   create_table "wk_audios", force: :cascade do |t|
     t.string "file", limit: 64
     t.integer "wk_id"
-    t.integer "vocab_id"
     t.integer "reading_id"
     t.index ["reading_id"], name: "index_wk_audios_on_reading_id"
-    t.index ["vocab_id"], name: "index_wk_audios_on_vocab_id"
   end
 
   create_table "wk_kanjis", force: :cascade do |t|
@@ -511,8 +509,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_151805) do
     t.string "reading", limit: 48
     t.text "reading_mnemonic"
     t.integer "wk_id"
-    t.integer "accent_position", limit: 2
-    t.integer "accent_pattern", limit: 2
     t.text "notes"
     t.datetime "last_noted"
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
