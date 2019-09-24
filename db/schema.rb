@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_091229) do
+ActiveRecord::Schema.define(version: 2019_09_24_092334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,13 +246,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_091229) do
     t.integer "number", limit: 2
   end
 
-  create_table "occupations", force: :cascade do |t|
-    t.string "kanji", limit: 20
-    t.string "meaning", limit: 100
-    t.string "reading", limit: 20
-    t.integer "vocab_id"
-  end
-
   create_table "openings", id: :serial, force: :cascade do |t|
     t.string "code", limit: 3
     t.string "description", limit: 255
@@ -479,20 +472,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_091229) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description", limit: 20
-  end
-
-  create_table "verb_pairs", force: :cascade do |t|
-    t.string "tag", limit: 285
-    t.integer "transitive_id"
-    t.integer "intransitive_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "group", limit: 2
-    t.index ["group"], name: "index_verb_pairs_on_group"
-    t.index ["intransitive_id"], name: "index_verb_pairs_on_intransitive_id"
-    t.index ["tag"], name: "index_verb_pairs_on_tag"
-    t.index ["transitive_id", "intransitive_id"], name: "index_verb_pairs_on_transitive_id_and_intransitive_id"
-    t.index ["transitive_id"], name: "index_verb_pairs_on_transitive_id"
   end
 
   create_table "vocabs", id: :serial, force: :cascade do |t|

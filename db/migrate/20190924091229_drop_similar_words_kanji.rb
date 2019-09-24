@@ -1,12 +1,10 @@
 class DropSimilarWordsKanji < ActiveRecord::Migration[6.0]
-  def change
-    def up
-      drop_table :similar_kanji
-      drop_table :similar_words
-    end
+  def up
+    drop_table :similar_kanji
+    drop_table :similar_words
+  end
 
-    def down
-      raise ActiveRecord::IrreversibleMigration
-    end
+  def down
+    raise ActiveRecord::IrreversibleMigration
   end
 end

@@ -34,7 +34,6 @@ Rails.application.routes.draw do
   end
   resources :misas
   resources :notes
-  resources :occupations, only: [:index, :show]
   resources :openings do
     get :match, on: :collection
   end
@@ -71,7 +70,6 @@ Rails.application.routes.draw do
   resources :vehicles do
     get :match, on: :collection
   end
-  resources :verb_pairs, only: [:index, :show]
   resources :vocabs, only: [:index, :show]
   namespace :wk do
     resources :kanjis, only: [:index, :show]
