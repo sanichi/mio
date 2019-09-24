@@ -47,6 +47,7 @@ module Wk
     }
 
     has_many :audios, dependent: :destroy
+    has_many :readings, dependent: :destroy
 
     before_validation :set_accent_pattern, :clean_up
 

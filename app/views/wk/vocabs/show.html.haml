@@ -14,6 +14,10 @@
     %tr.d-flex#accent_updates
       %td.col-3= t("wk.vocab.audio")
       %td.col-9= render "audio", vocab: @vocab
+    - @vocab.readings.each do |r|
+      %tr.d-flex
+        %td.col-3= t("wk.reading")
+        %td.col-9= r.characters
     %tr.d-flex
       %td.col-3= t("wk.vocab.parts")
       %td.col-9= @vocab.parts_of_speech
