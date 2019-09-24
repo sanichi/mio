@@ -1,9 +1,0 @@
-.row
-  .offset-1.col-11.offset-sm-2.col-sm-10.offset-lg-3.col-lg-9
-    = form_for t, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: t, col: "md", pad: 4 }
-      = render "utils/select_for", shared.merge(param: :level, text: t("vocab.level"), width: 2, menu: vocab_level_menu(t.level))
-      .row
-        .offset-md-4.col-md-8
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), t.new_record?? kanji_tests_path : t, class: "btn btn-secondary"

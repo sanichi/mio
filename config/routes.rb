@@ -27,8 +27,6 @@ Rails.application.routes.draw do
   end
   resources :interfaces
   resources :kanjis, only: [:index, :show]
-  resources :kanji_questions, only: [:create]
-  resources :kanji_tests, only: [:index, :show, :new, :create, :destroy]
   resources :lessons
   resources :logins, only: [:index]
   resources :masses, except: [:show] do
@@ -76,8 +74,6 @@ Rails.application.routes.draw do
     get :match, on: :collection
   end
   resources :verb_pairs, only: [:index, :show]
-  resources :vocab_questions, only: [:create]
-  resources :vocab_tests, only: [:index, :show, :new, :create, :destroy]
   resources :vocabs, only: [:index, :show]
   namespace :wk do
     resources :kanjis, only: [:index, :show]

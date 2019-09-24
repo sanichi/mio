@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_084623) do
+ActiveRecord::Schema.define(version: 2019_09_24_085729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,26 +169,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_084623) do
     t.datetime "updated_at", null: false
     t.string "ip_address", limit: 15
     t.string "manufacturer", limit: 50
-  end
-
-  create_table "kanji_questions", force: :cascade do |t|
-    t.integer "kanji_id"
-    t.integer "kanji_test_id"
-    t.boolean "answer", default: false
-    t.datetime "created_at"
-    t.index ["kanji_id"], name: "index_kanji_questions_on_kanji_id"
-    t.index ["kanji_test_id"], name: "index_kanji_questions_on_kanji_test_id"
-  end
-
-  create_table "kanji_tests", force: :cascade do |t|
-    t.integer "attempts", limit: 2, default: 0
-    t.integer "correct", limit: 2, default: 0
-    t.integer "hit_rate", limit: 2, default: 0
-    t.integer "level", limit: 2
-    t.integer "progress_rate", limit: 2, default: 0
-    t.integer "total", limit: 2, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "kanjis", force: :cascade do |t|
@@ -513,32 +493,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_084623) do
     t.index ["tag"], name: "index_verb_pairs_on_tag"
     t.index ["transitive_id", "intransitive_id"], name: "index_verb_pairs_on_transitive_id_and_intransitive_id"
     t.index ["transitive_id"], name: "index_verb_pairs_on_transitive_id"
-  end
-
-  create_table "vocab_questions", force: :cascade do |t|
-    t.integer "vocab_id"
-    t.integer "vocab_test_id"
-    t.string "kanji", limit: 20
-    t.string "meaning", limit: 100
-    t.string "reading", limit: 20
-    t.boolean "kanji_correct", default: false
-    t.boolean "meaning_correct", default: false
-    t.boolean "reading_correct", default: false
-    t.datetime "created_at"
-    t.index ["vocab_id"], name: "index_vocab_questions_on_vocab_id"
-    t.index ["vocab_test_id"], name: "index_vocab_questions_on_vocab_test_id"
-  end
-
-  create_table "vocab_tests", force: :cascade do |t|
-    t.integer "total", limit: 2, default: 0
-    t.integer "level", limit: 2
-    t.string "category", limit: 5
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "attempts", limit: 2, default: 0
-    t.integer "correct", limit: 2, default: 0
-    t.integer "hit_rate", limit: 2, default: 0
-    t.integer "progress_rate", limit: 2, default: 0
   end
 
   create_table "vocabs", id: :serial, force: :cascade do |t|

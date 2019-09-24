@@ -14,8 +14,6 @@ class Vocab < ApplicationRecord
   MIN_PATTERN = 0
   IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
 
-  has_many :vocab_questions, dependent: :destroy
-
   before_validation :truncate, :set_morae_and_deduce_pattern
 
   validates :accent, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT, less_than_or_equal_to: MAX_READING }, allow_nil: true
