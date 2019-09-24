@@ -54,8 +54,6 @@ Rails.application.routes.draw do
   resources :readings, only: [:index, :show]
   resources :residents
   resources :sessions, only: [:create]
-  resources :similar_kanjis, only: [:index, :show]
-  resources :similar_words, only: [:index, :show]
   resources :tapas, except: [:show] do
     get :notes, on: :member
   end

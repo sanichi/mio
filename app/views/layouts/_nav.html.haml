@@ -10,7 +10,7 @@
       .nav-item
         = link_to t("home"), blogs_path, class: "nav-link"
 
-    - if [Vocab, VerbPair, Kanji, Reading, Radical, SimilarWord, SimilarKanji, Occupation, Problem].map{ |c| can?(:read, c) }.any?
+    - if [Vocab, VerbPair, Kanji, Reading, Radical, Occupation, Problem].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
         = render "layouts/dropdown_head", text: t("vocab.temporary.header"), id: "navbarJapaneseMenu"
         %div{class: "dropdown-menu", "aria-labelledby" => "navbarJapaneseMenu"}
@@ -20,8 +20,6 @@
           = render "layouts/dropdown_item", cond: can?(:read, Radical), text: t("vocab.radicals"), path: radicals_path
           = render "layouts/dropdown_item", cond: can?(:read, VerbPair), text: t("verb_pair.verb_pairs"), path: verb_pairs_path
           = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.occupation.occupations"), path: occupations_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.words"), path: similar_words_path
-          = render "layouts/dropdown_item", cond: can?(:read, Vocab), text: t("vocab.similar.kanjis"), path: similar_kanjis_path
 
     - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Note, Misa].map{ |c| can?(:read, c) }.any?
       .nav-item.dropdown
