@@ -1,5 +1,7 @@
 module Wk
   class Reading < ActiveRecord::Base
+    include Wanikani
+
     # pitch accent patterns
     HEIBAN = 0
     ATAMADAKA = 1
@@ -61,6 +63,114 @@ module Wk
         self.accent_position = i if i >= 0
       end
       save
+    end
+
+    def self.update(days=nil)
+      stats = Hash.new(0)
+      new_wk_ids = []
+      old_wk_ids = Vocab.pluck(:wk_id)
+
+      url, since = start_url("vocabulary", days)
+      puts
+      puts "readings since #{since}"
+      puts "-------------------------"
+
+      while url.present? do
+        subjects, url = get_subjects(url)
+        puts "subjects: #{subjects.size}"
+
+        # updates and creates that don't need all vocab present
+        subjects.each do |subject|
+          check(subject, "vocab subject is not a hash #{subject.class}") { |v| v.is_a?(Hash) }
+
+          wk_id = check(subject["id"], "vocab ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
+          vocab = Wk::Vocab.find_by(wk_id: wk_id)
+          if vocab
+            stats["matched vocabs"] += 1
+            old_wk_ids.delete(wk_id)
+          else
+            new_wk_ids.push(wk_id)
+            next
+          end
+          context = "vocab (#{wk_id})"
+
+          data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
+
+          readings = check(data["readings"], "#{context} doesn't have a readings array") { |v| v.is_a?(Array) && v.size > 0 }
+          wk_readings = {}
+          readings.each do |r|
+            check(r, "#{context} has an invalid reading") { |v| v.is_a?(Hash) && v["reading"].is_a?(String) && v["reading"].present? && (v["primary"] == true || v["primary"] == false) }
+            wk_readings[r["reading"]] = r["primary"]
+          end
+          wk_readings.each do | characters, primary |
+            db_reading = Wk::Reading.find_by(vocab_id: vocab.id, characters: characters)
+            if db_reading
+              if db_reading.primary == primary
+                stats["matched readings"] += 1
+              else
+                db_reading.update_column(primary: primary)
+                stats["updated readings"] += 1
+              end
+            else
+              vocab.readings << Wk::Reading.create!(vocab_id: vocab.id, characters: characters, primary: primary)
+              stats["new readings"] += 1
+            end
+          end
+          db_readings = {}
+          vocab.readings.each do |reading|
+            if wk_readings.has_key?(reading.characters)
+              db_readings[reading.characters] = reading
+            else
+              vocab.readings.delete(reading)
+              stats["old readings"] += 1
+            end
+          end
+
+          audios = check(data["pronunciation_audios"], "#{context} doesn't have an audios array") { |v| v.is_a?(Array) && v.size > 0 }
+          wk_audios = Hash.new { |h, k| h[k] = [] }
+          audios.each do |a|
+            check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Wk::Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) && wk_readings.has_key?(v["metadata"]["pronunciation"]) }
+            if a["content_type"] == "audio/mpeg"
+              wk_audios[a["metadata"]["pronunciation"]].push(a["url"].delete_prefix(Wk::Audio::DEFAULT_BASE))
+            end
+          end
+          db_readings.each do | characters, reading |
+            wk_audios[characters].each do |file|
+              db_audio = Wk::Audio.find_by(reading_id: reading.id, file: file)
+              if db_audio
+                stats["matched audios"] += 1
+              else
+                reading.audios << Wk::Audio.create!(reading_id: reading.id, file: file)
+                stats["new audios"] += 1
+              end
+            end
+            reading.audios.each do |audio|
+              unless wk_audios[characters].include?(audio.file)
+                reading.audios.delete(audio)
+                stats["old audios"] += 1
+              end
+            end
+          end
+        end
+      end
+
+      extra = {}
+      max_extra = 55
+      unless new_wk_ids.empty?
+        key = "WK vocabs not in DB"
+        stats[key] = new_wk_ids.size
+        extra[key] = "(#{new_wk_ids.sort.join(',')})".truncate(max_extra)
+      end
+      if days.nil? && old_wk_ids.size > 0
+        key = "DB vocabs not in WK"
+        stats[key] = old_wk_ids.size
+        extra[key] = "(#{old_wk_ids.sort.join(',')})".truncate(max_extra)
+      end
+
+      puts "stats:"
+      stats.sort_by { |k, v| v }.reverse.each do |k, v|
+        puts "  %s%s %s %s" % [k, "." * (25 - k.length), v, extra[k]]
+      end
     end
 
     private

@@ -9,5 +9,6 @@ module Wk
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
     Wk::Vocab.update(days)
+    Wk::Reading.update(days)
   end
 end

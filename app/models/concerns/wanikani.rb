@@ -39,20 +39,10 @@ module Wanikani
 
     def start_url(type, days)
       params = { types: type, hidden: false }
-      if days.is_a?(Integer)
-        if days >= 0
-          since = Date.today.days_ago(days)
-        else
-          since = "forever"
-        end
+      if days.is_a?(Integer) && days >= 0
+        since = Date.today.days_ago(days)
       else
-        klass = case type
-        when "radical"    then Wk::Radical
-        when "kanji"      then Wk::Kanji
-        when "vocabulary" then Wk::Vocab
-        else raise "invalid subject type (#{type})"
-        end
-        since = klass.maximum(:last_updated)
+        since = "forever"
       end
       params[:updated_after] = "#{since.to_s}T00:00:00Z" if since.is_a?(Date)
       params = params.map{ |k, v| "#{k}=#{v}" }.join("&")

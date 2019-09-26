@@ -189,7 +189,6 @@ module Wk
           readings.each do |r|
             if r.is_a?(Hash) && r["reading"].is_a?(String) && r["reading"].present?
               reading = r["reading"]
-              reading = reading.katakana if r["type"] == "onyomi"
               if r["primary"]
                 primary.push(reading)
               else
