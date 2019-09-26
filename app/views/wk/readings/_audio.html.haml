@@ -4,8 +4,9 @@
 - colour = reading.pattern_colour
 - klass = "btn-#{colour} accent_updater updates_#{reading.id}"
 
-- reading.audios.each_with_index do |audio, i|
+- audios = reading.audios
+- audios = audios.sample(max) if max && audios.size > max
+- audios.each_with_index do |audio, i|
   %button.btn.btn-sm{type: "button", class: klass, onclick: "document.getElementById('audio_#{audio.id}').play()", "data-id" => reading.id}= accent
   %audio{id: "audio_#{audio.id}"}
     %source{src: audio.url, type: "audio/mpeg"}
-  - break if max && max == i + 1
