@@ -39,7 +39,7 @@ module Wk
       when "ireading"      then by_ireading
       else                      by_tsuffix_group
       end
-      if sql = cross_constraint(params[:query], %w{tag})
+      if sql = cross_constraint(params[:pquery], %w{tag})
         matches = matches.where(sql)
       end
       matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])

@@ -51,6 +51,7 @@ en:
       transitive: Transitive
       transitive_reading: T-Reading
       transitive_suffix: T-Suffix
+      verb_pair: Verb Pair
       verb_pairs: Verb Pairs
     vocab:
       audio: Audio

@@ -2,8 +2,8 @@
 = render "utils/title", key: "wk.verb_pair.verb_pairs"
 
 = form_tag wk_verb_pairs_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :query, t("search"), class: "sr-only"
-  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
+  = label_tag :pquery, t("wk.verb_pair.verb_pair"), class: "sr-only"
+  = text_field_tag :pquery, params[:pquery], class: "form-control mr-1 mb-1", placeholder: t("wk.verb_pair.verb_pair"), size: 16, autofocus: true
   = label_tag :category, t("wk.verb_pair.category"), class: "sr-only"
   = select_tag :category, wk_verb_pair_category_menu(params[:category]), class: "form-control mr-1 mb-1 auto-submit"
   = label_tag :order, t("order"), class: "sr-only"
