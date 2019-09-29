@@ -1,7 +1,7 @@
 #flash_messages.row
   - flash.each do |name, msg|
     - if msg
-      .col-xs-12
+      .col-12
         .text-center{class: flash_style(name)}
           %button.close{"type" => "button", "data-dismiss" => "alert"}= t("symbol.cross")
           = msg
