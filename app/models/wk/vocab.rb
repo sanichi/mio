@@ -109,7 +109,15 @@ module Wk
     end
 
     def notes_html
-      to_html(notes)
+      notes_plus = notes.to_s
+      unless examples.empty?
+        notes.sub(/\n+\z/, "")
+        notes_plus += "\n\nExamples:\n\n"
+        examples.each do |example|
+          notes_plus += example.to_markdown(bold: characters)
+        end
+      end
+      to_html(notes_plus)
     end
 
     def parts_of_speech
