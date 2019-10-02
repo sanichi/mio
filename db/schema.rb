@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_26_195715) do
+ActiveRecord::Schema.define(version: 2019_10_02_101827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -438,6 +438,20 @@ ActiveRecord::Schema.define(version: 2019_09_26_195715) do
     t.string "file", limit: 64
     t.integer "reading_id"
     t.index ["reading_id"], name: "index_wk_audios_on_reading_id"
+  end
+
+  create_table "wk_examples", force: :cascade do |t|
+    t.string "japanese", limit: 100
+    t.string "english", limit: 100
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "wk_examples_vocabs", force: :cascade do |t|
+    t.bigint "example_id", null: false
+    t.bigint "vocab_id", null: false
+    t.index ["example_id"], name: "index_wk_examples_vocabs_on_example_id"
+    t.index ["vocab_id"], name: "index_wk_examples_vocabs_on_vocab_id"
   end
 
   create_table "wk_kanjis", force: :cascade do |t|

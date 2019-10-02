@@ -68,13 +68,14 @@ Rails.application.routes.draw do
     get :match, on: :collection
   end
   namespace :wk do
+    resources :examples
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]
-    resources :verb_pairs, only: [:index]
-    resources :vocabs, only: [:edit, :index, :show, :update] do
+    resources :readings, only: [] do
       patch :quick_accent_update, on: :member
     end
-    resources :readings, only: [] do
+    resources :verb_pairs, only: [:index]
+    resources :vocabs, only: [:edit, :index, :show, :update] do
       patch :quick_accent_update, on: :member
     end
   end

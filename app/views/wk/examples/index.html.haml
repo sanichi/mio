@@ -1,0 +1,19 @@
+= render "utils/title", key: "wk.example.examples"
+
+= form_tag wk_examples_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :query, t("wk.example.example"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.example.example"), size: 16, autofocus: true
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+
+%table{class: "table table-bordered table-striped table-sm mt-3"}
+  %thead
+    %tr
+      %th= t("wk.example.japanese")
+      %th= t("wk.example.english")
+  %tbody{id: "results"}
+    = render "results", examples: @examples
+
+- if can?(:create, Wk::Example)
+  .text-center.mt3
+    = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-info"
+    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"

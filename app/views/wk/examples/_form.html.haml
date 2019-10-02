@@ -1,0 +1,8 @@
+= form_for example, html: { class: "form-horizontal" } do |f|
+  - shared = { form: f, object: example, col: "md", pad: 2, width: 10}
+  = render "utils/text_field_for", shared.merge(param: :japanese, text: t("wk.example.japanese"))
+  = render "utils/text_field_for", shared.merge(param: :english, text: t("wk.example.english"))
+  .row
+    .offset-md-2.col-md-10
+      = f.submit t("save"), class: "btn btn-primary"
+      = link_to t("cancel"), example.new_record?? wk_examples_path : example, class: "btn btn-secondary"

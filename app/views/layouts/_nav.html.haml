@@ -19,6 +19,7 @@
           = render "wk/radicals/dropdown_menu", cond: can?(:read, Wk::Radical), size: menu_size
           = render "wk/verb_pairs/dropdown_menu", cond: can?(:read, Wk::VerbPair), size: menu_size
           = render "layouts/dropdown_item", cond: can?(:read, Wk::VerbPair), text: t("wk.verb_pair.verb_pairs"), path: wk_verb_pairs_path
+          = render "layouts/dropdown_item", cond: can?(:read, Wk::Example), text: t("wk.example.examples"), path: wk_examples_path
           = render "layouts/dropdown_item", cond: can?(:read, Misa), text: t("misa.misas"), path: misas_path
           = render "layouts/dropdown_item", cond: can?(:read, Note), text: t("note.notes"), path: notes_path
           = render "layouts/dropdown_item", cond: can?(:read, Problem), text: t("problem.problems"), path: problems_path

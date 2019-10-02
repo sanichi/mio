@@ -6,6 +6,13 @@ en:
     level: Level
     meaning: Meaning
     reading: Reading
+    example:
+      edit: Edit Example
+      english: English
+      example: Example
+      examples: Examples
+      new: New Example
+      japanese: Japanese
     hint:
       meaning: Meaning Mnemonic
       mnemonic: Mnemonic

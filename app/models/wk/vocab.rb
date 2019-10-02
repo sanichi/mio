@@ -34,6 +34,7 @@ module Wk
     }
 
     has_many :readings, dependent: :destroy
+    has_and_belongs_to_many :examples
 
     before_validation :clean_up
 
