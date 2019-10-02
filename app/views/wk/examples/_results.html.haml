@@ -1,5 +1,5 @@
 - examples.matches.each do |example|
   %tr
-    %td= link_to example.japanese, example
-    %td= example.english
+    %td= example.japanese_html
+    %td= link_to example.english, example
 = render "utils/pagination_links", pager: examples, columns: 2
