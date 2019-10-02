@@ -111,7 +111,7 @@ module Wk
     def notes_html
       notes_plus = notes.to_s
       unless examples.empty?
-        notes.sub(/\n+\z/, "")
+        notes_plus.sub(/\n+\z/, "")
         notes_plus += "\n\nExamples:\n\n"
         examples.each do |example|
           notes_plus += example.to_markdown(bold: characters)
