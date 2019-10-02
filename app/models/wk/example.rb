@@ -73,15 +73,17 @@ module Wk
     end
 
     def update_vocabs
-      current = current_vocabs
+      remaining = current_vocabs
       japanese.scan(PATTERN) do |display, characters|
         characters = display if !characters
-        next if current.delete(characters) # we have this association already
+        if vocabs.find_by(characters: characters)
+          remaining.delete(characters)
+          next
+        end
         vocab = Vocab.find_by(characters: characters)
-        next unless vocab # we can't seem to find this Wk::Vocab
-        vocabs << vocab
+        vocabs << vocab if vocab
       end
-      current.each_value { |vocab| vocabs.destroy(vocab) } # delete any that are no longer used
+      remaining.each_value { |vocab| vocab.destroy(vocab) }
     end
   end
 end
