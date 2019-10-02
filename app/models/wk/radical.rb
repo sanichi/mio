@@ -102,7 +102,7 @@ module Wk
 
     def character_name(linked: false)
       if character
-        kanji = Wk::Kanji.find_by(character: character) if linked
+        kanji = Kanji.find_by(character: character) if linked
         if kanji
           %Q{<a href="/wk/kanjis/#{kanji.id}">#{character}</a>-#{name}}.html_safe
         else

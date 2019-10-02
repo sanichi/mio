@@ -84,7 +84,7 @@ module Wk
           check(subject, "vocab subject is not a hash #{subject.class}") { |v| v.is_a?(Hash) }
 
           wk_id = check(subject["id"], "vocab ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
-          vocab = Wk::Vocab.find_by(wk_id: wk_id)
+          vocab = Vocab.find_by(wk_id: wk_id)
           if vocab
             stats["matched vocabs"] += 1
             old_wk_ids.delete(wk_id)
@@ -103,16 +103,16 @@ module Wk
             wk_readings[r["reading"]] = r["primary"]
           end
           wk_readings.each do | characters, primary |
-            db_reading = Wk::Reading.find_by(vocab_id: vocab.id, characters: characters)
+            db_reading = Reading.find_by(vocab_id: vocab.id, characters: characters)
             if db_reading
               if db_reading.primary == primary
                 stats["matched readings"] += 1
               else
-                db_reading.update_column(primary: primary)
+                db_reading.update_column(:primary, primary)
                 stats["updated readings"] += 1
               end
             else
-              vocab.readings << Wk::Reading.create!(vocab_id: vocab.id, characters: characters, primary: primary)
+              vocab.readings << Reading.create!(vocab_id: vocab.id, characters: characters, primary: primary)
               stats["new readings"] += 1
             end
           end
@@ -129,18 +129,18 @@ module Wk
           audios = check(data["pronunciation_audios"], "#{context} doesn't have an audios array") { |v| v.is_a?(Array) && v.size > 0 }
           wk_audios = Hash.new { |h, k| h[k] = [] }
           audios.each do |a|
-            check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Wk::Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) && wk_readings.has_key?(v["metadata"]["pronunciation"]) }
+            check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) && wk_readings.has_key?(v["metadata"]["pronunciation"]) }
             if a["content_type"] == "audio/mpeg"
-              wk_audios[a["metadata"]["pronunciation"]].push(a["url"].delete_prefix(Wk::Audio::DEFAULT_BASE))
+              wk_audios[a["metadata"]["pronunciation"]].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
             end
           end
           db_readings.each do | characters, reading |
             wk_audios[characters].each do |file|
-              db_audio = Wk::Audio.find_by(reading_id: reading.id, file: file)
+              db_audio = Audio.find_by(reading_id: reading.id, file: file)
               if db_audio
                 stats["matched audios"] += 1
               else
-                reading.audios << Wk::Audio.create!(reading_id: reading.id, file: file)
+                reading.audios << Audio.create!(reading_id: reading.id, file: file)
                 stats["new audios"] += 1
               end
             end

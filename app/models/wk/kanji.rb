@@ -47,7 +47,7 @@ module Wk
     end
 
     def linked_character
-      radical = Wk::Radical.find_by(character: character)
+      radical = Radical.find_by(character: character)
       if radical
         %Q{<a href="/wk/radicals/#{radical.id}">#{character}</a>}.html_safe
       else
@@ -59,7 +59,7 @@ module Wk
       updates = 0
       creates = 0
       new_similarities = {}
-      radical_from_id = Wk::Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
+      radical_from_id = Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
 
       url, since = start_url("kanji", days)
       puts
@@ -187,7 +187,7 @@ module Wk
       end
 
       # updates that need all kanji present
-      kanji_from_id = Wk::Kanji.all.each_with_object({}) { |k, h| h[k.wk_id] = k }
+      kanji_from_id = Kanji.all.each_with_object({}) { |k, h| h[k.wk_id] = k }
       new_similarities.each do |kanji, similar_ids|
         similar_kanjis = similar_ids.map do |wk_id|
           check(kanji_from_id[wk_id], "kanji (#{kanji.id}, #{kanji.wk_id}, #{kanji.character}) is similar to a kanji with a non-existant ID (#{wk_id})") { |v| !v.nil? }

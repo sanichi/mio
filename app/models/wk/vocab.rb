@@ -103,7 +103,7 @@ module Wk
 
     def linked_characters
       characters.split('').map do |c|
-        k = Wk::Kanji.find_by(character: c)
+        k = Kanji.find_by(character: c)
         k ? %Q{<a href="/wk/kanjis/#{k.id}">#{c}</a>} : c
       end.join('').html_safe
     end
@@ -118,9 +118,9 @@ module Wk
 
     def pairs
       if transitive?
-        Wk::VerbPair.where(transitive: self).to_a
+        VerbPair.where(transitive: self).to_a
       elsif intransitive?
-        Wk::VerbPair.where(intransitive: self).to_a
+        VerbPair.where(intransitive: self).to_a
       else
         []
       end

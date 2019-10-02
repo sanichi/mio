@@ -55,12 +55,12 @@ module Wk
     end
 
     def self.update
-      count = Wk::VerbPair.count
-      Wk::VerbPair.delete_all
+      count = VerbPair.count
+      VerbPair.delete_all
       puts "old pairs deleted... #{count}"
 
-      trn = Wk::Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb%'").where.not("parts LIKE '%srv%'").to_a
-      int = Wk::Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb%'").where.not("parts LIKE '%srv%'").to_a
+      trn = Vocab.where("parts LIKE '%tvb%'").where.not("parts LIKE '%ivb%'").where.not("parts LIKE '%srv%'").to_a
+      int = Vocab.where("parts LIKE '%ivb%'").where.not("parts LIKE '%tvb%'").where.not("parts LIKE '%srv%'").to_a
       puts "transitives......... #{trn.size}"
       puts "intransitives....... #{int.size}"
 
@@ -94,7 +94,7 @@ module Wk
           tv, th = t
           is.each do |i|
             iv, ih = i
-            pair = Wk::VerbPair.create(transitive: tv, intransitive: iv, transitive_suffix: th, intransitive_suffix: ih)
+            pair = VerbPair.create(transitive: tv, intransitive: iv, transitive_suffix: th, intransitive_suffix: ih)
             if pair.okay?
               pair.categorize!
               pair.save!

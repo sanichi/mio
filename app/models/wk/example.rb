@@ -77,7 +77,7 @@ module Wk
       japanese.scan(PATTERN) do |display, characters|
         characters = display if !characters
         next if current.delete(characters) # we have this association already
-        vocab = Wk::Vocab.find_by(characters: characters)
+        vocab = Vocab.find_by(characters: characters)
         next unless vocab # we can't seem to find this Wk::Vocab
         vocabs << vocab
       end
