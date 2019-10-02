@@ -4,7 +4,7 @@ module Wk
     before_action :find_example, only: [:edit, :show, :update, :destroy]
 
     def index
-      @examples = Wk::Example.search(params, wk_examples_path)
+      @examples = Wk::Example.search(params, wk_examples_path, per_page: 20)
     end
 
     def new

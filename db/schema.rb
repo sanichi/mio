@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_02_101827) do
+ActiveRecord::Schema.define(version: 2019_10_02_160624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -455,12 +455,12 @@ ActiveRecord::Schema.define(version: 2019_10_02_101827) do
   end
 
   create_table "wk_kanjis", force: :cascade do |t|
-    t.string "character", limit: 1
+    t.integer "wk_id"
     t.integer "level", limit: 2
+    t.string "character", limit: 1
+    t.string "meaning", limit: 128
     t.text "meaning_mnemonic"
     t.text "reading_mnemonic"
-    t.integer "wk_id"
-    t.string "meaning", limit: 128
     t.date "last_updated"
     t.string "reading", limit: 128
     t.index ["wk_id"], name: "index_wk_kanjis_on_wk_id", unique: true
