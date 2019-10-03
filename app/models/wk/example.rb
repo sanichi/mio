@@ -13,8 +13,10 @@ module Wk
 
     validates :english, :japanese, presence: true, length: { maximum: MAX_EXAMPLE }
 
+    scope :by_updated_at, -> { order(updated_at: :desc) }
+
     def self.search(params, path, opt={})
-      matches = all
+      matches = by_updated_at
       if sql = cross_constraint(params[:query], %w{english japanese})
         matches = matches.where(sql)
       end
