@@ -98,6 +98,10 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
+    def any_notes?
+      notes.present? || examples.any? || groups.any?
+    end
+
     def intransitive?
       parts.match?(/ivb/)
     end

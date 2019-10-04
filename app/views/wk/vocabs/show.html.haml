@@ -43,7 +43,7 @@
     %tr.d-flex
       %td.col-3= t("wk.last_updated")
       %td.col-9= @vocab.last_updated
-    - if @vocab.notes.present? || @vocab.examples.any?
+    - if @vocab.any_notes?
       %tr.d-flex
         %td.col-12{colspan: 2}= @vocab.notes_html
 
