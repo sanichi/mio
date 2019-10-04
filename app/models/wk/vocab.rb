@@ -35,6 +35,7 @@ module Wk
 
     has_many :readings, dependent: :destroy
     has_and_belongs_to_many :examples
+    has_and_belongs_to_many :groups
 
     before_validation :clean_up
 
@@ -110,13 +111,20 @@ module Wk
 
     def notes_html
       notes_plus = notes.to_s
+      notes_plus.sub(/\n+\z/, "")
+      Wk::Group::CATEGORIES.each do |category|
+        groups.where(category: category).each do |group|
+          notes_plus += "\n\n"
+          notes_plus += group.to_markdown(bold: characters)
+        end
+      end
       unless examples.empty?
-        notes_plus.sub(/\n+\z/, "")
         notes_plus += "\n\nExamples:\n\n"
         examples.each do |example|
           notes_plus += example.to_markdown(bold: characters)
         end
       end
+      notes_plus += "\n"
       to_html(notes_plus)
     end
 
@@ -131,6 +139,15 @@ module Wk
         VerbPair.where(intransitive: self).to_a
       else
         []
+      end
+    end
+
+    def to_markdown(display: nil, bold: nil)
+      display = characters unless display
+      if bold && bold == characters
+        "**#{display}**"
+      else
+        "[#{display}](/wk/vocabs/#{characters})"
       end
     end
 

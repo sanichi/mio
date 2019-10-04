@@ -1,0 +1,21 @@
+= render "utils/title", key: "wk.group.groups"
+
+= form_tag wk_groups_path, method: :get, remote: true, class: "form-inline justify-content-center" do
+  = label_tag :category, t("wk.group.category"), class: "sr-only"
+  = select_tag :category, wk_group_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
+  = label_tag :query, t("wk.group.group"), class: "sr-only"
+  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.group.group"), size: 16, autofocus: true
+  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+
+%table{class: "table table-bordered table-striped table-sm mt-3"}
+  %thead
+    %tr
+      %th= t("wk.group.category")
+      %th= t("wk.group.vocab_list")
+  %tbody{id: "results"}
+    = render "results", groups: @groups
+
+- if can?(:create, Wk::Group)
+  .text-center.mt3
+    = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-info"
+    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"

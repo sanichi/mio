@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   end
   namespace :wk do
     resources :examples
+    resources :groups, except: [:show]
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]
     resources :readings, only: [] do

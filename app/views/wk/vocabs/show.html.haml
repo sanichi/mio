@@ -53,4 +53,5 @@
   = link_to t("wk.radical.radicals"), wk_radicals_path, class: "btn btn-success"
   = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "btn btn-success"
   = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
-  = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success"
+  = link_to t("wk.example.examples"), wk_examples_path(query: @vocab.characters), class: "btn btn-success"
+  = link_to t("wk.group.groups"), wk_groups_path(query: @vocab.characters), class: "btn btn-success"

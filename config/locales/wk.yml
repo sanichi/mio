@@ -13,6 +13,18 @@ en:
       examples: Examples
       new: New Example
       japanese: Japanese
+    group:
+      category: Category
+      edit: Edit Group
+      group: Group
+      groups: Groups
+      new: New Group
+      vocab_list: Vocab List
+      categories:
+        antonyms: Antonyms
+        related_to: Related to
+        sounds_like: Sounds like
+        synonyms: Synonyms
     hint:
       meaning: Meaning Mnemonic
       mnemonic: Mnemonic

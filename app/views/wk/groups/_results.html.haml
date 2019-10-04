@@ -1,0 +1,5 @@
+- groups.matches.each do |group|
+  %tr
+    %td= t("wk.group.categories.#{group.category}")
+    %td= link_to group.vocab_list, edit_wk_group_path(group)
+= render "utils/pagination_links", pager: groups, columns: 2

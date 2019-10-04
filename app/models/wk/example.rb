@@ -32,11 +32,7 @@ module Wk
           "**#{display}**"
         else
           vocab = current[characters]
-          if vocab
-            "[#{display}](/wk/vocabs/#{characters})"
-          else
-            match
-          end
+          vocab ? vocab.to_markdown(display: display) : match
         end
       end
     end

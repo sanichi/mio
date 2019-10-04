@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_03_181111) do
+ActiveRecord::Schema.define(version: 2019_10_03_190443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -452,6 +452,20 @@ ActiveRecord::Schema.define(version: 2019_10_03_181111) do
     t.bigint "vocab_id", null: false
     t.index ["example_id"], name: "index_wk_examples_vocabs_on_example_id"
     t.index ["vocab_id"], name: "index_wk_examples_vocabs_on_vocab_id"
+  end
+
+  create_table "wk_groups", force: :cascade do |t|
+    t.string "category", limit: 20
+    t.string "vocab_list", limit: 200
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "wk_groups_vocabs", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "vocab_id", null: false
+    t.index ["group_id"], name: "index_wk_groups_vocabs_on_group_id"
+    t.index ["vocab_id"], name: "index_wk_groups_vocabs_on_vocab_id"
   end
 
   create_table "wk_kanjis", force: :cascade do |t|

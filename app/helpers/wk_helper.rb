@@ -46,4 +46,11 @@ module WkHelper
     %w/category transitive_suffix intransitive_suffix/.map { |i| [t("wk.verb_pair.#{i}"), i] }
     options_for_select(opts, selected)
   end
+
+  def wk_group_category_menu(selected, search: false, new_record: false)
+    opts = Wk::Group::CATEGORIES.map { |c| [t("wk.group.categories.#{c}"), c] }
+    opts.unshift [t("any"), ""] if search
+    opts.unshift [t("select"), ""] if new_record
+    options_for_select(opts, selected)
+  end
 end
