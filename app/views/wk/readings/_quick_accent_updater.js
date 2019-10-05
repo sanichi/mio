@@ -1,6 +1,6 @@
 $(function() {
   $('#accent_updates').on('keypress', 'button.audio_button', function(e) {
-    var reading_id = $(e.target).data('id');
+    var reading_id = $(e.target).data('reading');
     var code = e.keyCode;
     var accent = '';
     if (code == 45) {
