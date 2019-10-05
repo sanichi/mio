@@ -1,6 +1,6 @@
 $(function() {
-  $('#accent_updates').on('keypress', '.accent_updater', function(e) {
-    var id = $(e.target).data('id');
+  $('#accent_updates').on('keypress', 'button.audio_button', function(e) {
+    var reading_id = $(e.target).data('id');
     var code = e.keyCode;
     var accent = '';
     if (code == 45) {
@@ -21,7 +21,7 @@ $(function() {
     }
     if (accent.length == 1 || accent.length == 2) {
       $.ajax({
-        url: '/wk/readings/' + id + '/quick_accent_update',
+        url: '/wk/readings/' + reading_id + '/quick_accent_update',
         type: 'patch',
         data: { accent: accent }
       });

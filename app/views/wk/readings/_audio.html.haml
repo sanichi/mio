@@ -1,12 +1,9 @@
-- defined?(max) || max = nil
-
-- accent = reading.accent_display
-- colour = reading.pattern_colour
-- klass = "btn-#{colour} accent_updater updates_#{reading.id}"
-
-- audios = reading.audios
-- audios = audios.sample(max) if max && audios.size > max
-- audios.each_with_index do |audio, i|
-  %button.btn.btn-sm{type: "button", class: klass, onclick: "document.getElementById('audio_#{audio.id}').play()", "data-id" => reading.id}= accent
+- klass = "btn-#{reading.pattern_colour} audio_button reading_#{reading.id}"
+- display_id = reading.audios.pluck(:id).sample
+- reading.audios.each do |audio|
+  - id = "audio_button_#{audio.id}"
+  - onclick = "play_audio(#{audio.id}, #{reading.id})"
+  - style = audio.id == display_id ? nil : "display: none"
+  %button.btn.btn-sm{id: id, class: klass, onclick: onclick, style: style, "data-id" => reading.id, type: "button"}= reading.accent_display
   %audio{id: "audio_#{audio.id}"}
     %source{src: audio.url, type: "audio/mpeg"}
