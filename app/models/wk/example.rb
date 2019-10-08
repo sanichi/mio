@@ -81,7 +81,7 @@ module Wk
         vocab = Vocab.find_by(characters: characters)
         vocabs << vocab if vocab
       end
-      remaining.each_value { |vocab| vocab.destroy(vocab) }
+      remaining.each_value { |vocab| vocabs.destroy(vocab) }
     end
   end
 end
