@@ -10,7 +10,8 @@
   = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.group.group"), size: 16, autofocus: true
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
   = link_to t("reset"), "#", class: "btn btn-success mr-1 mb-1", id: "reset"
-
+  - if can?(:create, Wk::Group)
+    = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-info mr-1 mb-1"
 
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead
@@ -21,8 +22,6 @@
   %tbody{id: "results"}
     = render "results", groups: @groups
 
-- if can?(:create, Wk::Group)
-  .text-center.mt3
-    = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-info"
-    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
-    = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success"
+.text-center.mt3
+  = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
+  = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success"

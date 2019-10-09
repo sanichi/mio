@@ -8,6 +8,8 @@
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, misa_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+  - if can?(:create, Misa)
+    = link_to t("misa.new"), new_misa_path, class: "btn btn-info mr-1 mb-1"
 
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead
@@ -20,7 +22,3 @@
       %th.text-center= t("misa.abbrev.url")
   %tbody{id: "results"}
     = render "results", misas: @misas
-
-- if can?(:create, Misa)
-  .text-center.mt3
-    = link_to t("misa.new"), new_misa_path, class: "btn btn-info"

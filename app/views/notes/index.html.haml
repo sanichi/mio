@@ -8,6 +8,8 @@
   = label_tag :order, t("order"), class: "sr-only"
   = select_tag :order, note_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+  - if can?(:create, Note)
+    = link_to t("note.new"), new_note_path, class: "btn btn-info mr-1 mb-1"
 
 .row.mt-3
   .offset-md-1.col-md-10
@@ -19,7 +21,3 @@
           %th.text-center= t("note.updated")
       %tbody{id: "results"}
         = render "results", notes: @notes
-
-- if can?(:create, Note)
-  .text-center.mt-3
-    = link_to t("note.new"), new_note_path, class: "btn btn-info"
