@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     get :match, on: :collection
   end
   namespace :wk do
-    resources :examples
+    resources :examples, except: [:show]
     resources :groups, except: [:show]
     resources :kanjis, only: [:index, :show]
     resources :radicals, only: [:index, :show]

@@ -6,3 +6,4 @@
     .offset-md-2.col-md-10
       = f.submit t("save"), class: "btn btn-primary"
       = link_to t("cancel"), example.new_record?? wk_examples_path : example, class: "btn btn-secondary"
+      = link_to t("delete"), example, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

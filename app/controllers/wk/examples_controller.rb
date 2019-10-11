@@ -1,7 +1,7 @@
 module Wk
   class ExamplesController < ApplicationController
     authorize_resource
-    before_action :find_example, only: [:edit, :show, :update, :destroy]
+    before_action :find_example, only: [:edit, :update, :destroy]
 
     def index
       @examples = Wk::Example.search(params, wk_examples_path, per_page: 20)
@@ -14,7 +14,7 @@ module Wk
     def create
       @example = Example.new(strong_params)
       if @example.save
-        redirect_to @example
+        redirect_to wk_examples_path
       else
         render "new"
       end
@@ -22,7 +22,7 @@ module Wk
 
     def update
       if @example.update(strong_params)
-        redirect_to @example
+        redirect_to wk_examples_path
       else
         render action: "edit"
       end

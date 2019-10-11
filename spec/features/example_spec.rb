@@ -16,7 +16,7 @@ describe Wk::Example do
       fill_in t(:wk_example_english), with: data.english
       click_button t(:save)
 
-      expect(page).to have_title t(:wk_example_example)
+      expect(page).to have_title t(:wk_example_examples)
 
       expect(Wk::Example.count).to eq 2
       e = Wk::Example.last
@@ -38,15 +38,13 @@ describe Wk::Example do
 
   context "edit" do
     it "success" do
-      visit wk_example_path(example)
-      expect(page).to have_title t(:wk_example_example)
       click_link t(:edit)
 
       expect(page).to have_title t(:wk_example_edit)
       fill_in t(:wk_example_english), with: data.english
       click_button t(:save)
 
-      expect(page).to have_title t(:wk_example_example)
+      expect(page).to have_title t(:wk_example_examples)
 
       expect(Wk::Example.count).to eq 1
       e = Wk::Example.last
@@ -59,7 +57,7 @@ describe Wk::Example do
     it "success" do
       expect(Wk::Example.count).to eq 1
 
-      visit wk_example_path(example)
+      click_link t(:edit)
       click_link t(:delete)
 
       expect(page).to have_title t(:wk_example_examples)

@@ -1,5 +1,6 @@
 - examples.matches.each do |example|
   %tr
     %td= example.japanese_html
-    %td= link_to example.english, example
-= render "utils/pagination_links", pager: examples, columns: 2
+    %td= example.english
+    %td.text-center= link_to t("edit"), edit_wk_example_path(example), class: "btn btn-info btn-sm"
+= render "utils/pagination_links", pager: examples, columns: 3
