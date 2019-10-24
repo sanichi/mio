@@ -17,7 +17,6 @@ gem "ruby-progressbar", "~> 1.8"
 gem "date_validator", "~> 0.9"
 gem "mini_magick", "~> 4.8"
 gem "mojinizer", "~> 0.2"
-gem "whenever", require: false
 
 group :development do
   gem "capistrano-rails"
