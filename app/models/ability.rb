@@ -12,10 +12,6 @@ class Ability
       can :read, [Picture, Partnership]
     end
 
-    if user.books?
-      can :manage, Book
-    end
-
     can :read, [Blog, Book, Bucket, Dragon, Favourite, Tapa]
     can :notes, Tapa
     can [:read, :graph], Mass

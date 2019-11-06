@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
-  resources :books
+  resources :books, only: [:show, :index]
   resources :buckets
   resources :devices
   resources :dragons, except: [:show]
