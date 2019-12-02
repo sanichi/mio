@@ -269,7 +269,9 @@ module Wk
       show_change(changes, "reading_mnemonic", max: 50)
       show_change(changes, "last_updated")
 
-      return false unless permission_granted?
+      ask = changes.size == 1 && changes.has_key?("last_updated") ? false : true
+      return false if ask && !permission_granted?
+
       save!
       return true
     end

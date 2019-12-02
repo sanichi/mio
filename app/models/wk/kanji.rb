@@ -213,7 +213,9 @@ module Wk
       show_change(changes, "similar_kanjis", no_change: old_similar_ids)
       show_change(changes, "last_updated")
 
-      return false unless permission_granted?
+      ask = changes.size == 1 && changes.has_key?("last_updated") ? false : true
+      return false if ask && !permission_granted?
+
       save!
       self.radicals = new_radicals if new_radicals
       return true
