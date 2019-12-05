@@ -13,7 +13,8 @@
 //= require jquery
 //= require jquery-ui/widgets/autocomplete
 //= require jquery_ujs
-//= require bootstrap.min
+//= require popper
+//= require bootstrap
 
 $(function() {
   // Auto-submit on change.

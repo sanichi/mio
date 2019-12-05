@@ -1,0 +1,68 @@
+// Bootstrap overides.
+
+$dropdown-link-hover-color: white
+$dropdown-link-hover-bg: black
+
+// Bootstrap
+
+@import "bootstrap"
+
+// Navbar
+
+nav
+  @extend .navbar, .navbar-expand-md, .navbar-light, .bg-light, .mb-3
+  button
+    @extend .navbar-toggler
+    span
+      @extend .navbar-toggler-icon
+  #navbar
+    ul
+      @extend .navbar-nav
+      &.left
+        @extend .mr-auto
+      &.right
+        @extend .ml-auto
+      &>li
+        @extend .nav-item
+        &>a
+          @extend .nav-link
+        .dropdown-menu
+          &>a
+            @extend .dropdown-item
+          input[type="text"]
+            @extend .ml-3
+
+/* Form errors. */
+.field_with_errors
+  color: red
+.field_with_errors input
+  border-color: red
+.help-block
+  color: red !important
+
+/* Centered tables. */
+.table-center
+  border-style: none !important
+  margin-left: auto
+  margin-right: auto
+
+/* For Todos. */
+span.active
+  font-weight: bold
+span.inactive
+  text-decoration: line-through
+tr.last-updated
+  background-color: lightblue !important
+
+/* For monospaced textareas. */
+textarea.monospace
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace
+  font-size: 0.8em
+
+// Other imports
+@import "board"
+@import "highlight"
+@import "risle"
+@import "tree"
+@import "tribute"
+@import "wk"

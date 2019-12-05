@@ -62,7 +62,13 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     ansi (1.5.0)
     ast (2.4.0)
+    autoprefixer-rails (9.7.3)
+      execjs
     awesome_print (1.8.0)
+    bootstrap (4.3.1)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     builder (3.2.3)
     byebug (11.0.1)
     cancancan (3.0.1)
@@ -183,6 +189,7 @@ GEM
       ast
       ruby-ll (~> 2.1)
     pg (1.1.4)
+    popper_js (1.14.5)
     public_suffix (4.0.1)
     puma (3.12.1)
     rack (2.0.7)
@@ -295,6 +302,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print (~> 1.8)
+  bootstrap (~> 4.3)
   byebug
   cancancan (~> 3.0)
   capistrano-passenger (~> 0.2)

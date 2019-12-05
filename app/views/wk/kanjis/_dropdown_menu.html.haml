@@ -1,4 +1,3 @@
-- if cond
-  = form_tag wk_kanjis_path, method: :get, class: "form-inline dropdown-item nav-link" do
-    = label_tag :kquery, t("wk.kanji.kanji"), class: "sr-only"
-    = text_field_tag :kquery, params[:kquery], class: "form-control", placeholder: t("wk.kanji.kanji"), size: size
+= form_tag wk_kanjis_path, method: :get, class: "form-inline dropdown-item nav-link" do
+  = label_tag :kquery, t("wk.kanji.kanji"), class: "sr-only"
+  = text_field_tag :kquery, params[:kquery], class: "form-control", placeholder: t("wk.kanji.kanji"), size: 8
