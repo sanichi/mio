@@ -20,21 +20,4 @@ $(function() {
   $('form .auto-submit').change(function() {
     $(this).parents('form').submit();
   });
-  // Keyboard pagination.
-  $(document).keydown(function(event) {
-    switch (event.which) {
-      case 37:
-        $('a#pagn_prev').trigger('click');
-        break;
-      case 38:
-        $('a#pagn_frst').trigger('click');
-        break;
-      case 39:
-        $('a#pagn_next').trigger('click');
-        break;
-      case 40:
-        $('a#pagn_last').trigger('click');
-        break;
-    }
-  });
 });
