@@ -35,6 +35,9 @@
               = succeed(")") do
                 = t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
     %tr.d-flex
+      %td.col-3= t("wk.links")
+      %td.col-9= link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", path: t("wk.jisho.path"), vocab: @vocab.characters), target: "external"
+    %tr.d-flex
       %td.col-3= t("wk.level")
       %td.col-9= @vocab.level
     %tr.d-flex

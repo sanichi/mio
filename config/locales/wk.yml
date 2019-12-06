@@ -4,6 +4,7 @@ en:
     id: WaniKani ID
     last_updated: Last Updated
     level: Level
+    links: Links
     meaning: Meaning
     reading: Reading
     example:
@@ -13,6 +14,12 @@ en:
       examples: Examples
       new: New Example
       japanese: Japanese
+    jisho:
+      text: Jisho
+      path: https://jisho.org/search
+      url:
+        vocab: "%{path}/%{vocab}"
+        kanji: "%{path}/%{kanji}%20%23kanji"
     group:
       category: Category
       edit: Edit Group
