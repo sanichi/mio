@@ -4,7 +4,7 @@ en:
     category: Type
     edit: Edit Favourite
     favourite: Favourite
-    favourites: Favourites
+    favourites: Our Favourites
     link: Link
     mark: Mark
     note: Note
@@ -19,8 +19,8 @@ en:
       - Play
       - Podcast
     order:
-      combo: By Total Score
-      entered: By Date Entered
-      mark: By Mark's Score
-      sandra: By Sandra's Score
-      year: By Year
+      combo: by total score
+      entered: by date entered
+      mark: by Mark's score
+      sandra: by Sandra's score
+      year: by year

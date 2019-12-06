@@ -1,15 +1,13 @@
-= render "utils/title", key: "favourite.favourites"
+= render "utils/title", key: "favourite.favourites", header: true
 
-= form_tag favourites_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :name, t("query"), class: "sr-only"
-  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("query"), size: 20
-  = label_tag :year, t("year"), class: "sr-only"
-  = text_field_tag :year, params[:year], class: "form-control mr-1 mb-1", placeholder: t("year"), size: 7
-  = label_tag :category, t("favourite.category"), class: "sr-only"
-  = select_tag :category, favourite_category_search_menu(params[:category]), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :order, t("order"), class: "sr-only"
-  = select_tag :order, favourite_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:query,      t("query"),              :text,       size: 20, value: params[:query], placeholder: "#{t("name")}/#{t("favourite.note")}"],
+    [:category,   t("favourite.category"), :select,     menu: favourite_category_search_menu(params[:category])],
+    [:year,       t("year"),               :text,       size: 7,  value: params[:year]],
+    [:order,      t("order"),              :select,     menu: favourite_order_menu(params[:order])],
+  ]
+= render "utils/search/form", index: favourites_path, inputs: inputs
 
 %table.table.table-bordered.table-striped.table-sm.mt-3
   %thead
