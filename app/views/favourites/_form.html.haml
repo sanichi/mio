@@ -1,18 +1,30 @@
-.row
-  .col-md-12
-    = form_for favourite, html: { class: "form-horizontal" } do |f|
-      %fieldset
-        - shared = { form: f, object: favourite, col: "md", pad: 2 }
-        = render "utils/text_field_for", shared.merge(param: :name, text: t("name"), width: 6)
-        = render "utils/text_field_for", shared.merge(param: :year, text: t("year"), width: 2)
-        = render "utils/select_for", shared.merge(param: :category, text: t("favourite.category"), width: 2, menu: favourite_category_menu(favourite))
-        = render "utils/select_for", shared.merge(param: :mark, text: t("favourite.mark"), width: 1, menu: favourite_score_menu(favourite.mark, favourite.new_record?))
-        = render "utils/select_for", shared.merge(param: :sandra, text: t("favourite.sandra"), width: 1, menu: favourite_score_menu(favourite.sandra, favourite.new_record?))
-        = render "utils/text_field_for", shared.merge(param: :link, text: t("favourite.link"), width: 8)
-        = render "utils/text_area_for", shared.merge(param: :note, text: t("favourite.note"), rows: 20, width: 8)
-      .row
-        .offset-md-4.col-md-8
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), favourites_path, class: "btn btn-secondary"
-          - unless favourite.new_record?
-            = link_to t("delete"), favourite, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+-# .row
+-#   .col-md-12
+-#     = form_for favourite, html: { class: "form-horizontal" } do |f|
+-#       %fieldset
+-#         - shared = { form: f, object: favourite, col: "md", pad: 2 }
+-#         = render "utils/text_field_for", shared.merge(param: :name, text: t("name"), width: 6)
+-#         = render "utils/text_field_for", shared.merge(param: :year, text: t("year"), width: 2)
+-#         = render "utils/select_for", shared.merge(param: :category, text: t("favourite.category"), width: 2, menu: favourite_category_menu(favourite))
+-#         = render "utils/select_for", shared.merge(param: :mark, text: t("favourite.mark"), width: 1, menu: favourite_score_menu(favourite.mark, favourite.new_record?))
+-#         = render "utils/select_for", shared.merge(param: :sandra, text: t("favourite.sandra"), width: 1, menu: favourite_score_menu(favourite.sandra, favourite.new_record?))
+-#         = render "utils/text_field_for", shared.merge(param: :link, text: t("favourite.link"), width: 8)
+-#         = render "utils/text_area_for", shared.merge(param: :note, text: t("favourite.note"), rows: 20, width: 8)
+-#       .row
+-#         .offset-md-4.col-md-8
+-#           = f.submit t("save"), class: "btn btn-primary"
+-#           = link_to t("cancel"), favourites_path, class: "btn btn-secondary"
+-#           - unless favourite.new_record?
+-#             = link_to t("delete"), favourite, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+
+:ruby
+  inputs = [
+    [:name,     t("name"),               :text,      maxlength: Favourite::MAX_NAME],
+    [:year,     t("year"),               :text,      maxlength: 4],
+    [:category, t("favourite.category"), :select,    menu: favourite_category_menu(favourite)],
+    [:mark,     t("favourite.mark"),     :select,    menu: favourite_score_menu(favourite.mark, favourite.new_record?)],
+    [:sandra,   t("favourite.sandra"),   :select,    menu: favourite_score_menu(favourite.sandra, favourite.new_record?)],
+    [:link,     t("favourite.link"),     :text,      maxlength: Favourite::MAX_LINK],
+    [:note,     t("favourite.note"),     :text_area, rows: 20],
+  ]
+= render "utils/crud/form", object: favourite, index: favourites_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

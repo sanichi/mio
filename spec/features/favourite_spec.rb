@@ -6,20 +6,20 @@ describe Favourite do
 
   before(:each) do
     login
-    click_link t(:home) # currently favourites are on the home page
+    click_link t("home") # currently favourites are on the home page
   end
 
   context "create" do
     it "success" do
-      click_link t(:favourite_new)
-      fill_in t(:name), with: data.name
-      fill_in t(:year), with: data.year
-      select data.mark.to_s, from: t(:favourite_mark)
-      select data.sandra.to_s, from: t(:favourite_sandra)
-      fill_in t(:favourite_link), with: data.link
-      select t(:favourite_categories)[data.category], from: t(:favourite_category)
-      fill_in t(:favourite_note), with: data.note
-      click_button t(:save)
+      click_link t("favourite.new")
+      fill_in t("name"), with: data.name
+      fill_in t("year"), with: data.year
+      select data.mark.to_s, from: t("favourite.mark")
+      select data.sandra.to_s, from: t("favourite.sandra")
+      fill_in t("favourite.link"), with: data.link
+      select t("favourite.categories")[data.category], from: t("favourite.category")
+      fill_in t("favourite.note"), with: data.note
+      click_button t("save")
 
       expect(page).to have_title data.name
 
@@ -36,29 +36,29 @@ describe Favourite do
     end
 
     it "failure" do
-      click_link t(:favourite_new)
-      fill_in t(:year), with: data.year
-      select data.mark.to_s, from: t(:favourite_mark)
-      select data.sandra.to_s, from: t(:favourite_sandra)
-      fill_in t(:favourite_link), with: data.link
-      select t(:favourite_categories)[data.category], from: t(:favourite_category)
-      fill_in t(:favourite_note), with: data.note
-      click_button t(:save)
+      click_link t("favourite.new")
+      fill_in t("year"), with: data.year
+      select data.mark.to_s, from: t("favourite.mark")
+      select data.sandra.to_s, from: t("favourite.sandra")
+      fill_in t("favourite.link"), with: data.link
+      select t("favourite.categories")[data.category], from: t("favourite.category")
+      fill_in t("favourite.note"), with: data.note
+      click_button t("save")
 
-      expect(page).to have_title t(:favourite_new)
+      expect(page).to have_title t("favourite.new")
       expect(Favourite.count).to eq 1
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
   end
 
   context "edit" do
     it "success" do
       click_link favourite.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:favourite_edit)
-      fill_in t(:name), with: data.name
-      click_button t(:save)
+      expect(page).to have_title t("favourite.edit")
+      fill_in t("name"), with: data.name
+      click_button t("save")
 
       expect(page).to have_title data.name
 
@@ -68,15 +68,15 @@ describe Favourite do
 
     it "failure" do
       click_link favourite.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:favourite_edit)
-      select t("favourite_not__applicable"), from: t(:favourite_mark)
-      select t("favourite_not__applicable"), from: t(:favourite_sandra)
-      click_button t(:save)
+      expect(page).to have_title t("favourite.edit")
+      select t("favourite.not_applicable"), from: t("favourite.mark")
+      select t("favourite.not_applicable"), from: t("favourite.sandra")
+      click_button t("save")
 
-      expect(page).to have_title t(:favourite_edit)
-      expect(page).to have_css(error, text: "at least one")
+      expect(page).to have_title t("favourite.edit")
+      expect_error(page, "at least one")
 
       f = Favourite.last
       expect(f.mark + f.sandra).to be > 0
@@ -88,10 +88,10 @@ describe Favourite do
       expect(Favourite.count).to eq 1
 
       click_link favourite.name
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:favourite_favourites)
+      expect(page).to have_title t("favourite.favourites")
       expect(Favourite.count).to eq 0
     end
   end

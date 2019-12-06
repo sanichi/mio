@@ -15,6 +15,7 @@ class FavouritesController < ApplicationController
     if @favourite.save
       redirect_to @favourite
     else
+      failure @favourite
       render "new"
     end
   end
@@ -23,6 +24,7 @@ class FavouritesController < ApplicationController
     if @favourite.update(strong_params)
       redirect_to @favourite
     else
+      failure @favourite
       render action: "edit"
     end
   end

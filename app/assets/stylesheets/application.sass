@@ -32,6 +32,52 @@ nav
           input[type="text"]
             @extend .ml-3
 
+// Crud forms - adpated from Pragmatic Studio prepared files for Rails 6 course.
+
+form.crud
+  margin-top: 1.5rem
+
+  label
+    font-size: 1.1rem
+    font-weight: 600
+    display: block
+
+  input:not([type="checkbox"]):not([type="submit"]), textarea, select:not(.datetime)
+    @extend .form-control
+    margin-bottom: 0.75rem
+    width: 100%
+
+  textarea
+    @extend .text-monospace
+    font-size: 0.9rem
+
+  input[type="checkbox"]
+    // @extend .form-check-input   // this is causing problems
+    width: 20px
+    height: 20px
+
+  div.field_with_errors
+    display: inline
+    label
+      color: $red
+    input[type="text"], textarea, select
+      background: lighten($pink, 40%)
+
+// Sections (used for forms).
+
+section
+  @extend .card, .border-dark, .mb-3
+
+  .header
+    @extend .card-header
+
+  .body
+    @extend .card-body
+
+  .footer
+    @extend .card-footer
+
+
 /* Form errors. */
 .field_with_errors
   color: red

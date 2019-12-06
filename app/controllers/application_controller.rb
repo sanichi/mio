@@ -23,6 +23,10 @@ class ApplicationController < ActionController::Base
     session[key] = "_#{objects.map(&:id).join('_')}_"
   end
 
+  def failure(object)
+    flash.now[:alert] = object.errors.full_messages.join(", ")
+  end
+
   private
 
   def remember_last_non_autenticated_path

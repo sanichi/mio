@@ -17,7 +17,7 @@ describe Wk::Group do
   context "create" do
     it "success" do
       click_link t(:wk_group_new)
-      select t("wk_group_categories_#{data.category.gsub('_', '__')}"), from: t(:wk_group_category)
+      select t("wk.group.categories.#{data.category}"), from: t("wk.group.category")
       fill_in t(:wk_group_vocab__list), with: data.vocab_list
       click_button t(:save)
 

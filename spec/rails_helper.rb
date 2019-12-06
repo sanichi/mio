@@ -49,11 +49,19 @@ def wait_a_while(delay=0.3)
 end
 
 def t(key, *arg)
-  I18n.t(key.to_s.gsub("_", ".").gsub("..", "_"), *arg)
+  if key.is_a?(Symbol)
+    I18n.t(key.to_s.gsub("_", ".").gsub("..", "_"), *arg)
+  else
+    I18n.t(key, *arg)
+  end
 end
 
 def error
   "div.help-block"
+end
+
+def expect_error(page, text)
+  expect(page).to have_css("div.alert-danger", text: text)
 end
 
 def remove_active_storage_files
