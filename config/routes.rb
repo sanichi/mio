@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
 
-  %w[aoc check deeds magic pam play risle risle_stats tribute].each do |page|
+  %w[aoc check deeds magic pam play risle risle_stats].each do |page|
     get page => "pages##{page}"
   end
 
@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   resources :books, only: [:show, :index]
   resources :buckets
   resources :devices
-  resources :dragons, except: [:show]
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats

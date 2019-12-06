@@ -1,9 +1,0 @@
-= render "utils/title", key: "dragon.tribute"
-
-%h1.text-center.mb-5.tribute= t("dragon.title")
-
-- sep = "\u00a0#{t('dragon.separator')} "
-%p.mt-5.tribute
-  = @dragons.map(&:name).join(sep)
-
-%p.mt-5.text-center= t("dragon.subtitle")
