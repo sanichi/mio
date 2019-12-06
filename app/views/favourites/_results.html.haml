@@ -1,10 +1,10 @@
 - favourites.matches.each do |favourite|
-  %tr.d-flex
-    %td.col-4= link_to favourite.name, favourite
-    %td.col-3= favourite.note.truncate(25)
-    %td.col-1.text-center= I18n.t("favourite.categories")[favourite.category]
-    %td.col-1.text-center= favourite.year
-    %td.col-1.text-center= favourite.sandra if favourite.sandra > 0
-    %td.col-1.text-center= favourite.mark if favourite.mark > 0
-    %td.col-1.text-center= favourite.total
+  %tr
+    %td= link_to favourite.name, favourite
+    %td= favourite.note.truncate(25)
+    %td.text-center= I18n.t("favourite.categories")[favourite.category]
+    %td.text-center= favourite.year
+    %td.text-center= favourite.sandra if favourite.sandra > 0
+    %td.text-center= favourite.mark if favourite.mark > 0
+    %td.text-center= favourite.total
 = render "utils/pagination_links", pager: favourites, columns: 7

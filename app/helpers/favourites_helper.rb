@@ -22,7 +22,7 @@ module FavouritesHelper
   end
 
   def favourite_order_menu(selected)
-    fans = %w/combo sandra mark year entered/.map{ |o| [t("favourite.order.#{o}"), o] }
+    fans = %w/entered combo sandra mark year/.map{ |o| [t("favourite.order.#{o}"), o] }
     options_for_select(fans, selected)
   end
 end

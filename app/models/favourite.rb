@@ -33,10 +33,10 @@ class Favourite < ApplicationRecord
       by_sandra
     when "year"
       by_year
-    when "entered"
-      by_entered
-    else
+    when "combo"
       by_combo
+    else
+      by_entered
     end
     if params[:category].present?
       matches = matches.where(category: params[:category].to_i)

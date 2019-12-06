@@ -24,8 +24,8 @@
 
       - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
         %li.dropdown
-          = link_to t("family"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu{"aria-labelledby" => "family_dropdown"}
+          = link_to t("family"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
+          .dropdown-menu
             = link_to t("person.tree"),              tree_people_path       if can?(:tree, Person)
             = link_to t("person.people"),            people_path            if can?(:read, Person)
             = link_to t("picture.pictures"),         pictures_path          if can?(:read, Picture)
@@ -35,8 +35,8 @@
 
       - if [Position, Opening, Lesson, Book].map{|c| can?(:read, c) }.any?
         %li.dropdown
-          = link_to t("chess"), "#", class: "dropdown-toggle", id: "chess_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu{"aria-labelledby" => "chess_dropdown"}
+          = link_to t("chess"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
+          .dropdown-menu
             = link_to t("lesson.lessons"),     lessons_path   if can?(:read, Lesson)
             = link_to t("book.books"),         books_path     if can?(:read, Book)
             = link_to t("position.positions"), positions_path if can?(:read, Position)
@@ -44,8 +44,8 @@
 
       - if [Resident, Flat, Vehicle, Parking].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, Page) }.any?
         %li.dropdown
-          = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", id: "risle_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu{"aria-labelledby" => "risle_dropdown"}
+          = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
+          .dropdown-menu
             = link_to t("map"),                risle_path     if can?(:risle, Page)
             = link_to t("pages.pam"),          pam_path       if can?(:pam, Page)
             = link_to t("resident.residents"), residents_path if can?(:read, Resident)
@@ -56,20 +56,19 @@
 
       - if [Income, Trade, Fund, Transaction, Expense].map{|c| can?(:read, c) }.any?
         %li.dropdown
-          = link_to t("money"), "#", class: "dropdown-toggle", id: "money_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu{"aria-labelledby" => "money_dropdown"}
+          = link_to t("money"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
+          .dropdown-menu
             = link_to t("income.incomes"),           graph_incomes_path        if can?(:read, Income)
             = link_to t("trade.trades"),             trades_path               if can?(:read, Trade)
             = link_to t("fund.funds"),               funds_path                if can?(:read, Fund)
             = link_to t("transaction.transactions"), summary_transactions_path if can?(:read, Transaction)
             = link_to t("expense.expenses"),         expenses_path             if can?(:read, Expense)
 
-      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Dragon, Favourite, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Device, Dragon, Interface, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
-          = link_to t("other"), "#", class: "dropdown-toggle", id: "other_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu{"aria-labelledby" => "other_dropdown"}
+          = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
+          .dropdown-menu
             = link_to t("mass.mass"),            graph_masses_path if can?(:read, Mass)
-            = link_to t("favourite.favourites"), favourites_path   if can?(:read, Favourite)
             = link_to t("bucket.buckets"),       buckets_path      if can?(:read, Bucket)
             = link_to t("todo.todos"),           todos_path        if can?(:read, Todo)
             = link_to t("pages.aoc.short"),      aoc_path          if can?(:aoc, Page)
@@ -83,7 +82,8 @@
             = link_to t("login.logins"),         logins_path       if can?(:read, Login)
 
     %ul.right
-      - if authenticated?
-        = link_to t("session.sign_out"), sign_out_path
-      - else
-        = link_to t("session.sign_in"), sign_in_path
+      %li
+        - if authenticated?
+          = link_to t("session.sign_out"), sign_out_path
+        - else
+          = link_to t("session.sign_in"), sign_in_path

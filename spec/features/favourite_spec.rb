@@ -6,7 +6,7 @@ describe Favourite do
 
   before(:each) do
     login
-    click_link t(:favourite_favourites)
+    click_link t(:home) # currently favourites are on the home page
   end
 
   context "create" do

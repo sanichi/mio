@@ -11,20 +11,18 @@
   = select_tag :order, favourite_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
   = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
 
-.row.mt-3
-  .col-12
-    %table{class: "table table-bordered table-striped table-sm"}
-      %thead
-        %tr.d-flex
-          %th.col-4= t("name")
-          %th.col-3= t("favourite.note")
-          %th.col-1.text-center= t("favourite.category")
-          %th.col-1.text-center= t("year")
-          %th.col-1.text-center= t("favourite.sandra")
-          %th.col-1.text-center= t("favourite.mark")
-          %th.col-1.text-center= t("total")
-      %tbody{id: "results"}
-        = render "results", favourites: @favourites
+%table.table.table-bordered.table-striped.table-sm.mt-3
+  %thead
+    %tr
+      %th= t("name")
+      %th= t("favourite.note")
+      %th.text-center= t("favourite.category")
+      %th.text-center= t("year")
+      %th.text-center= t("favourite.sandra")
+      %th.text-center= t("favourite.mark")
+      %th.text-center= t("total")
+  %tbody#results
+    = render "results", favourites: @favourites
 
 - if can?(:create, Favourite)
   .text-center.mt-3
