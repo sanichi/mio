@@ -6,15 +6,15 @@ describe Opening do
 
   before(:each) do
     login
-    click_link t(:opening_openings)
+    click_link t("opening.openings")
   end
 
   context "create" do
     it "success" do
-      click_link t(:opening_new)
-      fill_in t(:opening_code), with: data.code
-      fill_in t(:description), with: data.description
-      click_button t(:save)
+      click_link t("opening.new")
+      fill_in t("opening.code"), with: data.code
+      fill_in t("description"), with: data.description
+      click_button t("save")
 
       expect(page).to have_title data.code
 
@@ -26,11 +26,11 @@ describe Opening do
     end
 
     it "failure" do
-      click_link t(:opening_new)
-      fill_in t(:description), with: data.description
-      click_button t(:save)
+      click_link t("opening.new")
+      fill_in t("description"), with: data.description
+      click_button t("save")
 
-      expect(page).to have_title t(:opening_new)
+      expect(page).to have_title t("opening.new")
       expect(page).to have_css(error, text: "invalid")
       expect(Opening.count).to eq 1
     end
@@ -39,11 +39,11 @@ describe Opening do
   context "edit" do
     it "success" do
       click_link opening.code
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:opening_edit)
-      fill_in t(:opening_code), with: data.code
-      click_button t(:save)
+      expect(page).to have_title t("opening.edit")
+      fill_in t("opening.code"), with: data.code
+      click_button t("save")
 
       expect(page).to have_title data.code
 
@@ -55,12 +55,12 @@ describe Opening do
 
     it "failure" do
       click_link opening.code
-      click_link t(:edit)
+      click_link t("edit")
 
-      fill_in t(:description), with: ""
-      click_button t(:save)
+      fill_in t("description"), with: ""
+      click_button t("save")
 
-      expect(page).to have_title t(:opening_edit)
+      expect(page).to have_title t("opening.edit")
       expect(page).to have_css(error, text: "blank")
     end
   end
@@ -70,10 +70,10 @@ describe Opening do
       expect(Opening.count).to eq 1
 
       click_link opening.code
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:opening_openings)
+      expect(page).to have_title t("opening.openings")
       expect(Opening.count).to eq 0
     end
   end

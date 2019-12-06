@@ -6,19 +6,19 @@ describe Bucket do
 
   before(:each) do
     login
-    click_link t(:bucket_buckets)
+    click_link t("bucket.buckets")
   end
 
   context "create" do
     it "success" do
-      click_link t(:bucket_new)
-      fill_in t(:name), with: data.name
-      select t(:bucket_level)[data.mark], from: t(:bucket_mark)
-      select t(:bucket_level)[data.sandra], from: t(:bucket_sandra)
-      fill_in t(:notes), with: data.notes
-      click_button t(:save)
+      click_link t("bucket.new")
+      fill_in t("name"), with: data.name
+      select t("bucket.level")[data.mark], from: t("bucket.mark")
+      select t("bucket.level")[data.sandra], from: t("bucket.sandra")
+      fill_in t("notes"), with: data.notes
+      click_button t("save")
 
-      expect(page).to have_title t(:bucket_bucket)
+      expect(page).to have_title t("bucket.bucket")
 
       expect(Bucket.count).to eq 2
       b = Bucket.last
@@ -30,13 +30,13 @@ describe Bucket do
     end
 
     it "failure" do
-      click_link t(:bucket_new)
-      select t(:bucket_level)[data.mark], from: t(:bucket_mark)
-      select t(:bucket_level)[data.sandra], from: t(:bucket_sandra)
-      fill_in t(:notes), with: data.notes
-      click_button t(:save)
+      click_link t("bucket.new")
+      select t("bucket.level")[data.mark], from: t("bucket.mark")
+      select t("bucket.level")[data.sandra], from: t("bucket.sandra")
+      fill_in t("notes"), with: data.notes
+      click_button t("save")
 
-      expect(page).to have_title t(:bucket_new)
+      expect(page).to have_title t("bucket.new")
       expect(Bucket.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -45,13 +45,13 @@ describe Bucket do
   context "edit" do
     it "success" do
       click_link bucket.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:bucket_edit)
-      fill_in t(:name), with: data.name
-      click_button t(:save)
+      expect(page).to have_title t("bucket.edit")
+      fill_in t("name"), with: data.name
+      click_button t("save")
 
-      expect(page).to have_title t(:bucket_bucket)
+      expect(page).to have_title t("bucket.bucket")
 
       expect(Bucket.count).to eq 1
       b = Bucket.last
@@ -61,14 +61,14 @@ describe Bucket do
 
     it "failure" do
       click_link bucket.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:bucket_edit)
-      select t(:bucket_level)[0], from: t(:bucket_mark)
-      select t(:bucket_level)[0], from: t(:bucket_sandra)
-      click_button t(:save)
+      expect(page).to have_title t("bucket.edit")
+      select t("bucket.level")[0], from: t("bucket.mark")
+      select t("bucket.level")[0], from: t("bucket.sandra")
+      click_button t("save")
 
-      expect(page).to have_title t(:bucket_edit)
+      expect(page).to have_title t("bucket.edit")
       expect(page).to have_css(error, text: "at least one")
 
       expect(Bucket.count).to eq 1
@@ -83,10 +83,10 @@ describe Bucket do
       expect(Bucket.count).to eq 1
 
       click_link bucket.name
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:bucket_buckets)
+      expect(page).to have_title t("bucket.buckets")
       expect(Bucket.count).to eq 0
     end
   end

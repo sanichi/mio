@@ -7,16 +7,16 @@ describe User do
 
   before(:each) do
     login
-    click_link t(:user_users)
+    click_link t("user.users")
   end
 
   context "create" do
     it "success" do
-      click_link t(:user_new)
-      fill_in t(:email), with: data.email
-      fill_in t(:session_password), with: data.password
-      select role, from: t(:user_role)
-      click_button t(:save)
+      click_link t("user.new")
+      fill_in t("email"), with: data.email
+      fill_in t("session.password"), with: data.password
+      select role, from: t("user.role")
+      click_button t("save")
 
       expect(page).to have_title data.email
 
@@ -34,24 +34,24 @@ describe User do
     let!(:user) { create(:user) }
 
     it "no password" do
-      click_link t(:user_new)
-      fill_in t(:email), with: data.email
-      select role, from: t(:user_role)
-      click_button t(:save)
+      click_link t("user.new")
+      fill_in t("email"), with: data.email
+      select role, from: t("user.role")
+      click_button t("save")
 
-      expect(page).to have_title t(:user_new)
+      expect(page).to have_title t("user.new")
       expect(User.count).to eq 2
       expect(page).to have_css(error, text: "blank")
     end
 
     it "duplicate email" do
-      click_link t(:user_new)
-      fill_in t(:email), with: user.email
-      fill_in t(:session_password), with: data.password
-      select role, from: t(:user_role)
-      click_button t(:save)
+      click_link t("user.new")
+      fill_in t("email"), with: user.email
+      fill_in t("session.password"), with: data.password
+      select role, from: t("user.role")
+      click_button t("save")
 
-      expect(page).to have_title t(:user_new)
+      expect(page).to have_title t("user.new")
       expect(User.count).to eq 2
       expect(page).to have_css(error, text: "taken")
     end
@@ -62,13 +62,13 @@ describe User do
 
     it "password" do
       visit user_path(user)
-      click_link t(:edit)
+      click_link t("edit")
 
       new_password = user.password.reverse
 
-      expect(page).to have_title t(:user_edit)
-      fill_in t(:session_password), with: new_password
-      click_button t(:save)
+      expect(page).to have_title t("user.edit")
+      fill_in t("session.password"), with: new_password
+      click_button t("save")
 
       expect(page).to have_title user.email
 
@@ -80,12 +80,12 @@ describe User do
 
     it "role" do
       visit user_path(user)
-      click_link t(:edit)
+      click_link t("edit")
       new_role = User::ROLES.select{ |r| r != role }.sample
 
-      expect(page).to have_title t(:user_edit)
-      select I18n.t("user.roles.#{new_role}"), from: t(:user_role)
-      click_button t(:save)
+      expect(page).to have_title t("user.edit")
+      select I18n.t("user.roles.#{new_role}"), from: t("user.role")
+      click_button t("save")
 
       expect(page).to have_title user.email
 
@@ -102,10 +102,10 @@ describe User do
 
     it "success" do
       visit user_path(user)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:user_users)
+      expect(page).to have_title t("user.users")
       expect(User.count).to eq 1
     end
   end

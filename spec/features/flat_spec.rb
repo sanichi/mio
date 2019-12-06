@@ -10,25 +10,25 @@ describe Flat do
 
   before(:each) do
     login
-    click_link t(:flat_flats)
+    click_link t("flat.flats")
   end
 
   context "create" do
     context "success" do
       it "maximum" do
-        click_link t(:flat_new)
-        select data.building.to_s, from: t(:flat_building)
-        select data.number.to_s, from: t(:flat_number)
-        select data.block.to_s, from: t(:flat_block)
-        select data.bay.to_s, from: t(:flat_bay)
-        select data.category, from: t(:flat_category)
-        select data.name, from: t(:flat_name)
-        select tenant.name, from: t(:flat_tenant)
-        select landlord.name, from: t(:flat_landlord)
-        fill_in t(:notes), with: data.notes
-        click_button t(:save)
+        click_link t("flat.new")
+        select data.building.to_s, from: t("flat.building")
+        select data.number.to_s, from: t("flat.number")
+        select data.block.to_s, from: t("flat.block")
+        select data.bay.to_s, from: t("flat.bay")
+        select data.category, from: t("flat.category")
+        select data.name, from: t("flat.name")
+        select tenant.name, from: t("flat.tenant")
+        select landlord.name, from: t("flat.landlord")
+        fill_in t("notes"), with: data.notes
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_flat)
+        expect(page).to have_title t("flat.flat")
 
         expect(Flat.count).to eq 2
         f = Flat.last
@@ -46,16 +46,16 @@ describe Flat do
       end
 
       it "minimum" do
-        click_link t(:flat_new)
-        select data.building.to_s, from: t(:flat_building)
-        select t(:none), from: t(:flat_number)
-        select data.block.to_s, from: t(:flat_block)
-        select t(:none), from: t(:flat_bay)
-        select data.category, from: t(:flat_category)
-        select data.name, from: t(:flat_name)
-        click_button t(:save)
+        click_link t("flat.new")
+        select data.building.to_s, from: t("flat.building")
+        select t("none"), from: t("flat.number")
+        select data.block.to_s, from: t("flat.block")
+        select t("none"), from: t("flat.bay")
+        select data.category, from: t("flat.category")
+        select data.name, from: t("flat.name")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_flat)
+        expect(page).to have_title t("flat.flat")
 
         expect(Flat.count).to eq 2
         f = Flat.last
@@ -75,14 +75,14 @@ describe Flat do
 
     context "failure" do
       it "no building" do
-        click_link t(:flat_new)
-        select data.block.to_s, from: t(:flat_block)
-        select data.bay.to_s, from: t(:flat_bay)
-        select data.category, from: t(:flat_category)
-        select data.name, from: t(:flat_name)
-        click_button t(:save)
+        click_link t("flat.new")
+        select data.block.to_s, from: t("flat.block")
+        select data.bay.to_s, from: t("flat.bay")
+        select data.category, from: t("flat.category")
+        select data.name, from: t("flat.name")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_new)
+        expect(page).to have_title t("flat.new")
         expect(Flat.count).to eq 1
         expect(page).to have_css(error, text: "not included")
       end
@@ -93,14 +93,14 @@ describe Flat do
     context "success" do
       it "flat" do
         click_link flat.address
-        click_link t(:edit)
+        click_link t("edit")
 
-        expect(page).to have_title t(:flat_edit)
+        expect(page).to have_title t("flat.edit")
 
-        select data.number.to_s, from: t(:flat_number)
-        click_button t(:save)
+        select data.number.to_s, from: t("flat.number")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_flat)
+        expect(page).to have_title t("flat.flat")
 
         expect(Flat.count).to eq 1
         f = Flat.last
@@ -112,36 +112,36 @@ describe Flat do
     context "failure" do
       it "duplicate bay" do
         click_link flat.address
-        click_link t(:edit)
+        click_link t("edit")
 
-        select flat2.bay.to_s, from: t(:flat_bay)
-        click_button t(:save)
+        select flat2.bay.to_s, from: t("flat.bay")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_edit)
+        expect(page).to have_title t("flat.edit")
         expect(page).to have_css(error, text: "already been taken")
       end
 
       it "owner with tenant" do
         click_link flat.address
-        click_link t(:edit)
+        click_link t("edit")
 
-        select owner.name, from: t(:flat_owner)
-        select tenant.name, from: t(:flat_tenant)
-        click_button t(:save)
+        select owner.name, from: t("flat.owner")
+        select tenant.name, from: t("flat.tenant")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_edit)
+        expect(page).to have_title t("flat.edit")
         expect(page).to have_css(error, text: "can't have")
       end
 
       it "owner with landlord" do
         click_link flat.address
-        click_link t(:edit)
+        click_link t("edit")
 
-        select owner.name, from: t(:flat_owner)
-        select landlord.name, from: t(:flat_landlord)
-        click_button t(:save)
+        select owner.name, from: t("flat.owner")
+        select landlord.name, from: t("flat.landlord")
+        click_button t("save")
 
-        expect(page).to have_title t(:flat_edit)
+        expect(page).to have_title t("flat.edit")
         expect(page).to have_css(error, text: "can't have")
       end
     end
@@ -152,10 +152,10 @@ describe Flat do
       expect(Flat.count).to eq 1
 
       click_link flat.address
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:flat_flats)
+      expect(page).to have_title t("flat.flats")
       expect(Flat.count).to eq 0
     end
   end

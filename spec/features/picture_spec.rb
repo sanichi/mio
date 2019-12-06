@@ -11,11 +11,11 @@ describe Picture do
 
   before(:each) do
     login
-    click_link t(:person_people)
-    select t(:person_realms)[data.realm], from: t(:person_realm)
-    click_button t(:search)
+    click_link t("person.people")
+    select t("person.realms")[data.realm], from: t("person.realm")
+    click_button t("search")
     within("#buttons") do
-      click_link t(:picture_pictures)
+      click_link t("picture.pictures")
     end
   end
 
@@ -23,14 +23,14 @@ describe Picture do
 
     context "success" do
       it "with people" do
-        click_link t(:picture_new)
-        fill_in t(:description), with: data.description
-        check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), test_file_path(good_file)
-        select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
-        select person2.name(reversed: true, with_years: true), from: t(:picture_person, number: 2)
-        select t(:person_realms)[data.realm], from: t(:person_realm)
-        click_button t(:save)
+        click_link t("picture.new")
+        fill_in t("description"), with: data.description
+        check t("picture.portrait") if data.portrait
+        attach_file t("picture.file"), test_file_path(good_file)
+        select person1.name(reversed: true, with_years: true), from: t("picture.person", number: 1)
+        select person2.name(reversed: true, with_years: true), from: t("picture.person", number: 2)
+        select t("person.realms")[data.realm], from: t("person.realm")
+        click_button t("save")
 
         expect(PersonPicture.count).to eq 2
         expect(Picture.count).to eq 1
@@ -51,18 +51,18 @@ describe Picture do
       end
 
       it "without people" do
-        click_link t(:picture_new)
-        fill_in t(:description), with: data.description
-        check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), test_file_path(good_file)
-        select t(:person_realms)[data.realm], from: t(:person_realm)
-        click_button t(:save)
+        click_link t("picture.new")
+        fill_in t("description"), with: data.description
+        check t("picture.portrait") if data.portrait
+        attach_file t("picture.file"), test_file_path(good_file)
+        select t("person.realms")[data.realm], from: t("person.realm")
+        click_button t("save")
 
         expect(PersonPicture.count).to eq 0
         expect(Picture.count).to eq 1
         p = Picture.last
 
-        title = t(:picture_picture)
+        title = t("picture.picture")
         expect(page).to have_title title
 
         expect(p.description).to eq data.description
@@ -79,15 +79,15 @@ describe Picture do
       let(:bad_file) { "malcolm.txt" }
 
       it "bad name" do
-        click_link t(:picture_new)
-        fill_in t(:description), with: data.description
-        check t(:picture_portrait) if data.portrait
-        attach_file t(:picture_file), test_file_path(bad_file)
-        select person1.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
-        select t(:person_realms)[data.realm], from: t(:person_realm)
-        click_button t(:save)
+        click_link t("picture.new")
+        fill_in t("description"), with: data.description
+        check t("picture.portrait") if data.portrait
+        attach_file t("picture.file"), test_file_path(bad_file)
+        select person1.name(reversed: true, with_years: true), from: t("picture.person", number: 1)
+        select t("person.realms")[data.realm], from: t("person.realm")
+        click_button t("save")
 
-        expect(page).to have_title t(:picture_new)
+        expect(page).to have_title t("picture.new")
         expect(Picture.count).to eq 0
         expect(PersonPicture.count).to eq 0
         expect(page).to have_css(error, text: "invalid filename")
@@ -105,16 +105,16 @@ describe Picture do
 
     before(:each) do
       visit picture_path(picture)
-      click_link t(:edit)
-      expect(page).to have_title t(:picture_edit)
+      click_link t("edit")
+      expect(page).to have_title t("picture.edit")
       expect(Picture.count).to eq 1
       expect(PersonPicture.count).to eq 2
     end
 
     it "people" do
-      select person3.name(reversed: true, with_years: true), from: t(:picture_person, number: 1)
-      select t(:select), from: t(:picture_person, number: 2)
-      click_button t(:save)
+      select person3.name(reversed: true, with_years: true), from: t("picture.person", number: 1)
+      select t("select"), from: t("picture.person", number: 2)
+      click_button t("save")
 
       title = person3.name(full: false)
       expect(page).to have_title title
@@ -130,11 +130,11 @@ describe Picture do
     it "description" do
       expect(picture.description).to be_present
 
-      expect(page).to have_title t(:picture_edit)
-      fill_in t(:description), with: ""
-      click_button t(:save)
+      expect(page).to have_title t("picture.edit")
+      fill_in t("description"), with: ""
+      click_button t("save")
 
-      expect(page).to_not have_title t(:picture_edit)
+      expect(page).to_not have_title t("picture.edit")
       expect(Picture.count).to eq 1
       expect(PersonPicture.count).to eq 2
 
@@ -147,11 +147,11 @@ describe Picture do
       expect(picture.image.content_type).to eq "image/jpeg"
       expect(picture.image.byte_size).to eq 13738
 
-      expect(page).to have_title t(:picture_edit)
-      attach_file t(:picture_file), test_file_path(good_file2)
-      click_button t(:save)
+      expect(page).to have_title t("picture.edit")
+      attach_file t("picture.file"), test_file_path(good_file2)
+      click_button t("save")
 
-      expect(page).to_not have_title t(:picture_edit)
+      expect(page).to_not have_title t("picture.edit")
       expect(Picture.count).to eq 1
       expect(PersonPicture.count).to eq 2
 
@@ -175,10 +175,10 @@ describe Picture do
       expect(PersonPicture.count).to eq 3
 
       visit picture_path(picture)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:picture_pictures)
+      expect(page).to have_title t("picture.pictures")
       expect(Picture.count).to eq 0
       expect(PersonPicture.count).to eq 0
     end

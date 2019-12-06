@@ -11,17 +11,17 @@ describe Wk::Group do
 
   before(:each) do
     login
-    click_link t(:wk_group_groups)
+    click_link t("wk.group.groups")
   end
 
   context "create" do
     it "success" do
-      click_link t(:wk_group_new)
+      click_link t("wk.group.new")
       select t("wk.group.categories.#{data.category}"), from: t("wk.group.category")
-      fill_in t(:wk_group_vocab__list), with: data.vocab_list
-      click_button t(:save)
+      fill_in t("wk.group.vocab_list"), with: data.vocab_list
+      click_button t("save")
 
-      expect(page).to have_title t(:wk_group_group)
+      expect(page).to have_title t("wk.group.group")
 
       expect(Wk::Group.count).to eq 2
       g = Wk::Group.last
@@ -42,11 +42,11 @@ describe Wk::Group do
     end
 
     it "failure" do
-      click_link t(:wk_group_new)
-      fill_in t(:wk_group_vocab__list), with: data.vocab_list
-      click_button t(:save)
+      click_link t("wk.group.new")
+      fill_in t("wk.group.vocab_list"), with: data.vocab_list
+      click_button t("save")
 
-      expect(page).to have_title t(:wk_group_new)
+      expect(page).to have_title t("wk.group.new")
       expect(Wk::Group.count).to eq 1
       expect(page).to have_css(error, text: "not included")
     end
@@ -55,12 +55,12 @@ describe Wk::Group do
   context "edit" do
     it "success" do
       visit edit_wk_group_path(group)
-      expect(page).to have_title t(:wk_group_edit)
+      expect(page).to have_title t("wk.group.edit")
 
-      fill_in t(:wk_group_vocab__list), with: "仮定 想定"
-      click_button t(:save)
+      fill_in t("wk.group.vocab_list"), with: "仮定 想定"
+      click_button t("save")
 
-      expect(page).to have_title t(:wk_group_group)
+      expect(page).to have_title t("wk.group.group")
 
       expect(Wk::Group.count).to eq 1
       g = Wk::Group.last
@@ -82,9 +82,9 @@ describe Wk::Group do
       expect(Wk::Group.count).to eq 1
 
       visit edit_wk_group_path(group)
-      click_link t(:delete)
+      click_link t("delete")
 
-      expect(page).to have_title t(:wk_group_groups)
+      expect(page).to have_title t("wk.group.groups")
       expect(Wk::Group.count).to eq 0
       expect(assumption.groups).to be_empty
       expect(supposition.groups).to be_empty

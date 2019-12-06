@@ -6,20 +6,20 @@ describe Resident do
 
   before(:each) do
     login
-    click_link t(:resident_residents)
+    click_link t("resident.residents")
   end
 
   context "create" do
     it "success" do
-      click_link t(:resident_new)
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:email), with: data.email
-      fill_in t(:resident_address), with: data.address
-      fill_in t(:resident_agent), with: data.agent
-      click_button t(:save)
+      click_link t("resident.new")
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("email"), with: data.email
+      fill_in t("resident.address"), with: data.address
+      fill_in t("resident.agent"), with: data.agent
+      click_button t("save")
 
-      expect(page).to have_title t(:resident_resident)
+      expect(page).to have_title t("resident.resident")
 
       expect(Resident.count).to eq 2
       r = Resident.last
@@ -32,12 +32,12 @@ describe Resident do
     end
 
     it "failure" do
-      click_link t(:resident_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:email), with: data.email
-      click_button t(:save)
+      click_link t("resident.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("email"), with: data.email
+      click_button t("save")
 
-      expect(page).to have_title t(:resident_new)
+      expect(page).to have_title t("resident.new")
       expect(Resident.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -46,13 +46,13 @@ describe Resident do
   context "edit" do
     it "success" do
       click_link resident.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:resident_edit)
-      fill_in t(:person_first__names), with: data.first_names
-      click_button t(:save)
+      expect(page).to have_title t("resident.edit")
+      fill_in t("person.first_names"), with: data.first_names
+      click_button t("save")
 
-      expect(page).to have_title t(:resident_resident)
+      expect(page).to have_title t("resident.resident")
 
       expect(Resident.count).to eq 1
       r = Resident.last
@@ -62,12 +62,12 @@ describe Resident do
 
     it "failure" do
       click_link resident.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      fill_in t(:person_last__name), with: ""
-      click_button t(:save)
+      fill_in t("person.last_name"), with: ""
+      click_button t("save")
 
-      expect(page).to have_title t(:resident_edit)
+      expect(page).to have_title t("resident.edit")
       expect(page).to have_css(error, text: "blank")
     end
   end
@@ -77,10 +77,10 @@ describe Resident do
       expect(Resident.count).to eq 1
 
       click_link resident.name
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:resident_residents)
+      expect(page).to have_title t("resident.residents")
       expect(Resident.count).to eq 0
     end
   end

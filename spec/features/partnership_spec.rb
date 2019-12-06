@@ -7,25 +7,25 @@ describe Partnership do
 
   before(:each) do
     login
-    click_link t(:partnership_partnerships)
-    select t(:person_realms)[data.realm], from: t(:person_realm)
-    click_button t(:search)
+    click_link t("partnership.partnerships")
+    select t("person.realms")[data.realm], from: t("person.realm")
+    click_button t("search")
   end
 
   context "create" do
     it "success" do
-      click_link t(:partnership_new)
-      select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
-      select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
-      fill_in t(:partnership_wedding), with: data.wedding
-      check t(:partnership_wedding__guess) if data.wedding_guess
-      fill_in t(:partnership_divorce), with: data.divorce if data.divorce
-      check t(:partnership_divorce__guess) if data.divorce_guess
-      uncheck t(:partnership_marriage) unless data.marriage
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      click_button t(:save)
+      click_link t("partnership.new")
+      select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
+      select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
+      fill_in t("partnership.wedding"), with: data.wedding
+      check t("partnership.wedding_guess") if data.wedding_guess
+      fill_in t("partnership.divorce"), with: data.divorce if data.divorce
+      check t("partnership.divorce_guess") if data.divorce_guess
+      uncheck t("partnership.marriage") unless data.marriage
+      select t("person.realms")[data.realm], from: t("person.realm")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_partnership)
+      expect(page).to have_title t("partnership.partnership")
 
       expect(Partnership.count).to eq 1
       p = Partnership.last
@@ -43,38 +43,38 @@ describe Partnership do
 
   context "failure" do
     it "no wife" do
-      click_link t(:partnership_new)
-      select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
-      fill_in t(:partnership_wedding), with: data.wedding
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      click_button t(:save)
+      click_link t("partnership.new")
+      select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
+      fill_in t("partnership.wedding"), with: data.wedding
+      select t("person.realms")[data.realm], from: t("person.realm")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_new)
+      expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
 
     it "no wedding" do
-      click_link t(:partnership_new)
-      select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
-      select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      click_button t(:save)
+      click_link t("partnership.new")
+      select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
+      select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
+      select t("person.realms")[data.realm], from: t("person.realm")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_new)
+      expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
 
     it "wedding before born" do
-      click_link t(:partnership_new)
-      select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
-      select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
-      fill_in t(:partnership_wedding), with: [husband.born, wife.born].min - 1
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      click_button t(:save)
+      click_link t("partnership.new")
+      select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
+      select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
+      fill_in t("partnership.wedding"), with: [husband.born, wife.born].min - 1
+      select t("person.realms")[data.realm], from: t("person.realm")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_new)
+      expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
       expect(page).to have_css(error, text: /before.*born/i)
     end
@@ -83,15 +83,15 @@ describe Partnership do
       Partnership.create!(husband_id: husband.id, wife_id: wife.id, wedding: data.wedding, marriage: data.marriage, realm: data.realm)
       expect(Partnership.count).to eq 1
 
-      click_link t(:partnership_new)
-      select husband.name(reversed: true, with_years: true), from: t(:partnership_husband)
-      select wife.name(reversed: true, with_years: true), from: t(:partnership_wife)
-      fill_in t(:partnership_wedding), with: data.wedding
-      uncheck t(:partnership_marriage) unless data.marriage
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      click_button t(:save)
+      click_link t("partnership.new")
+      select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
+      select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
+      fill_in t("partnership.wedding"), with: data.wedding
+      uncheck t("partnership.marriage") unless data.marriage
+      select t("person.realms")[data.realm], from: t("person.realm")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_new)
+      expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 1
       expect(page).to have_css(error, text: /already.*taken/i)
     end
@@ -105,13 +105,13 @@ describe Partnership do
       year = Date.today.year
 
       visit partnership_path(partnership)
-      click_link t(:edit)
-      expect(page).to have_title t(:partnership_edit)
-      fill_in t(:partnership_divorce), with: year
-      check t(:partnership_divorce__guess)
-      click_button t(:save)
+      click_link t("edit")
+      expect(page).to have_title t("partnership.edit")
+      fill_in t("partnership.divorce"), with: year
+      check t("partnership.divorce_guess")
+      click_button t("save")
 
-      expect(page).to have_title t(:partnership_partnership)
+      expect(page).to have_title t("partnership.partnership")
 
       expect(Partnership.count).to eq 1
       p = Partnership.last
@@ -128,10 +128,10 @@ describe Partnership do
       expect(Partnership.count).to eq 1
 
       visit partnership_path(partnership)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:partnership_partnerships)
+      expect(page).to have_title t("partnership.partnerships")
       expect(Partnership.count).to eq 0
     end
   end

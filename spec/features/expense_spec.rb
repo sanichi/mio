@@ -14,14 +14,14 @@ describe Expense do
 
   context "create" do
     it "success" do
-      click_link t(:expense_new)
-      fill_in t(:description), with: data.description
-      select category, from: t(:expense_category_category)
-      select period, from: t(:expense_period_period)
-      fill_in t(:amount), with: data.amount
-      click_button t(:save)
+      click_link t("expense.new")
+      fill_in t("description"), with: data.description
+      select category, from: t("expense.category.category")
+      select period, from: t("expense.period.period")
+      fill_in t("amount"), with: data.amount
+      click_button t("save")
 
-      expect(page).to have_title t(:expense_expenses)
+      expect(page).to have_title t("expense.expenses")
       expect(page).to have_xpath table % [data.description, category, period, "%.2f" % data.amount, data.annual]
 
       expect(Expense.count).to eq 1
@@ -37,26 +37,26 @@ describe Expense do
 
   context "failure" do
     it "no decription" do
-      click_link t(:expense_new)
-      select category, from: t(:expense_category_category)
-      select period, from: t(:expense_period_period)
-      fill_in t(:amount), with: data.amount
-      click_button t(:save)
+      click_link t("expense.new")
+      select category, from: t("expense.category.category")
+      select period, from: t("expense.period.period")
+      fill_in t("amount"), with: data.amount
+      click_button t("save")
 
-      expect(page).to have_title t(:expense_new)
+      expect(page).to have_title t("expense.new")
       expect(Expense.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
 
     it "invalid amount" do
-      click_link t(:expense_new)
-      fill_in t(:description), with: data.description
-      select category, from: t(:expense_category_category)
-      select period, from: t(:expense_period_period)
-      fill_in t(:amount), with: "0.0"
-      click_button t(:save)
+      click_link t("expense.new")
+      fill_in t("description"), with: data.description
+      select category, from: t("expense.category.category")
+      select period, from: t("expense.period.period")
+      fill_in t("amount"), with: "0.0"
+      click_button t("save")
 
-      expect(page).to have_title t(:expense_new)
+      expect(page).to have_title t("expense.new")
       expect(Expense.count).to eq 0
       expect(page).to have_css(error, text: "greater than 0")
     end
@@ -67,13 +67,13 @@ describe Expense do
 
     it "success" do
       visit expenses_path
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:expense_edit)
-      select period, from: t(:expense_period_period)
-      click_button t(:save)
+      expect(page).to have_title t("expense.edit")
+      select period, from: t("expense.period.period")
+      click_button t("save")
 
-      expect(page).to have_title t(:expense_expenses)
+      expect(page).to have_title t("expense.expenses")
 
       expect(Expense.count).to eq 1
       e = Expense.first
@@ -87,10 +87,10 @@ describe Expense do
 
     it "success" do
       visit expenses_path
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:expense_expenses)
+      expect(page).to have_title t("expense.expenses")
       expect(Expense.count).to eq 0
     end
   end

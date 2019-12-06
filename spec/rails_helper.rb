@@ -38,10 +38,10 @@ end
 def login(role="admin")
   user = create(:user, role: role)
   visit sign_in_path
-  click_link t(:session_sign__in)
-  fill_in t(:email), with: user.email
-  fill_in t(:session_password), with: user.password
-  click_button t(:session_sign__in)
+  click_link t("session.sign_in")
+  fill_in t("email"), with: user.email
+  fill_in t("session.password"), with: user.password
+  click_button t("session.sign_in")
 end
 
 def wait_a_while(delay=0.3)
@@ -49,11 +49,7 @@ def wait_a_while(delay=0.3)
 end
 
 def t(key, *arg)
-  if key.is_a?(Symbol)
-    I18n.t(key.to_s.gsub("_", ".").gsub("..", "_"), *arg)
-  else
-    I18n.t(key, *arg)
-  end
+  I18n.t(key, *arg)
 end
 
 def error

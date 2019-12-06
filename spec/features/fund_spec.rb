@@ -13,18 +13,18 @@ describe Fund do
 
   context "create" do
     it "success" do
-      click_link t(:fund_new)
-      fill_in t(:name), with: data.name
-      fill_in t(:fund_company), with: data.company
-      select category, from: t(:fund_category_category)
-      select data.sector, from: t(:fund_sector)
-      stars.each { |star| select star, from: t(:fund_stars_stars) }
-      fill_in t(:fund_size), with: data.size
-      select data.srri.to_s, from: t(:fund_srri)
-      check t(:fund_srri__estimated) if data.srri_estimated
-      fill_in t(:fund_annual__fee), with: data.annual_fee
-      check t(:fund_performance__fee) if data.performance_fee
-      click_button t(:save)
+      click_link t("fund.new")
+      fill_in t("name"), with: data.name
+      fill_in t("fund.company"), with: data.company
+      select category, from: t("fund.category.category")
+      select data.sector, from: t("fund.sector")
+      stars.each { |star| select star, from: t("fund.stars.stars") }
+      fill_in t("fund.size"), with: data.size
+      select data.srri.to_s, from: t("fund.srri")
+      check t("fund.srri_estimated") if data.srri_estimated
+      fill_in t("fund.annual_fee"), with: data.annual_fee
+      check t("fund.performance_fee") if data.performance_fee
+      click_button t("save")
 
       expect(page).to have_title data.name
 
@@ -46,19 +46,19 @@ describe Fund do
 
   context "failure" do
     it "no name" do
-      click_link t(:fund_new)
-      fill_in t(:fund_company), with: data.company
-      select category, from: t(:fund_category_category)
-      select data.sector, from: t(:fund_sector)
-      stars.each { |star| select star, from: t(:fund_stars_stars) }
-      fill_in t(:fund_size), with: data.size
-      select data.srri.to_s, from: t(:fund_srri)
-      check t(:fund_srri__estimated) if data.srri_estimated
-      fill_in t(:fund_annual__fee), with: data.annual_fee
-      check t(:fund_performance__fee) if data.performance_fee
-      click_button t(:save)
+      click_link t("fund.new")
+      fill_in t("fund.company"), with: data.company
+      select category, from: t("fund.category.category")
+      select data.sector, from: t("fund.sector")
+      stars.each { |star| select star, from: t("fund.stars.stars") }
+      fill_in t("fund.size"), with: data.size
+      select data.srri.to_s, from: t("fund.srri")
+      check t("fund.srri_estimated") if data.srri_estimated
+      fill_in t("fund.annual_fee"), with: data.annual_fee
+      check t("fund.performance_fee") if data.performance_fee
+      click_button t("save")
 
-      expect(page).to have_title t(:fund_new)
+      expect(page).to have_title t("fund.new")
       expect(Fund.count).to eq 0
       expect(page).to have_css(error, text: "blank")
     end
@@ -67,20 +67,20 @@ describe Fund do
       Fund.create(attrs)
       expect(Fund.count).to eq 1
 
-      click_link t(:fund_new)
-      fill_in t(:name), with: data.name
-      fill_in t(:fund_company), with: data.company
-      select category, from: t(:fund_category_category)
-      select data.sector, from: t(:fund_sector)
-      stars.each { |star| select star, from: t(:fund_stars_stars) }
-      fill_in t(:fund_size), with: data.size
-      select data.srri.to_s, from: t(:fund_srri)
-      check t(:fund_srri__estimated) if data.srri_estimated
-      fill_in t(:fund_annual__fee), with: data.annual_fee
-      check t(:fund_performance__fee) if data.performance_fee
-      click_button t(:save)
+      click_link t("fund.new")
+      fill_in t("name"), with: data.name
+      fill_in t("fund.company"), with: data.company
+      select category, from: t("fund.category.category")
+      select data.sector, from: t("fund.sector")
+      stars.each { |star| select star, from: t("fund.stars.stars") }
+      fill_in t("fund.size"), with: data.size
+      select data.srri.to_s, from: t("fund.srri")
+      check t("fund.srri_estimated") if data.srri_estimated
+      fill_in t("fund.annual_fee"), with: data.annual_fee
+      check t("fund.performance_fee") if data.performance_fee
+      click_button t("save")
 
-      expect(page).to have_title t(:fund_new)
+      expect(page).to have_title t("fund.new")
       expect(Fund.count).to eq 1
       expect(page).to have_css(error, text: "taken")
     end
@@ -91,12 +91,12 @@ describe Fund do
 
     it "success" do
       visit fund_path(fund)
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:fund_edit)
-      select category, from: t(:fund_category_category)
-      fund.stars.each { |star| unselect Fund.full_star(star), from: t(:fund_stars_stars) }
-      click_button t(:save)
+      expect(page).to have_title t("fund.edit")
+      select category, from: t("fund.category.category")
+      fund.stars.each { |star| unselect Fund.full_star(star), from: t("fund.stars.stars") }
+      click_button t("save")
 
       expect(page).to have_title fund.name
 
@@ -113,10 +113,10 @@ describe Fund do
 
     it "success" do
       visit funds_path
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:fund_funds)
+      expect(page).to have_title t("fund.funds")
       expect(Fund.count).to eq 0
     end
   end
@@ -129,13 +129,13 @@ describe Fund do
 
     it "add, add another, edit, delete, delete all" do
       visit fund_path(fund)
-      click_link t(:comment_new)
-      expect(page).to have_title t(:comment_new)
+      click_link t("comment.new")
+      expect(page).to have_title t("comment.new")
 
-      fill_in t(:date), with: data.date
-      fill_in t(:comment_source), with: data.source
-      fill_in t(:comment_text), with: data.text
-      click_button t(:save)
+      fill_in t("date"), with: data.date
+      fill_in t("comment.source"), with: data.source
+      fill_in t("comment.text"), with: data.text
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
@@ -145,22 +145,22 @@ describe Fund do
       expect(comment.source).to eq data.source
       expect(comment.text).to eq data.text
 
-      click_link t(:comment_new)
-      expect(page).to have_title t(:comment_new)
+      click_link t("comment.new")
+      expect(page).to have_title t("comment.new")
 
-      fill_in t(:date), with: data2.date
-      fill_in t(:comment_source), with: data2.source
-      fill_in t(:comment_text), with: data2.text
-      click_button t(:save)
+      fill_in t("date"), with: data2.date
+      fill_in t("comment.source"), with: data2.source
+      fill_in t("comment.text"), with: data2.text
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
       expect(fund.comments.length).to eq 2
 
       first(".card").click_link(t(:edit))
-      expect(page).to have_title t(:comment_edit)
-      fill_in t(:comment_text), with: data3.text
-      click_button t(:save)
+      expect(page).to have_title t("comment.edit")
+      fill_in t("comment.text"), with: data3.text
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
@@ -168,18 +168,18 @@ describe Fund do
       expect(fund.comments.length).to eq 2
 
       first(".card").click_link(t(:edit))
-      click_link t(:delete)
+      click_link t("delete")
       expect(page).to have_title fund.name
 
       fund.reload
       expect(fund.comments.where(text: data3.text).count).to eq 0
       expect(fund.comments.length).to eq 1
 
-      click_link t(:edit), match: :first
-      expect(page).to have_title t(:fund_edit)
+      click_link t("edit"), match: :first
+      expect(page).to have_title t("fund.edit")
 
-      click_link t(:delete)
-      expect(page).to have_title t(:fund_funds)
+      click_link t("delete")
+      expect(page).to have_title t("fund.funds")
 
       expect(Fund.count).to eq 0
       expect(Comment.count).to eq 0
@@ -194,12 +194,12 @@ describe Fund do
 
     it "add, add another, edit, delete, delete all" do
       visit fund_path(fund)
-      click_link t(:return_new)
-      expect(page).to have_title t(:return_new)
+      click_link t("return.new")
+      expect(page).to have_title t("return.new")
 
-      fill_in t(:return_year), with: data.year
-      fill_in t(:return_percent), with: data.percent
-      click_button t(:save)
+      fill_in t("return.year"), with: data.year
+      fill_in t("return.percent"), with: data.percent
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
@@ -208,21 +208,21 @@ describe Fund do
       expect(ret.year).to eq data.year
       expect(ret.percent).to eq data.percent
 
-      click_link t(:return_new)
-      expect(page).to have_title t(:return_new)
+      click_link t("return.new")
+      expect(page).to have_title t("return.new")
 
-      fill_in t(:return_year), with: data2.year
-      fill_in t(:return_percent), with: data2.percent
-      click_button t(:save)
+      fill_in t("return.year"), with: data2.year
+      fill_in t("return.percent"), with: data2.percent
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
       expect(fund.returns.length).to eq 2
 
       first(:xpath, "//tr/td[a[contains(@href,'edit')]]").click_link(t(:edit))
-      expect(page).to have_title t(:return_edit)
-      fill_in t(:return_percent), with: data3.percent
-      click_button t(:save)
+      expect(page).to have_title t("return.edit")
+      fill_in t("return.percent"), with: data3.percent
+      click_button t("save")
       expect(page).to have_title fund.name
 
       fund.reload
@@ -230,18 +230,18 @@ describe Fund do
       expect(fund.returns.length).to eq 2
 
       first(:xpath, "//tr/td[a[contains(@href,'edit')]]").click_link(t(:edit))
-      click_link t(:delete)
+      click_link t("delete")
       expect(page).to have_title fund.name
 
       fund.reload
       expect(fund.returns.where(percent: data3.percent).count).to eq 0
       expect(fund.returns.length).to eq 1
 
-      click_link t(:edit), match: :first
-      expect(page).to have_title t(:fund_edit)
+      click_link t("edit"), match: :first
+      expect(page).to have_title t("fund.edit")
 
-      click_link t(:delete)
-      expect(page).to have_title t(:fund_funds)
+      click_link t("delete")
+      expect(page).to have_title t("fund.funds")
 
       expect(Fund.count).to eq 0
       expect(Return.count).to eq 0

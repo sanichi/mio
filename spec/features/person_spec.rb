@@ -9,28 +9,28 @@ describe Person do
 
   before(:each) do
     login
-    click_link t(:person_people)
-    select t(:person_realms)[data.realm], from: t(:person_realm)
-    click_button t(:search)
+    click_link t("person.people")
+    select t("person.realms")[data.realm], from: t("person.realm")
+    click_button t("search")
   end
 
   context "create" do
     it "success" do
-      click_link t(:person_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_known__as), with: data.known_as
-      fill_in t(:person_born), with: data.born
-      check t(:person_born__guess) if data.born_guess
-      fill_in t(:person_died), with: data.died
-      check t(:person_died__guess) if data.died_guess
-      select father.name(reversed: true, with_years: true, with_married_name: true), from: t(:person_father)
-      select t(:person_realms)[data.realm], from: t(:person_realm)
-      select mother.name(reversed: true, with_years: true, with_married_name: true), from: t(:person_mother)
-      fill_in t(:person_notes), with: data.notes
-      check t(:person_male) if data.male
-      fill_in t(:person_married__name), with: data.married_name
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.known_as"), with: data.known_as
+      fill_in t("person.born"), with: data.born
+      check t("person.born_guess") if data.born_guess
+      fill_in t("person.died"), with: data.died
+      check t("person.died_guess") if data.died_guess
+      select father.name(reversed: true, with_years: true, with_married_name: true), from: t("person.father")
+      select t("person.realms")[data.realm], from: t("person.realm")
+      select mother.name(reversed: true, with_years: true, with_married_name: true), from: t("person.mother")
+      fill_in t("person.notes"), with: data.notes
+      check t("person.male") if data.male
+      fill_in t("person.married_name"), with: data.married_name
+      click_button t("save")
 
       expect(page).to have_title data.name(full: false)
 
@@ -53,11 +53,11 @@ describe Person do
     end
 
     it "minimum data" do
-      click_link t(:person_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_born), with: data.born
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.born"), with: data.born
+      click_button t("save")
 
       expect(page).to have_title data.last_name
 
@@ -81,49 +81,49 @@ describe Person do
 
   context "failure" do
     it "no last name" do
-      click_link t(:person_new)
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_born), with: data.born
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.born"), with: data.born
+      click_button t("save")
 
-      expect(page).to have_title t(:person_new)
+      expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
       expect(page).to have_css(error, text: "blank")
     end
 
     it "no birth year" do
-      click_link t(:person_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:person_first__names), with: data.first_names
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("person.first_names"), with: data.first_names
+      click_button t("save")
 
-      expect(page).to have_title t(:person_new)
+      expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
       expect(page).to have_css(error, text: /not a number/)
     end
 
     it "died before born" do
-      click_link t(:person_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_born), with: 1990
-      fill_in t(:person_died), with: 1920
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.born"), with: 1990
+      fill_in t("person.died"), with: 1920
+      click_button t("save")
 
-      expect(page).to have_title t(:person_new)
+      expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
       expect(page).to have_css(error, text: /died.*born/i)
     end
 
     it "born before father" do
-      click_link t(:person_new)
-      fill_in t(:person_last__name), with: data.last_name
-      fill_in t(:person_first__names), with: data.first_names
-      fill_in t(:person_born), with: father.born
-      select father.name(reversed: true, with_years: true), from: t(:person_father)
-      click_button t(:save)
+      click_link t("person.new")
+      fill_in t("person.last_name"), with: data.last_name
+      fill_in t("person.first_names"), with: data.first_names
+      fill_in t("person.born"), with: father.born
+      select father.name(reversed: true, with_years: true), from: t("person.father")
+      click_button t("save")
 
-      expect(page).to have_title t(:person_new)
+      expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
       expect(page).to have_css(error, text: /born.*father/i)
     end
@@ -134,13 +134,13 @@ describe Person do
 
     it "died" do
       visit person_path(person)
-      click_link t(:edit)
+      click_link t("edit")
       year = Date.today.year
 
-      expect(page).to have_title t(:person_edit)
-      fill_in t(:person_died), with: year
-      check t(:person_died__guess)
-      click_button t(:save)
+      expect(page).to have_title t("person.edit")
+      fill_in t("person.died"), with: year
+      check t("person.died_guess")
+      click_button t("save")
 
       expect(page).to have_title person.name(full: false)
 
@@ -159,10 +159,10 @@ describe Person do
       expect(Person.count).to eq count + 1
 
       visit person_path(person)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:person_people)
+      expect(page).to have_title t("person.people")
       expect(Person.count).to eq count
     end
   end

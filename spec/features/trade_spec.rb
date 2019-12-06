@@ -6,21 +6,21 @@ describe Trade do
 
   before(:each) do
     login
-    click_link t(:trade_trades)
+    click_link t("trade.trades")
   end
 
   context "create" do
     it "success" do
-      click_link t(:trade_new)
-      fill_in t(:trade_stock), with: data.stock
-      fill_in t(:trade_units), with: data.units
-      fill_in t(:trade_buy__date), with: data.buy_date
-      fill_in t(:trade_buy__price), with: data.buy_price
-      fill_in t(:trade_buy__factor), with: data.buy_factor
-      fill_in t(:trade_sell__date), with: data.sell_date
-      fill_in t(:trade_sell__price), with: data.sell_price
-      fill_in t(:trade_sell__factor), with: data.sell_factor
-      click_button t(:save)
+      click_link t("trade.new")
+      fill_in t("trade.stock"), with: data.stock
+      fill_in t("trade.units"), with: data.units
+      fill_in t("trade.buy_date"), with: data.buy_date
+      fill_in t("trade.buy_price"), with: data.buy_price
+      fill_in t("trade.buy_factor"), with: data.buy_factor
+      fill_in t("trade.sell_date"), with: data.sell_date
+      fill_in t("trade.sell_price"), with: data.sell_price
+      fill_in t("trade.sell_factor"), with: data.sell_factor
+      click_button t("save")
 
       expect(page).to have_title data.stock
 
@@ -38,18 +38,18 @@ describe Trade do
     end
 
     it "failure" do
-      click_link t(:trade_new)
-      fill_in t(:trade_stock), with: data.stock
-      fill_in t(:trade_units), with: data.units
-      fill_in t(:trade_buy__date), with: data.sell_date
-      fill_in t(:trade_buy__price), with: data.buy_price
-      fill_in t(:trade_buy__factor), with: data.buy_factor
-      fill_in t(:trade_sell__date), with: data.buy_date
-      fill_in t(:trade_sell__price), with: data.sell_price
-      fill_in t(:trade_sell__factor), with: data.sell_factor
-      click_button t(:save)
+      click_link t("trade.new")
+      fill_in t("trade.stock"), with: data.stock
+      fill_in t("trade.units"), with: data.units
+      fill_in t("trade.buy_date"), with: data.sell_date
+      fill_in t("trade.buy_price"), with: data.buy_price
+      fill_in t("trade.buy_factor"), with: data.buy_factor
+      fill_in t("trade.sell_date"), with: data.buy_date
+      fill_in t("trade.sell_price"), with: data.sell_price
+      fill_in t("trade.sell_factor"), with: data.sell_factor
+      click_button t("save")
 
-      expect(page).to have_title t(:trade_new)
+      expect(page).to have_title t("trade.new")
       expect(Trade.count).to eq 1
       expect(page).to have_css(error, text: "before")
     end
@@ -59,11 +59,11 @@ describe Trade do
     context "success" do
       it "stock" do
         click_link trade.stock
-        click_link t(:edit)
+        click_link t("edit")
 
-        expect(page).to have_title t(:trade_edit)
-        fill_in t(:trade_stock), with: data.stock
-        click_button t(:save)
+        expect(page).to have_title t("trade.edit")
+        fill_in t("trade.stock"), with: data.stock
+        click_button t("save")
 
         expect(page).to have_title data.stock
 
@@ -75,11 +75,11 @@ describe Trade do
 
       it "sell price" do
         click_link trade.stock
-        click_link t(:edit)
+        click_link t("edit")
 
-        expect(page).to have_title t(:trade_edit)
-        fill_in t(:trade_sell__price), with: trade.buy_price
-        click_button t(:save)
+        expect(page).to have_title t("trade.edit")
+        fill_in t("trade.sell_price"), with: trade.buy_price
+        click_button t("save")
 
         expect(page).to have_title trade.stock
 
@@ -94,12 +94,12 @@ describe Trade do
 
     it "failure" do
       click_link trade.stock
-      click_link t(:edit)
+      click_link t("edit")
 
-      fill_in t(:trade_stock), with: ""
-      click_button t(:save)
+      fill_in t("trade.stock"), with: ""
+      click_button t("save")
 
-      expect(page).to have_title t(:trade_edit)
+      expect(page).to have_title t("trade.edit")
       expect(Trade.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -110,10 +110,10 @@ describe Trade do
       expect(Trade.count).to eq 1
 
       click_link trade.stock
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:trade_trades)
+      expect(page).to have_title t("trade.trades")
       expect(Trade.count).to eq 0
     end
   end

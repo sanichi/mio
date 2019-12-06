@@ -6,21 +6,21 @@ describe Lesson do
 
   before(:each) do
     login
-    click_link t(:lesson_lessons)
+    click_link t("lesson.lessons")
   end
 
   context "create" do
     it "success" do
-      click_link t(:lesson_new)
-      fill_in t(:lesson_chapter), with: data.chapter
-      fill_in t(:lesson_chapter__no), with: data.chapter_no
-      fill_in t(:lesson_complete), with: data.complete
-      fill_in t(:lesson_link), with: data.link
-      fill_in t(:lesson_book), with: data.book
-      fill_in t(:lesson_section), with: data.section
-      fill_in t(:lesson_series), with: data.series
-      fill_in t(:lesson_eco), with: data.eco
-      click_button t(:save)
+      click_link t("lesson.new")
+      fill_in t("lesson.chapter"), with: data.chapter
+      fill_in t("lesson.chapter_no"), with: data.chapter_no
+      fill_in t("lesson.complete"), with: data.complete
+      fill_in t("lesson.link"), with: data.link
+      fill_in t("lesson.book"), with: data.book
+      fill_in t("lesson.section"), with: data.section
+      fill_in t("lesson.series"), with: data.series
+      fill_in t("lesson.eco"), with: data.eco
+      click_button t("save")
 
       expect(page).to have_title data.chapter
 
@@ -38,17 +38,17 @@ describe Lesson do
     end
 
     it "failure" do
-      click_link t(:lesson_new)
-      fill_in t(:lesson_chapter__no), with: data.chapter_no
-      fill_in t(:lesson_complete), with: data.complete
-      fill_in t(:lesson_link), with: data.link
-      fill_in t(:lesson_book), with: data.book
-      fill_in t(:lesson_section), with: data.section
-      fill_in t(:lesson_series), with: data.series
-      fill_in t(:lesson_eco), with: data.eco
-      click_button t(:save)
+      click_link t("lesson.new")
+      fill_in t("lesson.chapter_no"), with: data.chapter_no
+      fill_in t("lesson.complete"), with: data.complete
+      fill_in t("lesson.link"), with: data.link
+      fill_in t("lesson.book"), with: data.book
+      fill_in t("lesson.section"), with: data.section
+      fill_in t("lesson.series"), with: data.series
+      fill_in t("lesson.eco"), with: data.eco
+      click_button t("save")
 
-      expect(page).to have_title t(:lesson_new)
+      expect(page).to have_title t("lesson.new")
       expect(Lesson.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -57,11 +57,11 @@ describe Lesson do
   context "edit" do
     it "success" do
       visit lesson_path(lesson)
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:lesson_edit)
-      fill_in t(:lesson_chapter), with: data.chapter
-      click_button t(:save)
+      expect(page).to have_title t("lesson.edit")
+      fill_in t("lesson.chapter"), with: data.chapter
+      click_button t("save")
 
       expect(page).to have_title data.chapter
 
@@ -77,10 +77,10 @@ describe Lesson do
       expect(Lesson.count).to eq 1
 
       visit lesson_path(lesson)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:lesson_lessons)
+      expect(page).to have_title t("lesson.lessons")
       expect(Lesson.count).to eq 0
     end
   end

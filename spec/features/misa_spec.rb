@@ -6,25 +6,25 @@ describe Misa do
 
   before(:each) do
     login
-    click_link t(:misa_misas)
+    click_link t("misa.misas")
   end
 
   context "create" do
     it "success" do
-      click_link t(:misa_new)
+      click_link t("misa.new")
       if data.alt
-        fill_in t(:misa_alt), with: data.alt
+        fill_in t("misa.alt"), with: data.alt
       end
-      select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
+      select I18n.t("misa.categories.#{data.category}"), from: t("misa.category")
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
-      fill_in t(:misa_minutes), with: data.minutes
-      fill_in t(:misa_note), with: data.note
-      fill_in t(:misa_published), with: data.published
-      fill_in t(:misa_title), with: data.title
-      fill_in t(:misa_url), with: data.url
-      click_button t(:save)
+      fill_in t("misa.minutes"), with: data.minutes
+      fill_in t("misa.note"), with: data.note
+      fill_in t("misa.published"), with: data.published
+      fill_in t("misa.title"), with: data.title
+      fill_in t("misa.url"), with: data.url
+      click_button t("save")
 
-      expect(page).to have_title t(:misa_misa)
+      expect(page).to have_title t("misa.misa")
 
       expect(Misa.count).to eq 2
       m = Misa.last
@@ -40,19 +40,19 @@ describe Misa do
     end
 
     it "failure" do
-      click_link t(:misa_new)
+      click_link t("misa.new")
       if data.alt
-        fill_in t(:misa_alt), with: data.alt
+        fill_in t("misa.alt"), with: data.alt
       end
-      select I18n.t("misa.categories.#{data.category}"), from: t(:misa_category)
+      select I18n.t("misa.categories.#{data.category}"), from: t("misa.category")
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
-      fill_in t(:misa_minutes), with: data.minutes
-      fill_in t(:misa_note), with: data.note
-      fill_in t(:misa_published), with: data.published
-      fill_in t(:misa_url), with: data.url
-      click_button t(:save)
+      fill_in t("misa.minutes"), with: data.minutes
+      fill_in t("misa.note"), with: data.note
+      fill_in t("misa.published"), with: data.published
+      fill_in t("misa.url"), with: data.url
+      click_button t("save")
 
-      expect(page).to have_title t(:misa_new)
+      expect(page).to have_title t("misa.new")
       expect(Misa.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -61,13 +61,13 @@ describe Misa do
   context "edit" do
     it "success" do
       visit misa_path(misa)
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:misa_edit)
-      fill_in t(:misa_title), with: data.title
-      click_button t(:save)
+      expect(page).to have_title t("misa.edit")
+      fill_in t("misa.title"), with: data.title
+      click_button t("save")
 
-      expect(page).to have_title t(:misa_misa)
+      expect(page).to have_title t("misa.misa")
 
       expect(Misa.count).to eq 1
       m = Misa.last
@@ -81,10 +81,10 @@ describe Misa do
       expect(Misa.count).to eq 1
 
       visit misa_path(misa)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:misa_misas)
+      expect(page).to have_title t("misa.misas")
       expect(Misa.count).to eq 0
     end
   end

@@ -6,17 +6,17 @@ describe Note do
 
   before(:each) do
     login
-    click_link t(:note_notes)
+    click_link t("note.notes")
   end
 
   context "create" do
     it "success" do
-      click_link t(:note_new)
-      fill_in t(:note_title), with: data.title
-      fill_in t(:note_stuff), with: data.stuff
-      fill_in t(:note_series), with: data.series
-      fill_in t(:note_number), with: data.number
-      click_button t(:save)
+      click_link t("note.new")
+      fill_in t("note.title"), with: data.title
+      fill_in t("note.stuff"), with: data.stuff
+      fill_in t("note.series"), with: data.series
+      fill_in t("note.number"), with: data.number
+      click_button t("save")
 
       expect(page).to have_title data.title
 
@@ -32,11 +32,11 @@ describe Note do
 
   context "failure" do
     it "no title" do
-      click_link t(:note_new)
-      fill_in t(:note_stuff), with: data.stuff
-      click_button t(:save)
+      click_link t("note.new")
+      fill_in t("note.stuff"), with: data.stuff
+      click_button t("save")
 
-      expect(page).to have_title t(:note_new)
+      expect(page).to have_title t("note.new")
       expect(Note.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -45,11 +45,11 @@ describe Note do
   context "edit" do
     it "change title" do
       visit note_path(note)
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:note_edit)
-      fill_in t(:note_title), with: data.title
-      click_button t(:save)
+      expect(page).to have_title t("note.edit")
+      fill_in t("note.title"), with: data.title
+      click_button t("save")
 
       expect(page).to have_title data.title
 
@@ -65,10 +65,10 @@ describe Note do
       expect(Note.count).to eq 1
 
       visit note_path(note)
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:note_notes)
+      expect(page).to have_title t("note.notes")
       expect(Note.count).to eq 0
     end
   end

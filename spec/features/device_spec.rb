@@ -6,15 +6,15 @@ describe Device do
 
   before(:each) do
     login
-    click_link t(:device_devices)
+    click_link t("device.devices")
   end
 
   context "create" do
     it "success" do
-      click_link t(:device_new)
-      fill_in t(:device_name), with: data.name
-      fill_in t(:notes), with: data.notes
-      click_button t(:save)
+      click_link t("device.new")
+      fill_in t("device.name"), with: data.name
+      fill_in t("notes"), with: data.notes
+      click_button t("save")
 
       expect(page).to have_title data.name
 
@@ -26,11 +26,11 @@ describe Device do
     end
 
     it "failure" do
-      click_link t(:device_new)
-      fill_in t(:notes), with: data.notes
-      click_button t(:save)
+      click_link t("device.new")
+      fill_in t("notes"), with: data.notes
+      click_button t("save")
 
-      expect(page).to have_title t(:device_new)
+      expect(page).to have_title t("device.new")
       expect(Device.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -39,11 +39,11 @@ describe Device do
   context "edit" do
     it "success" do
       click_link device.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:device_edit)
-      fill_in t(:device_name), with: data.name
-      click_button t(:save)
+      expect(page).to have_title t("device.edit")
+      fill_in t("device.name"), with: data.name
+      click_button t("save")
 
       expect(page).to have_title data.name
 
@@ -55,12 +55,12 @@ describe Device do
 
     it "failure" do
       click_link device.name
-      click_link t(:edit)
+      click_link t("edit")
 
-      fill_in t(:device_name), with: ""
-      click_button t(:save)
+      fill_in t("device.name"), with: ""
+      click_button t("save")
 
-      expect(page).to have_title t(:device_edit)
+      expect(page).to have_title t("device.edit")
       expect(page).to have_css(error, text: "blank")
     end
   end
@@ -70,10 +70,10 @@ describe Device do
       expect(Device.count).to eq 1
 
       click_link device.name
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:device_devices)
+      expect(page).to have_title t("device.devices")
       expect(Device.count).to eq 0
     end
   end

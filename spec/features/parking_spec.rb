@@ -7,17 +7,17 @@ describe Parking do
 
   before(:each) do
     login
-    click_link t(:parking_parkings)
+    click_link t("parking.parkings")
   end
 
   context "create" do
     it "success" do
-      click_link t(:parking_new)
-      select vehicle.registration, from: t(:vehicle_vehicle)
-      select flat.bay.to_s, from: t(:flat_bay)
-      click_button t(:save)
+      click_link t("parking.new")
+      select vehicle.registration, from: t("vehicle.vehicle")
+      select flat.bay.to_s, from: t("flat.bay")
+      click_button t("save")
 
-      expect(page).to have_title t(:parking_parkings)
+      expect(page).to have_title t("parking.parkings")
 
       expect(Parking.count).to eq 2
       p = Parking.last
@@ -28,24 +28,24 @@ describe Parking do
     end
 
     it "failure (no bay)" do
-      click_link t(:parking_new)
-      select vehicle.registration, from: t(:vehicle_vehicle)
-      click_button t(:save)
+      click_link t("parking.new")
+      select vehicle.registration, from: t("vehicle.vehicle")
+      click_button t("save")
 
-      expect(page).to have_title t(:parking_new)
+      expect(page).to have_title t("parking.new")
       expect(page).to have_css(error, text: "not a number")
 
       expect(Parking.count).to eq 1
     end
 
     it "failure (invalid time)" do
-      click_link t(:parking_new)
-      select vehicle.registration, from: t(:vehicle_vehicle)
-      select flat.bay.to_s, from: t(:flat_bay)
-      fill_in t(:parking_noted__at), with: "tomorrow at 3pm"
-      click_button t(:save)
+      click_link t("parking.new")
+      select vehicle.registration, from: t("vehicle.vehicle")
+      select flat.bay.to_s, from: t("flat.bay")
+      fill_in t("parking.noted_at"), with: "tomorrow at 3pm"
+      click_button t("save")
 
-      expect(page).to have_title t(:parking_new)
+      expect(page).to have_title t("parking.new")
       expect(page).to have_css(error, text: "future")
 
       expect(Parking.count).to eq 1
@@ -56,9 +56,9 @@ describe Parking do
     it "success" do
       expect(Parking.count).to eq 1
 
-      click_link t(:symbol_cross)
+      click_link t("symbol.cross")
 
-      expect(page).to have_title t(:parking_parkings)
+      expect(page).to have_title t("parking.parkings")
       expect(Parking.count).to eq 0
     end
   end

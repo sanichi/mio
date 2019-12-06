@@ -7,18 +7,18 @@ describe Vehicle do
 
   before(:each) do
     login
-    click_link t(:vehicle_vehicles)
+    click_link t("vehicle.vehicles")
   end
 
   context "create" do
     it "success" do
-      click_link t(:vehicle_new)
-      fill_in t(:vehicle_registration), with: data.registration
-      fill_in t(:description), with: data.description
-      select resident.name, from: t(:owner)
-      click_button t(:save)
+      click_link t("vehicle.new")
+      fill_in t("vehicle.registration"), with: data.registration
+      fill_in t("description"), with: data.description
+      select resident.name, from: t("owner")
+      click_button t("save")
 
-      expect(page).to have_title t(:vehicle_vehicle)
+      expect(page).to have_title t("vehicle.vehicle")
 
       expect(Vehicle.count).to eq 2
       v = Vehicle.last
@@ -29,12 +29,12 @@ describe Vehicle do
     end
 
     it "failure" do
-      click_link t(:vehicle_new)
-      fill_in t(:description), with: data.description
-      select resident.name, from: t(:owner)
-      click_button t(:save)
+      click_link t("vehicle.new")
+      fill_in t("description"), with: data.description
+      select resident.name, from: t("owner")
+      click_button t("save")
 
-      expect(page).to have_title t(:vehicle_new)
+      expect(page).to have_title t("vehicle.new")
       expect(Vehicle.count).to eq 1
       expect(page).to have_css(error, text: "blank")
     end
@@ -43,13 +43,13 @@ describe Vehicle do
   context "edit" do
     it "success" do
       click_link vehicle.registration
-      click_link t(:edit)
+      click_link t("edit")
 
-      expect(page).to have_title t(:vehicle_edit)
-      fill_in t(:vehicle_registration), with: data.registration
-      click_button t(:save)
+      expect(page).to have_title t("vehicle.edit")
+      fill_in t("vehicle.registration"), with: data.registration
+      click_button t("save")
 
-      expect(page).to have_title t(:vehicle_vehicle)
+      expect(page).to have_title t("vehicle.vehicle")
 
       expect(Vehicle.count).to eq 1
       v = Vehicle.last
@@ -59,12 +59,12 @@ describe Vehicle do
 
     it "failure" do
       click_link vehicle.registration
-      click_link t(:edit)
+      click_link t("edit")
 
-      fill_in t(:description), with: ""
-      click_button t(:save)
+      fill_in t("description"), with: ""
+      click_button t("save")
 
-      expect(page).to have_title t(:vehicle_edit)
+      expect(page).to have_title t("vehicle.edit")
       expect(page).to have_css(error, text: "blank")
     end
   end
@@ -74,10 +74,10 @@ describe Vehicle do
       expect(Vehicle.count).to eq 1
 
       click_link vehicle.registration
-      click_link t(:edit)
-      click_link t(:delete)
+      click_link t("edit")
+      click_link t("delete")
 
-      expect(page).to have_title t(:vehicle_vehicles)
+      expect(page).to have_title t("vehicle.vehicles")
       expect(Vehicle.count).to eq 0
     end
   end

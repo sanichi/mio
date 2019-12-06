@@ -10,22 +10,22 @@ describe Ability do
     context "signed out" do
       it "index" do
         visit masses_path
-        expect(page).to have_title t(:mass_data)
+        expect(page).to have_title t("mass.data")
       end
 
       it "graph" do
         visit graph_masses_path
-        expect(page).to have_title t(:mass_data)
+        expect(page).to have_title t("mass.data")
       end
 
       it "new" do
         visit new_mass_path
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
 
       it "edit" do
         visit edit_mass_path(record)
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
     end
 
@@ -36,12 +36,12 @@ describe Ability do
 
       it "new" do
         visit new_mass_path
-        expect(page).to have_title t(:mass_new)
+        expect(page).to have_title t("mass.new")
       end
 
       it "edit" do
         visit edit_mass_path(record)
-        expect(page).to have_title t(:mass_edit)
+        expect(page).to have_title t("mass.edit")
       end
     end
   end
@@ -52,17 +52,17 @@ describe Ability do
     context "signed out" do
       it "index" do
         visit uploads_path
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
 
       it "show" do
         visit upload_path(record)
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
 
       it "new" do
         visit new_upload_path
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
     end
 
@@ -73,17 +73,17 @@ describe Ability do
 
       it "index" do
         visit uploads_path
-        expect(page).to have_title t(:upload_uploads)
+        expect(page).to have_title t("upload.uploads")
       end
 
       it "show" do
         visit upload_path(record)
-        expect(page).to have_title t(:upload_upload)
+        expect(page).to have_title t("upload.upload")
       end
 
       it "new" do
         visit new_upload_path
-        expect(page).to have_title t(:upload_new)
+        expect(page).to have_title t("upload.new")
       end
     end
   end
@@ -94,17 +94,17 @@ describe Ability do
     context "signed out" do
       it "index" do
         visit transactions_path
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
 
       it "summary" do
         visit summary_transactions_path
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
 
       it "show" do
         visit transaction_path(record)
-        expect(page).to have_title t(:session_sign__in)
+        expect(page).to have_title t("session.sign_in")
       end
     end
 
@@ -115,17 +115,17 @@ describe Ability do
 
       it "index" do
         visit transactions_path
-        expect(page).to have_title t(:transaction_transactions)
+        expect(page).to have_title t("transaction.transactions")
       end
 
       it "summary" do
         visit summary_transactions_path
-        expect(page).to have_title t(:transaction_summary)
+        expect(page).to have_title t("transaction.summary")
       end
 
       it "show" do
         visit transaction_path(record)
-        expect(page).to have_title t(:transaction_transaction)
+        expect(page).to have_title t("transaction.transaction")
       end
     end
   end
