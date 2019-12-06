@@ -1,13 +1,11 @@
-- menu_size = 8
-
 %nav
   %button{type: "button", "data-toggle" => "collapse", "data-target" => "#navbar"}
-    %span.navbar-toggler-icon
+    %span
   #navbar.collapse.navbar-collapse
     %ul.left
 
-      - if can?(:read, Blog)
-        %li= link_to t("home"), blogs_path
+      - if can?(:read, Favourite)
+        %li= link_to t("home"), favourites_path
 
       - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Problem].map{ |c| can?(:read, c) }.any?
         %li.dropdown
