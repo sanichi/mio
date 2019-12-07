@@ -44,9 +44,6 @@ describe "Authentication" do
       visit new_upload_path
       expect(page).to have_title t("upload.new")
 
-      visit todos_path
-      expect(page).to have_title t("todo.todos")
-
       visit users_path
       expect(page).to have_title t("user.users")
 
@@ -62,9 +59,6 @@ describe "Authentication" do
       expect(page).to have_title t("session.sign_in")
 
       visit new_upload_path
-      expect(page).to have_title t("session.sign_in")
-
-      visit todos_path
       expect(page).to have_title t("session.sign_in")
 
       visit users_path

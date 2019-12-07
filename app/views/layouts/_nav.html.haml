@@ -70,7 +70,6 @@
           .dropdown-menu
             = link_to t("mass.mass"),            graph_masses_path if can?(:read, Mass)
             = link_to t("bucket.buckets"),       buckets_path      if can?(:read, Bucket)
-            = link_to t("todo.todos"),           todos_path        if can?(:read, Todo)
             = link_to t("pages.aoc.short"),      aoc_path          if can?(:aoc, Page)
             = link_to t("pages.magic"),          magic_path        if can?(:magic, Page)
             = link_to t("pages.play"),           play_path         if can?(:play, Page)

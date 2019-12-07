@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_192822) do
+ActiveRecord::Schema.define(version: 2019_12_07_193519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -325,14 +325,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_192822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
-  end
-
-  create_table "todos", id: :serial, force: :cascade do |t|
-    t.string "description", limit: 60
-    t.boolean "done", default: false
-    t.integer "priority", limit: 2, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "trades", id: :serial, force: :cascade do |t|
