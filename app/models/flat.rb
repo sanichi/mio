@@ -10,10 +10,6 @@ class Flat < ApplicationRecord
   CATEGORIES = %w/A A1 A2 A3 A4 B B1 B2 BM B-upper C C1 CM E E1 G P1 P2 P3/
   NAMES = %w/Albany Clofars Comet Concord Dart Eagle Fortune Gallery Hopewill Leith Penthouse Raith Rohilla Ronan Salamander Sirius Unicorn/
 
-  belongs_to :owner, class_name: "Resident", foreign_key: "owner_id"
-  belongs_to :tenant, class_name: "Resident", foreign_key: "tenant_id"
-  belongs_to :landlord, class_name: "Resident", foreign_key: "landlord_id"
-
   before_validation :canonicalize
 
   validates :bay, inclusion: { in: BAYS }, uniqueness: true, allow_nil: true
@@ -22,9 +18,6 @@ class Flat < ApplicationRecord
   validates :number, inclusion: { in: NUMBERS }, uniqueness: { scope: :building }, allow_nil: true
   validates :name, inclusion: { in: NAMES }
   validates :category, inclusion: { in: CATEGORIES }
-  validates :owner_id, :tenant_id, numericality: { integer_only: true, greater_than: 0 }, allow_nil: true
-
-  validate :owner_tenant_landlord
 
   scope :by_address,  -> { order(:building, :number) }
   scope :by_bay,      -> { order(:bay, :building, :number) }
@@ -40,7 +33,6 @@ class Flat < ApplicationRecord
     when "name"     then by_name
     else                 by_address
     end
-    matches = matches.includes(:owner).includes(:tenant)
     %i/building number block bay/.each do |k|
       if sql = numerical_constraint(params[k], k)
         matches = matches.where(sql)
@@ -95,11 +87,5 @@ class Flat < ApplicationRecord
 
   def canonicalize
     self.notes = nil if notes.blank?
-  end
-
-  def owner_tenant_landlord
-    if owner_id.present? && (tenant_id.present? || landlord_id.present?)
-      errors.add(:owner_id, "can't have a tenant or landlord with an owner-occupier")
-    end
   end
 end

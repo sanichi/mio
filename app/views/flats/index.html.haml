@@ -31,10 +31,9 @@
           %th.text-center= t("flat.bay")
           %th.text-center= t("flat.category")
           %th.text-center= t("flat.name")
-          %th.text-center= t("owner")
-          %th.text-center= t("flat.tenant")
-          %th.text-center= t("flat.landlord")
       %tbody{id: "results"}
         = render "results", flats: @flats
 
-= render "residents/bottom_links", focus: :flat
+- if can?(:create, Flat)
+  .text-center.mt3
+    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"

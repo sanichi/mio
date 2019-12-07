@@ -1,6 +1,0 @@
-- vehicles.matches.each do |vehicle|
-  %tr
-    %td= link_to vehicle.registration, vehicle
-    %td= vehicle.description
-    %td= link_to vehicle.resident.first_names, vehicle.resident if vehicle.resident
-= render "utils/pagination_links", pager: vehicles, columns: 3

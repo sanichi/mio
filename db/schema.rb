@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_194746) do
+ActiveRecord::Schema.define(version: 2019_12_07_211244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,11 +96,8 @@ ActiveRecord::Schema.define(version: 2019_12_07_194746) do
     t.integer "number", limit: 2
     t.string "name", limit: 10
     t.string "category", limit: 7
-    t.integer "owner_id"
-    t.integer "tenant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "landlord_id"
     t.text "notes"
   end
 
@@ -194,15 +191,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_194746) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "parkings", id: :serial, force: :cascade do |t|
-    t.integer "vehicle_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "noted_at"
-    t.integer "bay", limit: 2
-    t.index ["vehicle_id"], name: "index_parkings_on_vehicle_id"
-  end
-
   create_table "partnerships", id: :serial, force: :cascade do |t|
     t.integer "divorce", limit: 2
     t.integer "husband_id"
@@ -292,16 +280,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_194746) do
     t.index ["problem_id"], name: "index_questions_on_problem_id"
   end
 
-  create_table "residents", id: :serial, force: :cascade do |t|
-    t.string "first_names", limit: 100
-    t.string "last_name", limit: 50
-    t.string "email", limit: 75
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "address", limit: 200
-    t.string "agent", limit: 200
-  end
-
   create_table "returns", id: :serial, force: :cascade do |t|
     t.integer "year", limit: 2
     t.decimal "percent", precision: 4, scale: 1
@@ -319,14 +297,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_194746) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_id"
-  end
-
-  create_table "vehicles", id: :serial, force: :cascade do |t|
-    t.integer "resident_id"
-    t.string "registration", limit: 12
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "description", limit: 20
   end
 
   create_table "wk_audios", force: :cascade do |t|

@@ -3,9 +3,6 @@ require 'rails_helper'
 describe Flat do
   let(:data)      { build(:flat) }
   let!(:flat)     { create(:flat) }
-  let!(:owner)    { create(:resident) }
-  let!(:tenant)   { create(:resident) }
-  let!(:landlord) { create(:resident) }
   let(:flat2)     { create(:flat) }
 
   before(:each) do
@@ -23,8 +20,6 @@ describe Flat do
         select data.bay.to_s, from: t("flat.bay")
         select data.category, from: t("flat.category")
         select data.name, from: t("flat.name")
-        select tenant.name, from: t("flat.tenant")
-        select landlord.name, from: t("flat.landlord")
         fill_in t("notes"), with: data.notes
         click_button t("save")
 
@@ -40,9 +35,6 @@ describe Flat do
         expect(f.category).to eq data.category
         expect(f.name).to eq data.name
         expect(f.notes).to eq data.notes
-        expect(f.owner_id).to be_nil
-        expect(f.tenant_id).to eq tenant.id
-        expect(f.landlord_id).to eq landlord.id
       end
 
       it "minimum" do
@@ -67,9 +59,6 @@ describe Flat do
         expect(f.category).to eq data.category
         expect(f.name).to eq data.name
         expect(f.notes).to be_nil
-        expect(f.owner_id).to be_nil
-        expect(f.tenant_id).to be_nil
-        expect(f.landlord_id).to be_nil
       end
     end
 
@@ -119,30 +108,6 @@ describe Flat do
 
         expect(page).to have_title t("flat.edit")
         expect(page).to have_css(error, text: "already been taken")
-      end
-
-      it "owner with tenant" do
-        click_link flat.address
-        click_link t("edit")
-
-        select owner.name, from: t("flat.owner")
-        select tenant.name, from: t("flat.tenant")
-        click_button t("save")
-
-        expect(page).to have_title t("flat.edit")
-        expect(page).to have_css(error, text: "can't have")
-      end
-
-      it "owner with landlord" do
-        click_link flat.address
-        click_link t("edit")
-
-        select owner.name, from: t("flat.owner")
-        select landlord.name, from: t("flat.landlord")
-        click_button t("save")
-
-        expect(page).to have_title t("flat.edit")
-        expect(page).to have_css(error, text: "can't have")
       end
     end
   end

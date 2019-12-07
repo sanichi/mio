@@ -5,13 +5,6 @@ fids['bay-<%= flat.bay %>'] = 'flat-<%= flat.building %>-<%= flat.number %>';
 bids['flat-<%= flat.building %>-<%= flat.number %>'] = 'bay-<%= flat.bay %>';
 <% end %>
 
-var text = {};  // bay ID to array of textual parking info
-<% if @pstat %>
-  <% @pdata.bay.each do |bid, array| %>
-  text['bay-<%= bid %>'] = [<%= array.map{ |t| "'#{t}'" }.join(', ').html_safe %>];
-  <% end %>
-<% end %>
-
 function highlight_bft(bay, flat, on) {
   var bid, fid;
   if (bay) {
@@ -30,16 +23,6 @@ function highlight_bft(bay, flat, on) {
     bay.removeClass('focus');
     flat.removeClass('focus');
   }
-  if (text[bid]) {
-    for (var i=0; i<<%= @pdata.entries %>; i++) $('#text-' + i).text(on ? text[bid][i] : '');
-  }
-}
-
-function highlight_street(on) {
-  var bid = 'bay-0';
-  if (text[bid]) {
-    for (var i=0; i<<%= @pdata.entries %>; i++) $('#text-' + i).text(on ? text[bid][i] : '');
-  }
 }
 
 $(function() {
@@ -55,13 +38,6 @@ $(function() {
       highlight_bft(undefined, $(this), true);
     }, function() {
       highlight_bft(undefined, $(this), false);
-    }
-  );
-  $('g.street').hover(
-    function() {
-      highlight_street(true);
-    }, function() {
-      highlight_street(false);
     }
   );
   $('#results').on('mouseenter', 'span.bay', function() {

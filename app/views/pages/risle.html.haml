@@ -1,6 +1,6 @@
 = render "utils/title", key: "pages.risle.map"
 
-- if @pdata
+- if can?(:park, Flat)
   - content_for :javascript do
     = render "risle.js"
 
@@ -14,7 +14,3 @@
   = render "pages/risle/maindoors"
   = render "pages/risle/binhuts"
   = render "pages/risle/streets"
-  = render "pages/risle/text"
-
-- if @pstat
-  = render "pages/risle/stats", pstat: @pstat

@@ -22,17 +22,11 @@
         %tr
           %th= t("flat.name")
           %td= @flat.name
-        %tr
-          %th= t("flat.owner")
-          %td= link_to @flat.owner.name, @flat.owner if @flat.owner
-        %tr
-          %th= t("flat.tenant")
-          %td= link_to @flat.tenant.name, @flat.tenant if @flat.tenant
-        %tr
-          %th= t("flat.landlord")
-          %td= link_to @flat.landlord.name, @flat.landlord if @flat.landlord
 
-= render "residents/bottom_links", focus: :flat, flat: @flat
+.text-center
+  = link_to t("flat.flats"), flats_path, class: "btn btn-success"
+  - if can?(:manage, Flat)
+    = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-info"
 
 - if @flat.notes.present?
   .card.mt-3

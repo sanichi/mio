@@ -35,24 +35,6 @@ module FlatHelper
     options_for_select(opt, flat.name)
   end
 
-  def flat_owner_menu(flat)
-    opt = Resident.by_name.map { |r| [r.name, r.id] }
-    opt.unshift [t("unknown"), ""]
-    options_for_select(opt, flat.owner_id)
-  end
-
-  def flat_tenant_menu(flat)
-    opt = Resident.by_name.map { |r| [r.name, r.id] }
-    opt.unshift [t("unknown"), ""]
-    options_for_select(opt, flat.tenant_id)
-  end
-
-  def flat_landlord_menu(flat)
-    opt = Resident.by_name.map { |r| [r.name, r.id] }
-    opt.unshift [t("unknown"), ""]
-    options_for_select(opt, flat.landlord_id)
-  end
-
   def flat_search_order_menu(order)
     opt = %w/address block bay category name/.map { |o| [I18n.t("flat.#{o}"), o] }
     options_for_select(opt, order)

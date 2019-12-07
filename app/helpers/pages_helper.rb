@@ -20,16 +20,4 @@ module PagesHelper
       flats.push [rite[i], rx, ry] if rite[i]
     end
   end
-
-  def pages_risle_number_menu
-    options_for_select ParkingStat::NUMBERS.map{ |n| [t("pages.risle.top", count: n), n] }
-  end
-
-  def pages_risle_stats_menu
-    options_for_select t("pages.risle.stats").map{ |k,v| [v, k] }
-  end
-
-  def pages_risle_months_menu
-    options_for_select ParkingStat::MONTHS.map{ |m| [t("pages.risle.month", count: m), m] }
-  end
 end

@@ -1,9 +1,0 @@
-= form_tag risle_stats_path, method: :get, remote: true, class: "form-inline justify-content-center mt-3" do
-  = select_tag :number, pages_risle_number_menu, class: "form-control mr-1 mb-1 auto-submit"
-  = select_tag :stat, pages_risle_stats_menu, class: "form-control mr-1 mb-1 auto-submit"
-  = select_tag :months, pages_risle_months_menu, class: "form-control mr-1 mb-1 auto-submit"
-
-.mt-3
-  .col-lg-8.offset-lg-2
-    %table{class: "table table-bordered table-striped", id: "results"}
-      = render "pages/risle/stats_results", pstat: pstat
