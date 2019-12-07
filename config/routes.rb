@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   resources :blogs
   resources :books, only: [:show, :index]
   resources :buckets
-  resources :devices
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats
@@ -24,7 +23,6 @@ Rails.application.routes.draw do
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
-  resources :interfaces
   resources :lessons
   resources :logins, only: [:index]
   resources :masses, except: [:show] do

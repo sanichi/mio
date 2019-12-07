@@ -1,8 +1,0 @@
-- interfaces.matches.each do |interface|
-  %tr
-    %td= link_to interface.name, interface
-    %td= interface.mac_address
-    %td= interface.ip_address
-    %td= interface.manufacturer
-    %td= link_to interface.device.name, interface.device
-= render "utils/pagination_links", pager: interfaces, columns: 5
