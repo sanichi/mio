@@ -64,7 +64,7 @@
             = link_to t("transaction.transactions"), summary_transactions_path if can?(:read, Transaction)
             = link_to t("expense.expenses"),         expenses_path             if can?(:read, Expense)
 
-      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Login, Mass, Opening, Position, Tapa, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Login, Mass, Opening, Position, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
@@ -72,7 +72,6 @@
             = link_to t("bucket.buckets"),       buckets_path      if can?(:read, Bucket)
             = link_to t("todo.todos"),           todos_path        if can?(:read, Todo)
             = link_to t("pages.aoc.short"),      aoc_path          if can?(:aoc, Page)
-            = link_to t("tapa.tapas"),           tapas_path        if can?(:read, Tapa)
             = link_to t("pages.magic"),          magic_path        if can?(:magic, Page)
             = link_to t("pages.play"),           play_path         if can?(:play, Page)
             = link_to t("user.users"),           users_path        if can?(:read, User)

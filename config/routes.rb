@@ -47,9 +47,6 @@ Rails.application.routes.draw do
   resources :questions
   resources :residents
   resources :sessions, only: [:create]
-  resources :tapas, except: [:show] do
-    get :notes, on: :member
-  end
   resources :todos, except: [:show] do
     get :toggle, on: :member
     get :up, on: :member

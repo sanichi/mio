@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_092133) do
+ActiveRecord::Schema.define(version: 2019_12_07_192822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -325,17 +325,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_092133) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
-  end
-
-  create_table "tapas", id: :serial, force: :cascade do |t|
-    t.string "title", limit: 50
-    t.string "keywords", limit: 100
-    t.integer "number", limit: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "post_id", limit: 150
-    t.text "notes"
-    t.boolean "star", default: false
   end
 
   create_table "todos", id: :serial, force: :cascade do |t|

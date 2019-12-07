@@ -12,8 +12,7 @@ class Ability
       can :read, [Picture, Partnership]
     end
 
-    can :read, [Book, Bucket, Favourite, Tapa]
-    can :notes, Tapa
+    can :read, [Book, Bucket, Favourite]
     can [:read, :graph], Mass
     can [:aoc, :pam, :risle, :risle_stats], Page
   end
