@@ -3,6 +3,7 @@ class FavouritesController < ApplicationController
   before_action :find_favourite, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_path(:favourites)
     @favourites = Favourite.search(params, favourites_path, per_page: 20, remote: true)
   end
 

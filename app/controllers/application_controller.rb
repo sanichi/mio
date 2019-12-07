@@ -34,4 +34,8 @@ class ApplicationController < ActionController::Base
     return if !current_user.guest? || controller_name == "sessions"
     session[:last_path] = request.path
   end
+
+  def remember_last_path(name)
+    session["last_#{name}_path".to_sym] = request.fullpath
+  end
 end

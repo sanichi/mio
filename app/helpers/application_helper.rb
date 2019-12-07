@@ -32,4 +32,8 @@ module ApplicationHelper
     klass.push "offset-xl-#{(12 - xl) / 2} col-xl-#{xl}" if xl > 0
     klass.any? ? klass.join(" ") : "col-12"
   end
+
+  def last_path(name)
+    session["last_#{name}_path"] || "/#{name}"
+  end
 end
