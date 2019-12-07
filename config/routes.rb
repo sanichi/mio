@@ -14,11 +14,6 @@ Rails.application.routes.draw do
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats
-  resources :funds do
-    resources :comments, except: [:index, :show]
-    resources :links, except: [:index, :show]
-    resources :returns, except: [:index, :show]
-  end
   resources :historical_events, except: [:show]
   resources :incomes, except: [:show] do
     get :graph, on: :collection
@@ -52,11 +47,6 @@ Rails.application.routes.draw do
     get :up, on: :member
     get :down, on: :member
   end
-  resources :transactions, only: [:index, :show] do
-    get :summary, on: :collection
-  end
-  resources :trades
-  resources :uploads, except: [:edit, :update]
   resources :users
   resources :vehicles do
     get :match, on: :collection

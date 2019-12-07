@@ -7,8 +7,6 @@ describe "Authentication" do
     it "success" do
       visit root_path
       expect(page).to_not have_link t("session.sign_out")
-      expect(page).to_not have_link t("transaction.transactions")
-      expect(page).to_not have_link t("upload.uploads")
 
       click_link t("session.sign_in")
       fill_in t("email"), with: user.email
@@ -35,15 +33,6 @@ describe "Authentication" do
     it "signed in" do
       login
 
-      visit transactions_path
-      expect(page).to have_title t("transaction.transactions")
-
-      visit uploads_path
-      expect(page).to have_title t("upload.uploads")
-
-      visit new_upload_path
-      expect(page).to have_title t("upload.new")
-
       visit users_path
       expect(page).to have_title t("user.users")
 
@@ -52,15 +41,6 @@ describe "Authentication" do
     end
 
     it "signed out" do
-      visit transactions_path
-      expect(page).to have_title t("session.sign_in")
-
-      visit uploads_path
-      expect(page).to have_title t("session.sign_in")
-
-      visit new_upload_path
-      expect(page).to have_title t("session.sign_in")
-
       visit users_path
       expect(page).to have_title t("session.sign_in")
 

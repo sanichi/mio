@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_193519) do
+ActiveRecord::Schema.define(version: 2019_12_07_194746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,21 +102,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_193519) do
     t.datetime "updated_at", null: false
     t.integer "landlord_id"
     t.text "notes"
-  end
-
-  create_table "funds", id: :serial, force: :cascade do |t|
-    t.decimal "annual_fee", precision: 3, scale: 2
-    t.string "category", limit: 10
-    t.string "company", limit: 50
-    t.string "name", limit: 70
-    t.boolean "performance_fee"
-    t.integer "srri", limit: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "sector", limit: 40
-    t.integer "size"
-    t.string "stars"
-    t.boolean "srri_estimated", default: false
   end
 
   create_table "historical_events", id: :serial, force: :cascade do |t|
@@ -325,45 +310,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_193519) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
-  end
-
-  create_table "trades", id: :serial, force: :cascade do |t|
-    t.string "stock", limit: 60
-    t.decimal "units", precision: 10, scale: 3
-    t.decimal "buy_price", precision: 9, scale: 2
-    t.decimal "sell_price", precision: 9, scale: 2
-    t.date "buy_date"
-    t.date "sell_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "buy_factor", precision: 6, scale: 3, default: "1.0"
-    t.decimal "sell_factor", precision: 6, scale: 3, default: "1.0"
-  end
-
-  create_table "transactions", id: :serial, force: :cascade do |t|
-    t.decimal "cost", precision: 10, scale: 2
-    t.datetime "created_at"
-    t.string "description"
-    t.integer "quantity"
-    t.string "reference"
-    t.date "settle_date"
-    t.string "signature"
-    t.date "trade_date"
-    t.integer "upload_id"
-    t.decimal "value", precision: 10, scale: 2
-    t.string "account", limit: 3
-    t.index ["signature"], name: "index_transactions_on_signature", unique: true
-    t.index ["upload_id"], name: "index_transactions_on_upload_id"
-  end
-
-  create_table "uploads", id: :serial, force: :cascade do |t|
-    t.text "content"
-    t.string "content_type"
-    t.string "error"
-    t.string "name"
-    t.integer "size"
-    t.datetime "created_at"
-    t.string "account", limit: 3
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
