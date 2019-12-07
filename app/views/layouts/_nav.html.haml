@@ -22,7 +22,7 @@
             = link_to t("note.notes"),              notes_path         if can?(:read, Note)
             = link_to t("problem.problems"),        problems_path      if can?(:read, Problem)
 
-      - if [Person, Picture, Partnership, HistoricalEvent].map{|c| can?(:read, c) }.any?
+      - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
         %li.dropdown
           = link_to t("family"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
@@ -31,7 +31,6 @@
             = link_to t("picture.pictures"),         pictures_path          if can?(:read, Picture)
             = link_to t("partnership.partnerships"), partnerships_path      if can?(:read, Partnership)
             = link_to t("person.checks.title"),      checks_people_path     if can?(:checks, Person)
-            = link_to t("historical_event.events"),  historical_events_path if can?(:read, HistoricalEvent)
 
       - if [Position, Opening, Lesson, Book].map{|c| can?(:read, c) }.any?
         %li.dropdown
