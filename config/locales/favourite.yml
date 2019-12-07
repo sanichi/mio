@@ -12,6 +12,10 @@ en:
     sandra: Sandra
     new: New Favourite
     person: Fan
+    abbr:
+      mark: M
+      sandra: S
+      total: T
     categories:
       - Film
       - TV

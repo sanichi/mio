@@ -13,12 +13,18 @@
   %thead
     %tr
       %th= t("name")
-      %th= t("favourite.note")
+      %th.d-none.d-lg-table-cell= t("favourite.note")
       %th.text-center= t("favourite.category")
       %th.text-center= t("year")
-      %th.text-center= t("favourite.sandra")
-      %th.text-center= t("favourite.mark")
-      %th.text-center= t("total")
+      %th.text-center
+        %span.d-none.d-md-inline= t("favourite.sandra")
+        %span.d-md-none= t("favourite.abbr.sandra")
+      %th.text-center
+        %span.d-none.d-md-inline= t("favourite.mark")
+        %span.d-md-none= t("favourite.abbr.mark")
+      %th.text-center
+        %span.d-none.d-md-inline= t("total")
+        %span.d-md-none= t("favourite.abbr.total")
   %tbody#results
     = render "results", favourites: @favourites
 

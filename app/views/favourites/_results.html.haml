@@ -1,7 +1,7 @@
 - favourites.matches.each do |favourite|
   %tr
     %td= link_to favourite.name, favourite
-    %td= favourite.note.truncate(25)
+    %td.d-none.d-lg-table-cell= favourite.note.truncate(25)
     %td.text-center= I18n.t("favourite.categories")[favourite.category]
     %td.text-center= favourite.year
     %td.text-center= favourite.sandra if favourite.sandra > 0
