@@ -13,14 +13,11 @@
         %tr
           %th= t("bucket.sandra")
           %td= t("bucket.level")[@bucket.sandra]
+        - if @bucket.notes.present?
+          %tr
+            %td{colspan: 2}= @bucket.notes_html
 
 .text-center
   - if can?(:update, @bucket)
     = link_to t("edit"), edit_bucket_path(@bucket), class: "btn btn-info"
   = link_to t("bucket.buckets"), last_path(:buckets), class: "btn btn-success"
-
-- if @bucket.notes.present?
-  .card.mt-3
-    .card-header
-      = t("notes")
-    .card-body= @bucket.notes_html
