@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_215326) do
+ActiveRecord::Schema.define(version: 2019_12_08_160550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,17 +125,6 @@ ActiveRecord::Schema.define(version: 2019_12_07_215326) do
     t.datetime "updated_at", null: false
     t.string "book", limit: 200
     t.string "eco", limit: 20
-  end
-
-  create_table "links", id: :serial, force: :cascade do |t|
-    t.string "url", limit: 256
-    t.string "target", limit: 20, default: "external"
-    t.string "text", limit: 50
-    t.integer "linkable_id"
-    t.string "linkable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
   end
 
   create_table "logins", id: :serial, force: :cascade do |t|
