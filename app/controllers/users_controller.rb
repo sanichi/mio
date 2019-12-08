@@ -15,6 +15,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user
     else
+      failure @user
       render "new"
     end
   end
@@ -23,6 +24,7 @@ class UsersController < ApplicationController
     if @user.update(strong_params)
       redirect_to @user
     else
+      failure @user
       render "edit"
     end
   end

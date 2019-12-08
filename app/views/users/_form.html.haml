@@ -1,14 +1,8 @@
-.row
-  .offset-md-2.col-md-8
-    = form_for user, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: user, col: "md", pad: 4, width: 4 }
-      = render "utils/select_for", shared.merge(param: :role, text: t("user.role"), menu: user_role_menu(user), width: 3)
-      = render "utils/text_field_for", shared.merge(param: :email, text: t("email"), width: 5)
-      = render "utils/text_field_for", shared.merge(param: :password, text: t("session.password"), width: 5)
-      = render "utils/select_for", shared.merge(param: :person_id, text: t("person.person"), menu: user_person_menu(user), width: 4)
-      .row
-        .offset-md-4.col-md-8
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), user.new_record?? users_path : user, class: "btn btn-secondary"
-          - unless user.new_record?
-            = link_to t("delete"), user, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:role,      t("user.role"),        :select, menu: user_role_menu(user)],
+    [:email,     t("email"),            :text,   maxlength: User::MAX_EMAIL],
+    [:password,  t("session.password"), :text],
+    [:person_id, t("person.person"),    :select, menu: user_person_menu(user)],
+  ]
+= render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, center: center(xl: 6, lg: 8, md: 10)

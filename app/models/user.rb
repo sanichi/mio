@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   belongs_to :person
 
-  ROLES = ["admin", "none", "books", "family"]
+  ROLES = ["admin", "none", "family"]
   MAX_EMAIL = 75
   MAX_PASSWORD = 32
   MAX_ROLE = 20

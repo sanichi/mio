@@ -1,16 +1,9 @@
-= render "utils/title", text: @user.email
+= render "utils/title", text: @user.email, header: true
 
 .row
-  .offset-md-2.col-md-8.offset-xl-3.col-xl-6
-    %table{class: "table table-bordered table-striped"}
+  %div{class: center(xl:6, md: 8, xs: 10)}
+    %table{class: "table table-bordered table-striped table-sm"}
       %tbody
-        %tr
-          %th= t("email")
-          %td= @user.email
-        - if current_user.admin?
-          %tr
-            %th= t("session.password")
-            %td= @user.encrypted_password
         %tr
           %th= t("user.role")
           %td= t("user.roles.#{@user.role}")

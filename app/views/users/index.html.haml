@@ -1,18 +1,17 @@
-= render "utils/title", key: "user.users"
+= render "utils/title", key: "user.users", header: true
 
-= form_tag users_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  - width = 10
-  = label_tag :email, t("email"), class: "sr-only"
-  = text_field_tag :email, params[:email], class: "form-control mr-1 mb-1", placeholder: t("email"), size: width
-  = label_tag :last_name, t("person.last_name"), class: "sr-only"
-  = text_field_tag :last_name, params[:last_name], class: "form-control mr-1 mb-1", placeholder: t("person.last_name"), size: 10
-  = label_tag :last_name, t("person.first_name"), class: "sr-only"
-  = text_field_tag :first_names, params[:first_names], class: "form-control mr-1 mb-1", placeholder: t("person.first_name"), size: 10
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:email, t("email"),             :text,   size: 10, value: params[:email]],
+    [:year,  t("person.last_name"),  :text,   size: 10, value: params[:last_name]],
+    [:year,  t("person.first_name"), :text,   size: 10, value: params[:first_name]],
+  ]
+= render "utils/search/form", index: users_path, inputs: inputs
 
 .row.mt-3
+  %div{class: center(lg: 6, md: 8, sm: 10)}
   .offset-md-2.col-md-8.offset-xl-3.col-xl-6
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
           %th= t("email")

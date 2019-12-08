@@ -41,7 +41,7 @@ describe User do
 
       expect(page).to have_title t("user.new")
       expect(User.count).to eq 2
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
 
     it "duplicate email" do
@@ -53,7 +53,7 @@ describe User do
 
       expect(page).to have_title t("user.new")
       expect(User.count).to eq 2
-      expect(page).to have_css(error, text: "taken")
+      expect_error(page, "taken")
     end
   end
 
