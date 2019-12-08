@@ -1,20 +1,20 @@
-= render "utils/title", key: "bucket.buckets"
+= render "utils/title", key: "bucket.buckets", header: true
 
-= form_tag buckets_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :name, t("name"), class: "sr-only"
-  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 20
-  = label_tag :fan, t("bucket.fans"), class: "sr-only"
-  = select_tag :fan, bucket_fan_search_menu(params[:fan]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:name, t("name"),        :text,   size: 20, value: params[:name]],
+    [:fan,  t("bucket.fans"), :select, menu: bucket_fan_search_menu(params[:fan])],
+  ]
+= render "utils/search/form", index: buckets_path, inputs: inputs
 
 .row.mt-3
-  .col-md-10.offset-md-1
-    %table{class: "table table-bordered table-striped"}
+  %div{class: center(xl: 6, lg: 8, md: 10, sm: 12)}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
-        %tr.d-flex
-          %th.col-8.text-center= t("bucket.name")
-          %th.col-2.text-center= t("bucket.mark")
-          %th.col-2.text-center= t("bucket.sandra")
+        %tr
+          %th.text-center= t("bucket.name")
+          %th.text-center= t("bucket.mark")
+          %th.text-center= t("bucket.sandra")
       %tbody{id: "results"}
         = render "results", buckets: @buckets
 

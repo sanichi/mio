@@ -38,7 +38,7 @@ describe Bucket do
 
       expect(page).to have_title t("bucket.new")
       expect(Bucket.count).to eq 1
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
   end
 
@@ -69,7 +69,7 @@ describe Bucket do
       click_button t("save")
 
       expect(page).to have_title t("bucket.edit")
-      expect(page).to have_css(error, text: "at least one")
+      expect_error(page, "at least one")
 
       expect(Bucket.count).to eq 1
       b = Bucket.last

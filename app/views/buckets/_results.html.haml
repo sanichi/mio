@@ -1,5 +1,5 @@
 - buckets.each do |bucket|
-  %tr.d-flex
-    %td.col-8= link_to bucket.name, bucket
-    %td.col-2.text-center= t("bucket.symbol.level")[bucket.mark]
-    %td.col-2.text-center= t("bucket.symbol.level")[bucket.sandra]
+  %tr
+    %td= link_to bucket.name, bucket
+    %td.text-center= t("bucket.symbol.level")[bucket.mark]
+    %td.text-center= t("bucket.symbol.level")[bucket.sandra]

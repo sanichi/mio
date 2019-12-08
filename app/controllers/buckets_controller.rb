@@ -15,7 +15,8 @@ class BucketsController < ApplicationController
     if @bucket.save
       redirect_to @bucket
     else
-      render "new"
+      failure @bucket
+      render :new
     end
   end
 
@@ -23,7 +24,8 @@ class BucketsController < ApplicationController
     if @bucket.update(strong_params)
       redirect_to @bucket
     else
-      render action: "edit"
+      failure @bucket
+      render :edit
     end
   end
 
