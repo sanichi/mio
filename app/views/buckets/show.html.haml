@@ -17,7 +17,7 @@
 .text-center
   - if can?(:update, @bucket)
     = link_to t("edit"), edit_bucket_path(@bucket), class: "btn btn-info"
-  = link_to t("bucket.buckets"), buckets_path, class: "btn btn-success"
+  = link_to t("bucket.buckets"), last_path(:buckets), class: "btn btn-success"
 
 - if @bucket.notes.present?
   .card.mt-3
