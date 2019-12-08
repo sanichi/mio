@@ -20,7 +20,7 @@ class IncomesController < ApplicationController
     if @income.save
       redirect_to incomes_path
     else
-      render "new"
+      render :new
     end
   end
 
@@ -28,7 +28,7 @@ class IncomesController < ApplicationController
     if @income.update(strong_params)
       redirect_to incomes_path
     else
-      render "edit"
+      render :edit
     end
   end
 

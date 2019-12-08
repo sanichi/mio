@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
       redirect_to @comment.commentable
     else
       @commentable = @comment.commentable
-      render "new"
+      render :new
     end
   end
 
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
     if @comment.update(strong_params)
       redirect_to @comment.commentable
     else
-      render "edit"
+      render :edit
     end
   end
 

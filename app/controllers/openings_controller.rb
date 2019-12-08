@@ -22,7 +22,7 @@ class OpeningsController < ApplicationController
     if @opening.save
       redirect_to @opening
     else
-      render "new"
+      render :new
     end
   end
 
@@ -30,7 +30,7 @@ class OpeningsController < ApplicationController
     if @opening.update(strong_params)
       redirect_to @opening
     else
-      render action: "edit"
+      render :edit
     end
   end
 

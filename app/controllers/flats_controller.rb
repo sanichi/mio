@@ -15,7 +15,7 @@ class FlatsController < ApplicationController
     if @flat.save
       redirect_to @flat
     else
-      render action: "new"
+      render :new
     end
   end
 
@@ -23,7 +23,7 @@ class FlatsController < ApplicationController
     if @flat.update(strong_params)
       redirect_to @flat
     else
-      render action: "edit"
+      render :edit
     end
   end
 

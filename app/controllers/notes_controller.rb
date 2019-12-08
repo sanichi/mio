@@ -15,7 +15,7 @@ class NotesController < ApplicationController
     if @note.save
       redirect_to @note
     else
-      render "new"
+      render :new
     end
   end
 
@@ -23,7 +23,7 @@ class NotesController < ApplicationController
     if @note.update(strong_params)
       redirect_to @note
     else
-      render action: "edit"
+      render :edit
     end
   end
 

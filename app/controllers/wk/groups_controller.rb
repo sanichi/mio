@@ -16,7 +16,7 @@ module Wk
       if @group.save
         redirect_to wk_groups_path
       else
-        render "new"
+        render :new
       end
     end
 
@@ -24,7 +24,7 @@ module Wk
       if @group.update(strong_params)
         redirect_to wk_groups_path
       else
-        render action: "edit"
+        render :edit
       end
     end
 

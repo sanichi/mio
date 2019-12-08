@@ -13,12 +13,12 @@ class ReturnsController < ApplicationController
     if @return.save
       if params[:commit] == I18n.t("return.save_and_next")
         @return = @returnable.returns.new(year: @return.year + 1)
-        render "new"
+        render :new
       else
         redirect_to @returnable
       end
     else
-      render "new"
+      render :new
     end
   end
 
@@ -26,7 +26,7 @@ class ReturnsController < ApplicationController
     if @return.update(strong_params)
       redirect_to @return.returnable
     else
-      render "edit"
+      render :edit
     end
   end
 

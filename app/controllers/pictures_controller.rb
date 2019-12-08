@@ -21,7 +21,7 @@ class PicturesController < ApplicationController
     if @picture.save
       redirect_to @picture
     else
-      render "new"
+      render :new
     end
   end
 
@@ -30,7 +30,7 @@ class PicturesController < ApplicationController
     if @picture.update(strong_params)
       redirect_to @picture
     else
-      render action: "edit"
+      render :edit
     end
   end
 

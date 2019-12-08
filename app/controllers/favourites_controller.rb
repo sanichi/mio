@@ -17,7 +17,7 @@ class FavouritesController < ApplicationController
       redirect_to @favourite
     else
       failure @favourite
-      render "new"
+      render :new
     end
   end
 
@@ -26,7 +26,7 @@ class FavouritesController < ApplicationController
       redirect_to @favourite
     else
       failure @favourite
-      render action: "edit"
+      render :edit
     end
   end
 

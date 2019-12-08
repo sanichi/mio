@@ -48,7 +48,7 @@ class PeopleController < ApplicationController
     if @person.save
       redirect_to @person
     else
-      render "new"
+      render :new
     end
   end
 
@@ -56,7 +56,7 @@ class PeopleController < ApplicationController
     if @person.update(strong_params)
       redirect_to @person
     else
-      render "edit"
+      render :edit
     end
   end
 

@@ -15,7 +15,7 @@ class PositionsController < ApplicationController
     if @position.save
       redirect_to @position
     else
-      render "new"
+      render :new
     end
   end
 
@@ -23,7 +23,7 @@ class PositionsController < ApplicationController
     if @position.update(strong_params)
       redirect_to @position
     else
-      render action: "edit"
+      render :edit
     end
   end
 

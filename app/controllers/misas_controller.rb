@@ -15,7 +15,7 @@ class MisasController < ApplicationController
     if @misa.save
       redirect_to @misa
     else
-      render "new"
+      render :new
     end
   end
 
@@ -23,7 +23,7 @@ class MisasController < ApplicationController
     if @misa.update(strong_params)
       redirect_to @misa
     else
-      render action: "edit"
+      render :edit
     end
   end
 

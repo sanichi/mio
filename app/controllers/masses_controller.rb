@@ -28,7 +28,7 @@ class MassesController < ApplicationController
     if @mass.save
       redirect_to graph_masses_path
     else
-      render "new"
+      render :new
     end
   end
 
@@ -36,7 +36,7 @@ class MassesController < ApplicationController
     if @mass.update(strong_params)
       redirect_to graph_masses_path
     else
-      render "edit"
+      render :edit
     end
   end
 

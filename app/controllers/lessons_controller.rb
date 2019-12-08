@@ -15,7 +15,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       redirect_to @lesson
     else
-      render "new"
+      render :new
     end
   end
 
@@ -23,7 +23,7 @@ class LessonsController < ApplicationController
     if @lesson.update(strong_params)
       redirect_to @lesson
     else
-      render action: "edit"
+      render :edit
     end
   end
 
