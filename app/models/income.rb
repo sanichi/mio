@@ -1,7 +1,7 @@
 class Income < ApplicationRecord
   MAX_DESC = 60
-  MIN_YEAR = 2014
-  MAX_YEAR = 2023
+  MIN_YEAR = 2020
+  MAX_YEAR = 2030
   CATEGORIES = %w/mark sandra/
   PERIODS = %w/week month year/
 
@@ -24,7 +24,7 @@ class Income < ApplicationRecord
   def full_description
     "#{description} (#{I18n.t("income.category.#{category}")})"
   end
-  
+
   def duration
     (finish.try(:year) || MAX_YEAR) - (start.try(:year) || MIN_YEAR)
   end

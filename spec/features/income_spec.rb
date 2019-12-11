@@ -47,7 +47,7 @@ describe Income do
 
       expect(page).to have_title t("income.new")
       expect(Income.count).to eq 0
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
 
     it "invalid amount" do
@@ -60,7 +60,7 @@ describe Income do
 
       expect(page).to have_title t("income.new")
       expect(Income.count).to eq 0
-      expect(page).to have_css(error, text: "greater than 0")
+      expect_error(page, "greater than 0")
     end
   end
 

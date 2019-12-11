@@ -20,6 +20,7 @@ class IncomesController < ApplicationController
     if @income.save
       redirect_to incomes_path
     else
+      failure @income
       render :new
     end
   end
@@ -28,6 +29,7 @@ class IncomesController < ApplicationController
     if @income.update(strong_params)
       redirect_to incomes_path
     else
+      failure @income
       render :edit
     end
   end
@@ -42,7 +44,7 @@ class IncomesController < ApplicationController
   def find_income
     @income = Income.find(params[:id])
   end
-  
+
   def get_scope
     @scope = params[:scope] || "joint"
   end
