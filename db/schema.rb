@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_124443) do
+ActiveRecord::Schema.define(version: 2019_12_12_152924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,13 +153,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_124443) do
     t.integer "number", limit: 2
   end
 
-  create_table "openings", id: :serial, force: :cascade do |t|
-    t.string "code", limit: 3
-    t.string "description", limit: 255
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "partnerships", id: :serial, force: :cascade do |t|
     t.integer "divorce", limit: 2
     t.integer "husband_id"
@@ -206,22 +199,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_124443) do
     t.boolean "portrait", default: false
     t.string "title"
     t.integer "realm", limit: 2, default: 0
-  end
-
-  create_table "positions", id: :serial, force: :cascade do |t|
-    t.string "pieces", limit: 71
-    t.string "active", limit: 1
-    t.string "castling", limit: 4
-    t.string "en_passant", limit: 2
-    t.integer "half_move", limit: 2
-    t.integer "move", limit: 2
-    t.string "name", limit: 255
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "opening_id", limit: 2
-    t.date "last_reviewed"
-    t.string "opening_365", limit: 255
   end
 
   create_table "problems", force: :cascade do |t|

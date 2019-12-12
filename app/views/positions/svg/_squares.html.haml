@@ -1,7 +1,0 @@
-- 8.downto(1) do |r|
-  - w = r.even?
-  - y = (8 - r) * size
-  - 1.upto(8) do |f|
-    - x = (f - 1) * size
-    %use{"xlink:href" => "#square-#{w ? 'w' : 'b'}", x: x, y: y}
-    - w = !w

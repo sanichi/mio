@@ -14,6 +14,6 @@ class Ability
 
     can :read, [Bucket, Favourite]
     can [:read, :graph], Mass
-    can [:aoc, :pam, :risle, :risle_stats], Page
+    can [:aoc, :pam, :risle], Page
   end
 end

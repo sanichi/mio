@@ -23,10 +23,6 @@ Rails.application.routes.draw do
   end
   resources :misas
   resources :notes
-  resources :openings do
-    get :match, on: :collection
-  end
-  resources :parkings, only: [:index, :new, :create, :destroy]
   resources :partnerships
   resources :people do
     get :checks, on: :collection
@@ -35,20 +31,10 @@ Rails.application.routes.draw do
     get :tree, on: :collection
   end
   resources :pictures
-  resources :positions
   resources :problems
   resources :questions
-  resources :residents
   resources :sessions, only: [:create]
-  resources :todos, except: [:show] do
-    get :toggle, on: :member
-    get :up, on: :member
-    get :down, on: :member
-  end
   resources :users
-  resources :vehicles do
-    get :match, on: :collection
-  end
   namespace :wk do
     resources :examples, except: [:show]
     resources :groups, except: [:show]

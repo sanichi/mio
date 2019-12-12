@@ -32,14 +32,6 @@
             = link_to t("partnership.partnerships"), partnerships_path      if can?(:read, Partnership)
             = link_to t("person.checks.title"),      checks_people_path     if can?(:checks, Person)
 
-      - if [Position, Opening, Lesson].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to t("chess"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("lesson.lessons"),     lessons_path   if can?(:read, Lesson)
-            = link_to t("position.positions"), positions_path if can?(:read, Position)
-            = link_to t("opening.openings"),   openings_path  if can?(:read, Opening)
-
       - if [Flat].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, Page) }.any?
         %li.dropdown
           = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
@@ -56,12 +48,13 @@
             = link_to t("income.incomes"),   graph_incomes_path if can?(:read, Income)
             = link_to t("expense.expenses"), expenses_path      if can?(:read, Expense)
 
-      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Login, Mass, Opening, Position, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :magic, :play].map{ |p| can?(p, Page) }.any? || [Bucket, Lesson, Login, Mass, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
             = link_to t("mass.mass"),       graph_masses_path if can?(:read, Mass)
             = link_to t("bucket.buckets"),  buckets_path      if can?(:read, Bucket)
+            = link_to t("lesson.lessons"),  lessons_path      if can?(:read, Lesson)
             = link_to t("pages.aoc.short"), aoc_path          if can?(:aoc, Page)
             = link_to t("pages.magic"),     magic_path        if can?(:magic, Page)
             = link_to t("pages.play"),      play_path         if can?(:play, Page)
