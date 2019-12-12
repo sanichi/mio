@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
-  resources :books, only: [:show, :index]
   resources :buckets
   resources :expenses, except: [:show]
   resources :favourites

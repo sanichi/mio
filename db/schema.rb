@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_08_160550) do
+ActiveRecord::Schema.define(version: 2019_12_12_124443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,18 +34,6 @@ ActiveRecord::Schema.define(version: 2019_12_08_160550) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "books", force: :cascade do |t|
-    t.string "author", limit: 60
-    t.string "category", limit: 10
-    t.string "medium", limit: 10
-    t.text "note"
-    t.string "title", limit: 100
-    t.integer "year", limit: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "borrower", limit: 30
   end
 
   create_table "buckets", id: :serial, force: :cascade do |t|
