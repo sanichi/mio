@@ -7,7 +7,7 @@ class Income < ApplicationRecord
 
   scope :graph_order,  -> { by_category.by_stability }
   scope :by_category,  -> { order(category: :desc) }
-  scope :by_stability, -> { order("(COALESCE(finish, DATE '2050-01-01') - COALESCE(start, DATE '1990-01-01')) DESC") }
+  scope :by_stability, -> { order("(COALESCE(finish, DATE '#{MAX_YEAR}-01-01') - COALESCE(start, DATE '#{MIN_YEAR}-01-01')) DESC") }
 
   validates :amount,      numericality: { greater_than: 0.0 }
   validates :joint,       numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
