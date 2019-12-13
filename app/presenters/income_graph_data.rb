@@ -3,13 +3,13 @@ class IncomeGraphData
 
   def initialize(scope)
     @joint = scope != "total"
-    @data = Income.all.sort_by(&:duration).reverse
+    @data = Income.graph_order.all
     @full_height = 500
     get_years
     get_incomes
     get_data_rows
   end
-  
+
   def vaxis_label
     "#{I18n.t(@joint ? 'income.joint' : 'total')} #{I18n.t('income.income')}"
   end
