@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 6.0.1"
-gem "puma", "~> 3.11"
+gem "rails", "~> 6.0.2"
+gem "puma", "~> 4.1"
 gem "pg", '>= 0.18', '< 2.0'
 gem "haml-rails", '~> 2.0'
 gem "sassc-rails", '~> 2.1'
@@ -12,7 +12,7 @@ gem "bootstrap", '~> 4.3'
 gem "cancancan", "~> 3.0"
 gem "redcarpet", "~> 3.5"
 gem "chronic", "~> 0.10"
-gem "oga", "~> 2.5"
+gem "oga", "~> 3.0"
 gem "mechanize", "~> 2.7"
 gem "ruby-progressbar", "~> 1.10"
 gem "date_validator", "~> 0.9"
