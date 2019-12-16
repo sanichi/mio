@@ -1,14 +1,8 @@
-.row
-  .offset-md-1.col-md-11
-    = form_for note, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: note, col: "md", pad: 2, width: 8 }
-      = render "utils/text_field_for", shared.merge(param: :title, text: t("note.title"))
-      = render "utils/text_field_for", shared.merge(param: :series, text: t("note.series"), width: 4)
-      = render "utils/text_field_for", shared.merge(param: :number, text: t("note.number"), width: 1)
-      = render "utils/text_area_for", shared.merge(param: :stuff, text: t("note.stuff"), rows: 40)
-      .row
-        .offset-md-2.col-md-10
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), note.new_record?? notes_path : note, class: "btn btn-secondary"
-          - unless note.new_record?
-            = link_to t("delete"), note, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:title,  t("note.title"),  :text,      maxlength: Note::MAX_TITLE],
+    [:series, t("note.series"), :text,      maxlength: Note::MAX_SERIES],
+    [:number, t("note.number"), :text,      maxlength: Note::MAX_NUMBER],
+    [:stuff,  t("note.stuff"),  :text_area, rows: 40],
+  ]
+= render "utils/crud/form", object: note, index: notes_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
