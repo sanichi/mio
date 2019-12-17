@@ -99,7 +99,7 @@ module Wk
     end
 
     def any_notes?
-      notes.present? || examples.any? || groups.any?
+      notes.present? || examples.any? || groups.any? || pairs.any?
     end
 
     def intransitive?
@@ -116,19 +116,21 @@ module Wk
     def notes_html
       notes_plus = notes.to_s
       notes_plus.sub(/\n+\z/, "")
+      notes_plus += "\n\n" if notes_plus.present?
+      pairs.each do |pair|
+        notes_plus += pair.to_markdown(bold: characters)
+      end
       Wk::Group::CATEGORIES.each do |category|
         groups.where(category: category).each do |group|
-          notes_plus += "\n\n"
           notes_plus += group.to_markdown(bold: characters)
         end
       end
       unless examples.empty?
-        notes_plus += "\n\nExamples:\n\n"
+        notes_plus += "Examples:\n\n"
         examples.each do |example|
           notes_plus += example.to_markdown(bold: characters)
         end
       end
-      notes_plus += "\n"
       to_html(notes_plus)
     end
 
@@ -137,13 +139,14 @@ module Wk
     end
 
     def pairs
-      if transitive?
-        VerbPair.where(transitive: self).to_a
-      elsif intransitive?
-        VerbPair.where(intransitive: self).to_a
-      else
-        []
-      end
+      @pairs ||=
+        if transitive?
+          VerbPair.where(transitive: self).to_a
+        elsif intransitive?
+          VerbPair.where(intransitive: self).to_a
+        else
+          []
+        end
     end
 
     def to_markdown(display: nil, bold: nil)

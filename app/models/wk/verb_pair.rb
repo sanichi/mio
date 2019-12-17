@@ -152,6 +152,10 @@ module Wk
       self.category = cat
     end
 
+    def to_markdown(bold: nil)
+      "%s: %s → %s (%s).\n\n" % [I18n.t("wk.verb_pair.verb_pair"), transitive.to_markdown(bold: bold), intransitive.to_markdown(bold: bold), I18n.t("wk.verb_pair.categories.#{category}", locale: "jp")]
+    end
+
     private
 
     def set_tag

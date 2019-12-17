@@ -30,7 +30,7 @@ module Wk
     end
 
     def to_markdown(bold: nil)
-      "%s: %s.\n" % [I18n.t("wk.group.categories.#{category}"), vocabs.map{ |v| v.to_markdown(bold: bold) }.join(", ")]
+      "%s: %s.\n\n" % [I18n.t("wk.group.categories.#{category}"), vocabs.map{ |v| v.to_markdown(bold: bold) }.join(", ")]
     end
 
     private

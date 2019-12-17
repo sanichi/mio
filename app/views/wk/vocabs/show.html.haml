@@ -5,49 +5,38 @@
 
 %table{class: "table table-bordered"}
   %tbody#accent_updates
-    %tr.d-flex
-      %td.col-3= t("wk.meaning")
-      %td.col-9= @vocab.meaning
+    %tr
+      %td= t("wk.meaning")
+      %td= @vocab.meaning
     - @vocab.readings.each do |reading|
-      %tr.d-flex
-        %td.col-3= t("wk.reading")
-        %td.col-9
+      %tr
+        %td= t("wk.reading")
+        %td
           = reading.characters
           = render "wk/readings/audio", reading: reading
-    %tr.d-flex
-      %td.col-3= t("wk.vocab.parts")
-      %td.col-9= @vocab.parts_of_speech
-    %tr.d-flex
-      %td.col-3= t("wk.hint.meaning")
-      %td.col-9= @vocab.meaning_mnemonic.html_safe
-    %tr.d-flex
-      %td.col-3= t("wk.hint.reading")
-      %td.col-9= @vocab.reading_mnemonic.html_safe
-    - pairs = @vocab.pairs
-    - unless pairs.empty?
-      %tr.d-flex
-        %td.col-3= [t("wk.verb_pair.#{@vocab.transitive? ? 'in' : ''}transitive"), t("wk.verb_pair.partner#{pairs.size > 1 ? 's' : ''}")].join(" ")
-        %td.col-9
-          - pairs.each do |pair|
-            - vocab = @vocab.transitive? ? pair.intransitive : pair.transitive
-            = link_to vocab.characters, vocab
-            = precede("(") do
-              = succeed(")") do
-                = t("wk.verb_pair.categories.#{pair.category}", locale: "jp")
-    %tr.d-flex
-      %td.col-3= t("wk.links")
-      %td.col-9= link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", path: t("wk.jisho.path"), vocab: @vocab.characters), target: "external"
-    %tr.d-flex
-      %td.col-3= t("wk.level")
-      %td.col-9= @vocab.level
-    %tr.d-flex
-      %td.col-3= t("wk.id")
-      %td.col-9= @vocab.wk_id
-    %tr.d-flex
-      %td.col-3= t("wk.last_updated")
-      %td.col-9= @vocab.last_updated
+    %tr
+      %td= t("wk.vocab.parts")
+      %td= @vocab.parts_of_speech
+    %tr
+      %td= t("wk.hint.meaning")
+      %td= @vocab.meaning_mnemonic.html_safe
+    %tr
+      %td= t("wk.hint.reading")
+      %td= @vocab.reading_mnemonic.html_safe
+    %tr
+      %td= t("wk.links")
+      %td= link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", path: t("wk.jisho.path"), vocab: @vocab.characters), target: "external"
+    %tr
+      %td= t("wk.level")
+      %td= @vocab.level
+    %tr
+      %td= t("wk.id")
+      %td= @vocab.wk_id
+    %tr
+      %td= t("wk.last_updated")
+      %td= @vocab.last_updated
     - if @vocab.any_notes?
-      %tr.d-flex
+      %tr
         %td.col-12{colspan: 2}= @vocab.notes_html
 
 .text-center
