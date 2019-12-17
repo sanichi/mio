@@ -54,7 +54,7 @@ describe Misa do
 
       expect(page).to have_title t("misa.new")
       expect(Misa.count).to eq 1
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
   end
 

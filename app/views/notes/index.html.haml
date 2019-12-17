@@ -2,7 +2,7 @@
 
 :ruby
   inputs = [
-    [:q,      t("query"),       :text,   size: 16, value: params[:name], placeholder: t("search"), autofocus: true],
+    [:q,      t("query"),       :text,   size: 16, value: params[:q], placeholder: t("search"), autofocus: true],
     [:series, t("note.series"), :select, menu: note_series_menu(params[:series])],
     [:order,  t("order"),       :select, menu: note_search_order_menu(params[:order])],
   ]

@@ -1,15 +1,12 @@
 = render "utils/title", key: "misa.misas"
 
-= form_tag misas_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :q, t("query"), class: "sr-only"
-  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
-  = label_tag :category, t("misa.category"), class: "sr-only"
-  = select_tag :category, misa_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :order, t("order"), class: "sr-only"
-  = select_tag :order, misa_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
-  - if can?(:create, Misa)
-    = link_to t("misa.new"), new_misa_path, class: "btn btn-info mr-1 mb-1"
+:ruby
+  inputs = [
+    [:q,        t("query"),         :text,   size: 16, value: params[:q], placeholder: t("search"), autofocus: true],
+    [:category, t("misa.category"), :select, menu: misa_category_menu(params[:category], search: true)],
+    [:order,    t("order"),         :select, menu: misa_search_order_menu(params[:order])],
+  ]
+= render "utils/search/form", index: misas_path, inputs: inputs
 
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead
@@ -22,3 +19,7 @@
       %th.text-center= t("misa.abbrev.url")
   %tbody{id: "results"}
     = render "results", misas: @misas
+
+- if can?(:create, Misa)
+  .text-center.mt-3
+    = link_to t("misa.new"), new_misa_path, class: "btn btn-info"

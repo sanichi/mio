@@ -15,6 +15,7 @@ class MisasController < ApplicationController
     if @misa.save
       redirect_to @misa
     else
+      failure @misa
       render :new
     end
   end
@@ -23,6 +24,7 @@ class MisasController < ApplicationController
     if @misa.update(strong_params)
       redirect_to @misa
     else
+      failure @misa
       render :edit
     end
   end

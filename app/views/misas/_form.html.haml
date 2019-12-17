@@ -1,16 +1,12 @@
-= form_for misa, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: misa, col: "md", pad: 3, width: 8}
-  = render "utils/text_field_for", shared.merge(param: :title, text: t("misa.title"))
-  = render "utils/select_for", shared.merge(param: :category, text: t("misa.category"), menu: misa_category_menu(misa.category, new_record: misa.new_record?), width: 2)
-  = render "utils/text_field_for", shared.merge(param: :url, text: t("misa.url"))
-  = render "utils/text_field_for", shared.merge(param: :alt, text: t("misa.alt"))
-  = render "utils/text_field_for", shared.merge(param: :minutes, text: t("misa.minutes"), width: 2)
-  = render "utils/text_field_for", shared.merge(param: :published, text: t("misa.published"), width: 2)
-  = render "utils/check_box_for", shared.merge(param: :japanese, text: t("misa.japanese"), width: 1)
-  = render "utils/text_area_for", shared.merge(param: :note, text: t("misa.note"), rows: 30)
-  .row
-    .offset-md-3.col-md-9
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), misa.new_record?? misas_path : misa, class: "btn btn-secondary"
-      - unless misa.new_record?
-        = link_to t("delete"), misa, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:title,     t("misa.title"),     :text,   maxlength: Misa::MAX_TITLE],
+    [:category,  t("misa.category"),  :select, menu: misa_category_menu(misa.category, new_record: misa.new_record?)],
+    [:url,       t("misa.url"),       :text,   maxlength: Misa::MAX_URL],
+    [:alt,       t("misa.alt"),       :text,   maxlength: Misa::MAX_URL],
+    [:minutes,   t("misa.minutes"),   :text,   maxlength: Misa::MAX_MINUTES],
+    [:published, t("misa.published"), :text],
+    [:japanese,  t("misa.japanese"),  :check_box],
+    [:note,      t("misa.note"),      :text_area, rows: 30],
+  ]
+= render "utils/crud/form", object: misa, index: misas_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
