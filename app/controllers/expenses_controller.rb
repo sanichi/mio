@@ -15,6 +15,7 @@ class ExpensesController < ApplicationController
     if @expense.save
       redirect_to expenses_path
     else
+      failure @expense
       render :new
     end
   end
@@ -23,6 +24,7 @@ class ExpensesController < ApplicationController
     if @expense.update(strong_params)
       redirect_to expenses_path
     else
+      failure @expense
       render :edit
     end
   end
