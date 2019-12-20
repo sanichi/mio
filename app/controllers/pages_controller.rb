@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
-  authorize_resource
+  # see https://github.com/CanCanCommunity/cancancan/wiki/Non-RESTful-Controllers
+  authorize_resource class: false
 
   def risle
     @flats = Flat.where.not(bay: nil).order(:bay).all
