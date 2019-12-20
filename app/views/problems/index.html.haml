@@ -1,15 +1,14 @@
 = render "utils/title", key: "problem.problems"
 
-= form_tag problems_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :level, t("problem.level"), class: "sr-only"
-  = select_tag :level, problem_level_menu(params[:level], search: true), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :category, t("problem.category"), class: "sr-only"
-  = select_tag :category, problem_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :subcategory, t("problem.subcategory"), class: "sr-only"
-  = select_tag :subcategory, problem_subcategory_menu(params[:subcategory], search: true), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :question, t("question.question"), class: "sr-only"
-  = text_field_tag :question, params[:question], class: "form-control mr-1 mb-1", placeholder: t("question.question"), size: 16
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:level,       t("problem.level"),       :select, menu: problem_level_menu(params[:level], search: true)],
+    [:category,    t("problem.category"),    :select, menu: problem_category_menu(params[:category], search: true)],
+    [:subcategory, t("problem.subcategory"), :select, menu: problem_subcategory_menu(params[:subcategory], search: true)],
+    [:question,    t("question.question"),    :text,   size: 16, value: params[:quuestion]],
+  ]
+= render "utils/search/form", index: problems_path, inputs: inputs
+
 
 .row.mt-3
   .col-md-10.offset-md-1.col-lg-8.offset-lg-2.col-xl-6.offset-xl-3

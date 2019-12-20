@@ -38,7 +38,7 @@ describe Problem do
 
       expect(page).to have_title t("problem.new")
       expect(Problem.count).to eq 1
-      expect(page).to have_css(error, text: "not a number")
+      expect_error(page, "not a number")
     end
   end
 

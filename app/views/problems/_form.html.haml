@@ -1,13 +1,9 @@
-= form_for problem, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: problem, col: "md", pad: 2, width: 3}
-  = render "utils/select_for", shared.merge(param: :level, text: t("problem.level"), menu: problem_level_menu(problem.level, new_record: problem.new_record?), width: 2)
-  = render "utils/select_for", shared.merge(param: :category, text: t("problem.category"), menu: problem_category_menu(problem.category, new_record: problem.new_record?))
-  = render "utils/select_for", shared.merge(param: :subcategory, text: t("problem.subcategory"), menu: problem_subcategory_menu(problem.subcategory, new_record: problem.new_record?))
-  = render "utils/text_field_for", shared.merge(param: :audio, text: t("problem.audio"), width: 4)
-  = render "utils/text_area_for", shared.merge(param: :note, text: t("problem.note"), width: 10, rows: 15)
-  .row
-    .offset-md-2.col-md-10
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), problem.new_record?? problems_path : problem, class: "btn btn-secondary"
-      - unless problem.new_record?
-        = link_to t("delete"), problem, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:level,       t("problem.level"),       :select,    menu: problem_level_menu(problem.level, new_record: problem.new_record?)],
+    [:category,    t("problem.category"),    :select,    menu: problem_category_menu(problem.category, new_record: problem.new_record?)],
+    [:subcategory, t("problem.subcategory"), :select,    menu: problem_subcategory_menu(problem.subcategory, new_record: problem.new_record?)],
+    [:audio,       t("problem.audio"),       :text,      maxlength: Problem::MAX_AUDIO],
+    [:note,        t("problem.note"),        :text_area, rows: 15],
+  ]
+= render "utils/crud/form", object: problem, index: problems_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

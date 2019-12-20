@@ -15,6 +15,7 @@ class ProblemsController < ApplicationController
     if @problem.save
       redirect_to @problem
     else
+      failure @problem
       render :new
     end
   end
@@ -38,6 +39,7 @@ class ProblemsController < ApplicationController
     if @problem.update(strong_params)
       redirect_to @problem
     else
+      failure @problem
       render :edit
     end
   end
