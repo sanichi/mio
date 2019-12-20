@@ -1,18 +1,15 @@
-= form_for question, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: question, col: "md", pad: 2, width: 6 }
-  = render "utils/select_for", shared.merge(param: :problem_id, text: t("problem.problem"), menu: problem_menu(question.problem_id))
-  = render "utils/text_field_for", shared.merge(param: :question, text: t("question.question"), width: 10)
-  = render "utils/text_field_for", shared.merge(param: :answer1, text: t("question.answer1"))
-  = render "utils/text_field_for", shared.merge(param: :answer2, text: t("question.answer2"))
-  = render "utils/text_field_for", shared.merge(param: :answer3, text: t("question.answer3"))
-  = render "utils/text_field_for", shared.merge(param: :answer4, text: t("question.answer4"))
-  = render "utils/select_for", shared.merge(param: :solution, text: t("question.solution"), menu: question_solution_menu(question.solution, question.new_record?), width: 3)
-  = render "utils/file_field_for", shared.merge(param: :picture, text: t("question.picture"))
-  = render "utils/text_field_for", shared.merge(param: :audio, text: t("question.audio"), width: 4)
-  = render "utils/text_area_for", shared.merge(param: :note, text: t("question.note"), width: 10, rows: 15)
-  .row
-    .offset-md-2.col-md-10
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), { controller: "problems", action: "show", id: question.problem.id, question_id: question.id }, class: "btn btn-secondary"
-      - unless question.new_record?
-        = link_to t("delete"), question, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:problem_id, t("problem.problem"),   :select,    menu: problem_menu(question.problem_id)],
+    [:question,   t("question.question"), :text,      maxlength: Question::MAX_QUESTION],
+    [:answer1,    t("question.answer1"),  :text,      maxlength: Question::MAX_ANSWER],
+    [:answer2,    t("question.answer2"),  :text,      maxlength: Question::MAX_ANSWER],
+    [:answer3,    t("question.answer3"),  :text,      maxlength: Question::MAX_ANSWER],
+    [:answer4,    t("question.answer4"),  :text,      maxlength: Question::MAX_ANSWER],
+    [:solution,   t("question.solution"), :select,    menu: question_solution_menu(question.solution, question.new_record?)],
+    [:picture,    t("question.picture"),  :file],
+    [:audio,      t("question.audio"),    :text,      maxlength: Question::MAX_AUDIO],
+    [:note,       t("question.note"),     :text_area, rows: 15],
+  ]
+  cancel = url_for controller: "problems", action: "show", id: question.problem.id, question_id: question.id
+= render "utils/crud/form", object: question, cancel: cancel, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

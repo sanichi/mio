@@ -11,6 +11,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to url_for_problem(@question)
     else
+      failure @question
       render :new
     end
   end
@@ -19,6 +20,7 @@ class QuestionsController < ApplicationController
     if @question.update(strong_params)
       redirect_to url_for_problem(@question)
     else
+      failure @question
       render :edit
     end
   end

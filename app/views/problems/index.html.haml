@@ -9,7 +9,6 @@
   ]
 = render "utils/search/form", index: problems_path, inputs: inputs
 
-
 .row.mt-3
   .col-md-10.offset-md-1.col-lg-8.offset-lg-2.col-xl-6.offset-xl-3
     %table{class: "table table-bordered table-striped table-sm mt-3"}
@@ -20,6 +19,6 @@
       %tbody{id: "results"}
         = render "results", problems: @problems
 
-- if can?(:create, Misa)
+- if can?(:create, Problem)
   .text-center.mt3
     = link_to t("problem.new"), new_problem_path, class: "btn btn-info"
