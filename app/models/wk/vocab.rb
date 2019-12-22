@@ -3,6 +3,7 @@ module Wk
     include Constrainable
     include Pageable
     include Remarkable
+    include Vocabable
     include Wanikani
 
     IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
@@ -114,7 +115,7 @@ module Wk
     end
 
     def notes_html
-      notes_plus = notes.to_s
+      notes_plus = link_vocabs(notes.to_s)
       notes_plus.sub(/\n+\z/, "")
       notes_plus += "\n\n" if notes_plus.present?
       pairs.each do |pair|

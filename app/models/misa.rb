@@ -2,6 +2,7 @@ class Misa < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Vocabable
 
   CATEGORIES = %w/none beginners counters dajare difference howto mistakes native proverbs shadowing vocab yuta tofugu dogen smile/
   MAX_CATEGORY = 10
@@ -36,7 +37,7 @@ class Misa < ApplicationRecord
   end
 
   def note_html
-    to_html(note)
+    to_html(link_vocabs(note))
   end
 
   def full_title

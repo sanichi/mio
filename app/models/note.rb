@@ -2,6 +2,7 @@ class Note < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Vocabable
 
   MAX_SERIES = 50
   MAX_TITLE = 150
@@ -31,7 +32,7 @@ class Note < ApplicationRecord
   end
 
   def stuff_html
-    to_html(stuff)
+    to_html(link_vocabs(stuff))
   end
 
   def series_number(links: false)
