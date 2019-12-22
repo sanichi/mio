@@ -1,23 +1,23 @@
 module Vocabable
   extend ActiveSupport::Concern
 
-  included do
-    PATTERN = /
-      \{
-      ([^}|]+)
-      (?:\|([^}|]+))?
-      \}
-    /x
-    NRETTAP = /
-      \[
-      ([^\]\)]+)
-      \]
-      \(
-      \/wk\/vocabs\/
-      ([^\]\)]+)
-      \)
-    /x
+  PATTERN = /
+    \{
+    ([^}|]+)
+    (?:\|([^}|]+))?
+    \}
+  /x
+  NRETTAP = /
+    \[
+    ([^\]\)]+)
+    \]
+    \(
+    \/wk\/vocabs\/
+    ([^\]\)]+)
+    \)
+  /x
 
+  included do
     def link_vocabs(text)
       text&.gsub(PATTERN) do |match|
         display = $1
