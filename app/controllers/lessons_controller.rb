@@ -15,6 +15,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       redirect_to @lesson
     else
+      failure @lesson
       render :new
     end
   end
@@ -23,6 +24,7 @@ class LessonsController < ApplicationController
     if @lesson.update(strong_params)
       redirect_to @lesson
     else
+      failure @lesson
       render :edit
     end
   end

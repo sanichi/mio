@@ -1,9 +1,10 @@
 = render "utils/title", key: "lesson.lessons"
 
-= form_tag lessons_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :q, t("query"), class: "sr-only"
-  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16, autofocus: true
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:q, t("search"), :text, value: params[:q], size: 16, autofocus: true],
+  ]
+= render "utils/search/form", index: lessons_path, inputs: inputs
 
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead

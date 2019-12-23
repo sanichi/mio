@@ -50,7 +50,7 @@ describe Lesson do
 
       expect(page).to have_title t("lesson.new")
       expect(Lesson.count).to eq 1
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
   end
 
