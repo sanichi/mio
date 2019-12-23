@@ -126,7 +126,7 @@ module Wk
             end
           end
 
-          audios = check(data["pronunciation_audios"], "#{context} doesn't have an audios array") { |v| v.is_a?(Array) && v.size > 0 }
+          audios = check(data["pronunciation_audios"], "#{context} doesn't have an audios array") { |v| v.is_a?(Array) }
           wk_audios = Hash.new { |h, k| h[k] = [] }
           audios.each do |a|
             check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) && wk_readings.has_key?(v["metadata"]["pronunciation"]) }
