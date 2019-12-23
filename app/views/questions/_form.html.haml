@@ -1,15 +1,15 @@
 :ruby
   inputs = [
-    [:problem_id, t("problem.problem"),   :select,    menu: problem_menu(question.problem_id)],
-    [:question,   t("question.question"), :text,      maxlength: Question::MAX_QUESTION],
-    [:answer1,    t("question.answer1"),  :text,      maxlength: Question::MAX_ANSWER],
-    [:answer2,    t("question.answer2"),  :text,      maxlength: Question::MAX_ANSWER],
-    [:answer3,    t("question.answer3"),  :text,      maxlength: Question::MAX_ANSWER],
-    [:answer4,    t("question.answer4"),  :text,      maxlength: Question::MAX_ANSWER],
-    [:solution,   t("question.solution"), :select,    menu: question_solution_menu(question.solution, question.new_record?)],
+    [:problem_id, t("problem.problem"),   :select, menu: problem_menu(question.problem_id)],
+    [:question,   t("question.question"), :text,   maxlength: Question::MAX_QUESTION],
+    [:answer1,    t("question.answer1"),  :text,   maxlength: Question::MAX_ANSWER],
+    [:answer2,    t("question.answer2"),  :text,   maxlength: Question::MAX_ANSWER],
+    [:answer3,    t("question.answer3"),  :text,   maxlength: Question::MAX_ANSWER],
+    [:answer4,    t("question.answer4"),  :text,   maxlength: Question::MAX_ANSWER],
+    [:solution,   t("question.solution"), :select, menu: question_solution_menu(question.solution, question.new_record?)],
     [:picture,    t("question.picture"),  :file],
-    [:audio,      t("question.audio"),    :text,      maxlength: Question::MAX_AUDIO],
-    [:note,       t("question.note"),     :text_area, rows: 15],
+    [:audio,      t("question.audio"),    :text,   maxlength: Question::MAX_AUDIO],
+    [:note,       t("question.note"),     :area,   rows: 15],
   ]
   cancel = url_for controller: "problems", action: "show", id: question.problem.id, question_id: question.id
 = render "utils/crud/form", object: question, cancel: cancel, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

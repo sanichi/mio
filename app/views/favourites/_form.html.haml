@@ -1,11 +1,11 @@
 :ruby
   inputs = [
-    [:name,     t("name"),               :text,      maxlength: Favourite::MAX_NAME],
-    [:year,     t("year"),               :text,      maxlength: 4],
-    [:category, t("favourite.category"), :select,    menu: favourite_category_menu(favourite)],
-    [:mark,     t("favourite.mark"),     :select,    menu: favourite_score_menu(favourite.mark, favourite.new_record?)],
-    [:sandra,   t("favourite.sandra"),   :select,    menu: favourite_score_menu(favourite.sandra, favourite.new_record?)],
-    [:link,     t("favourite.link"),     :text,      maxlength: Favourite::MAX_LINK],
-    [:note,     t("favourite.note"),     :text_area, rows: 20],
+    [:name,     t("name"),               :text,   maxlength: Favourite::MAX_NAME],
+    [:year,     t("year"),               :text,   maxlength: 4],
+    [:category, t("favourite.category"), :select, menu: favourite_category_menu(favourite)],
+    [:mark,     t("favourite.mark"),     :select, menu: favourite_score_menu(favourite.mark, favourite.new_record?)],
+    [:sandra,   t("favourite.sandra"),   :select, menu: favourite_score_menu(favourite.sandra, favourite.new_record?)],
+    [:link,     t("favourite.link"),     :text,   maxlength: Favourite::MAX_LINK],
+    [:note,     t("favourite.note"),     :area,   rows: 20],
   ]
 = render "utils/crud/form", object: favourite, index: favourites_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

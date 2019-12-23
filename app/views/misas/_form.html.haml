@@ -6,7 +6,7 @@
     [:alt,       t("misa.alt"),       :text,   maxlength: Misa::MAX_URL],
     [:minutes,   t("misa.minutes"),   :text,   maxlength: Misa::MAX_MINUTES],
     [:published, t("misa.published"), :text],
-    [:japanese,  t("misa.japanese"),  :check_box],
-    [:note,      t("misa.note"),      :text_area, rows: 30],
+    [:japanese,  t("misa.japanese"),  :check],
+    [:note,      t("misa.note"),      :area,   rows: 30],
   ]
 = render "utils/crud/form", object: misa, index: misas_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

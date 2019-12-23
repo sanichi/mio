@@ -1,8 +1,8 @@
 :ruby
   inputs = [
-    [:title,  t("note.title"),  :text,      maxlength: Note::MAX_TITLE],
-    [:series, t("note.series"), :text,      maxlength: Note::MAX_SERIES],
-    [:number, t("note.number"), :text,      maxlength: Note::MAX_NUMBER],
-    [:stuff,  t("note.stuff"),  :text_area, rows: 40],
+    [:title,  t("note.title"),  :text, maxlength: Note::MAX_TITLE],
+    [:series, t("note.series"), :text, maxlength: Note::MAX_SERIES],
+    [:number, t("note.number"), :text, maxlength: Note::MAX_NUMBER],
+    [:stuff,  t("note.stuff"),  :area, rows: 40],
   ]
 = render "utils/crud/form", object: note, index: notes_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
