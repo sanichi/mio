@@ -34,7 +34,7 @@ describe Mass do
 
         expect(page).to have_title t("mass.new")
         expect(Mass.count).to eq 0
-        expect(page).to have_css(error, text: "at least 1")
+        expect_error(page, "at least 1")
       end
 
       it "out of range" do
@@ -46,7 +46,7 @@ describe Mass do
 
         expect(page).to have_title t("mass.new")
         expect(Mass.count).to eq 0
-        expect(page).to have_css(error, text: "must be less than")
+        expect_error(page, "must be less than")
       end
 
       it "no date" do
@@ -58,7 +58,7 @@ describe Mass do
 
         expect(page).to have_title t("mass.new")
         expect(Mass.count).to eq 0
-        expect(page).to have_css(error, text: "can't be blank")
+        expect_error(page, "can't be blank")
       end
 
       it "duplicate date" do
@@ -79,7 +79,7 @@ describe Mass do
 
         expect(page).to have_title t("mass.new")
         expect(Mass.count).to eq 1
-        expect(page).to have_css(error, text: "has already been taken")
+        expect_error(page, "has already been taken")
       end
     end
   end
