@@ -1,17 +1,11 @@
 = render "utils/title", key: "wk.group.groups"
 
-= content_for :javascript do
-  = render "groups.js"
-
-= form_tag wk_groups_path, method: :get, remote: true, class: "form-inline justify-content-center" do
-  = label_tag :category, t("wk.group.category"), class: "sr-only"
-  = select_tag :category, wk_group_category_menu(params[:category], search: true), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :query, t("wk.group.group"), class: "sr-only"
-  = text_field_tag :query, params[:query], class: "form-control mr-1 mb-1", placeholder: t("wk.group.group"), size: 16, autofocus: true
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
-  = link_to t("reset"), "#", class: "btn btn-success mr-1 mb-1", id: "reset"
-  - if can?(:create, Wk::Group)
-    = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-info mr-1 mb-1"
+:ruby
+  inputs = [
+    [:category, t("wk.group.category"), :select, menu: wk_group_category_menu(params[:category], search: true)],
+    [:query,    t("wk.group.group"),    :text, value: params[:query]],
+  ]
+= render "utils/search/form", index: wk_groups_path, inputs: inputs
 
 %table{class: "table table-bordered table-striped table-sm mt-3"}
   %thead
@@ -25,3 +19,5 @@
 .text-center.mt3
   = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
   = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success"
+  - if can?(:create, Wk::Group)
+    = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-info"

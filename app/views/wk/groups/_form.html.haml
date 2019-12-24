@@ -1,9 +1,6 @@
-= form_for group, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: group, col: "md", pad: 2, width: 10}
-  = render "utils/select_for", shared.merge(param: :category, text: t("wk.group.category"), menu: wk_group_category_menu(group.category, new_record: group.new_record?), width: 3)
-  = render "utils/text_field_for", shared.merge(param: :vocab_list, text: t("wk.group.vocab_list"))
-  .row
-    .offset-md-2.col-md-10
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), wk_groups_path, class: "btn btn-secondary"
-      = link_to t("delete"), group, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:category,   t("wk.group.category"),   :select, menu: wk_group_category_menu(group.category, new_record: group.new_record?)],
+    [:vocab_list, t("wk.group.vocab_list"), :text, value: params[:vocab_list]],
+  ]
+= render "utils/crud/form", object: group, cancel: wk_groups_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

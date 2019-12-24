@@ -32,7 +32,7 @@ describe Wk::Example do
 
       expect(page).to have_title t("wk.example.new")
       expect(Wk::Example.count).to eq 1
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
   end
 

@@ -16,6 +16,7 @@ module Wk
       if @example.save
         redirect_to wk_examples_path
       else
+        failure @example
         render :new
       end
     end
@@ -24,6 +25,7 @@ module Wk
       if @example.update(strong_params)
         redirect_to wk_examples_path
       else
+        failure @example
         render :edit
       end
     end

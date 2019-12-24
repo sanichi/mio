@@ -16,6 +16,7 @@ module Wk
       if @group.save
         redirect_to wk_groups_path
       else
+        failure @group
         render :new
       end
     end
@@ -24,6 +25,7 @@ module Wk
       if @group.update(strong_params)
         redirect_to wk_groups_path
       else
+        failure @group
         render :edit
       end
     end

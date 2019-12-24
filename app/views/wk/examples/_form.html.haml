@@ -1,9 +1,6 @@
-= form_for example, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: example, col: "md", pad: 2, width: 10}
-  = render "utils/text_field_for", shared.merge(param: :japanese, text: t("wk.example.japanese"))
-  = render "utils/text_field_for", shared.merge(param: :english, text: t("wk.example.english"))
-  .row
-    .offset-md-2.col-md-10
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), wk_examples_path, class: "btn btn-secondary"
-      = link_to t("delete"), example, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:japanese, t("wk.example.japanese"), :text, maxlength: Wk::Example::MAX_EXAMPLE],
+    [:english,  t("wk.example.english"),  :text, maxlength: Wk::Example::MAX_EXAMPLE],
+  ]
+= render "utils/crud/form", object: example, cancel: wk_examples_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)

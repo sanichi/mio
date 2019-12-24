@@ -48,7 +48,7 @@ describe Wk::Group do
 
       expect(page).to have_title t("wk.group.new")
       expect(Wk::Group.count).to eq 1
-      expect(page).to have_css(error, text: "not included")
+      expect_error(page, "not included")
     end
   end
 
