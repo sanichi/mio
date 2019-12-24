@@ -1,8 +1,9 @@
-- defined?(index)  || index = nil
-- defined?(cancel) || cancel = nil
+- defined?(index)    || index = nil
+- defined?(cancel)   || cancel = nil
+- defined?(centered) || centered = center(xl: 8, lg: 10)
 
 .row
-  %div{class: center}
+  %div{class: centered}
     = form_for object, html: { class: "crud" } do |form|
       %section
         .header.text-center

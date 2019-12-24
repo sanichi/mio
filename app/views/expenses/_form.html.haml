@@ -5,4 +5,4 @@
     [:period,      t("expense.period"),   :select, menu: expense_period_menu(expense)],
     [:amount,      t("amount"),           :text,   rows: 10],
   ]
-= render "utils/crud/form", object: expense, index: expenses_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
+= render "utils/crud/form", object: expense, index: expenses_path, inputs: inputs, title: title

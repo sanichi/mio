@@ -12,4 +12,4 @@
     [:note,       t("question.note"),     :area,   rows: 15],
   ]
   cancel = url_for controller: "problems", action: "show", id: question.problem.id, question_id: question.id
-= render "utils/crud/form", object: question, cancel: cancel, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
+= render "utils/crud/form", object: question, cancel: cancel, inputs: inputs, title: title

@@ -10,4 +10,4 @@
     [:complete,   t("lesson.complete"),   :text, maxlength: Lesson::MAX_COMPLETE],
     [:note,       t("lesson.note"),       :area, rows: lesson.new_record?? 5 : 30],
   ]
-= render "utils/crud/form", object: lesson, index: lessons_path, inputs: inputs, title: title, center: center(xl: 8, lg: 10)
+= render "utils/crud/form", object: lesson, index: lessons_path, inputs: inputs, title: title
