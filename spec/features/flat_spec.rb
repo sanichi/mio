@@ -73,7 +73,7 @@ describe Flat do
 
         expect(page).to have_title t("flat.new")
         expect(Flat.count).to eq 1
-        expect(page).to have_css(error, text: "not included")
+        expect_error(page, "not included")
       end
     end
   end
@@ -107,7 +107,7 @@ describe Flat do
         click_button t("save")
 
         expect(page).to have_title t("flat.edit")
-        expect(page).to have_css(error, text: "already been taken")
+        expect_error(page, "already been taken")
       end
     end
   end

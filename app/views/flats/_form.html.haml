@@ -1,15 +1,11 @@
-= form_for flat, html: { class: "form-horizontal" } do |f|
-  - shared = { form: f, object: flat, col: "md", pad: 3, width: 2 }
-  = render "utils/select_for",    shared.merge(param: :building, text: t("flat.building"), menu: flat_building_menu(flat))
-  = render "utils/select_for",    shared.merge(param: :number, text: t("flat.number"), menu: flat_number_menu(flat))
-  = render "utils/select_for",    shared.merge(param: :block, text: t("flat.block"), menu: flat_block_menu(flat))
-  = render "utils/select_for",    shared.merge(param: :bay, text: t("flat.bay"), menu: flat_bay_menu(flat))
-  = render "utils/select_for",    shared.merge(param: :category, text: t("flat.category"), menu: flat_category_menu(flat))
-  = render "utils/select_for",    shared.merge(param: :name, text: t("flat.name"), menu: flat_name_menu(flat))
-  = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
-  .row
-    .offset-md-3.col-md-9
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), flat.new_record?? flats_path : flat, class: "btn btn-secondary"
-      - unless flat.new_record?
-        = link_to t("delete"), flat, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:building, t("flat.building"), :select, menu: flat_building_menu(flat)],
+    [:number,   t("flat.number"),   :select, menu: flat_number_menu(flat)],
+    [:block,    t("flat.block"),    :select, menu: flat_block_menu(flat)],
+    [:bay,      t("flat.bay"),      :select, menu: flat_bay_menu(flat)],
+    [:category, t("flat.category"), :select, menu: flat_category_menu(flat)],
+    [:name,     t("flat.name"),     :select, menu: flat_name_menu(flat)],
+    [:notes,    t("notes"),         :area,   rows: 10],
+  ]
+= render "utils/crud/form", object: flat, index: flats_path, inputs: inputs, title: title

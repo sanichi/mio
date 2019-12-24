@@ -15,6 +15,7 @@ class FlatsController < ApplicationController
     if @flat.save
       redirect_to @flat
     else
+      failure @flat
       render :new
     end
   end
@@ -23,6 +24,7 @@ class FlatsController < ApplicationController
     if @flat.update(strong_params)
       redirect_to @flat
     else
+      failure @flat
       render :edit
     end
   end
