@@ -2,9 +2,9 @@
 
 :ruby
   inputs = [
-    [:query,    t("query"),              :text,   size: 20, value: params[:query], placeholder: "#{t("name")}/#{t("favourite.note")}"],
+    [:query,    t("query"),              :text,   size: 20, placeholder: "#{t("name")}/#{t("favourite.note")}"],
     [:category, t("favourite.category"), :select, menu: favourite_category_search_menu(params[:category])],
-    [:year,     t("year"),               :text,   size: 7,  value: params[:year]],
+    [:year,     t("year"),               :text,   size: 7],
     [:order,    t("order"),              :select, menu: favourite_order_menu(params[:order])],
   ]
 = render "utils/search/form", index: favourites_path, inputs: inputs

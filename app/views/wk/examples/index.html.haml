@@ -2,7 +2,7 @@
 
 :ruby
   inputs = [
-    [:query, t("wk.example.example"), :text, value: params[:query], autofocus: true],
+    [:query, t("wk.example.example"), :text, autofocus: true],
   ]
 = render "utils/search/form", index: wk_examples_path, inputs: inputs
 

@@ -3,7 +3,7 @@
 :ruby
   inputs = [
     [:category, t("wk.group.category"), :select, menu: wk_group_category_menu(params[:category], search: true)],
-    [:query,    t("wk.group.group"),    :text, value: params[:query]],
+    [:query,    t("wk.group.group"),    :text],
   ]
 = render "utils/search/form", index: wk_groups_path, inputs: inputs
 

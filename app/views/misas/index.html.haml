@@ -2,7 +2,7 @@
 
 :ruby
   inputs = [
-    [:q,        t("query"),         :text,   size: 16, value: params[:q], placeholder: t("search"), autofocus: true],
+    [:q,        t("query"),         :text,   size: 16, placeholder: t("search"), autofocus: true],
     [:category, t("misa.category"), :select, menu: misa_category_menu(params[:category], search: true)],
     [:order,    t("order"),         :select, menu: misa_search_order_menu(params[:order])],
   ]

@@ -2,7 +2,7 @@
 
 :ruby
   inputs = [
-    [:q, t("search"), :text, value: params[:q], size: 16, autofocus: true],
+    [:q, t("search"), :text, size: 16, autofocus: true],
   ]
 = render "utils/search/form", index: lessons_path, inputs: inputs
 

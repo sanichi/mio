@@ -2,9 +2,9 @@
 
 :ruby
   inputs = [
-    [:date,  t("date"),     :text, size: 16, value: params[:date]],
-    [:email, t("email"),    :text, size: 16, value: params[:email]],
-    [:ip,    t("login.ip"), :text, size: 16, value: params[:ip]],
+    [:date,  t("date"),     :text, size: 16],
+    [:email, t("email"),    :text, size: 16],
+    [:ip,    t("login.ip"), :text, size: 16],
   ]
 = render "utils/search/form", index: logins_path, inputs: inputs
 

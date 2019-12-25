@@ -2,9 +2,9 @@
 
 :ruby
   inputs = [
-    [:email, t("email"),             :text,   size: 10, value: params[:email]],
-    [:year,  t("person.last_name"),  :text,   size: 10, value: params[:last_name]],
-    [:year,  t("person.first_name"), :text,   size: 10, value: params[:first_name]],
+    [:email, t("email"),             :text,   size: 10],
+    [:year,  t("person.last_name"),  :text,   size: 10],
+    [:year,  t("person.first_name"), :text,   size: 10],
   ]
 = render "utils/search/form", index: users_path, inputs: inputs
 

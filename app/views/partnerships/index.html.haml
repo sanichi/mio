@@ -2,9 +2,9 @@
 
 :ruby
   inputs = [
-    [:male,    t("person.male"),         :text,   size: 12, value: params[:male]],
-    [:female,  t("person.female"),       :text,   size: 12, value: params[:female]],
-    [:wedding, t("partnership.wedding"), :text,   size: 12, value: params[:wedding]],
+    [:male,    t("person.male"),         :text,   size: 12],
+    [:female,  t("person.female"),       :text,   size: 12],
+    [:wedding, t("partnership.wedding"), :text,   size: 12],
     [:realm,   t("person.realm"),        :select, menu: person_realm_menu(params[:realm])],
   ]
 = render "utils/search/form", index: partnerships_path, inputs: inputs, remote: false

@@ -2,12 +2,12 @@
 
 :ruby
   inputs = [
-    [:building, t("flat.building"), :text,   size: 5, value: params[:building]],
-    [:number,   t("flat.number"),   :text,   size: 5, value: params[:number]],
-    [:block,    t("flat.block"),    :text,   size: 5, value: params[:block]],
-    [:bay,      t("flat.bay"),      :text,   size: 5, value: params[:bay]],
-    [:category, t("flat.category"), :text,   size: 5, value: params[:category]],
-    [:name,     t("flat.name"),     :text,   size: 5, value: params[:name]],
+    [:building, t("flat.building"), :text,   size: 5],
+    [:number,   t("flat.number"),   :text,   size: 5],
+    [:block,    t("flat.block"),    :text,   size: 5],
+    [:bay,      t("flat.bay"),      :text,   size: 5],
+    [:category, t("flat.category"), :text,   size: 5],
+    [:name,     t("flat.name"),     :text,   size: 5],
     [:order,    t("order"),         :select, menu: flat_search_order_menu(params[:order])],
   ]
 = render "utils/search/form", index: flats_path, inputs: inputs

@@ -5,7 +5,7 @@
     [:level,       t("problem.level"),       :select, menu: problem_level_menu(params[:level], search: true)],
     [:category,    t("problem.category"),    :select, menu: problem_category_menu(params[:category], search: true)],
     [:subcategory, t("problem.subcategory"), :select, menu: problem_subcategory_menu(params[:subcategory], search: true)],
-    [:question,    t("question.question"),    :text,   size: 16, value: params[:quuestion]],
+    [:question,    t("question.question"),   :text,   size: 16],
   ]
 = render "utils/search/form", index: problems_path, inputs: inputs
 

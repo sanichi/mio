@@ -2,11 +2,11 @@
 
 :ruby
   inputs = [
-    [:name,   t("name"),          :text,   size: 14, value: params[:name]],
+    [:name,   t("name"),          :text,   size: 14],
     [:gender, t("person.gender"), :select, menu: person_gender_search_menu(params[:gender])],
-    [:born,   t("person.born"),   :text,   size: 10, value: params[:born]],
-    [:died,   t("person.died"),   :text,   size: 10, value: params[:died]],
-    [:notes,  t("person.notes"),  :text,   size: 10, value: params[:notes]],
+    [:born,   t("person.born"),   :text,   size: 10],
+    [:died,   t("person.died"),   :text,   size: 10],
+    [:notes,  t("person.notes"),  :text,   size: 10],
     [:realm,  t("person.realm"),  :select, menu: person_realm_menu(params[:realm])],
     [:order,  t("order"),         :select, menu: person_search_order_menu(params[:order])],
   ]

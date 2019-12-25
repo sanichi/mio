@@ -2,7 +2,7 @@
 
 :ruby
   inputs = [
-    [:name, t("name"),        :text,   size: 20, value: params[:name]],
+    [:name, t("name"),        :text,   size: 20],
     [:fan,  t("bucket.fans"), :select, menu: bucket_fan_search_menu(params[:fan])],
   ]
 = render "utils/search/form", index: buckets_path, inputs: inputs
