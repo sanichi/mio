@@ -1,25 +1,20 @@
 = render "utils/title", key: "person.people", header: true
 
-= form_tag people_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :name, t("name"), class: "sr-only"
-  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 14
-  = label_tag :gender, t("person.gender"), class: "sr-only"
-  = select_tag :gender, person_gender_search_menu(params[:gender]), class: "form-control mr-1  mb-1 auto-submit"
-  = label_tag :born, t("person.born"), class: "sr-only"
-  = text_field_tag :born, params[:born], class: "form-control mr-1 mb-1", placeholder: t("person.born"), size: 10
-  = label_tag :born, t("person.died"), class: "sr-only"
-  = text_field_tag :died, params[:died], class: "form-control mr-1 mb-1", placeholder: t("person.died"), size: 10
-  = label_tag :notes, t("person.notes"), class: "sr-only"
-  = text_field_tag :notes, params[:notes], class: "form-control mr-1 mb-1", placeholder: t("person.notes"), size: 10
-  = label_tag :realm, t("person.realm"), class: "sr-only"
-  = select_tag :realm, person_realm_menu(params[:realm]), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :order, t("order"), class: "sr-only"
-  = select_tag :order, person_search_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mb-1"
+:ruby
+  inputs = [
+    [:name,   t("name"),          :text,   size: 14, value: params[:name]],
+    [:gender, t("person.gender"), :select, menu: person_gender_search_menu(params[:gender])],
+    [:born,   t("person.born"),   :text,   size: 10, value: params[:born]],
+    [:died,   t("person.died"),   :text,   size: 10, value: params[:died]],
+    [:notes,  t("person.notes"),  :text,   size: 10, value: params[:notes]],
+    [:realm,  t("person.realm"),  :select, menu: person_realm_menu(params[:realm])],
+    [:order,  t("order"),         :select, menu: person_search_order_menu(params[:order])],
+  ]
+= render "utils/search/form", index: people_path, inputs: inputs, remote: false
 
 .row.mt-3
   .col-12.col-lg-10.offset-lg-1.col-xl-8.offset-xl-2
-    %table{class: "table table-bordered table-striped"}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
           %th.col-9= t("name")

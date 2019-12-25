@@ -88,7 +88,7 @@ describe Person do
 
       expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
 
     it "no birth year" do
@@ -99,7 +99,7 @@ describe Person do
 
       expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
-      expect(page).to have_css(error, text: /not a number/)
+      expect_error(page, "not a number")
     end
 
     it "died before born" do
@@ -112,7 +112,7 @@ describe Person do
 
       expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
-      expect(page).to have_css(error, text: /died.*born/i)
+      expect_error(page, "died before")
     end
 
     it "born before father" do
@@ -125,7 +125,7 @@ describe Person do
 
       expect(page).to have_title t("person.new")
       expect(Person.count).to eq count
-      expect(page).to have_css(error, text: /born.*father/i)
+      expect_error(page, "born before")
     end
   end
 

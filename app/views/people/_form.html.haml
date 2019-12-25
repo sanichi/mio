@@ -1,26 +1,22 @@
-- content_for :javascript do
-  = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm
-
-.row
-  .offset-md-1.col-md-11
-    = form_for person, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: person, col: "md", pad: 3}
-      = render "utils/text_field_for", shared.merge(param: :last_name, text: t("person.last_name"), width: 5)
-      = render "utils/text_field_for", shared.merge(param: :first_names, text: t("person.first_names"), width: 6)
-      = render "utils/text_field_for", shared.merge(param: :known_as, text: t("person.known_as"), width: 4)
-      = render "utils/text_field_for", shared.merge(param: :married_name, text: t("person.married_name"), width: 5)
-      = render "utils/text_field_for", shared.merge(param: :born, text: t("person.born"), width: 3)
-      = render "utils/check_box_for", shared.merge(param: :born_guess, text: t("person.born_guess"), width: 1)
-      = render "utils/text_field_for", shared.merge(param: :died, text: t("person.died"), width: 3)
-      = render "utils/check_box_for", shared.merge(param: :died_guess, text: t("person.died_guess"), width: 1)
-      = render "utils/check_box_for", shared.merge(param: :male, text: t("person.male"), width: 1)
-      = render "utils/select_completer_for", shared.merge(param: :father_id, text: t("person.father"), menu: person_father_menu(person), width: 4)
-      = render "utils/select_completer_for", shared.merge(param: :mother_id, text: t("person.mother"), menu: person_mother_menu(person), width: 4)
-      = render "utils/select_for", shared.merge(param: :realm, text: t("person.realm"), menu: person_realm_menu(person.realm), width: 2)
-      = render "utils/text_area_for", shared.merge(param: :notes, text: t("notes"), width: 9)
-      .row
-        .offset-md-3.col-md-9
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), person.new_record?? people_path : person, class: "btn btn-secondary"
-          - unless person.new_record?
-            = link_to t("delete"), person, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+-# - content_for :javascript do
+-#   = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm
+-#
+-#       = render "utils/select_completer_for", shared.merge(param: :father_id, text: t("person.father"), menu: person_father_menu(person), width: 4)
+-#       = render "utils/select_completer_for", shared.merge(param: :mother_id, text: t("person.mother"), menu: person_mother_menu(person), width: 4)
+:ruby
+  inputs = [
+    [:last_name,    t("person.last_name"),    :text, maxlength: Person::MAX_FN],
+    [:first_names,  t("person.first_names"),  :text, maxlength: Person::MAX_LN],
+    [:known_as,     t("person.known_as"),     :text, maxlength: Person::MAX_KA],
+    [:married_name, t("person.married_name"), :text, maxlength: Person::MAX_LN],
+    [:born,         t("person.born"),         :text, maxlength: 4],
+    [:born_guess,   t("person.born_guess"),   :check],
+    [:died,         t("person.died"),         :text, maxlength: 4],
+    [:died_guess,   t("person.died_guess"),   :check],
+    [:male,         t("person.male"),         :check],
+    [:father_id,    t("person.father"),       :select, menu: person_father_menu(person)],
+    [:mother_id,    t("person.mother"),       :select, menu: person_mother_menu(person)],
+    [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
+    [:notes,        t("notes"),               :area,   rows: 10],
+  ]
+= render "utils/crud/form", object: person, index: people_path, inputs: inputs, title: title
