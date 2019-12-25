@@ -51,7 +51,7 @@ describe Partnership do
 
       expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
 
     it "no wedding" do
@@ -63,7 +63,7 @@ describe Partnership do
 
       expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
-      expect(page).to have_css(error, text: "blank")
+      expect_error(page, "blank")
     end
 
     it "wedding before born" do
@@ -76,7 +76,7 @@ describe Partnership do
 
       expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 0
-      expect(page).to have_css(error, text: /before.*born/i)
+      expect_error(page, "before")
     end
 
     it "duplicate" do
@@ -93,7 +93,7 @@ describe Partnership do
 
       expect(page).to have_title t("partnership.new")
       expect(Partnership.count).to eq 1
-      expect(page).to have_css(error, text: /already.*taken/i)
+      expect_error(page, "already")
     end
   end
 

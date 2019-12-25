@@ -24,6 +24,7 @@ class PartnershipsController < ApplicationController
     if @partnership.save
       redirect_to @partnership
     else
+      failure @partnership
       render :new
     end
   end
@@ -32,6 +33,7 @@ class PartnershipsController < ApplicationController
     if @partnership.update(strong_params)
       redirect_to @partnership
     else
+      failure @partnership
       render :edit
     end
   end

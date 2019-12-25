@@ -1,19 +1,17 @@
 = render "utils/title", key: "partnership.partnerships"
 
-= form_tag partnerships_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :male, t("person.male"), class: "sr-only"
-  = text_field_tag :male, params[:male], class: "form-control mr-1 mb-1", placeholder: t("person.male"), size: 12
-  = label_tag :female, t("person.female"), class: "sr-only"
-  = text_field_tag :female, params[:female], class: "form-control mr-1 mb-1", placeholder: t("person.female"), size: 12
-  = label_tag :wedding, t("partnership.wedding"), class: "sr-only"
-  = text_field_tag :wedding, params[:wedding], class: "form-control mr-1 mb-1", placeholder: t("partnership.wedding"), size: 12
-  = label_tag :realm, t("person.realm"), class: "sr-only"
-  = select_tag :realm, person_realm_menu(params[:realm]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  inputs = [
+    [:male,    t("person.male"),         :text,   size: 12, value: params[:male]],
+    [:female,  t("person.female"),       :text,   size: 12, value: params[:female]],
+    [:wedding, t("partnership.wedding"), :text,   size: 12, value: params[:wedding]],
+    [:realm,   t("person.realm"),        :select, menu: person_realm_menu(params[:realm])],
+  ]
+= render "utils/search/form", index: partnerships_path, inputs: inputs, remote: false
 
 .row.mt-3
-  .col-12.col-lg-10.offset-lg-1.col-xl-8.offset-xl-2
-    %table{class: "table table-bordered table-striped"}
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
           %th= t("partnership.husband")
