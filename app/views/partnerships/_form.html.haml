@@ -1,12 +1,10 @@
--# - content_for :javascript do
--#   = render "couples_completer.js", realm: partnership.realm
--#
--#       = render "utils/select_completer_for", shared.merge(param: :husband_id, text: t("partnership.husband"), menu: partnership_husband_menu(partnership), width: 4, cwidth: 3)
--#       = render "utils/select_completer_for", shared.merge(param: :wife_id, text: t("partnership.wife"), menu: partnership_wife_menu(partnership), width: 4, cwidth: 3)
+- content_for :javascript do
+  = render "couples_completer.js", realm: partnership.realm
+
 :ruby
   inputs = [
-    [:husband_id,    t("partnership.husband"),       :select, menu: partnership_husband_menu(partnership)],
-    [:wife_id,       t("partnership.wife"),          :select, menu: partnership_wife_menu(partnership)],
+    [:husband_id,    t("partnership.husband"),       :combo,  menu: partnership_husband_menu(partnership)],
+    [:wife_id,       t("partnership.wife"),          :combo,  menu: partnership_wife_menu(partnership)],
     [:wedding,       t("partnership.wedding"),       :text,   maxlength: 4],
     [:wedding_guess, t("partnership.wedding_guess"), :check],
     [:divorce,       t("partnership.divorce"),       :text,   maxlength: 4],

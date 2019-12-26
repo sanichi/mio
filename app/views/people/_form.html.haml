@@ -1,21 +1,19 @@
--# - content_for :javascript do
--#   = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm
--#
--#       = render "utils/select_completer_for", shared.merge(param: :father_id, text: t("person.father"), menu: person_father_menu(person), width: 4)
--#       = render "utils/select_completer_for", shared.merge(param: :mother_id, text: t("person.mother"), menu: person_mother_menu(person), width: 4)
+- content_for :javascript do
+  = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm
+
 :ruby
   inputs = [
-    [:last_name,    t("person.last_name"),    :text, maxlength: Person::MAX_FN],
-    [:first_names,  t("person.first_names"),  :text, maxlength: Person::MAX_LN],
-    [:known_as,     t("person.known_as"),     :text, maxlength: Person::MAX_KA],
-    [:married_name, t("person.married_name"), :text, maxlength: Person::MAX_LN],
-    [:born,         t("person.born"),         :text, maxlength: 4],
+    [:last_name,    t("person.last_name"),    :text,   maxlength: Person::MAX_FN],
+    [:first_names,  t("person.first_names"),  :text,   maxlength: Person::MAX_LN],
+    [:known_as,     t("person.known_as"),     :text,   maxlength: Person::MAX_KA],
+    [:married_name, t("person.married_name"), :text,   maxlength: Person::MAX_LN],
+    [:born,         t("person.born"),         :text,   maxlength: 4],
     [:born_guess,   t("person.born_guess"),   :check],
-    [:died,         t("person.died"),         :text, maxlength: 4],
+    [:died,         t("person.died"),         :text,   maxlength: 4],
     [:died_guess,   t("person.died_guess"),   :check],
     [:male,         t("person.male"),         :check],
-    [:father_id,    t("person.father"),       :select, menu: person_father_menu(person)],
-    [:mother_id,    t("person.mother"),       :select, menu: person_mother_menu(person)],
+    [:father_id,    t("person.father"),       :combo,  menu: person_father_menu(person)],
+    [:mother_id,    t("person.mother"),       :combo,  menu: person_mother_menu(person)],
     [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
     [:notes,        t("notes"),               :area,   rows: 10],
   ]
