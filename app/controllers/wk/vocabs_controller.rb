@@ -15,6 +15,7 @@ module Wk
         @vocab.update_column(:last_noted, Time.now)
         redirect_to @vocab
       else
+        failure @vocab
         render :edit
       end
     end

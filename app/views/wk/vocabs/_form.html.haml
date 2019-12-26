@@ -1,7 +1,15 @@
-= form_for vocab, html: { class: "form-horizontal" } do |f|
-  %fieldset
-    = render "utils/text_area_for", form: f, object: vocab, col: "md", pad: 1, param: :notes, text: t("notes"), rows: 20, width: 11
-  .row
-    .offset-md-1.col-md-11
-      = f.submit t("save"), class: "btn btn-primary"
-      = link_to t("cancel"), vocab, class: "btn btn-secondary"
+-# custom version of utils/crud/_form
+.row
+  %div{class: center(xl: 10)}
+    = form_for vocab, html: { class: "crud" } do |form|
+      %section
+        .header.text-center
+          %h4.d-inline= vocab.characters
+        .body
+          -# custom version of utils/crud/_area
+          = form.label :notes, t("notes")
+          = form.text_area :notes, rows: 20
+        .footer
+          -# custom version of utils/crud/_buttons
+          = form.submit t("save"), class: "btn btn-primary btn-sm"
+          = link_to t("cancel"), vocab, class: "btn btn-secondary btn-sm"
