@@ -1,0 +1,7 @@
+- defined?(term)        || term = :term
+- defined?(placeholder) || placeholder = t("search")
+
+= label_tag select_id, label
+.row
+  .col-6= select_tag param, menu, id: select_id
+  .col-6= text_field_tag term, "", id: completer_id, placeholder: placeholder

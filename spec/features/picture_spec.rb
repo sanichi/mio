@@ -90,7 +90,7 @@ describe Picture do
         expect(page).to have_title t("picture.new")
         expect(Picture.count).to eq 0
         expect(PersonPicture.count).to eq 0
-        expect(page).to have_css(error, text: "invalid filename")
+        expect_error(page, "invalid filename")
       end
     end
   end

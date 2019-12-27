@@ -3,18 +3,14 @@
 - content_for :javascript do
   = render "person_completer.js", number: number, realm: picture.realm
 
-.row
-  .col-md-12
-    = form_for picture, html: { class: "form-horizontal" } do |f|
-      - shared = { form: f, object: picture, col: "md", pad: 2}
-      = render "utils/file_field_for", shared.merge(param: :image, text: t("picture.file"), width: 4)
-      = render "check_box_completers", shared.merge(param: :people, width: 4, number: number)
-      = render "utils/check_box_for", shared.merge(param: :portrait, text: t("picture.portrait"), width: 1)
-      = render "utils/select_for", shared.merge(param: :realm, text: t("person.realm"), menu: person_realm_menu(picture.realm), width: 2)
-      = render "utils/text_area_for", shared.merge(param: :description, text: t("description"), width: 10)
-      .row
-        .offset-md-2.col-md-10
-          = f.submit t("save"), class: "btn btn-primary"
-          = link_to t("cancel"), picture.new_record?? pictures_path : picture, class: "btn btn-secondary"
-          - unless picture.new_record?
-            = link_to t("delete"), picture, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+:ruby
+  inputs = [
+    [:image,       t("picture.file"),     :file],
+    [:portrait,    t("picture.portrait"), :check],
+    [:realm,       t("person.realm"),     :select, menu: person_realm_menu(picture.realm)],
+    [:description, t("description"),      :area,   rows: 10],
+  ]
+  (0..number-1).to_a.reverse.each do |i|
+    inputs.insert 1, ["picture[people][]", t("picture.person", number: i + 1), :combo2, menu: picture_person_menu(picture, i), select_id: "picture_people_#{i}", completer_id: "person_id_completer_#{i}"]
+  end
+= render "utils/crud/form", object: picture, index: pictures_path, inputs: inputs, title: title

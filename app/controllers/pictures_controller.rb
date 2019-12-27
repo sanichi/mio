@@ -21,6 +21,7 @@ class PicturesController < ApplicationController
     if @picture.save
       redirect_to @picture
     else
+      failure @picture
       render :new
     end
   end
@@ -30,6 +31,7 @@ class PicturesController < ApplicationController
     if @picture.update(strong_params)
       redirect_to @picture
     else
+      failure @picture
       render :edit
     end
   end
