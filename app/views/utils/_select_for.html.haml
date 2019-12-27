@@ -1,7 +1,0 @@
-- defined?(multiple) || multiple = false
-- defined?(size)     || size     = multiple ? 4 : 1
-
-.form-group.row{class: object.errors[param].any? ? "has-error" : ""}
-  = form.label param, text, class: "col-form-label col-#{col}-#{pad}"
-  %div{class: "col-#{col}-#{width}"}= form.select param, menu, {}, class: "form-control input-sm", multiple: multiple, size: size
-  %div{class: "col-#{col}-#{12-pad-width} help-block"}= object.errors[param].first

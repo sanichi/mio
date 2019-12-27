@@ -52,10 +52,6 @@ def t(key, *arg)
   I18n.t(key, *arg)
 end
 
-def error
-  "div.help-block"
-end
-
 def expect_error(page, text)
   expect(page).to have_css("div.alert-danger", text: text)
 end
