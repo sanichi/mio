@@ -3,6 +3,7 @@ class FlatsController < ApplicationController
   before_action :find_flat, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_search(flats_path)
     @flats = Flat.search(params, flats_path, remote: true)
   end
 

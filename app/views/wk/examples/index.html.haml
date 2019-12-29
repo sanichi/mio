@@ -16,7 +16,7 @@
     = render "results", examples: @examples
 
 .text-center.mt3
-  = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
-  = link_to t("wk.group.groups"), wk_groups_path, class: "btn btn-success"
+  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
+  = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success"
   - if can?(:create, Wk::Example)
     = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-info"

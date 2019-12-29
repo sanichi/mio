@@ -3,7 +3,7 @@ class BucketsController < ApplicationController
   before_action :find_bucket, only: [:edit, :update, :show, :destroy]
 
   def index
-    remember_last_path(:buckets)
+    remember_last_search(buckets_path)
     @buckets = Bucket.search(params)
   end
 

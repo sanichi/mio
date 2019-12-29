@@ -3,6 +3,7 @@ class NotesController < ApplicationController
   before_action :find_note, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_search(notes_path)
     @notes = Note.search(params, notes_path, per_page: 20)
   end
 

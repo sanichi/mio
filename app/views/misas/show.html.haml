@@ -17,6 +17,6 @@
     .card-body= @misa.note_html
 
 .text-center.mt-3
-  = link_to t("misa.misas"), misas_path, class: "btn btn-success"
+  = link_to t("misa.misas"), last_search(misas_path), class: "btn btn-success"
   - if can?(:edit, Misa)
     = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-info"

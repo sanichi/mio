@@ -24,7 +24,7 @@
           %td= @flat.name
 
 .text-center
-  = link_to t("flat.flats"), flats_path, class: "btn btn-success"
+  = link_to t("flat.flats"), last_search(flats_path), class: "btn btn-success"
   - if can?(:manage, Flat)
     = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-info"
 

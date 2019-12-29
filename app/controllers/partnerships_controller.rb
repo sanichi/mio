@@ -3,6 +3,7 @@ class PartnershipsController < ApplicationController
   before_action :find_partnership, only: [:destroy, :edit, :show, :update]
 
   def index
+    remember_last_search(partnerships_path)
     @partnerships = Partnership.search(params, partnerships_path)
   end
 

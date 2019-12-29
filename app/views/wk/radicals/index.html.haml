@@ -24,5 +24,5 @@
         = render "results", radicals: @radicals
 
 .text-center
-  = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "btn btn-success"
-  = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success"
+  = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
+  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"

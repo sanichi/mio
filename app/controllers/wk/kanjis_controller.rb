@@ -3,6 +3,7 @@ module Wk
     authorize_resource
 
     def index
+      remember_last_search(wk_kanjis_path)
       @kanjis = Wk::Kanji.search(params, wk_kanjis_path, per_page: 20)
       if @kanjis.count == 1
         redirect_to @kanjis.matches.first

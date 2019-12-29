@@ -3,6 +3,7 @@ class MisasController < ApplicationController
   before_action :find_misa, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_search(misas_path)
     @misas = Misa.search(params, misas_path, per_page: 20)
   end
 

@@ -27,6 +27,6 @@
           %td{colspan: 2}= @favourite.note_html
 
 .text-center
-  = link_to t("favourite.favourites"), last_path(:favourites), class: "btn btn-success"
+  = link_to t("favourite.favourites"), last_search(favourites_path), class: "btn btn-success"
   - if can?(:manage, Favourite)
     = link_to t("edit"), edit_favourite_path(@favourite), class: "btn btn-info"

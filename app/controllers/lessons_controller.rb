@@ -3,6 +3,7 @@ class LessonsController < ApplicationController
   before_action :find_lesson, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_search(lessons_path)
     @lessons = Lesson.search(params, lessons_path, per_page: 20)
   end
 

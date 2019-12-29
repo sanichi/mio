@@ -33,7 +33,7 @@ module ApplicationHelper
     klass.any? ? klass.join(" ") : "col-12"
   end
 
-  def last_path(name)
-    session["last_#{name}_path"] || "/#{name}"
+  def last_search(path)
+    session["last_#{path}_search"] || path
   end
 end

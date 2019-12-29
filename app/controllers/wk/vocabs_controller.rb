@@ -4,6 +4,7 @@ module Wk
     before_action :find_vocab, only: [:edit, :show, :update, :quick_accent_update]
 
     def index
+      remember_last_search(wk_vocabs_path)
       @vocabs = Wk::Vocab.search(params, wk_vocabs_path, per_page: 20)
       if @vocabs.count == 1
         redirect_to @vocabs.matches.first

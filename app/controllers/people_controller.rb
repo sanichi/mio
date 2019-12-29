@@ -3,6 +3,7 @@ class PeopleController < ApplicationController
   before_action :find_person, only: [:destroy, :edit, :show, :update]
 
   def index
+    remember_last_search(people_path)
     @people = Person.search(params, people_path)
   end
 

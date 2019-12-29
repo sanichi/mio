@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     session[:last_path] = request.path
   end
 
-  def remember_last_path(name)
-    session["last_#{name}_path".to_sym] = request.fullpath
+  def remember_last_search(path)
+    session["last_#{path}_search"] = request.fullpath
   end
 end

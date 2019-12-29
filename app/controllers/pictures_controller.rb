@@ -3,6 +3,7 @@ class PicturesController < ApplicationController
   before_action :find_picture, only: [:show, :edit, :update, :destroy]
 
   def index
+    remember_last_search(pictures_path)
     @pictures = Picture.search(params)
     prev_next(:picture_ids, @pictures)
   end

@@ -23,7 +23,7 @@
     .card-body= @lesson.note_html
 
 .text-center.mt-3
-  = link_to t("lesson.lessons"), lessons_path, class: "btn btn-success"
+  = link_to t("lesson.lessons"), last_search(lessons_path), class: "btn btn-success"
   - if can?(:edit, Lesson)
     = link_to t("edit"), edit_lesson_path(@lesson), class: "btn btn-info"
   - if can?(:delete, Lesson)

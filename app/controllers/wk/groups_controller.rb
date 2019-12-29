@@ -4,6 +4,7 @@ module Wk
     before_action :find_group, only: [:edit, :update, :destroy]
 
     def index
+      remember_last_search(wk_groups_path)
       @groups = Wk::Group.search(params, wk_groups_path, per_page: 20)
     end
 
