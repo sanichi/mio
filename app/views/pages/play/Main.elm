@@ -3,7 +3,6 @@ module Main exposing (Model, initModel, initTasks, main, panel, subscriptions, u
 -- local modules
 
 import Browser
-import Checker
 import Counter
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -29,9 +28,7 @@ main =
 initTasks : Cmd Msg
 initTasks =
     Cmd.batch
-        [ Checker.check
-        , Randoms.request
-        ]
+        [ Randoms.request ]
 
 
 subscriptions : Model -> Sub Msg
@@ -46,7 +43,6 @@ subscriptions model =
 
 type alias Model =
     { counter : Counter.Model
-    , checker : Checker.Model
     , randoms : Randoms.Model
     }
 
@@ -54,7 +50,6 @@ type alias Model =
 initModel : Model
 initModel =
     { counter = Counter.init
-    , checker = Checker.init
     , randoms = Randoms.init
     }
 
@@ -68,7 +63,6 @@ view model =
     div []
         [ panel "Counter" (Counter.view model.counter)
         , panel "Randoms" (Randoms.view model.randoms)
-        , panel "Checker" (Checker.view model.checker)
         ]
 
 
@@ -92,15 +86,6 @@ update msg model =
 
         CounterReset ->
             ( { model | counter = Counter.init }, Cmd.none )
-
-        CheckRequest ->
-            ( model, Checker.check )
-
-        CheckFail err ->
-            ( { model | checker = Checker.fail model.checker err }, Cmd.none )
-
-        CheckSucceed ( ok, message ) ->
-            ( { model | checker = Checker.succeed model.checker ok message }, Cmd.none )
 
         RandomRequest ->
             ( model, Randoms.request )
