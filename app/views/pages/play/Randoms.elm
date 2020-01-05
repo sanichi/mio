@@ -24,7 +24,7 @@ reset rand =
 view : Model -> Html Msg
 view rand =
     div []
-        [ button [ class "btn btn-success btn-lg" ] [ text (String.fromInt rand) ]
+        [ button [ class "btn btn-success btn-sm" ] [ text (String.fromInt rand) ]
         , button [ class "btn btn-warning btn-sm float-right", onClick RandomRequest ] [ text "↩︎" ]
         ]
 

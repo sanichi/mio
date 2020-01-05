@@ -68,9 +68,9 @@ view model =
 
 panel : String -> Html Msg -> Html Msg
 panel title body =
-    div [ class "card mt-3" ]
-        [ div [ class "card-header" ] [ text title ]
-        , div [ class "card-body" ] [ body ]
+    section [ class "card mt-3" ]
+        [ div [ class "header" ] [ text title ]
+        , div [ class "body" ] [ body ]
         ]
 
 

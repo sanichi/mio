@@ -23,7 +23,7 @@ increment counter =
 view : Model -> Html Msg
 view counter =
     div []
-        [ button [ class "btn btn-success btn-lg" ] [ text (String.fromInt counter) ]
+        [ button [ class "btn btn-success btn-sm" ] [ text (String.fromInt counter) ]
         , div [ class "float-right" ]
             [ button [ class "btn btn-danger btn-sm", onClick CounterIncrement ] [ text "+" ]
             , span [] [ text " " ]

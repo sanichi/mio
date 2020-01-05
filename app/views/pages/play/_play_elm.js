@@ -5212,12 +5212,13 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$section = _VirtualDom_node('section');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$panel = F2(
 	function (title, body) {
 		return A2(
-			$elm$html$Html$div,
+			$elm$html$Html$section,
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class('card mt-3')
@@ -5228,7 +5229,7 @@ var $author$project$Main$panel = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('card-header')
+							$elm$html$Html$Attributes$class('header')
 						]),
 					_List_fromArray(
 						[
@@ -5238,7 +5239,7 @@ var $author$project$Main$panel = F2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('card-body')
+							$elm$html$Html$Attributes$class('body')
 						]),
 					_List_fromArray(
 						[body]))
@@ -5275,7 +5276,7 @@ var $author$project$Counter$view = function (counter) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('btn btn-success btn-lg')
+						$elm$html$Html$Attributes$class('btn btn-success btn-sm')
 					]),
 				_List_fromArray(
 					[
@@ -5333,7 +5334,7 @@ var $author$project$Randoms$view = function (rand) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('btn btn-success btn-lg')
+						$elm$html$Html$Attributes$class('btn btn-success btn-sm')
 					]),
 				_List_fromArray(
 					[
