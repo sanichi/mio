@@ -27,8 +27,9 @@ main =
 
 initTasks : Cmd Msg
 initTasks =
-    Cmd.batch
-        [ Randoms.request ]
+    -- Cmd.batch
+    --     [ Randoms.request ]
+    Randoms.request
 
 
 subscriptions : Model -> Sub Msg
@@ -83,6 +84,9 @@ update msg model =
     case msg of
         CounterIncrement ->
             ( { model | counter = Counter.increment model.counter }, Cmd.none )
+
+        CounterDecrement ->
+            ( { model | counter = Counter.decrement model.counter }, Cmd.none )
 
         CounterReset ->
             ( { model | counter = Counter.init }, Cmd.none )

@@ -2704,7 +2704,7 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		o: func(record.o),
+		p: func(record.p),
 		L: record.L,
 		I: record.I
 	}
@@ -2974,7 +2974,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.o;
+		var message = !tag ? value : tag < 3 ? value.a : value.p;
 		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
@@ -5140,7 +5140,7 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Counter$init = 0;
 var $author$project$Randoms$init = 0;
-var $author$project$Main$initModel = {v: $author$project$Counter$init, F: $author$project$Randoms$init};
+var $author$project$Main$initModel = {o: $author$project$Counter$init, F: $author$project$Randoms$init};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $author$project$Ports$random_request = _Platform_outgoingPort(
@@ -5154,7 +5154,7 @@ var $author$project$Main$initTasks = $elm$core$Platform$Cmd$batch(
 		[$author$project$Randoms$request]));
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $author$project$Messages$RandomResponse = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Ports$random_response = _Platform_incomingPort('random_response', $elm$json$Json$Decode$int);
@@ -5163,6 +5163,9 @@ var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$batch(
 		_List_fromArray(
 			[$author$project$Randoms$respond]));
+};
+var $author$project$Counter$decrement = function (counter) {
+	return counter - 1;
 };
 var $author$project$Counter$increment = function (counter) {
 	return counter + 1;
@@ -5179,16 +5182,24 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							v: $author$project$Counter$increment(model.v)
+							o: $author$project$Counter$increment(model.o)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 1:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{v: $author$project$Counter$init}),
+						{
+							o: $author$project$Counter$decrement(model.o)
+						}),
 					$elm$core$Platform$Cmd$none);
 			case 2:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{o: $author$project$Counter$init}),
+					$elm$core$Platform$Cmd$none);
+			case 3:
 				return _Utils_Tuple2(model, $author$project$Randoms$request);
 			default:
 				var num = msg.a;
@@ -5245,8 +5256,9 @@ var $author$project$Main$panel = F2(
 						[body]))
 				]));
 	});
+var $author$project$Messages$CounterDecrement = {$: 1};
 var $author$project$Messages$CounterIncrement = {$: 0};
-var $author$project$Messages$CounterReset = {$: 1};
+var $author$project$Messages$CounterReset = {$: 2};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
@@ -5265,7 +5277,6 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$html$Html$span = _VirtualDom_node('span');
 var $author$project$Counter$view = function (counter) {
 	return A2(
 		$elm$html$Html$div,
@@ -5295,7 +5306,7 @@ var $author$project$Counter$view = function (counter) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm'),
+								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
 								$elm$html$Html$Events$onClick($author$project$Messages$CounterIncrement)
 							]),
 						_List_fromArray(
@@ -5303,27 +5314,31 @@ var $author$project$Counter$view = function (counter) {
 								$elm$html$Html$text('+')
 							])),
 						A2(
-						$elm$html$Html$span,
-						_List_Nil,
+						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$text(' ')
+								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
+								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('0')
 							])),
 						A2(
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-warning btn-sm'),
-								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
+								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+								$elm$html$Html$Events$onClick($author$project$Messages$CounterDecrement)
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('↩︎')
+								$elm$html$Html$text('-')
 							]))
 					]))
 			]));
 };
-var $author$project$Messages$RandomRequest = {$: 2};
+var $author$project$Messages$RandomRequest = {$: 3};
 var $author$project$Randoms$view = function (rand) {
 	return A2(
 		$elm$html$Html$div,
@@ -5350,7 +5365,7 @@ var $author$project$Randoms$view = function (rand) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('↩︎')
+						$elm$html$Html$text('R')
 					]))
 			]));
 };
@@ -5363,7 +5378,7 @@ var $author$project$Main$view = function (model) {
 				A2(
 				$author$project$Main$panel,
 				'Counter',
-				$author$project$Counter$view(model.v)),
+				$author$project$Counter$view(model.o)),
 				A2(
 				$author$project$Main$panel,
 				'Randoms',

@@ -1,4 +1,4 @@
-module Counter exposing (Model, increment, init, view)
+module Counter exposing (Model, decrement, increment, init, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -20,13 +20,18 @@ increment counter =
     counter + 1
 
 
+decrement : Model -> Model
+decrement counter =
+    counter - 1
+
+
 view : Model -> Html Msg
 view counter =
     div []
         [ button [ class "btn btn-success btn-sm" ] [ text (String.fromInt counter) ]
         , div [ class "float-right" ]
-            [ button [ class "btn btn-danger btn-sm", onClick CounterIncrement ] [ text "+" ]
-            , span [] [ text " " ]
-            , button [ class "btn btn-warning btn-sm", onClick CounterReset ] [ text "↩︎" ]
+            [ button [ class "btn btn-primary btn-sm ml-1", onClick CounterIncrement ] [ text "+" ]
+            , button [ class "btn btn-warning btn-sm ml-1", onClick CounterReset ] [ text "0" ]
+            , button [ class "btn btn-danger btn-sm ml-1", onClick CounterDecrement ] [ text "-" ]
             ]
         ]
