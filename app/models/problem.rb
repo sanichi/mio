@@ -1,6 +1,7 @@
 class Problem < ApplicationRecord
   include Pageable
   include Remarkable
+  include Vocabable
 
   MAX_AUDIO = 20
   MAX_LEVEL = I18n.t("problem.levels").size - 1
@@ -46,7 +47,7 @@ class Problem < ApplicationRecord
   end
 
   def note_html
-    to_html(note)
+    to_html(link_vocabs(note))
   end
 
   def description(locale="jp")
