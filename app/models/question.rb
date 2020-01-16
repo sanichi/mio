@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   include Constrainable
   include Remarkable
+  include Vocabable
 
   MAX_ANSWER = 100
   MAX_AUDIO = 20
@@ -42,7 +43,7 @@ class Question < ApplicationRecord
   end
 
   def note_html
-    to_html(note)
+    to_html(link_vocabs(note))
   end
 
   def count(qids)
