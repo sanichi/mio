@@ -4,7 +4,7 @@ class Misa < ApplicationRecord
   include Remarkable
   include Vocabable
 
-  CATEGORIES = %w/none beginners counters dajare difference howto mistakes native proverbs shadowing vocab yuta tofugu dogen smile/
+  CATEGORIES = %w/none beginners counters dajare difference grammar howto mistakes native proverbs shadowing vocab yuta tofugu dogen smile/
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
   MAX_TITLE = 150
