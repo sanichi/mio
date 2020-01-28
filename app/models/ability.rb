@@ -12,6 +12,10 @@ class Ability
       can :read, [Picture, Partnership]
     end
 
+    if user.chess?
+      can :read, Lesson
+    end
+
     can :read, [Bucket, Favourite]
     can [:read, :graph], Mass
     can [:aoc, :pam, :risle], :page
