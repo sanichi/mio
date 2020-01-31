@@ -1,13 +1,5 @@
 = render "utils/title", key: "user.users", header: true
 
-:ruby
-  inputs = [
-    [:email, t("email"),             :text,   size: 10],
-    [:year,  t("person.last_name"),  :text,   size: 10],
-    [:year,  t("person.first_name"), :text,   size: 10],
-  ]
-= render "utils/search/form", index: users_path, inputs: inputs
-
 .row.mt-3
   %div{class: center(lg: 6, md: 8, sm: 10)}
   .offset-md-2.col-md-8.offset-xl-3.col-xl-6
@@ -17,8 +9,12 @@
           %th= t("email")
           %th= t("name")
           %th= t("user.role")
-      %tbody{id: "results"}
-        = render "results", users: @users
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td= link_to user.email, user
+            %td= user.name
+            %td= t("user.roles.#{user.role}")
 
 - if can?(:create, User)
   .text-center

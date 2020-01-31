@@ -4,8 +4,8 @@ class Person < ApplicationRecord
   include Remarkable
 
   has_and_belongs_to_many :pictures
-  belongs_to :father, class_name: "Person"
-  belongs_to :mother, class_name: "Person"
+  belongs_to :father, class_name: "Person", optional: true
+  belongs_to :mother, class_name: "Person", optional: true
   has_many :partnerships_as_male, class_name: "Partnership", foreign_key: "husband_id", dependent: :destroy
   has_many :partnerships_as_female, class_name: "Partnership", foreign_key: "wife_id", dependent: :destroy
   has_many :fathered_children, class_name: "Person", foreign_key: "father_id", dependent: :nullify

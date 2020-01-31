@@ -15,6 +15,8 @@ describe User do
       click_link t("user.new")
       fill_in t("email"), with: data.email
       fill_in t("session.password"), with: data.password
+      fill_in t("person.first_name"), with: data.first_name
+      fill_in t("person.last_name"), with: data.last_name
       select role, from: t("user.role")
       click_button t("save")
 
@@ -26,6 +28,8 @@ describe User do
       expect(u.email).to eq data.email
       expect(u.encrypted_password).to eq Digest::MD5.hexdigest(data.password)
       expect(u.person_id).to be_nil
+      expect(u.first_name).to eq data.first_name
+      expect(u.last_name).to eq data.last_name
       expect(u.role).to eq data.role
     end
   end
@@ -36,6 +40,8 @@ describe User do
     it "no password" do
       click_link t("user.new")
       fill_in t("email"), with: data.email
+      fill_in t("person.first_name"), with: data.first_name
+      fill_in t("person.last_name"), with: data.last_name
       select role, from: t("user.role")
       click_button t("save")
 
@@ -48,6 +54,8 @@ describe User do
       click_link t("user.new")
       fill_in t("email"), with: user.email
       fill_in t("session.password"), with: data.password
+      fill_in t("person.first_name"), with: data.first_name
+      fill_in t("person.last_name"), with: data.last_name
       select role, from: t("user.role")
       click_button t("save")
 

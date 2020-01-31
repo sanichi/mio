@@ -1,8 +1,9 @@
 :ruby
   inputs = [
-    [:role,      t("user.role"),        :select, menu: user_role_menu(user)],
-    [:email,     t("email"),            :text,   maxlength: User::MAX_EMAIL],
-    [:password,  t("session.password"), :text],
-    [:person_id, t("person.person"),    :select, menu: user_person_menu(user)],
+    [:role,       t("user.role"),         :select, menu: user_role_menu(user)],
+    [:email,      t("email"),             :text,   maxlength: User::MAX_EMAIL],
+    [:password,   t("session.password"),  :text],
+    [:first_name, t("person.first_name"), :text, maxlength: User::MAX_FN],
+    [:last_name,  t("person.last_name"),  :text, maxlength: User::MAX_LN],
   ]
 = render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, centered: center(xl: 6, lg: 8, md: 10)

@@ -8,8 +8,8 @@
           %th= t("user.role")
           %td= t("user.roles.#{@user.role}")
         %tr
-          %th= t("person.person")
-          %td= link_to @user.person.name(full: false), @user.person if @user.person
+          %th= t("name")
+          %td= @user.name
 
 .text-center
   = link_to t("user.users"), users_path, class: "btn btn-success"

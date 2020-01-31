@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :find_user, only: [:destroy, :edit, :show, :update]
 
   def index
-    @users = User.search(params, users_path, remote: true)
+    @users = User.order(:email).all
   end
 
   def new
@@ -41,6 +41,6 @@ class UsersController < ApplicationController
   end
 
   def strong_params
-    params.require(:user).permit(:email, :password, :person_id, :role)
+    params.require(:user).permit(:email, :first_name, :last_name, :password, :role)
   end
 end
