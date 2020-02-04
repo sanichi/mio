@@ -3,8 +3,10 @@ en:
     date: date
     edit: Edit Tutorial
     new: New Tutorial
+    next: ▶︎
     notes: Notes
     number: "#"
+    prev: ◀︎
     summary: Summary
     title: "Lesson %{number}"
     tutorials: Tutorials

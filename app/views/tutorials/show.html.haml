@@ -1,5 +1,20 @@
 = render "utils/title", text: t("tutorial.title", number: @tutorial.number)
 
+- if @prev || @next
+  %p.text-center
+    %button.btn-success
+      - if @prev
+        = link_to @prev, class: "badge badge-light" do
+          = t("tutorial.prev")
+          = @prev.number
+      - if @prev && @next
+        = "&nbsp;".html_safe
+      - if @next
+        = link_to @next, class: "badge badge-light" do
+          = @next.number
+          = t("tutorial.next")
+
+
 .card
   .card-header
     = t("tutorial.title", number: @tutorial.number)

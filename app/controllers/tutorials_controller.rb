@@ -7,6 +7,11 @@ class TutorialsController < ApplicationController
     @tutorials = Tutorial.search(params, tutorials_path, per_page: 10)
   end
 
+  def show
+    @prev = Tutorial.by_date.where("date < ?", @tutorial.date).last
+    @next = Tutorial.by_date.where("date > ?", @tutorial.date).first
+  end
+
   def new
     @tutorial = Tutorial.new
   end
