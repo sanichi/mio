@@ -1,5 +1,10 @@
 = render "utils/title", text: t("tutorial.title", number: @tutorial.number)
 
+- comments, boards = @tutorial.split_notes
+
+= content_for :javascript do
+  = render "boards.js", fens: boards
+
 - if @prev || @next
   %p.text-center
     %button.btn-success
@@ -19,8 +24,11 @@
     = t("tutorial.title", number: @tutorial.number)
     .float-right= @tutorial.date.strftime("%Y-%m-%d")
   .card-body
-    - @tutorial.note_blocks.each do |b|
-      = b
+    - comments.each do |html|
+      - if html.match(/\AFEN__(\d+)\z/)
+        = render "board", id: $1
+      - else
+        = html
 
 .text-center.mt-3
   = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success"

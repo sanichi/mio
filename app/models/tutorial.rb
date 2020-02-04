@@ -27,21 +27,24 @@ class Tutorial < ApplicationRecord
     self.class.where("date < ?", date).count + 1
   end
 
-  def note_blocks
-    blocks = notes.present? ? notes.split(FEN1) : []
-    blocks.map! do |b|
-      if b.present?
-        if b.match(FEN2)
-          "<p>#{$1}</p>".html_safe
+  def split_notes
+    html = []
+    fens = []
+    fen_id = 0
+    parts = notes.present? ? notes.split(FEN1) : []
+    parts.each do |p|
+      if p.present?
+        if p.match(FEN2)
+          html.push "FEN__#{fen_id}"
+          fen_id += 1
+          fens.push $1
         else
-          to_html(b)
+          html.push to_html(p)
         end
-      else
-        nil
       end
-    end.compact!
-    blocks.unshift(to_html(I18n.t("tutorial.summary") + ": " + summary))
-    blocks
+    end
+    html.unshift "<p>Summary: #{summary}".html_safe
+    [html, fens]
   end
 
   private
