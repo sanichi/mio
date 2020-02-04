@@ -4,6 +4,8 @@ class Tutorial < ApplicationRecord
   include Remarkable
 
   MAX_SUMMARY = 100
+  FEN1 = /\n*\s*(FEN\s*"[^"]*")\s*\n*/
+  FEN2 = /\AFEN\s*"([^"]*)"\z/
 
   before_validation :normalize_attributes
 
@@ -25,13 +27,30 @@ class Tutorial < ApplicationRecord
     self.class.where("date < ?", date).count + 1
   end
 
-  def note_html
-    to_html(I18n.t("tutorial.summary") + ": " + summary)
+  def note_blocks
+    blocks = notes.present? ? notes.split(FEN1) : []
+    blocks.map! do |b|
+      if b.present?
+        if b.match(FEN2)
+          "<p>#{$1}</p>".html_safe
+        else
+          to_html(b)
+        end
+      else
+        nil
+      end
+    end.compact!
+    blocks.unshift(to_html(I18n.t("tutorial.summary") + ": " + summary))
+    blocks
   end
 
   private
 
   def normalize_attributes
     summary&.squish!
+    notes&.lstrip!
+    notes&.rstrip!
+    notes&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.notes = nil unless notes.present?
   end
 end

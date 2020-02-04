@@ -4,7 +4,9 @@
   .card-header
     = t("tutorial.title", number: @tutorial.number)
     .float-right= @tutorial.date.strftime("%Y-%m-%d")
-  .card-body= @tutorial.note_html
+  .card-body
+    - @tutorial.note_blocks.each do |b|
+      = b
 
 .text-center.mt-3
   = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success"

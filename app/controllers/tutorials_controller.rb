@@ -42,6 +42,6 @@ class TutorialsController < ApplicationController
   end
 
   def strong_params
-    params.require(:tutorial).permit(:date, :summary)
+    params.require(:tutorial).permit(:date, :notes, :summary)
   end
 end

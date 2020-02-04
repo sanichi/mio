@@ -14,6 +14,7 @@ describe Tutorial do
       click_link t("tutorial.new")
       fill_in t("date"), with: data.date
       fill_in t("tutorial.summary"), with: data.summary
+      fill_in t("tutorial.notes"), with: data.notes
       click_button t("save")
 
       expect(Tutorial.count).to eq 2
@@ -22,13 +23,14 @@ describe Tutorial do
       expect(page).to have_title t("tutorial.title", number: t.number)
 
       expect(t.date).to eq data.date
+      expect(t.notes).to eq data.notes
       expect(t.summary).to eq data.summary
     end
 
     it "failure" do
       click_link t("tutorial.new")
       fill_in t("date"), with: data.date
-      click_button t("save")
+      fill_in t("tutorial.notes"), with: data.notes
       click_button t("save")
 
       expect(page).to have_title t("tutorial.new")
