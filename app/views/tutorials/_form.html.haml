@@ -1,0 +1,6 @@
+:ruby
+  inputs = [
+    [:date,    t("date"),             :text],
+    [:summary, t("tutorial.summary"), :text, maxlength: Tutorial::MAX_SUMMARY],
+  ]
+= render "utils/crud/form", object: tutorial, index: tutorials_path, inputs: inputs, title: title

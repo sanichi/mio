@@ -52,14 +52,15 @@
         %li.dropdown
           = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
-            = link_to t("mass.mass"),       graph_masses_path if can?(:read, Mass)
-            = link_to t("bucket.buckets"),  buckets_path      if can?(:read, Bucket)
-            = link_to t("lesson.lessons"),  lessons_path      if can?(:read, Lesson)
-            = link_to t("pages.aoc.short"), aoc_path          if can?(:aoc, :page)
-            = link_to t("pages.magic"),     magic_path        if can?(:magic, :page)
-            = link_to t("pages.play"),      play_path         if can?(:play, :page)
-            = link_to t("user.users"),      users_path        if can?(:read, User)
-            = link_to t("login.logins"),    logins_path       if can?(:read, Login)
+            = link_to t("mass.mass"),          graph_masses_path if can?(:read, Mass)
+            = link_to t("bucket.buckets"),     buckets_path      if can?(:read, Bucket)
+            = link_to t("lesson.lessons"),     lessons_path      if can?(:read, Lesson)
+            = link_to t("tutorial.tutorials"), tutorials_path    if can?(:read, Tutorial)
+            = link_to t("pages.aoc.short"),    aoc_path          if can?(:aoc, :page)
+            = link_to t("pages.magic"),        magic_path        if can?(:magic, :page)
+            = link_to t("pages.play"),         play_path         if can?(:play, :page)
+            = link_to t("user.users"),         users_path        if can?(:read, User)
+            = link_to t("login.logins"),       logins_path       if can?(:read, Login)
 
     %ul.right
       %li

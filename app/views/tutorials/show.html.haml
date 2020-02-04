@@ -1,0 +1,14 @@
+= render "utils/title", text: t("tutorial.title", number: @tutorial.number)
+
+.card
+  .card-header
+    = t("tutorial.title", number: @tutorial.number)
+    .float-right= @tutorial.date.strftime("%Y-%m-%d")
+  .card-body= @tutorial.note_html
+
+.text-center.mt-3
+  = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success"
+  - if can?(:edit, Tutorial)
+    = link_to t("edit"), edit_tutorial_path(@tutorial), class: "btn btn-info"
+  - if can?(:delete, Tutorial)
+    = link_to t("delete"), @tutorial, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }

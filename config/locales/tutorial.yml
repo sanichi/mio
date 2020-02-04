@@ -1,0 +1,9 @@
+en:
+  tutorial:
+    date: date
+    edit: Edit Tutorial
+    new: New Tutorial
+    number: "#"
+    summary: Summary
+    title: "Lesson %{number}"
+    tutorials: Tutorials

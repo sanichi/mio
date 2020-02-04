@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :problems
   resources :questions
   resources :sessions, only: [:create]
+  resources :tutorials
   resources :users
   namespace :wk do
     resources :examples, except: [:show]
