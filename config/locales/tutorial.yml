@@ -8,5 +8,5 @@ en:
     number: "#"
     prev: ◀︎
     summary: Summary
-    title: "Lesson %{number}"
+    title: "Tutorial %{number}"
     tutorials: Tutorials
