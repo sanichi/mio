@@ -17,7 +17,7 @@ class Tutorial < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = by_date
-    if sql = cross_constraint(params[:q], %w{summary})
+    if sql = cross_constraint(params[:q], %w{summary notes})
       matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)
