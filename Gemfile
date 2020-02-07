@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 6.0.2.1"
-gem "puma", "~> 4.1"
 gem "pg", '>= 0.18', '< 2.0'
 gem "haml-rails", '~> 2.0'
 gem "sassc-rails", '~> 2.1'
@@ -20,6 +19,7 @@ gem "mini_magick", "~> 4.9"
 gem "mojinizer", "~> 0.2"
 
 group :development do
+  gem "puma", "~> 4.1"
   gem "capistrano-rails", '~> 1.4', require: false
   gem "capistrano-passenger", '~> 0.2', require: false
   gem "awesome_print", '~> 1.8', require: "ap"
