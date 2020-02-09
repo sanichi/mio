@@ -61,4 +61,11 @@ namespace :elm do
       compile_and_minify "magic"
     end
   end
+
+  desc "make and minify the Elm JS file for Board"
+  task :board do
+    Dir.chdir("app/views/pages/board") do
+      compile_and_minify "board"
+    end
+  end
 end
