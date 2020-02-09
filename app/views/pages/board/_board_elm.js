@@ -5151,35 +5151,829 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
+var $author$project$Image$del = 45;
+var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
+var $author$project$Image$translate = F3(
+	function (w, f, r) {
+		var j = w ? (8 - r) : (r - 1);
+		var y = $elm$core$String$fromInt(j * $author$project$Image$del);
+		var i = w ? (f - 1) : (8 - f);
+		var x = $elm$core$String$fromInt(i * $author$project$Image$del);
+		return $elm$svg$Svg$Attributes$transform('translate(' + (x + (' ' + (y + ')'))));
+	});
+var $author$project$Image$bk = F3(
+	function (w, f, r) {
+		return A2(
+			$elm$svg$Svg$g,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+					A3($author$project$Image$translate, w, f, r)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
+							$elm$svg$Svg$Attributes$style('fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z '),
+							$elm$svg$Svg$Attributes$style('fill:#000000; stroke:#000000;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 32,29.5 C 32,29.5 40.5,25.5 38.03,19.85 C 34.15,14 25,18 22.5,24.5 L 22.51,26.6 L 22.5,24.5 C 20,18 9.906,14 6.997,19.85 C 4.5,25.5 11.85,28.85 11.85,28.85'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30 M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5 M 11.5,37 C 17,34 27,34 32.5,37'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+						]),
+					_List_Nil)
+				]));
+	});
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
+var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $author$project$Image$board = function () {
+	var w = $elm$svg$Svg$Attributes$width(
+		$elm$core$String$fromInt($author$project$Image$del));
+	var t = $author$project$Image$translate(true);
+	var l = $elm$svg$Svg$Attributes$fill('#f0d9b5');
+	var h = $elm$svg$Svg$Attributes$height(
+		$elm$core$String$fromInt($author$project$Image$del));
+	var d = $elm$svg$Svg$Attributes$fill('#b58863');
+	return A2(
+		$elm$svg$Svg$g,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 1, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 2, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 3, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 4, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 5, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 6, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 7, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 8, 1)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 1, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 2, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 3, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 4, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 5, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 6, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 7, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 8, 2)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 1, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 2, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 3, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 4, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 5, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 6, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 7, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 8, 3)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 1, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 2, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 3, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 4, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 5, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 6, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 7, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 8, 4)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 1, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 2, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 3, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 4, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 5, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 6, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 7, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 8, 5)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 1, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 2, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 3, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 4, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 5, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 6, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 7, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 8, 6)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 1, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 2, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 3, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 4, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 5, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 6, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 7, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 8, 7)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 1, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 2, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 3, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 4, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 5, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 6, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						l,
+						w,
+						h,
+						A2(t, 7, 8)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$rect,
+				_List_fromArray(
+					[
+						d,
+						w,
+						h,
+						A2(t, 8, 8)
+					]),
+				_List_Nil)
+			]));
+}();
+var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$version = _VirtualDom_attribute('version');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $author$project$Image$wk = F3(
+	function (w, f, r) {
+		return A2(
+			$elm$svg$Svg$g,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+					A3($author$project$Image$translate, w, f, r)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
+							$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000; stroke-linecap:butt; stroke-linejoin:miter;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z'),
+							$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,34 27,34 32.5,37'),
+							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+						]),
+					_List_Nil)
+				]));
+	});
 var $author$project$Main$view = function (model) {
-	var background = A2(
-		$elm$svg$Svg$rect,
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Attributes$fill('red'),
-				$elm$svg$Svg$Attributes$width('1000'),
-				$elm$svg$Svg$Attributes$height('1000')
-			]),
-		_List_Nil);
 	return A2(
 		$elm$svg$Svg$svg,
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$id('board'),
 				$elm$svg$Svg$Attributes$version('1.1'),
-				$elm$svg$Svg$Attributes$viewBox('0 0 1000 1000')
+				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
 		_List_fromArray(
-			[background]));
+			[
+				$author$project$Image$board,
+				A3($author$project$Image$wk, true, 5, 1),
+				A3($author$project$Image$bk, true, 5, 8)
+			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{

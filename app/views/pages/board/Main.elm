@@ -4,6 +4,7 @@ module Main exposing (Model)
 
 import Browser
 import Html exposing (Html)
+import Image exposing (bk, board, wk)
 import Messages exposing (Msg(..))
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -52,11 +53,7 @@ initModel =
 
 view : Model -> Html Msg
 view model =
-    let
-        background =
-            rect [ fill "red", width "1000", height "1000" ] []
-    in
-    svg [ id "board", version "1.1", viewBox "0 0 1000 1000" ] [ background ]
+    svg [ id "board", version "1.1", viewBox "0 0 360 360" ] [ board, wk True 5 1, bk True 5 8 ]
 
 
 
