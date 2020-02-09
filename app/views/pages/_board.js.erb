@@ -1,6 +1,10 @@
 $(function() {
-  var app = Elm.Main.init({
-    node: $('#elm-app').get(0),
+  var app1 = Elm.Main.init({
+    node: $('#elm-app-1').get(0),
+    flags: {}
+  });
+  var app2 = Elm.Main.init({
+    node: $('#elm-app-2').get(0),
     flags: {}
   });
 });
