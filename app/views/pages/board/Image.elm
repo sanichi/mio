@@ -1,9 +1,52 @@
-module Image exposing (bk, board, wk)
+module Image exposing (Orientation(..), fromPosition)
 
 import Html exposing (Html)
+import Piece exposing (Category(..), Colour(..), Piece)
+import Position exposing (Position)
 import String exposing (fromInt)
-import Svg exposing (g, path, rect)
-import Svg.Attributes exposing (d, fill, height, style, transform, width)
+import Svg exposing (circle, g, path, rect)
+import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width)
+
+
+type Orientation
+    = Up
+    | Down
+
+
+type alias Ofr =
+    ( Orientation, Int, Int )
+
+
+fromPiece : Orientation -> Piece -> Html msg
+fromPiece o p =
+    let
+        ofr =
+            ( o, p.file, p.rank )
+    in
+    if p.col == White then
+        case p.cat of
+            King ->
+                wk ofr
+
+            Queen ->
+                wq ofr
+
+    else
+        case p.cat of
+            King ->
+                bk ofr
+
+            Queen ->
+                bq ofr
+
+
+fromPosition : Orientation -> Position -> List (Html msg)
+fromPosition o p =
+    let
+        pieces =
+            List.map (fromPiece o) p
+    in
+    board :: pieces
 
 
 del : Int
@@ -11,18 +54,27 @@ del =
     45
 
 
-translate : Bool -> Int -> Int -> Svg.Attribute msg
-translate w f r =
+translate : Ofr -> Svg.Attribute msg
+translate ofr =
+    let
+        ( o, f, r ) =
+            ofr
+    in
+    translate2 o f r
+
+
+translate2 : Orientation -> Int -> Int -> Svg.Attribute msg
+translate2 o f r =
     let
         i =
-            if w then
+            if o == Up then
                 f - 1
 
             else
                 8 - f
 
         j =
-            if w then
+            if o == Up then
                 8 - r
 
             else
@@ -53,7 +105,7 @@ board =
             height <| fromInt del
 
         t =
-            translate True
+            translate2 Up
     in
     g []
         [ rect [ d, w, h, t 1 1 ] []
@@ -123,9 +175,9 @@ board =
         ]
 
 
-wk : Bool -> Int -> Int -> Html msg
-wk w f r =
-    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate w f r ]
+wk : Ofr -> Html msg
+wk ofr =
+    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 20,8 L 25,8", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25", style "fill:#ffffff; stroke:#000000; stroke-linecap:butt; stroke-linejoin:miter;" ] []
@@ -136,9 +188,9 @@ wk w f r =
         ]
 
 
-bk : Bool -> Int -> Int -> Html msg
-bk w f r =
-    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate w f r ]
+bk : Ofr -> Html msg
+bk ofr =
+    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25", style "fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;" ] []
         , path [ d "M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z ", style "fill:#000000; stroke:#000000;" ] []
@@ -148,69 +200,42 @@ bk w f r =
         ]
 
 
+wq : Ofr -> Html msg
+wq ofr =
+    g [ style "opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+        [ path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(-1,-1)" ] []
+        , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(15.5,-5.5)" ] []
+        , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(32,-1)" ] []
+        , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(7,-4.5)" ] []
+        , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(24,-4)" ] []
+        , path [ d "M 9,26 C 17.5,24.5 30,24.5 36,26 L 38,14 L 31,25 L 31,11 L 25.5,24.5 L 22.5,9.5 L 19.5,24.5 L 14,10.5 L 14,25 L 7,14 L 9,26 z ", style "stroke-linecap:butt;" ] []
+        , path [ d "M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z ", style "stroke-linecap:butt;" ] []
+        , path [ d "M 11.5,30 C 15,29 30,29 33.5,30", style "fill:none;" ] []
+        , path [ d "M 12,33.5 C 18,32.5 27,32.5 33,33.5", style "fill:none;" ] []
+        ]
 
--- WQ
---   <g style="opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;">
---     <path
---       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
---       transform="translate(-1,-1)" />
---     <path
---       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
---       transform="translate(15.5,-5.5)" />
---     <path
---       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
---       transform="translate(32,-1)" />
---     <path
---       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
---       transform="translate(7,-4.5)" />
---     <path
---       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
---       transform="translate(24,-4)" />
---     <path
---       d="M 9,26 C 17.5,24.5 30,24.5 36,26 L 38,14 L 31,25 L 31,11 L 25.5,24.5 L 22.5,9.5 L 19.5,24.5 L 14,10.5 L 14,25 L 7,14 L 9,26 z "
---       style="stroke-linecap:butt;" />
---     <path
---       d="M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z "
---       style="stroke-linecap:butt;" />
---     <path
---       d="M 11.5,30 C 15,29 30,29 33.5,30"
---       style="fill:none;" />
---     <path
---       d="M 12,33.5 C 18,32.5 27,32.5 33,33.5"
---       style="fill:none;" />
---   </g>
---
--- BQ
---   <g style="opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;">
---     <g style="fill:#000000; stroke:none;">
---       <circle cx="6"    cy="12" r="2.75" />
---       <circle cx="14"   cy="9"  r="2.75" />
---       <circle cx="22.5" cy="8"  r="2.75" />
---       <circle cx="31"   cy="9"  r="2.75" />
---       <circle cx="39"   cy="12" r="2.75" />
---     </g>
---     <path
---        d="M 9,26 C 17.5,24.5 30,24.5 36,26 L 38.5,13.5 L 31,25 L 30.7,10.9 L 25.5,24.5 L 22.5,10 L 19.5,24.5 L 14.3,10.9 L 14,25 L 6.5,13.5 L 9,26 z"
---        style="stroke-linecap:butt; stroke:#000000;" />
---     <path
---        d="M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z"
---        style="stroke-linecap:butt;" />
---     <path
---        d="M 11,38.5 A 35,35 1 0 0 34,38.5"
---        style="fill:none; stroke:#000000; stroke-linecap:butt;" />
---     <path
---        d="M 11,29 A 35,35 1 0 1 34,29"
---        style="fill:none; stroke:#ffffff;" />
---     <path
---        d="M 12.5,31.5 L 32.5,31.5"
---        style="fill:none; stroke:#ffffff;" />
---     <path
---        d="M 11.5,34.5 A 35,35 1 0 0 33.5,34.5"
---        style="fill:none; stroke:#ffffff;" />
---     <path
---        d="M 10.5,37.5 A 35,35 1 0 0 34.5,37.5"
---        style="fill:none; stroke:#ffffff;" />
---   </g>
+
+bq : Ofr -> Html msg
+bq ofr =
+    g [ style "opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+        [ g [ style "fill:#000000; stroke:none;" ]
+            [ circle [ cx "6", cy "12", r "2.75" ] []
+            , circle [ cx "14", cy "9", r "2.75" ] []
+            , circle [ cx "22.5", cy "8", r "2.75" ] []
+            , circle [ cx "31", cy "9", r "2.75" ] []
+            , circle [ cx "39", cy "12", r "2.75" ] []
+            ]
+        , path [ d "M 9,26 C 17.5,24.5 30,24.5 36,26 L 38.5,13.5 L 31,25 L 30.7,10.9 L 25.5,24.5 L 22.5,10 L 19.5,24.5 L 14.3,10.9 L 14,25 L 6.5,13.5 L 9,26 z", style "stroke-linecap:butt; stroke:#000000;" ] []
+        , path [ d "M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z", style "stroke-linecap:butt;" ] []
+        , path [ d "M 11,38.5 A 35,35 1 0 0 34,38.5", style "fill:none; stroke:#000000; stroke-linecap:butt;" ] []
+        , path [ d "M 11,29 A 35,35 1 0 1 34,29", style "fill:none; stroke:#ffffff;" ] []
+        , path [ d "M 12.5,31.5 L 32.5,31.5", style "fill:none; stroke:#ffffff;" ] []
+        , path [ d "M 11.5,34.5 A 35,35 1 0 0 33.5,34.5", style "fill:none; stroke:#ffffff;" ] []
+        , path [ d "M 10.5,37.5 A 35,35 1 0 0 34.5,37.5", style "fill:none; stroke:#ffffff;" ] []
+        ]
+
+
+
 --
 -- WR
 --   <g style="opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;">

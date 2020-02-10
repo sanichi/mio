@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.z === region.N.z)
+	if (region.K.z === region.Q.z)
 	{
-		return 'on line ' + region.I.z;
+		return 'on line ' + region.K.z;
 	}
-	return 'on lines ' + region.I.z + ' through ' + region.N.z;
+	return 'on lines ' + region.K.z + ' through ' + region.Q.z;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ay,
+		impl.aH,
+		impl.aF,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		J: record.J,
-		G: record.G
+		L: record.L,
+		I: record.I
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.J;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.G) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.I) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ay,
+		impl.aH,
+		impl.aF,
 		function(sendToApp, initialModel) {
-			var view = impl.aC;
+			var view = impl.aI;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ay,
+		impl.aH,
+		impl.aF,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.H && impl.H(sendToApp)
-			var view = impl.aC;
+			var divertHrefToApp = impl.J && impl.J(sendToApp)
+			var view = impl.aI;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.am);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ap);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aA) && (_VirtualDom_doc.title = title = doc.aA);
+				(title !== doc.aG) && (_VirtualDom_doc.title = title = doc.aG);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.av;
-	var onUrlRequest = impl.aw;
+	var onUrlChange = impl.aA;
+	var onUrlRequest = impl.aB;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		H: function(sendToApp)
+		J: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr._ === next._
-							&& curr.R === next.R
-							&& curr.X.a === next.X.a
+							&& curr.ac === next.ac
+							&& curr.U === next.U
+							&& curr._.a === next._.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		at: function(flags)
+		ay: function(flags)
 		{
-			return A3(impl.at, flags, _Browser_getUrl(), key);
+			return A3(impl.ay, flags, _Browser_getUrl(), key);
 		},
-		aC: impl.aC,
-		aB: impl.aB,
-		az: impl.az
+		aI: impl.aI,
+		aH: impl.aH,
+		aF: impl.aF
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ar: 'hidden', an: 'visibilitychange' }
+		? { aw: 'hidden', aq: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ar: 'mozHidden', an: 'mozvisibilitychange' }
+		? { aw: 'mozHidden', aq: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ar: 'msHidden', an: 'msvisibilitychange' }
+		? { aw: 'msHidden', aq: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ar: 'webkitHidden', an: 'webkitvisibilitychange' }
-		: { ar: 'hidden', an: 'visibilitychange' };
+		? { aw: 'webkitHidden', aq: 'webkitvisibilitychange' }
+		: { aw: 'hidden', aq: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ad: _Browser_getScene(),
-		ag: {
-			ai: _Browser_window.pageXOffset,
-			aj: _Browser_window.pageYOffset,
-			ah: _Browser_doc.documentElement.clientWidth,
-			Q: _Browser_doc.documentElement.clientHeight
+		ag: _Browser_getScene(),
+		aj: {
+			al: _Browser_window.pageXOffset,
+			am: _Browser_window.pageYOffset,
+			ak: _Browser_doc.documentElement.clientWidth,
+			T: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ah: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Q: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ak: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		T: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ad: {
-				ah: node.scrollWidth,
-				Q: node.scrollHeight
-			},
 			ag: {
-				ai: node.scrollLeft,
-				aj: node.scrollTop,
-				ah: node.clientWidth,
-				Q: node.clientHeight
+				ak: node.scrollWidth,
+				T: node.scrollHeight
+			},
+			aj: {
+				al: node.scrollLeft,
+				am: node.scrollTop,
+				ak: node.clientWidth,
+				T: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ad: _Browser_getScene(),
-			ag: {
-				ai: x,
-				aj: y,
-				ah: _Browser_doc.documentElement.clientWidth,
-				Q: _Browser_doc.documentElement.clientHeight
+			ag: _Browser_getScene(),
+			aj: {
+				al: x,
+				am: y,
+				ak: _Browser_doc.documentElement.clientWidth,
+				T: _Browser_doc.documentElement.clientHeight
 			},
-			ap: {
-				ai: x + rect.left,
-				aj: y + rect.top,
-				ah: rect.width,
-				Q: rect.height
+			at: {
+				al: x + rect.left,
+				am: y + rect.top,
+				ak: rect.width,
+				T: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {P: fragment, R: host, V: path, X: port_, _: protocol, aa: query};
+		return {S: fragment, U: host, Y: path, _: port_, ac: protocol, ad: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5138,7 +5138,23 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$initModel = 'Board';
+var $author$project$Image$Up = 0;
+var $author$project$Piece$Black = 0;
+var $author$project$Piece$King = 0;
+var $author$project$Piece$Piece = F4(
+	function (col, cat, file, rank) {
+		return {N: cat, ar: col, av: file, aD: rank};
+	});
+var $author$project$Piece$Queen = 1;
+var $author$project$Piece$White = 1;
+var $author$project$Position$initialPosition = _List_fromArray(
+	[
+		A4($author$project$Piece$Piece, 1, 0, 5, 1),
+		A4($author$project$Piece$Piece, 1, 1, 4, 1),
+		A4($author$project$Piece$Piece, 0, 0, 5, 8),
+		A4($author$project$Piece$Piece, 0, 1, 4, 8)
+	]);
+var $author$project$Main$initModel = {G: 0, H: $author$project$Position$initialPosition};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$initTasks = $elm$core$Platform$Cmd$none;
@@ -5151,90 +5167,26 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $author$project$Image$del = 45;
+var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
-var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
-var $author$project$Image$del = 45;
+var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
-var $author$project$Image$translate = F3(
-	function (w, f, r) {
-		var j = w ? (8 - r) : (r - 1);
+var $author$project$Image$translate2 = F3(
+	function (o, f, r) {
+		var j = (!o) ? (8 - r) : (r - 1);
 		var y = $elm$core$String$fromInt(j * $author$project$Image$del);
-		var i = w ? (f - 1) : (8 - f);
+		var i = (!o) ? (f - 1) : (8 - f);
 		var x = $elm$core$String$fromInt(i * $author$project$Image$del);
 		return $elm$svg$Svg$Attributes$transform('translate(' + (x + (' ' + (y + ')'))));
 	});
-var $author$project$Image$bk = F3(
-	function (w, f, r) {
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-					A3($author$project$Image$translate, w, f, r)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
-							$elm$svg$Svg$Attributes$style('fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z '),
-							$elm$svg$Svg$Attributes$style('fill:#000000; stroke:#000000;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 32,29.5 C 32,29.5 40.5,25.5 38.03,19.85 C 34.15,14 25,18 22.5,24.5 L 22.51,26.6 L 22.5,24.5 C 20,18 9.906,14 6.997,19.85 C 4.5,25.5 11.85,28.85 11.85,28.85'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30 M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5 M 11.5,37 C 17,34 27,34 32.5,37'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
-						]),
-					_List_Nil)
-				]));
-	});
-var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
-var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Image$board = function () {
 	var w = $elm$svg$Svg$Attributes$width(
 		$elm$core$String$fromInt($author$project$Image$del));
-	var t = $author$project$Image$translate(true);
+	var t = $author$project$Image$translate2(0);
 	var l = $elm$svg$Svg$Attributes$fill('#f0d9b5');
 	var h = $elm$svg$Svg$Attributes$height(
 		$elm$core$String$fromInt($author$project$Image$del));
@@ -5886,79 +5838,385 @@ var $author$project$Image$board = function () {
 				_List_Nil)
 			]));
 }();
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
+var $author$project$Image$translate = function (ofr) {
+	var _v0 = ofr;
+	var o = _v0.a;
+	var f = _v0.b;
+	var r = _v0.c;
+	return A3($author$project$Image$translate2, o, f, r);
+};
+var $author$project$Image$bk = function (ofr) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(ofr)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
+						$elm$svg$Svg$Attributes$style('fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z '),
+						$elm$svg$Svg$Attributes$style('fill:#000000; stroke:#000000;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 32,29.5 C 32,29.5 40.5,25.5 38.03,19.85 C 34.15,14 25,18 22.5,24.5 L 22.51,26.6 L 22.5,24.5 C 20,18 9.906,14 6.997,19.85 C 4.5,25.5 11.85,28.85 11.85,28.85'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30 M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5 M 11.5,37 C 17,34 27,34 32.5,37'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil)
+			]));
+};
+var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $author$project$Image$bq = function (ofr) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(ofr)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$g,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$style('fill:#000000; stroke:none;')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$svg$Svg$circle,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$cx('6'),
+								$elm$svg$Svg$Attributes$cy('12'),
+								$elm$svg$Svg$Attributes$r('2.75')
+							]),
+						_List_Nil),
+						A2(
+						$elm$svg$Svg$circle,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$cx('14'),
+								$elm$svg$Svg$Attributes$cy('9'),
+								$elm$svg$Svg$Attributes$r('2.75')
+							]),
+						_List_Nil),
+						A2(
+						$elm$svg$Svg$circle,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$cx('22.5'),
+								$elm$svg$Svg$Attributes$cy('8'),
+								$elm$svg$Svg$Attributes$r('2.75')
+							]),
+						_List_Nil),
+						A2(
+						$elm$svg$Svg$circle,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$cx('31'),
+								$elm$svg$Svg$Attributes$cy('9'),
+								$elm$svg$Svg$Attributes$r('2.75')
+							]),
+						_List_Nil),
+						A2(
+						$elm$svg$Svg$circle,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$cx('39'),
+								$elm$svg$Svg$Attributes$cy('12'),
+								$elm$svg$Svg$Attributes$r('2.75')
+							]),
+						_List_Nil)
+					])),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9,26 C 17.5,24.5 30,24.5 36,26 L 38.5,13.5 L 31,25 L 30.7,10.9 L 25.5,24.5 L 22.5,10 L 19.5,24.5 L 14.3,10.9 L 14,25 L 6.5,13.5 L 9,26 z'),
+						$elm$svg$Svg$Attributes$style('stroke-linecap:butt; stroke:#000000;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z'),
+						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11,38.5 A 35,35 1 0 0 34,38.5'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linecap:butt;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11,29 A 35,35 1 0 1 34,29'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 12.5,31.5 L 32.5,31.5'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,34.5 A 35,35 1 0 0 33.5,34.5'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 10.5,37.5 A 35,35 1 0 0 34.5,37.5'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#ffffff;')
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Image$wk = function (ofr) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(ofr)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
+						$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000; stroke-linecap:butt; stroke-linejoin:miter;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z'),
+						$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,34 27,34 32.5,37'),
+						$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Image$wq = function (ofr) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(ofr)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z'),
+						$elm$svg$Svg$Attributes$transform('translate(-1,-1)')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z'),
+						$elm$svg$Svg$Attributes$transform('translate(15.5,-5.5)')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z'),
+						$elm$svg$Svg$Attributes$transform('translate(32,-1)')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z'),
+						$elm$svg$Svg$Attributes$transform('translate(7,-4.5)')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z'),
+						$elm$svg$Svg$Attributes$transform('translate(24,-4)')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9,26 C 17.5,24.5 30,24.5 36,26 L 38,14 L 31,25 L 31,11 L 25.5,24.5 L 22.5,9.5 L 19.5,24.5 L 14,10.5 L 14,25 L 7,14 L 9,26 z '),
+						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z '),
+						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 11.5,30 C 15,29 30,29 33.5,30'),
+						$elm$svg$Svg$Attributes$style('fill:none;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M 12,33.5 C 18,32.5 27,32.5 33,33.5'),
+						$elm$svg$Svg$Attributes$style('fill:none;')
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Image$fromPiece = F2(
+	function (o, p) {
+		var ofr = _Utils_Tuple3(o, p.av, p.aD);
+		if (p.ar === 1) {
+			var _v0 = p.N;
+			if (!_v0) {
+				return $author$project$Image$wk(ofr);
+			} else {
+				return $author$project$Image$wq(ofr);
+			}
+		} else {
+			var _v1 = p.N;
+			if (!_v1) {
+				return $author$project$Image$bk(ofr);
+			} else {
+				return $author$project$Image$bq(ofr);
+			}
+		}
+	});
+var $author$project$Image$fromPosition = F2(
+	function (o, p) {
+		var pieces = A2(
+			$elm$core$List$map,
+			$author$project$Image$fromPiece(o),
+			p);
+		return A2($elm$core$List$cons, $author$project$Image$board, pieces);
+	});
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$version = _VirtualDom_attribute('version');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $author$project$Image$wk = F3(
-	function (w, f, r) {
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-					A3($author$project$Image$translate, w, f, r)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 22.5,11.63 L 22.5,6'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 20,8 L 25,8'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
-							$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000; stroke-linecap:butt; stroke-linejoin:miter;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z'),
-							$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:#000000;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,30 C 17,27 27,27 32.5,30'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,34 27,34 32.5,37'),
-							$elm$svg$Svg$Attributes$style('fill:none; stroke:#000000;')
-						]),
-					_List_Nil)
-				]));
-	});
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -5968,21 +6226,16 @@ var $author$project$Main$view = function (model) {
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
-		_List_fromArray(
-			[
-				$author$project$Image$board,
-				A3($author$project$Image$wk, true, 5, 1),
-				A3($author$project$Image$bk, true, 5, 8)
-			]));
+		A2($author$project$Image$fromPosition, model.G, model.H));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		at: function (_v0) {
+		ay: function (_v0) {
 			return _Utils_Tuple2($author$project$Main$initModel, $author$project$Main$initTasks);
 		},
-		az: $author$project$Main$subscriptions,
-		aB: $author$project$Main$update,
-		aC: $author$project$Main$view
+		aF: $author$project$Main$subscriptions,
+		aH: $author$project$Main$update,
+		aI: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
