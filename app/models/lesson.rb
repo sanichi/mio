@@ -2,6 +2,7 @@ class Lesson < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Splitable
 
   MAX_BOOK = 200
   MAX_CHAPTER = 60
@@ -50,8 +51,8 @@ class Lesson < ApplicationRecord
     "#{complete}#{I18n.t('lesson.abbrev.complete')}"
   end
 
-  def note_html
-    to_html(note)
+  def split_notes
+    split(note)
   end
 
   private

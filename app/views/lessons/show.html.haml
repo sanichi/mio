@@ -1,5 +1,12 @@
 = render "utils/title", text: @lesson.chapter
 
+- comments, boards = @lesson.split_notes
+
+- unless boards.empty?
+  = content_for :javascript do
+    = render "utils/board/boards.js", fens: boards
+
+
 .card
   .card-header
     = @lesson.chapter_and_links
@@ -19,8 +26,13 @@
           = t("symbol.katakana_middle_dot")
         = link_to "##{@lesson.chapter_no}", @lesson.link, target: "lesson_link"
 
-  - if @lesson.note.present?
-    .card-body= @lesson.note_html
+  - unless comments.empty?
+    .card-body
+      - comments.each do |html|
+        - if html.match(/\AFEN__(\d+)\z/)
+          = render "utils/board/board", id: $1
+        - else
+          = html
 
 .text-center.mt-3
   = link_to t("lesson.lessons"), last_search(lessons_path), class: "btn btn-success"

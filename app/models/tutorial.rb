@@ -2,10 +2,9 @@ class Tutorial < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Splitable
 
   MAX_SUMMARY = 100
-  FEN1 = /\n*\s*(FEN\s*"[^"]*")\s*\n*/
-  FEN2 = /\AFEN\s*"([^"]*)"\z/
 
   before_validation :normalize_attributes
 
@@ -28,21 +27,7 @@ class Tutorial < ApplicationRecord
   end
 
   def split_notes
-    html = []
-    fens = []
-    fen_id = 0
-    parts = notes.present? ? notes.split(FEN1) : []
-    parts.each do |p|
-      if p.present?
-        if p.match(FEN2)
-          html.push "FEN__#{fen_id}"
-          fen_id += 1
-          fens.push $1
-        else
-          html.push to_html(p)
-        end
-      end
-    end
+    html, fens = split(notes)
     html.unshift "<p>Summary: #{summary}".html_safe
     [html, fens]
   end

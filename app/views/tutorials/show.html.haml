@@ -2,8 +2,9 @@
 
 - comments, boards = @tutorial.split_notes
 
-= content_for :javascript do
-  = render "boards.js", fens: boards
+- unless boards.empty?
+  = content_for :javascript do
+    = render "utils/board/boards.js", fens: boards
 
 - if @prev || @next
   %p.text-center
@@ -26,7 +27,7 @@
   .card-body
     - comments.each do |html|
       - if html.match(/\AFEN__(\d+)\z/)
-        = render "board", id: $1
+        = render "utils/board/board", id: $1
       - else
         = html
 
