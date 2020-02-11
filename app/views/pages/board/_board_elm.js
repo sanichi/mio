@@ -5841,20 +5841,20 @@ var $author$project$Image$board = function () {
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
-var $author$project$Image$translate = function (ofr) {
-	var _v0 = ofr;
+var $author$project$Image$translate = function (place) {
+	var _v0 = place;
 	var o = _v0.a;
 	var f = _v0.b;
 	var r = _v0.c;
 	return A3($author$project$Image$translate2, o, f, r);
 };
-var $author$project$Image$bk = function (ofr) {
+var $author$project$Image$bk = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-				$author$project$Image$translate(ofr)
+				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
 			[
@@ -5912,13 +5912,13 @@ var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
 var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
-var $author$project$Image$bq = function (ofr) {
+var $author$project$Image$bq = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-				$author$project$Image$translate(ofr)
+				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
 			[
@@ -6034,13 +6034,13 @@ var $author$project$Image$bq = function (ofr) {
 				_List_Nil)
 			]));
 };
-var $author$project$Image$wk = function (ofr) {
+var $author$project$Image$wk = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-				$author$project$Image$translate(ofr)
+				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
 			[
@@ -6102,13 +6102,13 @@ var $author$project$Image$wk = function (ofr) {
 				_List_Nil)
 			]));
 };
-var $author$project$Image$wq = function (ofr) {
+var $author$project$Image$wq = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
-				$author$project$Image$translate(ofr)
+				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
 			[
@@ -6188,20 +6188,20 @@ var $author$project$Image$wq = function (ofr) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (o, p) {
-		var ofr = _Utils_Tuple3(o, p.av, p.aD);
+		var place = _Utils_Tuple3(o, p.av, p.aD);
 		if (p.ar === 1) {
 			var _v0 = p.N;
 			if (!_v0) {
-				return $author$project$Image$wk(ofr);
+				return $author$project$Image$wk(place);
 			} else {
-				return $author$project$Image$wq(ofr);
+				return $author$project$Image$wq(place);
 			}
 		} else {
 			var _v1 = p.N;
 			if (!_v1) {
-				return $author$project$Image$bk(ofr);
+				return $author$project$Image$bk(place);
 			} else {
-				return $author$project$Image$bq(ofr);
+				return $author$project$Image$bq(place);
 			}
 		}
 	});

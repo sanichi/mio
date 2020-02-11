@@ -13,31 +13,31 @@ type Orientation
     | Down
 
 
-type alias Ofr =
+type alias Place =
     ( Orientation, Int, Int )
 
 
 fromPiece : Orientation -> Piece -> Html msg
 fromPiece o p =
     let
-        ofr =
+        place =
             ( o, p.file, p.rank )
     in
     if p.col == White then
         case p.cat of
             King ->
-                wk ofr
+                wk place
 
             Queen ->
-                wq ofr
+                wq place
 
     else
         case p.cat of
             King ->
-                bk ofr
+                bk place
 
             Queen ->
-                bq ofr
+                bq place
 
 
 fromPosition : Orientation -> Position -> List (Html msg)
@@ -54,11 +54,11 @@ del =
     45
 
 
-translate : Ofr -> Svg.Attribute msg
-translate ofr =
+translate : Place -> Svg.Attribute msg
+translate place =
     let
         ( o, f, r ) =
-            ofr
+            place
     in
     translate2 o f r
 
@@ -175,9 +175,9 @@ board =
         ]
 
 
-wk : Ofr -> Html msg
-wk ofr =
-    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+wk : Place -> Html msg
+wk place =
+    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 20,8 L 25,8", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25", style "fill:#ffffff; stroke:#000000; stroke-linecap:butt; stroke-linejoin:miter;" ] []
@@ -188,9 +188,9 @@ wk ofr =
         ]
 
 
-bk : Ofr -> Html msg
-bk ofr =
-    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+bk : Place -> Html msg
+bk place =
+    g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
         , path [ d "M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25", style "fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;" ] []
         , path [ d "M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z ", style "fill:#000000; stroke:#000000;" ] []
@@ -200,9 +200,9 @@ bk ofr =
         ]
 
 
-wq : Ofr -> Html msg
-wq ofr =
-    g [ style "opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+wq : Place -> Html msg
+wq place =
+    g [ style "opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(-1,-1)" ] []
         , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(15.5,-5.5)" ] []
         , path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(32,-1)" ] []
@@ -215,9 +215,9 @@ wq ofr =
         ]
 
 
-bq : Ofr -> Html msg
-bq ofr =
-    g [ style "opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate ofr ]
+bq : Place -> Html msg
+bq place =
+    g [ style "opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ g [ style "fill:#000000; stroke:none;" ]
             [ circle [ cx "6", cy "12", r "2.75" ] []
             , circle [ cx "14", cy "9", r "2.75" ] []

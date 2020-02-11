@@ -7,8 +7,8 @@ import Html exposing (Html)
 import Image exposing (Orientation(..), fromPosition)
 import Messages exposing (Msg(..))
 import Position exposing (Position, initialPosition)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Svg exposing (svg)
+import Svg.Attributes exposing (id, version, viewBox)
 
 
 
