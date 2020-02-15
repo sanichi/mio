@@ -5154,7 +5154,7 @@ var $author$project$Position$initialPosition = _List_fromArray(
 		A4($author$project$Piece$Piece, 0, 0, 5, 8),
 		A4($author$project$Piece$Piece, 0, 1, 4, 8)
 	]);
-var $author$project$Main$initModel = {G: 0, H: $author$project$Position$initialPosition};
+var $author$project$Main$initModel = {A: 0, H: $author$project$Position$initialPosition};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$initTasks = $elm$core$Platform$Cmd$none;
@@ -5163,15 +5163,39 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Image$Down = 1;
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		var ori = (!model.A) ? 1 : 0;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{A: ori}),
+			$elm$core$Platform$Cmd$none);
 	});
+var $author$project$Messages$Flip = 0;
 var $author$project$Image$del = 45;
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$svg$Svg$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var $author$project$Image$translate2 = F3(
@@ -5193,7 +5217,10 @@ var $author$project$Image$board = function () {
 	var d = $elm$svg$Svg$Attributes$fill('#b58863');
 	return A2(
 		$elm$svg$Svg$g,
-		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Events$onClick(0)
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -6226,7 +6253,7 @@ var $author$project$Main$view = function (model) {
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
-		A2($author$project$Image$fromPosition, model.G, model.H));
+		A2($author$project$Image$fromPosition, model.A, model.H));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{

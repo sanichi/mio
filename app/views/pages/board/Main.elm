@@ -68,5 +68,13 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Cmd.none )
+        Flip ->
+            let
+                ori =
+                    if model.ori == Up then
+                        Down
+
+                    else
+                        Up
+            in
+            ( { model | ori = ori }, Cmd.none )

@@ -1,11 +1,13 @@
 module Image exposing (Orientation(..), fromPosition)
 
 import Html exposing (Html)
+import Messages exposing (Msg(..))
 import Piece exposing (Category(..), Colour(..), Piece)
 import Position exposing (Position)
 import String exposing (fromInt)
-import Svg exposing (circle, g, path, rect)
+import Svg exposing (Svg, circle, g, path, rect)
 import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width)
+import Svg.Events exposing (onClick)
 
 
 type Orientation
@@ -17,7 +19,7 @@ type alias Place =
     ( Orientation, Int, Int )
 
 
-fromPiece : Orientation -> Piece -> Html msg
+fromPiece : Orientation -> Piece -> Svg Msg
 fromPiece o p =
     let
         place =
@@ -40,7 +42,7 @@ fromPiece o p =
                 bq place
 
 
-fromPosition : Orientation -> Position -> List (Html msg)
+fromPosition : Orientation -> Position -> List (Svg Msg)
 fromPosition o p =
     let
         pieces =
@@ -54,7 +56,7 @@ del =
     45
 
 
-translate : Place -> Svg.Attribute msg
+translate : Place -> Svg.Attribute Msg
 translate place =
     let
         ( o, f, r ) =
@@ -63,7 +65,7 @@ translate place =
     translate2 o f r
 
 
-translate2 : Orientation -> Int -> Int -> Svg.Attribute msg
+translate2 : Orientation -> Int -> Int -> Svg.Attribute Msg
 translate2 o f r =
     let
         i =
@@ -89,7 +91,7 @@ translate2 o f r =
     transform <| "translate(" ++ x ++ " " ++ y ++ ")"
 
 
-board : Html msg
+board : Svg Msg
 board =
     let
         d =
@@ -107,7 +109,7 @@ board =
         t =
             translate2 Up
     in
-    g []
+    g [ onClick Flip ]
         [ rect [ d, w, h, t 1 1 ] []
         , rect [ l, w, h, t 2 1 ] []
         , rect [ d, w, h, t 3 1 ] []
@@ -175,7 +177,7 @@ board =
         ]
 
 
-wk : Place -> Html msg
+wk : Place -> Svg Msg
 wk place =
     g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
@@ -188,7 +190,7 @@ wk place =
         ]
 
 
-bk : Place -> Html msg
+bk : Place -> Svg Msg
 bk place =
     g [ style "fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 22.5,11.63 L 22.5,6", style "fill:none; stroke:#000000; stroke-linejoin:miter;" ] []
@@ -200,7 +202,7 @@ bk place =
         ]
 
 
-wq : Place -> Html msg
+wq : Place -> Svg Msg
 wq place =
     g [ style "opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ path [ d "M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z", transform "translate(-1,-1)" ] []
@@ -215,7 +217,7 @@ wq place =
         ]
 
 
-bq : Place -> Html msg
+bq : Place -> Svg Msg
 bq place =
     g [ style "opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ]
         [ g [ style "fill:#000000; stroke:none;" ]
