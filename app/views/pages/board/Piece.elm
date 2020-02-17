@@ -9,6 +9,10 @@ type Colour
 type Category
     = King
     | Queen
+    | Rook
+    | Bishop
+    | Knight
+    | Pawn
 
 
 type alias Piece =
