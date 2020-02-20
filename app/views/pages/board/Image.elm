@@ -1,32 +1,26 @@
-module Image exposing (Orientation(..), fromPosition)
+module Image exposing (fromPosition)
 
 import Html exposing (Html)
 import Messages exposing (Msg(..))
 import Piece exposing (Category(..), Colour(..), Piece)
 import Position exposing (Position)
-import String exposing (fromInt)
 import Svg exposing (Svg, circle, g, path, rect)
 import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width)
 import Svg.Events exposing (onClick)
 
 
-type Orientation
-    = WhiteUp
-    | BlackUp
-
-
 type alias Place =
-    ( Orientation, Int, Int )
+    ( Colour, Int, Int )
 
 
-fromPiece : Orientation -> Piece -> Svg Msg
-fromPiece o p =
+fromPiece : Colour -> Piece -> Svg Msg
+fromPiece orientation piece =
     let
         place =
-            ( o, p.file, p.rank )
+            ( orientation, piece.file, piece.rank )
     in
-    if p.col == White then
-        case p.cat of
+    if piece.col == White then
+        case piece.cat of
             King ->
                 wk place
 
@@ -46,7 +40,7 @@ fromPiece o p =
                 wp place
 
     else
-        case p.cat of
+        case piece.cat of
             King ->
                 bk place
 
@@ -66,11 +60,11 @@ fromPiece o p =
                 bp place
 
 
-fromPosition : Orientation -> Position -> List (Svg Msg)
-fromPosition o p =
+fromPosition : Colour -> Position -> List (Svg Msg)
+fromPosition orientation position =
     let
         pieces =
-            List.map (fromPiece o) p
+            List.map (fromPiece orientation) position
     in
     board :: pieces
 
@@ -83,34 +77,34 @@ del =
 translate : Place -> Svg.Attribute Msg
 translate place =
     let
-        ( o, f, r ) =
+        ( orientation, file, rank ) =
             place
     in
-    translate2 o f r
+    translate2 orientation file rank
 
 
-translate2 : Orientation -> Int -> Int -> Svg.Attribute Msg
-translate2 o f r =
+translate2 : Colour -> Int -> Int -> Svg.Attribute Msg
+translate2 orientation file rank =
     let
         i =
-            if o == WhiteUp then
-                f - 1
+            if orientation == White then
+                file - 1
 
             else
-                8 - f
+                8 - file
 
         j =
-            if o == WhiteUp then
-                8 - r
+            if orientation == White then
+                8 - rank
 
             else
-                r - 1
+                rank - 1
 
         x =
-            i * del |> fromInt
+            i * del |> String.fromInt
 
         y =
-            j * del |> fromInt
+            j * del |> String.fromInt
     in
     transform <| "translate(" ++ x ++ " " ++ y ++ ")"
 
@@ -125,13 +119,13 @@ board =
             fill "#f0d9b5"
 
         w =
-            width <| fromInt del
+            width <| String.fromInt del
 
         h =
-            height <| fromInt del
+            height <| String.fromInt del
 
         t =
-            translate2 WhiteUp
+            translate2 White
     in
     g [ onClick Flip ]
         [ rect [ d, w, h, t 1 1 ] []

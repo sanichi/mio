@@ -4,9 +4,10 @@ module Main exposing (Model)
 
 import Browser
 import Html exposing (Html)
-import Image exposing (Orientation(..), fromPosition)
+import Image exposing (fromPosition)
 import Json.Decode exposing (Value, decodeValue)
 import Messages exposing (Msg(..))
+import Piece exposing (Colour(..))
 import Position exposing (Position, initialPosition)
 import Preferences exposing (defaultPreferences, flagsDecoder)
 import Svg exposing (svg)
@@ -18,8 +19,8 @@ import Svg.Attributes exposing (id, version, viewBox)
 
 
 type alias Model =
-    { pos : Position
-    , ori : Orientation
+    { position : Position
+    , orientation : Colour
     }
 
 
@@ -44,13 +45,13 @@ init flags =
             decodeValue flagsDecoder flags |> Result.withDefault defaultPreferences
 
         model =
-            { pos = initialPosition
-            , ori =
+            { position = initialPosition
+            , orientation =
                 if preferences.orientation == "black" then
-                    BlackUp
+                    Black
 
                 else
-                    WhiteUp
+                    White
             }
     in
     ( model, Cmd.none )
@@ -67,7 +68,7 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    svg [ id "board", version "1.1", viewBox "0 0 360 360" ] (fromPosition model.ori model.pos)
+    svg [ id "board", version "1.1", viewBox "0 0 360 360" ] (fromPosition model.orientation model.position)
 
 
 
@@ -79,11 +80,11 @@ update msg model =
     case msg of
         Flip ->
             let
-                ori =
-                    if model.ori == WhiteUp then
-                        BlackUp
+                orientation =
+                    if model.orientation == White then
+                        Black
 
                     else
-                        WhiteUp
+                        White
             in
-            ( { model | ori = ori }, Cmd.none )
+            ( { model | orientation = orientation }, Cmd.none )

@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.K.z === region.Q.z)
+	if (region.K.A === region.Q.A)
 	{
-		return 'on line ' + region.K.z;
+		return 'on line ' + region.K.A;
 	}
-	return 'on lines ' + region.K.z + ' through ' + region.Q.z;
+	return 'on lines ' + region.K.A + ' through ' + region.Q.A;
 }
 
 
@@ -1858,8 +1858,8 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 		flagDecoder,
 		args,
 		impl.az,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aG,
 		function() { return function() {} }
 	);
 });
@@ -3929,10 +3929,10 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 		flagDecoder,
 		args,
 		impl.az,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var view = impl.aK;
+			var view = impl.aJ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3965,11 +3965,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		flagDecoder,
 		args,
 		impl.az,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.J && impl.J(sendToApp)
-			var view = impl.aK;
+			var view = impl.aJ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3982,7 +3982,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aI) && (_VirtualDom_doc.title = title = doc.aI);
+				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
 			});
 		}
 	);
@@ -4073,9 +4073,9 @@ function _Browser_application(impl)
 		{
 			return A3(impl.az, flags, _Browser_getUrl(), key);
 		},
-		aK: impl.aK,
 		aJ: impl.aJ,
-		aH: impl.aH
+		aI: impl.aI,
+		aG: impl.aG
 	});
 }
 
@@ -5138,12 +5138,12 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Image$BlackUp = 1;
-var $author$project$Image$WhiteUp = 0;
+var $author$project$Piece$Black = 0;
+var $author$project$Piece$White = 1;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F2(
 	function (orientation, fen) {
-		return {av: fen, aE: orientation};
+		return {av: fen, w: orientation};
 	});
 var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 var $author$project$Preferences$defaultOrientation = 'white';
@@ -5191,17 +5191,15 @@ var $author$project$Preferences$flagsDecoder = A3(
 		$author$project$Preferences$defaultFen,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)));
 var $author$project$Piece$Bishop = 3;
-var $author$project$Piece$Black = 0;
 var $author$project$Piece$King = 0;
 var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F4(
 	function (col, cat, file, rank) {
-		return {N: cat, ar: col, aw: file, aF: rank};
+		return {N: cat, ar: col, aw: file, aE: rank};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
-var $author$project$Piece$White = 1;
 var $author$project$Position$initialPosition = _List_fromArray(
 	[
 		A4($author$project$Piece$Piece, 1, 0, 5, 1),
@@ -5254,7 +5252,7 @@ var $author$project$Main$init = function (flags) {
 		$author$project$Preferences$defaultPreferences,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
 	var model = {
-		A: (preferences.aE === 'black') ? 1 : 0,
+		w: (preferences.w === 'black') ? 0 : 1,
 		H: $author$project$Position$initialPosition
 	};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -5266,11 +5264,11 @@ var $author$project$Main$subscriptions = function (model) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var ori = (!model.A) ? 1 : 0;
+		var orientation = (model.w === 1) ? 0 : 1;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{A: ori}),
+				{w: orientation}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
@@ -5300,10 +5298,10 @@ var $elm$svg$Svg$Events$onClick = function (msg) {
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var $author$project$Image$translate2 = F3(
-	function (o, f, r) {
-		var j = (!o) ? (8 - r) : (r - 1);
+	function (orientation, file, rank) {
+		var j = (orientation === 1) ? (8 - rank) : (rank - 1);
 		var y = $elm$core$String$fromInt(j * $author$project$Image$del);
-		var i = (!o) ? (f - 1) : (8 - f);
+		var i = (orientation === 1) ? (file - 1) : (8 - file);
 		var x = $elm$core$String$fromInt(i * $author$project$Image$del);
 		return $elm$svg$Svg$Attributes$transform('translate(' + (x + (' ' + (y + ')'))));
 	});
@@ -5311,7 +5309,7 @@ var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Image$board = function () {
 	var w = $elm$svg$Svg$Attributes$width(
 		$elm$core$String$fromInt($author$project$Image$del));
-	var t = $author$project$Image$translate2(0);
+	var t = $author$project$Image$translate2(1);
 	var l = $elm$svg$Svg$Attributes$fill('#f0d9b5');
 	var h = $elm$svg$Svg$Attributes$height(
 		$elm$core$String$fromInt($author$project$Image$del));
@@ -5971,10 +5969,10 @@ var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
 var $author$project$Image$translate = function (place) {
 	var _v0 = place;
-	var o = _v0.a;
-	var f = _v0.b;
-	var r = _v0.c;
-	return A3($author$project$Image$translate2, o, f, r);
+	var orientation = _v0.a;
+	var file = _v0.b;
+	var rank = _v0.c;
+	return A3($author$project$Image$translate2, orientation, file, rank);
 };
 var $author$project$Image$bb = function (place) {
 	return A2(
@@ -6701,10 +6699,10 @@ var $author$project$Image$wr = function (place) {
 			]));
 };
 var $author$project$Image$fromPiece = F2(
-	function (o, p) {
-		var place = _Utils_Tuple3(o, p.aw, p.aF);
-		if (p.ar === 1) {
-			var _v0 = p.N;
+	function (orientation, piece) {
+		var place = _Utils_Tuple3(orientation, piece.aw, piece.aE);
+		if (piece.ar === 1) {
+			var _v0 = piece.N;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -6720,7 +6718,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = p.N;
+			var _v1 = piece.N;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -6738,11 +6736,11 @@ var $author$project$Image$fromPiece = F2(
 		}
 	});
 var $author$project$Image$fromPosition = F2(
-	function (o, p) {
+	function (orientation, position) {
 		var pieces = A2(
 			$elm$core$List$map,
-			$author$project$Image$fromPiece(o),
-			p);
+			$author$project$Image$fromPiece(orientation),
+			position);
 		return A2($elm$core$List$cons, $author$project$Image$board, pieces);
 	});
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
@@ -6758,8 +6756,8 @@ var $author$project$Main$view = function (model) {
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
-		A2($author$project$Image$fromPosition, model.A, model.H));
+		A2($author$project$Image$fromPosition, model.w, model.H));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{az: $author$project$Main$init, aH: $author$project$Main$subscriptions, aJ: $author$project$Main$update, aK: $author$project$Main$view});
+	{az: $author$project$Main$init, aG: $author$project$Main$subscriptions, aI: $author$project$Main$update, aJ: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));
