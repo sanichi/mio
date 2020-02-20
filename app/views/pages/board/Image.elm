@@ -11,8 +11,8 @@ import Svg.Events exposing (onClick)
 
 
 type Orientation
-    = Up
-    | Down
+    = WhiteUp
+    | BlackUp
 
 
 type alias Place =
@@ -93,14 +93,14 @@ translate2 : Orientation -> Int -> Int -> Svg.Attribute Msg
 translate2 o f r =
     let
         i =
-            if o == Up then
+            if o == WhiteUp then
                 f - 1
 
             else
                 8 - f
 
         j =
-            if o == Up then
+            if o == WhiteUp then
                 8 - r
 
             else
@@ -131,7 +131,7 @@ board =
             height <| fromInt del
 
         t =
-            translate2 Up
+            translate2 WhiteUp
     in
     g [ onClick Flip ]
         [ rect [ d, w, h, t 1 1 ] []

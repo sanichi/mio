@@ -5,34 +5,12 @@ module Main exposing (Model)
 import Browser
 import Html exposing (Html)
 import Image exposing (Orientation(..), fromPosition)
+import Json.Decode exposing (Value, decodeValue)
 import Messages exposing (Msg(..))
 import Position exposing (Position, initialPosition)
+import Preferences exposing (defaultPreferences, flagsDecoder)
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
-
-
-
--- MAIN
-
-
-main : Program () Model Msg
-main =
-    Browser.element
-        { init = \_ -> ( initModel, initTasks )
-        , view = view
-        , update = update
-        , subscriptions = subscriptions
-        }
-
-
-initTasks : Cmd Msg
-initTasks =
-    Cmd.none
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
 
 
 
@@ -45,11 +23,42 @@ type alias Model =
     }
 
 
-initModel : Model
-initModel =
-    { pos = initialPosition
-    , ori = Up
-    }
+
+-- MAIN
+
+
+main : Program Value Model Msg
+main =
+    Browser.element
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
+
+
+init : Value -> ( Model, Cmd Msg )
+init flags =
+    let
+        preferences =
+            decodeValue flagsDecoder flags |> Result.withDefault defaultPreferences
+
+        model =
+            { pos = initialPosition
+            , ori =
+                if preferences.orientation == "black" then
+                    BlackUp
+
+                else
+                    WhiteUp
+            }
+    in
+    ( model, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 
@@ -71,10 +80,10 @@ update msg model =
         Flip ->
             let
                 ori =
-                    if model.ori == Up then
-                        Down
+                    if model.ori == WhiteUp then
+                        BlackUp
 
                     else
-                        Up
+                        WhiteUp
             in
             ( { model | ori = ori }, Cmd.none )

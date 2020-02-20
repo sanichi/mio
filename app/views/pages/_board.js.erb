@@ -1,8 +1,14 @@
 $(function() {
   Elm.Main.init({
-    node: $('#elm-app-1').get(0)
+    node: $('#elm-app-1').get(0),
+    flags: {
+      orientation: 'black'
+    }
   });
   Elm.Main.init({
-    node: $('#elm-app-2').get(0)
+    node: $('#elm-app-2').get(0),
+    flags: {
+      orientation: 'white'
+    }
   });
 });
