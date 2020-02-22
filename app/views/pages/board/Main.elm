@@ -8,7 +8,7 @@ import Image exposing (fromPosition)
 import Json.Decode exposing (Value, decodeValue)
 import Messages exposing (Msg(..))
 import Piece exposing (Colour(..))
-import Position exposing (Position, initialPosition)
+import Position exposing (Position, emptyBoard, fromFen, initialPosition)
 import Preferences exposing (defaultPreferences, flagsDecoder)
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
@@ -44,15 +44,23 @@ init flags =
         preferences =
             decodeValue flagsDecoder flags |> Result.withDefault defaultPreferences
 
-        model =
-            { position = initialPosition
-            , orientation =
-                if preferences.orientation == "black" then
-                    Black
+        orientation =
+            if preferences.orientation == "black" then
+                Black
 
-                else
-                    White
-            }
+            else
+                White
+
+        position =
+            case fromFen preferences.fen of
+                Ok pos ->
+                    pos
+
+                Err err ->
+                    emptyBoard
+
+        model =
+            { position = position, orientation = orientation }
     in
     ( model, Cmd.none )
 

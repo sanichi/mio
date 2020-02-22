@@ -1,4 +1,4 @@
-module Preferences exposing (defaultPreferences, flagsDecoder)
+module Preferences exposing (defaultFen, defaultPreferences, flagsDecoder)
 
 import Json.Decode exposing (Decoder, field, map, map2, maybe, string, succeed)
 

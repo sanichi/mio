@@ -5148,6 +5148,7 @@ var $author$project$Preferences$Preferences = F2(
 var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 var $author$project$Preferences$defaultOrientation = 'white';
 var $author$project$Preferences$defaultPreferences = A2($author$project$Preferences$Preferences, $author$project$Preferences$defaultOrientation, $author$project$Preferences$defaultFen);
+var $author$project$Position$emptyBoard = _List_Nil;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$core$String$toLower = _String_toLower;
@@ -5200,6 +5201,186 @@ var $author$project$Piece$Piece = F4(
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
+var $author$project$Piece$fromChar = function (_char) {
+	switch (_char) {
+		case 'K':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 0));
+		case 'Q':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 1));
+		case 'R':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 2));
+		case 'N':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 4));
+		case 'B':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 3));
+		case 'P':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 1, 5));
+		case 'k':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 0));
+		case 'q':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 1));
+		case 'r':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 2));
+		case 'n':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 4));
+		case 'b':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 3));
+		case 'p':
+			return $elm$core$Maybe$Just(
+				A2($author$project$Piece$Piece, 0, 5));
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Basics$ge = _Utils_ge;
+var $author$project$Piece$place = F3(
+	function (pieceType, file, rank) {
+		return ((file >= 1) && ((file <= 8) && ((rank >= 1) && (rank <= 8)))) ? $elm$core$Maybe$Just(
+			A2(pieceType, file, rank)) : $elm$core$Maybe$Nothing;
+	});
+var $author$project$Position$fromFen_ = F4(
+	function (current, file, rank, fen) {
+		fromFen_:
+		while (true) {
+			if ((file === 9) && (rank === 1)) {
+				return $elm$core$Result$Ok(current);
+			} else {
+				var split = $elm$core$String$uncons(fen);
+				if (!split.$) {
+					var _v1 = split.a;
+					var _char = _v1.a;
+					var rest = _v1.b;
+					switch (_char) {
+						case '/':
+							var $temp$current = current,
+								$temp$file = file - 8,
+								$temp$rank = rank - 1,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '1':
+							var $temp$current = current,
+								$temp$file = file + 1,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '2':
+							var $temp$current = current,
+								$temp$file = file + 2,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '3':
+							var $temp$current = current,
+								$temp$file = file + 3,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '4':
+							var $temp$current = current,
+								$temp$file = file + 4,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '5':
+							var $temp$current = current,
+								$temp$file = file + 5,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '6':
+							var $temp$current = current,
+								$temp$file = file + 6,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '7':
+							var $temp$current = current,
+								$temp$file = file + 7,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						case '8':
+							var $temp$current = current,
+								$temp$file = file + 8,
+								$temp$rank = rank,
+								$temp$fen = rest;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							fen = $temp$fen;
+							continue fromFen_;
+						default:
+							var tryPiece = $author$project$Piece$fromChar(_char);
+							if (!tryPiece.$) {
+								var pieceType = tryPiece.a;
+								var _v4 = A3($author$project$Piece$place, pieceType, file, rank);
+								if (!_v4.$) {
+									var piece = _v4.a;
+									var $temp$current = A2($elm$core$List$cons, piece, current),
+										$temp$file = file + 1,
+										$temp$rank = rank,
+										$temp$fen = rest;
+									current = $temp$current;
+									file = $temp$file;
+									rank = $temp$rank;
+									fen = $temp$fen;
+									continue fromFen_;
+								} else {
+									return $elm$core$Result$Err(fen);
+								}
+							} else {
+								return $elm$core$Result$Err(fen);
+							}
+					}
+				} else {
+					return $elm$core$Result$Err(fen);
+				}
+			}
+		}
+	});
 var $author$project$Position$initialPosition = _List_fromArray(
 	[
 		A4($author$project$Piece$Piece, 1, 0, 5, 1),
@@ -5235,6 +5416,9 @@ var $author$project$Position$initialPosition = _List_fromArray(
 		A4($author$project$Piece$Piece, 0, 5, 7, 7),
 		A4($author$project$Piece$Piece, 0, 5, 8, 7)
 	]);
+var $author$project$Position$fromFen = function (fen) {
+	return _Utils_eq(fen, $author$project$Preferences$defaultFen) ? $elm$core$Result$Ok($author$project$Position$initialPosition) : A4($author$project$Position$fromFen_, $author$project$Position$emptyBoard, 1, 8, fen);
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Result$withDefault = F2(
@@ -5251,10 +5435,18 @@ var $author$project$Main$init = function (flags) {
 		$elm$core$Result$withDefault,
 		$author$project$Preferences$defaultPreferences,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
-	var model = {
-		w: (preferences.w === 'black') ? 0 : 1,
-		H: $author$project$Position$initialPosition
-	};
+	var position = function () {
+		var _v0 = $author$project$Position$fromFen(preferences.av);
+		if (!_v0.$) {
+			var pos = _v0.a;
+			return pos;
+		} else {
+			var err = _v0.a;
+			return $author$project$Position$emptyBoard;
+		}
+	}();
+	var orientation = (preferences.w === 'black') ? 0 : 1;
+	var model = {w: orientation, H: position};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
