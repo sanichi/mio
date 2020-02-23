@@ -64,7 +64,7 @@ fromPosition : Colour -> Position -> List (Svg Msg)
 fromPosition orientation position =
     let
         pieces =
-            List.map (fromPiece orientation) position
+            List.map (fromPiece orientation) position.pieces
     in
     board :: pieces
 

@@ -1,61 +1,70 @@
-module Position exposing (Position, emptyBoard, fromFen, initialPosition)
+module Position exposing (Position, fromFen)
 
 import Piece exposing (Category(..), Colour(..), Piece, fromChar, place)
 import Preferences exposing (defaultFen)
 
 
 type alias Position =
-    List Piece
+    { pieces : List Piece
+    , move : Colour
+    }
 
 
-fromFen : String -> Result String Position
+type alias ParseResult =
+    Result ( Position, String, String ) Position
+
+
+fromFen : String -> ParseResult
 fromFen fen =
-    if fen == defaultFen then
-        Ok initialPosition
-
-    else
-        fromFen_ emptyBoard 1 8 fen
+    fenPieces emptyBoard 1 8 "" fen
 
 
-fromFen_ : Position -> Int -> Int -> String -> Result String Position
-fromFen_ current file rank fen =
+fenPieces : Position -> Int -> Int -> String -> String -> ParseResult
+fenPieces current file rank consumed remaining =
     if file == 9 && rank == 1 then
-        Ok current
+        fenMove current consumed remaining
 
     else
         let
             split =
-                String.uncons fen
+                String.uncons remaining
+
+            err =
+                Err ( current, consumed, remaining )
         in
         case split of
-            Just ( char, rest ) ->
+            Just ( char, next ) ->
+                let
+                    prev =
+                        consumed ++ String.fromChar char
+                in
                 case char of
                     '/' ->
-                        fromFen_ current (file - 8) (rank - 1) rest
+                        fenPieces current (file - 8) (rank - 1) prev next
 
                     '1' ->
-                        fromFen_ current (file + 1) rank rest
+                        fenPieces current (file + 1) rank prev next
 
                     '2' ->
-                        fromFen_ current (file + 2) rank rest
+                        fenPieces current (file + 2) rank prev next
 
                     '3' ->
-                        fromFen_ current (file + 3) rank rest
+                        fenPieces current (file + 3) rank prev next
 
                     '4' ->
-                        fromFen_ current (file + 4) rank rest
+                        fenPieces current (file + 4) rank prev next
 
                     '5' ->
-                        fromFen_ current (file + 5) rank rest
+                        fenPieces current (file + 5) rank prev next
 
                     '6' ->
-                        fromFen_ current (file + 6) rank rest
+                        fenPieces current (file + 6) rank prev next
 
                     '7' ->
-                        fromFen_ current (file + 7) rank rest
+                        fenPieces current (file + 7) rank prev next
 
                     '8' ->
-                        fromFen_ current (file + 8) rank rest
+                        fenPieces current (file + 8) rank prev next
 
                     _ ->
                         let
@@ -66,55 +75,61 @@ fromFen_ current file rank fen =
                             Just pieceType ->
                                 case place pieceType file rank of
                                     Just piece ->
-                                        fromFen_ (piece :: current) (file + 1) rank rest
+                                        let
+                                            position =
+                                                { current | pieces = piece :: current.pieces }
+                                        in
+                                        fenPieces position (file + 1) rank prev next
 
                                     Nothing ->
-                                        Err fen
+                                        err
 
                             Nothing ->
-                                Err fen
+                                err
 
             Nothing ->
-                Err fen
+                err
+
+
+fenMove : Position -> String -> String -> ParseResult
+fenMove current consumed remaining =
+    let
+        split =
+            String.uncons remaining
+
+        err =
+            Err ( current, consumed, remaining )
+    in
+    case split of
+        Just ( char, next ) ->
+            let
+                prev =
+                    consumed ++ String.fromChar char
+            in
+            case char of
+                ' ' ->
+                    fenMove current prev next
+
+                'w' ->
+                    fenEnd { current | move = White }
+
+                'b' ->
+                    fenEnd { current | move = Black }
+
+                _ ->
+                    err
+
+        Nothing ->
+            err
+
+
+fenEnd : Position -> ParseResult
+fenEnd position =
+    Ok position
 
 
 emptyBoard : Position
 emptyBoard =
-    []
-
-
-initialPosition : Position
-initialPosition =
-    [ Piece White King 5 1
-    , Piece White Queen 4 1
-    , Piece White Rook 1 1
-    , Piece White Rook 8 1
-    , Piece White Bishop 3 1
-    , Piece White Bishop 6 1
-    , Piece White Knight 2 1
-    , Piece White Knight 7 1
-    , Piece White Pawn 1 2
-    , Piece White Pawn 2 2
-    , Piece White Pawn 3 2
-    , Piece White Pawn 4 2
-    , Piece White Pawn 5 2
-    , Piece White Pawn 6 2
-    , Piece White Pawn 7 2
-    , Piece White Pawn 8 2
-    , Piece Black King 5 8
-    , Piece Black Queen 4 8
-    , Piece Black Rook 1 8
-    , Piece Black Rook 8 8
-    , Piece Black Bishop 3 8
-    , Piece Black Bishop 6 8
-    , Piece Black Knight 2 8
-    , Piece Black Knight 7 8
-    , Piece Black Pawn 1 7
-    , Piece Black Pawn 2 7
-    , Piece Black Pawn 3 7
-    , Piece Black Pawn 4 7
-    , Piece Black Pawn 5 7
-    , Piece Black Pawn 6 7
-    , Piece Black Pawn 7 7
-    , Piece Black Pawn 8 7
-    ]
+    { pieces = []
+    , move = White
+    }

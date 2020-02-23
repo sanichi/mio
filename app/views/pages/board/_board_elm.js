@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.K.A === region.Q.A)
+	if (region.L.A === region.R.A)
 	{
-		return 'on line ' + region.K.A;
+		return 'on line ' + region.L.A;
 	}
-	return 'on lines ' + region.K.A + ' through ' + region.Q.A;
+	return 'on lines ' + region.L.A + ' through ' + region.R.A;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
+		impl.aA,
+		impl.aK,
 		impl.aI,
-		impl.aG,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		L: record.L,
-		I: record.I
+		M: record.M,
+		J: record.J
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.M;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.I) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.J) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
+		impl.aA,
+		impl.aK,
 		impl.aI,
-		impl.aG,
 		function(sendToApp, initialModel) {
-			var view = impl.aJ;
+			var view = impl.aL;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
+		impl.aA,
+		impl.aK,
 		impl.aI,
-		impl.aG,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.J && impl.J(sendToApp)
-			var view = impl.aJ;
+			var divertHrefToApp = impl.K && impl.K(sendToApp)
+			var view = impl.aL;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ap);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
+				(title !== doc.aJ) && (_VirtualDom_doc.title = title = doc.aJ);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aB;
-	var onUrlRequest = impl.aC;
+	var onUrlChange = impl.aC;
+	var onUrlRequest = impl.aD;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		J: function(sendToApp)
+		K: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ac === next.ac
-							&& curr.U === next.U
-							&& curr._.a === next._.a
+							&& curr.ad === next.ad
+							&& curr.V === next.V
+							&& curr.aa.a === next.aa.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		az: function(flags)
+		aA: function(flags)
 		{
-			return A3(impl.az, flags, _Browser_getUrl(), key);
+			return A3(impl.aA, flags, _Browser_getUrl(), key);
 		},
-		aJ: impl.aJ,
-		aI: impl.aI,
-		aG: impl.aG
+		aL: impl.aL,
+		aK: impl.aK,
+		aI: impl.aI
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ax: 'hidden', aq: 'visibilitychange' }
+		? { ay: 'hidden', ar: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ax: 'mozHidden', aq: 'mozvisibilitychange' }
+		? { ay: 'mozHidden', ar: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ax: 'msHidden', aq: 'msvisibilitychange' }
+		? { ay: 'msHidden', ar: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ax: 'webkitHidden', aq: 'webkitvisibilitychange' }
-		: { ax: 'hidden', aq: 'visibilitychange' };
+		? { ay: 'webkitHidden', ar: 'webkitvisibilitychange' }
+		: { ay: 'hidden', ar: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ag: _Browser_getScene(),
-		aj: {
-			al: _Browser_window.pageXOffset,
-			am: _Browser_window.pageYOffset,
-			ak: _Browser_doc.documentElement.clientWidth,
-			T: _Browser_doc.documentElement.clientHeight
+		ah: _Browser_getScene(),
+		ak: {
+			am: _Browser_window.pageXOffset,
+			an: _Browser_window.pageYOffset,
+			al: _Browser_doc.documentElement.clientWidth,
+			U: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ak: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		T: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ag: {
-				ak: node.scrollWidth,
-				T: node.scrollHeight
+			ah: {
+				al: node.scrollWidth,
+				U: node.scrollHeight
 			},
-			aj: {
-				al: node.scrollLeft,
-				am: node.scrollTop,
-				ak: node.clientWidth,
-				T: node.clientHeight
+			ak: {
+				am: node.scrollLeft,
+				an: node.scrollTop,
+				al: node.clientWidth,
+				U: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ag: _Browser_getScene(),
-			aj: {
-				al: x,
-				am: y,
-				ak: _Browser_doc.documentElement.clientWidth,
-				T: _Browser_doc.documentElement.clientHeight
+			ah: _Browser_getScene(),
+			ak: {
+				am: x,
+				an: y,
+				al: _Browser_doc.documentElement.clientWidth,
+				U: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
-				al: x + rect.left,
-				am: y + rect.top,
-				ak: rect.width,
-				T: rect.height
+			au: {
+				am: x + rect.left,
+				an: y + rect.top,
+				al: rect.width,
+				U: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {S: fragment, U: host, Y: path, _: port_, ac: protocol, ad: query};
+		return {T: fragment, V: host, Z: path, aa: port_, ad: protocol, ae: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5143,12 +5143,11 @@ var $author$project$Piece$White = 1;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F2(
 	function (orientation, fen) {
-		return {av: fen, w: orientation};
+		return {aw: fen, w: orientation};
 	});
 var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 var $author$project$Preferences$defaultOrientation = 'white';
 var $author$project$Preferences$defaultPreferences = A2($author$project$Preferences$Preferences, $author$project$Preferences$defaultOrientation, $author$project$Preferences$defaultFen);
-var $author$project$Position$emptyBoard = _List_Nil;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$core$String$toLower = _String_toLower;
@@ -5191,13 +5190,62 @@ var $author$project$Preferences$flagsDecoder = A3(
 		$author$project$Preferences$withDefault,
 		$author$project$Preferences$defaultFen,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)));
+var $author$project$Position$emptyBoard = {F: 1, aF: _List_Nil};
+var $author$project$Position$fenEnd = function (position) {
+	return $elm$core$Result$Ok(position);
+};
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $author$project$Position$fenMove = F3(
+	function (current, consumed, remaining) {
+		fenMove:
+		while (true) {
+			var split = $elm$core$String$uncons(remaining);
+			var err = $elm$core$Result$Err(
+				_Utils_Tuple3(current, consumed, remaining));
+			if (!split.$) {
+				var _v1 = split.a;
+				var _char = _v1.a;
+				var next = _v1.b;
+				var prev = _Utils_ap(
+					consumed,
+					$elm$core$String$fromChar(_char));
+				switch (_char) {
+					case ' ':
+						var $temp$current = current,
+							$temp$consumed = prev,
+							$temp$remaining = next;
+						current = $temp$current;
+						consumed = $temp$consumed;
+						remaining = $temp$remaining;
+						continue fenMove;
+					case 'w':
+						return $author$project$Position$fenEnd(
+							_Utils_update(
+								current,
+								{F: 1}));
+					case 'b':
+						return $author$project$Position$fenEnd(
+							_Utils_update(
+								current,
+								{F: 0}));
+					default:
+						return err;
+				}
+			} else {
+				return err;
+			}
+		}
+	});
 var $author$project$Piece$Bishop = 3;
 var $author$project$Piece$King = 0;
 var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F4(
 	function (col, cat, file, rank) {
-		return {N: cat, ar: col, aw: file, aE: rank};
+		return {O: cat, as: col, ax: file, aG: rank};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5249,109 +5297,132 @@ var $author$project$Piece$place = F3(
 		return ((file >= 1) && ((file <= 8) && ((rank >= 1) && (rank <= 8)))) ? $elm$core$Maybe$Just(
 			A2(pieceType, file, rank)) : $elm$core$Maybe$Nothing;
 	});
-var $author$project$Position$fromFen_ = F4(
-	function (current, file, rank, fen) {
-		fromFen_:
+var $author$project$Position$fenPieces = F5(
+	function (current, file, rank, consumed, remaining) {
+		fenPieces:
 		while (true) {
 			if ((file === 9) && (rank === 1)) {
-				return $elm$core$Result$Ok(current);
+				return A3($author$project$Position$fenMove, current, consumed, remaining);
 			} else {
-				var split = $elm$core$String$uncons(fen);
+				var split = $elm$core$String$uncons(remaining);
+				var err = $elm$core$Result$Err(
+					_Utils_Tuple3(current, consumed, remaining));
 				if (!split.$) {
 					var _v1 = split.a;
 					var _char = _v1.a;
-					var rest = _v1.b;
+					var next = _v1.b;
+					var prev = _Utils_ap(
+						consumed,
+						$elm$core$String$fromChar(_char));
 					switch (_char) {
 						case '/':
 							var $temp$current = current,
 								$temp$file = file - 8,
 								$temp$rank = rank - 1,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '1':
 							var $temp$current = current,
 								$temp$file = file + 1,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '2':
 							var $temp$current = current,
 								$temp$file = file + 2,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '3':
 							var $temp$current = current,
 								$temp$file = file + 3,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '4':
 							var $temp$current = current,
 								$temp$file = file + 4,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '5':
 							var $temp$current = current,
 								$temp$file = file + 5,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '6':
 							var $temp$current = current,
 								$temp$file = file + 6,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '7':
 							var $temp$current = current,
 								$temp$file = file + 7,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						case '8':
 							var $temp$current = current,
 								$temp$file = file + 8,
 								$temp$rank = rank,
-								$temp$fen = rest;
+								$temp$consumed = prev,
+								$temp$remaining = next;
 							current = $temp$current;
 							file = $temp$file;
 							rank = $temp$rank;
-							fen = $temp$fen;
-							continue fromFen_;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
 						default:
 							var tryPiece = $author$project$Piece$fromChar(_char);
 							if (!tryPiece.$) {
@@ -5359,65 +5430,37 @@ var $author$project$Position$fromFen_ = F4(
 								var _v4 = A3($author$project$Piece$place, pieceType, file, rank);
 								if (!_v4.$) {
 									var piece = _v4.a;
-									var $temp$current = A2($elm$core$List$cons, piece, current),
+									var position = _Utils_update(
+										current,
+										{
+											aF: A2($elm$core$List$cons, piece, current.aF)
+										});
+									var $temp$current = position,
 										$temp$file = file + 1,
 										$temp$rank = rank,
-										$temp$fen = rest;
+										$temp$consumed = prev,
+										$temp$remaining = next;
 									current = $temp$current;
 									file = $temp$file;
 									rank = $temp$rank;
-									fen = $temp$fen;
-									continue fromFen_;
+									consumed = $temp$consumed;
+									remaining = $temp$remaining;
+									continue fenPieces;
 								} else {
-									return $elm$core$Result$Err(fen);
+									return err;
 								}
 							} else {
-								return $elm$core$Result$Err(fen);
+								return err;
 							}
 					}
 				} else {
-					return $elm$core$Result$Err(fen);
+					return err;
 				}
 			}
 		}
 	});
-var $author$project$Position$initialPosition = _List_fromArray(
-	[
-		A4($author$project$Piece$Piece, 1, 0, 5, 1),
-		A4($author$project$Piece$Piece, 1, 1, 4, 1),
-		A4($author$project$Piece$Piece, 1, 2, 1, 1),
-		A4($author$project$Piece$Piece, 1, 2, 8, 1),
-		A4($author$project$Piece$Piece, 1, 3, 3, 1),
-		A4($author$project$Piece$Piece, 1, 3, 6, 1),
-		A4($author$project$Piece$Piece, 1, 4, 2, 1),
-		A4($author$project$Piece$Piece, 1, 4, 7, 1),
-		A4($author$project$Piece$Piece, 1, 5, 1, 2),
-		A4($author$project$Piece$Piece, 1, 5, 2, 2),
-		A4($author$project$Piece$Piece, 1, 5, 3, 2),
-		A4($author$project$Piece$Piece, 1, 5, 4, 2),
-		A4($author$project$Piece$Piece, 1, 5, 5, 2),
-		A4($author$project$Piece$Piece, 1, 5, 6, 2),
-		A4($author$project$Piece$Piece, 1, 5, 7, 2),
-		A4($author$project$Piece$Piece, 1, 5, 8, 2),
-		A4($author$project$Piece$Piece, 0, 0, 5, 8),
-		A4($author$project$Piece$Piece, 0, 1, 4, 8),
-		A4($author$project$Piece$Piece, 0, 2, 1, 8),
-		A4($author$project$Piece$Piece, 0, 2, 8, 8),
-		A4($author$project$Piece$Piece, 0, 3, 3, 8),
-		A4($author$project$Piece$Piece, 0, 3, 6, 8),
-		A4($author$project$Piece$Piece, 0, 4, 2, 8),
-		A4($author$project$Piece$Piece, 0, 4, 7, 8),
-		A4($author$project$Piece$Piece, 0, 5, 1, 7),
-		A4($author$project$Piece$Piece, 0, 5, 2, 7),
-		A4($author$project$Piece$Piece, 0, 5, 3, 7),
-		A4($author$project$Piece$Piece, 0, 5, 4, 7),
-		A4($author$project$Piece$Piece, 0, 5, 5, 7),
-		A4($author$project$Piece$Piece, 0, 5, 6, 7),
-		A4($author$project$Piece$Piece, 0, 5, 7, 7),
-		A4($author$project$Piece$Piece, 0, 5, 8, 7)
-	]);
 var $author$project$Position$fromFen = function (fen) {
-	return _Utils_eq(fen, $author$project$Preferences$defaultFen) ? $elm$core$Result$Ok($author$project$Position$initialPosition) : A4($author$project$Position$fromFen_, $author$project$Position$emptyBoard, 1, 8, fen);
+	return A5($author$project$Position$fenPieces, $author$project$Position$emptyBoard, 1, 8, '', fen);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5436,17 +5479,20 @@ var $author$project$Main$init = function (flags) {
 		$author$project$Preferences$defaultPreferences,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
 	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.av);
+		var _v0 = $author$project$Position$fromFen(preferences.aw);
 		if (!_v0.$) {
 			var pos = _v0.a;
 			return pos;
 		} else {
-			var err = _v0.a;
-			return $author$project$Position$emptyBoard;
+			var _v1 = _v0.a;
+			var current = _v1.a;
+			var consumed = _v1.b;
+			var remaining = _v1.c;
+			return current;
 		}
 	}();
 	var orientation = (preferences.w === 'black') ? 0 : 1;
-	var model = {w: orientation, H: position};
+	var model = {w: orientation, I: position};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6892,9 +6938,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.aw, piece.aE);
-		if (piece.ar === 1) {
-			var _v0 = piece.N;
+		var place = _Utils_Tuple3(orientation, piece.ax, piece.aG);
+		if (piece.as === 1) {
+			var _v0 = piece.O;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -6910,7 +6956,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.N;
+			var _v1 = piece.O;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -6932,7 +6978,7 @@ var $author$project$Image$fromPosition = F2(
 		var pieces = A2(
 			$elm$core$List$map,
 			$author$project$Image$fromPiece(orientation),
-			position);
+			position.aF);
 		return A2($elm$core$List$cons, $author$project$Image$board, pieces);
 	});
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
@@ -6948,8 +6994,8 @@ var $author$project$Main$view = function (model) {
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
-		A2($author$project$Image$fromPosition, model.w, model.H));
+		A2($author$project$Image$fromPosition, model.w, model.I));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{az: $author$project$Main$init, aG: $author$project$Main$subscriptions, aI: $author$project$Main$update, aJ: $author$project$Main$view});
+	{aA: $author$project$Main$init, aI: $author$project$Main$subscriptions, aK: $author$project$Main$update, aL: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

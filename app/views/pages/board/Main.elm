@@ -8,7 +8,7 @@ import Image exposing (fromPosition)
 import Json.Decode exposing (Value, decodeValue)
 import Messages exposing (Msg(..))
 import Piece exposing (Colour(..))
-import Position exposing (Position, emptyBoard, fromFen, initialPosition)
+import Position exposing (Position, fromFen)
 import Preferences exposing (defaultPreferences, flagsDecoder)
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
@@ -56,8 +56,8 @@ init flags =
                 Ok pos ->
                     pos
 
-                Err err ->
-                    emptyBoard
+                Err ( current, consumed, remaining ) ->
+                    current
 
         model =
             { position = position, orientation = orientation }
