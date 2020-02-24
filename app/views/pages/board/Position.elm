@@ -1,7 +1,7 @@
 module Position exposing (Position, fromFen)
 
-import Piece exposing (Category(..), Colour(..), Piece, fromChar, place)
-import Preferences exposing (defaultFen)
+import Piece exposing (Category(..), Colour(..), Piece)
+import Square exposing (Square)
 
 
 type alias Position =
@@ -69,11 +69,14 @@ fenPieces current file rank consumed remaining =
                     _ ->
                         let
                             tryPiece =
-                                fromChar char
+                                Piece.fromChar char
+
+                            square =
+                                Square file rank
                         in
                         case tryPiece of
                             Just pieceType ->
-                                case place pieceType file rank of
+                                case Piece.place pieceType square of
                                     Just piece ->
                                         let
                                             position =

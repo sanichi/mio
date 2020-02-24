@@ -1,5 +1,7 @@
 module Piece exposing (Category(..), Colour(..), Piece, fromChar, place)
 
+import Square exposing (Square)
+
 
 type Colour
     = Black
@@ -70,10 +72,10 @@ fromChar char =
             Nothing
 
 
-place : PieceType -> Int -> Int -> Maybe Piece
-place pieceType file rank =
-    if file >= 1 && file <= 8 && rank >= 1 && rank <= 8 then
-        Just (pieceType file rank)
+place : PieceType -> Square -> Maybe Piece
+place pieceType square =
+    if Square.valid square then
+        Just (pieceType square.file square.rank)
 
     else
         Nothing

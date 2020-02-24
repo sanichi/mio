@@ -1,9 +1,11 @@
-module Image exposing (fromPosition)
+module Image exposing (fromModel)
 
 import Html exposing (Html)
 import Messages exposing (Msg(..))
+import Model exposing (Model)
 import Piece exposing (Category(..), Colour(..), Piece)
 import Position exposing (Position)
+import Square exposing (Square)
 import Svg exposing (Svg, circle, g, path, rect)
 import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width)
 import Svg.Events exposing (onClick)
@@ -60,11 +62,11 @@ fromPiece orientation piece =
                 bp place
 
 
-fromPosition : Colour -> Position -> List (Svg Msg)
-fromPosition orientation position =
+fromModel : Model -> List (Svg Msg)
+fromModel model =
     let
         pieces =
-            List.map (fromPiece orientation) position.pieces
+            List.map (fromPiece model.orientation) model.position.pieces
     in
     board :: pieces
 

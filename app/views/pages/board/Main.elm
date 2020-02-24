@@ -1,27 +1,19 @@
-module Main exposing (Model)
+module Main exposing (main)
 
 -- local modules
 
 import Browser
 import Html exposing (Html)
-import Image exposing (fromPosition)
-import Json.Decode exposing (Value, decodeValue)
+import Image
+import Json.Decode exposing (Value)
 import Messages exposing (Msg(..))
+import Model exposing (Model)
 import Piece exposing (Colour(..))
-import Position exposing (Position, fromFen)
-import Preferences exposing (defaultPreferences, flagsDecoder)
+import Position exposing (Position)
+import Preferences
+import Square exposing (Square)
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
-
-
-
--- MODEL
-
-
-type alias Model =
-    { position : Position
-    , orientation : Colour
-    }
 
 
 
@@ -42,7 +34,7 @@ init : Value -> ( Model, Cmd Msg )
 init flags =
     let
         preferences =
-            decodeValue flagsDecoder flags |> Result.withDefault defaultPreferences
+            Preferences.decode flags
 
         orientation =
             if preferences.orientation == "black" then
@@ -52,15 +44,18 @@ init flags =
                 White
 
         position =
-            case fromFen preferences.fen of
+            case Position.fromFen preferences.fen of
                 Ok pos ->
                     pos
 
                 Err ( current, consumed, remaining ) ->
                     current
 
+        dots =
+            Square.fromList preferences.dots
+
         model =
-            { position = position, orientation = orientation }
+            { position = position, orientation = orientation, dots = dots }
     in
     ( model, Cmd.none )
 
@@ -76,7 +71,8 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    svg [ id "board", version "1.1", viewBox "0 0 360 360" ] (fromPosition model.orientation model.position)
+    Image.fromModel model
+        |> svg [ id "board", version "1.1", viewBox "0 0 360 360" ]
 
 
 

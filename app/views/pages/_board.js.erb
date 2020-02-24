@@ -12,4 +12,12 @@ $(function() {
       fen: '8/1KP5/8/2p5/1pP5/p7/k7/1R3R2 w - - 0 1'
     }
   });
+  Elm.Main.init({
+    node: $('#elm-app-3').get(0),
+    flags: {
+      orientation: 'white',
+      fen: '4k3/8/8/4P3/8/8/8/8 w - - 0 1',
+      dots: ['d6', 'e6', 'f6']
+    }
+  });
 });

@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.L.A === region.R.A)
+	if (region.J.z === region.Q.z)
 	{
-		return 'on line ' + region.L.A;
+		return 'on line ' + region.J.z;
 	}
-	return 'on lines ' + region.L.A + ' through ' + region.R.A;
+	return 'on lines ' + region.J.z + ' through ' + region.Q.z;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
-		impl.aK,
-		impl.aI,
+		impl.az,
+		impl.aL,
+		impl.aJ,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		M: record.M,
-		J: record.J
+		K: record.K,
+		H: record.H
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.M;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.J) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.H) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
-		impl.aK,
-		impl.aI,
+		impl.az,
+		impl.aL,
+		impl.aJ,
 		function(sendToApp, initialModel) {
-			var view = impl.aL;
+			var view = impl.aM;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
-		impl.aK,
-		impl.aI,
+		impl.az,
+		impl.aL,
+		impl.aJ,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.K && impl.K(sendToApp)
-			var view = impl.aL;
+			var divertHrefToApp = impl.I && impl.I(sendToApp)
+			var view = impl.aM;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ap);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aJ) && (_VirtualDom_doc.title = title = doc.aJ);
+				(title !== doc.aK) && (_VirtualDom_doc.title = title = doc.aK);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aC;
-	var onUrlRequest = impl.aD;
+	var onUrlChange = impl.aB;
+	var onUrlRequest = impl.aC;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		K: function(sendToApp)
+		I: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ad === next.ad
-							&& curr.V === next.V
-							&& curr.aa.a === next.aa.a
+							&& curr.ac === next.ac
+							&& curr.U === next.U
+							&& curr._.a === next._.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aA: function(flags)
+		az: function(flags)
 		{
-			return A3(impl.aA, flags, _Browser_getUrl(), key);
+			return A3(impl.az, flags, _Browser_getUrl(), key);
 		},
+		aM: impl.aM,
 		aL: impl.aL,
-		aK: impl.aK,
-		aI: impl.aI
+		aJ: impl.aJ
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ay: 'hidden', ar: 'visibilitychange' }
+		? { ax: 'hidden', aq: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ay: 'mozHidden', ar: 'mozvisibilitychange' }
+		? { ax: 'mozHidden', aq: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ay: 'msHidden', ar: 'msvisibilitychange' }
+		? { ax: 'msHidden', aq: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ay: 'webkitHidden', ar: 'webkitvisibilitychange' }
-		: { ay: 'hidden', ar: 'visibilitychange' };
+		? { ax: 'webkitHidden', aq: 'webkitvisibilitychange' }
+		: { ax: 'hidden', aq: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ah: _Browser_getScene(),
-		ak: {
-			am: _Browser_window.pageXOffset,
-			an: _Browser_window.pageYOffset,
-			al: _Browser_doc.documentElement.clientWidth,
-			U: _Browser_doc.documentElement.clientHeight
+		ag: _Browser_getScene(),
+		aj: {
+			al: _Browser_window.pageXOffset,
+			am: _Browser_window.pageYOffset,
+			ak: _Browser_doc.documentElement.clientWidth,
+			T: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ak: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		T: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ah: {
-				al: node.scrollWidth,
-				U: node.scrollHeight
+			ag: {
+				ak: node.scrollWidth,
+				T: node.scrollHeight
 			},
-			ak: {
-				am: node.scrollLeft,
-				an: node.scrollTop,
-				al: node.clientWidth,
-				U: node.clientHeight
+			aj: {
+				al: node.scrollLeft,
+				am: node.scrollTop,
+				ak: node.clientWidth,
+				T: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ah: _Browser_getScene(),
-			ak: {
-				am: x,
-				an: y,
-				al: _Browser_doc.documentElement.clientWidth,
-				U: _Browser_doc.documentElement.clientHeight
+			ag: _Browser_getScene(),
+			aj: {
+				al: x,
+				am: y,
+				ak: _Browser_doc.documentElement.clientWidth,
+				T: _Browser_doc.documentElement.clientHeight
 			},
-			au: {
-				am: x + rect.left,
-				an: y + rect.top,
-				al: rect.width,
-				U: rect.height
+			at: {
+				al: x + rect.left,
+				am: y + rect.top,
+				ak: rect.width,
+				T: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {T: fragment, V: host, Z: path, aa: port_, ad: protocol, ae: query};
+		return {S: fragment, U: host, Y: path, _: port_, ac: protocol, ad: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5141,14 +5141,17 @@ var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Piece$Black = 0;
 var $author$project$Piece$White = 1;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F2(
-	function (orientation, fen) {
-		return {aw: fen, w: orientation};
+var $author$project$Preferences$Preferences = F3(
+	function (orientation, fen, dots) {
+		return {P: dots, av: fen, aE: orientation};
 	});
+var $author$project$Preferences$defaultDots = _List_Nil;
 var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 var $author$project$Preferences$defaultOrientation = 'white';
-var $author$project$Preferences$defaultPreferences = A2($author$project$Preferences$Preferences, $author$project$Preferences$defaultOrientation, $author$project$Preferences$defaultFen);
+var $author$project$Preferences$defaultPreferences = A3($author$project$Preferences$Preferences, $author$project$Preferences$defaultOrientation, $author$project$Preferences$defaultFen, $author$project$Preferences$defaultDots);
 var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $elm$json$Json$Decode$map3 = _Json_map3;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$core$String$toLower = _String_toLower;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
@@ -5176,8 +5179,8 @@ var $author$project$Preferences$withDefault = F2(
 			$elm$core$Maybe$withDefault(fallback),
 			$elm$json$Json$Decode$maybe(decoder));
 	});
-var $author$project$Preferences$flagsDecoder = A3(
-	$elm$json$Json$Decode$map2,
+var $author$project$Preferences$flagsDecoder = A4(
+	$elm$json$Json$Decode$map3,
 	$author$project$Preferences$Preferences,
 	A2(
 		$elm$json$Json$Decode$map,
@@ -5189,8 +5192,34 @@ var $author$project$Preferences$flagsDecoder = A3(
 	A2(
 		$author$project$Preferences$withDefault,
 		$author$project$Preferences$defaultFen,
-		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)));
-var $author$project$Position$emptyBoard = {F: 1, aF: _List_Nil};
+		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$defaultDots,
+		A2(
+			$elm$json$Json$Decode$field,
+			'dots',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))));
+var $elm$core$Result$withDefault = F2(
+	function (def, result) {
+		if (!result.$) {
+			var a = result.a;
+			return a;
+		} else {
+			return def;
+		}
+	});
+var $author$project$Preferences$decode = function (flags) {
+	return A2(
+		$elm$core$Result$withDefault,
+		$author$project$Preferences$defaultPreferences,
+		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
+};
+var $author$project$Position$emptyBoard = {E: 1, aF: _List_Nil};
+var $author$project$Square$Square = F2(
+	function (file, rank) {
+		return {aw: file, aH: rank};
+	});
 var $author$project$Position$fenEnd = function (position) {
 	return $elm$core$Result$Ok(position);
 };
@@ -5225,12 +5254,12 @@ var $author$project$Position$fenMove = F3(
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{F: 1}));
+								{E: 1}));
 					case 'b':
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{F: 0}));
+								{E: 0}));
 					default:
 						return err;
 				}
@@ -5245,7 +5274,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F4(
 	function (col, cat, file, rank) {
-		return {O: cat, as: col, ax: file, aG: rank};
+		return {M: cat, ar: col, aw: file, aH: rank};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5292,10 +5321,13 @@ var $author$project$Piece$fromChar = function (_char) {
 	}
 };
 var $elm$core$Basics$ge = _Utils_ge;
-var $author$project$Piece$place = F3(
-	function (pieceType, file, rank) {
-		return ((file >= 1) && ((file <= 8) && ((rank >= 1) && (rank <= 8)))) ? $elm$core$Maybe$Just(
-			A2(pieceType, file, rank)) : $elm$core$Maybe$Nothing;
+var $author$project$Square$valid = function (square) {
+	return (square.aw >= 1) && ((square.aw <= 8) && ((square.aw >= 1) && (square.aw <= 8)));
+};
+var $author$project$Piece$place = F2(
+	function (pieceType, square) {
+		return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(
+			A2(pieceType, square.aw, square.aH)) : $elm$core$Maybe$Nothing;
 	});
 var $author$project$Position$fenPieces = F5(
 	function (current, file, rank, consumed, remaining) {
@@ -5425,9 +5457,10 @@ var $author$project$Position$fenPieces = F5(
 							continue fenPieces;
 						default:
 							var tryPiece = $author$project$Piece$fromChar(_char);
+							var square = A2($author$project$Square$Square, file, rank);
 							if (!tryPiece.$) {
 								var pieceType = tryPiece.a;
-								var _v4 = A3($author$project$Piece$place, pieceType, file, rank);
+								var _v4 = A2($author$project$Piece$place, pieceType, square);
 								if (!_v4.$) {
 									var piece = _v4.a;
 									var position = _Utils_update(
@@ -5462,24 +5495,54 @@ var $author$project$Position$fenPieces = F5(
 var $author$project$Position$fromFen = function (fen) {
 	return A5($author$project$Position$fenPieces, $author$project$Position$emptyBoard, 1, 8, '', fen);
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $elm$core$Result$withDefault = F2(
-	function (def, result) {
-		if (!result.$) {
-			var a = result.a;
-			return a;
+var $elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _v0 = f(mx);
+		if (!_v0.$) {
+			var x = _v0.a;
+			return A2($elm$core$List$cons, x, xs);
 		} else {
-			return def;
+			return xs;
 		}
 	});
+var $elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			$elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $author$project$Square$fromString = function (str) {
+	var square = function () {
+		var _v0 = $elm$core$String$toList(str);
+		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
+			var file = _v0.a;
+			var _v1 = _v0.b;
+			var rank = _v1.a;
+			return A2(
+				$author$project$Square$Square,
+				$elm$core$Char$toCode(file) - 96,
+				$elm$core$Char$toCode(rank) - 48);
+		} else {
+			return A2($author$project$Square$Square, 0, 0);
+		}
+	}();
+	return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(square) : $elm$core$Maybe$Nothing;
+};
+var $author$project$Square$fromList = function (strings) {
+	return A2($elm$core$List$filterMap, $author$project$Square$fromString, strings);
+};
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (flags) {
-	var preferences = A2(
-		$elm$core$Result$withDefault,
-		$author$project$Preferences$defaultPreferences,
-		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
+	var preferences = $author$project$Preferences$decode(flags);
 	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.aw);
+		var _v0 = $author$project$Position$fromFen(preferences.av);
 		if (!_v0.$) {
 			var pos = _v0.a;
 			return pos;
@@ -5491,8 +5554,9 @@ var $author$project$Main$init = function (flags) {
 			return current;
 		}
 	}();
-	var orientation = (preferences.w === 'black') ? 0 : 1;
-	var model = {w: orientation, I: position};
+	var orientation = (preferences.aE === 'black') ? 0 : 1;
+	var dots = $author$project$Square$fromList(preferences.P);
+	var model = {P: dots, aE: orientation, aG: position};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5502,11 +5566,11 @@ var $author$project$Main$subscriptions = function (model) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var orientation = (model.w === 1) ? 0 : 1;
+		var orientation = (model.aE === 1) ? 0 : 1;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{w: orientation}),
+				{aE: orientation}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
@@ -6938,9 +7002,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.ax, piece.aG);
-		if (piece.as === 1) {
-			var _v0 = piece.O;
+		var place = _Utils_Tuple3(orientation, piece.aw, piece.aH);
+		if (piece.ar === 1) {
+			var _v0 = piece.M;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -6956,7 +7020,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.O;
+			var _v1 = piece.M;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -6973,14 +7037,13 @@ var $author$project$Image$fromPiece = F2(
 			}
 		}
 	});
-var $author$project$Image$fromPosition = F2(
-	function (orientation, position) {
-		var pieces = A2(
-			$elm$core$List$map,
-			$author$project$Image$fromPiece(orientation),
-			position.aF);
-		return A2($elm$core$List$cons, $author$project$Image$board, pieces);
-	});
+var $author$project$Image$fromModel = function (model) {
+	var pieces = A2(
+		$elm$core$List$map,
+		$author$project$Image$fromPiece(model.aE),
+		model.aG.aF);
+	return A2($elm$core$List$cons, $author$project$Image$board, pieces);
+};
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$version = _VirtualDom_attribute('version');
@@ -6994,8 +7057,8 @@ var $author$project$Main$view = function (model) {
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
 			]),
-		A2($author$project$Image$fromPosition, model.w, model.I));
+		$author$project$Image$fromModel(model));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{aA: $author$project$Main$init, aI: $author$project$Main$subscriptions, aK: $author$project$Main$update, aL: $author$project$Main$view});
+	{az: $author$project$Main$init, aJ: $author$project$Main$subscriptions, aL: $author$project$Main$update, aM: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

@@ -1,11 +1,12 @@
-module Preferences exposing (defaultFen, defaultPreferences, flagsDecoder)
+module Preferences exposing (decode)
 
-import Json.Decode exposing (Decoder, field, map, map2, maybe, string, succeed)
+import Json.Decode as D exposing (Decoder, Value)
 
 
 type alias Preferences =
     { orientation : String
     , fen : String
+    , dots : List String
     }
 
 
@@ -19,15 +20,26 @@ defaultFen =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 
+defaultDots : List String
+defaultDots =
+    []
+
+
 defaultPreferences =
-    Preferences defaultOrientation defaultFen
+    Preferences defaultOrientation defaultFen defaultDots
 
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    map2 Preferences
-        (field "orientation" string |> withDefault defaultOrientation |> map String.toLower)
-        (field "fen" string |> withDefault defaultFen)
+    D.map3 Preferences
+        (D.field "orientation" D.string |> withDefault defaultOrientation |> D.map String.toLower)
+        (D.field "fen" D.string |> withDefault defaultFen)
+        (D.field "dots" (D.list D.string) |> withDefault defaultDots)
+
+
+decode : Value -> Preferences
+decode flags =
+    D.decodeValue flagsDecoder flags |> Result.withDefault defaultPreferences
 
 
 
@@ -36,5 +48,5 @@ flagsDecoder =
 
 withDefault : a -> Decoder a -> Decoder a
 withDefault fallback decoder =
-    maybe decoder
-        |> map (Maybe.withDefault fallback)
+    D.maybe decoder
+        |> D.map (Maybe.withDefault fallback)
