@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aL,
-		impl.aJ,
+		impl.aA,
+		impl.aM,
+		impl.aK,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aL,
-		impl.aJ,
+		impl.aA,
+		impl.aM,
+		impl.aK,
 		function(sendToApp, initialModel) {
-			var view = impl.aM;
+			var view = impl.aN;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aL,
-		impl.aJ,
+		impl.aA,
+		impl.aM,
+		impl.aK,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.I && impl.I(sendToApp)
-			var view = impl.aM;
+			var view = impl.aN;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ap);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aK) && (_VirtualDom_doc.title = title = doc.aK);
+				(title !== doc.aL) && (_VirtualDom_doc.title = title = doc.aL);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aB;
-	var onUrlRequest = impl.aC;
+	var onUrlChange = impl.aC;
+	var onUrlRequest = impl.aD;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		az: function(flags)
+		aA: function(flags)
 		{
-			return A3(impl.az, flags, _Browser_getUrl(), key);
+			return A3(impl.aA, flags, _Browser_getUrl(), key);
 		},
+		aN: impl.aN,
 		aM: impl.aM,
-		aL: impl.aL,
-		aJ: impl.aJ
+		aK: impl.aK
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ax: 'hidden', aq: 'visibilitychange' }
+		? { ay: 'hidden', ar: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ax: 'mozHidden', aq: 'mozvisibilitychange' }
+		? { ay: 'mozHidden', ar: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ax: 'msHidden', aq: 'msvisibilitychange' }
+		? { ay: 'msHidden', ar: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ax: 'webkitHidden', aq: 'webkitvisibilitychange' }
-		: { ax: 'hidden', aq: 'visibilitychange' };
+		? { ay: 'webkitHidden', ar: 'webkitvisibilitychange' }
+		: { ay: 'hidden', ar: 'visibilitychange' };
 }
 
 
@@ -4233,10 +4233,10 @@ function _Browser_getViewport()
 {
 	return {
 		ag: _Browser_getScene(),
-		aj: {
-			al: _Browser_window.pageXOffset,
-			am: _Browser_window.pageYOffset,
-			ak: _Browser_doc.documentElement.clientWidth,
+		ak: {
+			am: _Browser_window.pageXOffset,
+			an: _Browser_window.pageYOffset,
+			al: _Browser_doc.documentElement.clientWidth,
 			T: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4247,7 +4247,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ak: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		T: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4272,13 +4272,13 @@ function _Browser_getViewportOf(id)
 	{
 		return {
 			ag: {
-				ak: node.scrollWidth,
+				al: node.scrollWidth,
 				T: node.scrollHeight
 			},
-			aj: {
-				al: node.scrollLeft,
-				am: node.scrollTop,
-				ak: node.clientWidth,
+			ak: {
+				am: node.scrollLeft,
+				an: node.scrollTop,
+				al: node.clientWidth,
 				T: node.clientHeight
 			}
 		};
@@ -4310,16 +4310,16 @@ function _Browser_getElement(id)
 		var y = _Browser_window.pageYOffset;
 		return {
 			ag: _Browser_getScene(),
-			aj: {
-				al: x,
-				am: y,
-				ak: _Browser_doc.documentElement.clientWidth,
+			ak: {
+				am: x,
+				an: y,
+				al: _Browser_doc.documentElement.clientWidth,
 				T: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
-				al: x + rect.left,
-				am: y + rect.top,
-				ak: rect.width,
+			au: {
+				am: x + rect.left,
+				an: y + rect.top,
+				al: rect.width,
 				T: rect.height
 			}
 		};
@@ -5143,7 +5143,7 @@ var $author$project$Piece$White = 1;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F3(
 	function (orientation, fen, dots) {
-		return {P: dots, av: fen, aE: orientation};
+		return {P: dots, aw: fen, aF: orientation};
 	});
 var $author$project$Preferences$defaultDots = _List_Nil;
 var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -5215,10 +5215,10 @@ var $author$project$Preferences$decode = function (flags) {
 		$author$project$Preferences$defaultPreferences,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
 };
-var $author$project$Position$emptyBoard = {E: 1, aF: _List_Nil};
+var $author$project$Position$emptyBoard = {E: 1, aG: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {aw: file, aH: rank};
+		return {ax: file, aI: rank};
 	});
 var $author$project$Position$fenEnd = function (position) {
 	return $elm$core$Result$Ok(position);
@@ -5272,9 +5272,9 @@ var $author$project$Piece$Bishop = 3;
 var $author$project$Piece$King = 0;
 var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
-var $author$project$Piece$Piece = F4(
-	function (col, cat, file, rank) {
-		return {M: cat, ar: col, aw: file, aH: rank};
+var $author$project$Piece$Piece = F3(
+	function (colour, category, square) {
+		return {M: category, as: colour, ah: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5322,12 +5322,12 @@ var $author$project$Piece$fromChar = function (_char) {
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Square$valid = function (square) {
-	return (square.aw >= 1) && ((square.aw <= 8) && ((square.aw >= 1) && (square.aw <= 8)));
+	return (square.ax >= 1) && ((square.ax <= 8) && ((square.ax >= 1) && (square.ax <= 8)));
 };
 var $author$project$Piece$place = F2(
 	function (pieceType, square) {
 		return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(
-			A2(pieceType, square.aw, square.aH)) : $elm$core$Maybe$Nothing;
+			pieceType(square)) : $elm$core$Maybe$Nothing;
 	});
 var $author$project$Position$fenPieces = F5(
 	function (current, file, rank, consumed, remaining) {
@@ -5466,7 +5466,7 @@ var $author$project$Position$fenPieces = F5(
 									var position = _Utils_update(
 										current,
 										{
-											aF: A2($elm$core$List$cons, piece, current.aF)
+											aG: A2($elm$core$List$cons, piece, current.aG)
 										});
 									var $temp$current = position,
 										$temp$file = file + 1,
@@ -5542,7 +5542,7 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (flags) {
 	var preferences = $author$project$Preferences$decode(flags);
 	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.av);
+		var _v0 = $author$project$Position$fromFen(preferences.aw);
 		if (!_v0.$) {
 			var pos = _v0.a;
 			return pos;
@@ -5554,9 +5554,9 @@ var $author$project$Main$init = function (flags) {
 			return current;
 		}
 	}();
-	var orientation = (preferences.aE === 'black') ? 0 : 1;
+	var orientation = (preferences.aF === 'black') ? 0 : 1;
 	var dots = $author$project$Square$fromList(preferences.P);
-	var model = {P: dots, aE: orientation, aG: position};
+	var model = {P: dots, aF: orientation, aH: position};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5566,11 +5566,11 @@ var $author$project$Main$subscriptions = function (model) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var orientation = (model.aE === 1) ? 0 : 1;
+		var orientation = (model.aF === 1) ? 0 : 1;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{aE: orientation}),
+				{aF: orientation}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
@@ -7002,8 +7002,8 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.aw, piece.aH);
-		if (piece.ar === 1) {
+		var place = _Utils_Tuple3(orientation, piece.ah.ax, piece.ah.aI);
+		if (piece.as === 1) {
 			var _v0 = piece.M;
 			switch (_v0) {
 				case 0:
@@ -7040,8 +7040,8 @@ var $author$project$Image$fromPiece = F2(
 var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.aE),
-		model.aG.aF);
+		$author$project$Image$fromPiece(model.aF),
+		model.aH.aG);
 	return A2($elm$core$List$cons, $author$project$Image$board, pieces);
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
@@ -7060,5 +7060,5 @@ var $author$project$Main$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{az: $author$project$Main$init, aJ: $author$project$Main$subscriptions, aL: $author$project$Main$update, aM: $author$project$Main$view});
+	{aA: $author$project$Main$init, aK: $author$project$Main$subscriptions, aM: $author$project$Main$update, aN: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

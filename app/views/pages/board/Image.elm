@@ -19,10 +19,10 @@ fromPiece : Colour -> Piece -> Svg Msg
 fromPiece orientation piece =
     let
         place =
-            ( orientation, piece.file, piece.rank )
+            ( orientation, piece.square.file, piece.square.rank )
     in
-    if piece.col == White then
-        case piece.cat of
+    if piece.colour == White then
+        case piece.category of
             King ->
                 wk place
 
@@ -42,7 +42,7 @@ fromPiece orientation piece =
                 wp place
 
     else
-        case piece.cat of
+        case piece.category of
             King ->
                 bk place
 

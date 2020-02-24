@@ -18,15 +18,14 @@ type Category
 
 
 type alias Piece =
-    { col : Colour
-    , cat : Category
-    , file : Int
-    , rank : Int
+    { colour : Colour
+    , category : Category
+    , square : Square
     }
 
 
 type alias PieceType =
-    Int -> Int -> Piece
+    Square -> Piece
 
 
 fromChar : Char -> Maybe PieceType
@@ -75,7 +74,7 @@ fromChar char =
 place : PieceType -> Square -> Maybe Piece
 place pieceType square =
     if Square.valid square then
-        Just (pieceType square.file square.rank)
+        Just (pieceType square)
 
     else
         Nothing
