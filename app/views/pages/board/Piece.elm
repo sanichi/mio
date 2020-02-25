@@ -1,11 +1,7 @@
-module Piece exposing (Category(..), Colour(..), Piece, fromChar, place)
+module Piece exposing (Category(..), Piece, fromChar, place)
 
+import Colour exposing (Colour(..))
 import Square exposing (Square)
-
-
-type Colour
-    = Black
-    | White
 
 
 type Category

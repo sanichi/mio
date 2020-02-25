@@ -16,7 +16,7 @@ fromString : String -> Maybe Square
 fromString str =
     let
         square =
-            case String.toList str of
+            case String.toList <| String.toLower str of
                 file :: (rank :: []) ->
                     Square (Char.toCode file - 96) (Char.toCode rank - 48)
 

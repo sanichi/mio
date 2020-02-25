@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.z === region.Q.z)
+	if (region.M.z === region.S.z)
 	{
-		return 'on line ' + region.J.z;
+		return 'on line ' + region.M.z;
 	}
-	return 'on lines ' + region.J.z + ' through ' + region.Q.z;
+	return 'on lines ' + region.M.z + ' through ' + region.S.z;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
+		impl.aD,
+		impl.aO,
 		impl.aM,
-		impl.aK,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		K: record.K,
-		H: record.H
+		N: record.N,
+		K: record.K
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.H) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
+		impl.aD,
+		impl.aO,
 		impl.aM,
-		impl.aK,
 		function(sendToApp, initialModel) {
-			var view = impl.aN;
+			var view = impl.aP;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aA,
+		impl.aD,
+		impl.aO,
 		impl.aM,
-		impl.aK,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.I && impl.I(sendToApp)
-			var view = impl.aN;
+			var divertHrefToApp = impl.L && impl.L(sendToApp)
+			var view = impl.aP;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aL) && (_VirtualDom_doc.title = title = doc.aL);
+				(title !== doc.aN) && (_VirtualDom_doc.title = title = doc.aN);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aC;
-	var onUrlRequest = impl.aD;
+	var onUrlChange = impl.aF;
+	var onUrlRequest = impl.aG;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		I: function(sendToApp)
+		L: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ac === next.ac
-							&& curr.U === next.U
-							&& curr._.a === next._.a
+							&& curr.ae === next.ae
+							&& curr.W === next.W
+							&& curr.ab.a === next.ab.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aA: function(flags)
+		aD: function(flags)
 		{
-			return A3(impl.aA, flags, _Browser_getUrl(), key);
+			return A3(impl.aD, flags, _Browser_getUrl(), key);
 		},
-		aN: impl.aN,
-		aM: impl.aM,
-		aK: impl.aK
+		aP: impl.aP,
+		aO: impl.aO,
+		aM: impl.aM
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ay: 'hidden', ar: 'visibilitychange' }
+		? { aB: 'hidden', at: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ay: 'mozHidden', ar: 'mozvisibilitychange' }
+		? { aB: 'mozHidden', at: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ay: 'msHidden', ar: 'msvisibilitychange' }
+		? { aB: 'msHidden', at: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ay: 'webkitHidden', ar: 'webkitvisibilitychange' }
-		: { ay: 'hidden', ar: 'visibilitychange' };
+		? { aB: 'webkitHidden', at: 'webkitvisibilitychange' }
+		: { aB: 'hidden', at: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ag: _Browser_getScene(),
-		ak: {
-			am: _Browser_window.pageXOffset,
-			an: _Browser_window.pageYOffset,
-			al: _Browser_doc.documentElement.clientWidth,
-			T: _Browser_doc.documentElement.clientHeight
+		ai: _Browser_getScene(),
+		am: {
+			ao: _Browser_window.pageXOffset,
+			ap: _Browser_window.pageYOffset,
+			an: _Browser_doc.documentElement.clientWidth,
+			V: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		T: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		an: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		V: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ag: {
-				al: node.scrollWidth,
-				T: node.scrollHeight
+			ai: {
+				an: node.scrollWidth,
+				V: node.scrollHeight
 			},
-			ak: {
-				am: node.scrollLeft,
-				an: node.scrollTop,
-				al: node.clientWidth,
-				T: node.clientHeight
+			am: {
+				ao: node.scrollLeft,
+				ap: node.scrollTop,
+				an: node.clientWidth,
+				V: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ag: _Browser_getScene(),
-			ak: {
-				am: x,
-				an: y,
-				al: _Browser_doc.documentElement.clientWidth,
-				T: _Browser_doc.documentElement.clientHeight
+			ai: _Browser_getScene(),
+			am: {
+				ao: x,
+				ap: y,
+				an: _Browser_doc.documentElement.clientWidth,
+				V: _Browser_doc.documentElement.clientHeight
 			},
-			au: {
-				am: x + rect.left,
-				an: y + rect.top,
-				al: rect.width,
-				T: rect.height
+			ay: {
+				ao: x + rect.left,
+				ap: y + rect.top,
+				an: rect.width,
+				V: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {S: fragment, U: host, Y: path, _: port_, ac: protocol, ad: query};
+		return {U: fragment, W: host, _: path, ab: port_, ae: protocol, af: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5138,22 +5138,16 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Piece$Black = 0;
-var $author$project$Piece$White = 1;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F3(
-	function (orientation, fen, dots) {
-		return {P: dots, aw: fen, aF: orientation};
+var $author$project$Preferences$Preferences = F5(
+	function (fen, orientation, dots, crosses, stars) {
+		return {av: crosses, aw: dots, aA: fen, G: orientation, aL: stars};
 	});
-var $author$project$Preferences$defaultDots = _List_Nil;
-var $author$project$Preferences$defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-var $author$project$Preferences$defaultOrientation = 'white';
-var $author$project$Preferences$defaultPreferences = A3($author$project$Preferences$Preferences, $author$project$Preferences$defaultOrientation, $author$project$Preferences$defaultFen, $author$project$Preferences$defaultDots);
+var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', _List_Nil, _List_Nil, _List_Nil);
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$list = _Json_decodeList;
-var $elm$json$Json$Decode$map3 = _Json_map3;
+var $elm$json$Json$Decode$map5 = _Json_map5;
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$core$String$toLower = _String_toLower;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
 	return $elm$json$Json$Decode$oneOf(
@@ -5179,26 +5173,37 @@ var $author$project$Preferences$withDefault = F2(
 			$elm$core$Maybe$withDefault(fallback),
 			$elm$json$Json$Decode$maybe(decoder));
 	});
-var $author$project$Preferences$flagsDecoder = A4(
-	$elm$json$Json$Decode$map3,
+var $author$project$Preferences$flagsDecoder = A6(
+	$elm$json$Json$Decode$map5,
 	$author$project$Preferences$Preferences,
 	A2(
-		$elm$json$Json$Decode$map,
-		$elm$core$String$toLower,
-		A2(
-			$author$project$Preferences$withDefault,
-			$author$project$Preferences$defaultOrientation,
-			A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string))),
-	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$defaultFen,
+		$author$project$Preferences$default.aA,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$defaultDots,
+		$author$project$Preferences$default.G,
+		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.aw,
 		A2(
 			$elm$json$Json$Decode$field,
 			'dots',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.av,
+		A2(
+			$elm$json$Json$Decode$field,
+			'crosses',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.aL,
+		A2(
+			$elm$json$Json$Decode$field,
+			'stars',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5209,17 +5214,23 @@ var $elm$core$Result$withDefault = F2(
 			return def;
 		}
 	});
-var $author$project$Preferences$decode = function (flags) {
+var $author$project$Preferences$decode = function (value) {
 	return A2(
 		$elm$core$Result$withDefault,
-		$author$project$Preferences$defaultPreferences,
-		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, flags));
+		$author$project$Preferences$default,
+		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
-var $author$project$Position$emptyBoard = {E: 1, aG: _List_Nil};
+var $author$project$Model$Model = F5(
+	function (position, orientation, dots, crosses, stars) {
+		return {av: crosses, aw: dots, G: orientation, aJ: position, aL: stars};
+	});
+var $author$project$Colour$White = 1;
+var $author$project$Position$emptyBoard = {F: 1, aI: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {ax: file, aI: rank};
+		return {E: file, H: rank};
 	});
+var $author$project$Colour$Black = 0;
 var $author$project$Position$fenEnd = function (position) {
 	return $elm$core$Result$Ok(position);
 };
@@ -5254,12 +5265,12 @@ var $author$project$Position$fenMove = F3(
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{E: 1}));
+								{F: 1}));
 					case 'b':
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{E: 0}));
+								{F: 0}));
 					default:
 						return err;
 				}
@@ -5274,7 +5285,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {M: category, as: colour, ah: square};
+		return {P: category, au: colour, aj: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5322,7 +5333,7 @@ var $author$project$Piece$fromChar = function (_char) {
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Square$valid = function (square) {
-	return (square.ax >= 1) && ((square.ax <= 8) && ((square.ax >= 1) && (square.ax <= 8)));
+	return (square.E >= 1) && ((square.E <= 8) && ((square.E >= 1) && (square.E <= 8)));
 };
 var $author$project$Piece$place = F2(
 	function (pieceType, square) {
@@ -5466,7 +5477,7 @@ var $author$project$Position$fenPieces = F5(
 									var position = _Utils_update(
 										current,
 										{
-											aG: A2($elm$core$List$cons, piece, current.aG)
+											aI: A2($elm$core$List$cons, piece, current.aI)
 										});
 									var $temp$current = position,
 										$temp$file = file + 1,
@@ -5517,9 +5528,11 @@ var $elm$core$String$foldr = _String_foldr;
 var $elm$core$String$toList = function (string) {
 	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
 };
+var $elm$core$String$toLower = _String_toLower;
 var $author$project$Square$fromString = function (str) {
 	var square = function () {
-		var _v0 = $elm$core$String$toList(str);
+		var _v0 = $elm$core$String$toList(
+			$elm$core$String$toLower(str));
 		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
 			var file = _v0.a;
 			var _v1 = _v0.b;
@@ -5537,12 +5550,14 @@ var $author$project$Square$fromString = function (str) {
 var $author$project$Square$fromList = function (strings) {
 	return A2($elm$core$List$filterMap, $author$project$Square$fromString, strings);
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$init = function (flags) {
-	var preferences = $author$project$Preferences$decode(flags);
+var $author$project$Colour$fromString = function (str) {
+	var low = $elm$core$String$toLower(str);
+	return ((low === 'black') || (low === 'b')) ? 0 : 1;
+};
+var $author$project$Model$init = function (preferences) {
+	var stars = $author$project$Square$fromList(preferences.aL);
 	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.aw);
+		var _v0 = $author$project$Position$fromFen(preferences.aA);
 		if (!_v0.$) {
 			var pos = _v0.a;
 			return pos;
@@ -5554,23 +5569,38 @@ var $author$project$Main$init = function (flags) {
 			return current;
 		}
 	}();
-	var orientation = (preferences.aF === 'black') ? 0 : 1;
-	var dots = $author$project$Square$fromList(preferences.P);
-	var model = {P: dots, aF: orientation, aH: position};
-	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	var orientation = $author$project$Colour$fromString(preferences.G);
+	var dots = $author$project$Square$fromList(preferences.aw);
+	var crosses = $author$project$Square$fromList(preferences.av);
+	return A5($author$project$Model$Model, position, orientation, dots, crosses, stars);
+};
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Main$init = function (flags) {
+	return _Utils_Tuple2(
+		$author$project$Model$init(
+			$author$project$Preferences$decode(flags)),
+		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Colour$flip = function (colour) {
+	return (colour === 1) ? 0 : 1;
+};
+var $author$project$Model$flip = function (model) {
+	return _Utils_update(
+		model,
+		{
+			G: $author$project$Colour$flip(model.G)
+		});
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var orientation = (model.aF === 1) ? 0 : 1;
 		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{aF: orientation}),
+			$author$project$Model$flip(model),
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
@@ -6266,8 +6296,7 @@ var $author$project$Image$board = function () {
 				_List_Nil)
 			]));
 }();
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
 var $author$project$Image$translate = function (place) {
 	var _v0 = place;
@@ -6276,6 +6305,79 @@ var $author$project$Image$translate = function (place) {
 	var rank = _v0.c;
 	return A3($author$project$Image$translate2, orientation, file, rank);
 };
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $author$project$Image$cross = function (place) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(place)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('13'),
+						$elm$svg$Svg$Attributes$y1('13'),
+						$elm$svg$Svg$Attributes$x2('32'),
+						$elm$svg$Svg$Attributes$y2('32')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('13'),
+						$elm$svg$Svg$Attributes$y1('32'),
+						$elm$svg$Svg$Attributes$x2('32'),
+						$elm$svg$Svg$Attributes$y2('13')
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Image$fromCross = F2(
+	function (orientation, square) {
+		return $author$project$Image$cross(
+			_Utils_Tuple3(orientation, square.E, square.H));
+	});
+var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $author$project$Image$dot = function (place) {
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$style('fill:#000000; stroke:none;'),
+				$author$project$Image$translate(place)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$circle,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$cx('22.5'),
+						$elm$svg$Svg$Attributes$cy('22.5'),
+						$elm$svg$Svg$Attributes$r('9')
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Image$fromDot = F2(
+	function (orientation, square) {
+		return $author$project$Image$dot(
+			_Utils_Tuple3(orientation, square.E, square.H));
+	});
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $author$project$Image$bb = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
@@ -6331,7 +6433,7 @@ var $author$project$Image$bk = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6349,7 +6451,7 @@ var $author$project$Image$bk = function (place) {
 				_List_fromArray(
 					[
 						$elm$svg$Svg$Attributes$d('M 22.5,25 C 22.5,25 27,17.5 25.5,14.5 C 25.5,14.5 24.5,12 22.5,12 C 20.5,12 19.5,14.5 19.5,14.5 C 18,17.5 22.5,25 22.5,25'),
-						$elm$svg$Svg$Attributes$style('fill:#000000;fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;')
+						$elm$svg$Svg$Attributes$style('fill:#000000; fill-opacity:1; stroke-linecap:butt; stroke-linejoin:miter;')
 					]),
 				_List_Nil),
 				A2(
@@ -6391,7 +6493,7 @@ var $author$project$Image$bn = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6450,16 +6552,12 @@ var $author$project$Image$bp = function (place) {
 			]),
 		_List_Nil);
 };
-var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
-var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
-var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
-var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
 var $author$project$Image$bq = function (place) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6581,7 +6679,7 @@ var $author$project$Image$br = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6615,7 +6713,7 @@ var $author$project$Image$br = function (place) {
 				_List_fromArray(
 					[
 						$elm$svg$Svg$Attributes$d('M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z '),
-						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;stroke-linejoin:miter;')
+						$elm$svg$Svg$Attributes$style('stroke-linecap:butt; stroke-linejoin:miter;')
 					]),
 				_List_Nil),
 				A2(
@@ -6731,7 +6829,7 @@ var $author$project$Image$wk = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6799,7 +6897,7 @@ var $author$project$Image$wn = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6855,7 +6953,7 @@ var $author$project$Image$wq = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -6939,7 +7037,7 @@ var $author$project$Image$wr = function (place) {
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
 		_List_fromArray(
@@ -7002,9 +7100,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.ah.ax, piece.ah.aI);
-		if (piece.as === 1) {
-			var _v0 = piece.M;
+		var place = _Utils_Tuple3(orientation, piece.aj.E, piece.aj.H);
+		if (piece.au === 1) {
+			var _v0 = piece.P;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -7020,7 +7118,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.M;
+			var _v1 = piece.P;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -7037,12 +7135,47 @@ var $author$project$Image$fromPiece = F2(
 			}
 		}
 	});
+var $author$project$Image$star = function (place) {
+	return A2(
+		$elm$svg$Svg$path,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$d('M 22.5,36.5 L 20.0,27.0 L 9.9,29.5 L 17.5,22.5 L 9.9,15.5 L 20.0,18.0 L 22.5,8.5 L 25.0,18.0 L 35.1,15.5 L 27.5,22.5 L 35.1,29.5 L 25.0,27.0 z '),
+				$elm$svg$Svg$Attributes$style('opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
+				$author$project$Image$translate(place)
+			]),
+		_List_Nil);
+};
+var $author$project$Image$fromStar = F2(
+	function (orientation, square) {
+		return $author$project$Image$star(
+			_Utils_Tuple3(orientation, square.E, square.H));
+	});
 var $author$project$Image$fromModel = function (model) {
+	var stars = A2(
+		$elm$core$List$map,
+		$author$project$Image$fromStar(model.G),
+		model.aL);
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.aF),
-		model.aH.aG);
-	return A2($elm$core$List$cons, $author$project$Image$board, pieces);
+		$author$project$Image$fromPiece(model.G),
+		model.aJ.aI);
+	var dots = A2(
+		$elm$core$List$map,
+		$author$project$Image$fromDot(model.G),
+		model.aw);
+	var crosses = A2(
+		$elm$core$List$map,
+		$author$project$Image$fromCross(model.G),
+		model.av);
+	return A2(
+		$elm$core$List$cons,
+		$author$project$Image$board,
+		_Utils_ap(
+			pieces,
+			_Utils_ap(
+				dots,
+				_Utils_ap(crosses, stars))));
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
@@ -7060,5 +7193,5 @@ var $author$project$Main$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{aA: $author$project$Main$init, aK: $author$project$Main$subscriptions, aM: $author$project$Main$update, aN: $author$project$Main$view});
+	{aD: $author$project$Main$init, aM: $author$project$Main$subscriptions, aO: $author$project$Main$update, aP: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

@@ -1,17 +1,12 @@
 module Main exposing (main)
 
--- local modules
-
 import Browser
 import Html exposing (Html)
 import Image
 import Json.Decode exposing (Value)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
-import Piece exposing (Colour(..))
-import Position exposing (Position)
 import Preferences
-import Square exposing (Square)
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
 
@@ -30,39 +25,13 @@ main =
         }
 
 
+
+-- INIT
+
+
 init : Value -> ( Model, Cmd Msg )
 init flags =
-    let
-        preferences =
-            Preferences.decode flags
-
-        orientation =
-            if preferences.orientation == "black" then
-                Black
-
-            else
-                White
-
-        position =
-            case Position.fromFen preferences.fen of
-                Ok pos ->
-                    pos
-
-                Err ( current, consumed, remaining ) ->
-                    current
-
-        dots =
-            Square.fromList preferences.dots
-
-        model =
-            { position = position, orientation = orientation, dots = dots }
-    in
-    ( model, Cmd.none )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+    ( Preferences.decode flags |> Model.init, Cmd.none )
 
 
 
@@ -83,12 +52,13 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Flip ->
-            let
-                orientation =
-                    if model.orientation == White then
-                        Black
+            ( Model.flip model, Cmd.none )
 
-                    else
-                        White
-            in
-            ( { model | orientation = orientation }, Cmd.none )
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none

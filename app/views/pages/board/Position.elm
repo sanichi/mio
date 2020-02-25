@@ -1,6 +1,7 @@
 module Position exposing (Position, fromFen)
 
-import Piece exposing (Category(..), Colour(..), Piece)
+import Colour exposing (Colour(..))
+import Piece exposing (Category(..), Piece)
 import Square exposing (Square)
 
 
