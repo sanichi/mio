@@ -6,27 +6,23 @@ import Json.Decode as D exposing (Decoder, Value)
 type alias Preferences =
     { fen : String
     , orientation : String
-    , dots : List String
-    , crosses : List String
-    , stars : List String
     , notation : Bool
+    , marks : List String
     }
 
 
 default : Preferences
 default =
-    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" [] [] [] False
+    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False []
 
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map6 Preferences
+    D.map4 Preferences
         (D.field "fen" D.string |> withDefault default.fen)
         (D.field "orientation" D.string |> withDefault default.orientation)
-        (D.field "dots" (D.list D.string) |> withDefault default.dots)
-        (D.field "crosses" (D.list D.string) |> withDefault default.crosses)
-        (D.field "stars" (D.list D.string) |> withDefault default.stars)
         (D.field "notation" D.bool |> withDefault default.notation)
+        (D.field "marks" (D.list D.string) |> withDefault default.marks)
 
 
 decode : Value -> Preferences

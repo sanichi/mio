@@ -1,4 +1,4 @@
-module Square exposing (Square, fromList, valid)
+module Square exposing (Square, fromString, valid)
 
 
 type alias Square =
@@ -28,8 +28,3 @@ fromString str =
 
     else
         Nothing
-
-
-fromList : List String -> List Square
-fromList strings =
-    List.filterMap fromString strings

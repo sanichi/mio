@@ -1,18 +1,16 @@
 module Model exposing (Model, flip, init)
 
 import Colour exposing (Colour)
+import Mark exposing (Mark)
 import Position exposing (Position)
 import Preferences exposing (Preferences)
-import Square exposing (Square)
 
 
 type alias Model =
     { position : Position
     , orientation : Colour
-    , dots : List Square
-    , crosses : List Square
-    , stars : List Square
     , notation : Bool
+    , marks : List Mark
     }
 
 
@@ -30,19 +28,13 @@ init preferences =
                 Err ( current, consumed, remaining ) ->
                     current
 
-        dots =
-            Square.fromList preferences.dots
-
-        crosses =
-            Square.fromList preferences.crosses
-
-        stars =
-            Square.fromList preferences.stars
-
         notation =
             preferences.notation
+
+        marks =
+            Mark.fromList preferences.marks
     in
-    Model position orientation dots crosses stars notation
+    Model position orientation notation marks
 
 
 flip : Model -> Model

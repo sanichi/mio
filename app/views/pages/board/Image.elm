@@ -2,6 +2,7 @@ module Image exposing (fromModel)
 
 import Colour exposing (Colour(..))
 import Html exposing (Html)
+import Mark exposing (Mark, Symbol(..))
 import Messages exposing (Msg(..))
 import Model exposing (Model)
 import Piece exposing (Category(..), Piece)
@@ -78,25 +79,32 @@ fromStar orientation square =
     star ( orientation, square.file, square.rank )
 
 
+fromMark : Colour -> Mark -> Svg Msg
+fromMark orientation mark =
+    case mark.symbol of
+        Dot ->
+            dot ( orientation, mark.square.file, mark.square.rank )
+
+        Cross ->
+            cross ( orientation, mark.square.file, mark.square.rank )
+
+        Star ->
+            star ( orientation, mark.square.file, mark.square.rank )
+
+
 fromModel : Model -> List (Svg Msg)
 fromModel model =
     let
         pieces =
             List.map (fromPiece model.orientation) model.position.pieces
 
-        dots =
-            List.map (fromDot model.orientation) model.dots
-
-        crosses =
-            List.map (fromCross model.orientation) model.crosses
-
-        stars =
-            List.map (fromStar model.orientation) model.stars
-
         notation =
             notes model.notation model.orientation
+
+        marks =
+            List.map (fromMark model.orientation) model.marks
     in
-    board :: notation ++ pieces ++ dots ++ crosses ++ stars
+    board :: notation ++ pieces ++ marks
 
 
 del : Int
@@ -433,7 +441,7 @@ note char top orientation position =
                 ( "3", "12" )
 
             else
-                ( "36", "41" )
+                ( String.fromInt (del - 9), String.fromInt (del - 4) )
 
         ( file, rank ) =
             if top then
