@@ -51,8 +51,11 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Flip ->
-            ( Model.flip model, Cmd.none )
+        FlipOrientation ->
+            ( Model.flipOrientation model, Cmd.none )
+
+        ToggleNotation ->
+            ( Model.toggleNotation model, Cmd.none )
 
 
 

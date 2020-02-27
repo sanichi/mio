@@ -1,4 +1,4 @@
-module Model exposing (Model, flip, init)
+module Model exposing (Model, flipOrientation, init, toggleNotation)
 
 import Colour exposing (Colour)
 import Mark exposing (Mark)
@@ -37,6 +37,11 @@ init preferences =
     Model position orientation notation marks
 
 
-flip : Model -> Model
-flip model =
-    { model | orientation = Colour.flip model.orientation }
+flipOrientation : Model -> Model
+flipOrientation model =
+    { model | orientation = Colour.not model.orientation }
+
+
+toggleNotation : Model -> Model
+toggleNotation model =
+    { model | notation = not model.notation }

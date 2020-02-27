@@ -1,4 +1,4 @@
-module Colour exposing (Colour(..), flip, fromString)
+module Colour exposing (Colour(..), fromString, not)
 
 
 type Colour
@@ -6,8 +6,8 @@ type Colour
     | White
 
 
-flip : Colour -> Colour
-flip colour =
+not : Colour -> Colour
+not colour =
     if colour == White then
         Black
 

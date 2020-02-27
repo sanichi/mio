@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.N.C === region.T.C)
+	if (region.N.A === region.T.A)
 	{
-		return 'on line ' + region.N.C;
+		return 'on line ' + region.N.A;
 	}
-	return 'on lines ' + region.N.C + ' through ' + region.T.C;
+	return 'on lines ' + region.N.A + ' through ' + region.T.A;
 }
 
 
@@ -5216,10 +5216,10 @@ var $author$project$Model$Model = F4(
 		return {aC: marks, aE: notation, K: orientation, aJ: position};
 	});
 var $author$project$Colour$White = 1;
-var $author$project$Position$emptyBoard = {H: 1, aI: _List_Nil};
+var $author$project$Position$emptyBoard = {G: 1, aI: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {s: file, v: rank};
+		return {F: file, H: rank};
 	});
 var $author$project$Colour$Black = 0;
 var $author$project$Position$fenEnd = function (position) {
@@ -5256,12 +5256,12 @@ var $author$project$Position$fenMove = F3(
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{H: 1}));
+								{G: 1}));
 					case 'b':
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{H: 0}));
+								{G: 0}));
 					default:
 						return err;
 				}
@@ -5324,7 +5324,7 @@ var $author$project$Piece$fromChar = function (_char) {
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Square$valid = function (square) {
-	return (square.s >= 1) && ((square.s <= 8) && ((square.s >= 1) && (square.s <= 8)));
+	return (square.F >= 1) && ((square.F <= 8) && ((square.F >= 1) && (square.F <= 8)));
 };
 var $author$project$Piece$place = F2(
 	function (pieceType, square) {
@@ -5623,73 +5623,61 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Colour$flip = function (colour) {
+var $author$project$Colour$not = function (colour) {
 	return (colour === 1) ? 0 : 1;
 };
-var $author$project$Model$flip = function (model) {
+var $author$project$Model$flipOrientation = function (model) {
 	return _Utils_update(
 		model,
 		{
-			K: $author$project$Colour$flip(model.K)
+			K: $author$project$Colour$not(model.K)
 		});
+};
+var $elm$core$Basics$not = _Basics_not;
+var $author$project$Model$toggleNotation = function (model) {
+	return _Utils_update(
+		model,
+		{aE: !model.aE});
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(
-			$author$project$Model$flip(model),
-			$elm$core$Platform$Cmd$none);
+		if (!msg) {
+			return _Utils_Tuple2(
+				$author$project$Model$flipOrientation(model),
+				$elm$core$Platform$Cmd$none);
+		} else {
+			return _Utils_Tuple2(
+				$author$project$Model$toggleNotation(model),
+				$elm$core$Platform$Cmd$none);
+		}
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
-var $author$project$Messages$Flip = 0;
 var $author$project$Image$black = '#b58863';
-var $author$project$Image$del = 45;
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$svg$Svg$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var $author$project$Image$translate2 = F3(
 	function (orientation, file, rank) {
 		var j = (orientation === 1) ? (8 - rank) : (rank - 1);
-		var y = $elm$core$String$fromInt(j * $author$project$Image$del);
+		var y = $elm$core$String$fromInt(j * 45);
 		var i = (orientation === 1) ? (file - 1) : (8 - file);
-		var x = $elm$core$String$fromInt(i * $author$project$Image$del);
+		var x = $elm$core$String$fromInt(i * 45);
 		return $elm$svg$Svg$Attributes$transform('translate(' + (x + (' ' + (y + ')'))));
 	});
 var $author$project$Image$white = '#f0d9b5';
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Image$board = function () {
-	var w = $elm$svg$Svg$Attributes$width(
-		$elm$core$String$fromInt($author$project$Image$del));
+	var w = $elm$svg$Svg$Attributes$width('45');
 	var t = $author$project$Image$translate2(1);
 	var l = $elm$svg$Svg$Attributes$fill($author$project$Image$white);
-	var h = $elm$svg$Svg$Attributes$height(
-		$elm$core$String$fromInt($author$project$Image$del));
+	var h = $elm$svg$Svg$Attributes$height('45');
 	var d = $elm$svg$Svg$Attributes$fill($author$project$Image$black);
 	return A2(
 		$elm$svg$Svg$g,
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Events$onClick(0)
-			]),
+		_List_Nil,
 		_List_fromArray(
 			[
 				A2(
@@ -6334,8 +6322,53 @@ var $author$project$Image$board = function () {
 				_List_Nil)
 			]));
 }();
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $author$project$Messages$FlipOrientation = 0;
+var $author$project$Messages$ToggleNotation = 1;
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$svg$Svg$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
+var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var $author$project$Image$controls = _List_fromArray(
+	[
+		A2(
+		$elm$svg$Svg$path,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Events$onClick(1),
+				$elm$svg$Svg$Attributes$d('M 0,0 L 45,0 L 45,315 L 360,315 L 360,360 L 0,360 z'),
+				$elm$svg$Svg$Attributes$style('opacity:0; fill:white; stroke:none;')
+			]),
+		_List_Nil),
+		A2(
+		$elm$svg$Svg$rect,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Events$onClick(0),
+				$elm$svg$Svg$Attributes$x('45'),
+				$elm$svg$Svg$Attributes$width('315'),
+				$elm$svg$Svg$Attributes$height('315'),
+				$elm$svg$Svg$Attributes$style('opacity:0; fill:white; stroke:none;')
+			]),
+		_List_Nil)
+	]);
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $author$project$Image$translate = function (place) {
 	var _v0 = place;
 	var orientation = _v0.a;
@@ -6404,8 +6437,6 @@ var $author$project$Image$dot = function (place) {
 				_List_Nil)
 			]));
 };
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $author$project$Image$star = function (place) {
 	return A2(
 		$elm$svg$Svg$path,
@@ -6423,13 +6454,13 @@ var $author$project$Image$fromMark = F2(
 		switch (_v0) {
 			case 1:
 				return $author$project$Image$dot(
-					_Utils_Tuple3(orientation, mark.q.s, mark.q.v));
+					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
 			case 0:
 				return $author$project$Image$cross(
-					_Utils_Tuple3(orientation, mark.q.s, mark.q.v));
+					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
 			default:
 				return $author$project$Image$star(
-					_Utils_Tuple3(orientation, mark.q.s, mark.q.v));
+					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
 		}
 	});
 var $author$project$Image$bb = function (place) {
@@ -7154,7 +7185,7 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.q.s, piece.q.v);
+		var place = _Utils_Tuple3(orientation, piece.q.F, piece.q.H);
 		if (piece.au === 1) {
 			var _v0 = piece.Q;
 			switch (_v0) {
@@ -7193,16 +7224,13 @@ var $elm$core$Basics$modBy = _Basics_modBy;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$svg$Svg$text_ = $elm$svg$Svg$trustedNode('text');
-var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
 var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
 var $author$project$Image$note = F4(
-	function (_char, top, orientation, position) {
-		var _v0 = top ? _Utils_Tuple2('3', '12') : _Utils_Tuple2(
-			$elm$core$String$fromInt($author$project$Image$del - 9),
-			$elm$core$String$fromInt($author$project$Image$del - 4));
+	function (_char, top, orientation, num) {
+		var _v0 = top ? _Utils_Tuple2('3', '12') : _Utils_Tuple2('36', '41');
 		var x_ = _v0.a;
 		var y_ = _v0.b;
-		var _v1 = top ? ((orientation === 1) ? _Utils_Tuple2(1, position) : _Utils_Tuple2(8, position)) : ((orientation === 1) ? _Utils_Tuple2(position, 1) : _Utils_Tuple2(position, 8));
+		var _v1 = top ? ((orientation === 1) ? _Utils_Tuple2(1, num) : _Utils_Tuple2(8, num)) : ((orientation === 1) ? _Utils_Tuple2(num, 1) : _Utils_Tuple2(num, 8));
 		var file = _v1.a;
 		var rank = _v1.b;
 		var place = _Utils_Tuple3(orientation, file, rank);
@@ -7229,7 +7257,7 @@ var $author$project$Image$notes = F2(
 				$elm$svg$Svg$g,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$style('font-family: sans-serif; font-size: 12px')
+						$elm$svg$Svg$Attributes$style('font-family: sans-serif; font-size: 12px;')
 					]),
 				_List_fromArray(
 					[
@@ -7267,7 +7295,9 @@ var $author$project$Image$fromModel = function (model) {
 		$author$project$Image$board,
 		_Utils_ap(
 			notation,
-			_Utils_ap(pieces, marks)));
+			_Utils_ap(
+				pieces,
+				_Utils_ap(marks, $author$project$Image$controls))));
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');

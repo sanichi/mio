@@ -64,21 +64,6 @@ fromPiece orientation piece =
                 bp place
 
 
-fromDot : Colour -> Square -> Svg Msg
-fromDot orientation square =
-    dot ( orientation, square.file, square.rank )
-
-
-fromCross : Colour -> Square -> Svg Msg
-fromCross orientation square =
-    cross ( orientation, square.file, square.rank )
-
-
-fromStar : Colour -> Square -> Svg Msg
-fromStar orientation square =
-    star ( orientation, square.file, square.rank )
-
-
 fromMark : Colour -> Mark -> Svg Msg
 fromMark orientation mark =
     case mark.symbol of
@@ -104,12 +89,7 @@ fromModel model =
         marks =
             List.map (fromMark model.orientation) model.marks
     in
-    board :: notation ++ pieces ++ marks
-
-
-del : Int
-del =
-    45
+    board :: notation ++ pieces ++ marks ++ controls
 
 
 translate : Place -> Svg.Attribute Msg
@@ -139,10 +119,10 @@ translate2 orientation file rank =
                 rank - 1
 
         x =
-            i * del |> String.fromInt
+            i * 45 |> String.fromInt
 
         y =
-            j * del |> String.fromInt
+            j * 45 |> String.fromInt
     in
     transform <| "translate(" ++ x ++ " " ++ y ++ ")"
 
@@ -167,15 +147,15 @@ board =
             fill white
 
         w =
-            width <| String.fromInt del
+            width "45"
 
         h =
-            height <| String.fromInt del
+            height "45"
 
         t =
             translate2 White
     in
-    g [ onClick Flip ]
+    g []
         [ rect [ d, w, h, t 1 1 ] []
         , rect [ l, w, h, t 2 1 ] []
         , rect [ d, w, h, t 3 1 ] []
@@ -409,7 +389,7 @@ star place =
 notes : Bool -> Colour -> List (Svg Msg)
 notes on orientation =
     if on then
-        [ g [ style "font-family: sans-serif; font-size: 12px" ]
+        [ g [ style "font-family: sans-serif; font-size: 12px;" ]
             [ note "8" True orientation 8
             , note "7" True orientation 7
             , note "6" True orientation 6
@@ -434,28 +414,28 @@ notes on orientation =
 
 
 note : String -> Bool -> Colour -> Int -> Svg Msg
-note char top orientation position =
+note char top orientation num =
     let
         ( x_, y_ ) =
             if top then
                 ( "3", "12" )
 
             else
-                ( String.fromInt (del - 9), String.fromInt (del - 4) )
+                ( "36", "41" )
 
         ( file, rank ) =
             if top then
                 if orientation == White then
-                    ( 1, position )
+                    ( 1, num )
 
                 else
-                    ( 8, position )
+                    ( 8, num )
 
             else if orientation == White then
-                ( position, 1 )
+                ( num, 1 )
 
             else
-                ( position, 8 )
+                ( num, 8 )
 
         place =
             ( orientation, file, rank )
@@ -470,3 +450,10 @@ note char top orientation position =
                    )
     in
     text_ [ x x_, y y_, style style_, translate place ] [ text char ]
+
+
+controls : List (Svg Msg)
+controls =
+    [ path [ onClick ToggleNotation, d "M 0,0 L 45,0 L 45,315 L 360,315 L 360,360 L 0,360 z", style "opacity:0; fill:white; stroke:none;" ] []
+    , rect [ onClick FlipOrientation, x "45", width "315", height "315", style "opacity:0; fill:white; stroke:none;" ] []
+    ]
