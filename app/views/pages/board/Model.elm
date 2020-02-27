@@ -12,6 +12,7 @@ type alias Model =
     , dots : List Square
     , crosses : List Square
     , stars : List Square
+    , notation : Bool
     }
 
 
@@ -37,8 +38,11 @@ init preferences =
 
         stars =
             Square.fromList preferences.stars
+
+        notation =
+            preferences.notation
     in
-    Model position orientation dots crosses stars
+    Model position orientation dots crosses stars notation
 
 
 flip : Model -> Model

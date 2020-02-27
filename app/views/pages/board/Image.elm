@@ -7,8 +7,8 @@ import Model exposing (Model)
 import Piece exposing (Category(..), Piece)
 import Position exposing (Position)
 import Square exposing (Square)
-import Svg exposing (Svg, circle, g, line, path, rect)
-import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width, x1, x2, y1, y2)
+import Svg exposing (Svg, circle, g, line, path, rect, text, text_)
+import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width, x, x1, x2, y, y1, y2)
 import Svg.Events exposing (onClick)
 
 
@@ -92,8 +92,11 @@ fromModel model =
 
         stars =
             List.map (fromStar model.orientation) model.stars
+
+        notation =
+            notes model.notation model.orientation
     in
-    board :: pieces ++ dots ++ crosses ++ stars
+    board :: notation ++ pieces ++ dots ++ crosses ++ stars
 
 
 del : Int
@@ -136,14 +139,24 @@ translate2 orientation file rank =
     transform <| "translate(" ++ x ++ " " ++ y ++ ")"
 
 
+black : String
+black =
+    "#b58863"
+
+
+white : String
+white =
+    "#f0d9b5"
+
+
 board : Svg Msg
 board =
     let
         d =
-            fill "#b58863"
+            fill black
 
         l =
-            fill "#f0d9b5"
+            fill white
 
         w =
             width <| String.fromInt del
@@ -383,3 +396,69 @@ cross place =
 star : Place -> Svg Msg
 star place =
     path [ d "M 22.5,36.5 L 20.0,27.0 L 9.9,29.5 L 17.5,22.5 L 9.9,15.5 L 20.0,18.0 L 22.5,8.5 L 25.0,18.0 L 35.1,15.5 L 27.5,22.5 L 35.1,29.5 L 25.0,27.0 z ", style "opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ] []
+
+
+notes : Bool -> Colour -> List (Svg Msg)
+notes on orientation =
+    if on then
+        [ g [ style "font-family: sans-serif; font-size: 12px" ]
+            [ note "8" True orientation 8
+            , note "7" True orientation 7
+            , note "6" True orientation 6
+            , note "5" True orientation 5
+            , note "4" True orientation 4
+            , note "3" True orientation 3
+            , note "2" True orientation 2
+            , note "1" True orientation 1
+            , note "a" False orientation 1
+            , note "b" False orientation 2
+            , note "c" False orientation 3
+            , note "d" False orientation 4
+            , note "e" False orientation 5
+            , note "f" False orientation 6
+            , note "g" False orientation 7
+            , note "h" False orientation 8
+            ]
+        ]
+
+    else
+        []
+
+
+note : String -> Bool -> Colour -> Int -> Svg Msg
+note char top orientation position =
+    let
+        ( x_, y_ ) =
+            if top then
+                ( "3", "12" )
+
+            else
+                ( "36", "41" )
+
+        ( file, rank ) =
+            if top then
+                if orientation == White then
+                    ( 1, position )
+
+                else
+                    ( 8, position )
+
+            else if orientation == White then
+                ( position, 1 )
+
+            else
+                ( position, 8 )
+
+        place =
+            ( orientation, file, rank )
+
+        style_ =
+            "fill:"
+                ++ (if modBy 2 (file + rank) == 0 then
+                        white
+
+                    else
+                        black
+                   )
+    in
+    text_ [ x x_, y y_, style style_, translate place ] [ text char ]

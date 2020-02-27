@@ -9,7 +9,8 @@ $(function() {
     node: $('#elm-app-2').get(0),
     flags: {
       orientation: 'white',
-      fen: '8/1KP5/8/2p5/1pP5/p7/k7/1R3R2 w - - 0 1'
+      fen: '8/1KP5/8/2p5/1pP5/p7/k7/1R3R2 w - - 0 1',
+      notation: true
     }
   });
   Elm.Main.init({
@@ -19,7 +20,8 @@ $(function() {
       fen: '4k3/8/8/4P3/8/8/8/8 w - - 0 1',
       dots: ['d3', 'E3', 'f3'],
       crosses: ['d2', 'e2', 'f2'],
-      stars: ['d6', 'e6', 'f6']
+      stars: ['d6', 'e6', 'f6'],
+      notation: true
     }
   });
 });

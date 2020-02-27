@@ -9,22 +9,24 @@ type alias Preferences =
     , dots : List String
     , crosses : List String
     , stars : List String
+    , notation : Bool
     }
 
 
 default : Preferences
 default =
-    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" [] [] []
+    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" [] [] [] False
 
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map5 Preferences
+    D.map6 Preferences
         (D.field "fen" D.string |> withDefault default.fen)
         (D.field "orientation" D.string |> withDefault default.orientation)
         (D.field "dots" (D.list D.string) |> withDefault default.dots)
         (D.field "crosses" (D.list D.string) |> withDefault default.crosses)
         (D.field "stars" (D.list D.string) |> withDefault default.stars)
+        (D.field "notation" D.bool |> withDefault default.notation)
 
 
 decode : Value -> Preferences
