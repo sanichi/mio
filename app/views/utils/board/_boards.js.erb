@@ -6,14 +6,17 @@ $(function() {
   var fen = '<%= j fen %>';
   var elm = fen.match(/\|(.*)/);
   if (elm) {
-    opts = elm[1];
+    var opts = elm[1];
+    var o = opts.match(/o:\s*(b|black)/i);
+    var n = opts.match(/n:\s*(on|yes|y|true|t|1)/i);
+    var m = opts.match(/m:\s*([*,a-z1-8]+)/i);
     Elm.Main.init({
       node: $('#board_<%= id %>').get(0),
       flags: {
-        orientation: 'white',
         fen: fen,
-        orientation: opts.match(/o:\s*(b|black)/i) ? 'black' : 'white',
-        notation: opts.match(/n:\s*(on|yes|y|true|t|1)/i) ? true : false
+        orientation: o ? 'black' : 'white',
+        notation: n ? true : false,
+        marks: m ? m[1].split(',') : []
       }
     });
   } else {
