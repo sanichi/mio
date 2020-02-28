@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.N.A === region.T.A)
+	if (region.M.A === region.S.A)
 	{
-		return 'on line ' + region.N.A;
+		return 'on line ' + region.M.A;
 	}
-	return 'on lines ' + region.N.A + ' through ' + region.T.A;
+	return 'on lines ' + region.M.A + ' through ' + region.S.A;
 }
 
 
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		O: record.O,
-		L: record.L
+		N: record.N,
+		K: record.K
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.O;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.L) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3968,7 +3968,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.aP,
 		impl.aM,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.M && impl.M(sendToApp)
+			var divertHrefToApp = impl.L && impl.L(sendToApp)
 			var view = impl.aQ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aG;
-	var onUrlRequest = impl.aH;
+	var onUrlChange = impl.aH;
+	var onUrlRequest = impl.aI;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		M: function(sendToApp)
+		L: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4060,8 +4060,8 @@ function _Browser_application(impl)
 					sendToApp(onUrlRequest(
 						(next
 							&& curr.af === next.af
-							&& curr.X === next.X
-							&& curr.ac.a === next.ac.a
+							&& curr.W === next.W
+							&& curr.ab.a === next.ab.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4237,7 +4237,7 @@ function _Browser_getViewport()
 			ap: _Browser_window.pageXOffset,
 			aq: _Browser_window.pageYOffset,
 			ao: _Browser_doc.documentElement.clientWidth,
-			W: _Browser_doc.documentElement.clientHeight
+			V: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4248,7 +4248,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		V: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4273,13 +4273,13 @@ function _Browser_getViewportOf(id)
 		return {
 			aj: {
 				ao: node.scrollWidth,
-				W: node.scrollHeight
+				V: node.scrollHeight
 			},
 			an: {
 				ap: node.scrollLeft,
 				aq: node.scrollTop,
 				ao: node.clientWidth,
-				W: node.clientHeight
+				V: node.clientHeight
 			}
 		};
 	});
@@ -4314,13 +4314,13 @@ function _Browser_getElement(id)
 				ap: x,
 				aq: y,
 				ao: _Browser_doc.documentElement.clientWidth,
-				W: _Browser_doc.documentElement.clientHeight
+				V: _Browser_doc.documentElement.clientHeight
 			},
 			ax: {
 				ap: x + rect.left,
 				aq: y + rect.top,
 				ao: rect.width,
-				W: rect.height
+				V: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {V: fragment, X: host, aa: path, ac: port_, af: protocol, ag: query};
+		return {U: fragment, W: host, _: path, ab: port_, af: protocol, ag: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5141,7 +5141,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {az: fen, aD: marks, aF: notation, K: orientation, ak: scheme};
+		return {az: fen, aD: marks, aG: notation, G: orientation, ak: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5183,11 +5183,11 @@ var $author$project$Preferences$flagsDecoder = A6(
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.K,
+		$author$project$Preferences$default.G,
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aF,
+		$author$project$Preferences$default.aG,
 		A2($elm$json$Json$Decode$field, 'notation', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5217,10 +5217,10 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $author$project$Model$Model = F5(
 	function (position, orientation, notation, marks, scheme) {
-		return {aD: marks, aF: notation, K: orientation, aK: position, ak: scheme};
+		return {aD: marks, aG: notation, G: orientation, ac: position, ak: scheme};
 	});
 var $author$project$Colour$White = 1;
-var $author$project$Position$emptyBoard = {G: 1, aJ: _List_Nil};
+var $author$project$Position$emptyBoard = {aE: 1, aK: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
 		return {F: file, H: rank};
@@ -5260,12 +5260,12 @@ var $author$project$Position$fenMove = F3(
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{G: 1}));
+								{aE: 1}));
 					case 'b':
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{G: 0}));
+								{aE: 0}));
 					default:
 						return err;
 				}
@@ -5280,7 +5280,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {Q: category, av: colour, q: square};
+		return {P: category, av: colour, q: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5472,7 +5472,7 @@ var $author$project$Position$fenPieces = F5(
 									var position = _Utils_update(
 										current,
 										{
-											aJ: A2($elm$core$List$cons, piece, current.aJ)
+											aK: A2($elm$core$List$cons, piece, current.aK)
 										});
 									var $temp$current = position,
 										$temp$file = file + 1,
@@ -5627,8 +5627,8 @@ var $author$project$Model$init = function (preferences) {
 			return current;
 		}
 	}();
-	var orientation = $author$project$Colour$fromString(preferences.K);
-	var notation = preferences.aF;
+	var orientation = $author$project$Colour$fromString(preferences.G);
+	var notation = preferences.aG;
 	var marks = $author$project$Mark$fromList(preferences.aD);
 	return A5($author$project$Model$Model, position, orientation, notation, marks, scheme);
 };
@@ -5652,14 +5652,14 @@ var $author$project$Model$flipOrientation = function (model) {
 	return _Utils_update(
 		model,
 		{
-			K: $author$project$Colour$not(model.K)
+			G: $author$project$Colour$not(model.G)
 		});
 };
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Model$toggleNotation = function (model) {
 	return _Utils_update(
 		model,
-		{aF: !model.aF});
+		{aG: !model.aG});
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -6532,7 +6532,7 @@ var $author$project$Image$star = function (place) {
 		$elm$svg$Svg$path,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$d('M 22.5,36.5 L 20.0,27.0 L 9.9,29.5 L 17.5,22.5 L 9.9,15.5 L 20.0,18.0 L 22.5,8.5 L 25.0,18.0 L 35.1,15.5 L 27.5,22.5 L 35.1,29.5 L 25.0,27.0 z '),
+				$elm$svg$Svg$Attributes$d('M 22.5,36.5 L 20.0,27.0 L 9.9,29.5 L 17.5,22.5 L 9.9,15.5 L 20.0,18.0 L 22.5,8.5 L 25.0,18.0 L 35.1,15.5 L 27.5,22.5 L 35.1,29.5 L 25.0,27.0 z'),
 				$elm$svg$Svg$Attributes$style('opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
@@ -6633,7 +6633,7 @@ var $author$project$Image$bk = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z '),
+						$elm$svg$Svg$Attributes$d('M 11.5,37 C 17,40.5 27,40.5 32.5,37 L 32.5,30 C 32.5,30 41.5,25.5 38.5,19.5 C 34.5,13 25,16 22.5,23.5 L 22.5,27 L 22.5,23.5 C 19,16 9.5,13 6.5,19.5 C 3.5,25.5 11.5,29.5 11.5,29.5 L 11.5,37 z'),
 						$elm$svg$Svg$Attributes$style('fill:#000000; stroke:#000000;')
 					]),
 				_List_Nil),
@@ -6710,7 +6710,7 @@ var $author$project$Image$bn = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 24.55,10.4 L 24.1,11.85 L 24.6,12 C 27.75,13 30.25,14.49 32.5,18.75 C 34.75,23.01 35.75,29.06 35.25,39 L 35.2,39.5 L 37.45,39.5 L 37.5,39 C 38,28.94 36.62,22.15 34.25,17.66 C 31.88,13.17 28.46,11.02 25.06,10.5 L 24.55,10.4 z '),
+						$elm$svg$Svg$Attributes$d('M 24.55,10.4 L 24.1,11.85 L 24.6,12 C 27.75,13 30.25,14.49 32.5,18.75 C 34.75,23.01 35.75,29.06 35.25,39 L 35.2,39.5 L 37.45,39.5 L 37.5,39 C 38,28.94 36.62,22.15 34.25,17.66 C 31.88,13.17 28.46,11.02 25.06,10.5 L 24.55,10.4 z'),
 						$elm$svg$Svg$Attributes$style('fill:#ffffff; stroke:none;')
 					]),
 				_List_Nil)
@@ -6721,7 +6721,7 @@ var $author$project$Image$bp = function (place) {
 		$elm$svg$Svg$path,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$d('M 22,9 C 19.79,9 18,10.79 18,13 C 18,13.89 18.29,14.71 18.78,15.38 C 16.83,16.5 15.5,18.59 15.5,21 C 15.5,23.03 16.44,24.84 17.91,26.03 C 14.91,27.09 10.5,31.58 10.5,39.5 L 33.5,39.5 C 33.5,31.58 29.09,27.09 26.09,26.03 C 27.56,24.84 28.5,23.03 28.5,21 C 28.5,18.59 27.17,16.5 25.22,15.38 C 25.71,14.71 26,13.89 26,13 C 26,10.79 24.21,9 22,9 z '),
+				$elm$svg$Svg$Attributes$d('M 22,9 C 19.79,9 18,10.79 18,13 C 18,13.89 18.29,14.71 18.78,15.38 C 16.83,16.5 15.5,18.59 15.5,21 C 15.5,23.03 16.44,24.84 17.91,26.03 C 14.91,27.09 10.5,31.58 10.5,39.5 L 33.5,39.5 C 33.5,31.58 29.09,27.09 26.09,26.03 C 27.56,24.84 28.5,23.03 28.5,21 C 28.5,18.59 27.17,16.5 25.22,15.38 C 25.71,14.71 26,13.89 26,13 C 26,10.79 24.21,9 22,9 z'),
 				$elm$svg$Svg$Attributes$style('opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
@@ -6863,7 +6863,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z '),
+						$elm$svg$Svg$Attributes$d('M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -6871,7 +6871,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 12.5,32 L 14,29.5 L 31,29.5 L 32.5,32 L 12.5,32 z '),
+						$elm$svg$Svg$Attributes$d('M 12.5,32 L 14,29.5 L 31,29.5 L 32.5,32 L 12.5,32 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -6879,7 +6879,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z '),
+						$elm$svg$Svg$Attributes$d('M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -6887,7 +6887,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z '),
+						$elm$svg$Svg$Attributes$d('M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt; stroke-linejoin:miter;')
 					]),
 				_List_Nil),
@@ -6895,7 +6895,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z '),
+						$elm$svg$Svg$Attributes$d('M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -6903,7 +6903,7 @@ var $author$project$Image$br = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 11,14 L 11,9 L 15,9 L 15,11 L 20,11 L 20,9 L 25,9 L 25,11 L 30,11 L 30,9 L 34,9 L 34,14 L 11,14 z '),
+						$elm$svg$Svg$Attributes$d('M 11,14 L 11,9 L 15,9 L 15,11 L 20,11 L 20,9 L 25,9 L 25,11 L 30,11 L 30,9 L 34,9 L 34,14 L 11,14 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -7117,7 +7117,7 @@ var $author$project$Image$wp = function (place) {
 		$elm$svg$Svg$path,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$d('M 22,9 C 19.79,9 18,10.79 18,13 C 18,13.89 18.29,14.71 18.78,15.38 C 16.83,16.5 15.5,18.59 15.5,21 C 15.5,23.03 16.44,24.84 17.91,26.03 C 14.91,27.09 10.5,31.58 10.5,39.5 L 33.5,39.5 C 33.5,31.58 29.09,27.09 26.09,26.03 C 27.56,24.84 28.5,23.03 28.5,21 C 28.5,18.59 27.17,16.5 25.22,15.38 C 25.71,14.71 26,13.89 26,13 C 26,10.79 24.21,9 22,9 z '),
+				$elm$svg$Svg$Attributes$d('M 22,9 C 19.79,9 18,10.79 18,13 C 18,13.89 18.29,14.71 18.78,15.38 C 16.83,16.5 15.5,18.59 15.5,21 C 15.5,23.03 16.44,24.84 17.91,26.03 C 14.91,27.09 10.5,31.58 10.5,39.5 L 33.5,39.5 C 33.5,31.58 29.09,27.09 26.09,26.03 C 27.56,24.84 28.5,23.03 28.5,21 C 28.5,18.59 27.17,16.5 25.22,15.38 C 25.71,14.71 26,13.89 26,13 C 26,10.79 24.21,9 22,9 z'),
 				$elm$svg$Svg$Attributes$style('opacity:1; fill:#ffffff; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;'),
 				$author$project$Image$translate(place)
 			]),
@@ -7177,7 +7177,7 @@ var $author$project$Image$wq = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 9,26 C 17.5,24.5 30,24.5 36,26 L 38,14 L 31,25 L 31,11 L 25.5,24.5 L 22.5,9.5 L 19.5,24.5 L 14,10.5 L 14,25 L 7,14 L 9,26 z '),
+						$elm$svg$Svg$Attributes$d('M 9,26 C 17.5,24.5 30,24.5 36,26 L 38,14 L 31,25 L 31,11 L 25.5,24.5 L 22.5,9.5 L 19.5,24.5 L 14,10.5 L 14,25 L 7,14 L 9,26 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -7185,7 +7185,7 @@ var $author$project$Image$wq = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z '),
+						$elm$svg$Svg$Attributes$d('M 9,26 C 9,28 10.5,28 11.5,30 C 12.5,31.5 12.5,31 12,33.5 C 10.5,34.5 10.5,36 10.5,36 C 9,37.5 11,38.5 11,38.5 C 17.5,39.5 27.5,39.5 34,38.5 C 34,38.5 35.5,37.5 34,36 C 34,36 34.5,34.5 33,33.5 C 32.5,31 32.5,31.5 33.5,30 C 34.5,28 36,28 36,26 C 27.5,24.5 17.5,24.5 9,26 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -7221,7 +7221,7 @@ var $author$project$Image$wr = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z '),
+						$elm$svg$Svg$Attributes$d('M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -7229,7 +7229,7 @@ var $author$project$Image$wr = function (place) {
 				$elm$svg$Svg$path,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$d('M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z '),
+						$elm$svg$Svg$Attributes$d('M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z'),
 						$elm$svg$Svg$Attributes$style('stroke-linecap:butt;')
 					]),
 				_List_Nil),
@@ -7277,7 +7277,7 @@ var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
 		var place = _Utils_Tuple3(orientation, piece.q.F, piece.q.H);
 		if (piece.av === 1) {
-			var _v0 = piece.Q;
+			var _v0 = piece.P;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -7293,7 +7293,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.Q;
+			var _v1 = piece.P;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -7370,20 +7370,35 @@ var $author$project$Image$notes = F3(
 					]))
 			]) : _List_Nil;
 	});
+var $author$project$Image$pointer = F2(
+	function (move, orientation) {
+		var _v0 = _Utils_eq(move, orientation) ? _Utils_Tuple2('356', '360') : _Utils_Tuple2('4', '0');
+		var a = _v0.a;
+		var b = _v0.b;
+		return A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M 180,' + (a + (' L 190,' + (b + (' L 170,' + (b + ' z')))))),
+					$elm$svg$Svg$Attributes$style('opacity:1; fill:#000000; stroke:none;')
+				]),
+			_List_Nil);
+	});
 var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.K),
-		model.aK.aJ);
-	var notation = A3($author$project$Image$notes, model.aF, model.K, model.ak);
+		$author$project$Image$fromPiece(model.G),
+		model.ac.aK);
+	var notation = A3($author$project$Image$notes, model.aG, model.G, model.ak);
+	var move = A2($author$project$Image$pointer, model.ac.aE, model.G);
 	var marks = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromMark(model.K),
+		$author$project$Image$fromMark(model.G),
 		model.aD);
 	var board = $author$project$Image$chessboard(model.ak);
-	return A2(
-		$elm$core$List$cons,
-		board,
+	return _Utils_ap(
+		_List_fromArray(
+			[board, move]),
 		_Utils_ap(
 			notation,
 			_Utils_ap(
