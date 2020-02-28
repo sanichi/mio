@@ -6,18 +6,14 @@ $(function() {
   var fen = '<%= j fen %>';
   var elm = fen.match(/\|(.*)/);
   if (elm) {
-    var opts = elm[1];
-    var o = opts.match(/o:\s*(b|black)/i);
-    var n = opts.match(/n:\s*(on|yes|y|true|t|1)/i);
-    var m = opts.match(/m:\s*([*,a-z1-8]+)/i);
+    var opts = elm[1], flags = { fen: fen }, opt;
+    if (opt = opts.match(/\bo:\s*(\S+)/)) flags.orientation = opt[1];
+    if (opt = opts.match(/\bm:\s*(\S+)/)) flags.marks = opt[1];
+    if (opt = opts.match(/\bs:\s*(\S+)/)) flags.scheme = opt[1];
+    if (opt = opts.match(/\bn:\s*(on|yes|y|true|t|1)/i)) flags.notation = true;
     Elm.Main.init({
       node: $('#board_<%= id %>').get(0),
-      flags: {
-        fen: fen,
-        orientation: o ? 'black' : 'white',
-        notation: n ? true : false,
-        marks: m ? m[1].split(',') : []
-      }
+      flags: flags
     });
   } else {
     boards.push(Chessboard("board_<%= id %>", {
