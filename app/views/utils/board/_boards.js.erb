@@ -3,11 +3,26 @@ $(function() {
   var boards = [];
 
 <% fens.each_with_index do |fen, id| %>
-  boards.push(Chessboard("board_<%= id %>", {
-    showNotation: <%= fen.match?(/(W|B|N)\Z/) ? 'true' : 'false' %>,
-    position: "<%= fen %>",
-    orientation: "<%= fen.match?(/b\Z/i) ? 'black' : 'white' %>",
-  }));
+  var fen = '<%= j fen %>';
+  var elm = fen.match(/\|(.*)/);
+  if (elm) {
+    opts = elm[1];
+    Elm.Main.init({
+      node: $('#board_<%= id %>').get(0),
+      flags: {
+        orientation: 'white',
+        fen: fen,
+        orientation: opts.match(/o:\s*(b|black)/i) ? 'black' : 'white',
+        notation: opts.match(/n:\s*(on|yes|y|true|t|1)/i) ? true : false
+      }
+    });
+  } else {
+    boards.push(Chessboard("board_<%= id %>", {
+      showNotation: <%= fen.match?(/(W|B|N)\Z/) ? 'true' : 'false' %>,
+      position: fen,
+      orientation: "<%= fen.match?(/b\Z/i) ? 'black' : 'white' %>",
+    }));
+  }
 <% end %>
 
   $(window).resize(function() {

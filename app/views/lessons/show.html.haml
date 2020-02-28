@@ -4,6 +4,7 @@
 
 - unless boards.empty?
   = content_for :javascript do
+    = render "pages/board_elm.min.js"
     = render "utils/board/boards.js", fens: boards
 
 
