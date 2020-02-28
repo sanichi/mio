@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aO,
-		impl.aL,
+		impl.aC,
+		impl.aP,
+		impl.aM,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aO,
-		impl.aL,
+		impl.aC,
+		impl.aP,
+		impl.aM,
 		function(sendToApp, initialModel) {
-			var view = impl.aP;
+			var view = impl.aQ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aO,
-		impl.aL,
+		impl.aC,
+		impl.aP,
+		impl.aM,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.M && impl.M(sendToApp)
-			var view = impl.aP;
+			var view = impl.aQ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.at);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aN) && (_VirtualDom_doc.title = title = doc.aN);
+				(title !== doc.aO) && (_VirtualDom_doc.title = title = doc.aO);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aF;
-	var onUrlRequest = impl.aG;
+	var onUrlChange = impl.aG;
+	var onUrlRequest = impl.aH;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aB: function(flags)
+		aC: function(flags)
 		{
-			return A3(impl.aB, flags, _Browser_getUrl(), key);
+			return A3(impl.aC, flags, _Browser_getUrl(), key);
 		},
+		aQ: impl.aQ,
 		aP: impl.aP,
-		aO: impl.aO,
-		aL: impl.aL
+		aM: impl.aM
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { az: 'hidden', at: 'visibilitychange' }
+		? { aA: 'hidden', au: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { az: 'mozHidden', at: 'mozvisibilitychange' }
+		? { aA: 'mozHidden', au: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { az: 'msHidden', at: 'msvisibilitychange' }
+		? { aA: 'msHidden', au: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { az: 'webkitHidden', at: 'webkitvisibilitychange' }
-		: { az: 'hidden', at: 'visibilitychange' };
+		? { aA: 'webkitHidden', au: 'webkitvisibilitychange' }
+		: { aA: 'hidden', au: 'visibilitychange' };
 }
 
 
@@ -4233,10 +4233,10 @@ function _Browser_getViewport()
 {
 	return {
 		aj: _Browser_getScene(),
-		am: {
-			ao: _Browser_window.pageXOffset,
-			ap: _Browser_window.pageYOffset,
-			an: _Browser_doc.documentElement.clientWidth,
+		an: {
+			ap: _Browser_window.pageXOffset,
+			aq: _Browser_window.pageYOffset,
+			ao: _Browser_doc.documentElement.clientWidth,
 			W: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4247,7 +4247,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		an: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4272,13 +4272,13 @@ function _Browser_getViewportOf(id)
 	{
 		return {
 			aj: {
-				an: node.scrollWidth,
+				ao: node.scrollWidth,
 				W: node.scrollHeight
 			},
-			am: {
-				ao: node.scrollLeft,
-				ap: node.scrollTop,
-				an: node.clientWidth,
+			an: {
+				ap: node.scrollLeft,
+				aq: node.scrollTop,
+				ao: node.clientWidth,
 				W: node.clientHeight
 			}
 		};
@@ -4310,16 +4310,16 @@ function _Browser_getElement(id)
 		var y = _Browser_window.pageYOffset;
 		return {
 			aj: _Browser_getScene(),
-			am: {
-				ao: x,
-				ap: y,
-				an: _Browser_doc.documentElement.clientWidth,
+			an: {
+				ap: x,
+				aq: y,
+				ao: _Browser_doc.documentElement.clientWidth,
 				W: _Browser_doc.documentElement.clientHeight
 			},
-			aw: {
-				ao: x + rect.left,
-				ap: y + rect.top,
-				an: rect.width,
+			ax: {
+				ap: x + rect.left,
+				aq: y + rect.top,
+				ao: rect.width,
 				W: rect.height
 			}
 		};
@@ -5139,15 +5139,15 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F4(
-	function (fen, orientation, notation, marks) {
-		return {ay: fen, aC: marks, aE: notation, K: orientation};
+var $author$project$Preferences$Preferences = F5(
+	function (fen, orientation, notation, marks, scheme) {
+		return {az: fen, aD: marks, aF: notation, K: orientation, ak: scheme};
 	});
-var $author$project$Preferences$default = A4($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil);
+var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$list = _Json_decodeList;
-var $elm$json$Json$Decode$map4 = _Json_map4;
+var $elm$json$Json$Decode$map5 = _Json_map5;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
@@ -5174,12 +5174,12 @@ var $author$project$Preferences$withDefault = F2(
 			$elm$core$Maybe$withDefault(fallback),
 			$elm$json$Json$Decode$maybe(decoder));
 	});
-var $author$project$Preferences$flagsDecoder = A5(
-	$elm$json$Json$Decode$map4,
+var $author$project$Preferences$flagsDecoder = A6(
+	$elm$json$Json$Decode$map5,
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ay,
+		$author$project$Preferences$default.az,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5187,15 +5187,19 @@ var $author$project$Preferences$flagsDecoder = A5(
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aE,
+		$author$project$Preferences$default.aF,
 		A2($elm$json$Json$Decode$field, 'notation', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aC,
+		$author$project$Preferences$default.aD,
 		A2(
 			$elm$json$Json$Decode$field,
 			'marks',
-			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))));
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.ak,
+		A2($elm$json$Json$Decode$field, 'scheme', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
 		if (!result.$) {
@@ -5211,12 +5215,12 @@ var $author$project$Preferences$decode = function (value) {
 		$author$project$Preferences$default,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
-var $author$project$Model$Model = F4(
-	function (position, orientation, notation, marks) {
-		return {aC: marks, aE: notation, K: orientation, aJ: position};
+var $author$project$Model$Model = F5(
+	function (position, orientation, notation, marks, scheme) {
+		return {aD: marks, aF: notation, K: orientation, aK: position, ak: scheme};
 	});
 var $author$project$Colour$White = 1;
-var $author$project$Position$emptyBoard = {G: 1, aI: _List_Nil};
+var $author$project$Position$emptyBoard = {G: 1, aJ: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
 		return {F: file, H: rank};
@@ -5276,7 +5280,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {Q: category, au: colour, q: square};
+		return {Q: category, av: colour, q: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5468,7 +5472,7 @@ var $author$project$Position$fenPieces = F5(
 									var position = _Utils_update(
 										current,
 										{
-											aI: A2($elm$core$List$cons, piece, current.aI)
+											aJ: A2($elm$core$List$cons, piece, current.aJ)
 										});
 									var $temp$current = position,
 										$temp$file = file + 1,
@@ -5519,7 +5523,7 @@ var $author$project$Mark$Cross = 0;
 var $author$project$Mark$Dot = 1;
 var $author$project$Mark$Mark = F2(
 	function (symbol, square) {
-		return {q: square, aM: symbol};
+		return {q: square, aN: symbol};
 	});
 var $author$project$Mark$Star = 2;
 var $elm$core$String$foldr = _String_foldr;
@@ -5591,9 +5595,27 @@ var $author$project$Colour$fromString = function (str) {
 	var low = $elm$core$String$toLower(str);
 	return ((low === 'black') || (low === 'b')) ? 0 : 1;
 };
+var $author$project$Scheme$Blue = 1;
+var $author$project$Scheme$Brown = 2;
+var $author$project$Scheme$Default = 0;
+var $author$project$Scheme$Green = 3;
+var $author$project$Scheme$fromString = function (str) {
+	var low = $elm$core$String$toLower(str);
+	switch (low) {
+		case 'blue':
+			return 1;
+		case 'brown':
+			return 2;
+		case 'green':
+			return 3;
+		default:
+			return 0;
+	}
+};
 var $author$project$Model$init = function (preferences) {
+	var scheme = $author$project$Scheme$fromString(preferences.ak);
 	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.ay);
+		var _v0 = $author$project$Position$fromFen(preferences.az);
 		if (!_v0.$) {
 			var pos = _v0.a;
 			return pos;
@@ -5606,9 +5628,9 @@ var $author$project$Model$init = function (preferences) {
 		}
 	}();
 	var orientation = $author$project$Colour$fromString(preferences.K);
-	var notation = preferences.aE;
-	var marks = $author$project$Mark$fromList(preferences.aC);
-	return A4($author$project$Model$Model, position, orientation, notation, marks);
+	var notation = preferences.aF;
+	var marks = $author$project$Mark$fromList(preferences.aD);
+	return A5($author$project$Model$Model, position, orientation, notation, marks, scheme);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5637,7 +5659,7 @@ var $elm$core$Basics$not = _Basics_not;
 var $author$project$Model$toggleNotation = function (model) {
 	return _Utils_update(
 		model,
-		{aE: !model.aE});
+		{aF: !model.aF});
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -5652,11 +5674,34 @@ var $author$project$Main$update = F2(
 		}
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
-var $author$project$Image$black = '#b58863';
+var $author$project$Scheme$dark = function (scheme) {
+	switch (scheme) {
+		case 2:
+			return '#b58863';
+		case 1:
+			return '#3b98d9';
+		case 3:
+			return '#769656';
+		default:
+			return '#b58863';
+	}
+};
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $author$project$Scheme$light = function (scheme) {
+	switch (scheme) {
+		case 2:
+			return '#f0d9b5';
+		case 1:
+			return '#edf7ff';
+		case 3:
+			return '#eeeed1';
+		default:
+			return '#f0d9b5';
+	}
+};
 var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
@@ -5669,18 +5714,19 @@ var $author$project$Image$translate2 = F3(
 		var x = $elm$core$String$fromInt(i * 45);
 		return $elm$svg$Svg$Attributes$transform('translate(' + (x + (' ' + (y + ')'))));
 	});
-var $author$project$Image$white = '#f0d9b5';
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
 var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
 var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var $author$project$Image$board = function () {
+var $author$project$Image$chessboard = function (scheme) {
 	var w = $elm$svg$Svg$Attributes$width('45');
 	var t = $author$project$Image$translate2(1);
-	var l = $elm$svg$Svg$Attributes$fill($author$project$Image$white);
+	var l = $elm$svg$Svg$Attributes$fill(
+		$author$project$Scheme$light(scheme));
 	var h = $elm$svg$Svg$Attributes$height('45');
-	var d = $elm$svg$Svg$Attributes$fill($author$project$Image$black);
+	var d = $elm$svg$Svg$Attributes$fill(
+		$author$project$Scheme$dark(scheme));
 	return A2(
 		$elm$svg$Svg$g,
 		_List_Nil,
@@ -6371,7 +6417,7 @@ var $author$project$Image$board = function () {
 					]),
 				_List_Nil)
 			]));
-}();
+};
 var $author$project$Messages$FlipOrientation = 0;
 var $author$project$Messages$ToggleNotation = 1;
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
@@ -6494,7 +6540,7 @@ var $author$project$Image$star = function (place) {
 };
 var $author$project$Image$fromMark = F2(
 	function (orientation, mark) {
-		var _v0 = mark.aM;
+		var _v0 = mark.aN;
 		switch (_v0) {
 			case 1:
 				return $author$project$Image$dot(
@@ -7230,7 +7276,7 @@ var $author$project$Image$wr = function (place) {
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
 		var place = _Utils_Tuple3(orientation, piece.q.F, piece.q.H);
-		if (piece.au === 1) {
+		if (piece.av === 1) {
 			var _v0 = piece.Q;
 			switch (_v0) {
 				case 0:
@@ -7269,8 +7315,8 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$svg$Svg$text_ = $elm$svg$Svg$trustedNode('text');
 var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var $author$project$Image$note = F4(
-	function (_char, top, orientation, num) {
+var $author$project$Image$note = F5(
+	function (_char, top, orientation, scheme, num) {
 		var _v0 = top ? _Utils_Tuple2('3', '12') : _Utils_Tuple2('36', '41');
 		var x_ = _v0.a;
 		var y_ = _v0.b;
@@ -7278,7 +7324,7 @@ var $author$project$Image$note = F4(
 		var file = _v1.a;
 		var rank = _v1.b;
 		var place = _Utils_Tuple3(orientation, file, rank);
-		var style_ = 'fill:' + ((!A2($elm$core$Basics$modBy, 2, file + rank)) ? $author$project$Image$white : $author$project$Image$black);
+		var style_ = 'fill:' + ((!A2($elm$core$Basics$modBy, 2, file + rank)) ? $author$project$Scheme$light(scheme) : $author$project$Scheme$dark(scheme));
 		return A2(
 			$elm$svg$Svg$text_,
 			_List_fromArray(
@@ -7293,8 +7339,8 @@ var $author$project$Image$note = F4(
 					$elm$svg$Svg$text(_char)
 				]));
 	});
-var $author$project$Image$notes = F2(
-	function (on, orientation) {
+var $author$project$Image$notes = F3(
+	function (on, orientation, scheme) {
 		return on ? _List_fromArray(
 			[
 				A2(
@@ -7305,22 +7351,22 @@ var $author$project$Image$notes = F2(
 					]),
 				_List_fromArray(
 					[
-						A4($author$project$Image$note, '8', true, orientation, 8),
-						A4($author$project$Image$note, '7', true, orientation, 7),
-						A4($author$project$Image$note, '6', true, orientation, 6),
-						A4($author$project$Image$note, '5', true, orientation, 5),
-						A4($author$project$Image$note, '4', true, orientation, 4),
-						A4($author$project$Image$note, '3', true, orientation, 3),
-						A4($author$project$Image$note, '2', true, orientation, 2),
-						A4($author$project$Image$note, '1', true, orientation, 1),
-						A4($author$project$Image$note, 'a', false, orientation, 1),
-						A4($author$project$Image$note, 'b', false, orientation, 2),
-						A4($author$project$Image$note, 'c', false, orientation, 3),
-						A4($author$project$Image$note, 'd', false, orientation, 4),
-						A4($author$project$Image$note, 'e', false, orientation, 5),
-						A4($author$project$Image$note, 'f', false, orientation, 6),
-						A4($author$project$Image$note, 'g', false, orientation, 7),
-						A4($author$project$Image$note, 'h', false, orientation, 8)
+						A5($author$project$Image$note, '8', true, orientation, scheme, 8),
+						A5($author$project$Image$note, '7', true, orientation, scheme, 7),
+						A5($author$project$Image$note, '6', true, orientation, scheme, 6),
+						A5($author$project$Image$note, '5', true, orientation, scheme, 5),
+						A5($author$project$Image$note, '4', true, orientation, scheme, 4),
+						A5($author$project$Image$note, '3', true, orientation, scheme, 3),
+						A5($author$project$Image$note, '2', true, orientation, scheme, 2),
+						A5($author$project$Image$note, '1', true, orientation, scheme, 1),
+						A5($author$project$Image$note, 'a', false, orientation, scheme, 1),
+						A5($author$project$Image$note, 'b', false, orientation, scheme, 2),
+						A5($author$project$Image$note, 'c', false, orientation, scheme, 3),
+						A5($author$project$Image$note, 'd', false, orientation, scheme, 4),
+						A5($author$project$Image$note, 'e', false, orientation, scheme, 5),
+						A5($author$project$Image$note, 'f', false, orientation, scheme, 6),
+						A5($author$project$Image$note, 'g', false, orientation, scheme, 7),
+						A5($author$project$Image$note, 'h', false, orientation, scheme, 8)
 					]))
 			]) : _List_Nil;
 	});
@@ -7328,15 +7374,16 @@ var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromPiece(model.K),
-		model.aJ.aI);
-	var notation = A2($author$project$Image$notes, model.aE, model.K);
+		model.aK.aJ);
+	var notation = A3($author$project$Image$notes, model.aF, model.K, model.ak);
 	var marks = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromMark(model.K),
-		model.aC);
+		model.aD);
+	var board = $author$project$Image$chessboard(model.ak);
 	return A2(
 		$elm$core$List$cons,
-		$author$project$Image$board,
+		board,
 		_Utils_ap(
 			notation,
 			_Utils_ap(
@@ -7359,5 +7406,5 @@ var $author$project$Main$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{aB: $author$project$Main$init, aL: $author$project$Main$subscriptions, aO: $author$project$Main$update, aP: $author$project$Main$view});
+	{aC: $author$project$Main$init, aM: $author$project$Main$subscriptions, aP: $author$project$Main$update, aQ: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

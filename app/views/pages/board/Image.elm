@@ -7,6 +7,7 @@ import Messages exposing (Msg(..))
 import Model exposing (Model)
 import Piece exposing (Category(..), Piece)
 import Position exposing (Position)
+import Scheme exposing (Scheme)
 import Square exposing (Square)
 import Svg exposing (Svg, circle, g, line, path, rect, text, text_)
 import Svg.Attributes exposing (cx, cy, d, fill, height, r, style, transform, width, x, x1, x2, y, y1, y2)
@@ -84,10 +85,13 @@ fromModel model =
             List.map (fromPiece model.orientation) model.position.pieces
 
         notation =
-            notes model.notation model.orientation
+            notes model.notation model.orientation model.scheme
 
         marks =
             List.map (fromMark model.orientation) model.marks
+
+        board =
+            chessboard model.scheme
     in
     board :: notation ++ pieces ++ marks ++ controls
 
@@ -127,24 +131,14 @@ translate2 orientation file rank =
     transform <| "translate(" ++ x ++ " " ++ y ++ ")"
 
 
-black : String
-black =
-    "#b58863"
-
-
-white : String
-white =
-    "#f0d9b5"
-
-
-board : Svg Msg
-board =
+chessboard : Scheme -> Svg Msg
+chessboard scheme =
     let
         d =
-            fill black
+            Scheme.dark scheme |> fill
 
         l =
-            fill white
+            Scheme.light scheme |> fill
 
         w =
             width "45"
@@ -390,26 +384,26 @@ star place =
     path [ d "M 22.5,36.5 L 20.0,27.0 L 9.9,29.5 L 17.5,22.5 L 9.9,15.5 L 20.0,18.0 L 22.5,8.5 L 25.0,18.0 L 35.1,15.5 L 27.5,22.5 L 35.1,29.5 L 25.0,27.0 z ", style "opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;", translate place ] []
 
 
-notes : Bool -> Colour -> List (Svg Msg)
-notes on orientation =
+notes : Bool -> Colour -> Scheme -> List (Svg Msg)
+notes on orientation scheme =
     if on then
         [ g [ style "font-family: sans-serif; font-size: 12px;" ]
-            [ note "8" True orientation 8
-            , note "7" True orientation 7
-            , note "6" True orientation 6
-            , note "5" True orientation 5
-            , note "4" True orientation 4
-            , note "3" True orientation 3
-            , note "2" True orientation 2
-            , note "1" True orientation 1
-            , note "a" False orientation 1
-            , note "b" False orientation 2
-            , note "c" False orientation 3
-            , note "d" False orientation 4
-            , note "e" False orientation 5
-            , note "f" False orientation 6
-            , note "g" False orientation 7
-            , note "h" False orientation 8
+            [ note "8" True orientation scheme 8
+            , note "7" True orientation scheme 7
+            , note "6" True orientation scheme 6
+            , note "5" True orientation scheme 5
+            , note "4" True orientation scheme 4
+            , note "3" True orientation scheme 3
+            , note "2" True orientation scheme 2
+            , note "1" True orientation scheme 1
+            , note "a" False orientation scheme 1
+            , note "b" False orientation scheme 2
+            , note "c" False orientation scheme 3
+            , note "d" False orientation scheme 4
+            , note "e" False orientation scheme 5
+            , note "f" False orientation scheme 6
+            , note "g" False orientation scheme 7
+            , note "h" False orientation scheme 8
             ]
         ]
 
@@ -417,8 +411,8 @@ notes on orientation =
         []
 
 
-note : String -> Bool -> Colour -> Int -> Svg Msg
-note char top orientation num =
+note : String -> Bool -> Colour -> Scheme -> Int -> Svg Msg
+note char top orientation scheme num =
     let
         ( x_, y_ ) =
             if top then
@@ -447,10 +441,10 @@ note char top orientation num =
         style_ =
             "fill:"
                 ++ (if modBy 2 (file + rank) == 0 then
-                        white
+                        Scheme.light scheme
 
                     else
-                        black
+                        Scheme.dark scheme
                    )
     in
     text_ [ x x_, y y_, style style_, translate place ] [ text char ]

@@ -4,6 +4,7 @@ import Colour exposing (Colour)
 import Mark exposing (Mark)
 import Position exposing (Position)
 import Preferences exposing (Preferences)
+import Scheme exposing (Scheme)
 
 
 type alias Model =
@@ -11,6 +12,7 @@ type alias Model =
     , orientation : Colour
     , notation : Bool
     , marks : List Mark
+    , scheme : Scheme
     }
 
 
@@ -33,8 +35,11 @@ init preferences =
 
         marks =
             Mark.fromList preferences.marks
+
+        scheme =
+            Scheme.fromString preferences.scheme
     in
-    Model position orientation notation marks
+    Model position orientation notation marks scheme
 
 
 flipOrientation : Model -> Model
