@@ -5657,7 +5657,9 @@ var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
+var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
 var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var $author$project$Image$translate2 = F3(
 	function (orientation, file, rank) {
@@ -5669,6 +5671,10 @@ var $author$project$Image$translate2 = F3(
 	});
 var $author$project$Image$white = '#f0d9b5';
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
 var $author$project$Image$board = function () {
 	var w = $elm$svg$Svg$Attributes$width('45');
 	var t = $author$project$Image$translate2(1);
@@ -6319,6 +6325,50 @@ var $author$project$Image$board = function () {
 						h,
 						A2(t, 8, 8)
 					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('0'),
+						$elm$svg$Svg$Attributes$y1('0'),
+						$elm$svg$Svg$Attributes$x2('360'),
+						$elm$svg$Svg$Attributes$y2('0'),
+						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('360'),
+						$elm$svg$Svg$Attributes$y1('0'),
+						$elm$svg$Svg$Attributes$x2('360'),
+						$elm$svg$Svg$Attributes$y2('360'),
+						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('0'),
+						$elm$svg$Svg$Attributes$y1('360'),
+						$elm$svg$Svg$Attributes$x2('360'),
+						$elm$svg$Svg$Attributes$y2('360'),
+						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x1('0'),
+						$elm$svg$Svg$Attributes$y1('0'),
+						$elm$svg$Svg$Attributes$x2('0'),
+						$elm$svg$Svg$Attributes$y2('360'),
+						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
+					]),
 				_List_Nil)
 			]));
 }();
@@ -6343,7 +6393,6 @@ var $elm$svg$Svg$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
-var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
 var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
 var $author$project$Image$controls = _List_fromArray(
 	[
@@ -6368,7 +6417,6 @@ var $author$project$Image$controls = _List_fromArray(
 			]),
 		_List_Nil)
 	]);
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $author$project$Image$translate = function (place) {
 	var _v0 = place;
 	var orientation = _v0.a;
@@ -6376,10 +6424,6 @@ var $author$project$Image$translate = function (place) {
 	var rank = _v0.c;
 	return A3($author$project$Image$translate2, orientation, file, rank);
 };
-var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
-var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
-var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
-var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
 var $author$project$Image$cross = function (place) {
 	return A2(
 		$elm$svg$Svg$g,

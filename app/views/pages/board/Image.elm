@@ -220,6 +220,10 @@ board =
         , rect [ d, w, h, t 6 8 ] []
         , rect [ l, w, h, t 7 8 ] []
         , rect [ d, w, h, t 8 8 ] []
+        , line [ x1 "0", y1 "0", x2 "360", y2 "0", style "stroke:black;stroke-width:2;" ] []
+        , line [ x1 "360", y1 "0", x2 "360", y2 "360", style "stroke:black;stroke-width:2;" ] []
+        , line [ x1 "0", y1 "360", x2 "360", y2 "360", style "stroke:black;stroke-width:2;" ] []
+        , line [ x1 "0", y1 "0", x2 "0", y2 "360", style "stroke:black;stroke-width:2;" ] []
         ]
 
 
