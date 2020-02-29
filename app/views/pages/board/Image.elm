@@ -88,15 +88,19 @@ fromPiece orientation piece =
 
 fromMark : Colour -> Mark -> Svg Msg
 fromMark orientation mark =
-    case mark.symbol of
-        Dot ->
-            dot ( orientation, mark.square.file, mark.square.rank )
+    let
+        marker =
+            case mark.symbol of
+                Dot ->
+                    dot
 
-        Cross ->
-            cross ( orientation, mark.square.file, mark.square.rank )
+                Cross ->
+                    cross
 
-        Star ->
-            star ( orientation, mark.square.file, mark.square.rank )
+                Star ->
+                    star
+    in
+    marker ( orientation, mark.square.file, mark.square.rank )
 
 
 chessboard : Scheme -> Svg Msg

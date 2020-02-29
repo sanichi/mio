@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.A === region.S.A)
+	if (region.K.z === region.Q.z)
 	{
-		return 'on line ' + region.M.A;
+		return 'on line ' + region.K.z;
 	}
-	return 'on lines ' + region.M.A + ' through ' + region.S.A;
+	return 'on lines ' + region.K.z + ' through ' + region.Q.z;
 }
 
 
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		N: record.N,
-		K: record.K
+		L: record.L,
+		I: record.I
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.I) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3968,7 +3968,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.aP,
 		impl.aM,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.L && impl.L(sendToApp)
+			var divertHrefToApp = impl.J && impl.J(sendToApp)
 			var view = impl.aQ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4043,7 +4043,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		L: function(sendToApp)
+		J: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.af === next.af
-							&& curr.W === next.W
-							&& curr.ab.a === next.ab.a
+							&& curr.ae === next.ae
+							&& curr.V === next.V
+							&& curr.aa.a === next.aa.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4237,7 +4237,7 @@ function _Browser_getViewport()
 			ap: _Browser_window.pageXOffset,
 			aq: _Browser_window.pageYOffset,
 			ao: _Browser_doc.documentElement.clientWidth,
-			V: _Browser_doc.documentElement.clientHeight
+			U: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4248,7 +4248,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		V: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4273,13 +4273,13 @@ function _Browser_getViewportOf(id)
 		return {
 			aj: {
 				ao: node.scrollWidth,
-				V: node.scrollHeight
+				U: node.scrollHeight
 			},
 			an: {
 				ap: node.scrollLeft,
 				aq: node.scrollTop,
 				ao: node.clientWidth,
-				V: node.clientHeight
+				U: node.clientHeight
 			}
 		};
 	});
@@ -4314,13 +4314,13 @@ function _Browser_getElement(id)
 				ap: x,
 				aq: y,
 				ao: _Browser_doc.documentElement.clientWidth,
-				V: _Browser_doc.documentElement.clientHeight
+				U: _Browser_doc.documentElement.clientHeight
 			},
 			ax: {
 				ap: x + rect.left,
 				aq: y + rect.top,
 				ao: rect.width,
-				V: rect.height
+				U: rect.height
 			}
 		};
 	});
@@ -4859,7 +4859,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {U: fragment, W: host, _: path, ab: port_, af: protocol, ag: query};
+		return {T: fragment, V: host, Z: path, aa: port_, ae: protocol, af: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5141,7 +5141,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {az: fen, aD: marks, aG: notation, G: orientation, ak: scheme};
+		return {az: fen, aD: marks, aG: notation, E: orientation, ak: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5183,7 +5183,7 @@ var $author$project$Preferences$flagsDecoder = A6(
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.G,
+		$author$project$Preferences$default.E,
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5217,13 +5217,13 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $author$project$Model$Model = F5(
 	function (position, orientation, notation, marks, scheme) {
-		return {aD: marks, aG: notation, G: orientation, ac: position, ak: scheme};
+		return {aD: marks, aG: notation, E: orientation, ab: position, ak: scheme};
 	});
 var $author$project$Colour$White = 1;
 var $author$project$Position$emptyBoard = {aE: 1, aK: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {F: file, H: rank};
+		return {S: file, ag: rank};
 	});
 var $author$project$Colour$Black = 0;
 var $author$project$Position$fenEnd = function (position) {
@@ -5280,7 +5280,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {P: category, av: colour, q: square};
+		return {N: category, av: colour, F: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5328,7 +5328,7 @@ var $author$project$Piece$fromChar = function (_char) {
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Square$valid = function (square) {
-	return (square.F >= 1) && ((square.F <= 8) && ((square.F >= 1) && (square.F <= 8)));
+	return (square.S >= 1) && ((square.S <= 8) && ((square.S >= 1) && (square.S <= 8)));
 };
 var $author$project$Piece$place = F2(
 	function (pieceType, square) {
@@ -5523,7 +5523,7 @@ var $author$project$Mark$Cross = 0;
 var $author$project$Mark$Dot = 1;
 var $author$project$Mark$Mark = F2(
 	function (symbol, square) {
-		return {q: square, aN: symbol};
+		return {F: square, aN: symbol};
 	});
 var $author$project$Mark$Star = 2;
 var $elm$core$String$foldr = _String_foldr;
@@ -5627,7 +5627,7 @@ var $author$project$Model$init = function (preferences) {
 			return current;
 		}
 	}();
-	var orientation = $author$project$Colour$fromString(preferences.G);
+	var orientation = $author$project$Colour$fromString(preferences.E);
 	var notation = preferences.aG;
 	var marks = $author$project$Mark$fromList(preferences.aD);
 	return A5($author$project$Model$Model, position, orientation, notation, marks, scheme);
@@ -5652,7 +5652,7 @@ var $author$project$Model$flipOrientation = function (model) {
 	return _Utils_update(
 		model,
 		{
-			G: $author$project$Colour$not(model.G)
+			E: $author$project$Colour$not(model.E)
 		});
 };
 var $elm$core$Basics$not = _Basics_not;
@@ -6540,18 +6540,19 @@ var $author$project$Image$star = function (place) {
 };
 var $author$project$Image$fromMark = F2(
 	function (orientation, mark) {
-		var _v0 = mark.aN;
-		switch (_v0) {
-			case 1:
-				return $author$project$Image$dot(
-					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
-			case 0:
-				return $author$project$Image$cross(
-					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
-			default:
-				return $author$project$Image$star(
-					_Utils_Tuple3(orientation, mark.q.F, mark.q.H));
-		}
+		var marker = function () {
+			var _v0 = mark.aN;
+			switch (_v0) {
+				case 1:
+					return $author$project$Image$dot;
+				case 0:
+					return $author$project$Image$cross;
+				default:
+					return $author$project$Image$star;
+			}
+		}();
+		return marker(
+			_Utils_Tuple3(orientation, mark.F.S, mark.F.ag));
 	});
 var $author$project$Image$bb = function (place) {
 	return A2(
@@ -7275,9 +7276,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.q.F, piece.q.H);
+		var place = _Utils_Tuple3(orientation, piece.F.S, piece.F.ag);
 		if (piece.av === 1) {
-			var _v0 = piece.P;
+			var _v0 = piece.N;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -7293,7 +7294,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.P;
+			var _v1 = piece.N;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -7387,13 +7388,13 @@ var $author$project$Image$pointer = F2(
 var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.G),
-		model.ac.aK);
-	var notation = A3($author$project$Image$notes, model.aG, model.G, model.ak);
-	var move = A2($author$project$Image$pointer, model.ac.aE, model.G);
+		$author$project$Image$fromPiece(model.E),
+		model.ab.aK);
+	var notation = A3($author$project$Image$notes, model.aG, model.E, model.ak);
+	var move = A2($author$project$Image$pointer, model.ab.aE, model.E);
 	var marks = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromMark(model.G),
+		$author$project$Image$fromMark(model.E),
 		model.aD);
 	var board = $author$project$Image$chessboard(model.ak);
 	return _Utils_ap(
