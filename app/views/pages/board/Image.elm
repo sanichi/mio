@@ -198,12 +198,12 @@ pointer move orientation =
     let
         ( a, b ) =
             if move == orientation then
-                ( "356", "360" )
+                ( "354", "360" )
 
             else
-                ( "4", "0" )
+                ( "6", "0" )
     in
-    path [ d ("M 180," ++ a ++ " L 190," ++ b ++ " L 170," ++ b ++ " z"), style "opacity:1; fill:#000000; stroke:none;" ] []
+    path [ d ("M 180," ++ a ++ " Q 190," ++ b ++ " 200," ++ b ++ " L 160," ++ b ++ " Q 170," ++ b ++ " 180," ++ a ++ " z"), style "opacity:1; fill:#000000; stroke:none;" ] []
 
 
 wk : Place -> Svg Msg

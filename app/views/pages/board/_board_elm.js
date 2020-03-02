@@ -7373,14 +7373,14 @@ var $author$project$Image$notes = F3(
 	});
 var $author$project$Image$pointer = F2(
 	function (move, orientation) {
-		var _v0 = _Utils_eq(move, orientation) ? _Utils_Tuple2('356', '360') : _Utils_Tuple2('4', '0');
+		var _v0 = _Utils_eq(move, orientation) ? _Utils_Tuple2('354', '360') : _Utils_Tuple2('6', '0');
 		var a = _v0.a;
 		var b = _v0.b;
 		return A2(
 			$elm$svg$Svg$path,
 			_List_fromArray(
 				[
-					$elm$svg$Svg$Attributes$d('M 180,' + (a + (' L 190,' + (b + (' L 170,' + (b + ' z')))))),
+					$elm$svg$Svg$Attributes$d('M 180,' + (a + (' Q 190,' + (b + (' 200,' + (b + (' L 160,' + (b + (' Q 170,' + (b + (' 180,' + (a + ' z')))))))))))),
 					$elm$svg$Svg$Attributes$style('opacity:1; fill:#000000; stroke:none;')
 				]),
 			_List_Nil);
