@@ -5696,7 +5696,9 @@ var $author$project$Colour$fromString = function (str) {
 	var low = $elm$core$String$toLower(str);
 	return ((low === 'black') || (low === 'b')) ? 0 : 1;
 };
-var $author$project$Scheme$default = _Utils_Tuple2('#f0d9b5', '#b58863');
+var $author$project$Scheme$blue = _Utils_Tuple2('#edf7ff', '#3b98d9');
+var $author$project$Scheme$brown = _Utils_Tuple2('#f0d9b5', '#b58863');
+var $author$project$Scheme$default = $author$project$Scheme$brown;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
 		return {aD: index, aG: match, aL: number, aR: submatches};
@@ -5709,16 +5711,17 @@ var $elm$regex$Regex$fromString = function (string) {
 		{au: false, aI: false},
 		string);
 };
+var $author$project$Scheme$green = _Utils_Tuple2('#eeeed1', '#769656');
 var $elm$regex$Regex$never = _Regex_never;
 var $author$project$Scheme$fromString = function (str) {
 	var low = $elm$core$String$toLower(str);
 	switch (low) {
 		case 'blue':
-			return _Utils_Tuple2('#edf7ff', '#3b98d9');
+			return $author$project$Scheme$blue;
 		case 'brown':
-			return _Utils_Tuple2('#f0d9b5', '#b58863');
+			return $author$project$Scheme$brown;
 		case 'green':
-			return _Utils_Tuple2('#eeeed1', '#769656');
+			return $author$project$Scheme$green;
 		case 'default':
 			return $author$project$Scheme$default;
 		default:

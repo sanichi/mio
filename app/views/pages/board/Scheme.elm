@@ -7,9 +7,24 @@ type alias Scheme =
     ( String, String )
 
 
+blue : Scheme
+blue =
+    ( "#edf7ff", "#3b98d9" )
+
+
+brown : Scheme
+brown =
+    ( "#f0d9b5", "#b58863" )
+
+
+green : Scheme
+green =
+    ( "#eeeed1", "#769656" )
+
+
 default : Scheme
 default =
-    ( "#f0d9b5", "#b58863" )
+    brown
 
 
 fromString : String -> Scheme
@@ -20,13 +35,13 @@ fromString str =
     in
     case low of
         "blue" ->
-            ( "#edf7ff", "#3b98d9" )
+            blue
 
         "brown" ->
-            ( "#f0d9b5", "#b58863" )
+            brown
 
         "green" ->
-            ( "#eeeed1", "#769656" )
+            green
 
         "default" ->
             default
