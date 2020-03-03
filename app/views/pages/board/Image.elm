@@ -106,11 +106,11 @@ fromMark orientation mark =
 chessboard : Scheme -> Svg Msg
 chessboard scheme =
     let
-        d =
-            Scheme.dark scheme |> fill
-
         l =
-            Scheme.light scheme |> fill
+            Scheme.white scheme |> fill
+
+        d =
+            Scheme.black scheme |> fill
 
         w =
             width "45"
@@ -426,10 +426,10 @@ note char top orientation scheme num =
         style_ =
             "fill:"
                 ++ (if modBy 2 (file + rank) == 0 then
-                        Scheme.light scheme
+                        Scheme.white scheme
 
                     else
-                        Scheme.dark scheme
+                        Scheme.black scheme
                    )
     in
     text_ [ x x_, y y_, style style_, translate place ] [ text char ]

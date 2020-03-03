@@ -1,11 +1,15 @@
-module Scheme exposing (Scheme(..), dark, fromString, light)
+module Scheme exposing (Scheme, black, fromString, white)
+
+import Regex as R
 
 
-type Scheme
-    = Default
-    | Blue
-    | Brown
-    | Green
+type alias Scheme =
+    ( String, String )
+
+
+default : Scheme
+default =
+    ( "#f0d9b5", "#b58863" )
 
 
 fromString : String -> Scheme
@@ -16,45 +20,38 @@ fromString str =
     in
     case low of
         "blue" ->
-            Blue
+            ( "#edf7ff", "#3b98d9" )
 
         "brown" ->
-            Brown
+            ( "#f0d9b5", "#b58863" )
 
         "green" ->
-            Green
+            ( "#eeeed1", "#769656" )
+
+        "default" ->
+            default
 
         _ ->
-            Default
+            let
+                colours =
+                    Maybe.withDefault R.never <| R.fromString "^(#[0-9a-f]{3}|#[0-9a-f]{6})(#[0-9a-f]{3}|#[0-9a-f]{6})$"
+
+                matches =
+                    R.find colours low |> List.map .submatches
+            in
+            case matches of
+                [ [ Just light, Just dark ] ] ->
+                    ( light, dark )
+
+                _ ->
+                    default
 
 
-light : Scheme -> String
-light scheme =
-    case scheme of
-        Brown ->
-            "#f0d9b5"
-
-        Blue ->
-            "#edf7ff"
-
-        Green ->
-            "#eeeed1"
-
-        Default ->
-            "#f0d9b5"
+white : Scheme -> String
+white scheme =
+    Tuple.first scheme
 
 
-dark : Scheme -> String
-dark scheme =
-    case scheme of
-        Brown ->
-            "#b58863"
-
-        Blue ->
-            "#3b98d9"
-
-        Green ->
-            "#769656"
-
-        Default ->
-            "#b58863"
+black : Scheme -> String
+black scheme =
+    Tuple.second scheme
