@@ -5765,7 +5765,7 @@ var $author$project$Model$init = function (preferences) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$init = function (flags) {
+var $author$project$Board$init = function (flags) {
 	return _Utils_Tuple2(
 		$author$project$Model$init(
 			$author$project$Preferences$decode(flags)),
@@ -5773,7 +5773,7 @@ var $author$project$Main$init = function (flags) {
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (model) {
+var $author$project$Board$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Colour$not = function (colour) {
@@ -5792,7 +5792,7 @@ var $author$project$Model$toggleNotation = function (model) {
 		model,
 		{aK: !model.aK});
 };
-var $author$project$Main$update = F2(
+var $author$project$Board$update = F2(
 	function (msg, model) {
 		if (!msg) {
 			return _Utils_Tuple2(
@@ -7527,7 +7527,7 @@ var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$version = _VirtualDom_attribute('version');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $author$project$Main$view = function (model) {
+var $author$project$Board$view = function (model) {
 	return A2(
 		$elm$svg$Svg$svg,
 		_List_fromArray(
@@ -7538,6 +7538,6 @@ var $author$project$Main$view = function (model) {
 			]),
 		$author$project$Image$fromModel(model));
 };
-var $author$project$Main$main = $elm$browser$Browser$element(
-	{aE: $author$project$Main$init, aS: $author$project$Main$subscriptions, aV: $author$project$Main$update, aW: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));
+var $author$project$Board$main = $elm$browser$Browser$element(
+	{aE: $author$project$Board$init, aS: $author$project$Board$subscriptions, aV: $author$project$Board$update, aW: $author$project$Board$view});
+_Platform_export({'Board':{'init':$author$project$Board$main($elm$json$Json$Decode$value)(0)}});}(this));

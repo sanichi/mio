@@ -23,10 +23,10 @@ namespace :elm do
     end
   end
 
-  def compile_and_minify(name)
+  def compile_and_minify(name, main="Main")
     js = "_#{name}_elm.js"
     min = "../_#{name}_elm.min.js"
-    if system("elm make Main.elm --optimize --output #{js}")
+    if system("elm make #{main}.elm --optimize --output #{js}")
       File.open(min, "w") do |file|
         file.write(Uglifier.compile(File.read(js)))
       end
@@ -65,7 +65,7 @@ namespace :elm do
   desc "make and minify the Elm JS file for Board"
   task :board do
     Dir.chdir("app/views/pages/board") do
-      compile_and_minify "board"
+      compile_and_minify "board", "Board"
     end
   end
 end

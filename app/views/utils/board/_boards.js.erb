@@ -11,8 +11,7 @@ $(function() {
     if (opt = opts.match(/\bm:\s*(\S+)/)) flags.marks = opt[1].split(',');
     if (opt = opts.match(/\bs:\s*(\S+)/)) flags.scheme = opt[1];
     if (opt = opts.match(/\bn:\s*(on|yes|y|true|t|1)/i)) flags.notation = true;
-    console.log(flags);
-    Elm.Main.init({
+    Elm.Board.init({
       node: $('#board_<%= id %>').get(0),
       flags: flags
     });
