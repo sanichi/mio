@@ -1,33 +1,22 @@
 $(function() {
 
-  var boards = [];
+  var fen, flags, extra, opts, opt;
 
 <% fens.each_with_index do |fen, id| %>
-  var fen = '<%= j fen %>';
-  var elm = fen.match(/\|(.*)/);
-  if (elm) {
-    var opts = elm[1], flags = { fen: fen }, opt;
+  fen = '<%= j fen %>';
+  flags = { fen: fen };
+  extra = fen.match(/\|(.*)/);
+  if (extra) {
+    opts = extra[1];
     if (opt = opts.match(/\bo:\s*(\S+)/)) flags.orientation = opt[1];
     if (opt = opts.match(/\bm:\s*(\S+)/)) flags.marks = opt[1].split(',');
     if (opt = opts.match(/\bs:\s*(\S+)/)) flags.scheme = opt[1];
     if (opt = opts.match(/\bn:\s*(on|yes|y|true|t|1)/i)) flags.notation = true;
-    Elm.Board.init({
-      node: $('#board_<%= id %>').get(0),
-      flags: flags
-    });
-  } else {
-    boards.push(Chessboard("board_<%= id %>", {
-      showNotation: <%= fen.match?(/(W|B|N)\Z/) ? 'true' : 'false' %>,
-      position: fen,
-      orientation: "<%= fen.match?(/b\Z/i) ? 'black' : 'white' %>",
-    }));
   }
-<% end %>
-
-  $(window).resize(function() {
-    $.each(boards, function(i, board) {
-      board.resize();
-    });
+  Elm.Board.init({
+    node: $('#board_<%= id %>').get(0),
+    flags: flags
   });
+<% end %>
 
 });
