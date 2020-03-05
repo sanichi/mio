@@ -7517,14 +7517,17 @@ var $author$project$Image$fromModel = function (model) {
 		$author$project$Image$fromMark(model.E),
 		model.aF);
 	var board = $author$project$Image$chessboard(model.ak);
-	return _Utils_ap(
-		_List_fromArray(
-			[board, move]),
-		_Utils_ap(
-			notation,
+	return A2(
+		$elm$core$List$cons,
+		board,
+		A2(
+			$elm$core$List$cons,
+			move,
 			_Utils_ap(
-				pieces,
-				_Utils_ap(marks, $author$project$Image$controls))));
+				notation,
+				_Utils_ap(
+					pieces,
+					_Utils_ap(marks, $author$project$Image$controls)))));
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');

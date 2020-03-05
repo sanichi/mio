@@ -36,7 +36,7 @@ fromModel model =
         move =
             pointer model.position.move model.orientation
     in
-    [ board, move ] ++ notation ++ pieces ++ marks ++ controls
+    board :: move :: notation ++ pieces ++ marks ++ controls
 
 
 fromPiece : Colour -> Piece -> Svg Msg
