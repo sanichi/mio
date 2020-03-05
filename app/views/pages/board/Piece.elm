@@ -1,4 +1,4 @@
-module Piece exposing (Category(..), Piece, fromChar, place)
+module Piece exposing (Category(..), Piece, fromChar)
 
 import Colour exposing (Colour(..))
 import Square exposing (Square)
@@ -65,12 +65,3 @@ fromChar char =
 
         _ ->
             Nothing
-
-
-place : PieceType -> Square -> Maybe Piece
-place pieceType square =
-    if Square.valid square then
-        Just (pieceType square)
-
-    else
-        Nothing

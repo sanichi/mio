@@ -41,55 +41,90 @@ fenPieces current file rank consumed remaining =
                 in
                 case char of
                     '/' ->
-                        fenPieces current (file - 8) (rank - 1) prev next
+                        if file == 9 && rank > 1 then
+                            fenPieces current 1 (rank - 1) prev next
+
+                        else
+                            err
 
                     '1' ->
-                        fenPieces current (file + 1) rank prev next
+                        if file <= 8 then
+                            fenPieces current (file + 1) rank prev next
+
+                        else
+                            err
 
                     '2' ->
-                        fenPieces current (file + 2) rank prev next
+                        if file <= 7 then
+                            fenPieces current (file + 2) rank prev next
+
+                        else
+                            err
 
                     '3' ->
-                        fenPieces current (file + 3) rank prev next
+                        if file <= 6 then
+                            fenPieces current (file + 3) rank prev next
+
+                        else
+                            err
 
                     '4' ->
-                        fenPieces current (file + 4) rank prev next
+                        if file <= 5 then
+                            fenPieces current (file + 4) rank prev next
+
+                        else
+                            err
 
                     '5' ->
-                        fenPieces current (file + 5) rank prev next
+                        if file <= 4 then
+                            fenPieces current (file + 5) rank prev next
+
+                        else
+                            err
 
                     '6' ->
-                        fenPieces current (file + 6) rank prev next
+                        if file <= 3 then
+                            fenPieces current (file + 6) rank prev next
+
+                        else
+                            err
 
                     '7' ->
-                        fenPieces current (file + 7) rank prev next
+                        if file <= 2 then
+                            fenPieces current (file + 7) rank prev next
+
+                        else
+                            err
 
                     '8' ->
-                        fenPieces current (file + 8) rank prev next
+                        if file == 1 then
+                            fenPieces current 9 rank prev next
+
+                        else
+                            err
 
                     _ ->
-                        let
-                            tryPiece =
-                                Piece.fromChar char
+                        if file <= 8 then
+                            let
+                                tryPiece =
+                                    Piece.fromChar char
+                            in
+                            case tryPiece of
+                                Just pieceType ->
+                                    let
+                                        piece =
+                                            pieceType <| Square file rank
 
-                            square =
-                                Square file rank
-                        in
-                        case tryPiece of
-                            Just pieceType ->
-                                case Piece.place pieceType square of
-                                    Just piece ->
-                                        let
-                                            position =
-                                                { current | pieces = piece :: current.pieces }
-                                        in
-                                        fenPieces position (file + 1) rank prev next
+                                        position =
+                                            { current | pieces = piece :: current.pieces }
+                                    in
+                                    fenPieces position (file + 1) rank prev next
 
-                                    Nothing ->
-                                        err
+                                Nothing ->
+                                    err
 
-                            Nothing ->
-                                err
+                        else
+                            err
 
             Nothing ->
                 err

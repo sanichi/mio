@@ -1,4 +1,4 @@
-module Square exposing (Square, fromString, valid)
+module Square exposing (Square, fromString)
 
 
 type alias Square =

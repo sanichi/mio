@@ -5427,15 +5427,6 @@ var $author$project$Piece$fromChar = function (_char) {
 			return $elm$core$Maybe$Nothing;
 	}
 };
-var $elm$core$Basics$ge = _Utils_ge;
-var $author$project$Square$valid = function (square) {
-	return (square.S >= 1) && ((square.S <= 8) && ((square.S >= 1) && (square.S <= 8)));
-};
-var $author$project$Piece$place = F2(
-	function (pieceType, square) {
-		return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(
-			pieceType(square)) : $elm$core$Maybe$Nothing;
-	});
 var $author$project$Position$fenPieces = F5(
 	function (current, file, rank, consumed, remaining) {
 		fenPieces:
@@ -5455,121 +5446,156 @@ var $author$project$Position$fenPieces = F5(
 						$elm$core$String$fromChar(_char));
 					switch (_char) {
 						case '/':
-							var $temp$current = current,
-								$temp$file = file - 8,
-								$temp$rank = rank - 1,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if ((file === 9) && (rank > 1)) {
+								var $temp$current = current,
+									$temp$file = 1,
+									$temp$rank = rank - 1,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '1':
-							var $temp$current = current,
-								$temp$file = file + 1,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 8) {
+								var $temp$current = current,
+									$temp$file = file + 1,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '2':
-							var $temp$current = current,
-								$temp$file = file + 2,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 7) {
+								var $temp$current = current,
+									$temp$file = file + 2,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '3':
-							var $temp$current = current,
-								$temp$file = file + 3,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 6) {
+								var $temp$current = current,
+									$temp$file = file + 3,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '4':
-							var $temp$current = current,
-								$temp$file = file + 4,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 5) {
+								var $temp$current = current,
+									$temp$file = file + 4,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '5':
-							var $temp$current = current,
-								$temp$file = file + 5,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 4) {
+								var $temp$current = current,
+									$temp$file = file + 5,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '6':
-							var $temp$current = current,
-								$temp$file = file + 6,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 3) {
+								var $temp$current = current,
+									$temp$file = file + 6,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '7':
-							var $temp$current = current,
-								$temp$file = file + 7,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file <= 2) {
+								var $temp$current = current,
+									$temp$file = file + 7,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						case '8':
-							var $temp$current = current,
-								$temp$file = file + 8,
-								$temp$rank = rank,
-								$temp$consumed = prev,
-								$temp$remaining = next;
-							current = $temp$current;
-							file = $temp$file;
-							rank = $temp$rank;
-							consumed = $temp$consumed;
-							remaining = $temp$remaining;
-							continue fenPieces;
+							if (file === 1) {
+								var $temp$current = current,
+									$temp$file = 9,
+									$temp$rank = rank,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								file = $temp$file;
+								rank = $temp$rank;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenPieces;
+							} else {
+								return err;
+							}
 						default:
-							var tryPiece = $author$project$Piece$fromChar(_char);
-							var square = A2($author$project$Square$Square, file, rank);
-							if (!tryPiece.$) {
-								var pieceType = tryPiece.a;
-								var _v4 = A2($author$project$Piece$place, pieceType, square);
-								if (!_v4.$) {
-									var piece = _v4.a;
+							if (file <= 8) {
+								var tryPiece = $author$project$Piece$fromChar(_char);
+								if (!tryPiece.$) {
+									var pieceType = tryPiece.a;
+									var piece = pieceType(
+										A2($author$project$Square$Square, file, rank));
 									var position = _Utils_update(
 										current,
 										{
@@ -5632,6 +5658,10 @@ var $elm$core$String$toList = function (string) {
 	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
 };
 var $elm$core$String$toLower = _String_toLower;
+var $elm$core$Basics$ge = _Utils_ge;
+var $author$project$Square$valid = function (square) {
+	return (square.S >= 1) && ((square.S <= 8) && ((square.S >= 1) && (square.S <= 8)));
+};
 var $author$project$Square$fromString = function (str) {
 	var square = function () {
 		var _v0 = $elm$core$String$toList(
