@@ -31,7 +31,7 @@ fromModel model =
             List.map (fromMark model.orientation) model.marks
 
         board =
-            chessboard model.scheme
+            chessboard model.scheme model.error
 
         move =
             pointer model.position.move model.orientation
@@ -103,8 +103,8 @@ fromMark orientation mark =
     marker ( orientation, mark.square.file, mark.square.rank )
 
 
-chessboard : Scheme -> Svg Msg
-chessboard scheme =
+chessboard : Scheme -> Maybe String -> Svg Msg
+chessboard scheme error =
     let
         l =
             Scheme.white scheme |> fill
@@ -120,6 +120,19 @@ chessboard scheme =
 
         t =
             translate2 White
+
+        borderColour =
+            case error of
+                Nothing ->
+                    "black"
+
+                Just _ ->
+                    "red"
+
+        borderStyle =
+            "stroke:"
+                ++ borderColour
+                ++ ";stroke-width:2;"
     in
     g []
         [ rect [ d, w, h, t 1 1 ] []
@@ -186,10 +199,10 @@ chessboard scheme =
         , rect [ d, w, h, t 6 8 ] []
         , rect [ l, w, h, t 7 8 ] []
         , rect [ d, w, h, t 8 8 ] []
-        , line [ x1 "0", y1 "0", x2 "360", y2 "0", style "stroke:black;stroke-width:2;" ] []
-        , line [ x1 "360", y1 "0", x2 "360", y2 "360", style "stroke:black;stroke-width:2;" ] []
-        , line [ x1 "0", y1 "360", x2 "360", y2 "360", style "stroke:black;stroke-width:2;" ] []
-        , line [ x1 "0", y1 "0", x2 "0", y2 "360", style "stroke:black;stroke-width:2;" ] []
+        , line [ x1 "0", y1 "0", x2 "360", y2 "0", style borderStyle ] []
+        , line [ x1 "360", y1 "0", x2 "360", y2 "360", style borderStyle ] []
+        , line [ x1 "0", y1 "360", x2 "360", y2 "360", style borderStyle ] []
+        , line [ x1 "0", y1 "0", x2 "0", y2 "360", style borderStyle ] []
         ]
 
 

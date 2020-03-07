@@ -5945,705 +5945,714 @@ var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
 var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
 var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var $author$project$Image$chessboard = function (scheme) {
-	var w = $elm$svg$Svg$Attributes$width('45');
-	var t = $author$project$Image$translate2(1);
-	var l = $elm$svg$Svg$Attributes$fill(
-		$author$project$Scheme$white(scheme));
-	var h = $elm$svg$Svg$Attributes$height('45');
-	var d = $elm$svg$Svg$Attributes$fill(
-		$author$project$Scheme$black(scheme));
-	return A2(
-		$elm$svg$Svg$g,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 1, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 2, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 3, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 4, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 5, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 6, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 7, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 8, 1)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 1, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 2, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 3, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 4, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 5, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 6, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 7, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 8, 2)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 1, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 2, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 3, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 4, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 5, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 6, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 7, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 8, 3)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 1, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 2, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 3, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 4, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 5, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 6, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 7, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 8, 4)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 1, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 2, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 3, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 4, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 5, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 6, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 7, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 8, 5)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 1, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 2, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 3, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 4, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 5, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 6, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 7, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 8, 6)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 1, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 2, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 3, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 4, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 5, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 6, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 7, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 8, 7)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 1, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 2, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 3, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 4, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 5, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 6, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						l,
-						w,
-						h,
-						A2(t, 7, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$rect,
-				_List_fromArray(
-					[
-						d,
-						w,
-						h,
-						A2(t, 8, 8)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('0'),
-						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$x1('360'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('360'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('0'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style('stroke:black;stroke-width:2;')
-					]),
-				_List_Nil)
-			]));
-};
+var $author$project$Image$chessboard = F2(
+	function (scheme, error) {
+		var w = $elm$svg$Svg$Attributes$width('45');
+		var t = $author$project$Image$translate2(1);
+		var l = $elm$svg$Svg$Attributes$fill(
+			$author$project$Scheme$white(scheme));
+		var h = $elm$svg$Svg$Attributes$height('45');
+		var d = $elm$svg$Svg$Attributes$fill(
+			$author$project$Scheme$black(scheme));
+		var borderColour = function () {
+			if (error.$ === 1) {
+				return 'black';
+			} else {
+				return 'red';
+			}
+		}();
+		var borderStyle = 'stroke:' + (borderColour + ';stroke-width:2;');
+		return A2(
+			$elm$svg$Svg$g,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 1, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 2, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 3, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 4, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 5, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 6, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 7, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 8, 1)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 1, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 2, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 3, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 4, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 5, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 6, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 7, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 8, 2)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 1, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 2, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 3, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 4, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 5, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 6, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 7, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 8, 3)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 1, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 2, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 3, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 4, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 5, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 6, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 7, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 8, 4)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 1, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 2, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 3, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 4, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 5, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 6, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 7, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 8, 5)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 1, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 2, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 3, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 4, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 5, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 6, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 7, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 8, 6)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 1, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 2, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 3, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 4, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 5, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 6, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 7, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 8, 7)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 1, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 2, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 3, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 4, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 5, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 6, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							l,
+							w,
+							h,
+							A2(t, 7, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							d,
+							w,
+							h,
+							A2(t, 8, 8)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('0'),
+							$elm$svg$Svg$Attributes$y1('0'),
+							$elm$svg$Svg$Attributes$x2('360'),
+							$elm$svg$Svg$Attributes$y2('0'),
+							$elm$svg$Svg$Attributes$style(borderStyle)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('360'),
+							$elm$svg$Svg$Attributes$y1('0'),
+							$elm$svg$Svg$Attributes$x2('360'),
+							$elm$svg$Svg$Attributes$y2('360'),
+							$elm$svg$Svg$Attributes$style(borderStyle)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('0'),
+							$elm$svg$Svg$Attributes$y1('360'),
+							$elm$svg$Svg$Attributes$x2('360'),
+							$elm$svg$Svg$Attributes$y2('360'),
+							$elm$svg$Svg$Attributes$style(borderStyle)
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('0'),
+							$elm$svg$Svg$Attributes$y1('0'),
+							$elm$svg$Svg$Attributes$x2('0'),
+							$elm$svg$Svg$Attributes$y2('360'),
+							$elm$svg$Svg$Attributes$style(borderStyle)
+						]),
+					_List_Nil)
+				]));
+	});
 var $author$project$Messages$FlipOrientation = 0;
 var $author$project$Messages$ToggleNotation = 1;
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
@@ -7622,7 +7631,7 @@ var $author$project$Image$fromModel = function (model) {
 		$elm$core$List$map,
 		$author$project$Image$fromMark(model.E),
 		model.aG);
-	var board = $author$project$Image$chessboard(model.ak);
+	var board = A2($author$project$Image$chessboard, model.ak, model.az);
 	return A2(
 		$elm$core$List$cons,
 		board,
