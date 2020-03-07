@@ -13,6 +13,7 @@ type alias Model =
     , notation : Bool
     , marks : List Mark
     , scheme : Scheme
+    , error : Maybe String
     }
 
 
@@ -22,13 +23,13 @@ init preferences =
         orientation =
             Colour.fromString preferences.orientation
 
-        position =
+        ( position, error ) =
             case Position.fromFen preferences.fen of
                 Ok pos ->
-                    pos
+                    ( pos, Nothing )
 
                 Err ( current, consumed, remaining ) ->
-                    current
+                    ( current, Just <| Position.errorMessage consumed remaining )
 
         notation =
             preferences.notation
@@ -39,7 +40,7 @@ init preferences =
         scheme =
             Scheme.fromString preferences.scheme
     in
-    Model position orientation notation marks scheme
+    Model position orientation notation marks scheme error
 
 
 flipOrientation : Model -> Model

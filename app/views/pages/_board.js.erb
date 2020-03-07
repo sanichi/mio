@@ -5,7 +5,7 @@ $(function() {
       orientation: 'black'
     }
   });
-  Elm.Board.init({
+  var app2 = Elm.Board.init({
     node: $('#elm-app-2').get(0),
     flags: {
       orientation: 'white',
@@ -14,7 +14,10 @@ $(function() {
       scheme: 'green'
     }
   });
-  Elm.Board.init({
+  app2.ports.error.subscribe(function(msg) {
+    console.log(msg);
+  });
+  var app3 = Elm.Board.init({
     node: $('#elm-app-3').get(0),
     flags: {
       orientation: 'white',
@@ -23,6 +26,9 @@ $(function() {
       marks: ['od3', 'oE3', 'Of3', 'xd2', 'xe2', 'xf2', '*d6', '*e6', '*f6'],
       scheme: 'blue'
     }
+  });
+  app3.ports.error.subscribe(function(msg) {
+    console.log(msg);
   });
   Elm.Board.init({
     node: $('#elm-app-4').get(0),

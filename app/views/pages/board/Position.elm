@@ -1,4 +1,4 @@
-module Position exposing (Position, fromFen)
+module Position exposing (Position, errorMessage, fromFen)
 
 import Colour exposing (Colour(..))
 import Piece exposing (Piece)
@@ -172,3 +172,18 @@ emptyBoard =
     { pieces = []
     , move = White
     }
+
+
+errorMessage : String -> String -> String
+errorMessage consumed remaining =
+    let
+        preface =
+            "FEN parsing error: "
+    in
+    preface
+        ++ consumed
+        ++ remaining
+        ++ "\n"
+        ++ String.repeat (String.length preface + String.length consumed) " "
+        ++ "^"
+        ++ "\n"

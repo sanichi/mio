@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aV,
-		impl.aS,
+		impl.aF,
+		impl.aW,
+		impl.aT,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aV,
-		impl.aS,
+		impl.aF,
+		impl.aW,
+		impl.aT,
 		function(sendToApp, initialModel) {
-			var view = impl.aW;
+			var view = impl.aX;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aV,
-		impl.aS,
+		impl.aF,
+		impl.aW,
+		impl.aT,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.J && impl.J(sendToApp)
-			var view = impl.aW;
+			var view = impl.aX;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3982,7 +3982,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aU) && (_VirtualDom_doc.title = title = doc.aU);
+				(title !== doc.aV) && (_VirtualDom_doc.title = title = doc.aV);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aM;
-	var onUrlRequest = impl.aN;
+	var onUrlChange = impl.aN;
+	var onUrlRequest = impl.aO;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aE: function(flags)
+		aF: function(flags)
 		{
-			return A3(impl.aE, flags, _Browser_getUrl(), key);
+			return A3(impl.aF, flags, _Browser_getUrl(), key);
 		},
+		aX: impl.aX,
 		aW: impl.aW,
-		aV: impl.aV,
-		aS: impl.aS
+		aT: impl.aT
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aB: 'hidden', av: 'visibilitychange' }
+		? { aC: 'hidden', av: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aB: 'mozHidden', av: 'mozvisibilitychange' }
+		? { aC: 'mozHidden', av: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aB: 'msHidden', av: 'msvisibilitychange' }
+		? { aC: 'msHidden', av: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aB: 'webkitHidden', av: 'webkitvisibilitychange' }
-		: { aB: 'hidden', av: 'visibilitychange' };
+		? { aC: 'webkitHidden', av: 'webkitvisibilitychange' }
+		: { aC: 'hidden', av: 'visibilitychange' };
 }
 
 
@@ -4357,6 +4357,43 @@ function _Browser_load(url)
 }
 
 
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
+
+
 // CREATE
 
 var _Regex_never = /.^/;
@@ -4364,7 +4401,7 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.aI) { flags += 'm'; }
+	if (options.aJ) { flags += 'm'; }
 	if (options.au) { flags += 'i'; }
 
 	try
@@ -5242,7 +5279,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {aA: fen, aF: marks, aK: notation, E: orientation, ak: scheme};
+		return {aB: fen, aG: marks, aL: notation, E: orientation, ak: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5280,7 +5317,7 @@ var $author$project$Preferences$flagsDecoder = A6(
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aA,
+		$author$project$Preferences$default.aB,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5288,11 +5325,11 @@ var $author$project$Preferences$flagsDecoder = A6(
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aK,
+		$author$project$Preferences$default.aL,
 		A2($elm$json$Json$Decode$field, 'notation', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aF,
+		$author$project$Preferences$default.aG,
 		A2(
 			$elm$json$Json$Decode$field,
 			'marks',
@@ -5316,12 +5353,47 @@ var $author$project$Preferences$decode = function (value) {
 		$author$project$Preferences$default,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
-var $author$project$Model$Model = F5(
-	function (position, orientation, notation, marks, scheme) {
-		return {aF: marks, aK: notation, E: orientation, ab: position, ak: scheme};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $author$project$Ports$error = _Platform_outgoingPort('error', $elm$json$Json$Encode$string);
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Board$error = function (model) {
+	var _v0 = model.az;
+	if (_v0.$ === 1) {
+		return $elm$core$Platform$Cmd$none;
+	} else {
+		var msg = _v0.a;
+		return $author$project$Ports$error(msg);
+	}
+};
+var $author$project$Model$Model = F6(
+	function (position, orientation, notation, marks, scheme, error) {
+		return {az: error, aG: marks, aL: notation, E: orientation, ab: position, ak: scheme};
+	});
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
+var $elm$core$String$repeatHelp = F3(
+	function (n, chunk, result) {
+		return (n <= 0) ? result : A3(
+			$elm$core$String$repeatHelp,
+			n >> 1,
+			_Utils_ap(chunk, chunk),
+			(!(n & 1)) ? result : _Utils_ap(result, chunk));
+	});
+var $elm$core$String$repeat = F2(
+	function (n, chunk) {
+		return A3($elm$core$String$repeatHelp, n, chunk, '');
+	});
+var $author$project$Position$errorMessage = F2(
+	function (consumed, remaining) {
+		var preface = 'FEN parsing error: ';
+		return preface + (consumed + (remaining + ('\n' + (A2(
+			$elm$core$String$repeat,
+			$elm$core$String$length(preface) + $elm$core$String$length(consumed),
+			' ') + ('^' + '\n')))));
 	});
 var $author$project$Colour$White = 1;
-var $author$project$Position$emptyBoard = {aH: 1, aP: _List_Nil};
+var $author$project$Position$emptyBoard = {aI: 1, aQ: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
 		return {S: file, ag: rank};
@@ -5361,12 +5433,12 @@ var $author$project$Position$fenMove = F3(
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{aH: 1}));
+								{aI: 1}));
 					case 'b':
 						return $author$project$Position$fenEnd(
 							_Utils_update(
 								current,
-								{aH: 0}));
+								{aI: 0}));
 					default:
 						return err;
 				}
@@ -5599,7 +5671,7 @@ var $author$project$Position$fenPieces = F5(
 									var position = _Utils_update(
 										current,
 										{
-											aP: A2($elm$core$List$cons, piece, current.aP)
+											aQ: A2($elm$core$List$cons, piece, current.aQ)
 										});
 									var $temp$current = position,
 										$temp$file = file + 1,
@@ -5650,7 +5722,7 @@ var $author$project$Mark$Cross = 0;
 var $author$project$Mark$Dot = 1;
 var $author$project$Mark$Mark = F2(
 	function (symbol, square) {
-		return {F: square, aT: symbol};
+		return {F: square, aU: symbol};
 	});
 var $author$project$Mark$Star = 2;
 var $elm$core$String$foldr = _String_foldr;
@@ -5731,14 +5803,14 @@ var $author$project$Scheme$brown = _Utils_Tuple2('#f0d9b5', '#b58863');
 var $author$project$Scheme$default = $author$project$Scheme$brown;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {aD: index, aG: match, aL: number, aR: submatches};
+		return {aE: index, aH: match, aM: number, aS: submatches};
 	});
 var $elm$regex$Regex$find = _Regex_findAtMost(_Regex_infinity);
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{au: false, aI: false},
+		{au: false, aJ: false},
 		string);
 };
 var $author$project$Scheme$green = _Utils_Tuple2('#eeeed1', '#769656');
@@ -5762,7 +5834,7 @@ var $author$project$Scheme$fromString = function (str) {
 			var matches = A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.aR;
+					return $.aS;
 				},
 				A2($elm$regex$Regex$find, colours, low));
 			if ((((((matches.b && matches.a.b) && (!matches.a.a.$)) && matches.a.b.b) && (!matches.a.b.a.$)) && (!matches.a.b.b.b)) && (!matches.b.b)) {
@@ -5778,31 +5850,35 @@ var $author$project$Scheme$fromString = function (str) {
 };
 var $author$project$Model$init = function (preferences) {
 	var scheme = $author$project$Scheme$fromString(preferences.ak);
-	var position = function () {
-		var _v0 = $author$project$Position$fromFen(preferences.aA);
-		if (!_v0.$) {
-			var pos = _v0.a;
-			return pos;
+	var orientation = $author$project$Colour$fromString(preferences.E);
+	var notation = preferences.aL;
+	var marks = $author$project$Mark$fromList(preferences.aG);
+	var _v0 = function () {
+		var _v1 = $author$project$Position$fromFen(preferences.aB);
+		if (!_v1.$) {
+			var pos = _v1.a;
+			return _Utils_Tuple2(pos, $elm$core$Maybe$Nothing);
 		} else {
-			var _v1 = _v0.a;
-			var current = _v1.a;
-			var consumed = _v1.b;
-			var remaining = _v1.c;
-			return current;
+			var _v2 = _v1.a;
+			var current = _v2.a;
+			var consumed = _v2.b;
+			var remaining = _v2.c;
+			return _Utils_Tuple2(
+				current,
+				$elm$core$Maybe$Just(
+					A2($author$project$Position$errorMessage, consumed, remaining)));
 		}
 	}();
-	var orientation = $author$project$Colour$fromString(preferences.E);
-	var notation = preferences.aK;
-	var marks = $author$project$Mark$fromList(preferences.aF);
-	return A5($author$project$Model$Model, position, orientation, notation, marks, scheme);
+	var position = _v0.a;
+	var error = _v0.b;
+	return A6($author$project$Model$Model, position, orientation, notation, marks, scheme, error);
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Board$init = function (flags) {
+	var model = $author$project$Model$init(
+		$author$project$Preferences$decode(flags));
 	return _Utils_Tuple2(
-		$author$project$Model$init(
-			$author$project$Preferences$decode(flags)),
-		$elm$core$Platform$Cmd$none);
+		model,
+		$author$project$Board$error(model));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
@@ -5823,7 +5899,7 @@ var $elm$core$Basics$not = _Basics_not;
 var $author$project$Model$toggleNotation = function (model) {
 	return _Utils_update(
 		model,
-		{aK: !model.aK});
+		{aL: !model.aL});
 };
 var $author$project$Board$update = F2(
 	function (msg, model) {
@@ -6691,7 +6767,7 @@ var $author$project$Image$star = function (place) {
 var $author$project$Image$fromMark = F2(
 	function (orientation, mark) {
 		var marker = function () {
-			var _v0 = mark.aT;
+			var _v0 = mark.aU;
 			switch (_v0) {
 				case 1:
 					return $author$project$Image$dot;
@@ -7539,13 +7615,13 @@ var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromPiece(model.E),
-		model.ab.aP);
-	var notation = A3($author$project$Image$notes, model.aK, model.E, model.ak);
-	var move = A2($author$project$Image$pointer, model.ab.aH, model.E);
+		model.ab.aQ);
+	var notation = A3($author$project$Image$notes, model.aL, model.E, model.ak);
+	var move = A2($author$project$Image$pointer, model.ab.aI, model.E);
 	var marks = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromMark(model.E),
-		model.aF);
+		model.aG);
 	var board = $author$project$Image$chessboard(model.ak);
 	return A2(
 		$elm$core$List$cons,
@@ -7575,5 +7651,5 @@ var $author$project$Board$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Board$main = $elm$browser$Browser$element(
-	{aE: $author$project$Board$init, aS: $author$project$Board$subscriptions, aV: $author$project$Board$update, aW: $author$project$Board$view});
+	{aF: $author$project$Board$init, aT: $author$project$Board$subscriptions, aW: $author$project$Board$update, aX: $author$project$Board$view});
 _Platform_export({'Board':{'init':$author$project$Board$main($elm$json$Json$Decode$value)(0)}});}(this));

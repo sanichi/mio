@@ -6,6 +6,7 @@ import Image
 import Json.Decode exposing (Value)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
+import Ports
 import Preferences
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
@@ -31,7 +32,11 @@ main =
 
 init : Value -> ( Model, Cmd Msg )
 init flags =
-    ( Preferences.decode flags |> Model.init, Cmd.none )
+    let
+        model =
+            Model.init <| Preferences.decode flags
+    in
+    ( model, error model )
 
 
 
@@ -65,3 +70,17 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
+
+
+
+-- COMMANDS
+
+
+error : Model -> Cmd Msg
+error model =
+    case model.error of
+        Nothing ->
+            Cmd.none
+
+        Just msg ->
+            Ports.error msg
