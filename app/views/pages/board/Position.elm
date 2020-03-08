@@ -1,5 +1,6 @@
 module Position exposing (Position, errorMessage, fromFen)
 
+import Castle exposing (Castle)
 import Colour exposing (Colour(..))
 import Piece exposing (Piece)
 import Square exposing (Square)
@@ -8,6 +9,7 @@ import Square exposing (Square)
 type alias Position =
     { pieces : List Piece
     , move : Colour
+    , castle : Castle
     }
 
 
@@ -27,18 +29,11 @@ fenPieces current file rank consumed remaining =
 
     else
         let
-            split =
-                String.uncons remaining
-
-            err =
-                Err ( current, consumed, remaining )
+            ( err, char_, ( prev, next ) ) =
+                prepare current consumed remaining
         in
-        case split of
-            Just ( char, next ) ->
-                let
-                    prev =
-                        consumed ++ String.fromChar char
-                in
+        case char_ of
+            Just char ->
                 case char of
                     '/' ->
                         if file == 9 && rank > 1 then
@@ -133,27 +128,78 @@ fenPieces current file rank consumed remaining =
 fenMove : Position -> String -> String -> ParseResult
 fenMove current consumed remaining =
     let
-        split =
-            String.uncons remaining
-
-        err =
-            Err ( current, consumed, remaining )
+        ( err, char_, ( prev, next ) ) =
+            prepare current consumed remaining
     in
-    case split of
-        Just ( char, next ) ->
-            let
-                prev =
-                    consumed ++ String.fromChar char
-            in
+    case char_ of
+        Just char ->
             case char of
                 ' ' ->
                     fenMove current prev next
 
                 'w' ->
-                    fenEnd { current | move = White }
+                    fenCastle { current | move = White } prev next
 
                 'b' ->
-                    fenEnd { current | move = Black }
+                    fenCastle { current | move = Black } prev next
+
+                _ ->
+                    err
+
+        Nothing ->
+            err
+
+
+fenCastle : Position -> String -> String -> ParseResult
+fenCastle current consumed remaining =
+    let
+        ( err, char_, ( prev, next ) ) =
+            prepare current consumed remaining
+    in
+    case char_ of
+        Just char ->
+            case char of
+                ' ' ->
+                    if Castle.any current.castle then
+                        fenEnd current
+
+                    else
+                        fenCastle current prev next
+
+                '-' ->
+                    if Castle.any current.castle then
+                        err
+
+                    else
+                        fenEnd current
+
+                'K' ->
+                    if current.castle.whiteKing then
+                        err
+
+                    else
+                        fenCastle { current | castle = Castle.wk current.castle } prev next
+
+                'Q' ->
+                    if current.castle.whiteQueen then
+                        err
+
+                    else
+                        fenCastle { current | castle = Castle.wq current.castle } prev next
+
+                'k' ->
+                    if current.castle.blackKing then
+                        err
+
+                    else
+                        fenCastle { current | castle = Castle.bk current.castle } prev next
+
+                'q' ->
+                    if current.castle.blackQueen then
+                        err
+
+                    else
+                        fenCastle { current | castle = Castle.bq current.castle } prev next
 
                 _ ->
                     err
@@ -167,10 +213,39 @@ fenEnd position =
     Ok position
 
 
+prepare : Position -> String -> String -> ( ParseResult, Maybe Char, ( String, String ) )
+prepare current consumed remaining =
+    let
+        err =
+            Err ( current, consumed, remaining )
+
+        split =
+            String.uncons remaining
+
+        ( char_, next ) =
+            case split of
+                Just ( char, next_ ) ->
+                    ( Just char, next_ )
+
+                Nothing ->
+                    ( Nothing, remaining )
+
+        prev =
+            case char_ of
+                Just char ->
+                    consumed ++ String.fromChar char
+
+                Nothing ->
+                    consumed
+    in
+    ( err, char_, ( prev, next ) )
+
+
 emptyBoard : Position
 emptyBoard =
     { pieces = []
     , move = White
+    , castle = Castle.init
     }
 
 
