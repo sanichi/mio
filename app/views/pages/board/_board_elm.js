@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.P.A === region.V.A)
+	if (region.L.A === region.T.A)
 	{
-		return 'on line ' + region.P.A;
+		return 'on line ' + region.L.A;
 	}
-	return 'on lines ' + region.P.A + ' through ' + region.V.A;
+	return 'on lines ' + region.L.A + ' through ' + region.T.A;
 }
 
 
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		Q: record.Q,
-		N: record.N
+		M: record.M,
+		J: record.J
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Q;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.M;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.N) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.J) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3968,7 +3968,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.a$,
 		impl.aY,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.O && impl.O(sendToApp)
+			var divertHrefToApp = impl.K && impl.K(sendToApp)
 			var view = impl.a0;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4043,7 +4043,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		O: function(sendToApp)
+		K: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aj === next.aj
-							&& curr._ === next._
-							&& curr.af.a === next.af.a
+							&& curr.ah === next.ah
+							&& curr.Y === next.Y
+							&& curr.ad.a === next.ad.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ao: _Browser_getScene(),
-		as: {
+		am: _Browser_getScene(),
+		aq: {
 			au: _Browser_window.pageXOffset,
 			av: _Browser_window.pageYOffset,
 			at: _Browser_doc.documentElement.clientWidth,
-			Z: _Browser_doc.documentElement.clientHeight
+			X: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4248,7 +4248,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		at: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Z: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		X: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ao: {
+			am: {
 				at: node.scrollWidth,
-				Z: node.scrollHeight
+				X: node.scrollHeight
 			},
-			as: {
+			aq: {
 				au: node.scrollLeft,
 				av: node.scrollTop,
 				at: node.clientWidth,
-				Z: node.clientHeight
+				X: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ao: _Browser_getScene(),
-			as: {
+			am: _Browser_getScene(),
+			aq: {
 				au: x,
 				av: y,
 				at: _Browser_doc.documentElement.clientWidth,
-				Z: _Browser_doc.documentElement.clientHeight
+				X: _Browser_doc.documentElement.clientHeight
 			},
 			aD: {
 				au: x + rect.left,
 				av: y + rect.top,
 				at: rect.width,
-				Z: rect.height
+				X: rect.height
 			}
 		};
 	});
@@ -4997,7 +4997,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Y: fragment, _: host, ad: path, af: port_, aj: protocol, ak: query};
+		return {W: fragment, Y: host, ab: path, ad: port_, ah: protocol, ai: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5279,7 +5279,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {aG: fen, aL: marks, aQ: notation, H: orientation, ap: scheme};
+		return {aG: fen, aL: marks, aQ: notation, F: orientation, an: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5321,7 +5321,7 @@ var $author$project$Preferences$flagsDecoder = A6(
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.H,
+		$author$project$Preferences$default.F,
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5336,7 +5336,7 @@ var $author$project$Preferences$flagsDecoder = A6(
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ap,
+		$author$project$Preferences$default.an,
 		A2($elm$json$Json$Decode$field, 'scheme', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5368,7 +5368,7 @@ var $author$project$Board$error = function (model) {
 };
 var $author$project$Model$Model = F6(
 	function (position, orientation, notation, marks, scheme, error) {
-		return {aE: error, aL: marks, aQ: notation, H: orientation, ag: position, ap: scheme};
+		return {aE: error, aL: marks, aQ: notation, F: orientation, ae: position, an: scheme};
 	});
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
@@ -5395,30 +5395,24 @@ var $author$project$Position$errorMessage = F2(
 var $author$project$Colour$White = 1;
 var $author$project$Castle$Castle = F4(
 	function (whiteKing, whiteQueen, blackKing, blackQueen) {
-		return {F: blackKing, G: blackQueen, J: whiteKing, K: whiteQueen};
+		return {O: blackKing, P: blackQueen, ar: whiteKing, as: whiteQueen};
 	});
 var $author$project$Castle$init = A4($author$project$Castle$Castle, false, false, false, false);
-var $author$project$Position$emptyBoard = {e: $author$project$Castle$init, aN: 1, aV: _List_Nil};
+var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, aN: 1, aV: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {X: file, al: rank};
+		return {V: file, aj: rank};
 	});
 var $author$project$Colour$Black = 0;
-var $author$project$Castle$any = function (castle) {
-	return castle.J || (castle.K || (castle.F || castle.G));
-};
 var $author$project$Castle$bk = function (castle) {
 	return _Utils_update(
 		castle,
-		{F: true});
+		{O: true});
 };
 var $author$project$Castle$bq = function (castle) {
 	return _Utils_update(
 		castle,
-		{G: true});
-};
-var $author$project$Position$fenEnd = function (position) {
-	return $elm$core$Result$Ok(position);
+		{P: true});
 };
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
@@ -5461,15 +5455,15 @@ var $author$project$Position$prepare = F3(
 var $author$project$Castle$wk = function (castle) {
 	return _Utils_update(
 		castle,
-		{J: true});
+		{ar: true});
 };
 var $author$project$Castle$wq = function (castle) {
 	return _Utils_update(
 		castle,
-		{K: true});
+		{as: true});
 };
-var $author$project$Position$fenCastle = F3(
-	function (current, consumed, remaining) {
+var $author$project$Position$fenCastle = F4(
+	function (current, state, consumed, remaining) {
 		fenCastle:
 		while (true) {
 			var _v0 = A3($author$project$Position$prepare, current, consumed, remaining);
@@ -5481,84 +5475,94 @@ var $author$project$Position$fenCastle = F3(
 			if (!char_.$) {
 				var _char = char_.a;
 				switch (_char) {
-					case ' ':
-						if ($author$project$Castle$any(current.e)) {
-							return $author$project$Position$fenEnd(current);
-						} else {
+					case '-':
+						if (!state) {
 							var $temp$current = current,
+								$temp$state = 2,
 								$temp$consumed = prev,
 								$temp$remaining = next;
 							current = $temp$current;
+							state = $temp$state;
 							consumed = $temp$consumed;
 							remaining = $temp$remaining;
 							continue fenCastle;
+						} else {
+							return err;
 						}
-					case '-':
-						return $author$project$Castle$any(current.e) ? err : $author$project$Position$fenEnd(current);
 					case 'K':
-						if (current.e.J) {
+						if (current.f.ar || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
 								current,
 								{
-									e: $author$project$Castle$wk(current.e)
+									f: $author$project$Castle$wk(current.f)
 								}),
+								$temp$state = 1,
 								$temp$consumed = prev,
 								$temp$remaining = next;
 							current = $temp$current;
+							state = $temp$state;
 							consumed = $temp$consumed;
 							remaining = $temp$remaining;
 							continue fenCastle;
 						}
 					case 'Q':
-						if (current.e.K) {
+						if (current.f.as || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
 								current,
 								{
-									e: $author$project$Castle$wq(current.e)
+									f: $author$project$Castle$wq(current.f)
 								}),
+								$temp$state = 1,
 								$temp$consumed = prev,
 								$temp$remaining = next;
 							current = $temp$current;
+							state = $temp$state;
 							consumed = $temp$consumed;
 							remaining = $temp$remaining;
 							continue fenCastle;
 						}
 					case 'k':
-						if (current.e.F) {
+						if (current.f.O || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
 								current,
 								{
-									e: $author$project$Castle$bk(current.e)
+									f: $author$project$Castle$bk(current.f)
 								}),
+								$temp$state = 1,
 								$temp$consumed = prev,
 								$temp$remaining = next;
 							current = $temp$current;
+							state = $temp$state;
 							consumed = $temp$consumed;
 							remaining = $temp$remaining;
 							continue fenCastle;
 						}
 					case 'q':
-						if (current.e.G) {
+						if (current.f.P || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
 								current,
 								{
-									e: $author$project$Castle$bq(current.e)
+									f: $author$project$Castle$bq(current.f)
 								}),
+								$temp$state = 1,
 								$temp$consumed = prev,
 								$temp$remaining = next;
 							current = $temp$current;
+							state = $temp$state;
 							consumed = $temp$consumed;
 							remaining = $temp$remaining;
 							continue fenCastle;
 						}
+					case ' ':
+						return (!state) ? err : $elm$core$Result$Ok(current);
 					default:
 						return err;
 				}
@@ -5567,8 +5571,8 @@ var $author$project$Position$fenCastle = F3(
 			}
 		}
 	});
-var $author$project$Position$fenMove = F3(
-	function (current, consumed, remaining) {
+var $author$project$Position$fenMove = F4(
+	function (current, done, consumed, remaining) {
 		fenMove:
 		while (true) {
 			var _v0 = A3($author$project$Position$prepare, current, consumed, remaining);
@@ -5580,30 +5584,40 @@ var $author$project$Position$fenMove = F3(
 			if (!char_.$) {
 				var _char = char_.a;
 				switch (_char) {
-					case ' ':
-						var $temp$current = current,
-							$temp$consumed = prev,
-							$temp$remaining = next;
-						current = $temp$current;
-						consumed = $temp$consumed;
-						remaining = $temp$remaining;
-						continue fenMove;
 					case 'w':
-						return A3(
-							$author$project$Position$fenCastle,
-							_Utils_update(
+						if (done) {
+							return err;
+						} else {
+							var $temp$current = _Utils_update(
 								current,
 								{aN: 1}),
-							prev,
-							next);
+								$temp$done = true,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							done = $temp$done;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenMove;
+						}
 					case 'b':
-						return A3(
-							$author$project$Position$fenCastle,
-							_Utils_update(
+						if (done) {
+							return err;
+						} else {
+							var $temp$current = _Utils_update(
 								current,
 								{aN: 0}),
-							prev,
-							next);
+								$temp$done = true,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							done = $temp$done;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenMove;
+						}
+					case ' ':
+						return done ? A4($author$project$Position$fenCastle, current, 0, prev, next) : err;
 					default:
 						return err;
 				}
@@ -5618,7 +5632,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {S: category, aB: colour, I: square};
+		return {Q: category, aB: colour, G: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5668,37 +5682,174 @@ var $author$project$Position$fenPieces = F5(
 	function (current, file, rank, consumed, remaining) {
 		fenPieces:
 		while (true) {
-			if ((file === 9) && (rank === 1)) {
-				return A3($author$project$Position$fenMove, current, consumed, remaining);
-			} else {
-				var _v0 = A3($author$project$Position$prepare, current, consumed, remaining);
-				var err = _v0.a;
-				var char_ = _v0.b;
-				var _v1 = _v0.c;
-				var prev = _v1.a;
-				var next = _v1.b;
-				if (!char_.$) {
-					var _char = char_.a;
-					switch (_char) {
-						case '/':
-							if ((file === 9) && (rank > 1)) {
-								var $temp$current = current,
-									$temp$file = 1,
-									$temp$rank = rank - 1,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '1':
-							if (file <= 8) {
-								var $temp$current = current,
+			var _v0 = A3($author$project$Position$prepare, current, consumed, remaining);
+			var err = _v0.a;
+			var char_ = _v0.b;
+			var _v1 = _v0.c;
+			var prev = _v1.a;
+			var next = _v1.b;
+			if (!char_.$) {
+				var _char = char_.a;
+				switch (_char) {
+					case '/':
+						if ((file === 9) && (rank > 1)) {
+							var $temp$current = current,
+								$temp$file = 1,
+								$temp$rank = rank - 1,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '1':
+						if (file <= 8) {
+							var $temp$current = current,
+								$temp$file = file + 1,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '2':
+						if (file <= 7) {
+							var $temp$current = current,
+								$temp$file = file + 2,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '3':
+						if (file <= 6) {
+							var $temp$current = current,
+								$temp$file = file + 3,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '4':
+						if (file <= 5) {
+							var $temp$current = current,
+								$temp$file = file + 4,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '5':
+						if (file <= 4) {
+							var $temp$current = current,
+								$temp$file = file + 5,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '6':
+						if (file <= 3) {
+							var $temp$current = current,
+								$temp$file = file + 6,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '7':
+						if (file <= 2) {
+							var $temp$current = current,
+								$temp$file = file + 7,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case '8':
+						if (file === 1) {
+							var $temp$current = current,
+								$temp$file = 9,
+								$temp$rank = rank,
+								$temp$consumed = prev,
+								$temp$remaining = next;
+							current = $temp$current;
+							file = $temp$file;
+							rank = $temp$rank;
+							consumed = $temp$consumed;
+							remaining = $temp$remaining;
+							continue fenPieces;
+						} else {
+							return err;
+						}
+					case ' ':
+						return ((file === 9) && (rank === 1)) ? A4($author$project$Position$fenMove, current, false, prev, next) : err;
+					default:
+						if (file <= 8) {
+							var tryPiece = $author$project$Piece$fromChar(_char);
+							if (!tryPiece.$) {
+								var pieceType = tryPiece.a;
+								var piece = pieceType(
+									A2($author$project$Square$Square, file, rank));
+								var position = _Utils_update(
+									current,
+									{
+										aV: A2($elm$core$List$cons, piece, current.aV)
+									});
+								var $temp$current = position,
 									$temp$file = file + 1,
 									$temp$rank = rank,
 									$temp$consumed = prev,
@@ -5712,151 +5863,12 @@ var $author$project$Position$fenPieces = F5(
 							} else {
 								return err;
 							}
-						case '2':
-							if (file <= 7) {
-								var $temp$current = current,
-									$temp$file = file + 2,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '3':
-							if (file <= 6) {
-								var $temp$current = current,
-									$temp$file = file + 3,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '4':
-							if (file <= 5) {
-								var $temp$current = current,
-									$temp$file = file + 4,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '5':
-							if (file <= 4) {
-								var $temp$current = current,
-									$temp$file = file + 5,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '6':
-							if (file <= 3) {
-								var $temp$current = current,
-									$temp$file = file + 6,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '7':
-							if (file <= 2) {
-								var $temp$current = current,
-									$temp$file = file + 7,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						case '8':
-							if (file === 1) {
-								var $temp$current = current,
-									$temp$file = 9,
-									$temp$rank = rank,
-									$temp$consumed = prev,
-									$temp$remaining = next;
-								current = $temp$current;
-								file = $temp$file;
-								rank = $temp$rank;
-								consumed = $temp$consumed;
-								remaining = $temp$remaining;
-								continue fenPieces;
-							} else {
-								return err;
-							}
-						default:
-							if (file <= 8) {
-								var tryPiece = $author$project$Piece$fromChar(_char);
-								if (!tryPiece.$) {
-									var pieceType = tryPiece.a;
-									var piece = pieceType(
-										A2($author$project$Square$Square, file, rank));
-									var position = _Utils_update(
-										current,
-										{
-											aV: A2($elm$core$List$cons, piece, current.aV)
-										});
-									var $temp$current = position,
-										$temp$file = file + 1,
-										$temp$rank = rank,
-										$temp$consumed = prev,
-										$temp$remaining = next;
-									current = $temp$current;
-									file = $temp$file;
-									rank = $temp$rank;
-									consumed = $temp$consumed;
-									remaining = $temp$remaining;
-									continue fenPieces;
-								} else {
-									return err;
-								}
-							} else {
-								return err;
-							}
-					}
-				} else {
-					return err;
+						} else {
+							return err;
+						}
 				}
+			} else {
+				return err;
 			}
 		}
 	});
@@ -5885,7 +5897,7 @@ var $author$project$Mark$Cross = 0;
 var $author$project$Mark$Dot = 1;
 var $author$project$Mark$Mark = F2(
 	function (symbol, square) {
-		return {I: square, aZ: symbol};
+		return {G: square, aZ: symbol};
 	});
 var $author$project$Mark$Star = 2;
 var $elm$core$String$foldr = _String_foldr;
@@ -5895,7 +5907,7 @@ var $elm$core$String$toList = function (string) {
 var $elm$core$String$toLower = _String_toLower;
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Square$valid = function (square) {
-	return (square.X >= 1) && ((square.X <= 8) && ((square.X >= 1) && (square.X <= 8)));
+	return (square.V >= 1) && ((square.V <= 8) && ((square.V >= 1) && (square.V <= 8)));
 };
 var $author$project$Square$fromString = function (str) {
 	var square = function () {
@@ -6012,8 +6024,8 @@ var $author$project$Scheme$fromString = function (str) {
 	}
 };
 var $author$project$Model$init = function (preferences) {
-	var scheme = $author$project$Scheme$fromString(preferences.ap);
-	var orientation = $author$project$Colour$fromString(preferences.H);
+	var scheme = $author$project$Scheme$fromString(preferences.an);
+	var orientation = $author$project$Colour$fromString(preferences.F);
 	var notation = preferences.aQ;
 	var marks = $author$project$Mark$fromList(preferences.aL);
 	var _v0 = function () {
@@ -6055,7 +6067,7 @@ var $author$project$Model$flipOrientation = function (model) {
 	return _Utils_update(
 		model,
 		{
-			H: $author$project$Colour$not(model.H)
+			F: $author$project$Colour$not(model.F)
 		});
 };
 var $elm$core$Basics$not = _Basics_not;
@@ -6950,7 +6962,7 @@ var $author$project$Image$fromMark = F2(
 			}
 		}();
 		return marker(
-			_Utils_Tuple3(orientation, mark.I.X, mark.I.al));
+			_Utils_Tuple3(orientation, mark.G.V, mark.G.aj));
 	});
 var $author$project$Image$bb = function (place) {
 	return A2(
@@ -7674,9 +7686,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.I.X, piece.I.al);
+		var place = _Utils_Tuple3(orientation, piece.G.V, piece.G.aj);
 		if (piece.aB === 1) {
-			var _v0 = piece.S;
+			var _v0 = piece.Q;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -7692,7 +7704,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.S;
+			var _v1 = piece.Q;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -7786,15 +7798,15 @@ var $author$project$Image$pointer = F2(
 var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.H),
-		model.ag.aV);
-	var notation = A3($author$project$Image$notes, model.aQ, model.H, model.ap);
-	var move = A2($author$project$Image$pointer, model.ag.aN, model.H);
+		$author$project$Image$fromPiece(model.F),
+		model.ae.aV);
+	var notation = A3($author$project$Image$notes, model.aQ, model.F, model.an);
+	var move = A2($author$project$Image$pointer, model.ae.aN, model.F);
 	var marks = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromMark(model.H),
+		$author$project$Image$fromMark(model.F),
 		model.aL);
-	var board = A2($author$project$Image$chessboard, model.ap, model.aE);
+	var board = A2($author$project$Image$chessboard, model.an, model.aE);
 	return A2(
 		$elm$core$List$cons,
 		board,

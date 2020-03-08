@@ -1,4 +1,4 @@
-module Castle exposing (Castle, any, bk, bq, init, none, wk, wq)
+module Castle exposing (Castle, bk, bq, init, wk, wq)
 
 
 type alias Castle =
@@ -7,22 +7,6 @@ type alias Castle =
     , blackKing : Bool
     , blackQueen : Bool
     }
-
-
-any : Castle -> Bool
-any castle =
-    castle.whiteKing
-        || castle.whiteQueen
-        || castle.blackKing
-        || castle.blackQueen
-
-
-none : Castle -> Bool
-none castle =
-    not castle.whiteKing
-        && not castle.whiteQueen
-        && not castle.blackKing
-        && not castle.blackQueen
 
 
 init : Castle
