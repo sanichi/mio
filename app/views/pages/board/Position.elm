@@ -10,6 +10,7 @@ type alias Position =
     { pieces : List Piece
     , move : Colour
     , castle : Castle
+    , enPassant : Maybe Square
     }
 
 
@@ -214,10 +215,57 @@ fenCastle current state consumed remaining =
                         err
 
                     else
-                        Ok current
+                        fenEnPassant current "" prev next
 
                 _ ->
                     err
+
+        Nothing ->
+            err
+
+
+fenEnPassant : Position -> String -> String -> String -> ParseResult
+fenEnPassant current state consumed remaining =
+    let
+        ( err, char_, ( prev, next ) ) =
+            prepare current consumed remaining
+    in
+    case char_ of
+        Just char ->
+            case char of
+                '-' ->
+                    if state == "" then
+                        fenEnPassant current "-" prev next
+
+                    else
+                        err
+
+                ' ' ->
+                    if state == "-" then
+                        Ok current
+
+                    else
+                        err
+
+                _ ->
+                    if state == "" then
+                        fenEnPassant current (String.fromChar char) prev next
+
+                    else
+                        let
+                            square_ =
+                                Square.fromString (state ++ String.fromChar char)
+                        in
+                        case square_ of
+                            Just sq ->
+                                if (current.move == White && sq.rank == 6) || (current.move == Black && sq.rank == 3) then
+                                    fenEnPassant { current | enPassant = square_ } "-" prev next
+
+                                else
+                                    err
+
+                            Nothing ->
+                                err
 
         Nothing ->
             err
@@ -256,6 +304,7 @@ emptyBoard =
     { pieces = []
     , move = White
     , castle = Castle.init
+    , enPassant = Nothing
     }
 
 
