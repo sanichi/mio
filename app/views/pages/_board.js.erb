@@ -30,8 +30,19 @@ $(function() {
   app3.ports.error.subscribe(function(msg) {
     console.log(msg);
   });
-  Elm.Board.init({
+  var app4 = Elm.Board.init({
     node: $('#elm-app-4').get(0),
+    flags: {
+      orientation: 'black',
+      fen: 'rnbqkb1r/pp1p1ppp/5n2/2pPp3/2P5/8/PP2PPPP/RNBQKBNR w KQkq e6 0 4',
+      marks: ['xe6']
+    }
+  });
+  app4.ports.error.subscribe(function(msg) {
+    console.log(msg);
+  });
+  Elm.Board.init({
+    node: $('#elm-app-5').get(0),
     flags: {
       scheme: '#eaf0ce#bbbe64'
     }
