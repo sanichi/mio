@@ -56,7 +56,7 @@
             = link_to t("bucket.buckets"),     buckets_path      if can?(:read, Bucket)
             = link_to t("lesson.lessons"),     lessons_path      if can?(:read, Lesson)
             = link_to t("tutorial.tutorials"), tutorials_path    if can?(:read, Tutorial)
-            = link_to t("pages.board"),        board_path        if can?(:read, :page)
+            = link_to t("pages.board"),        board_path        if can?(:board, :page)
             = link_to t("pages.aoc.short"),    aoc_path          if can?(:aoc, :page)
             = link_to t("pages.magic"),        magic_path        if can?(:magic, :page)
             = link_to t("pages.play"),         play_path         if can?(:play, :page)
