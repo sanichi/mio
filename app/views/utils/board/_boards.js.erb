@@ -1,17 +1,22 @@
 $(function() {
 
-  var fen, flags, extra, opts, opt;
+  var fen, flags, split, opts, opt;
 
 <% fens.each_with_index do |fen, id| %>
   fen = '<%= j fen %>';
-  flags = { fen: fen };
-  extra = fen.match(/\|(.*)/);
-  if (extra) {
-    opts = extra[1];
+  split = fen.match(/^([^|]+)\|(.*)$/);
+  if (split) {
+    fen = split[1];
+    opts = split[2];
+    flags = { fen: fen };
     if (opt = opts.match(/\bo:\s*(\S+)/)) flags.orientation = opt[1];
     if (opt = opts.match(/\bm:\s*(\S+)/)) flags.marks = opt[1].split(',');
     if (opt = opts.match(/\bs:\s*(\S+)/)) flags.scheme = opt[1];
     if (opt = opts.match(/\bn:\s*(on|yes|y|true|t|1)/i)) flags.notation = true;
+  }
+  else
+  {
+    flags = { fen: fen };
   }
   Elm.Board.init({
     node: $('#board_<%= id %>').get(0),

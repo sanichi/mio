@@ -336,7 +336,7 @@ fenFullMove current started consumed remaining =
             case num_ of
                 Just num ->
                     if started then
-                        if current.halfMove == 0 then
+                        if current.fullMove == 0 then
                             err
 
                         else

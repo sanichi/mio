@@ -5398,7 +5398,7 @@ var $author$project$Castle$Castle = F4(
 		return {R: blackKing, S: blackQueen, au: whiteKing, av: whiteQueen};
 	});
 var $author$project$Castle$init = A4($author$project$Castle$Castle, false, false, false, false);
-var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, J: $elm$core$Maybe$Nothing, B: 1, t: 0, aQ: 1, aY: _List_Nil};
+var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, J: $elm$core$Maybe$Nothing, x: 1, y: 0, aQ: 1, aY: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
 		return {Y: file, am: rank};
@@ -5469,12 +5469,12 @@ var $author$project$Position$fenFullMove = F4(
 				if (!num_.$) {
 					var num = num_.a;
 					if (started) {
-						if (!current.t) {
+						if (!current.x) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
 								current,
-								{B: (current.B * 10) + num}),
+								{x: (current.x * 10) + num}),
 								$temp$started = true,
 								$temp$consumed = prev,
 								$temp$remaining = next;
@@ -5487,7 +5487,7 @@ var $author$project$Position$fenFullMove = F4(
 					} else {
 						var $temp$current = _Utils_update(
 							current,
-							{B: num}),
+							{x: num}),
 							$temp$started = true,
 							$temp$consumed = prev,
 							$temp$remaining = next;
@@ -5518,7 +5518,7 @@ var $author$project$Position$fenHalfMove = F4(
 			if (!char_.$) {
 				var _char = char_.a;
 				if (' ' === _char) {
-					return (done || (current.t > 0)) ? A4($author$project$Position$fenFullMove, current, false, prev, next) : err;
+					return (done || (current.y > 0)) ? A4($author$project$Position$fenFullMove, current, false, prev, next) : err;
 				} else {
 					if (done) {
 						return err;
@@ -5527,7 +5527,7 @@ var $author$project$Position$fenHalfMove = F4(
 							$elm$core$String$fromChar(_char));
 						if (!num_.$) {
 							var num = num_.a;
-							if ((!num) && (!current.t)) {
+							if ((!num) && (!current.y)) {
 								var $temp$current = current,
 									$temp$done = true,
 									$temp$consumed = prev,
@@ -5540,7 +5540,7 @@ var $author$project$Position$fenHalfMove = F4(
 							} else {
 								var $temp$current = _Utils_update(
 									current,
-									{t: (10 * current.t) + num}),
+									{y: (10 * current.y) + num}),
 									$temp$done = false,
 									$temp$consumed = prev,
 									$temp$remaining = next;
