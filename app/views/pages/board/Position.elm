@@ -11,8 +11,8 @@ type alias Position =
     , move : Colour
     , castle : Castle
     , enPassant : Maybe Square
-    , halfMoves : Int
-    , fullMoves : Int
+    , halfMove : Int
+    , fullMove : Int
     }
 
 
@@ -248,7 +248,7 @@ fenEnPassant current state consumed remaining =
 
                 ' ' ->
                     if state == "-" then
-                        fenHalfMoveClock current False prev next
+                        fenHalfMove current False prev next
 
                     else
                         err
@@ -281,8 +281,8 @@ fenEnPassant current state consumed remaining =
                 err
 
 
-fenHalfMoveClock : Position -> Bool -> String -> String -> ParseResult
-fenHalfMoveClock current done consumed remaining =
+fenHalfMove : Position -> Bool -> String -> String -> ParseResult
+fenHalfMove current done consumed remaining =
     let
         ( err, char_, ( prev, next ) ) =
             prepare current consumed remaining
@@ -291,8 +291,8 @@ fenHalfMoveClock current done consumed remaining =
         Just char ->
             case char of
                 ' ' ->
-                    if done || current.halfMoves > 0 then
-                        Ok current
+                    if done || current.halfMove > 0 then
+                        fenFullMove current False prev next
 
                     else
                         err
@@ -308,14 +308,45 @@ fenHalfMoveClock current done consumed remaining =
                         in
                         case num_ of
                             Just num ->
-                                if num == 0 && current.halfMoves == 0 then
-                                    fenHalfMoveClock current True prev next
+                                if num == 0 && current.halfMove == 0 then
+                                    fenHalfMove current True prev next
 
                                 else
-                                    fenHalfMoveClock { current | halfMoves = 10 * current.halfMoves + num } False prev next
+                                    fenHalfMove { current | halfMove = 10 * current.halfMove + num } False prev next
 
                             Nothing ->
                                 err
+
+        Nothing ->
+            Ok current
+
+
+fenFullMove : Position -> Bool -> String -> String -> ParseResult
+fenFullMove current started consumed remaining =
+    let
+        ( err, char_, ( prev, next ) ) =
+            prepare current consumed remaining
+    in
+    case char_ of
+        Just char ->
+            let
+                num_ =
+                    String.toInt (String.fromChar char)
+            in
+            case num_ of
+                Just num ->
+                    if started then
+                        if current.halfMove == 0 then
+                            err
+
+                        else
+                            fenFullMove { current | fullMove = current.fullMove * 10 + num } True prev next
+
+                    else
+                        fenFullMove { current | fullMove = num } True prev next
+
+                _ ->
+                    err
 
         Nothing ->
             Ok current
@@ -355,8 +386,8 @@ emptyBoard =
     , move = White
     , castle = Castle.init
     , enPassant = Nothing
-    , halfMoves = 0
-    , fullMoves = 1
+    , halfMove = 0
+    , fullMove = 1
     }
 
 
