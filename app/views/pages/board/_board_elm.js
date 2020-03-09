@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.A === region.U.A)
+	if (region.N.B === region.V.B)
 	{
-		return 'on line ' + region.M.A;
+		return 'on line ' + region.N.B;
 	}
-	return 'on lines ' + region.M.A + ' through ' + region.U.A;
+	return 'on lines ' + region.N.B + ' through ' + region.V.B;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aL,
-		impl.a0,
-		impl.aZ,
+		impl.aN,
+		impl.a2,
+		impl.a$,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		N: record.N,
-		K: record.K
+		O: record.O,
+		L: record.L
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.O;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.L) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aL,
-		impl.a0,
-		impl.aZ,
+		impl.aN,
+		impl.a2,
+		impl.a$,
 		function(sendToApp, initialModel) {
-			var view = impl.a1;
+			var view = impl.a3;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aL,
-		impl.a0,
-		impl.aZ,
+		impl.aN,
+		impl.a2,
+		impl.a$,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.L && impl.L(sendToApp)
-			var view = impl.a1;
+			var divertHrefToApp = impl.M && impl.M(sendToApp)
+			var view = impl.a3;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.az);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aB);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.a$) && (_VirtualDom_doc.title = title = doc.a$);
+				(title !== doc.a1) && (_VirtualDom_doc.title = title = doc.a1);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aT;
-	var onUrlRequest = impl.aU;
+	var onUrlChange = impl.aV;
+	var onUrlRequest = impl.aW;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		L: function(sendToApp)
+		M: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ai === next.ai
-							&& curr.Z === next.Z
-							&& curr.ae.a === next.ae.a
+							&& curr.ak === next.ak
+							&& curr.aa === next.aa
+							&& curr.ag.a === next.ag.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aL: function(flags)
+		aN: function(flags)
 		{
-			return A3(impl.aL, flags, _Browser_getUrl(), key);
+			return A3(impl.aN, flags, _Browser_getUrl(), key);
 		},
-		a1: impl.a1,
-		a0: impl.a0,
-		aZ: impl.aZ
+		a3: impl.a3,
+		a2: impl.a2,
+		a$: impl.a$
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aI: 'hidden', aB: 'visibilitychange' }
+		? { aK: 'hidden', aD: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aI: 'mozHidden', aB: 'mozvisibilitychange' }
+		? { aK: 'mozHidden', aD: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aI: 'msHidden', aB: 'msvisibilitychange' }
+		? { aK: 'msHidden', aD: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aI: 'webkitHidden', aB: 'webkitvisibilitychange' }
-		: { aI: 'hidden', aB: 'visibilitychange' };
+		? { aK: 'webkitHidden', aD: 'webkitvisibilitychange' }
+		: { aK: 'hidden', aD: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		an: _Browser_getScene(),
-		ar: {
-			av: _Browser_window.pageXOffset,
-			aw: _Browser_window.pageYOffset,
-			au: _Browser_doc.documentElement.clientWidth,
-			Y: _Browser_doc.documentElement.clientHeight
+		ap: _Browser_getScene(),
+		at: {
+			ax: _Browser_window.pageXOffset,
+			ay: _Browser_window.pageYOffset,
+			aw: _Browser_doc.documentElement.clientWidth,
+			_: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		au: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Y: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aw: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		_: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			an: {
-				au: node.scrollWidth,
-				Y: node.scrollHeight
+			ap: {
+				aw: node.scrollWidth,
+				_: node.scrollHeight
 			},
-			ar: {
-				av: node.scrollLeft,
-				aw: node.scrollTop,
-				au: node.clientWidth,
-				Y: node.clientHeight
+			at: {
+				ax: node.scrollLeft,
+				ay: node.scrollTop,
+				aw: node.clientWidth,
+				_: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			an: _Browser_getScene(),
-			ar: {
-				av: x,
-				aw: y,
-				au: _Browser_doc.documentElement.clientWidth,
-				Y: _Browser_doc.documentElement.clientHeight
+			ap: _Browser_getScene(),
+			at: {
+				ax: x,
+				ay: y,
+				aw: _Browser_doc.documentElement.clientWidth,
+				_: _Browser_doc.documentElement.clientHeight
 			},
-			aE: {
-				av: x + rect.left,
-				aw: y + rect.top,
-				au: rect.width,
-				Y: rect.height
+			aG: {
+				ax: x + rect.left,
+				ay: y + rect.top,
+				aw: rect.width,
+				_: rect.height
 			}
 		};
 	});
@@ -4401,8 +4401,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.aP) { flags += 'm'; }
-	if (options.aA) { flags += 'i'; }
+	if (options.aR) { flags += 'm'; }
+	if (options.aC) { flags += 'i'; }
 
 	try
 	{
@@ -4997,7 +4997,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {X: fragment, Z: host, ac: path, ae: port_, ai: protocol, aj: query};
+		return {Y: fragment, aa: host, ae: path, ag: port_, ak: protocol, al: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5279,7 +5279,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {aH: fen, aM: marks, aR: notation, F: orientation, ao: scheme};
+		return {aJ: fen, aO: marks, aT: notation, G: orientation, aq: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5317,26 +5317,26 @@ var $author$project$Preferences$flagsDecoder = A6(
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aH,
+		$author$project$Preferences$default.aJ,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.F,
+		$author$project$Preferences$default.G,
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aR,
+		$author$project$Preferences$default.aT,
 		A2($elm$json$Json$Decode$field, 'notation', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aM,
+		$author$project$Preferences$default.aO,
 		A2(
 			$elm$json$Json$Decode$field,
 			'marks',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ao,
+		$author$project$Preferences$default.aq,
 		A2($elm$json$Json$Decode$field, 'scheme', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5358,7 +5358,7 @@ var $author$project$Ports$error = _Platform_outgoingPort('error', $elm$json$Json
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Board$error = function (model) {
-	var _v0 = model.aF;
+	var _v0 = model.aH;
 	if (_v0.$ === 1) {
 		return $elm$core$Platform$Cmd$none;
 	} else {
@@ -5368,7 +5368,7 @@ var $author$project$Board$error = function (model) {
 };
 var $author$project$Model$Model = F6(
 	function (position, orientation, notation, marks, scheme, error) {
-		return {aF: error, aM: marks, aR: notation, F: orientation, af: position, ao: scheme};
+		return {aH: error, aO: marks, aT: notation, G: orientation, ah: position, aq: scheme};
 	});
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
@@ -5395,55 +5395,28 @@ var $author$project$Position$errorMessage = F2(
 var $author$project$Colour$White = 1;
 var $author$project$Castle$Castle = F4(
 	function (whiteKing, whiteQueen, blackKing, blackQueen) {
-		return {P: blackKing, Q: blackQueen, as: whiteKing, at: whiteQueen};
+		return {Q: blackKing, R: blackQueen, au: whiteKing, av: whiteQueen};
 	});
 var $author$project$Castle$init = A4($author$project$Castle$Castle, false, false, false, false);
-var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, H: $elm$core$Maybe$Nothing, aO: 1, aW: _List_Nil};
+var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, I: $elm$core$Maybe$Nothing, Z: 1, x: 0, aQ: 1, aY: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {W: file, ak: rank};
+		return {X: file, am: rank};
 	});
 var $author$project$Colour$Black = 0;
 var $author$project$Castle$bk = function (castle) {
 	return _Utils_update(
 		castle,
-		{P: true});
+		{Q: true});
 };
 var $author$project$Castle$bq = function (castle) {
 	return _Utils_update(
 		castle,
-		{Q: true});
+		{R: true});
 };
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
 	return A2($elm$core$String$cons, _char, '');
-};
-var $elm$core$String$foldr = _String_foldr;
-var $elm$core$String$toList = function (string) {
-	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
-};
-var $elm$core$String$toLower = _String_toLower;
-var $elm$core$Basics$ge = _Utils_ge;
-var $author$project$Square$valid = function (square) {
-	return (square.W >= 1) && ((square.W <= 8) && ((square.W >= 1) && (square.W <= 8)));
-};
-var $author$project$Square$fromString = function (str) {
-	var square = function () {
-		var _v0 = $elm$core$String$toList(
-			$elm$core$String$toLower(str));
-		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
-			var file = _v0.a;
-			var _v1 = _v0.b;
-			var rank = _v1.a;
-			return A2(
-				$author$project$Square$Square,
-				$elm$core$Char$toCode(file) - 96,
-				$elm$core$Char$toCode(rank) - 48);
-		} else {
-			return A2($author$project$Square$Square, 0, 0);
-		}
-	}();
-	return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(square) : $elm$core$Maybe$Nothing;
 };
 var $author$project$Position$prepare = F3(
 	function (current, consumed, remaining) {
@@ -5479,6 +5452,88 @@ var $author$project$Position$prepare = F3(
 			char_,
 			_Utils_Tuple2(prev, next));
 	});
+var $author$project$Position$fenHalfMoveClock = F4(
+	function (current, done, consumed, remaining) {
+		fenHalfMoveClock:
+		while (true) {
+			var _v0 = A3($author$project$Position$prepare, current, consumed, remaining);
+			var err = _v0.a;
+			var char_ = _v0.b;
+			var _v1 = _v0.c;
+			var prev = _v1.a;
+			var next = _v1.b;
+			if (!char_.$) {
+				var _char = char_.a;
+				if (' ' === _char) {
+					return (done || (current.x > 0)) ? $elm$core$Result$Ok(current) : err;
+				} else {
+					if (done) {
+						return err;
+					} else {
+						var num_ = $elm$core$String$toInt(
+							$elm$core$String$fromChar(_char));
+						if (!num_.$) {
+							var num = num_.a;
+							if ((!num) && (!current.x)) {
+								var $temp$current = current,
+									$temp$done = true,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								done = $temp$done;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenHalfMoveClock;
+							} else {
+								var $temp$current = _Utils_update(
+									current,
+									{x: (10 * current.x) + num}),
+									$temp$done = false,
+									$temp$consumed = prev,
+									$temp$remaining = next;
+								current = $temp$current;
+								done = $temp$done;
+								consumed = $temp$consumed;
+								remaining = $temp$remaining;
+								continue fenHalfMoveClock;
+							}
+						} else {
+							return err;
+						}
+					}
+				}
+			} else {
+				return $elm$core$Result$Ok(current);
+			}
+		}
+	});
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $elm$core$String$toLower = _String_toLower;
+var $elm$core$Basics$ge = _Utils_ge;
+var $author$project$Square$valid = function (square) {
+	return (square.X >= 1) && ((square.X <= 8) && ((square.X >= 1) && (square.X <= 8)));
+};
+var $author$project$Square$fromString = function (str) {
+	var square = function () {
+		var _v0 = $elm$core$String$toList(
+			$elm$core$String$toLower(str));
+		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
+			var file = _v0.a;
+			var _v1 = _v0.b;
+			var rank = _v1.a;
+			return A2(
+				$author$project$Square$Square,
+				$elm$core$Char$toCode(file) - 96,
+				$elm$core$Char$toCode(rank) - 48);
+		} else {
+			return A2($author$project$Square$Square, 0, 0);
+		}
+	}();
+	return $author$project$Square$valid(square) ? $elm$core$Maybe$Just(square) : $elm$core$Maybe$Nothing;
+};
 var $author$project$Position$fenEnPassant = F4(
 	function (current, state, consumed, remaining) {
 		fenEnPassant:
@@ -5507,7 +5562,7 @@ var $author$project$Position$fenEnPassant = F4(
 							return err;
 						}
 					case ' ':
-						return (state === '-') ? $elm$core$Result$Ok(current) : err;
+						return (state === '-') ? A4($author$project$Position$fenHalfMoveClock, current, false, prev, next) : err;
 					default:
 						if (state === '') {
 							var $temp$current = current,
@@ -5526,10 +5581,10 @@ var $author$project$Position$fenEnPassant = F4(
 									$elm$core$String$fromChar(_char)));
 							if (!square_.$) {
 								var sq = square_.a;
-								if (((current.aO === 1) && (sq.ak === 6)) || ((!current.aO) && (sq.ak === 3))) {
+								if (((current.aQ === 1) && (sq.am === 6)) || ((!current.aQ) && (sq.am === 3))) {
 									var $temp$current = _Utils_update(
 										current,
-										{H: square_}),
+										{I: square_}),
 										$temp$state = '-',
 										$temp$consumed = prev,
 										$temp$remaining = next;
@@ -5554,12 +5609,12 @@ var $author$project$Position$fenEnPassant = F4(
 var $author$project$Castle$wk = function (castle) {
 	return _Utils_update(
 		castle,
-		{as: true});
+		{au: true});
 };
 var $author$project$Castle$wq = function (castle) {
 	return _Utils_update(
 		castle,
-		{at: true});
+		{av: true});
 };
 var $author$project$Position$fenCastle = F4(
 	function (current, state, consumed, remaining) {
@@ -5589,7 +5644,7 @@ var $author$project$Position$fenCastle = F4(
 							return err;
 						}
 					case 'K':
-						if (current.f.as || (state === 2)) {
+						if (current.f.au || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5607,7 +5662,7 @@ var $author$project$Position$fenCastle = F4(
 							continue fenCastle;
 						}
 					case 'Q':
-						if (current.f.at || (state === 2)) {
+						if (current.f.av || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5625,7 +5680,7 @@ var $author$project$Position$fenCastle = F4(
 							continue fenCastle;
 						}
 					case 'k':
-						if (current.f.P || (state === 2)) {
+						if (current.f.Q || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5643,7 +5698,7 @@ var $author$project$Position$fenCastle = F4(
 							continue fenCastle;
 						}
 					case 'q':
-						if (current.f.Q || (state === 2)) {
+						if (current.f.R || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5689,7 +5744,7 @@ var $author$project$Position$fenMove = F4(
 						} else {
 							var $temp$current = _Utils_update(
 								current,
-								{aO: 1}),
+								{aQ: 1}),
 								$temp$done = true,
 								$temp$consumed = prev,
 								$temp$remaining = next;
@@ -5705,7 +5760,7 @@ var $author$project$Position$fenMove = F4(
 						} else {
 							var $temp$current = _Utils_update(
 								current,
-								{aO: 0}),
+								{aQ: 0}),
 								$temp$done = true,
 								$temp$consumed = prev,
 								$temp$remaining = next;
@@ -5731,7 +5786,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {R: category, aC: colour, G: square};
+		return {S: category, aE: colour, H: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -5946,7 +6001,7 @@ var $author$project$Position$fenPieces = F5(
 								var position = _Utils_update(
 									current,
 									{
-										aW: A2($elm$core$List$cons, piece, current.aW)
+										aY: A2($elm$core$List$cons, piece, current.aY)
 									});
 								var $temp$current = position,
 									$temp$file = file + 1,
@@ -5996,7 +6051,7 @@ var $author$project$Mark$Cross = 0;
 var $author$project$Mark$Dot = 1;
 var $author$project$Mark$Mark = F2(
 	function (symbol, square) {
-		return {G: square, a_: symbol};
+		return {H: square, a0: symbol};
 	});
 var $author$project$Mark$Star = 2;
 var $author$project$Mark$fromString = function (str) {
@@ -6050,14 +6105,14 @@ var $author$project$Scheme$brown = _Utils_Tuple2('#f0d9b5', '#b58863');
 var $author$project$Scheme$default = $author$project$Scheme$brown;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {aK: index, aN: match, aS: number, aY: submatches};
+		return {aM: index, aP: match, aU: number, a_: submatches};
 	});
 var $elm$regex$Regex$find = _Regex_findAtMost(_Regex_infinity);
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{aA: false, aP: false},
+		{aC: false, aR: false},
 		string);
 };
 var $author$project$Scheme$green = _Utils_Tuple2('#eeeed1', '#769656');
@@ -6081,7 +6136,7 @@ var $author$project$Scheme$fromString = function (str) {
 			var matches = A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.aY;
+					return $.a_;
 				},
 				A2($elm$regex$Regex$find, colours, low));
 			if ((((((matches.b && matches.a.b) && (!matches.a.a.$)) && matches.a.b.b) && (!matches.a.b.a.$)) && (!matches.a.b.b.b)) && (!matches.b.b)) {
@@ -6096,12 +6151,12 @@ var $author$project$Scheme$fromString = function (str) {
 	}
 };
 var $author$project$Model$init = function (preferences) {
-	var scheme = $author$project$Scheme$fromString(preferences.ao);
-	var orientation = $author$project$Colour$fromString(preferences.F);
-	var notation = preferences.aR;
-	var marks = $author$project$Mark$fromList(preferences.aM);
+	var scheme = $author$project$Scheme$fromString(preferences.aq);
+	var orientation = $author$project$Colour$fromString(preferences.G);
+	var notation = preferences.aT;
+	var marks = $author$project$Mark$fromList(preferences.aO);
 	var _v0 = function () {
-		var _v1 = $author$project$Position$fromFen(preferences.aH);
+		var _v1 = $author$project$Position$fromFen(preferences.aJ);
 		if (!_v1.$) {
 			var pos = _v1.a;
 			return _Utils_Tuple2(pos, $elm$core$Maybe$Nothing);
@@ -6139,14 +6194,14 @@ var $author$project$Model$flipOrientation = function (model) {
 	return _Utils_update(
 		model,
 		{
-			F: $author$project$Colour$not(model.F)
+			G: $author$project$Colour$not(model.G)
 		});
 };
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Model$toggleNotation = function (model) {
 	return _Utils_update(
 		model,
-		{aR: !model.aR});
+		{aT: !model.aT});
 };
 var $author$project$Board$update = F2(
 	function (msg, model) {
@@ -7023,7 +7078,7 @@ var $author$project$Image$star = function (place) {
 var $author$project$Image$fromMark = F2(
 	function (orientation, mark) {
 		var marker = function () {
-			var _v0 = mark.a_;
+			var _v0 = mark.a0;
 			switch (_v0) {
 				case 1:
 					return $author$project$Image$dot;
@@ -7034,7 +7089,7 @@ var $author$project$Image$fromMark = F2(
 			}
 		}();
 		return marker(
-			_Utils_Tuple3(orientation, mark.G.W, mark.G.ak));
+			_Utils_Tuple3(orientation, mark.H.X, mark.H.am));
 	});
 var $author$project$Image$bb = function (place) {
 	return A2(
@@ -7758,9 +7813,9 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.G.W, piece.G.ak);
-		if (piece.aC === 1) {
-			var _v0 = piece.R;
+		var place = _Utils_Tuple3(orientation, piece.H.X, piece.H.am);
+		if (piece.aE === 1) {
+			var _v0 = piece.S;
 			switch (_v0) {
 				case 0:
 					return $author$project$Image$wk(place);
@@ -7776,7 +7831,7 @@ var $author$project$Image$fromPiece = F2(
 					return $author$project$Image$wp(place);
 			}
 		} else {
-			var _v1 = piece.R;
+			var _v1 = piece.S;
 			switch (_v1) {
 				case 0:
 					return $author$project$Image$bk(place);
@@ -7870,15 +7925,15 @@ var $author$project$Image$pointer = F2(
 var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromPiece(model.F),
-		model.af.aW);
-	var notation = A3($author$project$Image$notes, model.aR, model.F, model.ao);
-	var move = A2($author$project$Image$pointer, model.af.aO, model.F);
+		$author$project$Image$fromPiece(model.G),
+		model.ah.aY);
+	var notation = A3($author$project$Image$notes, model.aT, model.G, model.aq);
+	var move = A2($author$project$Image$pointer, model.ah.aQ, model.G);
 	var marks = A2(
 		$elm$core$List$map,
-		$author$project$Image$fromMark(model.F),
-		model.aM);
-	var board = A2($author$project$Image$chessboard, model.ao, model.aF);
+		$author$project$Image$fromMark(model.G),
+		model.aO);
+	var board = A2($author$project$Image$chessboard, model.aq, model.aH);
 	return A2(
 		$elm$core$List$cons,
 		board,
@@ -7907,5 +7962,5 @@ var $author$project$Board$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Board$main = $elm$browser$Browser$element(
-	{aL: $author$project$Board$init, aZ: $author$project$Board$subscriptions, a0: $author$project$Board$update, a1: $author$project$Board$view});
+	{aN: $author$project$Board$init, a$: $author$project$Board$subscriptions, a2: $author$project$Board$update, a3: $author$project$Board$view});
 _Platform_export({'Board':{'init':$author$project$Board$main($elm$json$Json$Decode$value)(0)}});}(this));

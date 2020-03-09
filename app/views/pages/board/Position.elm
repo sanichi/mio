@@ -11,6 +11,8 @@ type alias Position =
     , move : Colour
     , castle : Castle
     , enPassant : Maybe Square
+    , halfMoves : Int
+    , fullMoves : Int
     }
 
 
@@ -246,7 +248,7 @@ fenEnPassant current state consumed remaining =
 
                 ' ' ->
                     if state == "-" then
-                        Ok current
+                        fenHalfMoveClock current False prev next
 
                     else
                         err
@@ -277,6 +279,46 @@ fenEnPassant current state consumed remaining =
 
             else
                 err
+
+
+fenHalfMoveClock : Position -> Bool -> String -> String -> ParseResult
+fenHalfMoveClock current done consumed remaining =
+    let
+        ( err, char_, ( prev, next ) ) =
+            prepare current consumed remaining
+    in
+    case char_ of
+        Just char ->
+            case char of
+                ' ' ->
+                    if done || current.halfMoves > 0 then
+                        Ok current
+
+                    else
+                        err
+
+                _ ->
+                    if done then
+                        err
+
+                    else
+                        let
+                            num_ =
+                                String.toInt (String.fromChar char)
+                        in
+                        case num_ of
+                            Just num ->
+                                if num == 0 && current.halfMoves == 0 then
+                                    fenHalfMoveClock current True prev next
+
+                                else
+                                    fenHalfMoveClock { current | halfMoves = 10 * current.halfMoves + num } False prev next
+
+                            Nothing ->
+                                err
+
+        Nothing ->
+            Ok current
 
 
 prepare : Position -> String -> String -> ( ParseResult, Maybe Char, ( String, String ) )
@@ -313,6 +355,8 @@ emptyBoard =
     , move = White
     , castle = Castle.init
     , enPassant = Nothing
+    , halfMoves = 0
+    , fullMoves = 1
     }
 
 
