@@ -163,7 +163,11 @@ fenMove current done consumed remaining =
                     err
 
         Nothing ->
-            err
+            if done then
+                Ok current
+
+            else
+                err
 
 
 fenCastle : Position -> Int -> String -> String -> ParseResult
@@ -221,7 +225,7 @@ fenCastle current state consumed remaining =
                     err
 
         Nothing ->
-            err
+            Ok current
 
 
 fenEnPassant : Position -> String -> String -> String -> ParseResult
@@ -268,7 +272,11 @@ fenEnPassant current state consumed remaining =
                                 err
 
         Nothing ->
-            err
+            if state == "" || state == "-" then
+                Ok current
+
+            else
+                err
 
 
 prepare : Position -> String -> String -> ( ParseResult, Maybe Char, ( String, String ) )

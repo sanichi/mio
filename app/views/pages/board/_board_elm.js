@@ -5547,7 +5547,7 @@ var $author$project$Position$fenEnPassant = F4(
 						}
 				}
 			} else {
-				return err;
+				return ((state === '') || (state === '-')) ? $elm$core$Result$Ok(current) : err;
 			}
 		}
 	});
@@ -5666,7 +5666,7 @@ var $author$project$Position$fenCastle = F4(
 						return err;
 				}
 			} else {
-				return err;
+				return $elm$core$Result$Ok(current);
 			}
 		}
 	});
@@ -5721,7 +5721,7 @@ var $author$project$Position$fenMove = F4(
 						return err;
 				}
 			} else {
-				return err;
+				return done ? $elm$core$Result$Ok(current) : err;
 			}
 		}
 	});
