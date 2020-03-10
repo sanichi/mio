@@ -14,11 +14,12 @@ class Tutorial < ApplicationRecord
   scope :by_date,    -> { order(:date) }
   scope :by_created, -> { order(:created_at) }
 
-  def self.search(params, path, opt={})
+  def self.search(params, path, no_drafts, opt={})
     matches = by_date
     if sql = cross_constraint(params[:q], %w{summary notes})
       matches = matches.where(sql)
     end
+    matches = matches.where(draft: false) if no_drafts
     paginate(matches, params, path, opt)
   end
 

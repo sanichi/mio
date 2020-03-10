@@ -4,12 +4,13 @@ class TutorialsController < ApplicationController
 
   def index
     remember_last_search(tutorials_path)
-    @tutorials = Tutorial.search(params, tutorials_path, per_page: 10)
+    @tutorials = Tutorial.search(params, tutorials_path, !current_user.admin?, per_page: 10)
   end
 
   def show
-    @prev = Tutorial.by_date.where("date < ?", @tutorial.date).last
-    @next = Tutorial.by_date.where("date > ?", @tutorial.date).first
+    authorize! :read, @tutorial
+    @prev = Tutorial.by_date.where("date < ?", @tutorial.date).to_a.select{ |t| can?(:read, t) }.last
+    @next = Tutorial.by_date.where("date > ?", @tutorial.date).to_a.select{ |t| can?(:read, t) }.first
   end
 
   def new
@@ -47,6 +48,6 @@ class TutorialsController < ApplicationController
   end
 
   def strong_params
-    params.require(:tutorial).permit(:date, :notes, :summary)
+    params.require(:tutorial).permit(:date, :draft, :notes, :summary)
   end
 end

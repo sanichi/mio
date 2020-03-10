@@ -15,6 +15,8 @@ describe Tutorial do
       fill_in t("date"), with: data.date
       fill_in t("tutorial.summary"), with: data.summary
       fill_in t("tutorial.notes"), with: data.notes
+      data.draft ? check(t("tutorial.draft")) : uncheck(t("tutorial.draft"))
+
       click_button t("save")
 
       expect(Tutorial.count).to eq 2
@@ -25,12 +27,14 @@ describe Tutorial do
       expect(t.date).to eq data.date
       expect(t.notes).to eq data.notes
       expect(t.summary).to eq data.summary
+      expect(t.draft).to eq data.draft
     end
 
     it "failure" do
       click_link t("tutorial.new")
       fill_in t("date"), with: data.date
       fill_in t("tutorial.notes"), with: data.notes
+      data.draft ? check(t("tutorial.draft")) : uncheck(t("tutorial.draft"))
       click_button t("save")
 
       expect(page).to have_title t("tutorial.new")

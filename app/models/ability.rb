@@ -14,7 +14,7 @@ class Ability
 
     if user.chess?
       can :read, Lesson
-      can :read, Tutorial
+      can :read, Tutorial, draft: false
     end
 
     can :read, [Bucket, Favourite]
