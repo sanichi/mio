@@ -66,6 +66,6 @@
     %ul.right
       %li
         - if authenticated?
-          = link_to t("session.sign_out"), sign_out_path
+          = link_to t("session.sign_out", user: current_user.initials), sign_out_path
         - else
           = link_to t("session.sign_in"), sign_in_path

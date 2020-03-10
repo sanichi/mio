@@ -14,7 +14,7 @@ describe "Authentication" do
       click_button t("session.sign_in")
 
       expect(page).to_not have_link t("session.sign_in")
-      expect(page).to have_link t("session.sign_out")
+      expect(page).to have_link t("session.sign_out", user: user.initials)
     end
 
     it "failure" do
