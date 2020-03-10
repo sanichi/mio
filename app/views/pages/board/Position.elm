@@ -1,4 +1,4 @@
-module Position exposing (Position, errorMessage, fromFen)
+module Position exposing (Position, fromFen)
 
 import Castle exposing (Castle)
 import Colour exposing (Colour(..))
@@ -13,16 +13,22 @@ type alias Position =
     , enPassant : Maybe Square
     , halfMove : Int
     , fullMove : Int
+    , error : Maybe String
     }
+
+
+fromFen : String -> Position
+fromFen fen =
+    case fenPieces emptyBoard 1 8 "" fen of
+        Ok position ->
+            position
+
+        Err ( position, consumed, remaining ) ->
+            { position | error = errorMessage consumed remaining }
 
 
 type alias ParseResult =
     Result ( Position, String, String ) Position
-
-
-fromFen : String -> ParseResult
-fromFen fen =
-    fenPieces emptyBoard 1 8 "" fen
 
 
 fenPieces : Position -> Int -> Int -> String -> String -> ParseResult
@@ -388,10 +394,11 @@ emptyBoard =
     , enPassant = Nothing
     , halfMove = 0
     , fullMove = 1
+    , error = Nothing
     }
 
 
-errorMessage : String -> String -> String
+errorMessage : String -> String -> Maybe String
 errorMessage consumed remaining =
     let
         preface =
@@ -404,3 +411,4 @@ errorMessage consumed remaining =
         ++ String.repeat (String.length preface + String.length consumed) " "
         ++ "^"
         ++ "\n"
+        |> Just

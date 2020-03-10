@@ -31,7 +31,7 @@ fromModel model =
             List.map (fromMark model.orientation) model.marks
 
         board =
-            chessboard model.scheme model.error
+            chessboard model.scheme model.position.error
 
         move =
             pointer model.position.move model.orientation

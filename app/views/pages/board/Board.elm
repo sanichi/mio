@@ -35,8 +35,16 @@ init flags =
     let
         model =
             Model.init <| Preferences.decode flags
+
+        cmd =
+            case model.position.error of
+                Nothing ->
+                    Cmd.none
+
+                Just msg ->
+                    Ports.error msg
     in
-    ( model, error model )
+    ( model, cmd )
 
 
 
@@ -45,8 +53,7 @@ init flags =
 
 view : Model -> Html Msg
 view model =
-    Image.fromModel model
-        |> svg [ id "board", version "1.1", viewBox "0 0 360 360" ]
+    svg [ id "board", version "1.1", viewBox "0 0 360 360" ] <| Image.fromModel model
 
 
 
@@ -70,17 +77,3 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
-
-
-
--- COMMANDS
-
-
-error : Model -> Cmd Msg
-error model =
-    case model.error of
-        Nothing ->
-            Cmd.none
-
-        Just msg ->
-            Ports.error msg

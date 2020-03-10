@@ -1857,7 +1857,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
+		impl.aM,
 		impl.a2,
 		impl.a$,
 		function() { return function() {} }
@@ -3928,7 +3928,7 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
+		impl.aM,
 		impl.a2,
 		impl.a$,
 		function(sendToApp, initialModel) {
@@ -3964,7 +3964,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
+		impl.aM,
 		impl.a2,
 		impl.a$,
 		function(sendToApp, initialModel) {
@@ -3977,7 +3977,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aB);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aA);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aV;
-	var onUrlRequest = impl.aW;
+	var onUrlChange = impl.aU;
+	var onUrlRequest = impl.aV;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4059,7 +4059,7 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ak === next.ak
+							&& curr.aj === next.aj
 							&& curr.aa === next.aa
 							&& curr.ag.a === next.ag.a
 						)
@@ -4069,9 +4069,9 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aN: function(flags)
+		aM: function(flags)
 		{
-			return A3(impl.aN, flags, _Browser_getUrl(), key);
+			return A3(impl.aM, flags, _Browser_getUrl(), key);
 		},
 		a3: impl.a3,
 		a2: impl.a2,
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aK: 'hidden', aD: 'visibilitychange' }
+		? { aJ: 'hidden', aC: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aK: 'mozHidden', aD: 'mozvisibilitychange' }
+		? { aJ: 'mozHidden', aC: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aK: 'msHidden', aD: 'msvisibilitychange' }
+		? { aJ: 'msHidden', aC: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aK: 'webkitHidden', aD: 'webkitvisibilitychange' }
-		: { aK: 'hidden', aD: 'visibilitychange' };
+		? { aJ: 'webkitHidden', aC: 'webkitvisibilitychange' }
+		: { aJ: 'hidden', aC: 'visibilitychange' };
 }
 
 
@@ -4232,11 +4232,11 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ap: _Browser_getScene(),
-		at: {
-			ax: _Browser_window.pageXOffset,
-			ay: _Browser_window.pageYOffset,
-			aw: _Browser_doc.documentElement.clientWidth,
+		ao: _Browser_getScene(),
+		as: {
+			aw: _Browser_window.pageXOffset,
+			ax: _Browser_window.pageYOffset,
+			av: _Browser_doc.documentElement.clientWidth,
 			_: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4247,7 +4247,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aw: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		av: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		_: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4271,14 +4271,14 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ap: {
-				aw: node.scrollWidth,
+			ao: {
+				av: node.scrollWidth,
 				_: node.scrollHeight
 			},
-			at: {
-				ax: node.scrollLeft,
-				ay: node.scrollTop,
-				aw: node.clientWidth,
+			as: {
+				aw: node.scrollLeft,
+				ax: node.scrollTop,
+				av: node.clientWidth,
 				_: node.clientHeight
 			}
 		};
@@ -4309,17 +4309,17 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ap: _Browser_getScene(),
-			at: {
-				ax: x,
-				ay: y,
-				aw: _Browser_doc.documentElement.clientWidth,
+			ao: _Browser_getScene(),
+			as: {
+				aw: x,
+				ax: y,
+				av: _Browser_doc.documentElement.clientWidth,
 				_: _Browser_doc.documentElement.clientHeight
 			},
-			aG: {
-				ax: x + rect.left,
-				ay: y + rect.top,
-				aw: rect.width,
+			aF: {
+				aw: x + rect.left,
+				ax: y + rect.top,
+				av: rect.width,
 				_: rect.height
 			}
 		};
@@ -4401,8 +4401,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.aR) { flags += 'm'; }
-	if (options.aC) { flags += 'i'; }
+	if (options.aQ) { flags += 'm'; }
+	if (options.aB) { flags += 'i'; }
 
 	try
 	{
@@ -4997,7 +4997,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Z: fragment, aa: host, ae: path, ag: port_, ak: protocol, al: query};
+		return {Z: fragment, aa: host, ae: path, ag: port_, aj: protocol, ak: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5279,7 +5279,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (fen, orientation, notation, marks, scheme) {
-		return {aJ: fen, aO: marks, aT: notation, H: orientation, aq: scheme};
+		return {aI: fen, aN: marks, aS: notation, H: orientation, ap: scheme};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'white', false, _List_Nil, 'default');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5317,7 +5317,7 @@ var $author$project$Preferences$flagsDecoder = A6(
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aJ,
+		$author$project$Preferences$default.aI,
 		A2($elm$json$Json$Decode$field, 'fen', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5325,18 +5325,18 @@ var $author$project$Preferences$flagsDecoder = A6(
 		A2($elm$json$Json$Decode$field, 'orientation', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aT,
+		$author$project$Preferences$default.aS,
 		A2($elm$json$Json$Decode$field, 'notation', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aO,
+		$author$project$Preferences$default.aN,
 		A2(
 			$elm$json$Json$Decode$field,
 			'marks',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aq,
+		$author$project$Preferences$default.ap,
 		A2($elm$json$Json$Decode$field, 'scheme', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5355,21 +5355,17 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Ports$error = _Platform_outgoingPort('error', $elm$json$Json$Encode$string);
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Board$error = function (model) {
-	var _v0 = model.aH;
-	if (_v0.$ === 1) {
-		return $elm$core$Platform$Cmd$none;
-	} else {
-		var msg = _v0.a;
-		return $author$project$Ports$error(msg);
-	}
-};
-var $author$project$Model$Model = F6(
-	function (position, orientation, notation, marks, scheme, error) {
-		return {aH: error, aO: marks, aT: notation, H: orientation, ah: position, aq: scheme};
+var $author$project$Model$Model = F5(
+	function (position, orientation, notation, marks, scheme) {
+		return {aN: marks, aS: notation, H: orientation, aY: position, ap: scheme};
 	});
+var $author$project$Colour$White = 1;
+var $author$project$Castle$Castle = F4(
+	function (whiteKing, whiteQueen, blackKing, blackQueen) {
+		return {R: blackKing, S: blackQueen, at: whiteKing, au: whiteQueen};
+	});
+var $author$project$Castle$init = A4($author$project$Castle$Castle, false, false, false, false);
+var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, J: $elm$core$Maybe$Nothing, aG: $elm$core$Maybe$Nothing, x: 1, y: 0, aP: 1, aX: _List_Nil};
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
 var $elm$core$String$repeatHelp = F3(
@@ -5387,21 +5383,15 @@ var $elm$core$String$repeat = F2(
 var $author$project$Position$errorMessage = F2(
 	function (consumed, remaining) {
 		var preface = 'FEN parsing error: ';
-		return preface + (consumed + (remaining + ('\n' + (A2(
-			$elm$core$String$repeat,
-			$elm$core$String$length(preface) + $elm$core$String$length(consumed),
-			' ') + ('^' + '\n')))));
+		return $elm$core$Maybe$Just(
+			preface + (consumed + (remaining + ('\n' + (A2(
+				$elm$core$String$repeat,
+				$elm$core$String$length(preface) + $elm$core$String$length(consumed),
+				' ') + ('^' + '\n'))))));
 	});
-var $author$project$Colour$White = 1;
-var $author$project$Castle$Castle = F4(
-	function (whiteKing, whiteQueen, blackKing, blackQueen) {
-		return {R: blackKing, S: blackQueen, au: whiteKing, av: whiteQueen};
-	});
-var $author$project$Castle$init = A4($author$project$Castle$Castle, false, false, false, false);
-var $author$project$Position$emptyBoard = {f: $author$project$Castle$init, J: $elm$core$Maybe$Nothing, x: 1, y: 0, aQ: 1, aY: _List_Nil};
 var $author$project$Square$Square = F2(
 	function (file, rank) {
-		return {Y: file, am: rank};
+		return {Y: file, al: rank};
 	});
 var $author$project$Colour$Black = 0;
 var $author$project$Castle$bk = function (castle) {
@@ -5634,7 +5624,7 @@ var $author$project$Position$fenEnPassant = F4(
 									$elm$core$String$fromChar(_char)));
 							if (!square_.$) {
 								var sq = square_.a;
-								if (((current.aQ === 1) && (sq.am === 6)) || ((!current.aQ) && (sq.am === 3))) {
+								if (((current.aP === 1) && (sq.al === 6)) || ((!current.aP) && (sq.al === 3))) {
 									var $temp$current = _Utils_update(
 										current,
 										{J: square_}),
@@ -5662,12 +5652,12 @@ var $author$project$Position$fenEnPassant = F4(
 var $author$project$Castle$wk = function (castle) {
 	return _Utils_update(
 		castle,
-		{au: true});
+		{at: true});
 };
 var $author$project$Castle$wq = function (castle) {
 	return _Utils_update(
 		castle,
-		{av: true});
+		{au: true});
 };
 var $author$project$Position$fenCastle = F4(
 	function (current, state, consumed, remaining) {
@@ -5697,7 +5687,7 @@ var $author$project$Position$fenCastle = F4(
 							return err;
 						}
 					case 'K':
-						if (current.f.au || (state === 2)) {
+						if (current.f.at || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5715,7 +5705,7 @@ var $author$project$Position$fenCastle = F4(
 							continue fenCastle;
 						}
 					case 'Q':
-						if (current.f.av || (state === 2)) {
+						if (current.f.au || (state === 2)) {
 							return err;
 						} else {
 							var $temp$current = _Utils_update(
@@ -5797,7 +5787,7 @@ var $author$project$Position$fenMove = F4(
 						} else {
 							var $temp$current = _Utils_update(
 								current,
-								{aQ: 1}),
+								{aP: 1}),
 								$temp$done = true,
 								$temp$consumed = prev,
 								$temp$remaining = next;
@@ -5813,7 +5803,7 @@ var $author$project$Position$fenMove = F4(
 						} else {
 							var $temp$current = _Utils_update(
 								current,
-								{aQ: 0}),
+								{aP: 0}),
 								$temp$done = true,
 								$temp$consumed = prev,
 								$temp$remaining = next;
@@ -5839,7 +5829,7 @@ var $author$project$Piece$Knight = 4;
 var $author$project$Piece$Pawn = 5;
 var $author$project$Piece$Piece = F3(
 	function (colour, category, square) {
-		return {T: category, aE: colour, I: square};
+		return {T: category, aD: colour, I: square};
 	});
 var $author$project$Piece$Queen = 1;
 var $author$project$Piece$Rook = 2;
@@ -6054,7 +6044,7 @@ var $author$project$Position$fenPieces = F5(
 								var position = _Utils_update(
 									current,
 									{
-										aY: A2($elm$core$List$cons, piece, current.aY)
+										aX: A2($elm$core$List$cons, piece, current.aX)
 									});
 								var $temp$current = position,
 									$temp$file = file + 1,
@@ -6080,7 +6070,21 @@ var $author$project$Position$fenPieces = F5(
 		}
 	});
 var $author$project$Position$fromFen = function (fen) {
-	return A5($author$project$Position$fenPieces, $author$project$Position$emptyBoard, 1, 8, '', fen);
+	var _v0 = A5($author$project$Position$fenPieces, $author$project$Position$emptyBoard, 1, 8, '', fen);
+	if (!_v0.$) {
+		var position = _v0.a;
+		return position;
+	} else {
+		var _v1 = _v0.a;
+		var position = _v1.a;
+		var consumed = _v1.b;
+		var remaining = _v1.c;
+		return _Utils_update(
+			position,
+			{
+				aG: A2($author$project$Position$errorMessage, consumed, remaining)
+			});
+	}
 };
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6158,14 +6162,14 @@ var $author$project$Scheme$brown = _Utils_Tuple2('#f0d9b5', '#b58863');
 var $author$project$Scheme$default = $author$project$Scheme$brown;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {aM: index, aP: match, aU: number, a_: submatches};
+		return {aL: index, aO: match, aT: number, a_: submatches};
 	});
 var $elm$regex$Regex$find = _Regex_findAtMost(_Regex_infinity);
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{aC: false, aR: false},
+		{aB: false, aQ: false},
 		string);
 };
 var $author$project$Scheme$green = _Utils_Tuple2('#eeeed1', '#769656');
@@ -6204,36 +6208,28 @@ var $author$project$Scheme$fromString = function (str) {
 	}
 };
 var $author$project$Model$init = function (preferences) {
-	var scheme = $author$project$Scheme$fromString(preferences.aq);
+	var scheme = $author$project$Scheme$fromString(preferences.ap);
+	var position = $author$project$Position$fromFen(preferences.aI);
 	var orientation = $author$project$Colour$fromString(preferences.H);
-	var notation = preferences.aT;
-	var marks = $author$project$Mark$fromList(preferences.aO);
-	var _v0 = function () {
-		var _v1 = $author$project$Position$fromFen(preferences.aJ);
-		if (!_v1.$) {
-			var pos = _v1.a;
-			return _Utils_Tuple2(pos, $elm$core$Maybe$Nothing);
-		} else {
-			var _v2 = _v1.a;
-			var current = _v2.a;
-			var consumed = _v2.b;
-			var remaining = _v2.c;
-			return _Utils_Tuple2(
-				current,
-				$elm$core$Maybe$Just(
-					A2($author$project$Position$errorMessage, consumed, remaining)));
-		}
-	}();
-	var position = _v0.a;
-	var error = _v0.b;
-	return A6($author$project$Model$Model, position, orientation, notation, marks, scheme, error);
+	var notation = preferences.aS;
+	var marks = $author$project$Mark$fromList(preferences.aN);
+	return A5($author$project$Model$Model, position, orientation, notation, marks, scheme);
 };
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Board$init = function (flags) {
 	var model = $author$project$Model$init(
 		$author$project$Preferences$decode(flags));
-	return _Utils_Tuple2(
-		model,
-		$author$project$Board$error(model));
+	var cmd = function () {
+		var _v0 = model.aY.aG;
+		if (_v0.$ === 1) {
+			return $elm$core$Platform$Cmd$none;
+		} else {
+			var msg = _v0.a;
+			return $author$project$Ports$error(msg);
+		}
+	}();
+	return _Utils_Tuple2(model, cmd);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
@@ -6254,7 +6250,7 @@ var $elm$core$Basics$not = _Basics_not;
 var $author$project$Model$toggleNotation = function (model) {
 	return _Utils_update(
 		model,
-		{aT: !model.aT});
+		{aS: !model.aS});
 };
 var $author$project$Board$update = F2(
 	function (msg, model) {
@@ -7142,7 +7138,7 @@ var $author$project$Image$fromMark = F2(
 			}
 		}();
 		return marker(
-			_Utils_Tuple3(orientation, mark.I.Y, mark.I.am));
+			_Utils_Tuple3(orientation, mark.I.Y, mark.I.al));
 	});
 var $author$project$Image$bb = function (place) {
 	return A2(
@@ -7866,8 +7862,8 @@ var $author$project$Image$wr = function (place) {
 };
 var $author$project$Image$fromPiece = F2(
 	function (orientation, piece) {
-		var place = _Utils_Tuple3(orientation, piece.I.Y, piece.I.am);
-		if (piece.aE === 1) {
+		var place = _Utils_Tuple3(orientation, piece.I.Y, piece.I.al);
+		if (piece.aD === 1) {
 			var _v0 = piece.T;
 			switch (_v0) {
 				case 0:
@@ -7979,14 +7975,14 @@ var $author$project$Image$fromModel = function (model) {
 	var pieces = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromPiece(model.H),
-		model.ah.aY);
-	var notation = A3($author$project$Image$notes, model.aT, model.H, model.aq);
-	var move = A2($author$project$Image$pointer, model.ah.aQ, model.H);
+		model.aY.aX);
+	var notation = A3($author$project$Image$notes, model.aS, model.H, model.ap);
+	var move = A2($author$project$Image$pointer, model.aY.aP, model.H);
 	var marks = A2(
 		$elm$core$List$map,
 		$author$project$Image$fromMark(model.H),
-		model.aO);
-	var board = A2($author$project$Image$chessboard, model.aq, model.aH);
+		model.aN);
+	var board = A2($author$project$Image$chessboard, model.ap, model.aY.aG);
 	return A2(
 		$elm$core$List$cons,
 		board,
@@ -8015,5 +8011,5 @@ var $author$project$Board$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Board$main = $elm$browser$Browser$element(
-	{aN: $author$project$Board$init, a$: $author$project$Board$subscriptions, a2: $author$project$Board$update, a3: $author$project$Board$view});
+	{aM: $author$project$Board$init, a$: $author$project$Board$subscriptions, a2: $author$project$Board$update, a3: $author$project$Board$view});
 _Platform_export({'Board':{'init':$author$project$Board$main($elm$json$Json$Decode$value)(0)}});}(this));

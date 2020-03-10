@@ -12,9 +12,9 @@ type alias Preferences =
     }
 
 
-default : Preferences
-default =
-    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False [] "default"
+decode : Value -> Preferences
+decode value =
+    D.decodeValue flagsDecoder value |> Result.withDefault default
 
 
 flagsDecoder : Decoder Preferences
@@ -27,9 +27,9 @@ flagsDecoder =
         (D.field "scheme" D.string |> withDefault default.scheme)
 
 
-decode : Value -> Preferences
-decode value =
-    D.decodeValue flagsDecoder value |> Result.withDefault default
+default : Preferences
+default =
+    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False [] "default"
 
 
 
