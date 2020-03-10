@@ -19,11 +19,11 @@ type alias Model =
 init : Preferences -> Model
 init preferences =
     let
-        orientation =
-            Colour.fromString preferences.orientation
-
         position =
             Position.fromFen preferences.fen
+
+        orientation =
+            Colour.fromString preferences.orientation
 
         notation =
             preferences.notation

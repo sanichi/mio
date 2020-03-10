@@ -24,7 +24,7 @@ fromFen fen =
             position
 
         Err ( position, consumed, remaining ) ->
-            { position | error = errorMessage consumed remaining }
+            { position | error = explain consumed remaining }
 
 
 type alias ParseResult =
@@ -398,8 +398,8 @@ emptyBoard =
     }
 
 
-errorMessage : String -> String -> Maybe String
-errorMessage consumed remaining =
+explain : String -> String -> Maybe String
+explain consumed remaining =
     let
         preface =
             "FEN parsing error: "

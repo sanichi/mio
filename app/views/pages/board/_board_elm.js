@@ -5380,7 +5380,7 @@ var $elm$core$String$repeat = F2(
 	function (n, chunk) {
 		return A3($elm$core$String$repeatHelp, n, chunk, '');
 	});
-var $author$project$Position$errorMessage = F2(
+var $author$project$Position$explain = F2(
 	function (consumed, remaining) {
 		var preface = 'FEN parsing error: ';
 		return $elm$core$Maybe$Just(
@@ -6082,7 +6082,7 @@ var $author$project$Position$fromFen = function (fen) {
 		return _Utils_update(
 			position,
 			{
-				aG: A2($author$project$Position$errorMessage, consumed, remaining)
+				aG: A2($author$project$Position$explain, consumed, remaining)
 			});
 	}
 };
