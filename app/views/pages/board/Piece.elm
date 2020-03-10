@@ -20,11 +20,7 @@ type alias Piece =
     }
 
 
-type alias PieceType =
-    Square -> Piece
-
-
-fromChar : Char -> Maybe PieceType
+fromChar : Char -> Maybe (Square -> Piece)
 fromChar char =
     case char of
         'K' ->
