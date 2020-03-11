@@ -7,3 +7,4 @@ type Msg
     | CounterReset
     | RandomRequest
     | RandomResponse Int
+    | ParserUpdate String

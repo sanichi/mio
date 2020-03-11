@@ -8,6 +8,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Encode exposing (Value)
 import Messages exposing (Msg(..))
+import Parsers
 import Randoms
 
 
@@ -45,6 +46,7 @@ subscriptions model =
 type alias Model =
     { counter : Counter.Model
     , randoms : Randoms.Model
+    , parsers : Parsers.Model
     }
 
 
@@ -52,6 +54,7 @@ initModel : Model
 initModel =
     { counter = Counter.init
     , randoms = Randoms.init
+    , parsers = Parsers.init
     }
 
 
@@ -64,6 +67,7 @@ view model =
     div []
         [ panel "Counter" (Counter.view model.counter)
         , panel "Randoms" (Randoms.view model.randoms)
+        , panel "Parsers" (Parsers.view model.parsers)
         ]
 
 
@@ -96,3 +100,6 @@ update msg model =
 
         RandomResponse num ->
             ( { model | randoms = Randoms.reset num }, Cmd.none )
+
+        ParserUpdate input ->
+            ( { model | parsers = Parsers.update input }, Cmd.none )
