@@ -22,7 +22,7 @@ init =
 view : Model -> Html Msg
 view model =
     div []
-        [ input [ placeholder "input", value model.input, size 7, onInput ParserUpdate ] []
+        [ input [ placeholder "input", value model.input, size 7, class "mb-2", onInput ParserUpdate ] []
         , span [] [ text " " ]
         , input [ placeholder "output", value model.output, size 30 ] []
         ]

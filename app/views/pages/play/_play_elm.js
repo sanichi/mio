@@ -5412,6 +5412,7 @@ var $author$project$Parsers$view = function (model) {
 						$elm$html$Html$Attributes$placeholder('input'),
 						$elm$html$Html$Attributes$value(model.F),
 						$elm$html$Html$Attributes$size(7),
+						$elm$html$Html$Attributes$class('mb-2'),
 						$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
 					]),
 				_List_Nil),
