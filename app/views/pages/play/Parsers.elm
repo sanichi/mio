@@ -24,7 +24,7 @@ view model =
     div []
         [ input [ placeholder "input", value model.input, size 7, onInput ParserUpdate ] []
         , span [] [ text " " ]
-        , input [ placeholder "output", value model.output, size 40 ] []
+        , input [ placeholder "output", value model.output, size 30 ] []
         ]
 
 

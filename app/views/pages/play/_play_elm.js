@@ -5428,7 +5428,7 @@ var $author$project$Parsers$view = function (model) {
 					[
 						$elm$html$Html$Attributes$placeholder('output'),
 						$elm$html$Html$Attributes$value(model.G),
-						$elm$html$Html$Attributes$size(40)
+						$elm$html$Html$Attributes$size(30)
 					]),
 				_List_Nil)
 			]));
