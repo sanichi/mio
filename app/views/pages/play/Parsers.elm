@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import Messages exposing (Msg(..))
+import Parser as P exposing ((|.), (|=), Parser)
 
 
 type alias Model =
@@ -30,4 +31,21 @@ view model =
 
 update : String -> Model
 update input =
-    { input = input, output = String.reverse input }
+    { input = input, output = parse input }
+
+
+parser : Parser Int
+parser =
+    P.succeed identity
+        |= P.int
+        |. P.end
+
+
+parse : String -> String
+parse input =
+    case P.run parser input of
+        Ok num ->
+            String.fromInt num
+
+        Err list ->
+            Debug.toString list
