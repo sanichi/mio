@@ -1,6 +1,11 @@
-module Parsers.PairOfInts exposing (parse)
+module Parsers.PairOfInts exposing (parse, title)
 
 import Parser as P exposing ((|.), (|=), Parser)
+
+
+title : String
+title =
+    "pair of ints"
 
 
 type alias Pair =
@@ -11,11 +16,15 @@ parser : Parser Pair
 parser =
     P.succeed Tuple.pair
         |. P.spaces
+        |. P.symbol "("
+        |. P.spaces
         |= P.int
         |. P.spaces
         |. P.symbol ","
         |. P.spaces
         |= P.int
+        |. P.spaces
+        |. P.symbol ")"
         |. P.spaces
         |. P.end
 

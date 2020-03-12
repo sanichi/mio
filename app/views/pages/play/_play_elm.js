@@ -5886,7 +5886,13 @@ var $author$project$Parsers$PairOfInts$parser = A2(
 		$elm$parser$Parser$keeper,
 		A2(
 			$elm$parser$Parser$ignorer,
-			$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+					$elm$parser$Parser$spaces),
+				$elm$parser$Parser$symbol('(')),
 			$elm$parser$Parser$spaces),
 		A2(
 			$elm$parser$Parser$ignorer,
@@ -5897,7 +5903,13 @@ var $author$project$Parsers$PairOfInts$parser = A2(
 			$elm$parser$Parser$spaces)),
 	A2(
 		$elm$parser$Parser$ignorer,
-		A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces),
+				$elm$parser$Parser$symbol(')')),
+			$elm$parser$Parser$spaces),
 		$elm$parser$Parser$end));
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
@@ -5977,6 +5989,7 @@ var $elm$html$Html$Attributes$rows = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
+var $author$project$Parsers$PairOfInts$title = 'pair of ints';
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Parsers$view = function (model) {
 	return A2(
@@ -6000,7 +6013,7 @@ var $author$project$Parsers$view = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$rows(5),
-								$elm$html$Html$Attributes$placeholder('input'),
+								$elm$html$Html$Attributes$placeholder($author$project$Parsers$PairOfInts$title),
 								$elm$html$Html$Attributes$value(model),
 								$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
 							]),

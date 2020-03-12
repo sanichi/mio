@@ -4,8 +4,8 @@ import Html exposing (Html, div, form, textarea)
 import Html.Attributes exposing (class, placeholder, rows, value)
 import Html.Events exposing (onInput)
 import Messages exposing (Msg(..))
-import Parsers.JavascriptVariable as JV exposing (parse)
-import Parsers.PairOfInts as PI exposing (parse)
+import Parsers.JavascriptVariable as JV exposing (parse, title)
+import Parsers.PairOfInts as PI exposing (parse, title)
 
 
 type alias Model =
@@ -21,7 +21,7 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder "input", value model, onInput ParserUpdate ] []
+            [ textarea [ rows 5, placeholder PI.title, value model, onInput ParserUpdate ] []
             , textarea [ rows 5, placeholder "output", value (PI.parse model) ] []
             ]
         ]

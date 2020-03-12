@@ -1,6 +1,11 @@
-module Parsers.JavascriptVariable exposing (parse)
+module Parsers.JavascriptVariable exposing (parse, title)
 
 import Parser as P exposing ((|.), (|=), Parser)
+
+
+title : String
+title =
+    "javascript variable"
 
 
 type alias Pair =
