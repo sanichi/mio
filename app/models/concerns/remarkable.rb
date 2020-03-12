@@ -37,6 +37,7 @@ module Remarkable
       fenced_code_blocks: true,
       no_intra_emphasis: true,
       strikethrough: true,
+      superscript: true,
       tables: true,
       underline: true,
     }
