@@ -22,10 +22,11 @@ init =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ input [ placeholder "input", value model.input, size 7, class "mb-2", onInput ParserUpdate ] []
-        , span [] [ text " " ]
-        , input [ placeholder "output", value model.output, size 30 ] []
+    div [ class "offset-1 col-10" ]
+        [ Html.form [ class "crud" ]
+            [ textarea [ rows 5, placeholder "input", value model.input, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value model.output ] []
+            ]
         ]
 
 
@@ -34,18 +35,28 @@ update input =
     { input = input, output = parse input }
 
 
-parser : Parser Int
+type alias Pair =
+    ( Int, Int )
+
+
+parser : Parser Pair
 parser =
-    P.succeed identity
+    P.succeed Tuple.pair
+        |. P.spaces
         |= P.int
+        |. P.spaces
+        |. P.symbol ","
+        |. P.spaces
+        |= P.int
+        |. P.spaces
         |. P.end
 
 
 parse : String -> String
 parse input =
     case P.run parser input of
-        Ok num ->
-            String.fromInt num
+        Ok good ->
+            Debug.toString good
 
         Err list ->
             Debug.toString list

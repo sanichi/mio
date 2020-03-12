@@ -5561,6 +5561,68 @@ var $elm$parser$Parser$Advanced$keeper = F2(
 		return A3($elm$parser$Parser$Advanced$map2, $elm$core$Basics$apL, parseFunc, parseArg);
 	});
 var $elm$parser$Parser$keeper = $elm$parser$Parser$Advanced$keeper;
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
+var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
+	function (isGood, offset, row, col, s0) {
+		chompWhileHelp:
+		while (true) {
+			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, offset, s0.src);
+			if (_Utils_eq(newOffset, -1)) {
+				return A3(
+					$elm$parser$Parser$Advanced$Good,
+					_Utils_cmp(s0.offset, offset) < 0,
+					_Utils_Tuple0,
+					{col: col, context: s0.context, indent: s0.indent, offset: offset, row: row, src: s0.src});
+			} else {
+				if (_Utils_eq(newOffset, -2)) {
+					var $temp$isGood = isGood,
+						$temp$offset = offset + 1,
+						$temp$row = row + 1,
+						$temp$col = 1,
+						$temp$s0 = s0;
+					isGood = $temp$isGood;
+					offset = $temp$offset;
+					row = $temp$row;
+					col = $temp$col;
+					s0 = $temp$s0;
+					continue chompWhileHelp;
+				} else {
+					var $temp$isGood = isGood,
+						$temp$offset = newOffset,
+						$temp$row = row,
+						$temp$col = col + 1,
+						$temp$s0 = s0;
+					isGood = $temp$isGood;
+					offset = $temp$offset;
+					row = $temp$row;
+					col = $temp$col;
+					s0 = $temp$s0;
+					continue chompWhileHelp;
+				}
+			}
+		}
+	});
+var $elm$parser$Parser$Advanced$chompWhile = function (isGood) {
+	return $elm$parser$Parser$Advanced$Parser(
+		function (s) {
+			return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.offset, s.row, s.col, s);
+		});
+};
+var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
+	function (c) {
+		return _Utils_eq(
+			c,
+			_Utils_chr(' ')) || (_Utils_eq(
+			c,
+			_Utils_chr('\n')) || _Utils_eq(
+			c,
+			_Utils_chr('\r')));
+	});
+var $elm$parser$Parser$spaces = $elm$parser$Parser$Advanced$spaces;
 var $elm$parser$Parser$Advanced$succeed = function (a) {
 	return $elm$parser$Parser$Advanced$Parser(
 		function (s) {
@@ -5568,10 +5630,62 @@ var $elm$parser$Parser$Advanced$succeed = function (a) {
 		});
 };
 var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
+var $elm$parser$Parser$ExpectingSymbol = function (a) {
+	return {$: 'ExpectingSymbol', a: a};
+};
+var $elm$parser$Parser$Advanced$Token = F2(
+	function (a, b) {
+		return {$: 'Token', a: a, b: b};
+	});
+var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
+var $elm$core$Basics$not = _Basics_not;
+var $elm$parser$Parser$Advanced$token = function (_v0) {
+	var str = _v0.a;
+	var expecting = _v0.b;
+	var progress = !$elm$core$String$isEmpty(str);
+	return $elm$parser$Parser$Advanced$Parser(
+		function (s) {
+			var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.offset, s.row, s.col, s.src);
+			var newOffset = _v1.a;
+			var newRow = _v1.b;
+			var newCol = _v1.c;
+			return _Utils_eq(newOffset, -1) ? A2(
+				$elm$parser$Parser$Advanced$Bad,
+				false,
+				A2($elm$parser$Parser$Advanced$fromState, s, expecting)) : A3(
+				$elm$parser$Parser$Advanced$Good,
+				progress,
+				_Utils_Tuple0,
+				{col: newCol, context: s.context, indent: s.indent, offset: newOffset, row: newRow, src: s.src});
+		});
+};
+var $elm$parser$Parser$Advanced$symbol = $elm$parser$Parser$Advanced$token;
+var $elm$parser$Parser$symbol = function (str) {
+	return $elm$parser$Parser$Advanced$symbol(
+		A2(
+			$elm$parser$Parser$Advanced$Token,
+			str,
+			$elm$parser$Parser$ExpectingSymbol(str)));
+};
 var $author$project$Parsers$parser = A2(
 	$elm$parser$Parser$keeper,
-	$elm$parser$Parser$succeed($elm$core$Basics$identity),
-	A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$end));
+	A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$ignorer,
+			$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+			$elm$parser$Parser$spaces),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces),
+				$elm$parser$Parser$symbol(',')),
+			$elm$parser$Parser$spaces)),
+	A2(
+		$elm$parser$Parser$ignorer,
+		A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces),
+		$elm$parser$Parser$end));
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
 		return {col: col, problem: problem, row: row};
@@ -5635,8 +5749,8 @@ var $elm$core$Debug$toString = _Debug_toString;
 var $author$project$Parsers$parse = function (input) {
 	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$parser, input);
 	if (_v0.$ === 'Ok') {
-		var num = _v0.a;
-		return $elm$core$String$fromInt(num);
+		var good = _v0.a;
+		return $elm$core$Debug$toString(good);
 	} else {
 		var list = _v0.a;
 		return $elm$core$Debug$toString(list);
@@ -5824,7 +5938,7 @@ var $author$project$Counter$view = function (counter) {
 var $author$project$Messages$ParserUpdate = function (a) {
 	return {$: 'ParserUpdate', a: a};
 };
-var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
@@ -5859,47 +5973,51 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $elm$html$Html$Attributes$size = function (n) {
+var $elm$html$Html$Attributes$rows = function (n) {
 	return A2(
 		_VirtualDom_attribute,
-		'size',
+		'rows',
 		$elm$core$String$fromInt(n));
 };
-var $elm$html$Html$span = _VirtualDom_node('span');
+var $elm$html$Html$textarea = _VirtualDom_node('textarea');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Parsers$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('offset-1 col-10')
+			]),
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$input,
+				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$placeholder('input'),
-						$elm$html$Html$Attributes$value(model.input),
-						$elm$html$Html$Attributes$size(7),
-						$elm$html$Html$Attributes$class('mb-2'),
-						$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
+						$elm$html$Html$Attributes$class('crud')
 					]),
-				_List_Nil),
-				A2(
-				$elm$html$Html$span,
-				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(' ')
-					])),
-				A2(
-				$elm$html$Html$input,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$placeholder('output'),
-						$elm$html$Html$Attributes$value(model.output),
-						$elm$html$Html$Attributes$size(30)
-					]),
-				_List_Nil)
+						A2(
+						$elm$html$Html$textarea,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$rows(5),
+								$elm$html$Html$Attributes$placeholder('input'),
+								$elm$html$Html$Attributes$value(model.input),
+								$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
+							]),
+						_List_Nil),
+						A2(
+						$elm$html$Html$textarea,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$rows(5),
+								$elm$html$Html$Attributes$placeholder('output'),
+								$elm$html$Html$Attributes$value(model.output)
+							]),
+						_List_Nil)
+					]))
 			]));
 };
 var $author$project$Messages$RandomRequest = {$: 'RandomRequest'};
