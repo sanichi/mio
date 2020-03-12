@@ -5275,7 +5275,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Counter$init = 0;
-var $author$project$Parsers$init = {input: '', output: ''};
+var $author$project$Parsers$init = '';
 var $author$project$Randoms$init = 0;
 var $author$project$Main$initModel = {counter: $author$project$Counter$init, parsers: $author$project$Parsers$init, randoms: $author$project$Randoms$init};
 var $elm$json$Json$Encode$null = _Json_encodeNull;
@@ -5308,6 +5308,219 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Randoms$reset = function (rand) {
 	return rand;
+};
+var $author$project$Parsers$update = function (input) {
+	return input;
+};
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'CounterIncrement':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							counter: $author$project$Counter$increment(model.counter)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'CounterDecrement':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							counter: $author$project$Counter$decrement(model.counter)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'CounterReset':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{counter: $author$project$Counter$init}),
+					$elm$core$Platform$Cmd$none);
+			case 'RandomRequest':
+				return _Utils_Tuple2(model, $author$project$Randoms$request);
+			case 'RandomResponse':
+				var num = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							randoms: $author$project$Randoms$reset(num)
+						}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var input = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							parsers: $author$project$Parsers$update(input)
+						}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
+var $elm$json$Json$Decode$value = _Json_decodeValue;
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$section = _VirtualDom_node('section');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$panel = F2(
+	function (title, body) {
+		return A2(
+			$elm$html$Html$section,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card mt-3')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('header')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(title)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('body')
+						]),
+					_List_fromArray(
+						[body]))
+				]));
+	});
+var $author$project$Messages$CounterDecrement = {$: 'CounterDecrement'};
+var $author$project$Messages$CounterIncrement = {$: 'CounterIncrement'};
+var $author$project$Messages$CounterReset = {$: 'CounterReset'};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Counter$view = function (counter) {
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('btn btn-success btn-sm')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(counter))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('float-right')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
+								$elm$html$Html$Events$onClick($author$project$Messages$CounterIncrement)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('+')
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
+								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('0')
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+								$elm$html$Html$Events$onClick($author$project$Messages$CounterDecrement)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('-')
+							]))
+					]))
+			]));
+};
+var $author$project$Messages$ParserUpdate = function (a) {
+	return {$: 'ParserUpdate', a: a};
+};
+var $elm$html$Html$form = _VirtualDom_node('form');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$parser$Parser$ExpectingEnd = {$: 'ExpectingEnd'};
 var $elm$parser$Parser$Advanced$Bad = F2(
@@ -5667,7 +5880,7 @@ var $elm$parser$Parser$symbol = function (str) {
 			str,
 			$elm$parser$Parser$ExpectingSymbol(str)));
 };
-var $author$project$Parsers$parser = A2(
+var $author$project$Parsers$PairOfInts$parser = A2(
 	$elm$parser$Parser$keeper,
 	A2(
 		$elm$parser$Parser$keeper,
@@ -5746,8 +5959,8 @@ var $elm$parser$Parser$run = F2(
 		}
 	});
 var $elm$core$Debug$toString = _Debug_toString;
-var $author$project$Parsers$parse = function (input) {
-	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$parser, input);
+var $author$project$Parsers$PairOfInts$parse = function (input) {
+	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$PairOfInts$parser, input);
 	if (_v0.$ === 'Ok') {
 		var good = _v0.a;
 		return $elm$core$Debug$toString(good);
@@ -5755,222 +5968,6 @@ var $author$project$Parsers$parse = function (input) {
 		var list = _v0.a;
 		return $elm$core$Debug$toString(list);
 	}
-};
-var $author$project$Parsers$update = function (input) {
-	return {
-		input: input,
-		output: $author$project$Parsers$parse(input)
-	};
-};
-var $author$project$Main$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 'CounterIncrement':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							counter: $author$project$Counter$increment(model.counter)
-						}),
-					$elm$core$Platform$Cmd$none);
-			case 'CounterDecrement':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							counter: $author$project$Counter$decrement(model.counter)
-						}),
-					$elm$core$Platform$Cmd$none);
-			case 'CounterReset':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{counter: $author$project$Counter$init}),
-					$elm$core$Platform$Cmd$none);
-			case 'RandomRequest':
-				return _Utils_Tuple2(model, $author$project$Randoms$request);
-			case 'RandomResponse':
-				var num = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							randoms: $author$project$Randoms$reset(num)
-						}),
-					$elm$core$Platform$Cmd$none);
-			default:
-				var input = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							parsers: $author$project$Parsers$update(input)
-						}),
-					$elm$core$Platform$Cmd$none);
-		}
-	});
-var $elm$json$Json$Decode$value = _Json_decodeValue;
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$section = _VirtualDom_node('section');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$panel = F2(
-	function (title, body) {
-		return A2(
-			$elm$html$Html$section,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('card mt-3')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('header')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(title)
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('body')
-						]),
-					_List_fromArray(
-						[body]))
-				]));
-	});
-var $author$project$Messages$CounterDecrement = {$: 'CounterDecrement'};
-var $author$project$Messages$CounterIncrement = {$: 'CounterIncrement'};
-var $author$project$Messages$CounterReset = {$: 'CounterReset'};
-var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $author$project$Counter$view = function (counter) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('btn btn-success btn-sm')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$elm$core$String$fromInt(counter))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('float-right')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$CounterIncrement)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('+')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('0')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$CounterDecrement)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('-')
-							]))
-					]))
-			]));
-};
-var $author$project$Messages$ParserUpdate = function (a) {
-	return {$: 'ParserUpdate', a: a};
-};
-var $elm$html$Html$form = _VirtualDom_node('form');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$Attributes$rows = function (n) {
@@ -6004,7 +6001,7 @@ var $author$project$Parsers$view = function (model) {
 							[
 								$elm$html$Html$Attributes$rows(5),
 								$elm$html$Html$Attributes$placeholder('input'),
-								$elm$html$Html$Attributes$value(model.input),
+								$elm$html$Html$Attributes$value(model),
 								$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
 							]),
 						_List_Nil),
@@ -6014,7 +6011,8 @@ var $author$project$Parsers$view = function (model) {
 							[
 								$elm$html$Html$Attributes$rows(5),
 								$elm$html$Html$Attributes$placeholder('output'),
-								$elm$html$Html$Attributes$value(model.output)
+								$elm$html$Html$Attributes$value(
+								$author$project$Parsers$PairOfInts$parse(model))
 							]),
 						_List_Nil)
 					]))
