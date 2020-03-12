@@ -6,6 +6,7 @@ import Html.Events exposing (onInput)
 import Messages exposing (Msg(..))
 import Parsers.JavascriptVariable as JV exposing (parse, title)
 import Parsers.PairOfInts as PI exposing (parse, title)
+import Parsers.RankAndFile as RF exposing (parse, title)
 
 
 type alias Model =
@@ -21,8 +22,8 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder PI.title, value model, onInput ParserUpdate ] []
-            , textarea [ rows 5, placeholder "output", value (PI.parse model) ] []
+            [ textarea [ rows 5, placeholder RF.title, value model, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value (RF.parse model) ] []
             ]
         ]
 
