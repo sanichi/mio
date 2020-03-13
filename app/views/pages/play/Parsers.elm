@@ -8,6 +8,7 @@ import Parsers.JavascriptVariable as JV exposing (parse, title)
 import Parsers.ListOfInts as LI exposing (parse, title)
 import Parsers.PairOfInts as PI exposing (parse, title)
 import Parsers.RankAndFile as RF exposing (parse, title)
+import Parsers.SequenceOfInts as SI exposing (parse, title)
 
 
 type alias Model =
@@ -23,8 +24,8 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder LI.title, value model, onInput ParserUpdate ] []
-            , textarea [ rows 5, placeholder "output", value (LI.parse model) ] []
+            [ textarea [ rows 5, placeholder SI.title, value model, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value (SI.parse model) ] []
             ]
         ]
 

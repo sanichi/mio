@@ -1,11 +1,11 @@
-module Parsers.ListOfInts exposing (parse, title)
+module Parsers.SequenceOfInts exposing (parse, title)
 
 import Parser exposing (..)
 
 
 title : String
 title =
-    "list of ints"
+    "sequence of ints"
 
 
 parser : Parser (List Int)
@@ -19,23 +19,25 @@ parser =
                 |= int
                 |. spaces
                 |= lazy (\_ -> parser)
+                |> andThen checkList
             ]
 
 
+checkList : List Int -> Parser (List Int)
+checkList list =
+    case list of
+        [] ->
+            succeed list
 
--- Works with "1 2 3" but not with " 1 2 3". Why not?
--- parser : Parser (List Int)
--- parser =
---     oneOf
---         [ succeed []
---             |. spaces
---             |. end
---         , succeed (::)
---             |. spaces
---             |= int
---             |. spaces
---             |= lazy (\_ -> parser)
---         ]
+        [ a ] ->
+            succeed list
+
+        a :: b :: c ->
+            if a + 1 == b then
+                succeed list
+
+            else
+                problem "consecutive numbers should be in sequence"
 
 
 parse : String -> String
