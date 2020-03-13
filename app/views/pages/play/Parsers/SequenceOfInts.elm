@@ -8,6 +8,12 @@ title =
     "sequence of ints"
 
 
+
+{- Here the errors come too late. E.g. "1 3 4" ->
+   - [{ col = 6, problem = Problem "consecutive numbers should be in sequence", row = 1 }]
+-}
+
+
 parser : Parser (List Int)
 parser =
     succeed identity
