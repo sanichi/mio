@@ -5,7 +5,7 @@ import Parser as P exposing ((|.), (|=), Parser)
 
 title : String
 title =
-    "pair of ints"
+    "pair of ints in brackets with comma"
 
 
 type alias Pair =

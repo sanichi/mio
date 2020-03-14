@@ -5,7 +5,7 @@ import Parser exposing (..)
 
 title : String
 title =
-    "list of ints"
+    "list of space separated ints"
 
 
 parser : Parser (List Int)

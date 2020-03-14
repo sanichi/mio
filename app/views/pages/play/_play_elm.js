@@ -5522,6 +5522,12 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
+var $elm$parser$Parser$Done = function (a) {
+	return {$: 'Done', a: a};
+};
+var $elm$parser$Parser$Loop = function (a) {
+	return {$: 'Loop', a: a};
+};
 var $elm$parser$Parser$Advanced$Bad = F2(
 	function (a, b) {
 		return {$: 'Bad', a: a, b: b};
@@ -5603,35 +5609,17 @@ var $elm$parser$Parser$Advanced$succeed = function (a) {
 		});
 };
 var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
-var $author$project$Parsers$SequenceOfInts$checkList = function (list) {
-	if (!list.b) {
-		return $elm$parser$Parser$succeed(list);
-	} else {
-		if (!list.b.b) {
-			var a = list.a;
-			return $elm$parser$Parser$succeed(list);
+var $author$project$Parsers$IntLoop$check = F2(
+	function (prev, next) {
+		if (!prev.b) {
+			return $elm$parser$Parser$succeed(next);
 		} else {
-			var a = list.a;
-			var _v1 = list.b;
-			var b = _v1.a;
-			var c = _v1.b;
-			return _Utils_eq(a + 1, b) ? $elm$parser$Parser$succeed(list) : $elm$parser$Parser$problem('consecutive numbers should be in sequence');
+			var last = prev.a;
+			var rest = prev.b;
+			return _Utils_eq(next, last + 1) ? $elm$parser$Parser$succeed(next) : $elm$parser$Parser$problem(
+				'I expected ' + ($elm$core$String$fromInt(last + 1) + (' but got ' + $elm$core$String$fromInt(next))));
 		}
-	}
-};
-var $elm$parser$Parser$ExpectingEnd = {$: 'ExpectingEnd'};
-var $elm$parser$Parser$Advanced$end = function (x) {
-	return $elm$parser$Parser$Advanced$Parser(
-		function (s) {
-			return _Utils_eq(
-				$elm$core$String$length(s.src),
-				s.offset) ? A3($elm$parser$Parser$Advanced$Good, false, _Utils_Tuple0, s) : A2(
-				$elm$parser$Parser$Advanced$Bad,
-				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, x));
-		});
-};
-var $elm$parser$Parser$end = $elm$parser$Parser$Advanced$end($elm$parser$Parser$ExpectingEnd);
+	});
 var $elm$core$Basics$always = F2(
 	function (a, _v0) {
 		return a;
@@ -5844,15 +5832,29 @@ var $elm$parser$Parser$Advanced$keeper = F2(
 		return A3($elm$parser$Parser$Advanced$map2, $elm$core$Basics$apL, parseFunc, parseArg);
 	});
 var $elm$parser$Parser$keeper = $elm$parser$Parser$Advanced$keeper;
-var $elm$parser$Parser$Advanced$lazy = function (thunk) {
-	return $elm$parser$Parser$Advanced$Parser(
-		function (s) {
-			var _v0 = thunk(_Utils_Tuple0);
-			var parse = _v0.a;
-			return parse(s);
-		});
-};
-var $elm$parser$Parser$lazy = $elm$parser$Parser$Advanced$lazy;
+var $elm$parser$Parser$Advanced$map = F2(
+	function (func, _v0) {
+		var parse = _v0.a;
+		return $elm$parser$Parser$Advanced$Parser(
+			function (s0) {
+				var _v1 = parse(s0);
+				if (_v1.$ === 'Good') {
+					var p = _v1.a;
+					var a = _v1.b;
+					var s1 = _v1.c;
+					return A3(
+						$elm$parser$Parser$Advanced$Good,
+						p,
+						func(a),
+						s1);
+				} else {
+					var p = _v1.a;
+					var x = _v1.b;
+					return A2($elm$parser$Parser$Advanced$Bad, p, x);
+				}
+			});
+	});
+var $elm$parser$Parser$map = $elm$parser$Parser$Advanced$map;
 var $elm$parser$Parser$Advanced$Append = F2(
 	function (a, b) {
 		return {$: 'Append', a: a, b: b};
@@ -5954,42 +5956,104 @@ var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
 			_Utils_chr('\r')));
 	});
 var $elm$parser$Parser$spaces = $elm$parser$Parser$Advanced$spaces;
-function $author$project$Parsers$SequenceOfInts$cyclic$parser() {
-	return A2(
-		$elm$parser$Parser$keeper,
-		A2(
-			$elm$parser$Parser$ignorer,
-			$elm$parser$Parser$succeed($elm$core$Basics$identity),
-			$elm$parser$Parser$spaces),
-		$elm$parser$Parser$oneOf(
-			_List_fromArray(
-				[
-					A2(
+var $author$project$Parsers$IntLoop$helper = function (revInts) {
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$keeper,
+				A2(
 					$elm$parser$Parser$ignorer,
-					$elm$parser$Parser$succeed(_List_Nil),
-					$elm$parser$Parser$end),
+					$elm$parser$Parser$succeed(
+						function (_int) {
+							return $elm$parser$Parser$Loop(
+								A2($elm$core$List$cons, _int, revInts));
+						}),
+					$elm$parser$Parser$spaces),
+				A2(
+					$elm$parser$Parser$ignorer,
 					A2(
-					$elm$parser$Parser$andThen,
-					$author$project$Parsers$SequenceOfInts$checkList,
-					A2(
-						$elm$parser$Parser$keeper,
-						A2(
-							$elm$parser$Parser$keeper,
-							$elm$parser$Parser$succeed($elm$core$List$cons),
-							A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces)),
-						$elm$parser$Parser$lazy(
-							function (_v0) {
-								return $author$project$Parsers$SequenceOfInts$cyclic$parser();
-							})))
-				])));
-}
-try {
-	var $author$project$Parsers$SequenceOfInts$parser = $author$project$Parsers$SequenceOfInts$cyclic$parser();
-	$author$project$Parsers$SequenceOfInts$cyclic$parser = function () {
-		return $author$project$Parsers$SequenceOfInts$parser;
-	};
-} catch ($) {
-	throw 'Some top-level definitions from `Parsers.SequenceOfInts` are causing infinite recursion:\n\n  ┌─────┐\n  │    parser\n  └─────┘\n\nThese errors are very tricky, so read https://elm-lang.org/0.19.1/bad-recursion to learn how to fix it!';}
+						$elm$parser$Parser$andThen,
+						$author$project$Parsers$IntLoop$check(revInts),
+						$elm$parser$Parser$int),
+					$elm$parser$Parser$spaces)),
+				A2(
+				$elm$parser$Parser$map,
+				function (_v0) {
+					return $elm$parser$Parser$Done(
+						$elm$core$List$reverse(revInts));
+				},
+				$elm$parser$Parser$succeed(_Utils_Tuple0))
+			]));
+};
+var $elm$parser$Parser$Advanced$loopHelp = F4(
+	function (p, state, callback, s0) {
+		loopHelp:
+		while (true) {
+			var _v0 = callback(state);
+			var parse = _v0.a;
+			var _v1 = parse(s0);
+			if (_v1.$ === 'Good') {
+				var p1 = _v1.a;
+				var step = _v1.b;
+				var s1 = _v1.c;
+				if (step.$ === 'Loop') {
+					var newState = step.a;
+					var $temp$p = p || p1,
+						$temp$state = newState,
+						$temp$callback = callback,
+						$temp$s0 = s1;
+					p = $temp$p;
+					state = $temp$state;
+					callback = $temp$callback;
+					s0 = $temp$s0;
+					continue loopHelp;
+				} else {
+					var result = step.a;
+					return A3($elm$parser$Parser$Advanced$Good, p || p1, result, s1);
+				}
+			} else {
+				var p1 = _v1.a;
+				var x = _v1.b;
+				return A2($elm$parser$Parser$Advanced$Bad, p || p1, x);
+			}
+		}
+	});
+var $elm$parser$Parser$Advanced$loop = F2(
+	function (state, callback) {
+		return $elm$parser$Parser$Advanced$Parser(
+			function (s) {
+				return A4($elm$parser$Parser$Advanced$loopHelp, false, state, callback, s);
+			});
+	});
+var $elm$parser$Parser$Advanced$Done = function (a) {
+	return {$: 'Done', a: a};
+};
+var $elm$parser$Parser$Advanced$Loop = function (a) {
+	return {$: 'Loop', a: a};
+};
+var $elm$parser$Parser$toAdvancedStep = function (step) {
+	if (step.$ === 'Loop') {
+		var s = step.a;
+		return $elm$parser$Parser$Advanced$Loop(s);
+	} else {
+		var a = step.a;
+		return $elm$parser$Parser$Advanced$Done(a);
+	}
+};
+var $elm$parser$Parser$loop = F2(
+	function (state, callback) {
+		return A2(
+			$elm$parser$Parser$Advanced$loop,
+			state,
+			function (s) {
+				return A2(
+					$elm$parser$Parser$map,
+					$elm$parser$Parser$toAdvancedStep,
+					callback(s));
+			});
+	});
+var $author$project$Parsers$IntLoop$parser = A2($elm$parser$Parser$loop, _List_Nil, $author$project$Parsers$IntLoop$helper);
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
 		return {col: col, problem: problem, row: row};
@@ -6050,8 +6114,8 @@ var $elm$parser$Parser$run = F2(
 		}
 	});
 var $elm$core$Debug$toString = _Debug_toString;
-var $author$project$Parsers$SequenceOfInts$parse = function (input) {
-	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$SequenceOfInts$parser, input);
+var $author$project$Parsers$IntLoop$parse = function (input) {
+	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$IntLoop$parser, input);
 	if (_v0.$ === 'Ok') {
 		var good = _v0.a;
 		return $elm$core$Debug$toString(good);
@@ -6068,7 +6132,7 @@ var $elm$html$Html$Attributes$rows = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
-var $author$project$Parsers$SequenceOfInts$title = 'sequence of ints';
+var $author$project$Parsers$IntLoop$title = 'list of space separated ints';
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Parsers$view = function (model) {
 	return A2(
@@ -6092,7 +6156,7 @@ var $author$project$Parsers$view = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$rows(5),
-								$elm$html$Html$Attributes$placeholder($author$project$Parsers$SequenceOfInts$title),
+								$elm$html$Html$Attributes$placeholder($author$project$Parsers$IntLoop$title),
 								$elm$html$Html$Attributes$value(model),
 								$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
 							]),
@@ -6104,7 +6168,7 @@ var $author$project$Parsers$view = function (model) {
 								$elm$html$Html$Attributes$rows(5),
 								$elm$html$Html$Attributes$placeholder('output'),
 								$elm$html$Html$Attributes$value(
-								$author$project$Parsers$SequenceOfInts$parse(model))
+								$author$project$Parsers$IntLoop$parse(model))
 							]),
 						_List_Nil)
 					]))
