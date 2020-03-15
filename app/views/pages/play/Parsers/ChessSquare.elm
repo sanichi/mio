@@ -1,35 +1,36 @@
-module Parsers.RankAndFile exposing (parse, title)
+module Parsers.ChessSquare exposing (parse, title)
 
 import Parser exposing (..)
 
 
 title : String
 title =
-    "rank and file"
+    "chess square"
 
 
-parser : Parser String
+parser : Parser Square
 parser =
-    oneOf
-        [ succeed (++)
-            |= rank
-            |= file
-            |. end
-        , succeed (++)
-            |= file
-            |= rank
-            |. end
-        ]
+    succeed identity
+        |= square
+        |. end
 
 
-rank : Parser String
-rank =
-    getChompedString <|
-        chompIf (\c -> c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h')
+square : Parser Square
+square =
+    map fromString <|
+        succeed (++)
+            |= file
+            |= rank
 
 
 file : Parser String
 file =
+    getChompedString <|
+        chompIf (\c -> c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h')
+
+
+rank : Parser String
+rank =
     getChompedString <|
         chompIf (\c -> c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8')
 
@@ -42,3 +43,19 @@ parse input =
 
         Err list ->
             Debug.toString list
+
+
+type alias Square =
+    { file : Int
+    , rank : Int
+    }
+
+
+fromString : String -> Square
+fromString str =
+    case String.toList str of
+        f :: (r :: []) ->
+            Square (Char.toCode f - 96) (Char.toCode r - 48)
+
+        _ ->
+            Square 0 0
