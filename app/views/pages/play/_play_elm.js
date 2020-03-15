@@ -5686,7 +5686,7 @@ var $author$project$Parsers$ChessSquare$file = $elm$parser$Parser$getChompedStri
 				c,
 				_Utils_chr('h'))))))));
 		}));
-var $author$project$Parsers$ChessSquare$Square = F2(
+var $author$project$Utils$Square$Square = F2(
 	function (file, rank) {
 		return {file: file, rank: rank};
 	});
@@ -5694,19 +5694,28 @@ var $elm$core$String$foldr = _String_foldr;
 var $elm$core$String$toList = function (string) {
 	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
 };
-var $author$project$Parsers$ChessSquare$fromString = function (str) {
-	var _v0 = $elm$core$String$toList(str);
-	if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
-		var f = _v0.a;
-		var _v1 = _v0.b;
-		var r = _v1.a;
-		return A2(
-			$author$project$Parsers$ChessSquare$Square,
-			$elm$core$Char$toCode(f) - 96,
-			$elm$core$Char$toCode(r) - 48);
-	} else {
-		return A2($author$project$Parsers$ChessSquare$Square, 0, 0);
-	}
+var $elm$core$String$toLower = _String_toLower;
+var $elm$core$Basics$ge = _Utils_ge;
+var $author$project$Utils$Square$valid = function (square) {
+	return (square.file >= 1) && ((square.file <= 8) && ((square.file >= 1) && (square.file <= 8)));
+};
+var $author$project$Utils$Square$fromString = function (str) {
+	var square = function () {
+		var _v0 = $elm$core$String$toList(
+			$elm$core$String$toLower(str));
+		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
+			var file = _v0.a;
+			var _v1 = _v0.b;
+			var rank = _v1.a;
+			return A2(
+				$author$project$Utils$Square$Square,
+				$elm$core$Char$toCode(file) - 96,
+				$elm$core$Char$toCode(rank) - 48);
+		} else {
+			return A2($author$project$Utils$Square$Square, 0, 0);
+		}
+	}();
+	return $author$project$Utils$Square$valid(square) ? $elm$core$Maybe$Just(square) : $elm$core$Maybe$Nothing;
 };
 var $elm$parser$Parser$Advanced$map = F2(
 	function (func, _v0) {
@@ -5761,7 +5770,7 @@ var $elm$parser$Parser$Advanced$succeed = function (a) {
 var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
 var $author$project$Parsers$ChessSquare$square = A2(
 	$elm$parser$Parser$map,
-	$author$project$Parsers$ChessSquare$fromString,
+	$author$project$Utils$Square$fromString,
 	A2(
 		$elm$parser$Parser$keeper,
 		A2(

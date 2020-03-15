@@ -1,6 +1,7 @@
 module Parsers.ChessSquare exposing (parse, title)
 
 import Parser exposing (..)
+import Utils.Square exposing (Square, fromString)
 
 
 title : String
@@ -8,14 +9,14 @@ title =
     "chess square"
 
 
-parser : Parser Square
+parser : Parser (Maybe Square)
 parser =
     succeed identity
         |= square
         |. end
 
 
-square : Parser Square
+square : Parser (Maybe Square)
 square =
     map fromString <|
         succeed (++)
@@ -43,19 +44,3 @@ parse input =
 
         Err list ->
             Debug.toString list
-
-
-type alias Square =
-    { file : Int
-    , rank : Int
-    }
-
-
-fromString : String -> Square
-fromString str =
-    case String.toList str of
-        f :: (r :: []) ->
-            Square (Char.toCode f - 96) (Char.toCode r - 48)
-
-        _ ->
-            Square 0 0
