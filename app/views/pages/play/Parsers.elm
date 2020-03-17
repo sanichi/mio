@@ -9,6 +9,7 @@ import Parsers.IntLoop as IL exposing (parse, title)
 import Parsers.JavascriptVariable as JV exposing (parse, title)
 import Parsers.ListOfInts as LI exposing (parse, title)
 import Parsers.PairOfInts as PI exposing (parse, title)
+import Parsers.PieceMove as PM exposing (parse, title)
 import Parsers.SequenceOfInts as SI exposing (parse, title)
 
 
@@ -25,8 +26,8 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder CS.title, value model, onInput ParserUpdate ] []
-            , textarea [ rows 5, placeholder "output", value (CS.parse model) ] []
+            [ textarea [ rows 5, placeholder PM.title, value model, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value (PM.parse model) ] []
             ]
         ]
 
