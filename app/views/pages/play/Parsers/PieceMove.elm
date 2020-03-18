@@ -15,7 +15,10 @@ parser =
         |= number
         |= colour
         |= piece
+        |= capture
         |= square
+        |. spaces
+        |. end
 
 
 number : Parser Int
@@ -38,32 +41,68 @@ colour =
 
 piece : Parser Category
 piece =
-    map pieceFromString pieceString
+    let
+        detect chr cat =
+            map (\_ -> cat) (chompIf (\c -> c == chr))
+    in
+    oneOf
+        [ detect 'K' King
+        , detect 'Q' Queen
+        , detect 'R' Rook
+        , detect 'B' Bishop
+        , detect 'N' Knight
+        ]
 
 
-pieceString : Parser String
-pieceString =
-    getChompedString <|
-        chompIf (\c -> c == 'K' || c == 'Q' || c == 'R' || c == 'B' || c == 'N')
+capture : Parser Bool
+capture =
+    oneOf
+        [ map (\_ -> True) (chompIf (\c -> c == 'x'))
+        , succeed False
+        ]
 
 
-square : Parser String
+square : Parser ( Int, Int )
 square =
-    succeed (++)
+    succeed Tuple.pair
         |= file
         |= rank
 
 
-file : Parser String
+file : Parser Int
 file =
-    getChompedString <|
-        chompIf (\c -> c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h')
+    let
+        detect chr int =
+            map (\_ -> int) (chompIf (\c -> c == chr))
+    in
+    oneOf
+        [ detect 'a' 1
+        , detect 'b' 2
+        , detect 'c' 3
+        , detect 'd' 4
+        , detect 'e' 5
+        , detect 'f' 6
+        , detect 'g' 7
+        , detect 'h' 8
+        ]
 
 
-rank : Parser String
+rank : Parser Int
 rank =
-    getChompedString <|
-        chompIf (\c -> c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8')
+    let
+        detect chr int =
+            map (\_ -> int) (chompIf (\c -> c == chr))
+    in
+    oneOf
+        [ detect '1' 1
+        , detect '2' 2
+        , detect '3' 3
+        , detect '4' 4
+        , detect '5' 5
+        , detect '6' 6
+        , detect '7' 7
+        , detect '8' 8
+        ]
 
 
 parse : String -> String
@@ -94,27 +133,6 @@ type alias Move =
     { number : Int
     , colour : Colour
     , category : Category
-    , square : String
+    , capture : Bool
+    , square : ( Int, Int )
     }
-
-
-pieceFromString : String -> Category
-pieceFromString letter =
-    case letter of
-        "K" ->
-            King
-
-        "Q" ->
-            Queen
-
-        "R" ->
-            Rook
-
-        "B" ->
-            Bishop
-
-        "N" ->
-            Knight
-
-        _ ->
-            Pawn
