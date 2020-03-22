@@ -1,5 +1,6 @@
 module Parsers exposing (Model, init, update, view)
 
+import Advanced.JustInt as AJI exposing (parse, title)
 import Html exposing (Html, div, form, textarea)
 import Html.Attributes exposing (class, placeholder, rows, value)
 import Html.Events exposing (onInput)
@@ -26,8 +27,8 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder PM.title, value model, onInput ParserUpdate ] []
-            , textarea [ rows 5, placeholder "output", value (PM.parse model) ] []
+            [ textarea [ rows 5, placeholder AJI.title, value model, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value (AJI.parse model) ] []
             ]
         ]
 
