@@ -17,6 +17,7 @@ parser =
         |= piece
         |= capture
         |= square
+        |= check
         |. spaces
         |. end
 
@@ -41,10 +42,6 @@ colour =
 
 piece : Parser Category
 piece =
-    let
-        detect chr cat =
-            map (\_ -> cat) (chompIf (\c -> c == chr))
-    in
     oneOf
         [ detect 'K' King
         , detect 'Q' Queen
@@ -57,7 +54,7 @@ piece =
 capture : Parser Bool
 capture =
     oneOf
-        [ map (\_ -> True) (chompIf (\c -> c == 'x'))
+        [ detect 'x' True
         , succeed False
         ]
 
@@ -69,12 +66,17 @@ square =
         |= rank
 
 
+check : Parser (Maybe Check)
+check =
+    oneOf
+        [ detect '+' (Just Check)
+        , detect '#' (Just Mate)
+        , succeed Nothing
+        ]
+
+
 file : Parser Int
 file =
-    let
-        detect chr int =
-            map (\_ -> int) (chompIf (\c -> c == chr))
-    in
     oneOf
         [ detect 'a' 1
         , detect 'b' 2
@@ -89,10 +91,6 @@ file =
 
 rank : Parser Int
 rank =
-    let
-        detect chr int =
-            map (\_ -> int) (chompIf (\c -> c == chr))
-    in
     oneOf
         [ detect '1' 1
         , detect '2' 2
@@ -103,6 +101,11 @@ rank =
         , detect '7' 7
         , detect '8' 8
         ]
+
+
+detect : Char -> a -> Parser a
+detect chr a =
+    map (\_ -> a) (chompIf (\c -> c == chr))
 
 
 parse : String -> String
@@ -129,10 +132,16 @@ type Colour
     | White
 
 
+type Check
+    = Check
+    | Mate
+
+
 type alias Move =
     { number : Int
     , colour : Colour
     , category : Category
     , capture : Bool
     , square : ( Int, Int )
+    , check : Maybe Check
     }
