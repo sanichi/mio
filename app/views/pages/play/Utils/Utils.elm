@@ -1,4 +1,4 @@
-module Utils.Utils exposing (positiveInt)
+module Utils.Utils exposing (positiveInt, ternary)
 
 import Parser exposing (..)
 
@@ -25,3 +25,12 @@ positiveInt =
                     0
         )
         may
+
+
+ternary : Bool -> a -> a -> a
+ternary c a b =
+    if c then
+        a
+
+    else
+        b

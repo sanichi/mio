@@ -5522,11 +5522,36 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $author$project$Parsers$PieceMove$Move = F6(
-	function (number, colour, category, capture, square, check) {
-		return {capture: capture, category: category, check: check, colour: colour, number: number, square: square};
+var $elm$parser$Parser$Done = function (a) {
+	return {$: 'Done', a: a};
+};
+var $elm$parser$Parser$Loop = function (a) {
+	return {$: 'Loop', a: a};
+};
+var $author$project$Parsers$PawnLoop$Black = {$: 'Black'};
+var $author$project$Parsers$PawnLoop$White = {$: 'White'};
+var $author$project$Utils$Utils$ternary = F3(
+	function (c, a, b) {
+		return c ? a : b;
 	});
-var $elm$parser$Parser$UnexpectedChar = {$: 'UnexpectedChar'};
+var $author$project$Parsers$PawnLoop$advance = F2(
+	function (move, state) {
+		var number = state.moveNumber + A3(
+			$author$project$Utils$Utils$ternary,
+			_Utils_eq(state.toMove, $author$project$Parsers$PawnLoop$White),
+			0,
+			1);
+		var list = A2($elm$core$List$cons, move, state.moves);
+		var colour = A3(
+			$author$project$Utils$Utils$ternary,
+			_Utils_eq(state.toMove, $author$project$Parsers$PawnLoop$White),
+			$author$project$Parsers$PawnLoop$Black,
+			$author$project$Parsers$PawnLoop$White);
+		return _Utils_update(
+			state,
+			{moveNumber: number, moves: list, toMove: colour});
+	});
+var $elm$parser$Parser$ExpectingEnd = {$: 'ExpectingEnd'};
 var $elm$parser$Parser$Advanced$Bad = F2(
 	function (a, b) {
 		return {$: 'Bad', a: a, b: b};
@@ -5554,143 +5579,18 @@ var $elm$parser$Parser$Advanced$fromState = F2(
 			$elm$parser$Parser$Advanced$Empty,
 			A4($elm$parser$Parser$Advanced$DeadEnd, s.row, s.col, x, s.context));
 	});
-var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
-var $elm$parser$Parser$Advanced$chompIf = F2(
-	function (isGood, expecting) {
-		return $elm$parser$Parser$Advanced$Parser(
-			function (s) {
-				var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, s.offset, s.src);
-				return _Utils_eq(newOffset, -1) ? A2(
-					$elm$parser$Parser$Advanced$Bad,
-					false,
-					A2($elm$parser$Parser$Advanced$fromState, s, expecting)) : (_Utils_eq(newOffset, -2) ? A3(
-					$elm$parser$Parser$Advanced$Good,
-					true,
-					_Utils_Tuple0,
-					{col: 1, context: s.context, indent: s.indent, offset: s.offset + 1, row: s.row + 1, src: s.src}) : A3(
-					$elm$parser$Parser$Advanced$Good,
-					true,
-					_Utils_Tuple0,
-					{col: s.col + 1, context: s.context, indent: s.indent, offset: newOffset, row: s.row, src: s.src}));
-			});
-	});
-var $elm$parser$Parser$chompIf = function (isGood) {
-	return A2($elm$parser$Parser$Advanced$chompIf, isGood, $elm$parser$Parser$UnexpectedChar);
-};
-var $elm$parser$Parser$Advanced$map = F2(
-	function (func, _v0) {
-		var parse = _v0.a;
-		return $elm$parser$Parser$Advanced$Parser(
-			function (s0) {
-				var _v1 = parse(s0);
-				if (_v1.$ === 'Good') {
-					var p = _v1.a;
-					var a = _v1.b;
-					var s1 = _v1.c;
-					return A3(
-						$elm$parser$Parser$Advanced$Good,
-						p,
-						func(a),
-						s1);
-				} else {
-					var p = _v1.a;
-					var x = _v1.b;
-					return A2($elm$parser$Parser$Advanced$Bad, p, x);
-				}
-			});
-	});
-var $elm$parser$Parser$map = $elm$parser$Parser$Advanced$map;
-var $author$project$Parsers$PieceMove$detect = F2(
-	function (chr, a) {
-		return A2(
-			$elm$parser$Parser$map,
-			function (_v0) {
-				return a;
-			},
-			$elm$parser$Parser$chompIf(
-				function (c) {
-					return _Utils_eq(c, chr);
-				}));
-	});
-var $elm$parser$Parser$Advanced$Append = F2(
-	function (a, b) {
-		return {$: 'Append', a: a, b: b};
-	});
-var $elm$parser$Parser$Advanced$oneOfHelp = F3(
-	function (s0, bag, parsers) {
-		oneOfHelp:
-		while (true) {
-			if (!parsers.b) {
-				return A2($elm$parser$Parser$Advanced$Bad, false, bag);
-			} else {
-				var parse = parsers.a.a;
-				var remainingParsers = parsers.b;
-				var _v1 = parse(s0);
-				if (_v1.$ === 'Good') {
-					var step = _v1;
-					return step;
-				} else {
-					var step = _v1;
-					var p = step.a;
-					var x = step.b;
-					if (p) {
-						return step;
-					} else {
-						var $temp$s0 = s0,
-							$temp$bag = A2($elm$parser$Parser$Advanced$Append, bag, x),
-							$temp$parsers = remainingParsers;
-						s0 = $temp$s0;
-						bag = $temp$bag;
-						parsers = $temp$parsers;
-						continue oneOfHelp;
-					}
-				}
-			}
-		}
-	});
-var $elm$parser$Parser$Advanced$oneOf = function (parsers) {
+var $elm$parser$Parser$Advanced$end = function (x) {
 	return $elm$parser$Parser$Advanced$Parser(
 		function (s) {
-			return A3($elm$parser$Parser$Advanced$oneOfHelp, s, $elm$parser$Parser$Advanced$Empty, parsers);
+			return _Utils_eq(
+				$elm$core$String$length(s.src),
+				s.offset) ? A3($elm$parser$Parser$Advanced$Good, false, _Utils_Tuple0, s) : A2(
+				$elm$parser$Parser$Advanced$Bad,
+				false,
+				A2($elm$parser$Parser$Advanced$fromState, s, x));
 		});
 };
-var $elm$parser$Parser$oneOf = $elm$parser$Parser$Advanced$oneOf;
-var $elm$parser$Parser$Advanced$succeed = function (a) {
-	return $elm$parser$Parser$Advanced$Parser(
-		function (s) {
-			return A3($elm$parser$Parser$Advanced$Good, false, a, s);
-		});
-};
-var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
-var $author$project$Parsers$PieceMove$capture = $elm$parser$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('x'),
-			true),
-			$elm$parser$Parser$succeed(false)
-		]));
-var $author$project$Parsers$PieceMove$Check = {$: 'Check'};
-var $author$project$Parsers$PieceMove$Mate = {$: 'Mate'};
-var $author$project$Parsers$PieceMove$check = $elm$parser$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('+'),
-			$elm$core$Maybe$Just($author$project$Parsers$PieceMove$Check)),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('#'),
-			$elm$core$Maybe$Just($author$project$Parsers$PieceMove$Mate)),
-			$elm$parser$Parser$succeed($elm$core$Maybe$Nothing)
-		]));
-var $author$project$Parsers$PieceMove$Black = {$: 'Black'};
-var $author$project$Parsers$PieceMove$White = {$: 'White'};
+var $elm$parser$Parser$end = $elm$parser$Parser$Advanced$end($elm$parser$Parser$ExpectingEnd);
 var $elm$core$Basics$always = F2(
 	function (a, _v0) {
 		return a;
@@ -5738,6 +5638,53 @@ var $elm$parser$Parser$Advanced$keeper = F2(
 		return A3($elm$parser$Parser$Advanced$map2, $elm$core$Basics$apL, parseFunc, parseArg);
 	});
 var $elm$parser$Parser$keeper = $elm$parser$Parser$Advanced$keeper;
+var $elm$parser$Parser$Advanced$Append = F2(
+	function (a, b) {
+		return {$: 'Append', a: a, b: b};
+	});
+var $elm$parser$Parser$Advanced$oneOfHelp = F3(
+	function (s0, bag, parsers) {
+		oneOfHelp:
+		while (true) {
+			if (!parsers.b) {
+				return A2($elm$parser$Parser$Advanced$Bad, false, bag);
+			} else {
+				var parse = parsers.a.a;
+				var remainingParsers = parsers.b;
+				var _v1 = parse(s0);
+				if (_v1.$ === 'Good') {
+					var step = _v1;
+					return step;
+				} else {
+					var step = _v1;
+					var p = step.a;
+					var x = step.b;
+					if (p) {
+						return step;
+					} else {
+						var $temp$s0 = s0,
+							$temp$bag = A2($elm$parser$Parser$Advanced$Append, bag, x),
+							$temp$parsers = remainingParsers;
+						s0 = $temp$s0;
+						bag = $temp$bag;
+						parsers = $temp$parsers;
+						continue oneOfHelp;
+					}
+				}
+			}
+		}
+	});
+var $elm$parser$Parser$Advanced$oneOf = function (parsers) {
+	return $elm$parser$Parser$Advanced$Parser(
+		function (s) {
+			return A3($elm$parser$Parser$Advanced$oneOfHelp, s, $elm$parser$Parser$Advanced$Empty, parsers);
+		});
+};
+var $elm$parser$Parser$oneOf = $elm$parser$Parser$Advanced$oneOf;
+var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
 var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 	function (isGood, offset, row, col, s0) {
 		chompWhileHelp:
@@ -5795,6 +5742,13 @@ var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
 			_Utils_chr('\r')));
 	});
 var $elm$parser$Parser$spaces = $elm$parser$Parser$Advanced$spaces;
+var $elm$parser$Parser$Advanced$succeed = function (a) {
+	return $elm$parser$Parser$Advanced$Parser(
+		function (s) {
+			return A3($elm$parser$Parser$Advanced$Good, false, a, s);
+		});
+};
+var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
 var $elm$parser$Parser$ExpectingSymbol = function (a) {
 	return {$: 'ExpectingSymbol', a: a};
 };
@@ -5832,40 +5786,57 @@ var $elm$parser$Parser$symbol = function (str) {
 			str,
 			$elm$parser$Parser$ExpectingSymbol(str)));
 };
-var $author$project$Parsers$PieceMove$colour = A2(
-	$elm$parser$Parser$keeper,
-	A2(
+var $author$project$Parsers$PawnLoop$moveNumber = function (state) {
+	return _Utils_eq(state.toMove, $author$project$Parsers$PawnLoop$White) ? A2(
 		$elm$parser$Parser$ignorer,
-		$elm$parser$Parser$succeed($elm$core$Basics$identity),
-		$elm$parser$Parser$symbol('.')),
-	A2(
-		$elm$parser$Parser$ignorer,
-		$elm$parser$Parser$oneOf(
-			_List_fromArray(
-				[
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$succeed(_Utils_Tuple0),
+				$elm$parser$Parser$symbol(
+					$elm$core$String$fromInt(state.moveNumber))),
+			$elm$parser$Parser$symbol('.')),
+		$elm$parser$Parser$spaces) : $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
 					A2(
-					$elm$parser$Parser$map,
-					function (_v0) {
-						return $author$project$Parsers$PieceMove$Black;
-					},
-					$elm$parser$Parser$symbol('..')),
-					$elm$parser$Parser$succeed($author$project$Parsers$PieceMove$White)
-				])),
-		$elm$parser$Parser$spaces));
-var $elm$parser$Parser$ExpectingEnd = {$: 'ExpectingEnd'};
-var $elm$parser$Parser$Advanced$end = function (x) {
-	return $elm$parser$Parser$Advanced$Parser(
-		function (s) {
-			return _Utils_eq(
-				$elm$core$String$length(s.src),
-				s.offset) ? A3($elm$parser$Parser$Advanced$Good, false, _Utils_Tuple0, s) : A2(
-				$elm$parser$Parser$Advanced$Bad,
-				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, x));
-		});
+						$elm$parser$Parser$ignorer,
+						$elm$parser$Parser$succeed(_Utils_Tuple0),
+						$elm$parser$Parser$symbol(
+							$elm$core$String$fromInt(state.moveNumber))),
+					$elm$parser$Parser$symbol('...')),
+				$elm$parser$Parser$spaces),
+				$elm$parser$Parser$succeed(_Utils_Tuple0)
+			]));
 };
-var $elm$parser$Parser$end = $elm$parser$Parser$Advanced$end($elm$parser$Parser$ExpectingEnd);
-var $elm$parser$Parser$chompWhile = $elm$parser$Parser$Advanced$chompWhile;
+var $elm$parser$Parser$UnexpectedChar = {$: 'UnexpectedChar'};
+var $elm$parser$Parser$Advanced$chompIf = F2(
+	function (isGood, expecting) {
+		return $elm$parser$Parser$Advanced$Parser(
+			function (s) {
+				var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, s.offset, s.src);
+				return _Utils_eq(newOffset, -1) ? A2(
+					$elm$parser$Parser$Advanced$Bad,
+					false,
+					A2($elm$parser$Parser$Advanced$fromState, s, expecting)) : (_Utils_eq(newOffset, -2) ? A3(
+					$elm$parser$Parser$Advanced$Good,
+					true,
+					_Utils_Tuple0,
+					{col: 1, context: s.context, indent: s.indent, offset: s.offset + 1, row: s.row + 1, src: s.src}) : A3(
+					$elm$parser$Parser$Advanced$Good,
+					true,
+					_Utils_Tuple0,
+					{col: s.col + 1, context: s.context, indent: s.indent, offset: newOffset, row: s.row, src: s.src}));
+			});
+	});
+var $elm$parser$Parser$chompIf = function (isGood) {
+	return A2($elm$parser$Parser$Advanced$chompIf, isGood, $elm$parser$Parser$UnexpectedChar);
+};
 var $elm$parser$Parser$Advanced$mapChompedString = F2(
 	function (func, _v0) {
 		var parse = _v0.a;
@@ -5895,175 +5866,167 @@ var $elm$parser$Parser$Advanced$getChompedString = function (parser) {
 	return A2($elm$parser$Parser$Advanced$mapChompedString, $elm$core$Basics$always, parser);
 };
 var $elm$parser$Parser$getChompedString = $elm$parser$Parser$Advanced$getChompedString;
-var $elm$core$Basics$neq = _Utils_notEqual;
-var $author$project$Utils$Utils$positiveInt = function () {
-	var str = $elm$parser$Parser$getChompedString(
-		A2(
-			$elm$parser$Parser$ignorer,
-			A2(
-				$elm$parser$Parser$ignorer,
-				$elm$parser$Parser$succeed(_Utils_Tuple0),
-				$elm$parser$Parser$chompIf(
-					function (c) {
-						return (!_Utils_eq(
-							c,
-							_Utils_chr('0'))) && $elm$core$Char$isDigit(c);
-					})),
-			$elm$parser$Parser$chompWhile(
-				function (c) {
-					return $elm$core$Char$isDigit(c);
-				})));
-	var may = A2($elm$parser$Parser$map, $elm$core$String$toInt, str);
-	return A2(
-		$elm$parser$Parser$map,
-		function (may_) {
-			if (may_.$ === 'Just') {
-				var _int = may_.a;
-				return _int;
-			} else {
-				return 0;
-			}
-		},
-		may);
-}();
-var $author$project$Parsers$PieceMove$number = A2(
-	$elm$parser$Parser$keeper,
-	$elm$parser$Parser$succeed($elm$core$Basics$identity),
-	A2($elm$parser$Parser$ignorer, $author$project$Utils$Utils$positiveInt, $elm$parser$Parser$spaces));
-var $author$project$Parsers$PieceMove$Bishop = {$: 'Bishop'};
-var $author$project$Parsers$PieceMove$King = {$: 'King'};
-var $author$project$Parsers$PieceMove$Knight = {$: 'Knight'};
-var $author$project$Parsers$PieceMove$Queen = {$: 'Queen'};
-var $author$project$Parsers$PieceMove$Rook = {$: 'Rook'};
-var $author$project$Parsers$PieceMove$piece = $elm$parser$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('K'),
-			$author$project$Parsers$PieceMove$King),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('Q'),
-			$author$project$Parsers$PieceMove$Queen),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('R'),
-			$author$project$Parsers$PieceMove$Rook),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('B'),
-			$author$project$Parsers$PieceMove$Bishop),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('N'),
-			$author$project$Parsers$PieceMove$Knight)
-		]));
-var $author$project$Parsers$PieceMove$file = $elm$parser$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('a'),
-			1),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('b'),
-			2),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('c'),
-			3),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('d'),
-			4),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('e'),
-			5),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('f'),
-			6),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('g'),
-			7),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('h'),
-			8)
-		]));
-var $elm$core$Tuple$pair = F2(
-	function (a, b) {
-		return _Utils_Tuple2(a, b);
-	});
-var $author$project$Parsers$PieceMove$rank = $elm$parser$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('1'),
-			1),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('2'),
-			2),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('3'),
-			3),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('4'),
-			4),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('5'),
-			5),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('6'),
-			6),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('7'),
-			7),
-			A2(
-			$author$project$Parsers$PieceMove$detect,
-			_Utils_chr('8'),
-			8)
-		]));
-var $author$project$Parsers$PieceMove$square = A2(
-	$elm$parser$Parser$keeper,
-	A2(
-		$elm$parser$Parser$keeper,
-		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
-		$author$project$Parsers$PieceMove$file),
-	$author$project$Parsers$PieceMove$rank);
-var $author$project$Parsers$PieceMove$parser = A2(
-	$elm$parser$Parser$keeper,
-	A2(
-		$elm$parser$Parser$keeper,
-		A2(
-			$elm$parser$Parser$keeper,
-			A2(
-				$elm$parser$Parser$keeper,
-				A2(
-					$elm$parser$Parser$keeper,
-					A2(
-						$elm$parser$Parser$keeper,
-						$elm$parser$Parser$succeed($author$project$Parsers$PieceMove$Move),
-						$author$project$Parsers$PieceMove$number),
-					$author$project$Parsers$PieceMove$colour),
-				$author$project$Parsers$PieceMove$piece),
-			$author$project$Parsers$PieceMove$capture),
-		$author$project$Parsers$PieceMove$square),
+var $author$project$Parsers$PawnLoop$san = $elm$parser$Parser$getChompedString(
 	A2(
 		$elm$parser$Parser$ignorer,
-		A2($elm$parser$Parser$ignorer, $author$project$Parsers$PieceMove$check, $elm$parser$Parser$spaces),
-		$elm$parser$Parser$end));
+		A2(
+			$elm$parser$Parser$ignorer,
+			$elm$parser$Parser$succeed(_Utils_Tuple0),
+			$elm$parser$Parser$chompIf(
+				function (c) {
+					return _Utils_eq(
+						c,
+						_Utils_chr('a')) || (_Utils_eq(
+						c,
+						_Utils_chr('b')) || (_Utils_eq(
+						c,
+						_Utils_chr('c')) || (_Utils_eq(
+						c,
+						_Utils_chr('d')) || (_Utils_eq(
+						c,
+						_Utils_chr('e')) || (_Utils_eq(
+						c,
+						_Utils_chr('f')) || (_Utils_eq(
+						c,
+						_Utils_chr('g')) || _Utils_eq(
+						c,
+						_Utils_chr('h'))))))));
+				})),
+		$elm$parser$Parser$chompIf(
+			function (c) {
+				return _Utils_eq(
+					c,
+					_Utils_chr('1')) || (_Utils_eq(
+					c,
+					_Utils_chr('2')) || (_Utils_eq(
+					c,
+					_Utils_chr('3')) || (_Utils_eq(
+					c,
+					_Utils_chr('4')) || (_Utils_eq(
+					c,
+					_Utils_chr('5')) || (_Utils_eq(
+					c,
+					_Utils_chr('6')) || (_Utils_eq(
+					c,
+					_Utils_chr('7')) || _Utils_eq(
+					c,
+					_Utils_chr('8'))))))));
+			})));
+var $author$project$Parsers$PawnLoop$helper = function (state) {
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$ignorer,
+					$elm$parser$Parser$succeed(
+						function (move) {
+							return $elm$parser$Parser$Loop(
+								A2($author$project$Parsers$PawnLoop$advance, move, state));
+						}),
+					$author$project$Parsers$PawnLoop$moveNumber(state)),
+				A2($elm$parser$Parser$ignorer, $author$project$Parsers$PawnLoop$san, $elm$parser$Parser$spaces)),
+				A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$succeed(
+					$elm$parser$Parser$Done(
+						$elm$core$List$reverse(state.moves))),
+				$elm$parser$Parser$end)
+			]));
+};
+var $author$project$Parsers$PawnLoop$initial = {moveNumber: 1, moves: _List_Nil, toMove: $author$project$Parsers$PawnLoop$White};
+var $elm$parser$Parser$Advanced$loopHelp = F4(
+	function (p, state, callback, s0) {
+		loopHelp:
+		while (true) {
+			var _v0 = callback(state);
+			var parse = _v0.a;
+			var _v1 = parse(s0);
+			if (_v1.$ === 'Good') {
+				var p1 = _v1.a;
+				var step = _v1.b;
+				var s1 = _v1.c;
+				if (step.$ === 'Loop') {
+					var newState = step.a;
+					var $temp$p = p || p1,
+						$temp$state = newState,
+						$temp$callback = callback,
+						$temp$s0 = s1;
+					p = $temp$p;
+					state = $temp$state;
+					callback = $temp$callback;
+					s0 = $temp$s0;
+					continue loopHelp;
+				} else {
+					var result = step.a;
+					return A3($elm$parser$Parser$Advanced$Good, p || p1, result, s1);
+				}
+			} else {
+				var p1 = _v1.a;
+				var x = _v1.b;
+				return A2($elm$parser$Parser$Advanced$Bad, p || p1, x);
+			}
+		}
+	});
+var $elm$parser$Parser$Advanced$loop = F2(
+	function (state, callback) {
+		return $elm$parser$Parser$Advanced$Parser(
+			function (s) {
+				return A4($elm$parser$Parser$Advanced$loopHelp, false, state, callback, s);
+			});
+	});
+var $elm$parser$Parser$Advanced$map = F2(
+	function (func, _v0) {
+		var parse = _v0.a;
+		return $elm$parser$Parser$Advanced$Parser(
+			function (s0) {
+				var _v1 = parse(s0);
+				if (_v1.$ === 'Good') {
+					var p = _v1.a;
+					var a = _v1.b;
+					var s1 = _v1.c;
+					return A3(
+						$elm$parser$Parser$Advanced$Good,
+						p,
+						func(a),
+						s1);
+				} else {
+					var p = _v1.a;
+					var x = _v1.b;
+					return A2($elm$parser$Parser$Advanced$Bad, p, x);
+				}
+			});
+	});
+var $elm$parser$Parser$map = $elm$parser$Parser$Advanced$map;
+var $elm$parser$Parser$Advanced$Done = function (a) {
+	return {$: 'Done', a: a};
+};
+var $elm$parser$Parser$Advanced$Loop = function (a) {
+	return {$: 'Loop', a: a};
+};
+var $elm$parser$Parser$toAdvancedStep = function (step) {
+	if (step.$ === 'Loop') {
+		var s = step.a;
+		return $elm$parser$Parser$Advanced$Loop(s);
+	} else {
+		var a = step.a;
+		return $elm$parser$Parser$Advanced$Done(a);
+	}
+};
+var $elm$parser$Parser$loop = F2(
+	function (state, callback) {
+		return A2(
+			$elm$parser$Parser$Advanced$loop,
+			state,
+			function (s) {
+				return A2(
+					$elm$parser$Parser$map,
+					$elm$parser$Parser$toAdvancedStep,
+					callback(s));
+			});
+	});
+var $author$project$Parsers$PawnLoop$parser = A2($elm$parser$Parser$loop, $author$project$Parsers$PawnLoop$initial, $author$project$Parsers$PawnLoop$helper);
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
 		return {col: col, problem: problem, row: row};
@@ -6124,8 +6087,8 @@ var $elm$parser$Parser$run = F2(
 		}
 	});
 var $elm$core$Debug$toString = _Debug_toString;
-var $author$project$Parsers$PieceMove$parse = function (input) {
-	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$PieceMove$parser, input);
+var $author$project$Parsers$PawnLoop$parse = function (input) {
+	var _v0 = A2($elm$parser$Parser$run, $author$project$Parsers$PawnLoop$parser, input);
 	if (_v0.$ === 'Ok') {
 		var good = _v0.a;
 		return $elm$core$Debug$toString(good);
@@ -6142,7 +6105,7 @@ var $elm$html$Html$Attributes$rows = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
-var $author$project$Parsers$PieceMove$title = 'piece move';
+var $author$project$Parsers$PawnLoop$title = 'list of numbered pawn moves';
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Parsers$view = function (model) {
 	return A2(
@@ -6166,7 +6129,7 @@ var $author$project$Parsers$view = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$rows(5),
-								$elm$html$Html$Attributes$placeholder($author$project$Parsers$PieceMove$title),
+								$elm$html$Html$Attributes$placeholder($author$project$Parsers$PawnLoop$title),
 								$elm$html$Html$Attributes$value(model),
 								$elm$html$Html$Events$onInput($author$project$Messages$ParserUpdate)
 							]),
@@ -6178,7 +6141,7 @@ var $author$project$Parsers$view = function (model) {
 								$elm$html$Html$Attributes$rows(5),
 								$elm$html$Html$Attributes$placeholder('output'),
 								$elm$html$Html$Attributes$value(
-								$author$project$Parsers$PieceMove$parse(model))
+								$author$project$Parsers$PawnLoop$parse(model))
 							]),
 						_List_Nil)
 					]))
