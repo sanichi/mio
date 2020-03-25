@@ -48,8 +48,8 @@ def wait_a_while(delay=0.3)
   sleep(delay)
 end
 
-def t(key, *arg)
-  I18n.t(key, *arg)
+def t(key, **arg)
+  I18n.t(key, **arg)
 end
 
 def expect_error(page, text)

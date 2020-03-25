@@ -41,7 +41,7 @@ class Relation
     else
       :none
     end
-    new(type, opt)
+    new(type, **opt)
   end
 
   def to_s(caps: false)
