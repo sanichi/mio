@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 6.0.2.1"
+gem "rails", "~> 6.0.2.2"
 gem "pg", '>= 0.18', '< 2.0'
 gem "haml-rails", '~> 2.0'
 gem "sassc-rails", '~> 2.1'
@@ -33,7 +33,7 @@ group :test do
 end
 
 group :development, :test do
-  gem "rspec-rails", "~> 3.8"
+  gem "rspec-rails", "~> 4.0"
   gem "capybara", "~> 3.8"
   gem "selenium-webdriver"
   gem "factory_bot_rails", "~> 5.0"
