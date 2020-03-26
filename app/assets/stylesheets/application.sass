@@ -111,6 +111,22 @@ section
   margin-left: auto
   margin-right: auto
 
+// Article tables.
+
+article
+
+  table
+    @extend .table-bordered, .table-striped, .table-light, .mb-3
+    margin-left: auto
+    margin-right: auto
+
+    td
+      @extend .p-1, .table-success
+
+    th
+      @extend .p-1, .table-info
+
+
 // Other imports
 @import "risle"
 @import "tree"

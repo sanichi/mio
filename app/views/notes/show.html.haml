@@ -5,7 +5,8 @@
     = @note.title
     .float-right
       = @note.series_number(links: true)
-  .card-body= @note.stuff_html
+  .card-body
+    %article= @note.stuff_html
 
 .text-center.mt-3
   = link_to t("note.notes"), last_search(notes_path), class: "btn btn-success"
