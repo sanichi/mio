@@ -1,4 +1,4 @@
-module Utils.Utils exposing (positiveInt, ternary)
+module Utils.Utils exposing (detect, positiveInt, ternary)
 
 import Parser exposing (..)
 
@@ -25,6 +25,11 @@ positiveInt =
                     0
         )
         may
+
+
+detect : Char -> a -> Parser a
+detect chr a =
+    map (\_ -> a) (chompIf (\c -> c == chr))
 
 
 ternary : Bool -> a -> a -> a

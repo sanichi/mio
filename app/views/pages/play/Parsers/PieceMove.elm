@@ -1,7 +1,7 @@
 module Parsers.PieceMove exposing (parse, title)
 
 import Parser exposing (..)
-import Utils.Utils exposing (positiveInt)
+import Utils.Utils exposing (detect, positiveInt)
 
 
 title : String
@@ -101,11 +101,6 @@ rank =
         , detect '7' 7
         , detect '8' 8
         ]
-
-
-detect : Char -> a -> Parser a
-detect chr a =
-    map (\_ -> a) (chompIf (\c -> c == chr))
 
 
 parse : String -> String

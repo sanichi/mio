@@ -5,6 +5,7 @@ import Html exposing (Html, div, form, textarea)
 import Html.Attributes exposing (class, placeholder, rows, value)
 import Html.Events exposing (onInput)
 import Messages exposing (Msg(..))
+import Parsers.ChessMovement as CM exposing (parse, title)
 import Parsers.ChessSquare as CS exposing (parse, title)
 import Parsers.IntLoop as IL exposing (parse, title)
 import Parsers.JavascriptVariable as JV exposing (parse, title)
@@ -28,8 +29,8 @@ view : Model -> Html Msg
 view model =
     div [ class "offset-1 col-10" ]
         [ form [ class "crud" ]
-            [ textarea [ rows 5, placeholder PL.title, value model, onInput ParserUpdate ] []
-            , textarea [ rows 5, placeholder "output", value (PL.parse model) ] []
+            [ textarea [ rows 5, placeholder CM.title, value model, onInput ParserUpdate ] []
+            , textarea [ rows 5, placeholder "output", value (CM.parse model) ] []
             ]
         ]
 
