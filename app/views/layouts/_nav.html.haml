@@ -15,11 +15,11 @@
             = render "wk/kanjis/dropdown_menu"                         if can?(:read, Wk::Kanji)
             = render "wk/radicals/dropdown_menu"                       if can?(:read, Wk::Radical)
             = render "wk/verb_pairs/dropdown_menu"                     if can?(:read, Wk::VerbPair)
+            = link_to t("misa.misas"),              misas_path         if can?(:read, Misa)
+            = link_to t("note.notes"),              notes_path         if can?(:read, Note)
             = link_to t("wk.verb_pair.verb_pairs"), wk_verb_pairs_path if can?(:read, Wk::VerbPair)
             = link_to t("wk.example.examples"),     wk_examples_path   if can?(:read, Wk::Example)
             = link_to t("wk.group.groups"),         wk_groups_path     if can?(:read, Wk::Group)
-            = link_to t("misa.misas"),              misas_path         if can?(:read, Misa)
-            = link_to t("note.notes"),              notes_path         if can?(:read, Note)
             = link_to t("problem.problems"),        problems_path      if can?(:read, Problem)
 
       - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
