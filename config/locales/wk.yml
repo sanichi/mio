@@ -8,7 +8,7 @@ en:
     meaning: Meaning
     reading: Reading
     alive:
-      text: KanjiAlive
+      text: Alive
       url: "https://app.kanjialive.com/%{kanji}"
     example:
       edit: Edit Example
