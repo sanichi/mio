@@ -29,7 +29,9 @@
       %td.col-9= @kanji.reading_mnemonic.html_safe
     %tr.d-flex
       %td.col-3= t("wk.links")
-      %td.col-9= link_to t("wk.jisho.text"), t("wk.jisho.url.kanji", path: t("wk.jisho.path"), kanji: @kanji.character), target: "external"
+      %td.col-9
+        = link_to t("wk.jisho.text"), t("wk.jisho.url.kanji", path: t("wk.jisho.path"), kanji: @kanji.character), target: "external"
+        = link_to t("wk.alive.text"), t("wk.alive.url", kanji: @kanji.character), target: "external"
     %tr.d-flex
       %td.col-3= t("wk.level")
       %td.col-9= @kanji.level

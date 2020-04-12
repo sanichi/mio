@@ -7,6 +7,9 @@ en:
     links: Links
     meaning: Meaning
     reading: Reading
+    alive:
+      text: KanjiAlive
+      url: "https://app.kanjialive.com/%{kanji}"
     example:
       edit: Edit Example
       english: English
