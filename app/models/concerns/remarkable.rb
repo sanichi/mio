@@ -16,6 +16,13 @@ module Remarkable
       end
     end
 
+    def image(link, title, alt)
+      link = "/images/#{link}" unless link.match?(/\//)
+      width = get_width(title)
+      klass = get_klass(title)
+      %Q(<img src="#{link}" alt="#{alt}" class="styled #{klass}" width="#{width}">)
+    end
+
     private
 
     def link_with_target(link, text=nil)
@@ -24,6 +31,26 @@ module Remarkable
       trgt = $2.blank?? "external" : $2
       text = link if text.blank?
       [link, trgt, text]
+    end
+
+    def get_width(inst)
+      if inst&.match(/([1-9]\d*)%/) && $1.to_i <= 100 && $1.to_i >= 10
+        "#{$1}%"
+      elsif inst&.match(/([1-9]\d*)/) && $1.to_i <= 300 && $1.to_i >= 100
+        "#{$1}px"
+      else
+        "300px"
+      end
+    end
+
+    def get_klass(inst)
+      if inst&.match?(/R/i)
+        "float-right ml-3 mt-1 mb-1"
+      elsif inst&.match?(/L/i)
+        "float-left mr-3 mt-1 mb-1"
+      else
+        "mx-auto d-block mt-3 mb-3"
+      end
     end
   end
 
