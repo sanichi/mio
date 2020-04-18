@@ -16,3 +16,6 @@ require 'capistrano/passenger'
 
 # For prettier console output.
 require 'airbrussh/capistrano'
+
+# Include local tasks.
+Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
