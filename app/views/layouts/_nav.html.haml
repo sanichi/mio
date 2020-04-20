@@ -62,6 +62,7 @@
             = link_to t("pages.play"),         play_path         if can?(:play, :page)
             = link_to t("user.users"),         users_path        if can?(:read, User)
             = link_to t("login.logins"),       logins_path       if can?(:read, Login)
+            = link_to t("pages.env"),          env_path          if can?(:env, :page)
 
     %ul.right
       %li
