@@ -1,7 +1,14 @@
 = render "wk/readings/utils"
 = render "utils/title", text: @kanji.character
 
-%h1.text-center= @kanji.linked_character
+- if @kanji.kvg_xml.present?
+  = content_for :javascript do
+    = render "kvg_button.js"
+
+%h1.text-center
+  = @kanji.linked_character
+  - if @kanji.kvg_xml.present?
+    = render inline: @kanji.kvg_xml
 
 %table{class: "table table-bordered"}
   %tbody
@@ -52,6 +59,8 @@
   = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success"
   = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
   = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
+  - if @kanji.kvg_xml.present?
+    = link_to t("wk.kanji.kvg"), "#", class: "btn btn-warning", id: "toggle_kvg"
 
 - if @kanji.kvg_xml.present?
-  %pre.mt-3= @kanji.kvg_xml
+  %pre#kvg.mt-3= @kanji.kvg_xml
