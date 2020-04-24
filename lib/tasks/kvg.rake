@@ -17,22 +17,30 @@ namespace :kvg do
       paths.each do |path|
         files += 1
         id = path.to_s[-9..-5]
+
         xml = path.read
         xml.sub!(/<\?xml version="1.0" encoding="UTF-8"\?>/, "")
         xml.sub!(/<!--.*-->/m, "")
         xml.sub!(/\s*<!DOCTYPE.*\]>/m, "")
         xml.sub!(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/, 'version="1.1"')
         xml.gsub!(/\t/, "  ")
+
+        doc = Nokogiri::XML(xml) { |config| config.strict } rescue nil
+        raise "can't parse #{id}" if doc.nil?
+
         unless xml.match(/<g id="kvg:#{id}" kvg:element="(.)"/)
           skipped.push id
           next
         end
+
         character = $1
         characters += 1
         duplicates[character].push id
         next if duplicates[character].size > 1
+
         kanji = Wk::Kanji.find_by(character: character) || next
         kanjis += 1
+
         if kanji.kvg_xml.blank? || args[:overwrite] == "y"
           kanji.update_columns(kvg_id: id, kvg_xml: xml)
           updates += 1
