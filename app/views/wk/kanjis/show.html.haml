@@ -5,7 +5,7 @@
   = content_for :javascript do
     = render "kvg_button.js"
 
-%h1.text-center
+%h1.text-center.display-1
   = @kanji.linked_character
   - if @kanji.kvg_xml.present?
     = render inline: @kanji.kvg_xml
