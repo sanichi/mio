@@ -1,18 +1,19 @@
 namespace :kvg do
   desc "update KanjiVG data"
   task :update, [:overwrite, :skipped] => :environment do |task, args|
-    files = 0
-    skipped = []
-    characters = 0
-    kanjis = 0
-    duplicates = Hash.new { |h, k| h[k] = [] }
-    updates = 0
-
     begin
-      path = Pathname.new("/tmp/kanjivg")
+      files = 0
+      skipped = []
+      characters = 0
+      kanjis = 0
+      duplicates = Hash.new { |h, k| h[k] = [] }
+      updates = 0
+
+      path = Pathname.new("/tmp/kanji")
       raise "#{path} does not exist" unless path.directory?
       paths = path.glob("?????.svg")
       raise "no KanjiVG files found" unless paths.size > 0
+
       paths.each do |path|
         files += 1
         id = path.to_s[-9..-5]
@@ -28,27 +29,28 @@ namespace :kvg do
         end
         character = $1
         characters += 1
-        kanji = Wk::Kanji.find_by(character: character) || next
         duplicates[character].push id
         next if duplicates[character].size > 1
+        kanji = Wk::Kanji.find_by(character: character) || next
         kanjis += 1
         if kanji.kvg_xml.blank? || args[:overwrite] == "y"
           kanji.update_columns(kvg_id: id, kvg_xml: xml)
           updates += 1
         end
       end
+
+      duplicates = duplicates.map do |k,v|
+        v.length > 1 ? "#{k}=#{v.join(',')}" : nil
+      end.compact
+
+      puts "files......... #{files}"
+      puts "skipped....... #{skipped.length} #{args[:skipped] == "y" ? skipped.sort.join(',') : ''}"
+      puts "duplicates.... #{duplicates.length} (#{duplicates.join(' ')})"
+      puts "characters.... #{characters}"
+      puts "kanjis........ #{kanjis}"
+      puts "updates....... #{updates}"
     rescue StandardError => e
       puts e.message
     end
-
-    duplicates.delete_if { |k,v| v.size == 1 }
-    dupdetails = duplicates.map { |k,v| "#{k}=#{v.join(',')}" }
-
-    puts "files......... #{files}"
-    puts "skipped....... #{skipped.length} #{args[:skipped] == "y" ? skipped.sort.join(',') : ''}"
-    puts "duplicates.... #{dupdetails.length} (#{dupdetails.join(' ')})"
-    puts "characters.... #{characters}"
-    puts "kanjis........ #{kanjis}"
-    puts "updates....... #{updates}"
   end
 end
