@@ -4,9 +4,10 @@ namespace :kvg do
     files = 0
     skipped = []
     characters = 0
-    kanjis = {}
+    kanjis = 0
     duplicates = Hash.new { |h, k| h[k] = [] }
     updates = 0
+
     begin
       path = Pathname.new("/tmp/kanjivg")
       raise "#{path} does not exist" unless path.directory?
@@ -30,8 +31,8 @@ namespace :kvg do
         kanji = Wk::Kanji.find_by(character: character) || next
         duplicates[character].push id
         next if duplicates[character].size > 1
-        kanjis[character] = true
-        if kanji.kvg_xml&.empty? || args[:overwrite] == "y"
+        kanjis += 1
+        if kanji.kvg_xml.blank? || args[:overwrite] == "y"
           kanji.update_columns(kvg_id: id, kvg_xml: xml)
           updates += 1
         end
@@ -39,6 +40,7 @@ namespace :kvg do
     rescue StandardError => e
       puts e.message
     end
+
     duplicates.delete_if { |k,v| v.size == 1 }
     dupdetails = duplicates.map { |k,v| "#{k}=#{v.join(',')}" }
 
@@ -46,7 +48,7 @@ namespace :kvg do
     puts "skipped....... #{skipped.length} #{args[:skipped] == "y" ? skipped.sort.join(',') : ''}"
     puts "duplicates.... #{dupdetails.length} (#{dupdetails.join(' ')})"
     puts "characters.... #{characters}"
-    puts "kanjis........ #{kanjis.size}"
+    puts "kanjis........ #{kanjis}"
     puts "updates....... #{updates}"
   end
 end
