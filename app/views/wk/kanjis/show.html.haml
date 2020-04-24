@@ -52,3 +52,6 @@
   = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success"
   = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
   = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
+
+- if @kanji.kvg_xml.present?
+  %pre.mt-3= @kanji.kvg_xml
