@@ -1,13 +1,132 @@
+class KvgZu
+  WIDTH = 109
+  HEIGHT = 109
+  SVG_HEAD = "<svg width=\"_WIDTH_px\" height=\"#{HEIGHT}px\" viewBox=\"0 0 _WIDTH_px #{HEIGHT}px\" xmlns=\"http://www.w3.org/2000/svg\" version\"1.1\">"
+  PATH_STYLE = 'fill:none;stroke:black;stroke-width:3'
+  GRAY_STYLE = 'fill:none;stroke:#999;stroke-width:3'
+  LINE_STYLE = 'stroke:#ddd;stroke-width:2'
+  DASH_STYLE = 'stroke:#ddd;stroke-width:2;stroke-dasharray:3 3'
+  COORD_RE = %r{(?ix:\d+ (?:\.\d+)?)}
+
+  def initialize(xml, id, type = :numbers)
+    @id = id
+    @type = type
+    begin
+      @doc = Nokogiri::XML(xml) { |config| config.strict.norecover }
+    rescue
+      raise "can't parse XML for #{@id}"
+    end
+  end
+
+  def character
+    g = @doc.xpath('//g[@id="kvg:%s"]' % @id)
+    raise "can't find element with kvg:id for #{@id}" unless g.length == 1
+    @entry = g[0]
+    @entry['kvg:element']
+  end
+
+  def frames
+    paths = @entry.xpath('.//path[@d]')
+    strokes = paths.length
+    strokes = 1 if strokes == 0
+    width = WIDTH * strokes
+    svg = []
+    svg << SVG_HEAD.gsub('_WIDTH_', width.to_s)
+
+    # outer frames
+    top = 1
+    left = 1
+    bottom = HEIGHT - 1
+    right = width - 1
+    svg << line(left, top, right, top, LINE_STYLE)
+    svg << line(left, top, left, bottom, LINE_STYLE)
+    svg << line(left, bottom, right, bottom, LINE_STYLE)
+    svg << line(right, top, right, bottom, LINE_STYLE)
+
+    # vertical divisions
+    (1 .. strokes - 1).each do |i|
+      svg << line(WIDTH * i, top, WIDTH * i, bottom, LINE_STYLE)
+    end
+
+    # inner guides
+    h_width = WIDTH/2
+    h_height = HEIGHT/2
+    svg << line(left, h_height, right, h_height, DASH_STYLE)
+    (1 .. strokes).each do |i|
+      x = h_width + WIDTH * (i-1) + 1
+      svg << line(x, top, x, bottom, DASH_STYLE)
+    end
+
+    # strokes
+    current = []
+    count = 0
+    paths.each do |stroke|
+      current << stroke.xpath('@d').to_s
+      count += 1
+      md = %r{^[LMTm] \s* (#{COORD_RE}) [,\s] (#{COORD_RE})}ix.match(current.last)
+      path_start_x = md[1].to_f
+      path_start_y = md[2].to_f
+      path_start_x += WIDTH * (count - 1)
+
+      current.each_with_index do |path, i|
+        last = count == i + 1
+        delta = last ? WIDTH * (count - 1) : WIDTH
+
+        # move strokes relative to the frame
+        path.gsub!(%r{([LMT]) \s* (#{COORD_RE})}x) do |m|
+          letter = $1
+          x  = $2.to_f
+          x += delta
+          "#{letter}#{x}"
+        end
+        path.gsub!(%r{(S) \s* (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE})}x) do |m|
+          letter = $1
+          x1  = $2.to_f
+          x1 += delta
+          x2  = $4.to_f
+          x2 += delta
+          "#{letter}#{x1},#{$3},#{x2}"
+        end
+        path.gsub!(%r{(C) \s* (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE})}x) do |m|
+          letter  = $1
+          x1  = $2.to_f
+          x1 += delta
+          x2  = $4.to_f
+          x2 += delta
+          x3  = $6.to_f
+          x3 += delta
+          "#{letter}#{x1},#{$3},#{x2},#{$5},#{x3}"
+        end
+
+        # add the new path
+        svg << "<path d=\"#{path}\" style=\"#{last ? PATH_STYLE : GRAY_STYLE}\" />"
+      end
+
+      # put a circle at the stroke start
+      svg << "<circle cx=\"#{path_start_x}\" cy=\"#{path_start_y}\" r=\"5\" stroke-width=\"0\" fill=\"#FF2A00\" opacity=\"0.7\" />"
+    end
+
+    # complete and return the SVG text
+    svg.join("\n") + "\n</svg>\n"
+  end
+
+  private
+
+  def line(x1, y1, x2, y2, style)
+    '<line x1="%d" y1="%d" x2="%d" y2="%d" style="%s"/>' % [x1, y1, x2, y2, style]
+  end
+end
+
 namespace :kvg do
   desc "update KanjiVG data"
-  task :update, [:overwrite, :skipped] => :environment do |task, args|
+  task :update, [:overwrite] => :environment do |task, args|
     begin
       files = 0
-      skipped = []
       characters = 0
       kanjis = 0
       duplicates = Hash.new { |h, k| h[k] = [] }
-      updates = 0
+      xml_updates = 0
+      frames_updates = 0
 
       path = Pathname.new("/tmp/kanji")
       raise "#{path} does not exist" unless path.directory?
@@ -23,17 +142,13 @@ namespace :kvg do
         xml.sub!(/<!--.*-->/m, "")
         xml.sub!(/\s*<!DOCTYPE.*\]>/m, "")
         xml.sub!(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/, 'version="1.1"')
+        xml.sub!(/<svg/, '<svg xmlns:kvg="https://kanjivg.tagaini.net/"')
         xml.gsub!(/\t/, "  ")
 
-        doc = Nokogiri::XML(xml) { |config| config.strict } rescue nil
-        raise "can't parse #{id}" if doc.nil?
+        zu = KvgZu.new(xml, id)
 
-        unless xml.match(/<g id="kvg:#{id}" kvg:element="(.)"/)
-          skipped.push id
-          next
-        end
-
-        character = $1
+        character = zu.character
+        next unless character && character.length == 1
         characters += 1
         duplicates[character].push id
         next if duplicates[character].size > 1
@@ -43,7 +158,12 @@ namespace :kvg do
 
         if kanji.kvg_xml.blank? || args[:overwrite] == "y"
           kanji.update_columns(kvg_id: id, kvg_xml: xml)
-          updates += 1
+          xml_updates += 1
+        end
+
+        if kanji.kvg_frames.blank? || args[:overwrite] == "y"
+          kanji.update_columns(kvg_frames: zu.frames)
+          frames_updates += 1
         end
       end
 
@@ -51,12 +171,12 @@ namespace :kvg do
         v.length > 1 ? "#{k}=#{v.join(',')}" : nil
       end.compact
 
-      puts "files......... #{files}"
-      puts "skipped....... #{skipped.length} #{args[:skipped] == "y" ? skipped.sort.join(',') : ''}"
-      puts "duplicates.... #{duplicates.length} (#{duplicates.join(' ')})"
-      puts "characters.... #{characters}"
-      puts "kanjis........ #{kanjis}"
-      puts "updates....... #{updates}"
+      puts "files........... #{files}"
+      puts "duplicates...... #{duplicates.length} (#{duplicates.join(' ')})"
+      puts "characters...... #{characters}"
+      puts "kanjis.......... #{kanjis}"
+      puts "xml updates..... #{xml_updates}"
+      puts "frames updates.. #{frames_updates}"
     rescue StandardError => e
       puts e.message
     end

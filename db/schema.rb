@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_092053) do
+ActiveRecord::Schema.define(version: 2020_04_25_114127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 2020_04_24_092053) do
     t.string "reading", limit: 128
     t.string "kvg_id"
     t.text "kvg_xml"
+    t.text "kvg_frames"
     t.index ["wk_id"], name: "index_wk_kanjis_on_wk_id", unique: true
   end
 
