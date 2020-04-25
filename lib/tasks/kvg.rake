@@ -6,6 +6,7 @@ class KvgZu
   GRAY_STYLE = 'fill:none;stroke:#999;stroke-width:3'
   LINE_STYLE = 'stroke:#ddd;stroke-width:2'
   DASH_STYLE = 'stroke:#ddd;stroke-width:2;stroke-dasharray:3 3'
+  SPOT_STYLE = 'stroke-width:0;fill:#FF2A00;opacity:0.7;r:5'
   COORD_RE = %r{(?ix:\d+ (?:\.\d+)?)}
 
   def initialize(xml, id, type = :numbers)
@@ -33,7 +34,7 @@ class KvgZu
     svg = []
     svg << SVG_HEAD.gsub('_WIDTH_', width.to_s)
 
-    # outer frames
+    # outer boundary
     top = 1
     left = 1
     bottom = HEIGHT - 1
@@ -59,54 +60,20 @@ class KvgZu
 
     # strokes
     current = []
-    count = 0
     paths.each do |stroke|
       current << stroke.xpath('@d').to_s
-      count += 1
+      delta = WIDTH * (current.length - 1)
       md = %r{^[LMTm] \s* (#{COORD_RE}) [,\s] (#{COORD_RE})}ix.match(current.last)
-      path_start_x = md[1].to_f
-      path_start_y = md[2].to_f
-      path_start_x += WIDTH * (count - 1)
 
+      svg << '<g transform="translate(%d 0)">' % delta
       current.each_with_index do |path, i|
-        last = count == i + 1
-        delta = last ? WIDTH * (count - 1) : WIDTH
-
-        # move strokes relative to the frame
-        path.gsub!(%r{([LMT]) \s* (#{COORD_RE})}x) do |m|
-          letter = $1
-          x  = $2.to_f
-          x += delta
-          "#{letter}#{x}"
-        end
-        path.gsub!(%r{(S) \s* (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE})}x) do |m|
-          letter = $1
-          x1  = $2.to_f
-          x1 += delta
-          x2  = $4.to_f
-          x2 += delta
-          "#{letter}#{x1},#{$3},#{x2}"
-        end
-        path.gsub!(%r{(C) \s* (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE}) [,\s] (#{COORD_RE})}x) do |m|
-          letter  = $1
-          x1  = $2.to_f
-          x1 += delta
-          x2  = $4.to_f
-          x2 += delta
-          x3  = $6.to_f
-          x3 += delta
-          "#{letter}#{x1},#{$3},#{x2},#{$5},#{x3}"
-        end
-
-        # add the new path
-        svg << "<path d=\"#{path}\" style=\"#{last ? PATH_STYLE : GRAY_STYLE}\" />"
+        svg << "<path d=\"#{path}\" style=\"#{current.length == i + 1 ? PATH_STYLE : GRAY_STYLE}\" />"
       end
-
-      # put a circle at the stroke start
-      svg << "<circle cx=\"#{path_start_x}\" cy=\"#{path_start_y}\" r=\"5\" stroke-width=\"0\" fill=\"#FF2A00\" opacity=\"0.7\" />"
+      svg << '<circle cx="%s" cy="%s" style="%s"/>' % [md[1], md[2], SPOT_STYLE] if md
+      svg << "</g>"
     end
 
-    # complete and return the SVG text
+    # complete and return
     svg.join("\n") + "\n</svg>\n"
   end
 
@@ -119,7 +86,7 @@ end
 
 namespace :kvg do
   desc "update KanjiVG data"
-  task :update, [:overwrite] => :environment do |task, args|
+  task :update, [:overwrite, :id] => :environment do |task, args|
     begin
       files = 0
       characters = 0
@@ -136,6 +103,8 @@ namespace :kvg do
       paths.each do |path|
         files += 1
         id = path.to_s[-9..-5]
+
+        next if args[:id] && id != args[:id]
 
         xml = path.read
         xml.sub!(/<\?xml version="1.0" encoding="UTF-8"\?>/, "")
