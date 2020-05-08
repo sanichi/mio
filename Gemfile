@@ -17,6 +17,7 @@ gem "ruby-progressbar", "~> 1.10"
 gem "date_validator", "~> 0.9"
 gem "mini_magick", "~> 4.9"
 gem "mojinizer", "~> 0.2"
+gem "activerecord-session_store"
 
 group :development do
   gem "puma", "~> 4.1"
