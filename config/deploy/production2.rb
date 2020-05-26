@@ -1,13 +1,10 @@
-server 'thessaloniki.markorr.net', user: 'sanichi', roles: %w{web app db}
+server "tsukuba.markorr.net", user: "sanichi", roles: %w{web app db}
+set :deploy_to, "/var/www/mio"
+set :rails_env, "production"
 
-set :deploy_to, '/var/www/mio.markorr.net'
-set :rails_env, 'production'
-
-set :rbenv_type, :user
-set :rbenv_ruby, File.read('.ruby-version').strip
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-
-before 'deploy:restart', 'deploy:turn_off_ssl'
+# The following is required to workaround sudo and registry problems with passenger-config.
+set :passenger_restart_command, "touch /var/www/mio/current/tmp/restart.txt"
+set :passenger_restart_options, nil
 
 # Simple Role Syntax
 # ==================
