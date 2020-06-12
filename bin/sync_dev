@@ -2,7 +2,8 @@
 use strict;
 
 # Setup.
-my $tss_app = '/var/www/me.sanichi.mio/current';
+my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
+my $tss_app = '/var/www/me.mio/current';
 my $tss_img = "$tss_app/public/system/pictures";
 my $tss_aud = "$tss_app/public/system/audio";
 my $tmp_sql = '/tmp/mio.sql';
@@ -12,7 +13,6 @@ my $loc_app = '/Users/mjo/Projects/sni_mio_app';
 my $loc_img = "$loc_app/public/system/pictures";
 my $loc_aud = "$loc_app/public/system/audio";
 my $loc_db  = 'sni_mio_app_development';
-my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
 
 # Sanity check.
 &check(-d $loc_app, "directory $loc_app does not exist");
