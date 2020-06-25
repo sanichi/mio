@@ -14,7 +14,8 @@
         - if @misa.japanese
           = t("misa.abbrev.japanese")
   - if @misa.note.present?
-    .card-body= @misa.note_html
+    .card-body
+      %article= @misa.note_html
 
 .text-center.mt-3
   = link_to t("misa.misas"), last_search(misas_path), class: "btn btn-success"
