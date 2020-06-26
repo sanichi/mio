@@ -84,6 +84,7 @@ module Wk
           check(subject, "vocab subject is not a hash #{subject.class}") { |v| v.is_a?(Hash) }
 
           wk_id = check(subject["id"], "vocab ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
+          next if wk_id == 8715 # TODO XXX: having problems with this one (両腕)
           vocab = Vocab.find_by(wk_id: wk_id)
           if vocab
             stats["matched vocabs"] += 1
