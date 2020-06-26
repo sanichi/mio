@@ -5,6 +5,13 @@ module Wk
     "wk_"
   end
 
+  # in development - check for problems
+  # bin/rails r Wk::Radical.update
+  # bin/rails r Wk::Kanji.update
+  # bin/rails r Wk::Vocab.update
+  # bin/rails r Wk::Reading.update
+  # on production, once problems resolved
+  # RAILS_ENV=production bin/rails r Wk.update
   def self.update(days=nil)
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
