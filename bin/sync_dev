@@ -6,14 +6,14 @@ my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
 my $tss_app = '/var/www/me.mio/current';
 my $tss_img = "$tss_app/public/system/pictures";
 my $tss_aud = "$tss_app/public/system/audio";
-my $tss_db  = 'sni_mio_app_production';
+my $tss_db  = 'mio_production';
 my $tmp_sql = '/tmp/mio.sql';
 my $tmp_img = '/tmp/img.tar.gz';
 my $tmp_aud = '/tmp/aud.tar.gz';
 my $loc_app = '/Users/mjo/Projects/app/mio';
 my $loc_img = "$loc_app/public/system/pictures";
 my $loc_aud = "$loc_app/public/system/audio";
-my $loc_db  = 'sni_mio_app_development';
+my $loc_db  = 'mio_development';
 
 # Sanity check.
 &check(-d $loc_app, "directory $loc_app does not exist");
