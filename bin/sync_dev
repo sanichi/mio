@@ -6,10 +6,11 @@ my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
 my $tss_app = '/var/www/me.mio/current';
 my $tss_img = "$tss_app/public/system/pictures";
 my $tss_aud = "$tss_app/public/system/audio";
+my $tss_db  = 'sni_mio_app_production';
 my $tmp_sql = '/tmp/mio.sql';
 my $tmp_img = '/tmp/img.tar.gz';
 my $tmp_aud = '/tmp/aud.tar.gz';
-my $loc_app = '/Users/mjo/Projects/sni_mio_app';
+my $loc_app = '/Users/mjo/Projects/app/mio';
 my $loc_img = "$loc_app/public/system/pictures";
 my $loc_aud = "$loc_app/public/system/audio";
 my $loc_db  = 'sni_mio_app_development';
@@ -20,7 +21,7 @@ my $loc_db  = 'sni_mio_app_development';
 &check(-d $loc_aud, "directory $loc_aud does not exist");
 
 # Generate data on server.
-&run("ssh $ssh_usr 'pg_dump sni_mio_app_production --no-owner --no-privileges --clean --file $tmp_sql'", "couldn't export DB on server");
+&run("ssh $ssh_usr 'pg_dump $tss_db --no-owner --no-privileges --clean --file $tmp_sql'", "couldn't export DB on server");
 &run("ssh $ssh_usr 'cd $tss_img; tar -zcf $tmp_img .'", "couldn't archive images on server");
 &run("ssh $ssh_usr 'cd $tss_aud; tar -zcf $tmp_aud .'", "couldn't archive audio on server");
 
