@@ -1,6 +1,6 @@
-set :application, "sni_mio_app"
+set :application, "mio"
 
-set :repo_url, "git@bitbucket.org:sanichi/sni_mio_app.git"
+set :repo_url, "git@bitbucket.org:sanichi/mio.git"
 set :branch, "master"
 
 set :linked_files, %w{config/database.yml config/master.key}
