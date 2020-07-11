@@ -24,9 +24,7 @@ group :development do
   gem "capistrano-rails", '~> 1.4', require: false
   gem "capistrano-passenger", '~> 0.2', require: false
   gem "awesome_print", '~> 1.8', require: "ap"
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'spring', '~> 2.1'
-  gem 'spring-watcher-listen', '~> 2.0'
+  gem 'listen', '~> 3.2'
 end
 
 group :test do
@@ -37,7 +35,7 @@ group :development, :test do
   gem "rspec-rails", "~> 4.0"
   gem "capybara", "~> 3.8"
   gem "selenium-webdriver"
-  gem "factory_bot_rails", "~> 5.0"
+  gem "factory_bot_rails", "~> 6.0"
   gem "launchy", "~> 2.4"
   gem "faker", "~> 2.1"
   gem "byebug", platform: :mri
