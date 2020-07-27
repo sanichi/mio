@@ -10,6 +10,9 @@ en:
     alive:
       text: Alive
       url: "https://app.kanjialive.com/%{kanji}"
+    daily:
+      text: Daily
+      url: "/notes/%{id}"
     example:
       edit: Edit Example
       english: English
