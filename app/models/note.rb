@@ -39,13 +39,21 @@ class Note < ApplicationRecord
     return "" unless series
     text = ["#{series} #{number}"]
     if links
-      sorted_ids = Note.where(series: series).order(:number).pluck(:id)
-      index = sorted_ids.index { |i| i == id }
+      sorted = Note.where(series: series).order(:number)
+      index = sorted.index { |n| n.id == id }
       if index
-        prev_id = sorted_ids[index - 1] if index > 0
-        next_id = sorted_ids[index + 1] if index < sorted_ids.size - 1
-        text.unshift(%Q{<a href="/notes/#{prev_id}">#{I18n.t("note.prev")}</a>}) if prev_id
-        text.push(%Q{<a href="/notes/#{next_id}">#{I18n.t("note.next")}</a>}) if next_id
+        prv = sorted[index - 1] if index > 0
+        nxt = sorted[index + 1] if index < sorted.size - 1
+        if prv
+          txt = I18n.t("note.prev")
+          txt = "#{txt} #{prv.title}" if prv.title.length == 1
+          text.unshift(%Q{<a href="/notes/#{prv.id}">#{txt}</a>})
+        end
+        if nxt
+          txt = I18n.t("note.next")
+          txt = "#{nxt.title} #{txt}" if nxt.title.length == 1
+          text.push(%Q{<a href="/notes/#{nxt.id}">#{txt}</a>})
+        end
       end
     end
     text.join(" ").html_safe
