@@ -13,6 +13,7 @@ module Wk
     def show
       @kanji = Wk::Kanji.find(params[:id])
       @vocabs = Wk::Vocab.by_reading.where("characters LIKE '%#{@kanji.character}%'")
+      @daily = Note.find_by(title: @kanji.character, series: t("wk.daily.text"))
     end
   end
 end
