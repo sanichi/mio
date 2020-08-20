@@ -177,7 +177,7 @@ module Wk
             else
               changes["similar_kanjis"] = [old_similar_ids.join(", "), new_similar_ids.join(", ")]
             end
-            if kanji.update_performed?(changes, options)
+            if kanji.update_performed?(changes, **options)
               updates += 1
             else
               # if we don't update the other attributes, don't update similar kanjis either
