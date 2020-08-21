@@ -84,7 +84,6 @@ module Wk
           check(subject, "vocab subject is not a hash #{subject.class}") { |v| v.is_a?(Hash) }
 
           wk_id = check(subject["id"], "vocab ID is not a positive integer ID") { |v| v.is_a?(Integer) && v > 0 }
-          next if wk_id == 8715 # TODO XXX: having problems with this one (両腕)
           vocab = Vocab.find_by(wk_id: wk_id)
           if vocab
             stats["matched vocabs"] += 1
@@ -130,9 +129,17 @@ module Wk
           audios = check(data["pronunciation_audios"], "#{context} doesn't have an audios array") { |v| v.is_a?(Array) }
           wk_audios = Hash.new { |h, k| h[k] = [] }
           audios.each do |a|
-            check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) && wk_readings.has_key?(v["metadata"]["pronunciation"]) }
-            if a["content_type"] == "audio/mpeg"
-              wk_audios[a["metadata"]["pronunciation"]].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
+            check(a, "#{context} has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?(Audio::DEFAULT_BASE) && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) }
+            pn = a["metadata"]["pronunciation"]
+            if wk_readings.has_key?(pn)
+              if a["content_type"] == "audio/mpeg"
+                wk_audios[pn].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
+              end
+            else
+              # TODO: 両腕, 8715 currently has a mismatched pronunciation (no matching reading)
+              # here we want to make sure this is the only one
+              check(wk_id, "problem other than with 8715") { |v| v == 8715 }
+              stats["skipped known problems"] += 1
             end
           end
           db_readings.each do | characters, reading |
