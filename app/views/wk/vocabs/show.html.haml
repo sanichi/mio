@@ -25,7 +25,9 @@
       %td= @vocab.reading_mnemonic.html_safe
     %tr
       %td= t("wk.links")
-      %td= link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", path: t("wk.jisho.path"), vocab: @vocab.characters), target: "external"
+      %td
+        = link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", vocab: @vocab.characters), target: "external"
+        = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.vocab", vocab: @vocab.characters), target: "external"
     %tr
       %td= t("wk.level")
       %td= @vocab.level

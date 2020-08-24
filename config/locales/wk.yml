@@ -7,12 +7,9 @@ en:
     links: Links
     meaning: Meaning
     reading: Reading
-    alive:
-      text: Alive
-      url: "https://app.kanjialive.com/%{kanji}"
     daily:
       text: Daily
-      url: "/notes/%{id}"
+      url: '/notes/%{id}'
     example:
       edit: Edit Example
       english: English
@@ -22,10 +19,14 @@ en:
       japanese: Japanese
     jisho:
       text: Jisho
-      path: https://jisho.org/search
       url:
-        vocab: "%{path}/%{vocab}"
-        kanji: "%{path}/%{kanji}%20%23kanji"
+        kanji: 'https://jisho.org/search/%{kanji}%20%23kanji'
+        vocab: 'https://jisho.org/search/%{vocab}'
+    kanshudo:
+      text: Kanshudo
+      url:
+        kanji: 'https://www.kanshudo.com/search?q=%{kanji}'
+        vocab: 'https://www.kanshudo.com/searchw?q=%{vocab}'
     group:
       category: Category
       edit: Edit Group
