@@ -31,6 +31,10 @@ class Note < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.random
+    find_by(id: where(series: "Daily").pluck(:id).sample)
+  end
+
   def stuff_html
     to_html(link_vocabs(stuff))
   end

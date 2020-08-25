@@ -36,10 +36,12 @@ en:
   owner: Owner
   prev: Prev
   query: Query
+  random: Random
   reset: Reset
   save: Save
   search: Search
   select: Please select
+  show: Show
   size: Size
   skip: Skip
   submit: Submit

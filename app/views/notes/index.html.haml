@@ -19,6 +19,7 @@
       %tbody{id: "results"}
         = render "results", notes: @notes
 
-- if can?(:create, Note)
-  .text-center.mt-3
+.text-center.mt-3
+  - if can?(:create, Note)
     = link_to t("note.new"), new_note_path, class: "btn btn-info"
+  = link_to t("random"), random_notes_path, class: "btn btn-primary"

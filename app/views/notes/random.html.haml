@@ -1,0 +1,15 @@
+= render "utils/title", text: @note.title
+
+- content_for :javascript do
+  = render "random.js"
+
+.card
+  .card-header
+    %h4.d-inline= @note.title
+    .float-right
+      = link_to t("next"), random_notes_path, class: "btn btn-primary btn-sm"
+      = link_to t("note.note"), @note, class: "btn btn-success btn-sm"
+  .card-body.text-center
+    %button.btn.btn-primary.btn-sm#show= t("show")
+  .card-body#answer{style: "display: none"}
+    %article= @note.stuff_html

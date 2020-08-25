@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     get :graph, on: :collection
   end
   resources :misas
-  resources :notes
+  resources :notes do
+    get :random, on: :collection
+  end
   resources :partnerships
   resources :people do
     get :checks, on: :collection

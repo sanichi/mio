@@ -7,6 +7,10 @@ class NotesController < ApplicationController
     @notes = Note.search(params, notes_path, per_page: 20)
   end
 
+  def random
+    @note = Note.random
+  end
+
   def new
     @note = Note.new
   end
