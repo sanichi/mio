@@ -1,3 +1,14 @@
+#
+# Download the latest main kanji files from
+# https://github.com/KanjiVG and put them in
+# /tmp/kanji. For example, with this command:
+#
+# unzip kanjivg-20160426-main.zip -d /tmp
+#
+# Then from mio, run:
+#
+# bin/rake kvg:update
+#
 class KvgZu
   WIDTH = 109
   HEIGHT = 109
