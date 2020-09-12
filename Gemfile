@@ -1,13 +1,17 @@
 source "https://rubygems.org"
 
-gem "rails", "6.0.3.2"
+gem "rails", "6.0.3.3"
 gem "pg", '>= 0.18', '< 2.0'
 gem "haml-rails", '~> 2.0'
 gem "sassc-rails", '~> 2.1'
 gem "uglifier", '~> 4.2'
 gem "jquery-rails", '~> 4.3'
 gem "jquery-ui-rails", '~> 6.0'
-gem "bootstrap", '~> 4.3'
+# start: until problems solved
+# gem "bootstrap", '~> 4.5'
+gem "autoprefixer-rails", "9.8.5"
+gem "bootstrap", "4.5.0"
+# end: until problems solved
 gem "cancancan", "~> 3.0"
 gem "redcarpet", "~> 3.5"
 gem "chronic", "~> 0.10"
