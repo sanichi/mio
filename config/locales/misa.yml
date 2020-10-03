@@ -25,26 +25,6 @@ en:
       url: 🎞
       minutes: ⏱
       published: 🖨
-    categories:
-      beginners: Beginners
-      counters: Counters
-      dajare: Dajare
-      dogen: Dogen
-      difference: Differences
-      grammar: Grammar
-      howto: How To
-      miku: Miku
-      mistakes: Mistakes
-      native: Native Way
-      none: None
-      puroyobi: プロヨビ
-      proverbs: Proverbs
-      satori: Satori
-      shadowing: Shadowing
-      smile: Smile
-      tofugu: Tofugu
-      vocab: Vocab
-      yuta: Yuta
     order:
       created: First Created
       published: First Published
