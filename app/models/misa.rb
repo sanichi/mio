@@ -7,6 +7,8 @@ class Misa < ApplicationRecord
   CATEGORIES = %w/none beginners counters dajare difference grammar howto miku mistakes native proverbs satori shadowing puroyobi vocab yuta tofugu dogen smile/
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
+  MAX_NUMBER = 32767
+  MAX_SERIES = 50
   MAX_TITLE = 150
   MAX_URL = 256
 
@@ -19,6 +21,8 @@ class Misa < ApplicationRecord
   validates :alt, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true, allow_nil: true
   validates :published, date: { before_or_equal: Proc.new { Date.today } }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
+  validates :number, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_NUMBER }, uniqueness: { scope: :series }, allow_nil: true
+  validates :series, presence: true, length: { maximum: MAX_TITLE }, allow_nil: true
 
   def self.search(params, path, opt={})
     matches = case params[:order]

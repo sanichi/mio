@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_08_085318) do
+ActiveRecord::Schema.define(version: 2020_10_03_115421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 2020_05_08_085318) do
     t.date "published"
     t.string "url", limit: 256
     t.string "alt", limit: 256
+    t.string "series", limit: 50
+    t.integer "number", limit: 2
   end
 
   create_table "notes", force: :cascade do |t|
