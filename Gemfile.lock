@@ -70,7 +70,6 @@ GEM
     ast (2.4.1)
     autoprefixer-rails (9.8.5)
       execjs
-    awesome_print (1.8.0)
     bootstrap (4.5.0)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
@@ -309,7 +308,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord-session_store
   autoprefixer-rails (= 9.8.5)
-  awesome_print (~> 1.8)
   bootstrap (= 4.5.0)
   byebug
   cancancan (~> 3.0)
