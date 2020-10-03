@@ -283,6 +283,7 @@ GEM
     sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    table_print (1.5.7)
     temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
@@ -337,6 +338,7 @@ DEPENDENCIES
   ruby-progressbar (~> 1.10)
   sassc-rails (~> 2.1)
   selenium-webdriver
+  table_print (~> 1.5)
   uglifier (~> 4.2)
 
 BUNDLED WITH

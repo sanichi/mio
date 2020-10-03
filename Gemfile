@@ -28,6 +28,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'awesome_print', '~> 1.8', require: 'ap'
+  gem 'table_print', '~> 1.5'
   gem 'listen', '~> 3.2'
 end
 
