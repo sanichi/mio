@@ -8,10 +8,12 @@ en:
     misa: Ammo Lesson
     misas: Ammo
     new: New Lesson
+    number: Number
     next: ▶️
     note: Notes
     prev: ◀️
     published: Published
+    series: Series
     target: misa
     title: Title
     url: Main URL
@@ -19,6 +21,7 @@ en:
       alt: 📺
       japanese: 🇯🇵
       lines: 📖
+      number: '#'
       url: 🎞
       minutes: ⏱
       published: 🖨

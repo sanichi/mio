@@ -2,9 +2,9 @@
 
 :ruby
   inputs = [
-    [:q,        t("query"),         :text,   size: 16, placeholder: t("search"), autofocus: true],
-    [:category, t("misa.category"), :select, menu: misa_category_menu(params[:category], search: true)],
-    [:order,    t("order"),         :select, menu: misa_search_order_menu(params[:order])],
+    [:q,      t("query"),       :text,   size: 16, placeholder: t("search"), autofocus: true],
+    [:series, t("misa.series"), :select, menu: misa_series_menu(params[:series])],
+    [:order,  t("order"),       :select, menu: misa_search_order_menu(params[:order])],
   ]
 = render "utils/search/form", index: misas_path, inputs: inputs
 
@@ -12,7 +12,8 @@
   %thead
     %tr
       %th= t("misa.title")
-      %th= t("misa.category")
+      %th= t("misa.series")
+      %th.text-center= t("misa.abbrev.number")
       %th.text-center= t("misa.abbrev.lines")
       %th.text-center= t("misa.abbrev.minutes")
       %th.text-center= t("misa.abbrev.published")

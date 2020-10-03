@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 2020_10_03_115421) do
     t.date "published"
     t.string "url", limit: 256
     t.string "alt", limit: 256
-    t.string "series", limit: 50
+    t.string "series", limit: 16
     t.integer "number", limit: 2
   end
 

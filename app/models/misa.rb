@@ -8,21 +8,20 @@ class Misa < ApplicationRecord
   MAX_CATEGORY = 10
   MAX_MINUTES = 6
   MAX_NUMBER = 32767
-  MAX_SERIES = 50
+  MAX_SERIES = 16
   MAX_TITLE = 150
   MAX_URL = 256
 
   before_validation :normalize_attributes
   after_save :count_lines
 
-  validates :category, inclusion: { in: CATEGORIES }
   validates :minutes, format: { with: /\A\d{1,3}:[0-5]\d\z/ }
   validates :url, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true
   validates :alt, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true, allow_nil: true
   validates :published, date: { before_or_equal: Proc.new { Date.today } }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
   validates :number, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_NUMBER }, uniqueness: { scope: :series }, allow_nil: true
-  validates :series, presence: true, length: { maximum: MAX_TITLE }, allow_nil: true
+  validates :series, presence: true, length: { maximum: MAX_SERIES }, allow_nil: true
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -33,7 +32,7 @@ class Misa < ApplicationRecord
     else
       order(updated_at: :desc)
     end
-    matches = matches.where(category: params[:category]) if CATEGORIES.include?(params[:category])
+    matches = matches.where(series: params[:series]) if params[:series].present?
     if sql = cross_constraint(params[:q], %w{title note})
       matches = matches.where(sql)
     end
@@ -44,30 +43,22 @@ class Misa < ApplicationRecord
     to_html(link_vocabs(note))
   end
 
-  def full_title
-    cat = I18n.t("misa.categories.#{category}")
-    if title.include? cat
-      cat = nil
-    else
-      cat = "(#{cat})"
-    end
-    links = nil
-    if title =~ /^#([1-9]\d*)/ && category != "none"
-      sorted_ids = Misa.where(category: category).where("title ~ '^#[1-9]\d*'").to_a.sort_by! do |misa|
-        misa.title =~ /^#([1-9]\d*)/ ? $1.to_i : 0
-      end.pluck(:id)
-      index = sorted_ids.index { |i| i == id }
-      if index
-        prev_id = sorted_ids[index - 1] if index > 0
-        next_id = sorted_ids[index + 1] if index < sorted_ids.size - 1
-        prev_link = %Q{<a href="/misas/#{prev_id}">#{I18n.t("misa.prev")}</a>} if prev_id
-        next_link = %Q{<a href="/misas/#{next_id}">#{I18n.t("misa.next")}</a>} if next_id
-        if prev_link || next_link
-          links = [prev_link, next_link].compact.join(" ")
-        end
+  def series_number
+    return "" unless series
+    text = ["#{series} #{number}"]
+    sorted = Misa.where(series: series).order(:number)
+    index = sorted.index { |n| n.id == id }
+    if index
+      prv = sorted[index - 1] if index > 0
+      nxt = sorted[index + 1] if index < sorted.size - 1
+      if prv
+        text.unshift(%Q{<a href="/misas/#{prv.id}">#{I18n.t("misa.prev")}</a>})
+      end
+      if nxt
+        text.push(%Q{<a href="/misas/#{nxt.id}">#{I18n.t("misa.next")}</a>})
       end
     end
-    [links, title, cat].compact.join(" ").html_safe
+    text.join(" ").html_safe
   end
 
   private
@@ -80,6 +71,15 @@ class Misa < ApplicationRecord
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
     self.minutes = "#{$1}:00" if minutes.match(/\A(\d{1,3})(:0?)?\z/)
     self.alt = nil if alt.blank?
+    series&.squish!
+    if series.blank?
+      self.series = nil
+      self.number = nil
+    else
+      if number.blank? || number < 1
+        self.number = Misa.where(series: series).maximum(:number).to_i + 1
+      end
+    end
   end
 
   def count_lines

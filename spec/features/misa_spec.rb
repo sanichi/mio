@@ -15,13 +15,14 @@ describe Misa do
       if data.alt
         fill_in t("misa.alt"), with: data.alt
       end
-      select I18n.t("misa.categories.#{data.category}"), from: t("misa.category")
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
       fill_in t("misa.minutes"), with: data.minutes
       fill_in t("misa.note"), with: data.note
       fill_in t("misa.published"), with: data.published
       fill_in t("misa.title"), with: data.title
       fill_in t("misa.url"), with: data.url
+      fill_in t("misa.series"), with: data.series
+      fill_in t("misa.number"), with: data.number
       click_button t("save")
 
       expect(page).to have_title t("misa.misa")
@@ -30,13 +31,19 @@ describe Misa do
       m = Misa.last
 
       expect(m.alt).to eq data.alt
-      expect(m.category).to eq data.category
       expect(m.japanese).to eq data.japanese
       expect(m.minutes).to eq data.minutes
       expect(m.note).to eq data.note
       expect(m.published).to eq data.published
       expect(m.title).to eq data.title
       expect(m.url).to eq data.url
+      if data.series
+        expect(m.series).to eq data.series
+        expect(m.number).to eq data.number
+      else
+        expect(m.series).to be_nil
+        expect(m.number).to be_nil
+      end
     end
 
     it "failure" do
@@ -44,12 +51,14 @@ describe Misa do
       if data.alt
         fill_in t("misa.alt"), with: data.alt
       end
-      select I18n.t("misa.categories.#{data.category}"), from: t("misa.category")
       data.japanese ? check(:misa_japanese) : uncheck(:misa_japanese)
       fill_in t("misa.minutes"), with: data.minutes
       fill_in t("misa.note"), with: data.note
+      # fill_in t("misa.title"), with: data.title
       fill_in t("misa.published"), with: data.published
       fill_in t("misa.url"), with: data.url
+      fill_in t("misa.series"), with: data.series
+      fill_in t("misa.number"), with: data.number
       click_button t("save")
 
       expect(page).to have_title t("misa.new")

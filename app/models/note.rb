@@ -12,7 +12,7 @@ class Note < ApplicationRecord
 
   validates :number, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_NUMBER }, uniqueness: { scope: :series }, allow_nil: true
   validates :stuff, presence: true
-  validates :series, presence: true, length: { maximum: MAX_TITLE }, allow_nil: true
+  validates :series, presence: true, length: { maximum: MAX_SERIES }, allow_nil: true
   validates :title, presence: true, length: { maximum: MAX_TITLE }
 
   def self.search(params, path, opt={})

@@ -5,7 +5,7 @@ module NoteHelper
   end
 
   def note_series_menu(selected)
-    opts = Note.pluck(:series).uniq.compact.map { |s| [s, s] }
+    opts = Note.pluck(:series).uniq.compact.sort.map { |s| [s, s] }
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end
