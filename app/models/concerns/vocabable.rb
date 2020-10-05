@@ -16,12 +16,12 @@ module Vocabable
     ([^\]\)]+)
     \)
   /x
-  KPATTERN = /
+  NPATTERN = /
     <
     ([^><])
     >
   /x
-  NPATTERN = /
+  KPATTERN = /
     «
     ([^«»])
     »
