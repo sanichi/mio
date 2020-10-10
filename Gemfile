@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.3'
+gem 'rails', '6.0.3.4'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'haml-rails', '~> 2.0'
 gem 'sassc-rails', '~> 2.1'
@@ -24,7 +24,7 @@ gem 'mojinizer', '~> 0.2'
 gem 'activerecord-session_store'
 
 group :development do
-  gem 'puma', '~> 4.1'
+  gem 'puma', '~> 5.0'
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'table_print', '~> 1.5'
