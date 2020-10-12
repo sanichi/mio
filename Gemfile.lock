@@ -68,9 +68,9 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     ansi (1.5.0)
     ast (2.4.1)
-    autoprefixer-rails (9.8.5)
+    autoprefixer-rails (10.0.1.0)
       execjs
-    bootstrap (4.5.0)
+    bootstrap (4.5.2)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
@@ -235,7 +235,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redcarpet (3.5.0)
-    regexp_parser (1.8.1)
+    regexp_parser (1.8.2)
     rspec-core (3.9.3)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.2)
@@ -307,8 +307,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
-  autoprefixer-rails (= 9.8.5)
-  bootstrap (= 4.5.0)
+  autoprefixer-rails (~> 10.0)
+  bootstrap (~> 4.5)
   byebug
   cancancan (~> 3.0)
   capistrano-passenger (~> 0.2)
