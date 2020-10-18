@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   authorize_resource
-  before_action :find_note, only: [:show, :edit, :update, :destroy]
+  before_action :find_note, only: [:show, :edit, :nedit, :nupdate, :update, :destroy]
 
   def index
     remember_last_search(notes_path)
@@ -34,6 +34,16 @@ class NotesController < ApplicationController
     end
   end
 
+  def nupdate
+    msg = @note.shift(nstrong_params)
+    if msg
+      flash.now[:alert] = msg
+      render :nedit
+    else
+      redirect_to @note
+    end
+  end
+
   def destroy
     @note.destroy
     redirect_to notes_path
@@ -47,5 +57,9 @@ class NotesController < ApplicationController
 
   def strong_params
     params.require(:note).permit(:number, :series, :stuff, :title)
+  end
+
+  def nstrong_params
+    params.require(:note).permit(:number)
   end
 end

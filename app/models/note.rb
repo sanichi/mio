@@ -67,6 +67,33 @@ class Note < ApplicationRecord
     text.join(" ").html_safe
   end
 
+  def shiftable?
+    series.present? && number.present? && Note.where(series: series).count > 1
+  end
+
+  def shift(params)
+    new_number = params[:number].to_i
+    return "no series" unless series.present?
+    return "invalid number" if new_number == 0 || new_number < -1
+    return if new_number == number
+    all = Note.where(series: series).where.not(id: id).order(:number).to_a
+    if new_number == -1
+      all.push self
+    else
+      index = all.find_index { |n| n.number == new_number }
+      return "couldn't find index" unless index.present?
+      all.insert(index, self)
+    end
+    all.each_with_index do |n, i|
+      n.update_column(:number, i + 1) unless n.number == i + 1
+    end
+    return
+  end
+
+  def ntitle
+    "#{number} #{title.truncate(40)}"
+  end
+
   private
 
   def normalize_attributes

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   resources :misas
   resources :notes do
     get :random, on: :collection
+    get :nedit, on: :member
+    patch :nupdate, on: :member
   end
   resources :partnerships
   resources :people do

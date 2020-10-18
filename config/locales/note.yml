@@ -2,6 +2,7 @@ en:
   note:
     created: Created
     edit: Edit Note
+    last: (Last)
     new: New Note
     next: ▶️
     note: Note
@@ -9,6 +10,7 @@ en:
     number: Number
     prev: ◀️
     series: Series
+    shift: Shift
     stuff: Stuff
     title: Title
     updated: Updated
