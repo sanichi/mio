@@ -18,7 +18,8 @@ module Vocabable
   /x
   KPATTERN = /
     ([«<])
-    ([^«<>»])
+    ([^«<>»|])
+    (?:\|([^«<>»|]+))?
     [»>]
   /x
 
@@ -35,11 +36,12 @@ module Vocabable
         end
       end.gsub(KPATTERN) do |match|
         bracket = $1
-        character = $2
+        display = $2
+        character = $3 || display
         if bracket == '<' && note = Note.find_by(series: "Daily", title: character)
-          note.to_markdown
+          note.to_markdown(display: display)
         elsif kanji = Wk::Kanji.find_by(character: character)
-          kanji.to_markdown
+          kanji.to_markdown(display: display)
         else
           match
         end

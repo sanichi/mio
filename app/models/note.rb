@@ -31,8 +31,8 @@ class Note < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def to_markdown
-    "[#{title}](/notes/#{id})"
+  def to_markdown(display: nil)
+    "[#{display || title}](/notes/#{id})"
   end
 
   def self.random

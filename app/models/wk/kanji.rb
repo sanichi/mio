@@ -55,8 +55,8 @@ module Wk
       end
     end
 
-    def to_markdown
-      "[#{character}](/wk/kanjis/#{id})"
+    def to_markdown(display: nil)
+      "[#{display || character}](/wk/kanjis/#{id})"
     end
 
     def self.update(days=nil)
