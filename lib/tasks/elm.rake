@@ -69,4 +69,11 @@ namespace :elm do
       compile_and_minify "board", args, "Board"
     end
   end
+
+  desc "make and minify the Elm JS file for Weight"
+  task :weight, [:debug] do |task, args|
+    Dir.chdir("app/views/pages/weight") do
+      compile_and_minify "weight", args, "Weight"
+    end
+  end
 end

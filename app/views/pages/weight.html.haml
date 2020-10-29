@@ -1,0 +1,9 @@
+= render "utils/title", key: "pages.board"
+
+- content_for :javascript do
+  = render "weight_elm.min.js"
+  = render "weight.js"
+
+.row.mb-3
+  .div{class: center(xs: 12)}
+    .div{id: "elm-app"}

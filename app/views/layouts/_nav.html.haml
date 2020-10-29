@@ -48,10 +48,11 @@
             = link_to t("income.incomes"),   graph_incomes_path if can?(:read, Income)
             = link_to t("expense.expenses"), expenses_path      if can?(:read, Expense)
 
-      - if [:aoc, :magic, :play].map{ |p| can?(p, :page) }.any? || [Bucket, Lesson, Login, Mass, User].map{ |c| can?(:read, c) }.any?
+      - if [:aoc, :magic, :play, :weight].map{ |p| can?(p, :page) }.any? || [Bucket, Lesson, Login, Mass, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
+            = link_to t("mass.mass"),          weight_path       if can?(:weight, :page)
             = link_to t("mass.mass"),          graph_masses_path if can?(:read, Mass)
             = link_to t("bucket.buckets"),     buckets_path      if can?(:read, Bucket)
             = link_to t("lesson.lessons"),     lessons_path      if can?(:read, Lesson)
