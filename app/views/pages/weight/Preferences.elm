@@ -4,11 +4,7 @@ import Json.Decode as D exposing (Decoder, Value)
 
 
 type alias Preferences =
-    { fen : String
-    , orientation : String
-    , notation : Bool
-    , marks : List String
-    , scheme : String
+    { unit : String
     }
 
 
@@ -19,17 +15,13 @@ decode value =
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map5 Preferences
-        (D.field "fen" D.string |> withDefault default.fen)
-        (D.field "orientation" D.string |> withDefault default.orientation)
-        (D.field "notation" D.bool |> withDefault default.notation)
-        (D.field "marks" (D.list D.string) |> withDefault default.marks)
-        (D.field "scheme" D.string |> withDefault default.scheme)
+    D.map Preferences
+        (D.field "unit" D.string |> withDefault default.unit)
 
 
 default : Preferences
 default =
-    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False [] "default"
+    Preferences "kg"
 
 
 

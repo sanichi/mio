@@ -1,47 +1,28 @@
 module Model exposing (Model, flipOrientation, init, toggleNotation)
 
-import Colour exposing (Colour)
-import Mark exposing (Mark)
-import Position exposing (Position)
 import Preferences exposing (Preferences)
-import Scheme exposing (Scheme)
+import Unit exposing (Unit)
 
 
 type alias Model =
-    { position : Position
-    , orientation : Colour
-    , notation : Bool
-    , marks : List Mark
-    , scheme : Scheme
+    { unit : Unit
     }
 
 
 init : Preferences -> Model
 init preferences =
     let
-        position =
-            Position.fromFen preferences.fen
-
-        orientation =
-            Colour.fromString preferences.orientation
-
-        notation =
-            preferences.notation
-
-        marks =
-            Mark.fromList preferences.marks
-
-        scheme =
-            Scheme.fromString preferences.scheme
+        unit =
+            Unit.fromString preferences.unit
     in
-    Model position orientation notation marks scheme
+    Model unit
 
 
 flipOrientation : Model -> Model
 flipOrientation model =
-    { model | orientation = Colour.not model.orientation }
+    model
 
 
 toggleNotation : Model -> Model
 toggleNotation model =
-    { model | notation = not model.notation }
+    model
