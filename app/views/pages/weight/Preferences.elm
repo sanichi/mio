@@ -4,7 +4,8 @@ import Json.Decode as D exposing (Decoder, Value)
 
 
 type alias Preferences =
-    { unit : String
+    { months : Int
+    , unit : String
     }
 
 
@@ -15,13 +16,14 @@ decode value =
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map Preferences
+    D.map2 Preferences
+        (D.field "months" D.int |> withDefault default.months)
         (D.field "unit" D.string |> withDefault default.unit)
 
 
 default : Preferences
 default =
-    Preferences "kg"
+    Preferences 4 "kg"
 
 
 

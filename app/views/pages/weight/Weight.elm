@@ -2,13 +2,13 @@ module Weight exposing (main)
 
 import Browser
 import Html exposing (Html)
-import Image
 import Json.Decode exposing (Value)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
 import Preferences
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
+import View
 
 
 
@@ -44,7 +44,7 @@ init flags =
 
 view : Model -> Html Msg
 view model =
-    svg [ id "board", version "1.1", viewBox "0 0 1000 600" ] <| Image.fromModel model
+    svg [ id "board", version "1.1", viewBox "0 0 1000 600" ] <| View.fromModel model
 
 
 

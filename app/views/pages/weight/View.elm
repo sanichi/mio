@@ -1,4 +1,4 @@
-module Image exposing (fromModel)
+module View exposing (fromModel)
 
 import Html exposing (Html)
 import Messages exposing (Msg(..))
