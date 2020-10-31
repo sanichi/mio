@@ -5369,14 +5369,32 @@ var $author$project$Weight$update = F2(
 		}
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
+var $author$project$View$height = 500;
+var $author$project$View$width = 1000;
+var $author$project$View$box = '0 0 ' + ($elm$core$String$fromInt($author$project$View$width) + (' ' + $elm$core$String$fromInt($author$project$View$height)));
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
 var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $author$project$View$x1 = function (i) {
+	return $elm$svg$Svg$Attributes$x1(
+		$elm$core$String$fromInt(i));
+};
 var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $author$project$View$x2 = function (i) {
+	return $elm$svg$Svg$Attributes$x2(
+		$elm$core$String$fromInt(i));
+};
 var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $author$project$View$y1 = function (i) {
+	return $elm$svg$Svg$Attributes$y1(
+		$elm$core$String$fromInt(i));
+};
 var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $author$project$View$y2 = function (i) {
+	return $elm$svg$Svg$Attributes$y2(
+		$elm$core$String$fromInt(i));
+};
 var $author$project$View$frame = function () {
 	var borderStyle = 'stroke:black;stroke-width:2;';
 	return A2(
@@ -5388,44 +5406,40 @@ var $author$project$View$frame = function () {
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('0'),
-						$elm$svg$Svg$Attributes$style(borderStyle)
+						$author$project$View$x1(0),
+						$author$project$View$y1(0),
+						$author$project$View$x2($author$project$View$width),
+						$author$project$View$y2(0)
 					]),
 				_List_Nil),
 				A2(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$x1('360'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style(borderStyle)
+						$author$project$View$x1($author$project$View$width),
+						$author$project$View$y1(0),
+						$author$project$View$x2($author$project$View$width),
+						$author$project$View$y2($author$project$View$height)
 					]),
 				_List_Nil),
 				A2(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('360'),
-						$elm$svg$Svg$Attributes$x2('360'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style(borderStyle)
+						$author$project$View$x1($author$project$View$width),
+						$author$project$View$y1($author$project$View$height),
+						$author$project$View$x2(0),
+						$author$project$View$y2($author$project$View$height)
 					]),
 				_List_Nil),
 				A2(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$x1('0'),
-						$elm$svg$Svg$Attributes$y1('0'),
-						$elm$svg$Svg$Attributes$x2('0'),
-						$elm$svg$Svg$Attributes$y2('360'),
-						$elm$svg$Svg$Attributes$style(borderStyle)
+						$author$project$View$x1(0),
+						$author$project$View$y1($author$project$View$height),
+						$author$project$View$x2(0),
+						$author$project$View$y2(0)
 					]),
 				_List_Nil)
 			]));
@@ -5443,9 +5457,9 @@ var $author$project$Weight$view = function (model) {
 		$elm$svg$Svg$svg,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$id('board'),
+				$elm$svg$Svg$Attributes$id('weight'),
 				$elm$svg$Svg$Attributes$version('1.1'),
-				$elm$svg$Svg$Attributes$viewBox('0 0 1000 600')
+				$elm$svg$Svg$Attributes$viewBox($author$project$View$box)
 			]),
 		$author$project$View$fromModel(model));
 };

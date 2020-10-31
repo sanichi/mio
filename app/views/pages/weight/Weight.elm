@@ -44,7 +44,7 @@ init flags =
 
 view : Model -> Html Msg
 view model =
-    svg [ id "board", version "1.1", viewBox "0 0 1000 600" ] <| View.fromModel model
+    svg [ id "weight", version "1.1", viewBox View.box ] <| View.fromModel model
 
 
 
