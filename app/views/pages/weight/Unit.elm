@@ -1,4 +1,4 @@
-module Unit exposing (Unit(..), fromString)
+module Unit exposing (Unit(..), fromString, toString)
 
 import Regex exposing (Regex)
 
@@ -19,6 +19,19 @@ fromString str =
 
     else
         Kg
+
+
+toString : Unit -> String
+toString unit =
+    case unit of
+        Kg ->
+            "kg"
+
+        Lb ->
+            "lb"
+
+        St ->
+            "st"
 
 
 pounds : Regex

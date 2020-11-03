@@ -2,8 +2,10 @@ $(function() {
   Elm.Weight.init({
     node: $('#elm-app').get(0),
     flags: {
+      debug: true,
       months: 5,
-      unit: "st"
+      unit: "st",
+      kilos: [86.0, 86.3]
     }
   });
 });

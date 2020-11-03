@@ -3,14 +3,27 @@ module View exposing (box, fromModel)
 import Html exposing (Html)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
-import Svg as S exposing (Svg)
+import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
 import Svg.Events exposing (onClick)
 
 
 fromModel : Model -> List (Svg Msg)
 fromModel model =
-    [ frame ]
+    let
+        basics =
+            [ frame ]
+    in
+    if model.debug then
+        debug model :: basics
+
+    else
+        basics
+
+
+debug : Model -> Svg Msg
+debug model =
+    S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg model ]
 
 
 frame : Svg Msg
@@ -34,6 +47,21 @@ frame =
 box : String
 box =
     "0 0 " ++ String.fromInt width ++ " " ++ String.fromInt height
+
+
+cc : String -> Attribute Msg
+cc c =
+    A.class c
+
+
+xx : Int -> Attribute Msg
+xx x =
+    A.x <| String.fromInt x
+
+
+yy : Int -> Attribute Msg
+yy y =
+    A.y <| String.fromInt y
 
 
 x1 : Int -> S.Attribute msg
@@ -60,6 +88,16 @@ y2 i =
 -- Dimensions
 
 
+debugTextX : Int
+debugTextX =
+    width // 2
+
+
+debugTextY : Int
+debugTextY =
+    20
+
+
 height : Int
 height =
     500
@@ -68,3 +106,8 @@ height =
 width : Int
 width =
     1000
+
+
+tt : String -> Svg Msg
+tt t =
+    S.text t

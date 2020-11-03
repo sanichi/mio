@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.z === region.N.z)
+	if (region.K.z === region.R.z)
 	{
-		return 'on line ' + region.I.z;
+		return 'on line ' + region.K.z;
 	}
-	return 'on lines ' + region.I.z + ' through ' + region.N.z;
+	return 'on lines ' + region.K.z + ' through ' + region.R.z;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aL,
 		impl.aJ,
-		impl.aH,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		J: record.J,
-		G: record.G
+		L: record.L,
+		I: record.I
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.J;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.G) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.I) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aL,
 		impl.aJ,
-		impl.aH,
 		function(sendToApp, initialModel) {
-			var view = impl.aK;
+			var view = impl.aM;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aL,
 		impl.aJ,
-		impl.aH,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.H && impl.H(sendToApp)
-			var view = impl.aK;
+			var divertHrefToApp = impl.J && impl.J(sendToApp)
+			var view = impl.aM;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ao);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aI) && (_VirtualDom_doc.title = title = doc.aI);
+				(title !== doc.aK) && (_VirtualDom_doc.title = title = doc.aK);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aC;
-	var onUrlRequest = impl.aD;
+	var onUrlChange = impl.aE;
+	var onUrlRequest = impl.aF;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		H: function(sendToApp)
+		J: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aa === next.aa
-							&& curr.R === next.R
-							&& curr.Y.a === next.Y.a
+							&& curr.ad === next.ad
+							&& curr.V === next.V
+							&& curr.aa.a === next.aa.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ax: function(flags)
+		az: function(flags)
 		{
-			return A3(impl.ax, flags, _Browser_getUrl(), key);
+			return A3(impl.az, flags, _Browser_getUrl(), key);
 		},
-		aK: impl.aK,
-		aJ: impl.aJ,
-		aH: impl.aH
+		aM: impl.aM,
+		aL: impl.aL,
+		aJ: impl.aJ
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { au: 'hidden', aq: 'visibilitychange' }
+		? { aw: 'hidden', as: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { au: 'mozHidden', aq: 'mozvisibilitychange' }
+		? { aw: 'mozHidden', as: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { au: 'msHidden', aq: 'msvisibilitychange' }
+		? { aw: 'msHidden', as: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { au: 'webkitHidden', aq: 'webkitvisibilitychange' }
-		: { au: 'hidden', aq: 'visibilitychange' };
+		? { aw: 'webkitHidden', as: 'webkitvisibilitychange' }
+		: { aw: 'hidden', as: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ae: _Browser_getScene(),
-		ai: {
-			ak: _Browser_window.pageXOffset,
-			al: _Browser_window.pageYOffset,
-			aj: _Browser_doc.documentElement.clientWidth,
-			Q: _Browser_doc.documentElement.clientHeight
+		ah: _Browser_getScene(),
+		ak: {
+			am: _Browser_window.pageXOffset,
+			an: _Browser_window.pageYOffset,
+			al: _Browser_doc.documentElement.clientWidth,
+			U: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aj: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Q: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ae: {
-				aj: node.scrollWidth,
-				Q: node.scrollHeight
+			ah: {
+				al: node.scrollWidth,
+				U: node.scrollHeight
 			},
-			ai: {
-				ak: node.scrollLeft,
-				al: node.scrollTop,
-				aj: node.clientWidth,
-				Q: node.clientHeight
+			ak: {
+				am: node.scrollLeft,
+				an: node.scrollTop,
+				al: node.clientWidth,
+				U: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ae: _Browser_getScene(),
-			ai: {
-				ak: x,
-				al: y,
-				aj: _Browser_doc.documentElement.clientWidth,
-				Q: _Browser_doc.documentElement.clientHeight
+			ah: _Browser_getScene(),
+			ak: {
+				am: x,
+				an: y,
+				al: _Browser_doc.documentElement.clientWidth,
+				U: _Browser_doc.documentElement.clientHeight
 			},
-			as: {
-				ak: x + rect.left,
-				al: y + rect.top,
-				aj: rect.width,
-				Q: rect.height
+			au: {
+				am: x + rect.left,
+				an: y + rect.top,
+				al: rect.width,
+				U: rect.height
 			}
 		};
 	});
@@ -4364,8 +4364,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.az) { flags += 'm'; }
-	if (options.ap) { flags += 'i'; }
+	if (options.aB) { flags += 'm'; }
+	if (options.ar) { flags += 'i'; }
 
 	try
 	{
@@ -4960,7 +4960,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {P: fragment, R: host, W: path, Y: port_, aa: protocol, ab: query};
+		return {T: fragment, V: host, Z: path, aa: port_, ad: protocol, ae: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5240,13 +5240,17 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F2(
-	function (months, unit) {
-		return {U: months, ah: unit};
+var $author$project$Preferences$Preferences = F4(
+	function (debug, kilos, months, unit) {
+		return {Q: debug, E: kilos, G: months, M: unit};
 	});
-var $author$project$Preferences$default = A2($author$project$Preferences$Preferences, 4, 'kg');
+var $author$project$Preferences$default = A4($author$project$Preferences$Preferences, false, _List_Nil, 4, 'kg');
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $elm$json$Json$Decode$map4 = _Json_map4;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
@@ -5273,16 +5277,27 @@ var $author$project$Preferences$withDefault = F2(
 			$elm$core$Maybe$withDefault(fallback),
 			$elm$json$Json$Decode$maybe(decoder));
 	});
-var $author$project$Preferences$flagsDecoder = A3(
-	$elm$json$Json$Decode$map2,
+var $author$project$Preferences$flagsDecoder = A5(
+	$elm$json$Json$Decode$map4,
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.U,
+		$author$project$Preferences$default.Q,
+		A2($elm$json$Json$Decode$field, 'debug', $elm$json$Json$Decode$bool)),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.E,
+		A2(
+			$elm$json$Json$Decode$field,
+			'kilos',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$float))),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.G,
 		A2($elm$json$Json$Decode$field, 'months', $elm$json$Json$Decode$int)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ah,
+		$author$project$Preferences$default.M,
 		A2($elm$json$Json$Decode$field, 'unit', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5299,9 +5314,9 @@ var $author$project$Preferences$decode = function (value) {
 		$author$project$Preferences$default,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
-var $author$project$Model$Model = F2(
-	function (months, unit) {
-		return {U: months, ah: unit};
+var $author$project$Model$Model = F4(
+	function (debug, kilos, months, unit) {
+		return {Q: debug, E: kilos, G: months, M: unit};
 	});
 var $author$project$Months$fromInt = function (m) {
 	return (m < 0) ? 0 : m;
@@ -5311,14 +5326,14 @@ var $author$project$Unit$Lb = 1;
 var $author$project$Unit$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {aw: index, ay: match, aB: number, aG: submatches};
+		return {ay: index, aA: match, aD: number, aI: submatches};
 	});
 var $elm$regex$Regex$contains = _Regex_contains;
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{ap: false, az: false},
+		{ar: false, aB: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -5334,9 +5349,11 @@ var $author$project$Unit$fromString = function (str) {
 	return A2($elm$regex$Regex$contains, $author$project$Unit$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Unit$stones, str) ? 2 : 0);
 };
 var $author$project$Model$init = function (preferences) {
-	var unit = $author$project$Unit$fromString(preferences.ah);
-	var months = $author$project$Months$fromInt(preferences.U);
-	return A2($author$project$Model$Model, months, unit);
+	var unit = $author$project$Unit$fromString(preferences.M);
+	var months = $author$project$Months$fromInt(preferences.G);
+	var kilos = preferences.E;
+	var debug = preferences.Q;
+	return A4($author$project$Model$Model, debug, kilos, months, unit);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5372,7 +5389,66 @@ var $elm$json$Json$Decode$value = _Json_decodeValue;
 var $author$project$View$height = 500;
 var $author$project$View$width = 1000;
 var $author$project$View$box = '0 0 ' + ($elm$core$String$fromInt($author$project$View$width) + (' ' + $elm$core$String$fromInt($author$project$View$height)));
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var $author$project$View$cc = function (c) {
+	return $elm$svg$Svg$Attributes$class(c);
+};
+var $author$project$Unit$toString = function (unit) {
+	switch (unit) {
+		case 0:
+			return 'kg';
+		case 1:
+			return 'lb';
+		default:
+			return 'st';
+	}
+};
+var $author$project$Model$debugMsg = function (model) {
+	return A2(
+		$elm$core$String$join,
+		' | ',
+		_List_fromArray(
+			[
+				$elm$core$String$fromInt(
+				$elm$core$List$length(model.E)),
+				$author$project$Unit$toString(model.M),
+				$elm$core$String$fromInt(model.G)
+			]));
+};
+var $author$project$View$debugTextX = ($author$project$View$width / 2) | 0;
+var $author$project$View$debugTextY = 20;
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$text_ = $elm$svg$Svg$trustedNode('text');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$View$tt = function (t) {
+	return $elm$svg$Svg$text(t);
+};
+var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var $author$project$View$xx = function (x) {
+	return $elm$svg$Svg$Attributes$x(
+		$elm$core$String$fromInt(x));
+};
+var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
+var $author$project$View$yy = function (y) {
+	return $elm$svg$Svg$Attributes$y(
+		$elm$core$String$fromInt(y));
+};
+var $author$project$View$debug = function (model) {
+	return A2(
+		$elm$svg$Svg$text_,
+		_List_fromArray(
+			[
+				$author$project$View$xx($author$project$View$debugTextX),
+				$author$project$View$yy($author$project$View$debugTextY),
+				$author$project$View$cc('debug')
+			]),
+		_List_fromArray(
+			[
+				$author$project$View$tt(
+				$author$project$Model$debugMsg(model))
+			]));
+};
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
@@ -5445,8 +5521,12 @@ var $author$project$View$frame = function () {
 			]));
 }();
 var $author$project$View$fromModel = function (model) {
-	return _List_fromArray(
+	var basics = _List_fromArray(
 		[$author$project$View$frame]);
+	return model.Q ? A2(
+		$elm$core$List$cons,
+		$author$project$View$debug(model),
+		basics) : basics;
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
@@ -5464,5 +5544,5 @@ var $author$project$Weight$view = function (model) {
 		$author$project$View$fromModel(model));
 };
 var $author$project$Weight$main = $elm$browser$Browser$element(
-	{ax: $author$project$Weight$init, aH: $author$project$Weight$subscriptions, aJ: $author$project$Weight$update, aK: $author$project$Weight$view});
+	{az: $author$project$Weight$init, aJ: $author$project$Weight$subscriptions, aL: $author$project$Weight$update, aM: $author$project$Weight$view});
 _Platform_export({'Weight':{'init':$author$project$Weight$main($elm$json$Json$Decode$value)(0)}});}(this));
