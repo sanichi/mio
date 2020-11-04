@@ -136,9 +136,30 @@ img.styled
 pre
   @extend .border, .border-dark, .p-2
 
+// Elm weight display (pages/weight).
+
+svg#weight
+
+  // Border.
+  line
+    stroke: #bbb
+    stroke-width: 1
+
+  // All text.
+  text
+  font-family: $font-family-sans-serif
+  font-weight: normal
+  text-anchor: middle
+  fill: black
+
+  // Debug text
+  text.debug
+    font-size: 20px
+    opacity: 0.5
+
+
 // Other imports
 // @import "jquery-ui" - this doesn't seem to work, so see custom styling above
 @import "risle"
 @import "tree"
 @import "wk"
-@import "weight"
