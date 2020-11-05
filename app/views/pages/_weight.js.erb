@@ -3,8 +3,8 @@ $(function() {
     node: $('#elm-app').get(0),
     flags: {
       debug: true,
-      months: 5,
-      unit: 'st',
+      months: <%= Mass::DEFAULT_START %>,
+      unit: '<%= Mass::DEFAULT_UNIT.key.to_s %>',
       kilos: [<%= @kilos.map(&:to_s).join(',') %>],
       dates: ['<%= @dates.map(&:to_s).join("','").html_safe %>']
     }
