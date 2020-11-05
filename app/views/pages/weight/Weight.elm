@@ -5,6 +5,8 @@ import Html exposing (Html)
 import Json.Decode exposing (Value)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
+import Platform.Sub
+import Ports
 import Preferences
 import Svg exposing (svg)
 import Svg.Attributes exposing (id, version, viewBox)
@@ -54,11 +56,11 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        FlipOrientation ->
-            ( Model.flipOrientation model, Cmd.none )
+        ChangeUnits units ->
+            ( Model.changeUnits units model, Cmd.none )
 
-        ToggleNotation ->
-            ( Model.toggleNotation model, Cmd.none )
+        ChangeStart start ->
+            ( Model.changeStart start model, Cmd.none )
 
 
 
@@ -67,4 +69,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Platform.Sub.batch
+        [ Ports.changeUnits ChangeUnits
+        , Ports.changeStart ChangeStart
+        ]

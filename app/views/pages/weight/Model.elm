@@ -1,14 +1,14 @@
-module Model exposing (Model, debugMsg, flipOrientation, init, toggleNotation)
+module Model exposing (Model, changeStart, changeUnits, debugMsg, init)
 
-import Months exposing (Months)
 import Preferences exposing (Preferences)
+import Start exposing (Start)
 import Units exposing (Units)
 
 
 type alias Model =
     { debug : Bool
     , kilos : List Float
-    , start : Int
+    , start : Start
     , units : Units
     }
 
@@ -23,7 +23,7 @@ init preferences =
             preferences.kilos
 
         start =
-            Months.fromInt preferences.start
+            Start.fromInt preferences.start
 
         units =
             Units.fromString preferences.units
@@ -40,11 +40,11 @@ debugMsg model =
         ]
 
 
-flipOrientation : Model -> Model
-flipOrientation model =
-    model
+changeUnits : String -> Model -> Model
+changeUnits units model =
+    { model | units = Units.fromString units }
 
 
-toggleNotation : Model -> Model
-toggleNotation model =
-    model
+changeStart : Int -> Model -> Model
+changeStart start model =
+    { model | start = Start.fromInt start }

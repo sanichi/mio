@@ -1,5 +1,5 @@
 $(function() {
-  Elm.Weight.init({
+  var app = Elm.Weight.init({
     node: $('#elm-app').get(0),
     flags: {
       start: <%= Mass::DEFAULT_START %>,
@@ -10,9 +10,9 @@ $(function() {
     }
   });
   $('#units').change(function () {
-    alert('units changed to: ' + $('#units').val());
+    app.ports.changeUnits.send($('#units').val());
   });
   $('#start').change(function () {
-    alert('start changed to: ' + $('#start').val());
+    app.ports.changeStart.send(parseInt($('#start').val()));
   });
 });

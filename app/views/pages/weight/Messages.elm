@@ -2,5 +2,5 @@ module Messages exposing (..)
 
 
 type Msg
-    = FlipOrientation
-    | ToggleNotation
+    = ChangeUnits String
+    | ChangeStart Int

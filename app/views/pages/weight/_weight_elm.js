@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.z === region.Q.z)
+	if (region.E.z === region.Q.z)
 	{
-		return 'on line ' + region.J.z;
+		return 'on line ' + region.E.z;
 	}
-	return 'on lines ' + region.J.z + ' through ' + region.Q.z;
+	return 'on lines ' + region.E.z + ' through ' + region.Q.z;
 }
 
 
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		K: record.K,
-		H: record.H
+		L: record.L,
+		J: record.J
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.H) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.J) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3968,7 +3968,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.aK,
 		impl.aI,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.I && impl.I(sendToApp)
+			var divertHrefToApp = impl.K && impl.K(sendToApp)
 			var view = impl.aL;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4043,7 +4043,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		I: function(sendToApp)
+		K: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -5242,7 +5242,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F4(
 	function (debug, kilos, start, units) {
-		return {P: debug, E: kilos, J: start, L: units};
+		return {P: debug, G: kilos, E: start, F: units};
 	});
 var $author$project$Preferences$default = A4($author$project$Preferences$Preferences, false, _List_Nil, 4, 'kg');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5286,18 +5286,18 @@ var $author$project$Preferences$flagsDecoder = A5(
 		A2($elm$json$Json$Decode$field, 'debug', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.E,
+		$author$project$Preferences$default.G,
 		A2(
 			$elm$json$Json$Decode$field,
 			'kilos',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$float))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.J,
+		$author$project$Preferences$default.E,
 		A2($elm$json$Json$Decode$field, 'start', $elm$json$Json$Decode$int)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.L,
+		$author$project$Preferences$default.F,
 		A2($elm$json$Json$Decode$field, 'units', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5316,10 +5316,10 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $author$project$Model$Model = F4(
 	function (debug, kilos, start, units) {
-		return {P: debug, E: kilos, J: start, L: units};
+		return {P: debug, G: kilos, E: start, F: units};
 	});
-var $author$project$Months$fromInt = function (m) {
-	return (m < 0) ? 0 : m;
+var $author$project$Start$fromInt = function (months) {
+	return (months < 0) ? 0 : months;
 };
 var $author$project$Units$Kg = 0;
 var $author$project$Units$Lb = 1;
@@ -5349,9 +5349,9 @@ var $author$project$Units$fromString = function (str) {
 	return A2($elm$regex$Regex$contains, $author$project$Units$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Units$stones, str) ? 2 : 0);
 };
 var $author$project$Model$init = function (preferences) {
-	var units = $author$project$Units$fromString(preferences.L);
-	var start = $author$project$Months$fromInt(preferences.J);
-	var kilos = preferences.E;
+	var units = $author$project$Units$fromString(preferences.F);
+	var start = $author$project$Start$fromInt(preferences.E);
+	var kilos = preferences.G;
 	var debug = preferences.P;
 	return A4($author$project$Model$Model, debug, kilos, start, units);
 };
@@ -5362,26 +5362,50 @@ var $author$project$Weight$init = function (flags) {
 		$author$project$Preferences$decode(flags));
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
+var $author$project$Messages$ChangeStart = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Messages$ChangeUnits = function (a) {
+	return {$: 0, a: a};
+};
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Ports$changeStart = _Platform_incomingPort('changeStart', $elm$json$Json$Decode$int);
+var $author$project$Ports$changeUnits = _Platform_incomingPort('changeUnits', $elm$json$Json$Decode$string);
 var $author$project$Weight$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$Ports$changeUnits($author$project$Messages$ChangeUnits),
+				$author$project$Ports$changeStart($author$project$Messages$ChangeStart)
+			]));
 };
-var $author$project$Model$flipOrientation = function (model) {
-	return model;
-};
-var $author$project$Model$toggleNotation = function (model) {
-	return model;
-};
+var $author$project$Model$changeStart = F2(
+	function (start, model) {
+		return _Utils_update(
+			model,
+			{
+				E: $author$project$Start$fromInt(start)
+			});
+	});
+var $author$project$Model$changeUnits = F2(
+	function (units, model) {
+		return _Utils_update(
+			model,
+			{
+				F: $author$project$Units$fromString(units)
+			});
+	});
 var $author$project$Weight$update = F2(
 	function (msg, model) {
-		if (!msg) {
+		if (!msg.$) {
+			var units = msg.a;
 			return _Utils_Tuple2(
-				$author$project$Model$flipOrientation(model),
+				A2($author$project$Model$changeUnits, units, model),
 				$elm$core$Platform$Cmd$none);
 		} else {
+			var start = msg.a;
 			return _Utils_Tuple2(
-				$author$project$Model$toggleNotation(model),
+				A2($author$project$Model$changeStart, start, model),
 				$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -5410,9 +5434,9 @@ var $author$project$Model$debugMsg = function (model) {
 		_List_fromArray(
 			[
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.E)),
-				$author$project$Units$toString(model.L),
-				$elm$core$String$fromInt(model.J)
+				$elm$core$List$length(model.G)),
+				$author$project$Units$toString(model.F),
+				$elm$core$String$fromInt(model.E)
 			]));
 };
 var $author$project$View$debugTextX = ($author$project$View$width / 2) | 0;
