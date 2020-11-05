@@ -5,7 +5,6 @@ en:
     data: Measurements
     date: Date
     mass: Weight
-    months: Months
     new: New Measurement
     start: Morning
     options:
