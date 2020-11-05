@@ -9,4 +9,9 @@ class PagesController < ApplicationController
   def pam
     @answer = Flat.pam(params[:q])
   end
+
+  def weight
+    @kilos = Mass.kilos
+    @dates = Mass.dates
+  end
 end

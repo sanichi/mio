@@ -22,6 +22,20 @@ class Mass < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.kilos
+    ordered.all.each_with_object([]) do |m,a|
+      a.push(m.start) if m.start.present?
+      a.push(-m.finish) if m.finish.present?
+    end
+  end
+
+  def self.dates
+    ordered.all.each_with_object([]) do |m,a|
+      a.push(m.date) if m.start.present?
+      a.push(m.date) if m.finish.present?
+    end
+  end
+
   def to_json
     as_json(except: [:created_at, :updated_at])
   end
