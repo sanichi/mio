@@ -5321,9 +5321,9 @@ var $author$project$Model$Model = F4(
 var $author$project$Months$fromInt = function (m) {
 	return (m < 0) ? 0 : m;
 };
-var $author$project$Unit$Kg = 0;
-var $author$project$Unit$Lb = 1;
-var $author$project$Unit$St = 2;
+var $author$project$Units$Kg = 0;
+var $author$project$Units$Lb = 1;
+var $author$project$Units$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
 		return {ax: index, az: match, aC: number, aH: submatches};
@@ -5337,19 +5337,19 @@ var $elm$regex$Regex$fromString = function (string) {
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
-var $author$project$Unit$pounds = A2(
+var $author$project$Units$pounds = A2(
 	$elm$core$Maybe$withDefault,
 	$elm$regex$Regex$never,
 	$elm$regex$Regex$fromString('^(lb|pound)s?$'));
-var $author$project$Unit$stones = A2(
+var $author$project$Units$stones = A2(
 	$elm$core$Maybe$withDefault,
 	$elm$regex$Regex$never,
 	$elm$regex$Regex$fromString('^(st|stone)s?$'));
-var $author$project$Unit$fromString = function (str) {
-	return A2($elm$regex$Regex$contains, $author$project$Unit$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Unit$stones, str) ? 2 : 0);
+var $author$project$Units$fromString = function (str) {
+	return A2($elm$regex$Regex$contains, $author$project$Units$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Units$stones, str) ? 2 : 0);
 };
 var $author$project$Model$init = function (preferences) {
-	var units = $author$project$Unit$fromString(preferences.L);
+	var units = $author$project$Units$fromString(preferences.L);
 	var start = $author$project$Months$fromInt(preferences.J);
 	var kilos = preferences.E;
 	var debug = preferences.P;
@@ -5393,7 +5393,7 @@ var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$View$cc = function (c) {
 	return $elm$svg$Svg$Attributes$class(c);
 };
-var $author$project$Unit$toString = function (unit) {
+var $author$project$Units$toString = function (unit) {
 	switch (unit) {
 		case 0:
 			return 'kg';
@@ -5411,7 +5411,7 @@ var $author$project$Model$debugMsg = function (model) {
 			[
 				$elm$core$String$fromInt(
 				$elm$core$List$length(model.E)),
-				$author$project$Unit$toString(model.L),
+				$author$project$Units$toString(model.L),
 				$elm$core$String$fromInt(model.J)
 			]));
 };

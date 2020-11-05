@@ -1,15 +1,15 @@
-module Unit exposing (Unit(..), fromString, toString)
+module Units exposing (Units(..), fromString, toString)
 
 import Regex exposing (Regex)
 
 
-type Unit
+type Units
     = Kg
     | Lb
     | St
 
 
-fromString : String -> Unit
+fromString : String -> Units
 fromString str =
     if Regex.contains pounds str then
         Lb
@@ -21,7 +21,7 @@ fromString str =
         Kg
 
 
-toString : Unit -> String
+toString : Units -> String
 toString unit =
     case unit of
         Kg ->
