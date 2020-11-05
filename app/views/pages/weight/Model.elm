@@ -8,8 +8,8 @@ import Unit exposing (Unit)
 type alias Model =
     { debug : Bool
     , kilos : List Float
-    , months : Int
-    , unit : Unit
+    , start : Int
+    , units : Unit
     }
 
 
@@ -22,21 +22,21 @@ init preferences =
         kilos =
             preferences.kilos
 
-        months =
-            Months.fromInt preferences.months
+        start =
+            Months.fromInt preferences.start
 
-        unit =
-            Unit.fromString preferences.unit
+        units =
+            Unit.fromString preferences.units
     in
-    Model debug kilos months unit
+    Model debug kilos start units
 
 
 debugMsg : Model -> String
 debugMsg model =
     String.join " | "
         [ String.fromInt <| List.length model.kilos
-        , Unit.toString model.unit
-        , String.fromInt model.months
+        , Unit.toString model.units
+        , String.fromInt model.start
         ]
 
 
