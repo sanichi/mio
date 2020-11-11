@@ -21,8 +21,8 @@ combine kilos dates =
 combine_ : Data -> List Float -> List String -> Data
 combine_ data kilos dates =
     case ( kilos, dates ) of
-        ( kilo :: ks, string :: ds ) ->
-            case Date.fromIsoString string of
+        ( kilo :: ks, str :: ds ) ->
+            case Date.fromIsoString str of
                 Ok date ->
                     combine_ (Datum kilo date :: data) ks ds
 

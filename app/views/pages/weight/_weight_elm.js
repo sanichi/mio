@@ -6303,9 +6303,9 @@ var $author$project$Data$combine_ = F3(
 				var kilo = _v1.a;
 				var ks = _v1.b;
 				var _v2 = _v0.b;
-				var string = _v2.a;
+				var str = _v2.a;
 				var ds = _v2.b;
-				var _v3 = $justinmimbs$date$Date$fromIsoString(string);
+				var _v3 = $justinmimbs$date$Date$fromIsoString(str);
 				if (!_v3.$) {
 					var date = _v3.a;
 					var $temp$data = A2(
