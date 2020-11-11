@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aK,
-		impl.aI,
+		impl.aA,
+		impl.aO,
+		impl.aM,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		L: record.L,
-		J: record.J
+		K: record.K,
+		I: record.I
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.L;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.J) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.I) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aK,
-		impl.aI,
+		impl.aA,
+		impl.aO,
+		impl.aM,
 		function(sendToApp, initialModel) {
-			var view = impl.aL;
+			var view = impl.aP;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aK,
-		impl.aI,
+		impl.aA,
+		impl.aO,
+		impl.aM,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.K && impl.K(sendToApp)
-			var view = impl.aL;
+			var divertHrefToApp = impl.J && impl.J(sendToApp)
+			var view = impl.aP;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3982,7 +3982,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aJ) && (_VirtualDom_doc.title = title = doc.aJ);
+				(title !== doc.aN) && (_VirtualDom_doc.title = title = doc.aN);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aD;
-	var onUrlRequest = impl.aE;
+	var onUrlChange = impl.aH;
+	var onUrlRequest = impl.aI;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		K: function(sendToApp)
+		J: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ay: function(flags)
+		aA: function(flags)
 		{
-			return A3(impl.ay, flags, _Browser_getUrl(), key);
+			return A3(impl.aA, flags, _Browser_getUrl(), key);
 		},
-		aL: impl.aL,
-		aK: impl.aK,
-		aI: impl.aI
+		aP: impl.aP,
+		aO: impl.aO,
+		aM: impl.aM
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { av: 'hidden', ar: 'visibilitychange' }
+		? { ax: 'hidden', ar: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { av: 'mozHidden', ar: 'mozvisibilitychange' }
+		? { ax: 'mozHidden', ar: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { av: 'msHidden', ar: 'msvisibilitychange' }
+		? { ax: 'msHidden', ar: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { av: 'webkitHidden', ar: 'webkitvisibilitychange' }
-		: { av: 'hidden', ar: 'visibilitychange' };
+		? { ax: 'webkitHidden', ar: 'webkitvisibilitychange' }
+		: { ax: 'hidden', ar: 'visibilitychange' };
 }
 
 
@@ -4316,7 +4316,7 @@ function _Browser_getElement(id)
 				ak: _Browser_doc.documentElement.clientWidth,
 				T: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
+			av: {
 				al: x + rect.left,
 				am: y + rect.top,
 				ak: rect.width,
@@ -4364,7 +4364,7 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.aA) { flags += 'm'; }
+	if (options.aE) { flags += 'm'; }
 	if (options.aq) { flags += 'i'; }
 
 	try
@@ -5240,17 +5240,17 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F4(
-	function (debug, kilos, start, units) {
-		return {P: debug, G: kilos, E: start, F: units};
+var $author$project$Preferences$Preferences = F5(
+	function (debug, dates, kilos, start, units) {
+		return {at: dates, P: debug, aC: kilos, E: start, F: units};
 	});
-var $author$project$Preferences$default = A4($author$project$Preferences$Preferences, false, _List_Nil, 4, 'kg');
+var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, false, _List_Nil, _List_Nil, 4, 'kg');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
-var $elm$json$Json$Decode$map4 = _Json_map4;
+var $elm$json$Json$Decode$map5 = _Json_map5;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
@@ -5277,8 +5277,8 @@ var $author$project$Preferences$withDefault = F2(
 			$elm$core$Maybe$withDefault(fallback),
 			$elm$json$Json$Decode$maybe(decoder));
 	});
-var $author$project$Preferences$flagsDecoder = A5(
-	$elm$json$Json$Decode$map4,
+var $author$project$Preferences$flagsDecoder = A6(
+	$elm$json$Json$Decode$map5,
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
@@ -5286,7 +5286,14 @@ var $author$project$Preferences$flagsDecoder = A5(
 		A2($elm$json$Json$Decode$field, 'debug', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.G,
+		$author$project$Preferences$default.at,
+		A2(
+			$elm$json$Json$Decode$field,
+			'dates',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
+	A2(
+		$author$project$Preferences$withDefault,
+		$author$project$Preferences$default.aC,
 		A2(
 			$elm$json$Json$Decode$field,
 			'kilos',
@@ -5315,8 +5322,43 @@ var $author$project$Preferences$decode = function (value) {
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
 var $author$project$Model$Model = F4(
-	function (debug, kilos, start, units) {
-		return {P: debug, G: kilos, E: start, F: units};
+	function (data, debug, start, units) {
+		return {N: data, P: debug, E: start, F: units};
+	});
+var $author$project$Data$Datum = F2(
+	function (kilo, date) {
+		return {as: date, aB: kilo};
+	});
+var $author$project$Data$combine_ = F3(
+	function (data, kilos, dates) {
+		combine_:
+		while (true) {
+			var _v0 = _Utils_Tuple2(kilos, dates);
+			if (_v0.a.b && _v0.b.b) {
+				var _v1 = _v0.a;
+				var kilo = _v1.a;
+				var ks = _v1.b;
+				var _v2 = _v0.b;
+				var date = _v2.a;
+				var ds = _v2.b;
+				var $temp$data = A2(
+					$elm$core$List$cons,
+					A2($author$project$Data$Datum, kilo, date),
+					data),
+					$temp$kilos = ks,
+					$temp$dates = ds;
+				data = $temp$data;
+				kilos = $temp$kilos;
+				dates = $temp$dates;
+				continue combine_;
+			} else {
+				return data;
+			}
+		}
+	});
+var $author$project$Data$combine = F2(
+	function (kilos, dates) {
+		return A3($author$project$Data$combine_, _List_Nil, kilos, dates);
 	});
 var $author$project$Start$fromInt = function (months) {
 	return (months < 0) ? 0 : months;
@@ -5326,14 +5368,14 @@ var $author$project$Units$Lb = 1;
 var $author$project$Units$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {ax: index, az: match, aC: number, aH: submatches};
+		return {az: index, aD: match, aG: number, aL: submatches};
 	});
 var $elm$regex$Regex$contains = _Regex_contains;
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{aq: false, aA: false},
+		{aq: false, aE: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -5351,9 +5393,9 @@ var $author$project$Units$fromString = function (str) {
 var $author$project$Model$init = function (preferences) {
 	var units = $author$project$Units$fromString(preferences.F);
 	var start = $author$project$Start$fromInt(preferences.E);
-	var kilos = preferences.G;
 	var debug = preferences.P;
-	return A4($author$project$Model$Model, debug, kilos, start, units);
+	var data = A2($author$project$Data$combine, preferences.aC, preferences.at);
+	return A4($author$project$Model$Model, data, debug, start, units);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5434,7 +5476,7 @@ var $author$project$Model$debugMsg = function (model) {
 		_List_fromArray(
 			[
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.G)),
+				$elm$core$List$length(model.N)),
 				$author$project$Units$toString(model.F),
 				$elm$core$String$fromInt(model.E)
 			]));
@@ -5568,5 +5610,5 @@ var $author$project$Weight$view = function (model) {
 		$author$project$View$fromModel(model));
 };
 var $author$project$Weight$main = $elm$browser$Browser$element(
-	{ay: $author$project$Weight$init, aI: $author$project$Weight$subscriptions, aK: $author$project$Weight$update, aL: $author$project$Weight$view});
+	{aA: $author$project$Weight$init, aM: $author$project$Weight$subscriptions, aO: $author$project$Weight$update, aP: $author$project$Weight$view});
 _Platform_export({'Weight':{'init':$author$project$Weight$main($elm$json$Json$Decode$value)(0)}});}(this));

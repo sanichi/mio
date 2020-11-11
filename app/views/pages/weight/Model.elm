@@ -1,13 +1,14 @@
 module Model exposing (Model, changeStart, changeUnits, debugMsg, init)
 
+import Data exposing (Data)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
 import Units exposing (Units)
 
 
 type alias Model =
-    { debug : Bool
-    , kilos : List Float
+    { data : Data
+    , debug : Bool
     , start : Start
     , units : Units
     }
@@ -16,11 +17,11 @@ type alias Model =
 init : Preferences -> Model
 init preferences =
     let
+        data =
+            Data.combine preferences.kilos preferences.dates
+
         debug =
             preferences.debug
-
-        kilos =
-            preferences.kilos
 
         start =
             Start.fromInt preferences.start
@@ -28,13 +29,13 @@ init preferences =
         units =
             Units.fromString preferences.units
     in
-    Model debug kilos start units
+    Model data debug start units
 
 
 debugMsg : Model -> String
 debugMsg model =
     String.join " | "
-        [ String.fromInt <| List.length model.kilos
+        [ String.fromInt <| List.length model.data
         , Units.toString model.units
         , String.fromInt model.start
         ]

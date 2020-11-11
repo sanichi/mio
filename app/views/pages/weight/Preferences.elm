@@ -5,6 +5,7 @@ import Json.Decode as D exposing (Decoder, Value)
 
 type alias Preferences =
     { debug : Bool
+    , dates : List String
     , kilos : List Float
     , start : Int
     , units : String
@@ -18,8 +19,9 @@ decode value =
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map4 Preferences
+    D.map5 Preferences
         (D.field "debug" D.bool |> withDefault default.debug)
+        (D.field "dates" (D.list D.string) |> withDefault default.dates)
         (D.field "kilos" (D.list D.float) |> withDefault default.kilos)
         (D.field "start" D.int |> withDefault default.start)
         (D.field "units" D.string |> withDefault default.units)
@@ -27,7 +29,7 @@ flagsDecoder =
 
 default : Preferences
 default =
-    Preferences False [] 4 "kg"
+    Preferences False [] [] 4 "kg"
 
 
 
