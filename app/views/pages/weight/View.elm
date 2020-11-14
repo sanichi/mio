@@ -1,24 +1,27 @@
 module View exposing (box, fromModel)
 
+import Data exposing (Datum)
+import Date exposing (Date)
 import Html exposing (Html)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
 import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
 import Svg.Events exposing (onClick)
+import Time exposing (Month(..))
 
 
 fromModel : Model -> List (Svg Msg)
 fromModel model =
     let
-        basics =
-            [ frame ]
+        components =
+            [ frame, points model ]
     in
     if model.debug then
-        debug model :: basics
+        debug model :: components
 
     else
-        basics
+        components
 
 
 debug : Model -> Svg Msg
@@ -28,16 +31,43 @@ debug model =
 
 frame : Svg Msg
 frame =
-    let
-        borderStyle =
-            "stroke:black;stroke-width:2;"
-    in
-    S.g []
+    S.g [ cc "frame" ]
         [ S.line [ x1 0, y1 0, x2 width, y2 0 ] []
         , S.line [ x1 width, y1 0, x2 width, y2 height ] []
         , S.line [ x1 width, y1 height, x2 0, y2 height ] []
         , S.line [ x1 0, y1 height, x2 0, y2 0 ] []
         ]
+
+
+points : Model -> Svg Msg
+points model =
+    let
+        start =
+            model.data
+                |> List.filter Data.isStart
+                |> List.map point
+
+        finish =
+            model.data
+                |> List.filter Data.isFinish
+                |> List.map point
+    in
+    S.g [ cc "points" ]
+        [ S.g [ cc "start" ] start
+        , S.g [ cc "finish" ] finish
+        ]
+
+
+point : Datum -> Svg Msg
+point d =
+    let
+        x =
+            xFromDate d.date
+
+        y =
+            yFromKilo d.kilo
+    in
+    S.circle [ cx x, cy y, r 1 ] []
 
 
 
@@ -52,6 +82,21 @@ box =
 cc : String -> Attribute Msg
 cc c =
     A.class c
+
+
+cx : Int -> Attribute Msg
+cx x =
+    A.cx <| String.fromInt x
+
+
+cy : Int -> Attribute Msg
+cy y =
+    A.cy <| String.fromInt y
+
+
+r : Int -> Attribute Msg
+r d =
+    A.r <| String.fromInt d
 
 
 xx : Int -> Attribute Msg
@@ -106,6 +151,51 @@ height =
 width : Int
 width =
     1000
+
+
+xFromDate : Date -> Int
+xFromDate d =
+    let
+        low =
+            Date.toRataDie <| Date.fromCalendarDate 2014 Oct 1
+
+        hgh =
+            Date.toRataDie <| Date.fromCalendarDate 2020 Dec 1
+
+        mid =
+            Date.toRataDie d
+
+        num =
+            mid - low |> toFloat
+
+        den =
+            hgh - low |> toFloat
+
+        fac =
+            toFloat width / den
+    in
+    fac * num |> round
+
+
+yFromKilo : Float -> Int
+yFromKilo w =
+    let
+        low =
+            75.0
+
+        hgh =
+            100.0
+
+        num =
+            abs w - low
+
+        den =
+            hgh - low
+
+        fac =
+            toFloat height / den
+    in
+    height - (fac * num |> round)
 
 
 tt : String -> Svg Msg

@@ -1,4 +1,4 @@
-module Data exposing (Data, combine)
+module Data exposing (Data, Datum, combine, isFinish, isStart)
 
 import Date exposing (Date)
 
@@ -11,6 +11,16 @@ type alias Datum =
 
 type alias Data =
     List Datum
+
+
+isStart : Datum -> Bool
+isStart d =
+    d.kilo > 0.0
+
+
+isFinish : Datum -> Bool
+isFinish d =
+    d.kilo <= 0.0
 
 
 combine : List Float -> List String -> Data

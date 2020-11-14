@@ -141,9 +141,21 @@ pre
 svg#weight
 
   // Border.
-  line
-    stroke: #bbb
-    stroke-width: 1
+  g.frame
+    line
+      stroke: #bbb
+      stroke-width: 1
+
+  // Points.
+  g.points
+    circle
+      stroke: none
+  g.start
+    circle
+      fill: blue
+  g.finish
+    circle
+      fill: red
 
   // All text.
   text
