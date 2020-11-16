@@ -5456,8 +5456,8 @@ var $author$project$Model$Model = F4(
 		return {ab: data, ad: debug, M: start, N: units};
 	});
 var $author$project$Data$Datum = F3(
-	function (kilo, date, even) {
-		return {K: date, P: even, p: kilo};
+	function (kilo, rata, even) {
+		return {P: even, p: kilo, L: rata};
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -6296,6 +6296,10 @@ var $justinmimbs$date$Date$fromIsoString = A2(
 				$elm$core$Basics$composeR,
 				$elm$core$Maybe$map($justinmimbs$date$Date$deadEndToString),
 				$elm$core$Maybe$withDefault('')))));
+var $justinmimbs$date$Date$toRataDie = function (_v0) {
+	var rd = _v0;
+	return rd;
+};
 var $author$project$Data$combine_ = F3(
 	function (data, kilos, dates) {
 		combine_:
@@ -6311,10 +6315,11 @@ var $author$project$Data$combine_ = F3(
 				var _v3 = $justinmimbs$date$Date$fromIsoString(str);
 				if (!_v3.$) {
 					var date = _v3.a;
+					var rata = $justinmimbs$date$Date$toRataDie(date);
 					var datum = A3(
 						$author$project$Data$Datum,
 						$elm$core$Basics$abs(kilo),
-						date,
+						rata,
 						kilo < 0.0);
 					var $temp$data = A2($elm$core$List$cons, datum, data),
 						$temp$kilos = ks,
@@ -6578,117 +6583,6 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
-var $justinmimbs$date$Date$Days = 3;
-var $justinmimbs$date$Date$Months = 1;
-var $elm$core$Basics$min = F2(
-	function (x, y) {
-		return (_Utils_cmp(x, y) < 0) ? x : y;
-	});
-var $justinmimbs$date$Date$monthToNumber = function (m) {
-	switch (m) {
-		case 0:
-			return 1;
-		case 1:
-			return 2;
-		case 2:
-			return 3;
-		case 3:
-			return 4;
-		case 4:
-			return 5;
-		case 5:
-			return 6;
-		case 6:
-			return 7;
-		case 7:
-			return 8;
-		case 8:
-			return 9;
-		case 9:
-			return 10;
-		case 10:
-			return 11;
-		default:
-			return 12;
-	}
-};
-var $justinmimbs$date$Date$toCalendarDateHelp = F3(
-	function (y, m, d) {
-		toCalendarDateHelp:
-		while (true) {
-			var monthDays = A2($justinmimbs$date$Date$daysInMonth, y, m);
-			var mn = $justinmimbs$date$Date$monthToNumber(m);
-			if ((mn < 12) && (_Utils_cmp(d, monthDays) > 0)) {
-				var $temp$y = y,
-					$temp$m = $justinmimbs$date$Date$numberToMonth(mn + 1),
-					$temp$d = d - monthDays;
-				y = $temp$y;
-				m = $temp$m;
-				d = $temp$d;
-				continue toCalendarDateHelp;
-			} else {
-				return {ac: d, aq: m, aQ: y};
-			}
-		}
-	});
-var $justinmimbs$date$Date$divWithRemainder = F2(
-	function (a, b) {
-		return _Utils_Tuple2(
-			A2($justinmimbs$date$Date$floorDiv, a, b),
-			A2($elm$core$Basics$modBy, b, a));
-	});
-var $justinmimbs$date$Date$year = function (_v0) {
-	var rd = _v0;
-	var _v1 = A2($justinmimbs$date$Date$divWithRemainder, rd, 146097);
-	var n400 = _v1.a;
-	var r400 = _v1.b;
-	var _v2 = A2($justinmimbs$date$Date$divWithRemainder, r400, 36524);
-	var n100 = _v2.a;
-	var r100 = _v2.b;
-	var _v3 = A2($justinmimbs$date$Date$divWithRemainder, r100, 1461);
-	var n4 = _v3.a;
-	var r4 = _v3.b;
-	var _v4 = A2($justinmimbs$date$Date$divWithRemainder, r4, 365);
-	var n1 = _v4.a;
-	var r1 = _v4.b;
-	var n = (!r1) ? 0 : 1;
-	return ((((n400 * 400) + (n100 * 100)) + (n4 * 4)) + n1) + n;
-};
-var $justinmimbs$date$Date$toOrdinalDate = function (_v0) {
-	var rd = _v0;
-	var y = $justinmimbs$date$Date$year(rd);
-	return {
-		T: rd - $justinmimbs$date$Date$daysBeforeYear(y),
-		aQ: y
-	};
-};
-var $justinmimbs$date$Date$toCalendarDate = function (_v0) {
-	var rd = _v0;
-	var date = $justinmimbs$date$Date$toOrdinalDate(rd);
-	return A3($justinmimbs$date$Date$toCalendarDateHelp, date.aQ, 0, date.T);
-};
-var $justinmimbs$date$Date$add = F3(
-	function (unit, n, _v0) {
-		var rd = _v0;
-		switch (unit) {
-			case 0:
-				return A3($justinmimbs$date$Date$add, 1, 12 * n, rd);
-			case 1:
-				var date = $justinmimbs$date$Date$toCalendarDate(rd);
-				var wholeMonths = ((12 * (date.aQ - 1)) + ($justinmimbs$date$Date$monthToNumber(date.aq) - 1)) + n;
-				var m = $justinmimbs$date$Date$numberToMonth(
-					A2($elm$core$Basics$modBy, 12, wholeMonths) + 1);
-				var y = A2($justinmimbs$date$Date$floorDiv, wholeMonths, 12) + 1;
-				return ($justinmimbs$date$Date$daysBeforeYear(y) + A2($justinmimbs$date$Date$daysBeforeMonth, y, m)) + A2(
-					$elm$core$Basics$min,
-					date.ac,
-					A2($justinmimbs$date$Date$daysInMonth, y, m));
-			case 2:
-				return rd + (7 * n);
-			default:
-				return rd + n;
-		}
-	});
 var $elm$core$Basics$clamp = F3(
 	function (low, high, number) {
 		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
@@ -6701,56 +6595,40 @@ var $justinmimbs$date$Date$fromCalendarDate = F3(
 			A2($justinmimbs$date$Date$daysInMonth, y, m),
 			d);
 	});
-var $author$project$Data$defaultMax = A3(
-	$author$project$Data$Datum,
-	100.0,
-	A3($justinmimbs$date$Date$fromCalendarDate, 2055, 10, 9),
-	true);
+var $author$project$Data$defaultMax = function () {
+	var rata = $justinmimbs$date$Date$toRataDie(
+		A3($justinmimbs$date$Date$fromCalendarDate, 2055, 10, 9));
+	return A3($author$project$Data$Datum, 100.0, rata, true);
+}();
 var $author$project$Data$dateMax = function (data) {
-	return A3(
-		$justinmimbs$date$Date$add,
-		3,
-		1,
-		A2(
-			$elm$core$Maybe$withDefault,
-			$author$project$Data$defaultMax,
-			$elm$core$List$head(data)).K);
+	return 1 + A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Data$defaultMax,
+		$elm$core$List$head(data)).L;
 };
-var $author$project$Data$defaultMin = A3(
-	$author$project$Data$Datum,
-	70.0,
-	A3($justinmimbs$date$Date$fromCalendarDate, 2014, 11, 1),
-	true);
+var $author$project$Data$defaultMin = function () {
+	var rata = $justinmimbs$date$Date$toRataDie(
+		A3($justinmimbs$date$Date$fromCalendarDate, 2014, 11, 1));
+	return A3($author$project$Data$Datum, 70.0, rata, true);
+}();
 var $author$project$Data$dateMin = F2(
 	function (data, start) {
-		return (!start) ? $author$project$Data$defaultMin.K : A3(
-			$justinmimbs$date$Date$add,
-			3,
-			-1,
-			A3(
-				$justinmimbs$date$Date$add,
-				1,
-				-start,
-				$author$project$Data$dateMax(data)));
+		return (!start) ? $author$project$Data$defaultMin.L : function (x) {
+			return x - (30 * start);
+		}(
+			$author$project$Data$dateMax(data));
 	});
 var $elm$core$Basics$round = _Basics_round;
-var $justinmimbs$date$Date$toRataDie = function (_v0) {
-	var rd = _v0;
-	return rd;
-};
 var $author$project$View$iFromDate = F2(
 	function (model, d) {
-		var low = $justinmimbs$date$Date$toRataDie(
-			A2($author$project$Data$dateMin, model.ab, model.M));
-		var hgh = $justinmimbs$date$Date$toRataDie(
-			$author$project$Data$dateMax(model.ab));
+		var low = A2($author$project$Data$dateMin, model.ab, model.M);
+		var hgh = $author$project$Data$dateMax(model.ab);
 		var wid = hgh - low;
 		var fac = $author$project$View$width / wid;
 		return $elm$core$Basics$round(
 			fac * function (x) {
 				return x - low;
-			}(
-				$justinmimbs$date$Date$toRataDie(d)));
+			}(d));
 	});
 var $author$project$Data$isEvening = function (d) {
 	return d.P;
@@ -6769,9 +6647,7 @@ var $author$project$Data$limits = F3(
 			if (data.b) {
 				var d = data.a;
 				var rest = data.b;
-				if (_Utils_cmp(
-					$justinmimbs$date$Date$toRataDie(d.K),
-					cutoff) < 0) {
+				if (_Utils_cmp(d.L, cutoff) < 0) {
 					return sofar;
 				} else {
 					var minKilo = function () {
@@ -6807,8 +6683,7 @@ var $author$project$Data$limits = F3(
 	});
 var $author$project$Data$kiloMinMax = F2(
 	function (data, start) {
-		var cutoff = $justinmimbs$date$Date$toRataDie(
-			A2($author$project$Data$dateMin, data, start));
+		var cutoff = A2($author$project$Data$dateMin, data, start);
 		var _v0 = A3(
 			$author$project$Data$limits,
 			data,
@@ -6861,7 +6736,7 @@ var $author$project$View$r = function (d) {
 var $author$project$View$point = F3(
 	function (d2i, k2j, d) {
 		var y = k2j(d.p);
-		var x = d2i(d.K);
+		var x = d2i(d.L);
 		return A2(
 			$elm$svg$Svg$circle,
 			_List_fromArray(

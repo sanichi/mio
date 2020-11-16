@@ -16,7 +16,7 @@ import Time exposing (Month(..))
 
 type alias Datum =
     { kilo : Float
-    , date : Date
+    , rata : Int
     , even : Bool
     }
 
@@ -30,32 +30,31 @@ combine kilos dates =
     combine_ [] kilos dates
 
 
-dateMin : Data -> Start -> Date
+dateMin : Data -> Start -> Int
 dateMin data start =
     if start == 0 then
-        defaultMin.date
+        defaultMin.rata
 
     else
         data
             |> dateMax
-            |> Date.add Months -start
-            |> Date.add Days -1
+            |> (\x -> x - 30 * start)
 
 
-dateMax : Data -> Date
+dateMax : Data -> Int
 dateMax data =
     data
         |> List.head
         |> Maybe.withDefault defaultMax
-        |> .date
-        |> Date.add Days 1
+        |> .rata
+        |> (+) 1
 
 
 kiloMinMax : Data -> Start -> ( Float, Float )
 kiloMinMax data start =
     let
         cutoff =
-            dateMin data start |> Date.toRataDie
+            dateMin data start
 
         ( min, max ) =
             limits data cutoff ( Nothing, Nothing )
@@ -102,12 +101,20 @@ isEvening d =
 
 defaultMax : Datum
 defaultMax =
-    Datum 100.0 (Date.fromCalendarDate 2055 Nov 9) True
+    let
+        rata =
+            Date.fromCalendarDate 2055 Nov 9 |> Date.toRataDie
+    in
+    Datum 100.0 rata True
 
 
 defaultMin : Datum
 defaultMin =
-    Datum 70.0 (Date.fromCalendarDate 2014 Dec 1) True
+    let
+        rata =
+            Date.fromCalendarDate 2014 Dec 1 |> Date.toRataDie
+    in
+    Datum 70.0 rata True
 
 
 combine_ : Data -> List Float -> List String -> Data
@@ -117,8 +124,11 @@ combine_ data kilos dates =
             case Date.fromIsoString str of
                 Ok date ->
                     let
+                        rata =
+                            Date.toRataDie date
+
                         datum =
-                            Datum (abs kilo) date (kilo < 0.0)
+                            Datum (abs kilo) rata (kilo < 0.0)
                     in
                     combine_ (datum :: data) ks ds
 
@@ -133,7 +143,7 @@ limits : Data -> Int -> ( Maybe Float, Maybe Float ) -> ( Maybe Float, Maybe Flo
 limits data cutoff sofar =
     case data of
         d :: rest ->
-            if Date.toRataDie d.date < cutoff then
+            if d.rata < cutoff then
                 sofar
 
             else

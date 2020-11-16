@@ -155,14 +155,14 @@ width =
     1000
 
 
-iFromDate : Model -> Date -> Int
+iFromDate : Model -> Int -> Int
 iFromDate model d =
     let
         low =
-            Data.dateMin model.data model.start |> Date.toRataDie
+            Data.dateMin model.data model.start
 
         hgh =
-            Data.dateMax model.data |> Date.toRataDie
+            Data.dateMax model.data
 
         wid =
             hgh - low |> toFloat
@@ -171,7 +171,6 @@ iFromDate model d =
             toFloat width / wid
     in
     d
-        |> Date.toRataDie
         |> (\x -> x - low)
         |> toFloat
         |> (*) fac
@@ -197,11 +196,11 @@ jFromKilo model k =
         |> (-) height
 
 
-point : (Date -> Int) -> (Float -> Int) -> Datum -> Svg Msg
+point : (Int -> Int) -> (Float -> Int) -> Datum -> Svg Msg
 point d2i k2j d =
     let
         x =
-            d2i d.date
+            d2i d.rata
 
         y =
             k2j d.kilo
