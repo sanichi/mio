@@ -6,7 +6,7 @@ $(function() {
       units: '<%= Mass::DEFAULT_UNIT.key.to_s %>',
       kilos: [<%= @kilos.map(&:to_s).join(',') %>],
       dates: ['<%= @dates.map(&:to_s).join("','").html_safe %>'],
-      debug: true
+      debug: false
     }
   });
   $('#units').change(function () {
