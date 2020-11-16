@@ -42,32 +42,29 @@ frame =
 points : Model -> Svg Msg
 points model =
     let
+        d2i =
+            iFromDate model
+
+        k2j =
+            jFromKilo model
+
+        transform =
+            point d2i k2j
+
         start =
             model.data
                 |> List.filter Data.isStart
-                |> List.map point
+                |> List.map transform
 
         finish =
             model.data
                 |> List.filter Data.isFinish
-                |> List.map point
+                |> List.map transform
     in
     S.g [ cc "points" ]
         [ S.g [ cc "start" ] start
         , S.g [ cc "finish" ] finish
         ]
-
-
-point : Datum -> Svg Msg
-point d =
-    let
-        x =
-            xFromDate d.date
-
-        y =
-            yFromKilo d.kilo
-    in
-    S.circle [ cx x, cy y, r 1 ] []
 
 
 
@@ -129,6 +126,11 @@ y2 i =
     A.y2 <| String.fromInt i
 
 
+tt : String -> Svg Msg
+tt t =
+    S.text t
+
+
 
 -- Dimensions
 
@@ -153,51 +155,56 @@ width =
     1000
 
 
-xFromDate : Date -> Int
-xFromDate d =
+iFromDate : Model -> Date -> Int
+iFromDate model d =
     let
         low =
-            Date.toRataDie <| Date.fromCalendarDate 2014 Oct 1
+            Data.dateMin model.data model.start |> Date.toRataDie
 
         hgh =
-            Date.toRataDie <| Date.fromCalendarDate 2020 Dec 1
+            Data.dateMax model.data |> Date.toRataDie
 
-        mid =
-            Date.toRataDie d
-
-        num =
-            mid - low |> toFloat
-
-        den =
+        wid =
             hgh - low |> toFloat
 
         fac =
-            toFloat width / den
+            toFloat width / wid
     in
-    fac * num |> round
+    d
+        |> Date.toRataDie
+        |> (\x -> x - low)
+        |> toFloat
+        |> (*) fac
+        |> round
 
 
-yFromKilo : Float -> Int
-yFromKilo w =
+jFromKilo : Model -> Float -> Int
+jFromKilo model k =
     let
-        low =
-            75.0
+        ( low, hgh ) =
+            Data.kiloMinMax model.data model.start
 
-        hgh =
-            100.0
-
-        num =
-            abs w - low
-
-        den =
+        hit =
             hgh - low
 
         fac =
-            toFloat height / den
+            toFloat height / hit
     in
-    height - (fac * num |> round)
+    k
+        |> abs
+        |> (\x -> x - low)
+        |> (*) fac
+        |> round
+        |> (-) height
 
 
-tt : String -> Svg Msg
-tt t =
-    S.text t
+point : (Date -> Int) -> (Float -> Int) -> Datum -> Svg Msg
+point d2i k2j d =
+    let
+        x =
+            d2i d.date
+
+        y =
+            k2j d.kilo
+    in
+    S.circle [ cx x, cy y, r 2 ] []
