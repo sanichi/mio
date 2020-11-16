@@ -1,6 +1,7 @@
 module Model exposing (Model, changeStart, changeUnits, debugMsg, init)
 
 import Data exposing (Data)
+import Date exposing (Date)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
 import Units exposing (Units)
@@ -38,6 +39,8 @@ debugMsg model =
         [ String.fromInt <| List.length model.data
         , Units.toString model.units
         , String.fromInt model.start
+        , Date.toIsoString (dateFirst model)
+        , Date.toIsoString (dateLast model)
         ]
 
 
@@ -49,3 +52,20 @@ changeUnits units model =
 changeStart : Int -> Model -> Model
 changeStart start model =
     { model | start = Start.fromInt start }
+
+
+dateFirst : Model -> Date
+dateFirst model =
+    if model.start == 0 then
+        Data.defaultMin.date
+
+    else
+        Date.fromRataDie <| Date.toRataDie (dateLast model) - (30 * model.start)
+
+
+dateLast : Model -> Date
+dateLast model =
+    model.data
+        |> List.head
+        |> Maybe.withDefault Data.defaultMax
+        |> .date

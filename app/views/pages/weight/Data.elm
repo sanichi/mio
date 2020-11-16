@@ -1,6 +1,7 @@
-module Data exposing (Data, Datum, combine, isFinish, isStart)
+module Data exposing (Data, Datum, combine, defaultMax, defaultMin, isFinish, isStart)
 
 import Date exposing (Date)
+import Time exposing (Month(..))
 
 
 type alias Datum =
@@ -11,6 +12,16 @@ type alias Datum =
 
 type alias Data =
     List Datum
+
+
+defaultMax : Datum
+defaultMax =
+    Datum 100.0 (Date.fromCalendarDate 2055 Nov 9)
+
+
+defaultMin : Datum
+defaultMin =
+    Datum 70.0 (Date.fromCalendarDate 2014 Dec 1)
 
 
 isStart : Datum -> Bool
@@ -40,4 +51,4 @@ combine_ data kilos dates =
                     combine_ data ks ds
 
         _ ->
-            data
+            List.reverse data
