@@ -6438,7 +6438,7 @@ var $author$project$Weight$update = F2(
 		}
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
-var $author$project$View$height = 500;
+var $author$project$View$height = 400;
 var $author$project$View$width = 1000;
 var $author$project$View$box = '0 0 ' + ($elm$core$String$fromInt($author$project$View$width) + (' ' + $elm$core$String$fromInt($author$project$View$height)));
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');

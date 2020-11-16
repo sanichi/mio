@@ -147,7 +147,7 @@ debugTextY =
 
 height : Int
 height =
-    500
+    400
 
 
 width : Int
