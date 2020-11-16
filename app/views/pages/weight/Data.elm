@@ -4,8 +4,8 @@ module Data exposing
     , combine
     , dateMax
     , dateMin
-    , isFinish
-    , isStart
+    , isEvening
+    , isMorning
     , kiloMinMax
     )
 
@@ -17,6 +17,7 @@ import Time exposing (Month(..))
 type alias Datum =
     { kilo : Float
     , date : Date
+    , even : Bool
     }
 
 
@@ -85,14 +86,14 @@ kiloMinMax data start =
     ( low, hgh )
 
 
-isStart : Datum -> Bool
-isStart d =
-    d.kilo > 0.0
+isMorning : Datum -> Bool
+isMorning d =
+    not d.even
 
 
-isFinish : Datum -> Bool
-isFinish d =
-    d.kilo <= 0.0
+isEvening : Datum -> Bool
+isEvening d =
+    d.even
 
 
 
@@ -101,12 +102,12 @@ isFinish d =
 
 defaultMax : Datum
 defaultMax =
-    Datum 100.0 (Date.fromCalendarDate 2055 Nov 9)
+    Datum 100.0 (Date.fromCalendarDate 2055 Nov 9) True
 
 
 defaultMin : Datum
 defaultMin =
-    Datum 70.0 (Date.fromCalendarDate 2014 Dec 1)
+    Datum 70.0 (Date.fromCalendarDate 2014 Dec 1) True
 
 
 combine_ : Data -> List Float -> List String -> Data
@@ -115,7 +116,11 @@ combine_ data kilos dates =
         ( kilo :: ks, str :: ds ) ->
             case Date.fromIsoString str of
                 Ok date ->
-                    combine_ (Datum kilo date :: data) ks ds
+                    let
+                        datum =
+                            Datum (abs kilo) date (kilo < 0.0)
+                    in
+                    combine_ (datum :: data) ks ds
 
                 _ ->
                     combine_ data ks ds
@@ -136,11 +141,11 @@ limits data cutoff sofar =
                     minKilo =
                         case Tuple.first sofar of
                             Nothing ->
-                                Just (abs d.kilo)
+                                Just d.kilo
 
                             Just k ->
-                                if k > abs d.kilo then
-                                    Just (abs d.kilo)
+                                if k > d.kilo then
+                                    Just d.kilo
 
                                 else
                                     Just k
@@ -148,11 +153,11 @@ limits data cutoff sofar =
                     maxKilo =
                         case Tuple.second sofar of
                             Nothing ->
-                                Just (abs d.kilo)
+                                Just d.kilo
 
                             Just k ->
-                                if k < abs d.kilo then
-                                    Just (abs d.kilo)
+                                if k < d.kilo then
+                                    Just d.kilo
 
                                 else
                                     Just k

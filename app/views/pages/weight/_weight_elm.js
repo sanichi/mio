@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.F === region.ad.F)
+	if (region.M.F === region.ae.F)
 	{
 		return 'on line ' + region.M.F;
 	}
-	return 'on lines ' + region.M.F + ' through ' + region.ad.F;
+	return 'on lines ' + region.M.F + ' through ' + region.ae.F;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a0,
-		impl.be,
-		impl.bc,
+		impl.a1,
+		impl.bf,
+		impl.bd,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		t: func(record.t),
-		V: record.V,
-		T: record.T
+		W: record.W,
+		U: record.U
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.t;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.V;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.W;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.T) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.U) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a0,
-		impl.be,
-		impl.bc,
+		impl.a1,
+		impl.bf,
+		impl.bd,
 		function(sendToApp, initialModel) {
-			var view = impl.bf;
+			var view = impl.bg;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a0,
-		impl.be,
-		impl.bc,
+		impl.a1,
+		impl.bf,
+		impl.bd,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.U && impl.U(sendToApp)
-			var view = impl.bf;
+			var divertHrefToApp = impl.V && impl.V(sendToApp)
+			var view = impl.bg;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aR);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aS);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bd) && (_VirtualDom_doc.title = title = doc.bd);
+				(title !== doc.be) && (_VirtualDom_doc.title = title = doc.be);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a7;
-	var onUrlRequest = impl.a8;
+	var onUrlChange = impl.a8;
+	var onUrlRequest = impl.a9;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		U: function(sendToApp)
+		V: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ax === next.ax
-							&& curr.ak === next.ak
-							&& curr.at.a === next.at.a
+							&& curr.ay === next.ay
+							&& curr.al === next.al
+							&& curr.au.a === next.au.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a0: function(flags)
+		a1: function(flags)
 		{
-			return A3(impl.a0, flags, _Browser_getUrl(), key);
+			return A3(impl.a1, flags, _Browser_getUrl(), key);
 		},
+		bg: impl.bg,
 		bf: impl.bf,
-		be: impl.be,
-		bc: impl.bc
+		bd: impl.bd
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aZ: 'hidden', aT: 'visibilitychange' }
+		? { a_: 'hidden', aU: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aZ: 'mozHidden', aT: 'mozvisibilitychange' }
+		? { a_: 'mozHidden', aU: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aZ: 'msHidden', aT: 'msvisibilitychange' }
+		? { a_: 'msHidden', aU: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aZ: 'webkitHidden', aT: 'webkitvisibilitychange' }
-		: { aZ: 'hidden', aT: 'visibilitychange' };
+		? { a_: 'webkitHidden', aU: 'webkitvisibilitychange' }
+		: { a_: 'hidden', aU: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aD: _Browser_getScene(),
-		aJ: {
-			aN: _Browser_window.pageXOffset,
-			aO: _Browser_window.pageYOffset,
-			aM: _Browser_doc.documentElement.clientWidth,
-			ai: _Browser_doc.documentElement.clientHeight
+		aE: _Browser_getScene(),
+		aK: {
+			aO: _Browser_window.pageXOffset,
+			aP: _Browser_window.pageYOffset,
+			aN: _Browser_doc.documentElement.clientWidth,
+			aj: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aM: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ai: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aN: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aD: {
-				aM: node.scrollWidth,
-				ai: node.scrollHeight
+			aE: {
+				aN: node.scrollWidth,
+				aj: node.scrollHeight
 			},
-			aJ: {
-				aN: node.scrollLeft,
-				aO: node.scrollTop,
-				aM: node.clientWidth,
-				ai: node.clientHeight
+			aK: {
+				aO: node.scrollLeft,
+				aP: node.scrollTop,
+				aN: node.clientWidth,
+				aj: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aD: _Browser_getScene(),
-			aJ: {
-				aN: x,
-				aO: y,
-				aM: _Browser_doc.documentElement.clientWidth,
-				ai: _Browser_doc.documentElement.clientHeight
+			aE: _Browser_getScene(),
+			aK: {
+				aO: x,
+				aP: y,
+				aN: _Browser_doc.documentElement.clientWidth,
+				aj: _Browser_doc.documentElement.clientHeight
 			},
-			aX: {
-				aN: x + rect.left,
-				aO: y + rect.top,
-				aM: rect.width,
-				ai: rect.height
+			aY: {
+				aO: x + rect.left,
+				aP: y + rect.top,
+				aN: rect.width,
+				aj: rect.height
 			}
 		};
 	});
@@ -4494,8 +4494,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.a4) { flags += 'm'; }
-	if (options.aS) { flags += 'i'; }
+	if (options.a5) { flags += 'm'; }
+	if (options.aT) { flags += 'i'; }
 
 	try
 	{
@@ -5090,7 +5090,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ah: fragment, ak: host, ar: path, at: port_, ax: protocol, ay: query};
+		return {ai: fragment, al: host, as: path, au: port_, ay: protocol, az: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5372,7 +5372,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (debug, dates, kilos, start, units) {
-		return {aV: dates, ac: debug, a2: kilos, M: start, N: units};
+		return {aW: dates, ad: debug, a3: kilos, M: start, N: units};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, false, _List_Nil, _List_Nil, 4, 'kg');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5412,18 +5412,18 @@ var $author$project$Preferences$flagsDecoder = A6(
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ac,
+		$author$project$Preferences$default.ad,
 		A2($elm$json$Json$Decode$field, 'debug', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.aV,
+		$author$project$Preferences$default.aW,
 		A2(
 			$elm$json$Json$Decode$field,
 			'dates',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.a2,
+		$author$project$Preferences$default.a3,
 		A2(
 			$elm$json$Json$Decode$field,
 			'kilos',
@@ -5453,12 +5453,18 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $author$project$Model$Model = F4(
 	function (data, debug, start, units) {
-		return {aa: data, ac: debug, M: start, N: units};
+		return {ab: data, ad: debug, M: start, N: units};
 	});
-var $author$project$Data$Datum = F2(
-	function (kilo, date) {
-		return {K: date, n: kilo};
+var $author$project$Data$Datum = F3(
+	function (kilo, date, even) {
+		return {K: date, P: even, p: kilo};
 	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
 var $elm$core$Basics$always = F2(
 	function (a, _v0) {
 		return a;
@@ -5509,7 +5515,7 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {_: col, aU: contextStack, au: problem, aC: row};
+		return {aa: col, aV: contextStack, av: problem, aD: row};
 	});
 var $elm$parser$Parser$Advanced$Empty = {$: 0};
 var $elm$parser$Parser$Advanced$fromState = F2(
@@ -5517,12 +5523,9 @@ var $elm$parser$Parser$Advanced$fromState = F2(
 		return A2(
 			$elm$parser$Parser$Advanced$AddRight,
 			$elm$parser$Parser$Advanced$Empty,
-			A4($elm$parser$Parser$Advanced$DeadEnd, s.aC, s._, x, s.c));
+			A4($elm$parser$Parser$Advanced$DeadEnd, s.aD, s.aa, x, s.c));
 	});
 var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $elm$parser$Parser$Advanced$chompIf = F2(
 	function (isGood, expecting) {
 		return function (s) {
@@ -5534,11 +5537,11 @@ var $elm$parser$Parser$Advanced$chompIf = F2(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{_: 1, c: s.c, d: s.d, b: s.b + 1, aC: s.aC + 1, a: s.a}) : A3(
+				{aa: 1, c: s.c, d: s.d, b: s.b + 1, aD: s.aD + 1, a: s.a}) : A3(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{_: s._ + 1, c: s.c, d: s.d, b: newOffset, aC: s.aC, a: s.a}));
+				{aa: s.aa + 1, c: s.c, d: s.d, b: newOffset, aD: s.aD, a: s.a}));
 		};
 	});
 var $elm$parser$Parser$chompIf = function (isGood) {
@@ -5550,7 +5553,7 @@ var $elm$core$Basics$composeR = F3(
 			f(x));
 	});
 var $justinmimbs$date$Date$deadEndToString = function (_v0) {
-	var problem = _v0.au;
+	var problem = _v0.av;
 	if (problem.$ === 12) {
 		var message = problem.a;
 		return message;
@@ -5834,7 +5837,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(str);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.aC, s._, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.aD, s.aa, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -5845,7 +5848,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{_: newCol, c: s.c, d: s.d, b: newOffset, aC: newRow, a: s.a});
+			{aa: newCol, c: s.c, d: s.d, b: newOffset, aD: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$token = function (str) {
@@ -6203,10 +6206,10 @@ var $justinmimbs$date$Date$parser = A2(
 		$justinmimbs$date$Date$dayOfYear));
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
-		return {_: col, au: problem, aC: row};
+		return {aa: col, av: problem, aD: row};
 	});
 var $elm$parser$Parser$problemToDeadEnd = function (p) {
-	return A3($elm$parser$Parser$DeadEnd, p.aC, p._, p.au);
+	return A3($elm$parser$Parser$DeadEnd, p.aD, p.aa, p.av);
 };
 var $elm$parser$Parser$Advanced$bagToList = F2(
 	function (bag, list) {
@@ -6238,7 +6241,7 @@ var $elm$parser$Parser$Advanced$run = F2(
 	function (_v0, src) {
 		var parse = _v0;
 		var _v1 = parse(
-			{_: 1, c: _List_Nil, d: 1, b: 0, aC: 1, a: src});
+			{aa: 1, c: _List_Nil, d: 1, b: 0, aD: 1, a: src});
 		if (!_v1.$) {
 			var value = _v1.b;
 			return $elm$core$Result$Ok(value);
@@ -6308,10 +6311,12 @@ var $author$project$Data$combine_ = F3(
 				var _v3 = $justinmimbs$date$Date$fromIsoString(str);
 				if (!_v3.$) {
 					var date = _v3.a;
-					var $temp$data = A2(
-						$elm$core$List$cons,
-						A2($author$project$Data$Datum, kilo, date),
-						data),
+					var datum = A3(
+						$author$project$Data$Datum,
+						$elm$core$Basics$abs(kilo),
+						date,
+						kilo < 0.0);
+					var $temp$data = A2($elm$core$List$cons, datum, data),
 						$temp$kilos = ks,
 						$temp$dates = ds;
 					data = $temp$data;
@@ -6344,14 +6349,14 @@ var $author$project$Units$Lb = 1;
 var $author$project$Units$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {a$: index, a3: match, a6: number, bb: submatches};
+		return {a0: index, a4: match, a7: number, bc: submatches};
 	});
 var $elm$regex$Regex$contains = _Regex_contains;
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{aS: false, a4: false},
+		{aT: false, a5: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -6369,8 +6374,8 @@ var $author$project$Units$fromString = function (str) {
 var $author$project$Model$init = function (preferences) {
 	var units = $author$project$Units$fromString(preferences.N);
 	var start = $author$project$Start$fromInt(preferences.M);
-	var debug = preferences.ac;
-	var data = A2($author$project$Data$combine, preferences.a2, preferences.aV);
+	var debug = preferences.ad;
+	var data = A2($author$project$Data$combine, preferences.a3, preferences.aW);
 	return A4($author$project$Model$Model, data, debug, start, units);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -6452,7 +6457,7 @@ var $author$project$Model$debugMsg = function (model) {
 		_List_fromArray(
 			[
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.aa)),
+				$elm$core$List$length(model.ab)),
 				$author$project$Units$toString(model.N),
 				$elm$core$String$fromInt(model.M)
 			]));
@@ -6622,7 +6627,7 @@ var $justinmimbs$date$Date$toCalendarDateHelp = F3(
 				d = $temp$d;
 				continue toCalendarDateHelp;
 			} else {
-				return {ab: d, ap: m, aP: y};
+				return {ac: d, aq: m, aQ: y};
 			}
 		}
 	});
@@ -6653,14 +6658,14 @@ var $justinmimbs$date$Date$toOrdinalDate = function (_v0) {
 	var rd = _v0;
 	var y = $justinmimbs$date$Date$year(rd);
 	return {
-		S: rd - $justinmimbs$date$Date$daysBeforeYear(y),
-		aP: y
+		T: rd - $justinmimbs$date$Date$daysBeforeYear(y),
+		aQ: y
 	};
 };
 var $justinmimbs$date$Date$toCalendarDate = function (_v0) {
 	var rd = _v0;
 	var date = $justinmimbs$date$Date$toOrdinalDate(rd);
-	return A3($justinmimbs$date$Date$toCalendarDateHelp, date.aP, 0, date.S);
+	return A3($justinmimbs$date$Date$toCalendarDateHelp, date.aQ, 0, date.T);
 };
 var $justinmimbs$date$Date$add = F3(
 	function (unit, n, _v0) {
@@ -6670,13 +6675,13 @@ var $justinmimbs$date$Date$add = F3(
 				return A3($justinmimbs$date$Date$add, 1, 12 * n, rd);
 			case 1:
 				var date = $justinmimbs$date$Date$toCalendarDate(rd);
-				var wholeMonths = ((12 * (date.aP - 1)) + ($justinmimbs$date$Date$monthToNumber(date.ap) - 1)) + n;
+				var wholeMonths = ((12 * (date.aQ - 1)) + ($justinmimbs$date$Date$monthToNumber(date.aq) - 1)) + n;
 				var m = $justinmimbs$date$Date$numberToMonth(
 					A2($elm$core$Basics$modBy, 12, wholeMonths) + 1);
 				var y = A2($justinmimbs$date$Date$floorDiv, wholeMonths, 12) + 1;
 				return ($justinmimbs$date$Date$daysBeforeYear(y) + A2($justinmimbs$date$Date$daysBeforeMonth, y, m)) + A2(
 					$elm$core$Basics$min,
-					date.ab,
+					date.ac,
 					A2($justinmimbs$date$Date$daysInMonth, y, m));
 			case 2:
 				return rd + (7 * n);
@@ -6696,10 +6701,11 @@ var $justinmimbs$date$Date$fromCalendarDate = F3(
 			A2($justinmimbs$date$Date$daysInMonth, y, m),
 			d);
 	});
-var $author$project$Data$defaultMax = A2(
+var $author$project$Data$defaultMax = A3(
 	$author$project$Data$Datum,
 	100.0,
-	A3($justinmimbs$date$Date$fromCalendarDate, 2055, 10, 9));
+	A3($justinmimbs$date$Date$fromCalendarDate, 2055, 10, 9),
+	true);
 var $author$project$Data$dateMax = function (data) {
 	return A3(
 		$justinmimbs$date$Date$add,
@@ -6710,10 +6716,11 @@ var $author$project$Data$dateMax = function (data) {
 			$author$project$Data$defaultMax,
 			$elm$core$List$head(data)).K);
 };
-var $author$project$Data$defaultMin = A2(
+var $author$project$Data$defaultMin = A3(
 	$author$project$Data$Datum,
 	70.0,
-	A3($justinmimbs$date$Date$fromCalendarDate, 2014, 11, 1));
+	A3($justinmimbs$date$Date$fromCalendarDate, 2014, 11, 1),
+	true);
 var $author$project$Data$dateMin = F2(
 	function (data, start) {
 		return (!start) ? $author$project$Data$defaultMin.K : A3(
@@ -6734,9 +6741,9 @@ var $justinmimbs$date$Date$toRataDie = function (_v0) {
 var $author$project$View$iFromDate = F2(
 	function (model, d) {
 		var low = $justinmimbs$date$Date$toRataDie(
-			A2($author$project$Data$dateMin, model.aa, model.M));
+			A2($author$project$Data$dateMin, model.ab, model.M));
 		var hgh = $justinmimbs$date$Date$toRataDie(
-			$author$project$Data$dateMax(model.aa));
+			$author$project$Data$dateMax(model.ab));
 		var wid = hgh - low;
 		var fac = $author$project$View$width / wid;
 		return $elm$core$Basics$round(
@@ -6745,14 +6752,11 @@ var $author$project$View$iFromDate = F2(
 			}(
 				$justinmimbs$date$Date$toRataDie(d)));
 	});
-var $author$project$Data$isFinish = function (d) {
-	return d.n <= 0.0;
+var $author$project$Data$isEvening = function (d) {
+	return d.P;
 };
-var $author$project$Data$isStart = function (d) {
-	return d.n > 0.0;
-};
-var $elm$core$Basics$abs = function (n) {
-	return (n < 0) ? (-n) : n;
+var $author$project$Data$isMorning = function (d) {
+	return !d.P;
 };
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;
@@ -6773,27 +6777,19 @@ var $author$project$Data$limits = F3(
 					var minKilo = function () {
 						var _v2 = sofar.a;
 						if (_v2.$ === 1) {
-							return $elm$core$Maybe$Just(
-								$elm$core$Basics$abs(d.n));
+							return $elm$core$Maybe$Just(d.p);
 						} else {
 							var k = _v2.a;
-							return (_Utils_cmp(
-								k,
-								$elm$core$Basics$abs(d.n)) > 0) ? $elm$core$Maybe$Just(
-								$elm$core$Basics$abs(d.n)) : $elm$core$Maybe$Just(k);
+							return (_Utils_cmp(k, d.p) > 0) ? $elm$core$Maybe$Just(d.p) : $elm$core$Maybe$Just(k);
 						}
 					}();
 					var maxKilo = function () {
 						var _v1 = sofar.b;
 						if (_v1.$ === 1) {
-							return $elm$core$Maybe$Just(
-								$elm$core$Basics$abs(d.n));
+							return $elm$core$Maybe$Just(d.p);
 						} else {
 							var k = _v1.a;
-							return (_Utils_cmp(
-								k,
-								$elm$core$Basics$abs(d.n)) < 0) ? $elm$core$Maybe$Just(
-								$elm$core$Basics$abs(d.n)) : $elm$core$Maybe$Just(k);
+							return (_Utils_cmp(k, d.p) < 0) ? $elm$core$Maybe$Just(d.p) : $elm$core$Maybe$Just(k);
 						}
 					}();
 					var $temp$data = rest,
@@ -6826,17 +6822,17 @@ var $author$project$Data$kiloMinMax = F2(
 			function (x) {
 				return (x / rnd) + delta;
 			}(
-				A2($elm$core$Maybe$withDefault, $author$project$Data$defaultMax.n, max)));
+				A2($elm$core$Maybe$withDefault, $author$project$Data$defaultMax.p, max)));
 		var low = rnd * $elm$core$Basics$floor(
 			function (x) {
 				return (x / rnd) - delta;
 			}(
-				A2($elm$core$Maybe$withDefault, $author$project$Data$defaultMin.n, min)));
+				A2($elm$core$Maybe$withDefault, $author$project$Data$defaultMin.p, min)));
 		return _Utils_Tuple2(low, hgh);
 	});
 var $author$project$View$jFromKilo = F2(
 	function (model, k) {
-		var _v0 = A2($author$project$Data$kiloMinMax, model.aa, model.M);
+		var _v0 = A2($author$project$Data$kiloMinMax, model.ab, model.M);
 		var low = _v0.a;
 		var hgh = _v0.b;
 		var hit = hgh - low;
@@ -6844,8 +6840,7 @@ var $author$project$View$jFromKilo = F2(
 		return $author$project$View$height - $elm$core$Basics$round(
 			fac * function (x) {
 				return x - low;
-			}(
-				$elm$core$Basics$abs(k)));
+			}(k));
 	});
 var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
@@ -6865,7 +6860,7 @@ var $author$project$View$r = function (d) {
 };
 var $author$project$View$point = F3(
 	function (d2i, k2j, d) {
-		var y = k2j(d.n);
+		var y = k2j(d.p);
 		var x = d2i(d.K);
 		return A2(
 			$elm$svg$Svg$circle,
@@ -6881,14 +6876,14 @@ var $author$project$View$points = function (model) {
 	var k2j = $author$project$View$jFromKilo(model);
 	var d2i = $author$project$View$iFromDate(model);
 	var transform = A2($author$project$View$point, d2i, k2j);
-	var finish = A2(
+	var evening = A2(
 		$elm$core$List$map,
 		transform,
-		A2($elm$core$List$filter, $author$project$Data$isFinish, model.aa));
-	var start = A2(
+		A2($elm$core$List$filter, $author$project$Data$isEvening, model.ab));
+	var morning = A2(
 		$elm$core$List$map,
 		transform,
-		A2($elm$core$List$filter, $author$project$Data$isStart, model.aa));
+		A2($elm$core$List$filter, $author$project$Data$isMorning, model.ab));
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
@@ -6901,16 +6896,16 @@ var $author$project$View$points = function (model) {
 				$elm$svg$Svg$g,
 				_List_fromArray(
 					[
-						$author$project$View$cc('start')
+						$author$project$View$cc('morning')
 					]),
-				start),
+				morning),
 				A2(
 				$elm$svg$Svg$g,
 				_List_fromArray(
 					[
-						$author$project$View$cc('finish')
+						$author$project$View$cc('evening')
 					]),
-				finish)
+				evening)
 			]));
 };
 var $author$project$View$fromModel = function (model) {
@@ -6919,7 +6914,7 @@ var $author$project$View$fromModel = function (model) {
 			$author$project$View$frame,
 			$author$project$View$points(model)
 		]);
-	return model.ac ? A2(
+	return model.ad ? A2(
 		$elm$core$List$cons,
 		$author$project$View$debug(model),
 		components) : components;
@@ -6940,5 +6935,5 @@ var $author$project$Weight$view = function (model) {
 		$author$project$View$fromModel(model));
 };
 var $author$project$Weight$main = $elm$browser$Browser$element(
-	{a0: $author$project$Weight$init, bc: $author$project$Weight$subscriptions, be: $author$project$Weight$update, bf: $author$project$Weight$view});
+	{a1: $author$project$Weight$init, bd: $author$project$Weight$subscriptions, bf: $author$project$Weight$update, bg: $author$project$Weight$view});
 _Platform_export({'Weight':{'init':$author$project$Weight$main($elm$json$Json$Decode$value)(0)}});}(this));

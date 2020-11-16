@@ -51,19 +51,19 @@ points model =
         transform =
             point d2i k2j
 
-        start =
+        morning =
             model.data
-                |> List.filter Data.isStart
+                |> List.filter Data.isMorning
                 |> List.map transform
 
-        finish =
+        evening =
             model.data
-                |> List.filter Data.isFinish
+                |> List.filter Data.isEvening
                 |> List.map transform
     in
     S.g [ cc "points" ]
-        [ S.g [ cc "start" ] start
-        , S.g [ cc "finish" ] finish
+        [ S.g [ cc "morning" ] morning
+        , S.g [ cc "evening" ] evening
         ]
 
 
@@ -191,7 +191,6 @@ jFromKilo model k =
             toFloat height / hit
     in
     k
-        |> abs
         |> (\x -> x - low)
         |> (*) fac
         |> round
