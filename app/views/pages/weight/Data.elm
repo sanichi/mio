@@ -4,8 +4,6 @@ module Data exposing
     , combine
     , dateMax
     , dateMin
-    , isEvening
-    , isMorning
     , kiloMinMax
     )
 
@@ -83,16 +81,6 @@ kiloMinMax data start =
                 |> (*) rnd
     in
     ( low, hgh )
-
-
-isMorning : Datum -> Bool
-isMorning d =
-    not d.even
-
-
-isEvening : Datum -> Bool
-isEvening d =
-    d.even
 
 
 

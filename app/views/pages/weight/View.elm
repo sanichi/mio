@@ -72,12 +72,12 @@ points m t =
 
         morning =
             m.data
-                |> List.filter Data.isMorning
+                |> List.filter (\d -> not d.even && d.rata >= t.dLow)
                 |> List.map d2p
 
         evening =
             m.data
-                |> List.filter Data.isEvening
+                |> List.filter (\d -> d.even && d.rata >= t.dLow)
                 |> List.map d2p
     in
     S.g [ cc "points" ]
