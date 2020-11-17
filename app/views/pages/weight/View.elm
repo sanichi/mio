@@ -1,32 +1,33 @@
 module View exposing (box, fromModel)
 
 import Data exposing (Datum)
-import Date exposing (Date)
 import Html exposing (Html)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
 import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
-import Svg.Events exposing (onClick)
-import Time exposing (Month(..))
+import Transform exposing (Transform)
 
 
 fromModel : Model -> List (Svg Msg)
-fromModel model =
+fromModel m =
     let
+        t =
+            Transform.fromData m.data m.start width height
+
         components =
-            [ frame, points model ]
+            [ debug m, frame, points m t ]
     in
-    if model.debug then
-        debug model :: components
+    if m.debug then
+        components
 
     else
-        components
+        List.drop 1 components
 
 
 debug : Model -> Svg Msg
-debug model =
-    S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg model ]
+debug m =
+    S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
 
 
 frame : Svg Msg
@@ -39,27 +40,21 @@ frame =
         ]
 
 
-points : Model -> Svg Msg
-points model =
+points : Model -> Transform -> Svg Msg
+points m t =
     let
-        d2i =
-            iFromDate model
-
-        k2j =
-            jFromKilo model
-
-        transform =
-            point d2i k2j
+        d2p =
+            point t
 
         morning =
-            model.data
+            m.data
                 |> List.filter Data.isMorning
-                |> List.map transform
+                |> List.map d2p
 
         evening =
-            model.data
+            m.data
                 |> List.filter Data.isEvening
-                |> List.map transform
+                |> List.map d2p
     in
     S.g [ cc "points" ]
         [ S.g [ cc "morning" ] morning
@@ -147,7 +142,7 @@ debugTextY =
 
 height : Int
 height =
-    400
+    440
 
 
 width : Int
@@ -155,54 +150,10 @@ width =
     1000
 
 
-iFromDate : Model -> Int -> Int
-iFromDate model d =
+point : Transform -> Datum -> Svg Msg
+point t d =
     let
-        low =
-            Data.dateMin model.data model.start
-
-        hgh =
-            Data.dateMax model.data
-
-        wid =
-            hgh - low |> toFloat
-
-        fac =
-            toFloat width / wid
-    in
-    d
-        |> (\x -> x - low)
-        |> toFloat
-        |> (*) fac
-        |> round
-
-
-jFromKilo : Model -> Float -> Int
-jFromKilo model k =
-    let
-        ( low, hgh ) =
-            Data.kiloMinMax model.data model.start
-
-        hit =
-            hgh - low
-
-        fac =
-            toFloat height / hit
-    in
-    k
-        |> (\x -> x - low)
-        |> (*) fac
-        |> round
-        |> (-) height
-
-
-point : (Int -> Int) -> (Float -> Int) -> Datum -> Svg Msg
-point d2i k2j d =
-    let
-        x =
-            d2i d.rata
-
-        y =
-            k2j d.kilo
+        ( x, y ) =
+            Transform.transform t d
     in
     S.circle [ cx x, cy y, r 2 ] []
