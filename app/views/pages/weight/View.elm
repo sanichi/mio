@@ -86,13 +86,15 @@ points m t =
         ]
 
 
-
--- Helpers
-
-
 box : String
 box =
-    "0 0 " ++ String.fromInt width ++ " " ++ String.fromInt height
+    [ -margin, -margin, width + 2 * margin, height + 2 * margin ]
+        |> List.map String.fromInt
+        |> String.join " "
+
+
+
+-- Helpers
 
 
 cc : String -> Attribute Msg
@@ -172,6 +174,11 @@ height =
 width : Int
 width =
     1000
+
+
+margin : Int
+margin =
+    20
 
 
 point : Transform -> Datum -> Svg Msg

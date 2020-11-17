@@ -6439,8 +6439,16 @@ var $author$project$Weight$update = F2(
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
 var $author$project$View$height = 440;
+var $author$project$View$margin = 20;
 var $author$project$View$width = 1000;
-var $author$project$View$box = '0 0 ' + ($elm$core$String$fromInt($author$project$View$width) + (' ' + $elm$core$String$fromInt($author$project$View$height)));
+var $author$project$View$box = A2(
+	$elm$core$String$join,
+	' ',
+	A2(
+		$elm$core$List$map,
+		$elm$core$String$fromInt,
+		_List_fromArray(
+			[-$author$project$View$margin, -$author$project$View$margin, $author$project$View$width + (2 * $author$project$View$margin), $author$project$View$height + (2 * $author$project$View$margin)])));
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$View$cc = function (c) {
 	return $elm$svg$Svg$Attributes$class(c);
