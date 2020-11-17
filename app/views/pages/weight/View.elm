@@ -15,14 +15,23 @@ fromModel m =
         t =
             Transform.fromData m.data m.start width height
 
-        components =
-            [ debug m, frame, points m t ]
+        d =
+            debug m
+
+        f =
+            frame
+
+        kl =
+            levelsk t
+
+        p =
+            points m t
     in
     if m.debug then
-        components
+        [ d, f, kl, p ]
 
     else
-        List.drop 1 components
+        [ f, kl, p ]
 
 
 debug : Model -> Svg Msg
@@ -38,6 +47,21 @@ frame =
         , S.line [ x1 width, y1 height, x2 0, y2 height ] []
         , S.line [ x1 0, y1 height, x2 0, y2 0 ] []
         ]
+
+
+levelsk : Transform -> Svg Msg
+levelsk t =
+    let
+        level2line =
+            \l -> S.line [ x1 0, y1 l.val, x2 width, y2 l.val ] []
+
+        levels =
+            Transform.levelsk t
+
+        lines =
+            List.map level2line levels
+    in
+    S.g [ cc "axes" ] lines
 
 
 points : Model -> Transform -> Svg Msg
