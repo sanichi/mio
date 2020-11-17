@@ -10,6 +10,9 @@
 
 = form_tag weight_path, method: :get, remote: false, class: "form-inline justify-content-center mt-5" do
   = label_tag :start, t("mass.start"), class: "sr-only"
-  = select_tag :start, mass_months_menu, class: "form-control mr-3"
+  = select_tag :start, mass_months_menu, class: "mr-2"
   = label_tag :units, t("mass.unit.unit"), class: "sr-only"
-  = select_tag :units, mass_unit_menu, class: "form-control mr-3"
+  = select_tag :units, mass_unit_menu, class: "mr-2"
+  = link_to t("list"), masses_path, class: "btn btn-sm btn-info mr-2"
+  - if can?(:create, Mass)
+    = link_to t("mass.new"), new_mass_path, class: "btn btn-sm btn-info mr-2"

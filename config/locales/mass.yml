@@ -5,7 +5,8 @@ en:
     data: Measurements
     date: Date
     mass: Weight
-    new: New Measurement
+    new: New
+    old: Old Weight
     start: Morning
     options:
       all: All
