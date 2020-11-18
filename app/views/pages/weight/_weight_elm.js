@@ -6439,7 +6439,7 @@ var $author$project$Weight$update = F2(
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
 var $author$project$View$height = 440;
-var $author$project$View$margin = 20;
+var $author$project$View$margin = 40;
 var $author$project$View$width = 1000;
 var $author$project$View$box = A2(
 	$elm$core$String$join,
@@ -6754,6 +6754,7 @@ var $author$project$Transform$levelsk = function (t) {
 	var l = d * $elm$core$Basics$floor(t.K / d);
 	return A4($author$project$Transform$jlevels, t, d, l, _List_Nil);
 };
+var $elm$svg$Svg$Attributes$textAnchor = _VirtualDom_attribute('text-anchor');
 var $author$project$View$levelsk = function (t) {
 	var levels = $author$project$Transform$levelsk(t);
 	var level2line = function (l) {
@@ -6769,13 +6770,28 @@ var $author$project$View$levelsk = function (t) {
 			_List_Nil);
 	};
 	var lines = A2($elm$core$List$map, level2line, levels);
+	var level2label = function (l) {
+		return A2(
+			$elm$svg$Svg$text_,
+			_List_fromArray(
+				[
+					$author$project$View$xx(-5),
+					$author$project$View$yy(l.bo + 5),
+					$elm$svg$Svg$Attributes$textAnchor('end')
+				]),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$text(l.bb)
+				]));
+	};
+	var labels = A2($elm$core$List$map, level2label, levels);
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
 			[
 				$author$project$View$cc('axes')
 			]),
-		lines);
+		_Utils_ap(lines, labels));
 };
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
@@ -6884,9 +6900,9 @@ var $author$project$View$fromModel = function (m) {
 	var kl = $author$project$View$levelsk(t);
 	var f = $author$project$View$frame;
 	var d = $author$project$View$debug(m);
-	return m.af ? _List_fromArray(
-		[d, f, kl, p]) : _List_fromArray(
+	var c = _List_fromArray(
 		[f, kl, p]);
+	return m.af ? A2($elm$core$List$cons, d, c) : c;
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');

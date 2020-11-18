@@ -26,12 +26,15 @@ fromModel m =
 
         p =
             points m t
+
+        c =
+            [ f, kl, p ]
     in
     if m.debug then
-        [ d, f, kl, p ]
+        d :: c
 
     else
-        [ f, kl, p ]
+        c
 
 
 debug : Model -> Svg Msg
@@ -52,16 +55,22 @@ frame =
 levelsk : Transform -> Svg Msg
 levelsk t =
     let
-        level2line =
-            \l -> S.line [ x1 0, y1 l.val, x2 width, y2 l.val ] []
-
         levels =
             Transform.levelsk t
 
+        level2line =
+            \l -> S.line [ x1 0, y1 l.val, x2 width, y2 l.val ] []
+
         lines =
             List.map level2line levels
+
+        level2label =
+            \l -> S.text_ [ xx -5, yy (l.val + 5), A.textAnchor "end" ] [ S.text l.label ]
+
+        labels =
+            List.map level2label levels
     in
-    S.g [ cc "axes" ] lines
+    lines ++ labels |> S.g [ cc "axes" ]
 
 
 points : Model -> Transform -> Svg Msg
@@ -178,7 +187,7 @@ width =
 
 margin : Int
 margin =
-    20
+    40
 
 
 point : Transform -> Datum -> Svg Msg

@@ -7,7 +7,6 @@ $dropdown-link-hover-bg: black
 @import "bootstrap"
 
 // Navbar
-
 nav
   @extend .navbar, .sticky-top, .navbar-expand-md, .navbar-light, .bg-light, .mb-3
   button
@@ -32,7 +31,6 @@ nav
             @extend .ml-3
 
 // Crud forms - adpated from Pragmatic Studio prepared files for Rails 6 course.
-
 form.crud
   margin-top: 1.5rem
 
@@ -64,7 +62,6 @@ form.crud
       background: lighten($pink, 40%)
 
 // Sections (used for forms).
-
 section
   @extend .card, .border-dark, .mb-3
 
@@ -78,7 +75,6 @@ section
     @extend .card-footer
 
 // JQuery autocompleters. From https://stackoverflow.com/questions/28285813.
-
 .ui-autocomplete
     position: absolute
     z-index: 1000
@@ -105,14 +101,12 @@ section
   display: none
 
 // Centering for plain tables.
-
 .table-center
   border-style: none !important
   margin-left: auto
   margin-right: auto
 
 // Article tables.
-
 article
 
   table
@@ -127,17 +121,14 @@ article
       @extend .p-1
 
 // Images
-
 img.styled
   @extend .border, .border-dark, .rounded
 
 // Pre's
-
 pre
   @extend .border, .border-dark, .p-2
 
 // Elm weight display (pages/weight).
-
 svg#weight
 
   // Border.
@@ -151,6 +142,9 @@ svg#weight
     line
       stroke: #bbb
       stroke-width: 1
+    text
+      font-size: 16px
+      opacity: 0.5
 
   // Points.
   g.points
@@ -174,7 +168,6 @@ svg#weight
   text.debug
     font-size: 20px
     opacity: 0.5
-
 
 // Other imports
 // @import "jquery-ui" - this doesn't seem to work, so see custom styling above
