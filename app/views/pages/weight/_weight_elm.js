@@ -6762,7 +6762,7 @@ var $author$project$View$levelsk = function (t) {
 			$elm$svg$Svg$line,
 			_List_fromArray(
 				[
-					$author$project$View$x1(0),
+					$author$project$View$x1(-3),
 					$author$project$View$y1(l.bo),
 					$author$project$View$x2($author$project$View$width),
 					$author$project$View$y2(l.bo)
@@ -6775,7 +6775,7 @@ var $author$project$View$levelsk = function (t) {
 			$elm$svg$Svg$text_,
 			_List_fromArray(
 				[
-					$author$project$View$xx(-5),
+					$author$project$View$xx(-6),
 					$author$project$View$yy(l.bo + 5),
 					$elm$svg$Svg$Attributes$textAnchor('end')
 				]),

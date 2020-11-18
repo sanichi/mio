@@ -59,13 +59,13 @@ levelsk t =
             Transform.levelsk t
 
         level2line =
-            \l -> S.line [ x1 0, y1 l.val, x2 width, y2 l.val ] []
+            \l -> S.line [ x1 -3, y1 l.val, x2 width, y2 l.val ] []
 
         lines =
             List.map level2line levels
 
         level2label =
-            \l -> S.text_ [ xx -5, yy (l.val + 5), A.textAnchor "end" ] [ S.text l.label ]
+            \l -> S.text_ [ xx -6, yy (l.val + 5), A.textAnchor "end" ] [ S.text l.label ]
 
         labels =
             List.map level2label levels
