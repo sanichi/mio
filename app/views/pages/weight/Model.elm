@@ -4,14 +4,14 @@ import Data exposing (Data)
 import Date exposing (Date)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
-import Units exposing (Units)
+import Units exposing (Unit)
 
 
 type alias Model =
     { data : Data
     , debug : Bool
     , start : Start
-    , units : Units
+    , units : Unit
     }
 
 

@@ -2,6 +2,7 @@ module Transform exposing (Transform, fromData, levelsd, levelsk, transform)
 
 import Data exposing (Data, Datum)
 import Start exposing (Start)
+import Units exposing (Unit(..))
 
 
 type alias Transform =
@@ -56,16 +57,16 @@ levelsd t =
     [ Level 100 "May", Level 200 "June" ]
 
 
-levelsk : Transform -> Levels
-levelsk t =
+levelsk : Transform -> Unit -> Levels
+levelsk t u =
     let
         d =
-            5.0
+            Units.delta u (t.kHgh - t.kLow)
 
         l =
             d * toFloat (floor (t.kLow / d))
     in
-    jlevels t d l []
+    jlevels t u d l []
 
 
 
@@ -90,8 +91,8 @@ k2j t k =
         |> (-) t.kHit
 
 
-jlevels : Transform -> Float -> Float -> Levels -> Levels
-jlevels t d l ls =
+jlevels : Transform -> Unit -> Float -> Float -> Levels -> Levels
+jlevels t u d l ls =
     if l > t.kHgh then
         ls
 
@@ -101,7 +102,7 @@ jlevels t d l ls =
                 l + d
         in
         if l < t.kLow then
-            jlevels t d nl ls
+            jlevels t u d nl ls
 
         else
             let
@@ -109,6 +110,6 @@ jlevels t d l ls =
                     k2j t l
 
                 s =
-                    String.fromFloat l
+                    Units.format u l
             in
-            jlevels t d nl (Level j s :: ls)
+            jlevels t u d nl (Level j s :: ls)

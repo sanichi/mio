@@ -5,9 +5,17 @@ module MassHelper
   end
 
   def mass_months_menu
-    opts = [2, 4, 8, 16, 32, 64].map { |m| [t("mass.options.months", months: m), m] }
-    opts.unshift [t("mass.options.month"), 1]
-    opts.push [t("mass.options.all"), 0]
+    opts = [
+      ["1m", 1],
+      ["2m", 2],
+      ["3m", 3],
+      ["6m", 6],
+      ["1y", 12],
+      ["2y", 24],
+      ["4y", 48],
+      ["6y", 72],
+      ["All", 0]
+    ]
     options_for_select(opts, Mass::DEFAULT_START)
   end
 end

@@ -22,7 +22,7 @@ fromModel m =
             frame
 
         kl =
-            levelsk t
+            levelsk m t
 
         p =
             points m t
@@ -52,11 +52,11 @@ frame =
         ]
 
 
-levelsk : Transform -> Svg Msg
-levelsk t =
+levelsk : Model -> Transform -> Svg Msg
+levelsk m t =
     let
         levels =
-            Transform.levelsk t
+            Transform.levelsk t m.units
 
         level2line =
             \l -> S.line [ x1 -3, y1 l.val, x2 width, y2 l.val ] []

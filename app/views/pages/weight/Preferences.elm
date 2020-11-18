@@ -29,7 +29,7 @@ flagsDecoder =
 
 default : Preferences
 default =
-    Preferences False [] [] 4 "kg"
+    Preferences False [] [] 3 "kg"
 
 
 

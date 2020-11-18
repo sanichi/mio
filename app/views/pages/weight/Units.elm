@@ -1,15 +1,73 @@
-module Units exposing (Units(..), fromString, toString)
+module Units exposing (Unit(..), delta, format, fromString, toString)
 
 import Regex exposing (Regex)
 
 
-type Units
+type Unit
     = Kg
     | Lb
     | St
 
 
-fromString : String -> Units
+delta : Unit -> Float -> Float
+delta u w =
+    let
+        large =
+            w > 10.0
+    in
+    case u of
+        Kg ->
+            if large then
+                5.0
+
+            else
+                1.0
+
+        Lb ->
+            if large then
+                10.0 / kg2lb
+
+            else
+                2.0 / kg2lb
+
+        St ->
+            if large then
+                1.0 / kg2st
+
+            else
+                0.2 / kg2st
+
+
+format : Unit -> Float -> String
+format u k =
+    case u of
+        Kg ->
+            round k |> String.fromInt
+
+        Lb ->
+            round (k * kg2lb) |> String.fromInt
+
+        St ->
+            let
+                num =
+                    k * kg2st
+
+                whole =
+                    num
+                        |> round
+                        |> String.fromInt
+
+                decimal =
+                    num
+                        |> (*) 10.0
+                        |> round
+                        |> remainderBy 10
+                        |> String.fromInt
+            in
+            String.join "" [ whole, ".", decimal ]
+
+
+fromString : String -> Unit
 fromString str =
     if Regex.contains pounds str then
         Lb
@@ -21,7 +79,7 @@ fromString str =
         Kg
 
 
-toString : Units -> String
+toString : Unit -> String
 toString unit =
     case unit of
         Kg ->
@@ -42,3 +100,17 @@ pounds =
 stones : Regex
 stones =
     Maybe.withDefault Regex.never <| Regex.fromString "^(st|stone)s?$"
+
+
+
+-- Conversion factors
+
+
+kg2lb : Float
+kg2lb =
+    2.20462
+
+
+kg2st : Float
+kg2st =
+    0.157472

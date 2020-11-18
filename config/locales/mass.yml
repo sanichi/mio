@@ -8,10 +8,6 @@ en:
     new: New
     old: Old Weight
     start: Morning
-    options:
-      all: All
-      month: 1m
-      months: "%{months}m"
     unit:
       kg: Kilos
       lb: Pounds
