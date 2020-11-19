@@ -50,19 +50,13 @@ format u k =
         St ->
             let
                 num =
-                    k * kg2st
+                    round (10.0 * k * kg2st)
 
                 whole =
-                    num
-                        |> round
-                        |> String.fromInt
+                    String.fromInt (num // 10)
 
                 decimal =
-                    num
-                        |> (*) 10.0
-                        |> round
-                        |> remainderBy 10
-                        |> String.fromInt
+                    String.fromInt (remainderBy 10 num)
             in
             String.join "" [ whole, ".", decimal ]
 

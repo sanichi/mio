@@ -6728,11 +6728,9 @@ var $author$project$Units$format = F2(
 				return $elm$core$String$fromInt(
 					$elm$core$Basics$round(k * $author$project$Units$kg2lb));
 			default:
-				var num = k * $author$project$Units$kg2st;
-				var whole = $elm$core$String$fromInt(
-					$elm$core$Basics$round(num));
-				var decimal = $elm$core$String$fromInt(
-					$elm$core$Basics$round(10.0 * num) % 10);
+				var num = $elm$core$Basics$round((10.0 * k) * $author$project$Units$kg2st);
+				var whole = $elm$core$String$fromInt((num / 10) | 0);
+				var decimal = $elm$core$String$fromInt(num % 10);
 				return A2(
 					$elm$core$String$join,
 					'',
