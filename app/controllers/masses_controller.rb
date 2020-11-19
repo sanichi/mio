@@ -26,7 +26,7 @@ class MassesController < ApplicationController
   def create
     @mass = Mass.new(strong_params)
     if @mass.save
-      redirect_to graph_masses_path
+      redirect_to weight_path
     else
       failure @mass
       render :new
@@ -35,7 +35,7 @@ class MassesController < ApplicationController
 
   def update
     if @mass.update(strong_params)
-      redirect_to graph_masses_path
+      redirect_to weight_path
     else
       failure @mass
       render :edit
@@ -44,7 +44,7 @@ class MassesController < ApplicationController
 
   def destroy
     @mass.destroy
-    redirect_to graph_masses_path
+    redirect_to weight_path
   end
 
   private
