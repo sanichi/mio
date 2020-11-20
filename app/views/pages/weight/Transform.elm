@@ -1,7 +1,9 @@
 module Transform exposing (Transform, fromData, levelsd, levelsk, transform)
 
 import Data exposing (Data, Datum)
+import Date exposing (Unit(..))
 import Start exposing (Start)
+import Time exposing (Month(..))
 import Units exposing (Unit(..))
 
 
@@ -54,7 +56,40 @@ transform t d =
 
 levelsd : Transform -> Levels
 levelsd t =
-    [ Level 100 "May", Level 200 "June" ]
+    let
+        days =
+            t.dHgh - t.dLow
+
+        ( dn, du ) =
+            if days <= 31 then
+                ( 1, Weeks )
+
+            else if days <= 62 then
+                ( 2, Weeks )
+
+            else if days <= 125 then
+                ( 1, Months )
+
+            else if days <= 250 then
+                ( 2, Months )
+
+            else if days <= 400 then
+                ( 4, Months )
+
+            else if days <= 800 then
+                ( 8, Months )
+
+            else
+                ( 1, Years )
+
+        l =
+            t.dLow
+                |> Date.fromRataDie
+                |> Date.year
+                |> (\y -> Date.fromCalendarDate y Jan 1)
+                |> Date.toRataDie
+    in
+    dlevels t du dn l []
 
 
 levelsk : Transform -> Unit -> Levels
@@ -89,6 +124,48 @@ k2j t k =
         |> (*) t.kFac
         |> round
         |> (-) t.kHit
+
+
+dlevels : Transform -> Date.Unit -> Int -> Int -> Levels -> Levels
+dlevels t du dn l ls =
+    if l > t.dHgh then
+        ls
+
+    else
+        let
+            nl =
+                l
+                    |> Date.fromRataDie
+                    |> Date.add du dn
+                    |> Date.toRataDie
+        in
+        if l < t.dLow then
+            dlevels t du dn nl ls
+
+        else
+            let
+                i =
+                    d2i t l
+
+                d =
+                    Date.fromRataDie l
+
+                s =
+                    case du of
+                        Years ->
+                            Date.format "YYYY" d
+
+                        Months ->
+                            if dn <= 2 then
+                                Date.format "MMM" d
+
+                            else
+                                Date.format "MMM YYYY" d
+
+                        _ ->
+                            Date.format "MMM d" d
+            in
+            dlevels t du dn nl (Level i s :: ls)
 
 
 jlevels : Transform -> Unit -> Float -> Float -> Levels -> Levels
