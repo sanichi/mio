@@ -3,6 +3,7 @@
     "source-directories": [
         "2015",
         "2016",
+        "2020",
         "."
     ],
     "elm-version": "0.19.1",
