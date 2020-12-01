@@ -6386,6 +6386,7 @@ var $author$project$Data$combine = F2(
 var $author$project$Start$fromInt = function (months) {
 	return (months < 0) ? 0 : months;
 };
+var $author$project$Units$Bm = 3;
 var $author$project$Units$Kg = 0;
 var $author$project$Units$Lb = 1;
 var $author$project$Units$St = 2;
@@ -6393,7 +6394,6 @@ var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
 		return {a7: index, bc: match, bf: number, bk: submatches};
 	});
-var $elm$regex$Regex$contains = _Regex_contains;
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
@@ -6402,6 +6402,11 @@ var $elm$regex$Regex$fromString = function (string) {
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
+var $author$project$Units$bmi = A2(
+	$elm$core$Maybe$withDefault,
+	$elm$regex$Regex$never,
+	$elm$regex$Regex$fromString('^(bm|bmi)$'));
+var $elm$regex$Regex$contains = _Regex_contains;
 var $author$project$Units$pounds = A2(
 	$elm$core$Maybe$withDefault,
 	$elm$regex$Regex$never,
@@ -6411,7 +6416,7 @@ var $author$project$Units$stones = A2(
 	$elm$regex$Regex$never,
 	$elm$regex$Regex$fromString('^(st|stone)s?$'));
 var $author$project$Units$fromString = function (str) {
-	return A2($elm$regex$Regex$contains, $author$project$Units$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Units$stones, str) ? 2 : 0);
+	return A2($elm$regex$Regex$contains, $author$project$Units$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Units$stones, str) ? 2 : (A2($elm$regex$Regex$contains, $author$project$Units$bmi, str) ? 3 : 0));
 };
 var $author$project$Model$init = function (preferences) {
 	var units = $author$project$Units$fromString(preferences.P);
@@ -6496,8 +6501,10 @@ var $author$project$Units$toString = function (unit) {
 			return 'kg';
 		case 1:
 			return 'lb';
-		default:
+		case 2:
 			return 'st';
+		default:
+			return 'bm';
 	}
 };
 var $author$project$Model$debugMsg = function (model) {
@@ -7602,6 +7609,7 @@ var $author$project$View$levelsd = F2(
 				]),
 			_Utils_ap(lines, labels));
 	});
+var $author$project$Units$kg2bm = 0.290861;
 var $author$project$Units$kg2lb = 2.20462;
 var $author$project$Units$kg2st = 0.157472;
 var $author$project$Units$delta = F2(
@@ -7612,8 +7620,10 @@ var $author$project$Units$delta = F2(
 				return large ? 5.0 : 1.0;
 			case 1:
 				return large ? (10.0 / $author$project$Units$kg2lb) : (2.0 / $author$project$Units$kg2lb);
-			default:
+			case 2:
 				return large ? (1.0 / $author$project$Units$kg2st) : (0.2 / $author$project$Units$kg2st);
+			default:
+				return 1.0 / $author$project$Units$kg2bm;
 		}
 	});
 var $author$project$Units$format = F2(
@@ -7625,6 +7635,9 @@ var $author$project$Units$format = F2(
 			case 1:
 				return $elm$core$String$fromInt(
 					$elm$core$Basics$round(k * $author$project$Units$kg2lb));
+			case 3:
+				return $elm$core$String$fromInt(
+					$elm$core$Basics$round(k * $author$project$Units$kg2bm));
 			default:
 				var num = $elm$core$Basics$round((10.0 * k) * $author$project$Units$kg2st);
 				var whole = $elm$core$String$fromInt((num / 10) | 0);

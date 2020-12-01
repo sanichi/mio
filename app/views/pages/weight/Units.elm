@@ -7,6 +7,7 @@ type Unit
     = Kg
     | Lb
     | St
+    | Bm
 
 
 delta : Unit -> Float -> Float
@@ -37,6 +38,9 @@ delta u w =
             else
                 0.2 / kg2st
 
+        Bm ->
+            1.0 / kg2bm
+
 
 format : Unit -> Float -> String
 format u k =
@@ -46,6 +50,9 @@ format u k =
 
         Lb ->
             round (k * kg2lb) |> String.fromInt
+
+        Bm ->
+            round (k * kg2bm) |> String.fromInt
 
         St ->
             let
@@ -69,6 +76,9 @@ fromString str =
     else if Regex.contains stones str then
         St
 
+    else if Regex.contains bmi str then
+        Bm
+
     else
         Kg
 
@@ -85,6 +95,9 @@ toString unit =
         St ->
             "st"
 
+        Bm ->
+            "bm"
+
 
 pounds : Regex
 pounds =
@@ -94,6 +107,11 @@ pounds =
 stones : Regex
 stones =
     Maybe.withDefault Regex.never <| Regex.fromString "^(st|stone)s?$"
+
+
+bmi : Regex
+bmi =
+    Maybe.withDefault Regex.never <| Regex.fromString "^(bm|bmi)$"
 
 
 
@@ -108,3 +126,8 @@ kg2lb =
 kg2st : Float
 kg2st =
     0.157472
+
+
+kg2bm : Float
+kg2bm =
+    0.290861
