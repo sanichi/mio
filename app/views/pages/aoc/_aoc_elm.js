@@ -14472,226 +14472,46 @@ var $author$project$Y16$answer = F3(
 				return 'year 2016, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
 	});
-var $author$project$Y20D01$blocks = function (model) {
-	return $elm$core$Basics$abs(model.X.F) + $elm$core$Basics$abs(model.X.G);
-};
-var $author$project$Y20D01$Model = F2(
-	function (d, p) {
-		return {aF: d, X: p};
-	});
-var $author$project$Y20D01$North = 0;
-var $author$project$Y20D01$Position = F2(
-	function (x, y) {
-		return {F: x, G: y};
-	});
-var $author$project$Y20D01$origin = A2($author$project$Y20D01$Position, 0, 0);
-var $author$project$Y20D01$init = A2($author$project$Y20D01$Model, 0, $author$project$Y20D01$origin);
-var $author$project$Y20D01$Left = 0;
-var $author$project$Y20D01$Right = 1;
-var $author$project$Y20D01$Step = F2(
-	function (r, n) {
-		return {h: n, bl: r};
-	});
 var $author$project$Y20D01$parse = function (input) {
-	var step = A2(
-		$elm$core$Maybe$withDefault,
-		$elm$regex$Regex$never,
-		$elm$regex$Regex$fromString('([RL])([1-9][0-9]*)'));
 	return A2(
-		$elm$core$List$map,
-		function (m) {
-			if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
-				var r_ = m.a.a;
-				var _v1 = m.b;
-				var n_ = _v1.a.a;
-				var r = (r_ === 'R') ? 1 : 0;
-				var n = A2(
-					$elm$core$Maybe$withDefault,
-					1,
-					$elm$core$String$toInt(n_));
-				return A2($author$project$Y20D01$Step, r, n);
-			} else {
-				return A2($author$project$Y20D01$Step, 1, 1);
-			}
-		},
+		$elm$core$List$filterMap,
+		$elm$core$String$toInt,
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bJ;
+				return $.bD;
 			},
-			A2($elm$regex$Regex$find, step, input)));
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('\\d+'),
+				input)));
 };
-var $author$project$Y20D01$None = 2;
-var $author$project$Y20D01$East = 1;
-var $author$project$Y20D01$South = 2;
-var $author$project$Y20D01$West = 3;
-var $author$project$Y20D01$update = F2(
-	function (step, model) {
-		var p = model.X;
-		var d = model.aF;
-		var _v0 = step.bl;
-		switch (_v0) {
-			case 1:
-				switch (d) {
-					case 0:
-						return A2(
-							$author$project$Y20D01$Model,
-							1,
-							_Utils_update(
-								p,
-								{F: p.F + step.h}));
-					case 1:
-						return A2(
-							$author$project$Y20D01$Model,
-							2,
-							_Utils_update(
-								p,
-								{G: p.G - step.h}));
-					case 2:
-						return A2(
-							$author$project$Y20D01$Model,
-							3,
-							_Utils_update(
-								p,
-								{F: p.F - step.h}));
-					default:
-						return A2(
-							$author$project$Y20D01$Model,
-							0,
-							_Utils_update(
-								p,
-								{G: p.G + step.h}));
-				}
-			case 0:
-				var _v2 = model.aF;
-				switch (_v2) {
-					case 0:
-						return A2(
-							$author$project$Y20D01$Model,
-							3,
-							_Utils_update(
-								p,
-								{F: p.F - step.h}));
-					case 1:
-						return A2(
-							$author$project$Y20D01$Model,
-							0,
-							_Utils_update(
-								p,
-								{G: p.G + step.h}));
-					case 2:
-						return A2(
-							$author$project$Y20D01$Model,
-							1,
-							_Utils_update(
-								p,
-								{F: p.F + step.h}));
-					default:
-						return A2(
-							$author$project$Y20D01$Model,
-							2,
-							_Utils_update(
-								p,
-								{G: p.G - step.h}));
-				}
-			default:
-				var _v3 = model.aF;
-				switch (_v3) {
-					case 0:
-						return A2(
-							$author$project$Y20D01$Model,
-							0,
-							_Utils_update(
-								p,
-								{G: p.G + step.h}));
-					case 1:
-						return A2(
-							$author$project$Y20D01$Model,
-							1,
-							_Utils_update(
-								p,
-								{F: p.F + step.h}));
-					case 2:
-						return A2(
-							$author$project$Y20D01$Model,
-							2,
-							_Utils_update(
-								p,
-								{G: p.G - step.h}));
-					default:
-						return A2(
-							$author$project$Y20D01$Model,
-							3,
-							_Utils_update(
-								p,
-								{F: p.F - step.h}));
-				}
-		}
-	});
-var $author$project$Y20D01$revisits = F3(
-	function (steps, visits, model) {
-		revisits:
-		while (true) {
-			if (steps.b) {
-				var step = steps.a;
-				var rest = steps.b;
-				var newModel = A2(
-					$author$project$Y20D01$update,
-					_Utils_update(
-						step,
-						{h: 1}),
-					model);
-				if (A2($elm$core$List$member, newModel.X, visits)) {
-					return newModel;
-				} else {
-					var newVisits = A2($elm$core$List$cons, newModel.X, visits);
-					if (step.h <= 1) {
-						var $temp$steps = rest,
-							$temp$visits = newVisits,
-							$temp$model = newModel;
-						steps = $temp$steps;
-						visits = $temp$visits;
-						model = $temp$model;
-						continue revisits;
-					} else {
-						var $temp$steps = A2(
-							$elm$core$List$cons,
-							A2($author$project$Y20D01$Step, 2, step.h - 1),
-							rest),
-							$temp$visits = newVisits,
-							$temp$model = newModel;
-						steps = $temp$steps;
-						visits = $temp$visits;
-						model = $temp$model;
-						continue revisits;
-					}
-				}
+var $author$project$Y20D01$search = function (combos) {
+	search:
+	while (true) {
+		if (combos.b) {
+			var numbers = combos.a;
+			var rest = combos.b;
+			if ($elm$core$List$sum(numbers) === 2020) {
+				return $elm$core$String$fromInt(
+					$elm$core$List$product(numbers));
 			} else {
-				return model;
+				var $temp$combos = rest;
+				combos = $temp$combos;
+				continue search;
 			}
-		}
-	});
-var $author$project$Y20D01$updates = F2(
-	function (steps, model) {
-		if (steps.b) {
-			var step = steps.a;
-			var rest = steps.b;
-			return A2(
-				$author$project$Y20D01$updates,
-				rest,
-				A2($author$project$Y20D01$update, step, model));
 		} else {
-			return model;
+			return 'none found';
 		}
-	});
+	}
+};
 var $author$project$Y20D01$answer = F2(
 	function (part, input) {
-		var steps = $author$project$Y20D01$parse(input);
-		return (part === 1) ? $elm$core$String$fromInt(
-			$author$project$Y20D01$blocks(
-				A2($author$project$Y20D01$updates, steps, $author$project$Y20D01$init))) : $elm$core$String$fromInt(
-			$author$project$Y20D01$blocks(
-				A3($author$project$Y20D01$revisits, steps, _List_Nil, $author$project$Y20D01$init)));
+		var expenses = $author$project$Y20D01$parse(input);
+		var example = $author$project$Y20D01$parse('1721 979 366 299 675 1456');
+		return (part === 1) ? $author$project$Y20D01$search(
+			A2($author$project$Util$combinations, 2, expenses)) : $author$project$Y20D01$search(
+			A2($author$project$Util$combinations, 3, expenses));
 	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
