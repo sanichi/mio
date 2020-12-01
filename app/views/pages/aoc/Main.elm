@@ -631,7 +631,7 @@ codeLink model =
             "bitbucket.org/"
 
         path =
-            "sanichi/sni_mio_app/src/master/app/views/pages/aoc/" ++ year ++ "/"
+            "sanichi/mio/src/master/app/views/pages/aoc/" ++ year ++ "/"
 
         file =
             "Y" ++ shortYear ++ "D" ++ paddedDay ++ ".elm"
