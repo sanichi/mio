@@ -67,14 +67,12 @@ parsePassword : List (Maybe String) -> Maybe Password
 parsePassword submatches =
     case submatches of
         [ Just n1_, Just n2_, Just letter, Just password ] ->
-            let
-                n1 =
-                    String.toInt n1_ |> Maybe.withDefault 0
+            case ( String.toInt n1_, String.toInt n2_ ) of
+                ( Just n1, Just n2 ) ->
+                    Just (Password n1 n2 letter password)
 
-                n2 =
-                    String.toInt n2_ |> Maybe.withDefault 0
-            in
-            Just (Password n1 n2 letter password)
+                _ ->
+                    Nothing
 
         _ ->
             Nothing

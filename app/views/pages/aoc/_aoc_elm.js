@@ -14526,16 +14526,17 @@ var $author$project$Y20D02$parsePassword = function (submatches) {
 		var letter = _v2.a.a;
 		var _v3 = _v2.b;
 		var password = _v3.a.a;
-		var n2 = A2(
-			$elm$core$Maybe$withDefault,
-			0,
+		var _v4 = _Utils_Tuple2(
+			$elm$core$String$toInt(n1_),
 			$elm$core$String$toInt(n2_));
-		var n1 = A2(
-			$elm$core$Maybe$withDefault,
-			0,
-			$elm$core$String$toInt(n1_));
-		return $elm$core$Maybe$Just(
-			A4($author$project$Y20D02$Password, n1, n2, letter, password));
+		if ((!_v4.a.$) && (!_v4.b.$)) {
+			var n1 = _v4.a.a;
+			var n2 = _v4.b.a;
+			return $elm$core$Maybe$Just(
+				A4($author$project$Y20D02$Password, n1, n2, letter, password));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
 	} else {
 		return $elm$core$Maybe$Nothing;
 	}
