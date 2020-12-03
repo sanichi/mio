@@ -7,9 +7,6 @@ import Util
 answer : Int -> String -> String
 answer part input =
     let
-        example =
-            parse "1721 979 366 299 675 1456"
-
         expenses =
             parse input
     in
@@ -46,3 +43,8 @@ parse input =
         |> Regex.find (Util.regex "\\d+")
         |> List.map .match
         |> List.filterMap String.toInt
+
+
+example : String
+example =
+    "1721 979 366 299 675 1456"

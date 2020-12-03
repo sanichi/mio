@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bG,
-		impl.bQ,
-		impl.bO,
+		impl.bH,
+		impl.bR,
+		impl.bP,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bG,
-		impl.bQ,
-		impl.bO,
+		impl.bH,
+		impl.bR,
+		impl.bP,
 		function(sendToApp, initialModel) {
-			var view = impl.bR;
+			var view = impl.bS;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bG,
-		impl.bQ,
-		impl.bO,
+		impl.bH,
+		impl.bR,
+		impl.bP,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.aU && impl.aU(sendToApp)
-			var view = impl.bR;
+			var view = impl.bS;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.by);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bz);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bP) && (_VirtualDom_doc.title = title = doc.bP);
+				(title !== doc.bQ) && (_VirtualDom_doc.title = title = doc.bQ);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bJ;
-	var onUrlRequest = impl.bK;
+	var onUrlChange = impl.bK;
+	var onUrlRequest = impl.bL;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bG: function(flags)
+		bH: function(flags)
 		{
-			return A3(impl.bG, flags, _Browser_getUrl(), key);
+			return A3(impl.bH, flags, _Browser_getUrl(), key);
 		},
+		bS: impl.bS,
 		bR: impl.bR,
-		bQ: impl.bQ,
-		bO: impl.bO
+		bP: impl.bP
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bE: 'hidden', bA: 'visibilitychange' }
+		? { bF: 'hidden', bB: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bE: 'mozHidden', bA: 'mozvisibilitychange' }
+		? { bF: 'mozHidden', bB: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bE: 'msHidden', bA: 'msvisibilitychange' }
+		? { bF: 'msHidden', bB: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bE: 'webkitHidden', bA: 'webkitvisibilitychange' }
-		: { bE: 'hidden', bA: 'visibilitychange' };
+		? { bF: 'webkitHidden', bB: 'webkitvisibilitychange' }
+		: { bF: 'hidden', bB: 'visibilitychange' };
 }
 
 
@@ -4232,8 +4232,8 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bs: _Browser_getScene(),
-		bw: {
+		bt: _Browser_getScene(),
+		bx: {
 			F: _Browser_window.pageXOffset,
 			G: _Browser_window.pageYOffset,
 			Q: _Browser_doc.documentElement.clientWidth,
@@ -4271,11 +4271,11 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bs: {
+			bt: {
 				Q: node.scrollWidth,
 				V: node.scrollHeight
 			},
-			bw: {
+			bx: {
 				F: node.scrollLeft,
 				G: node.scrollTop,
 				Q: node.clientWidth,
@@ -4309,14 +4309,14 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bs: _Browser_getScene(),
-			bw: {
+			bt: _Browser_getScene(),
+			bx: {
 				F: x,
 				G: y,
 				Q: _Browser_doc.documentElement.clientWidth,
 				V: _Browser_doc.documentElement.clientHeight
 			},
-			bC: {
+			bD: {
 				F: x + rect.left,
 				G: y + rect.top,
 				Q: rect.width,
@@ -4364,8 +4364,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.bI) { flags += 'm'; }
-	if (options.bz) { flags += 'i'; }
+	if (options.bJ) { flags += 'm'; }
+	if (options.bA) { flags += 'i'; }
 
 	try
 	{
@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 2;
+var $author$project$Main$defaultDay = 3;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -5348,7 +5348,7 @@ var $author$project$Main$initModel = {
 			a: 2016
 		},
 			{
-			J: A2($elm$core$List$range, 1, 2),
+			J: A2($elm$core$List$range, 1, $author$project$Main$defaultDay),
 			a: 2020
 		}
 		])
@@ -5576,13 +5576,13 @@ var $author$project$Y15D02$ribbon = F3(
 	});
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {bb: index, bH: match, bf: number, bN: submatches};
+		return {bb: index, bI: match, bf: number, bO: submatches};
 	});
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{bz: false, bI: false},
+		{bA: false, bJ: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -5606,7 +5606,7 @@ var $author$project$Y15D02$sumLine = F3(
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bH;
+						return $.bI;
 					},
 					A2($elm$regex$Regex$find, number, line))));
 		var extra = function () {
@@ -6418,7 +6418,7 @@ var $author$project$Y15D04$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -6466,7 +6466,7 @@ var $author$project$Y15D05$answer = F2(
 		var strings = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bH;
+				return $.bI;
 			},
 			A2($elm$regex$Regex$find, $author$project$Y15D05$stringRgx, input));
 		return (part === 1) ? A2($author$project$Y15D05$countNice, $author$project$Y15D05$nice1, strings) : A2($author$project$Y15D05$countNice, $author$project$Y15D05$nice2, strings);
@@ -6550,7 +6550,7 @@ var $author$project$Y15D06$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bN;
+					return $.bO;
 				},
 				A2($elm$regex$Regex$find, rgx, input))));
 };
@@ -7253,7 +7253,7 @@ var $author$project$Y15D09$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7317,8 +7317,8 @@ var $author$project$Y15D09$answer = F2(
 	});
 var $author$project$Y15D10$mapper = function (match) {
 	var length = $elm$core$String$fromInt(
-		$elm$core$String$length(match.bH));
-	var _char = A2($elm$core$String$left, 1, match.bH);
+		$elm$core$String$length(match.bI));
+	var _char = A2($elm$core$String$left, 1, match.bI);
 	return _Utils_ap(length, _char);
 };
 var $author$project$Y15D10$conway = F2(
@@ -7349,7 +7349,7 @@ var $author$project$Y15D10$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -7387,7 +7387,7 @@ var $author$project$Y15D11$increment = function (p) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7501,7 +7501,7 @@ var $author$project$Y15D11$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -7528,7 +7528,7 @@ var $author$project$Y15D12$count = function (json) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bH;
+							return $.bI;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -7673,7 +7673,7 @@ var $author$project$Y15D13$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7823,7 +7823,7 @@ var $author$project$Y15D14$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7994,7 +7994,7 @@ var $author$project$Y15D15$score = F3(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bv;
+							return $.bw;
 						},
 						m),
 					cookie));
@@ -8080,7 +8080,7 @@ var $author$project$Y15D15$initCookie = F2(
 	});
 var $author$project$Y15D15$Ingredient = F6(
 	function (name, capacity, durability, flavor, texture, calories) {
-		return {a0: calories, a1: capacity, a5: durability, a8: flavor, be: name, bv: texture};
+		return {a0: calories, a1: capacity, a5: durability, a8: flavor, be: name, bw: texture};
 	});
 var $author$project$Y15D15$parseInt = function (s) {
 	return A2(
@@ -8094,7 +8094,7 @@ var $author$project$Y15D15$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -8234,7 +8234,7 @@ var $author$project$Y15D16$parseLine = F2(
 		var ms = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -8421,7 +8421,7 @@ var $author$project$Y15D17$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bH;
+						return $.bI;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -8543,7 +8543,7 @@ var $author$project$Y15D18$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -8849,7 +8849,7 @@ var $author$project$Y15D19$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A2($elm$regex$Regex$find, $author$project$Y15D19$ruleRgx, input)));
 	var molecule = $author$project$Y15D19$extractMolecule(
@@ -8857,7 +8857,7 @@ var $author$project$Y15D19$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bN;
+					return $.bO;
 				},
 				A2($elm$regex$Regex$find, $author$project$Y15D19$moleRgx, input))));
 	return {M: molecule, aq: $elm$core$Set$empty, aL: rules};
@@ -8952,7 +8952,7 @@ var $author$project$Y15D20$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bH;
+							return $.bI;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -8997,7 +8997,7 @@ var $author$project$Y15D21$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bH;
+				return $.bI;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -9249,7 +9249,7 @@ var $author$project$Y15D23$parseLine = F2(
 		var sm = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3($elm$regex$Regex$findAtMost, 1, rx, line));
 		if (((((sm.b && sm.a.b) && sm.a.b.b) && sm.a.b.b.b) && (!sm.a.b.b.b.b)) && (!sm.b.b)) {
@@ -9487,7 +9487,7 @@ var $author$project$Y15D24$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bH;
+						return $.bI;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -9522,7 +9522,7 @@ var $author$project$Y15D25$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bN;
+							return $.bO;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -9681,7 +9681,7 @@ var $author$project$Y16D01$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A2($elm$regex$Regex$find, step, input)));
 };
@@ -10095,7 +10095,7 @@ var $author$project$Y16D02$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.bH;
+			return $.bI;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -10168,7 +10168,7 @@ var $author$project$Y16D03$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -10359,7 +10359,7 @@ var $author$project$Y16D04$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bN;
+					return $.bO;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -10946,7 +10946,7 @@ var $author$project$Y16D05$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -11184,7 +11184,7 @@ var $author$project$Y16D06$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.bH;
+			return $.bI;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -11200,7 +11200,7 @@ var $author$project$Y16D07$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.bH;
+			return $.bI;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -11221,7 +11221,7 @@ var $author$project$Y16D07$fragments = F2(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bN;
+							return $.bO;
 						},
 						A2($elm$regex$Regex$find, matcher, address)))));
 	});
@@ -11348,7 +11348,7 @@ var $author$project$Y16D07$tls = function (address) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -11623,7 +11623,7 @@ var $author$project$Y16D08$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -11647,7 +11647,7 @@ var $author$project$Y16D09$matches = function (string) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -11797,7 +11797,7 @@ var $author$project$Y16D10$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.bN;
+			return $.bO;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -12117,7 +12117,7 @@ var $author$project$Y16D12$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bN;
+					return $.bO;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -12354,7 +12354,7 @@ var $author$project$Y16D14$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12435,7 +12435,7 @@ var $author$project$Y16D14$search = F5(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bH;
+							return $.bI;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -12521,7 +12521,7 @@ var $author$project$Y16D15$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bN;
+							return $.bO;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -12638,7 +12638,7 @@ var $author$project$Y16D16$checksum_ = function (data) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bH;
+						return $.bI;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -12692,7 +12692,7 @@ var $author$project$Y16D16$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12718,7 +12718,7 @@ var $author$project$Y16D17$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bH;
+					return $.bI;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12972,7 +12972,7 @@ var $author$project$Y16D18$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bH;
+							return $.bI;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -13146,7 +13146,7 @@ var $author$project$Y16D20$parse = function (input) {
 								A2(
 									$elm$core$List$map,
 									function ($) {
-										return $.bN;
+										return $.bO;
 									},
 									A2(
 										$elm$regex$Regex$find,
@@ -13301,7 +13301,7 @@ var $author$project$Y16D21$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bN;
+						return $.bO;
 					},
 					A2($elm$regex$Regex$find, $author$project$Y16D21$instructionPattern, input)))));
 };
@@ -13942,7 +13942,7 @@ var $author$project$Y16D22$parse = function (input) {
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.bN;
+								return $.bO;
 							},
 							A2(
 								$elm$regex$Regex$find,
@@ -14292,7 +14292,7 @@ var $author$project$Y16D24$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bH;
+							return $.bI;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -14401,7 +14401,7 @@ var $author$project$Y16D25$parse = function (input) {
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.bN;
+								return $.bO;
 							},
 							A3(
 								$elm$regex$Regex$findAtMost,
@@ -14479,7 +14479,7 @@ var $author$project$Y20D01$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bH;
+				return $.bI;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -14508,7 +14508,6 @@ var $author$project$Y20D01$search = function (combos) {
 var $author$project$Y20D01$answer = F2(
 	function (part, input) {
 		var expenses = $author$project$Y20D01$parse(input);
-		var example = $author$project$Y20D01$parse('1721 979 366 299 675 1456');
 		return (part === 1) ? $author$project$Y20D01$search(
 			A2($author$project$Util$combinations, 2, expenses)) : $author$project$Y20D01$search(
 			A2($author$project$Util$combinations, 3, expenses));
@@ -14548,7 +14547,7 @@ var $author$project$Y20D02$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.bN;
+				return $.bO;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -14570,12 +14569,123 @@ var $author$project$Y20D02$valid2 = function (p) {
 var $author$project$Y20D02$answer = F2(
 	function (part, input) {
 		var passwords = $author$project$Y20D02$parse(input);
-		var example = $author$project$Y20D02$parse('1-3 a: abcde 1-3 b: cdefg 2-9 c: ccccccccc');
 		return (part === 1) ? $elm$core$String$fromInt(
 			$elm$core$List$length(
 				A2($elm$core$List$filter, $author$project$Y20D02$valid1, passwords))) : $elm$core$String$fromInt(
 			$elm$core$List$length(
 				A2($elm$core$List$filter, $author$project$Y20D02$valid2, passwords)));
+	});
+var $author$project$Y20D03$count_ = F4(
+	function (forrest, _v0, _v1, t) {
+		count_:
+		while (true) {
+			var dx = _v0.a;
+			var dy = _v0.b;
+			var x = _v1.a;
+			var y = _v1.b;
+			if (_Utils_cmp(y, forrest.V) > -1) {
+				return t;
+			} else {
+				var dt = function () {
+					var _v2 = A2($elm$core$Array$get, y, forrest.bs);
+					if (!_v2.$) {
+						var row = _v2.a;
+						var _v3 = A2(
+							$elm$core$Array$get,
+							A2($elm$core$Basics$modBy, forrest.Q, x),
+							row);
+						if (!_v3.$) {
+							var tree = _v3.a;
+							return tree;
+						} else {
+							return 0;
+						}
+					} else {
+						return 0;
+					}
+				}();
+				var $temp$forrest = forrest,
+					$temp$_v0 = _Utils_Tuple2(dx, dy),
+					$temp$_v1 = _Utils_Tuple2(x + dx, y + dy),
+					$temp$t = t + dt;
+				forrest = $temp$forrest;
+				_v0 = $temp$_v0;
+				_v1 = $temp$_v1;
+				t = $temp$t;
+				continue count_;
+			}
+		}
+	});
+var $author$project$Y20D03$count = F2(
+	function (forrest, _v0) {
+		var dx = _v0.a;
+		var dy = _v0.b;
+		return A4(
+			$author$project$Y20D03$count_,
+			forrest,
+			_Utils_Tuple2(dx, dy),
+			_Utils_Tuple2(0, 0),
+			0);
+	});
+var $author$project$Y20D03$Forrest = F3(
+	function (rows, width, height) {
+		return {V: height, bs: rows, Q: width};
+	});
+var $author$project$Y20D03$parseRow = function (row) {
+	return $elm$core$Array$fromList(
+		A2(
+			$elm$core$List$map,
+			function (c) {
+				return (c === '#') ? 1 : 0;
+			},
+			A2($elm$core$String$split, '', row)));
+};
+var $author$project$Y20D03$parse = function (input) {
+	var list = A2(
+		$elm$core$List$map,
+		$author$project$Y20D03$parseRow,
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.bI;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('[.#]+'),
+				input)));
+	var rows = $elm$core$Array$fromList(list);
+	var width = function () {
+		if (list.b) {
+			var first = list.a;
+			var rest = list.b;
+			return $elm$core$Array$length(first);
+		} else {
+			return 0;
+		}
+	}();
+	var height = $elm$core$List$length(list);
+	return A3($author$project$Y20D03$Forrest, rows, width, height);
+};
+var $author$project$Y20D03$answer = F2(
+	function (part, input) {
+		var forrest = $author$project$Y20D03$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			A2(
+				$author$project$Y20D03$count,
+				forrest,
+				_Utils_Tuple2(3, 1))) : $elm$core$String$fromInt(
+			$elm$core$List$product(
+				A2(
+					$elm$core$List$map,
+					$author$project$Y20D03$count(forrest),
+					_List_fromArray(
+						[
+							_Utils_Tuple2(1, 1),
+							_Utils_Tuple2(3, 1),
+							_Utils_Tuple2(5, 1),
+							_Utils_Tuple2(7, 1),
+							_Utils_Tuple2(1, 2)
+						]))));
 	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
@@ -14584,6 +14694,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D01$answer, part, input);
 			case 2:
 				return A2($author$project$Y20D02$answer, part, input);
+			case 3:
+				return A2($author$project$Y20D03$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
@@ -15575,7 +15687,7 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{bG: $author$project$Main$init, bO: $author$project$Main$subscriptions, bQ: $author$project$Main$update, bR: $author$project$Main$view});
+	{bH: $author$project$Main$init, bP: $author$project$Main$subscriptions, bR: $author$project$Main$update, bS: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,

@@ -7,9 +7,6 @@ import Util
 answer : Int -> String -> String
 answer part input =
     let
-        example =
-            parse "1-3 a: abcde 1-3 b: cdefg 2-9 c: ccccccccc"
-
         passwords =
             parse input
     in
@@ -76,3 +73,8 @@ parsePassword submatches =
 
         _ ->
             Nothing
+
+
+example : String
+example =
+    "1-3 a: abcde 1-3 b: cdefg 2-9 c: ccccccccc"

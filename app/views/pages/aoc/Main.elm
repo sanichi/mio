@@ -1,4 +1,4 @@
-module Main exposing (Answers, Flags, Model, Msg(..), Thinks, Year, codeLink, defaultDay, defaultYear, failed, failedIndicator, getAnswer, getData, getNote, init, initAnswers, initModel, initThinks, main, newProblem, prepareAnswer, probLink, speed, speedColour, speedDescription, speedIndicator, subscriptions, thinking, toInt, update, view, viewAnswer, viewDayOption, viewHeader, viewHelp, viewIcon, viewLinks, viewNote, viewYearOption)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -68,7 +68,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    2
+    3
 
 
 initModel : Model
@@ -76,7 +76,7 @@ initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 25 }
-        , { year = 2020, days = List.range 1 2 }
+        , { year = 2020, days = List.range 1 defaultDay }
         ]
     , year = defaultYear
     , day = defaultDay
