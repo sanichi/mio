@@ -1,14 +1,14 @@
-module Main exposing (Model, initModel, initTasks, main, panel, subscriptions, update, view)
+module Main exposing (main)
 
 -- local modules
 
 import Browser
 import Counter
+import Dni
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Encode exposing (Value)
 import Messages exposing (Msg(..))
-import Parsers
 import Randoms
 
 
@@ -28,15 +28,12 @@ main =
 
 initTasks : Cmd Msg
 initTasks =
-    -- Cmd.batch
-    --     [ Randoms.request ]
     Randoms.request
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch
-        [ Randoms.respond ]
+    Randoms.respond
 
 
 
@@ -44,17 +41,17 @@ subscriptions model =
 
 
 type alias Model =
-    { counter : Counter.Model
+    { dni : Dni.Model
+    , counter : Counter.Model
     , randoms : Randoms.Model
-    , parsers : Parsers.Model
     }
 
 
 initModel : Model
 initModel =
-    { counter = Counter.init
+    { dni = Dni.init
+    , counter = Counter.init
     , randoms = Randoms.init
-    , parsers = Parsers.init
     }
 
 
@@ -65,9 +62,9 @@ initModel =
 view : Model -> Html Msg
 view model =
     div []
-        [ panel "Counter" (Counter.view model.counter)
+        [ panel "D‘ni" (Dni.view model.dni)
+        , panel "Counter" (Counter.view model.counter)
         , panel "Randoms" (Randoms.view model.randoms)
-        , panel "Parsers" (Parsers.view model.parsers)
         ]
 
 
@@ -95,11 +92,17 @@ update msg model =
         CounterReset ->
             ( { model | counter = Counter.init }, Cmd.none )
 
+        DniIncrement ->
+            ( { model | dni = Dni.increment model.dni }, Cmd.none )
+
+        DniDecrement ->
+            ( { model | dni = Dni.decrement model.dni }, Cmd.none )
+
+        DniCycle ->
+            ( { model | dni = Dni.cycle model.dni }, Cmd.none )
+
         RandomRequest ->
             ( model, Randoms.request )
 
         RandomResponse num ->
             ( { model | randoms = Randoms.reset num }, Cmd.none )
-
-        ParserUpdate input ->
-            ( { model | parsers = Parsers.update input }, Cmd.none )
