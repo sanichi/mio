@@ -12,7 +12,8 @@ answer part input =
             parse input
     in
     if part == 1 then
-        count forrest ( 3, 1 )
+        ( 3, 1 )
+            |> count forrest
             |> String.fromInt
 
     else
