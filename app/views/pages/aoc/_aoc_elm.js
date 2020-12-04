@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 3;
+var $author$project$Main$defaultDay = 4;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -14687,6 +14687,212 @@ var $author$project$Y20D03$answer = F2(
 							_Utils_Tuple2(1, 2)
 						]))));
 	});
+var $author$project$Y20D04$checkYear = F4(
+	function (p, f, min, max) {
+		var number = $elm$core$String$toInt(
+			A2(
+				$elm$core$Maybe$withDefault,
+				'',
+				A2($elm$core$Dict$get, f, p)));
+		if (!number.$) {
+			var year = number.a;
+			return (_Utils_cmp(min, year) < 1) && (_Utils_cmp(year, max) < 1);
+		} else {
+			return false;
+		}
+	});
+var $author$project$Y20D04$byrValid = function (p) {
+	return A4($author$project$Y20D04$checkYear, p, 'byr', 1920, 2002);
+};
+var $author$project$Y20D04$eclValid = function (p) {
+	return A2(
+		$elm$regex$Regex$contains,
+		$author$project$Util$regex('^(amb|blu|brn|gry|grn|hzl|oth)$'),
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2($elm$core$Dict$get, 'ecl', p)));
+};
+var $author$project$Y20D04$eyrValid = function (p) {
+	return A4($author$project$Y20D04$checkYear, p, 'eyr', 2020, 2030);
+};
+var $author$project$Y20D04$hclValid = function (p) {
+	return A2(
+		$elm$regex$Regex$contains,
+		$author$project$Util$regex('^#[0-9a-f]{6}$'),
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2($elm$core$Dict$get, 'hcl', p)));
+};
+var $author$project$Y20D04$getLength = function (input) {
+	var data = A2(
+		$elm$core$List$map,
+		$elm$core$Maybe$withDefault(''),
+		A2(
+			$elm$core$Maybe$withDefault,
+			_List_fromArray(
+				[
+					$elm$core$Maybe$Just(''),
+					$elm$core$Maybe$Just('')
+				]),
+			$elm$core$List$head(
+				A2(
+					$elm$core$List$map,
+					function ($) {
+						return $.bO;
+					},
+					A2(
+						$elm$regex$Regex$find,
+						$author$project$Util$regex('^(\\d+)(cm|in)$'),
+						input)))));
+	var number = A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		$elm$core$String$toInt(
+			A2(
+				$elm$core$Maybe$withDefault,
+				'',
+				$elm$core$List$head(data))));
+	_v0$2:
+	while (true) {
+		if ((data.b && data.b.b) && (!data.b.b.b)) {
+			switch (data.b.a) {
+				case 'cm':
+					var _v1 = data.b;
+					return $elm$core$Maybe$Just(
+						_Utils_Tuple2(number, 'cm'));
+				case 'in':
+					var _v2 = data.b;
+					return $elm$core$Maybe$Just(
+						_Utils_Tuple2(number, 'in'));
+				default:
+					break _v0$2;
+			}
+		} else {
+			break _v0$2;
+		}
+	}
+	return $elm$core$Maybe$Nothing;
+};
+var $author$project$Y20D04$hgtValid = function (p) {
+	var length = $author$project$Y20D04$getLength(
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2($elm$core$Dict$get, 'hgt', p)));
+	_v0$2:
+	while (true) {
+		if (!length.$) {
+			switch (length.a.b) {
+				case 'cm':
+					var _v1 = length.a;
+					var v = _v1.a;
+					return (150 <= v) && (v <= 193);
+				case 'in':
+					var _v2 = length.a;
+					var v = _v2.a;
+					return (59 <= v) && (v <= 76);
+				default:
+					break _v0$2;
+			}
+		} else {
+			break _v0$2;
+		}
+	}
+	return false;
+};
+var $author$project$Y20D04$iyrValid = function (p) {
+	return A4($author$project$Y20D04$checkYear, p, 'iyr', 2010, 2020);
+};
+var $author$project$Y20D04$parsePassport = function (input) {
+	return $elm$core$Dict$fromList(
+		A2(
+			$elm$core$List$filterMap,
+			function (m) {
+				if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
+					var field = m.a.a;
+					var _v1 = m.b;
+					var value = _v1.a.a;
+					return $elm$core$Maybe$Just(
+						_Utils_Tuple2(field, value));
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			},
+			A2(
+				$elm$core$List$map,
+				function ($) {
+					return $.bO;
+				},
+				A2(
+					$elm$regex$Regex$find,
+					$author$project$Util$regex('(byr|cid|ecl|eyr|hcl|hgt|iyr|pid):([^\\s]+)'),
+					input))));
+};
+var $author$project$Y20D04$parse = function (input) {
+	return A2(
+		$elm$core$List$map,
+		$author$project$Y20D04$parsePassport,
+		A2(
+			$elm$regex$Regex$split,
+			$author$project$Util$regex('\\n\\n'),
+			input));
+};
+var $author$project$Y20D04$pidValid = function (p) {
+	return A2(
+		$elm$regex$Regex$contains,
+		$author$project$Util$regex('^\\d{9}$'),
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2($elm$core$Dict$get, 'pid', p)));
+};
+var $elm$core$Dict$member = F2(
+	function (key, dict) {
+		var _v0 = A2($elm$core$Dict$get, key, dict);
+		if (!_v0.$) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var $author$project$Y20D04$valid = function (p) {
+	return A2(
+		$elm$core$List$all,
+		function (f) {
+			return A2($elm$core$Dict$member, f, p);
+		},
+		_List_fromArray(
+			['byr', 'ecl', 'eyr', 'hcl', 'hgt', 'iyr', 'pid']));
+};
+var $author$project$Y20D04$answer = F2(
+	function (part, input) {
+		var passports = $author$project$Y20D04$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			$elm$core$List$length(
+				A2($elm$core$List$filter, $author$project$Y20D04$valid, passports))) : $elm$core$String$fromInt(
+			$elm$core$List$length(
+				A2(
+					$elm$core$List$filter,
+					$author$project$Y20D04$pidValid,
+					A2(
+						$elm$core$List$filter,
+						$author$project$Y20D04$eclValid,
+						A2(
+							$elm$core$List$filter,
+							$author$project$Y20D04$hclValid,
+							A2(
+								$elm$core$List$filter,
+								$author$project$Y20D04$hgtValid,
+								A2(
+									$elm$core$List$filter,
+									$author$project$Y20D04$eyrValid,
+									A2(
+										$elm$core$List$filter,
+										$author$project$Y20D04$iyrValid,
+										A2($elm$core$List$filter, $author$project$Y20D04$byrValid, passports)))))))));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -14696,6 +14902,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D02$answer, part, input);
 			case 3:
 				return A2($author$project$Y20D03$answer, part, input);
+			case 4:
+				return A2($author$project$Y20D04$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
