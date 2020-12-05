@@ -2704,7 +2704,7 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		t: func(record.t),
+		u: func(record.u),
 		R: record.R,
 		O: record.O
 	}
@@ -2974,7 +2974,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.t;
+		var message = !tag ? value : tag < 3 ? value.a : value.u;
 		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.R;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
@@ -5141,11 +5141,11 @@ var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Counter$init = 0;
 var $author$project$Dni$Model = F2(
 	function (counter, increment) {
-		return {w: counter, y: increment};
+		return {t: counter, y: increment};
 	});
 var $author$project$Dni$init = A2($author$project$Dni$Model, 0, 1);
 var $author$project$Randoms$init = 0;
-var $author$project$Main$initModel = {w: $author$project$Counter$init, p: $author$project$Dni$init, L: $author$project$Randoms$init};
+var $author$project$Main$initModel = {t: $author$project$Counter$init, p: $author$project$Dni$init, L: $author$project$Randoms$init};
 var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $author$project$Ports$random_request = _Platform_outgoingPort(
 	'random_request',
@@ -5192,10 +5192,10 @@ var $author$project$Counter$decrement = function (counter) {
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Dni$decrement = function (m) {
-	var update = (_Utils_cmp(m.w, m.y) > -1) ? (m.w - m.y) : 0;
+	var update = (_Utils_cmp(m.t, m.y) > -1) ? (m.t - m.y) : 0;
 	return _Utils_update(
 		m,
-		{w: update});
+		{t: update});
 };
 var $author$project$Counter$increment = function (counter) {
 	return counter + 1;
@@ -5203,7 +5203,7 @@ var $author$project$Counter$increment = function (counter) {
 var $author$project$Dni$increment = function (m) {
 	return _Utils_update(
 		m,
-		{w: m.w + m.y});
+		{t: m.t + m.y});
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5218,7 +5218,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							w: $author$project$Counter$increment(model.w)
+							t: $author$project$Counter$increment(model.t)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 1:
@@ -5226,14 +5226,14 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							w: $author$project$Counter$decrement(model.w)
+							t: $author$project$Counter$decrement(model.t)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 2:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{w: $author$project$Counter$init}),
+						{t: $author$project$Counter$init}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
 				return _Utils_Tuple2(
@@ -5401,64 +5401,259 @@ var $author$project$Counter$view = function (counter) {
 var $author$project$Messages$DniCycle = {$: 5};
 var $author$project$Messages$DniDecrement = {$: 4};
 var $author$project$Messages$DniIncrement = {$: 3};
-var $author$project$Dni$view = function (m) {
+var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $author$project$Dni$aHeight = function (h) {
+	return $elm$svg$Svg$Attributes$height(
+		$elm$core$String$fromInt(h));
+};
+var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
+var $author$project$Dni$aId = function (c) {
+	return $elm$svg$Svg$Attributes$id(c);
+};
+var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
+var $author$project$Dni$aViewBox = F2(
+	function (w, h) {
+		var arg = A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$String$fromInt,
+				_List_fromArray(
+					[0, 0, w, h])));
+		return $elm$svg$Svg$Attributes$viewBox(arg);
+	});
+var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $author$project$Dni$aWidth = function (w) {
+	return $elm$svg$Svg$Attributes$width(
+		$elm$core$String$fromInt(w));
+};
+var $author$project$Dni$actualHeight = 32;
+var $author$project$Dni$fullHeight = 1000;
+var $author$project$Dni$margin = 50;
+var $author$project$Dni$dniHeight = $author$project$Dni$fullHeight - (2 * $author$project$Dni$margin);
+var $author$project$Dni$dniWidth = $author$project$Dni$dniHeight;
+var $author$project$Dni$fullWidth = function (d) {
+	return ($author$project$Dni$dniWidth * d) + (2 * $author$project$Dni$margin);
+};
+var $elm$core$Basics$round = _Basics_round;
+var $author$project$Dni$actualWidth = function (d) {
+	return $elm$core$Basics$round(
+		($author$project$Dni$actualHeight * $author$project$Dni$fullWidth(d)) / $author$project$Dni$fullHeight);
+};
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $author$project$Dni$digits_ = F2(
+	function (ds, n) {
+		digits_:
+		while (true) {
+			if (n < 25) {
+				return A2($elm$core$List$cons, n, ds);
+			} else {
+				var $temp$ds = A2(
+					$elm$core$List$cons,
+					A2($elm$core$Basics$modBy, 25, n),
+					ds),
+					$temp$n = (n / 25) | 0;
+				ds = $temp$ds;
+				n = $temp$n;
+				continue digits_;
+			}
+		}
+	});
+var $author$project$Dni$digits = function (n) {
+	return A2($author$project$Dni$digits_, _List_Nil, n);
+};
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var $author$project$Dni$aClass = function (c) {
+	return $elm$svg$Svg$Attributes$class(c);
+};
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $author$project$Dni$aX1 = function (x) {
+	return $elm$svg$Svg$Attributes$x1(
+		$elm$core$String$fromInt(x));
+};
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $author$project$Dni$aX2 = function (x) {
+	return $elm$svg$Svg$Attributes$x2(
+		$elm$core$String$fromInt(x));
+};
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $author$project$Dni$aY1 = function (y) {
+	return $elm$svg$Svg$Attributes$y1(
+		$elm$core$String$fromInt(y));
+};
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $author$project$Dni$aY2 = function (y) {
+	return $elm$svg$Svg$Attributes$y2(
+		$elm$core$String$fromInt(y));
+};
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $author$project$Dni$frame = function (d) {
+	var w = $author$project$Dni$fullWidth(d);
+	var h = $author$project$Dni$fullHeight;
 	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$author$project$Dni$aClass('frame')
+			]),
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$button,
+				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('btn btn-success btn-sm')
+						$author$project$Dni$aX1(0),
+						$author$project$Dni$aY1(0),
+						$author$project$Dni$aX2(w),
+						$author$project$Dni$aY2(0)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$author$project$Dni$aX1(w),
+						$author$project$Dni$aY1(0),
+						$author$project$Dni$aX2(w),
+						$author$project$Dni$aY2(h)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$author$project$Dni$aX1(w),
+						$author$project$Dni$aY1(h),
+						$author$project$Dni$aX2(0),
+						$author$project$Dni$aY2(h)
+					]),
+				_List_Nil),
+				A2(
+				$elm$svg$Svg$line,
+				_List_fromArray(
+					[
+						$author$project$Dni$aX1(0),
+						$author$project$Dni$aY1(h),
+						$author$project$Dni$aX2(0),
+						$author$project$Dni$aY2(0)
+					]),
+				_List_Nil)
+			]));
+};
+var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
+var $author$project$Dni$dniSvg = function (m) {
+	var ds = $author$project$Dni$digits(m.t);
+	var d = $elm$core$List$length(ds);
+	return A2(
+		$elm$svg$Svg$svg,
+		_List_fromArray(
+			[
+				$author$project$Dni$aWidth(
+				$author$project$Dni$actualWidth(d)),
+				$author$project$Dni$aHeight($author$project$Dni$actualHeight),
+				A2(
+				$author$project$Dni$aViewBox,
+				$author$project$Dni$fullWidth(d),
+				$author$project$Dni$fullHeight),
+				$author$project$Dni$aId('dni')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Dni$frame(d)
+			]));
+};
+var $author$project$Dni$view = function (m) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('row')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('col')
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(
-						$elm$core$String$fromInt(m.w))
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('btn btn-success btn-sm mr-3')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$elm$core$String$fromInt(m.t))
+							]))
 					])),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('float-right')
+						$elm$html$Html$Attributes$class('col')
+					]),
+				_List_fromArray(
+					[
+						$author$project$Dni$dniSvg(m)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('col')
 					]),
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$button,
+						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$DniIncrement)
+								$elm$html$Html$Attributes$class('float-right')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('+')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$DniCycle)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(
-								$elm$core$String$fromInt(m.y))
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$DniDecrement)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('-')
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
+										$elm$html$Html$Events$onClick($author$project$Messages$DniIncrement)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('+')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
+										$elm$html$Html$Events$onClick($author$project$Messages$DniCycle)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromInt(m.y))
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+										$elm$html$Html$Events$onClick($author$project$Messages$DniDecrement)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('-')
+									]))
 							]))
 					]))
 			]));
@@ -5507,7 +5702,7 @@ var $author$project$Main$view = function (model) {
 				A2(
 				$author$project$Main$panel,
 				'Counter',
-				$author$project$Counter$view(model.w)),
+				$author$project$Counter$view(model.t)),
 				A2(
 				$author$project$Main$panel,
 				'Randoms',
