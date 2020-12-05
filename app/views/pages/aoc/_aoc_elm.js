@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 4;
+var $author$project$Main$defaultDay = 5;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -14516,34 +14516,33 @@ var $author$project$Y20D02$Password = F4(
 	function (n1, n2, letter, password) {
 		return {aH: letter, aI: n1, aJ: n2, aK: password};
 	});
-var $author$project$Y20D02$parsePassword = function (submatches) {
-	if ((((((((submatches.b && (!submatches.a.$)) && submatches.b.b) && (!submatches.b.a.$)) && submatches.b.b.b) && (!submatches.b.b.a.$)) && submatches.b.b.b.b) && (!submatches.b.b.b.a.$)) && (!submatches.b.b.b.b.b)) {
-		var n1_ = submatches.a.a;
-		var _v1 = submatches.b;
-		var n2_ = _v1.a.a;
-		var _v2 = _v1.b;
-		var letter = _v2.a.a;
-		var _v3 = _v2.b;
-		var password = _v3.a.a;
-		var _v4 = _Utils_Tuple2(
-			$elm$core$String$toInt(n1_),
-			$elm$core$String$toInt(n2_));
-		if ((!_v4.a.$) && (!_v4.b.$)) {
-			var n1 = _v4.a.a;
-			var n2 = _v4.b.a;
-			return $elm$core$Maybe$Just(
-				A4($author$project$Y20D02$Password, n1, n2, letter, password));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $author$project$Y20D02$parse = function (input) {
 	return A2(
 		$elm$core$List$filterMap,
-		$author$project$Y20D02$parsePassword,
+		function (m) {
+			if ((((((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && m.b.b.b) && (!m.b.b.a.$)) && m.b.b.b.b) && (!m.b.b.b.a.$)) && (!m.b.b.b.b.b)) {
+				var n1_ = m.a.a;
+				var _v1 = m.b;
+				var n2_ = _v1.a.a;
+				var _v2 = _v1.b;
+				var letter = _v2.a.a;
+				var _v3 = _v2.b;
+				var password = _v3.a.a;
+				var _v4 = _Utils_Tuple2(
+					$elm$core$String$toInt(n1_),
+					$elm$core$String$toInt(n2_));
+				if ((!_v4.a.$) && (!_v4.b.$)) {
+					var n1 = _v4.a.a;
+					var n2 = _v4.b.a;
+					return $elm$core$Maybe$Just(
+						A4($author$project$Y20D02$Password, n1, n2, letter, password));
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		},
 		A2(
 			$elm$core$List$map,
 			function ($) {
@@ -14893,6 +14892,102 @@ var $author$project$Y20D04$answer = F2(
 										$author$project$Y20D04$iyrValid,
 										A2($elm$core$List$filter, $author$project$Y20D04$byrValid, passports)))))))));
 	});
+var $author$project$Y20D05$Pass = F2(
+	function (row, col) {
+		return {S: col, Y: row};
+	});
+var $author$project$Y20D05$convert_ = F3(
+	function (n, f, chars) {
+		convert_:
+		while (true) {
+			if (chars.b) {
+				var c = chars.a;
+				var rest = chars.b;
+				var d = ((c === 'B') || (c === 'R')) ? f : 0;
+				var $temp$n = n + d,
+					$temp$f = 2 * f,
+					$temp$chars = rest;
+				n = $temp$n;
+				f = $temp$f;
+				chars = $temp$chars;
+				continue convert_;
+			} else {
+				return n;
+			}
+		}
+	});
+var $author$project$Y20D05$convert = function (code) {
+	return A3(
+		$author$project$Y20D05$convert_,
+		0,
+		1,
+		$elm$core$String$toList(
+			$elm$core$String$reverse(code)));
+};
+var $author$project$Y20D05$id = function (p) {
+	return (8 * p.Y) + p.S;
+};
+var $author$project$Y20D05$parse = function (input) {
+	return A2(
+		$elm$core$List$map,
+		$author$project$Y20D05$id,
+		A2(
+			$elm$core$List$filterMap,
+			function (m) {
+				if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
+					var row = m.a.a;
+					var _v1 = m.b;
+					var col = _v1.a.a;
+					return $elm$core$Maybe$Just(
+						A2(
+							$author$project$Y20D05$Pass,
+							$author$project$Y20D05$convert(row),
+							$author$project$Y20D05$convert(col)));
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			},
+			A2(
+				$elm$core$List$map,
+				function ($) {
+					return $.bO;
+				},
+				A2(
+					$elm$regex$Regex$find,
+					$author$project$Util$regex('([FB]{7})([LR]{3})'),
+					input))));
+};
+var $author$project$Y20D05$search = function (ids) {
+	search:
+	while (true) {
+		if (ids.b && ids.b.b) {
+			var c1 = ids.a;
+			var _v1 = ids.b;
+			var c2 = _v1.a;
+			var rest = _v1.b;
+			if (_Utils_eq(c2, c1 + 2)) {
+				return c1 + 1;
+			} else {
+				var $temp$ids = A2($elm$core$List$cons, c2, rest);
+				ids = $temp$ids;
+				continue search;
+			}
+		} else {
+			return 0;
+		}
+	}
+};
+var $author$project$Y20D05$answer = F2(
+	function (part, input) {
+		var ids = $author$project$Y20D05$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			A2(
+				$elm$core$Maybe$withDefault,
+				0,
+				$elm$core$List$maximum(ids))) : $elm$core$String$fromInt(
+			$author$project$Y20D05$search(
+				$elm$core$List$sort(ids)));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -14904,6 +14999,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D03$answer, part, input);
 			case 4:
 				return A2($author$project$Y20D04$answer, part, input);
+			case 5:
+				return A2($author$project$Y20D05$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}

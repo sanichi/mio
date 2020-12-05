@@ -57,22 +57,20 @@ parse input =
     input
         |> Regex.find (Util.regex "([1-9]\\d*)-([1-9]\\d*) ([a-z]): ([a-z]+)")
         |> List.map .submatches
-        |> List.filterMap parsePassword
+        |> List.filterMap
+            (\m ->
+                case m of
+                    [ Just n1_, Just n2_, Just letter, Just password ] ->
+                        case ( String.toInt n1_, String.toInt n2_ ) of
+                            ( Just n1, Just n2 ) ->
+                                Just (Password n1 n2 letter password)
 
+                            _ ->
+                                Nothing
 
-parsePassword : List (Maybe String) -> Maybe Password
-parsePassword submatches =
-    case submatches of
-        [ Just n1_, Just n2_, Just letter, Just password ] ->
-            case ( String.toInt n1_, String.toInt n2_ ) of
-                ( Just n1, Just n2 ) ->
-                    Just (Password n1 n2 letter password)
-
-                _ ->
-                    Nothing
-
-        _ ->
-            Nothing
+                    _ ->
+                        Nothing
+            )
 
 
 example : String
