@@ -14921,8 +14921,8 @@ var $author$project$Y20D05$convert = function (code) {
 		$author$project$Y20D05$convert_,
 		0,
 		1,
-		$elm$core$String$toList(
-			$elm$core$String$reverse(code)));
+		$elm$core$List$reverse(
+			$elm$core$String$toList(code)));
 };
 var $author$project$Y20D05$id = function (p) {
 	return (8 * p.Y) + p.S;

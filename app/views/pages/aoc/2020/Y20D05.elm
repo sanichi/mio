@@ -68,8 +68,8 @@ parse input =
 convert : String -> Int
 convert code =
     code
-        |> String.reverse
         |> String.toList
+        |> List.reverse
         |> convert_ 0 1
 
 
