@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 5;
+var $author$project$Main$defaultDay = 6;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -14988,6 +14988,100 @@ var $author$project$Y20D05$answer = F2(
 			$author$project$Y20D05$search(
 				$elm$core$List$sort(ids)));
 	});
+var $elm$core$Dict$filter = F2(
+	function (isGood, dict) {
+		return A3(
+			$elm$core$Dict$foldl,
+			F3(
+				function (k, v, d) {
+					return A2(isGood, k, v) ? A3($elm$core$Dict$insert, k, v, d) : d;
+				}),
+			$elm$core$Dict$empty,
+			dict);
+	});
+var $elm$core$Dict$intersect = F2(
+	function (t1, t2) {
+		return A2(
+			$elm$core$Dict$filter,
+			F2(
+				function (k, _v0) {
+					return A2($elm$core$Dict$member, k, t2);
+				}),
+			t1);
+	});
+var $author$project$Y20D06$count_ = F3(
+	function (part, group, dict) {
+		count_:
+		while (true) {
+			if (group.b) {
+				var person = group.a;
+				var rest = group.b;
+				var combine = (part === 1) ? $elm$core$Dict$union : $elm$core$Dict$intersect;
+				var $temp$part = part,
+					$temp$group = rest,
+					$temp$dict = A2(combine, person, dict);
+				part = $temp$part;
+				group = $temp$group;
+				dict = $temp$dict;
+				continue count_;
+			} else {
+				return dict;
+			}
+		}
+	});
+var $author$project$Y20D06$count = F2(
+	function (part, group) {
+		var dict = (part === 1) ? $elm$core$Dict$empty : $elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$map,
+				function (c) {
+					return _Utils_Tuple2(c, true);
+				},
+				$elm$core$String$toList('abcdefghijklmnopqrstuvwxyz')));
+		return $elm$core$Dict$size(
+			A3($author$project$Y20D06$count_, part, group, dict));
+	});
+var $author$project$Y20D06$parsePerson = function (input) {
+	return $elm$core$Dict$fromList(
+		A2(
+			$elm$core$List$map,
+			function (c) {
+				return _Utils_Tuple2(c, true);
+			},
+			$elm$core$String$toList(input)));
+};
+var $author$project$Y20D06$parseGroup = function (input) {
+	return A2(
+		$elm$core$List$map,
+		$author$project$Y20D06$parsePerson,
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.bI;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('[a-z]+'),
+				input)));
+};
+var $author$project$Y20D06$parse = function (input) {
+	return A2(
+		$elm$core$List$map,
+		$author$project$Y20D06$parseGroup,
+		A2(
+			$elm$regex$Regex$split,
+			$author$project$Util$regex('\\n\\n'),
+			input));
+};
+var $author$project$Y20D06$answer = F2(
+	function (part, input) {
+		return $elm$core$String$fromInt(
+			$elm$core$List$sum(
+				A2(
+					$elm$core$List$map,
+					$author$project$Y20D06$count(part),
+					$author$project$Y20D06$parse(input))));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -15001,6 +15095,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D04$answer, part, input);
 			case 5:
 				return A2($author$project$Y20D05$answer, part, input);
+			case 6:
+				return A2($author$project$Y20D06$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
