@@ -37,32 +37,12 @@ search ids =
             0
 
 
-type alias Pass =
-    { row : Int
-    , col : Int
-    }
-
-
-id : Pass -> Int
-id p =
-    8 * p.row + p.col
-
-
 parse : String -> List Int
 parse input =
     input
-        |> Regex.find (Util.regex "([FB]{7})([LR]{3})")
-        |> List.map .submatches
-        |> List.filterMap
-            (\m ->
-                case m of
-                    [ Just row, Just col ] ->
-                        Just (Pass (convert row) (convert col))
-
-                    _ ->
-                        Nothing
-            )
-        |> List.map id
+        |> Regex.find (Util.regex "[FB]{7}[LR]{3}")
+        |> List.map .match
+        |> List.map convert
 
 
 convert : String -> Int

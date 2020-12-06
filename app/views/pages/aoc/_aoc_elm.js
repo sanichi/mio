@@ -14892,10 +14892,6 @@ var $author$project$Y20D04$answer = F2(
 										$author$project$Y20D04$iyrValid,
 										A2($elm$core$List$filter, $author$project$Y20D04$byrValid, passports)))))))));
 	});
-var $author$project$Y20D05$Pass = F2(
-	function (row, col) {
-		return {S: col, Y: row};
-	});
 var $author$project$Y20D05$convert_ = F3(
 	function (n, f, chars) {
 		convert_:
@@ -14924,38 +14920,19 @@ var $author$project$Y20D05$convert = function (code) {
 		$elm$core$List$reverse(
 			$elm$core$String$toList(code)));
 };
-var $author$project$Y20D05$id = function (p) {
-	return (8 * p.Y) + p.S;
-};
 var $author$project$Y20D05$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
-		$author$project$Y20D05$id,
+		$author$project$Y20D05$convert,
 		A2(
-			$elm$core$List$filterMap,
-			function (m) {
-				if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
-					var row = m.a.a;
-					var _v1 = m.b;
-					var col = _v1.a.a;
-					return $elm$core$Maybe$Just(
-						A2(
-							$author$project$Y20D05$Pass,
-							$author$project$Y20D05$convert(row),
-							$author$project$Y20D05$convert(col)));
-				} else {
-					return $elm$core$Maybe$Nothing;
-				}
+			$elm$core$List$map,
+			function ($) {
+				return $.bI;
 			},
 			A2(
-				$elm$core$List$map,
-				function ($) {
-					return $.bO;
-				},
-				A2(
-					$elm$regex$Regex$find,
-					$author$project$Util$regex('([FB]{7})([LR]{3})'),
-					input))));
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('[FB]{7}[LR]{3}'),
+				input)));
 };
 var $author$project$Y20D05$search = function (ids) {
 	search:
