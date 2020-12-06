@@ -15009,37 +15009,32 @@ var $elm$core$Dict$intersect = F2(
 				}),
 			t1);
 	});
-var $author$project$Y20D06$count_ = F3(
-	function (part, group, dict) {
-		count_:
-		while (true) {
-			if (group.b) {
-				var person = group.a;
-				var rest = group.b;
-				var combine = (part === 1) ? $elm$core$Dict$union : $elm$core$Dict$intersect;
-				var $temp$part = part,
-					$temp$group = rest,
-					$temp$dict = A2(combine, person, dict);
-				part = $temp$part;
-				group = $temp$group;
-				dict = $temp$dict;
-				continue count_;
-			} else {
-				return dict;
-			}
+var $author$project$Y20D06$mergeGroup = F3(
+	function (mergePerson, group, dict) {
+		if (group.b) {
+			var person = group.a;
+			var rest = group.b;
+			return A3(
+				$author$project$Y20D06$mergeGroup,
+				mergePerson,
+				rest,
+				A2(mergePerson, person, dict));
+		} else {
+			return dict;
 		}
 	});
 var $author$project$Y20D06$count = F2(
 	function (part, group) {
-		var dict = (part === 1) ? $elm$core$Dict$empty : $elm$core$Dict$fromList(
+		var start = (part === 1) ? $elm$core$Dict$empty : $elm$core$Dict$fromList(
 			A2(
 				$elm$core$List$map,
 				function (c) {
 					return _Utils_Tuple2(c, true);
 				},
 				$elm$core$String$toList('abcdefghijklmnopqrstuvwxyz')));
-		return $elm$core$Dict$size(
-			A3($author$project$Y20D06$count_, part, group, dict));
+		var mergePerson = (part === 1) ? $elm$core$Dict$union : $elm$core$Dict$intersect;
+		var merged = A3($author$project$Y20D06$mergeGroup, mergePerson, group, start);
+		return $elm$core$Dict$size(merged);
 	});
 var $author$project$Y20D06$parsePerson = function (input) {
 	return $elm$core$Dict$fromList(

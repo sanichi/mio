@@ -25,7 +25,7 @@ type alias Person =
 count : Int -> Group -> Int
 count part group =
     let
-        dict =
+        start =
             if part == 1 then
                 Dict.empty
 
@@ -34,23 +34,27 @@ count part group =
                     |> String.toList
                     |> List.map (\c -> ( c, True ))
                     |> Dict.fromList
+
+        mergePerson =
+            if part == 1 then
+                Dict.union
+
+            else
+                Dict.intersect
+
+        merged =
+            mergeGroup mergePerson group start
     in
-    count_ part group dict |> Dict.size
+    Dict.size merged
 
 
-count_ : Int -> Group -> Dict Char Bool -> Dict Char Bool
-count_ part group dict =
+mergeGroup : (Person -> Person -> Person) -> Group -> Person -> Person
+mergeGroup mergePerson group dict =
     case group of
         person :: rest ->
-            let
-                combine =
-                    if part == 1 then
-                        Dict.union
-
-                    else
-                        Dict.intersect
-            in
-            count_ part rest (combine person dict)
+            dict
+                |> mergePerson person
+                |> mergeGroup mergePerson rest
 
         _ ->
             dict
