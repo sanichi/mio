@@ -15009,22 +15009,22 @@ var $elm$core$Dict$intersect = F2(
 				}),
 			t1);
 	});
-var $author$project$Y20D06$mergeGroup = F3(
-	function (mergePerson, group, dict) {
-		if (group.b) {
-			var person = group.a;
-			var rest = group.b;
+var $author$project$Y20D06$mergePeople = F3(
+	function (mergePerson, people, soFar) {
+		if (people.b) {
+			var person = people.a;
+			var rest = people.b;
 			return A3(
-				$author$project$Y20D06$mergeGroup,
+				$author$project$Y20D06$mergePeople,
 				mergePerson,
 				rest,
-				A2(mergePerson, person, dict));
+				A2(mergePerson, person, soFar));
 		} else {
-			return dict;
+			return soFar;
 		}
 	});
 var $author$project$Y20D06$count = F2(
-	function (part, group) {
+	function (part, people) {
 		var start = (part === 1) ? $elm$core$Dict$empty : $elm$core$Dict$fromList(
 			A2(
 				$elm$core$List$map,
@@ -15033,7 +15033,7 @@ var $author$project$Y20D06$count = F2(
 				},
 				$elm$core$String$toList('abcdefghijklmnopqrstuvwxyz')));
 		var mergePerson = (part === 1) ? $elm$core$Dict$union : $elm$core$Dict$intersect;
-		var merged = A3($author$project$Y20D06$mergeGroup, mergePerson, group, start);
+		var merged = A3($author$project$Y20D06$mergePeople, mergePerson, people, start);
 		return $elm$core$Dict$size(merged);
 	});
 var $author$project$Y20D06$parsePerson = function (input) {
@@ -15045,7 +15045,7 @@ var $author$project$Y20D06$parsePerson = function (input) {
 			},
 			$elm$core$String$toList(input)));
 };
-var $author$project$Y20D06$parseGroup = function (input) {
+var $author$project$Y20D06$parsePeople = function (input) {
 	return A2(
 		$elm$core$List$map,
 		$author$project$Y20D06$parsePerson,
@@ -15062,7 +15062,7 @@ var $author$project$Y20D06$parseGroup = function (input) {
 var $author$project$Y20D06$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
-		$author$project$Y20D06$parseGroup,
+		$author$project$Y20D06$parsePeople,
 		A2(
 			$elm$regex$Regex$split,
 			$author$project$Util$regex('\\n\\n'),

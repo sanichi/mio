@@ -14,7 +14,7 @@ answer part input =
         |> String.fromInt
 
 
-type alias Group =
+type alias People =
     List Person
 
 
@@ -22,8 +22,8 @@ type alias Person =
     Dict Char Bool
 
 
-count : Int -> Group -> Int
-count part group =
+count : Int -> People -> Int
+count part people =
     let
         start =
             if part == 1 then
@@ -43,32 +43,32 @@ count part group =
                 Dict.intersect
 
         merged =
-            mergeGroup mergePerson group start
+            mergePeople mergePerson people start
     in
     Dict.size merged
 
 
-mergeGroup : (Person -> Person -> Person) -> Group -> Person -> Person
-mergeGroup mergePerson group dict =
-    case group of
+mergePeople : (Person -> Person -> Person) -> People -> Person -> Person
+mergePeople mergePerson people soFar =
+    case people of
         person :: rest ->
-            dict
+            soFar
                 |> mergePerson person
-                |> mergeGroup mergePerson rest
+                |> mergePeople mergePerson rest
 
         _ ->
-            dict
+            soFar
 
 
-parse : String -> List Group
+parse : String -> List People
 parse input =
     input
         |> Regex.split (Util.regex "\\n\\n")
-        |> List.map parseGroup
+        |> List.map parsePeople
 
 
-parseGroup : String -> Group
-parseGroup input =
+parsePeople : String -> People
+parsePeople input =
     input
         |> Regex.find (Util.regex "[a-z]+")
         |> List.map .match
