@@ -93,14 +93,10 @@ count2 parent data =
 
 count2_ : String -> Int -> Data -> Int
 count2_ parent number data =
-    let
-        children =
-            data
-                |> Dict.get parent
-                |> Maybe.withDefault Dict.empty
-                |> Dict.toList
-    in
-    children
+    data
+        |> Dict.get parent
+        |> Maybe.withDefault Dict.empty
+        |> Dict.toList
         |> List.map
             (\( child, num ) ->
                 count2_ child num data

@@ -15150,11 +15150,6 @@ var $author$project$Y20D07$count1 = F2(
 	});
 var $author$project$Y20D07$count2_ = F3(
 	function (parent, number, data) {
-		var children = $elm$core$Dict$toList(
-			A2(
-				$elm$core$Maybe$withDefault,
-				$elm$core$Dict$empty,
-				A2($elm$core$Dict$get, parent, data)));
 		return number + (number * $elm$core$List$sum(
 			A2(
 				$elm$core$List$map,
@@ -15163,7 +15158,11 @@ var $author$project$Y20D07$count2_ = F3(
 					var num = _v0.b;
 					return A3($author$project$Y20D07$count2_, child, num, data);
 				},
-				children)));
+				$elm$core$Dict$toList(
+					A2(
+						$elm$core$Maybe$withDefault,
+						$elm$core$Dict$empty,
+						A2($elm$core$Dict$get, parent, data))))));
 	});
 var $author$project$Y20D07$count2 = F2(
 	function (parent, data) {
