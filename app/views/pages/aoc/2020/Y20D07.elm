@@ -28,18 +28,8 @@ answer part input =
             |> String.fromInt
 
 
-type alias Line =
-    { parent : String
-    , children : List ( String, Int )
-    }
-
-
-type alias Bags =
-    Dict String Int
-
-
 type alias Data =
-    Dict String Bags
+    Dict String (Dict String Int)
 
 
 count1 : String -> Data -> Int
@@ -104,6 +94,12 @@ count2_ parent number data =
         |> List.sum
         |> (*) number
         |> (+) number
+
+
+type alias Line =
+    { parent : String
+    , children : List ( String, Int )
+    }
 
 
 ancestors : List Line -> Data
