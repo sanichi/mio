@@ -8,6 +8,10 @@ import Svg as S exposing (Attribute)
 import Svg.Attributes as SA
 
 
+
+-- model
+
+
 type alias Model =
     { counter : Int
     , increment : Int
@@ -66,6 +70,24 @@ cycle m =
     { m | increment = update }
 
 
+digits : Int -> List Int
+digits n =
+    digits_ [] n
+
+
+digits_ : List Int -> Int -> List Int
+digits_ ds n =
+    if n < 25 then
+        n :: ds
+
+    else
+        digits_ (modBy 25 n :: ds) (n // 25)
+
+
+
+-- view
+
+
 view : Model -> Html Msg
 view m =
     div [ class "row" ]
@@ -89,14 +111,15 @@ dniSvg : Model -> Html Msg
 dniSvg m =
     let
         ds =
-            digits m.counter
+            m.counter
+                |> digits
+                |> List.indexedMap digit
 
         d =
             List.length ds
     in
-    S.svg [ aWidth (actualWidth d), aHeight actualHeight, aViewBox (fullWidth d) fullHeight, aId "dni" ]
-        [ frame d
-        ]
+    S.svg [ aWidth (fullWidth d), aHeight fullHeight, aViewBox (fullWidth d) fullHeight, aId "dni" ]
+        (frame d :: ds)
 
 
 frame : Int -> Html Msg
@@ -116,76 +139,137 @@ frame d =
         ]
 
 
-digits : Int -> List Int
-digits n =
-    digits_ [] n
+
+-- digit images
 
 
-digits_ : List Int -> Int -> List Int
-digits_ ds n =
-    if n < 25 then
-        n :: ds
+dSquare : List (Html Msg)
+dSquare =
+    [ S.line [ aX1 0, aY1 0, aX2 dW, aY2 0 ] []
+    , S.line [ aX1 dW, aY1 0, aX2 dW, aY2 dH ] []
+    , S.line [ aX1 dW, aY1 dH, aX2 0, aY2 dH ] []
+    , S.line [ aX1 0, aY1 dH, aX2 0, aY2 0 ] []
+    ]
 
-    else
-        digits_ (modBy 25 n :: ds) (n // 25)
+
+digit : Int -> Int -> Html Msg
+digit position d =
+    let
+        x =
+            dX position
+
+        y =
+            dY
+    in
+    case d of
+        1 ->
+            one x y
+
+        2 ->
+            two x y
+
+        3 ->
+            three x y
+
+        _ ->
+            zero x y
+
+
+zero : Int -> Int -> Html Msg
+zero x y =
+    S.circle [ aCx (dW // 2), aCy (dH // 2), aR 1 ] []
+        :: dSquare
+        |> S.g [ aClass "digit", aTranslate x y ]
+
+
+one : Int -> Int -> Html Msg
+one x y =
+    S.line [ aX1 (dW // 2), aY1 0, aX2 (dW // 2), aY2 dH ] []
+        :: dSquare
+        |> S.g [ aClass "digit", aTranslate x y ]
+
+
+two : Int -> Int -> Html Msg
+two x y =
+    let
+        p1 =
+            "0,0"
+
+        p2 =
+            "0," ++ String.fromInt dH
+
+        ff =
+            round (toFloat dW / 3.0)
+
+        b1 =
+            String.fromInt ff ++ "," ++ String.fromInt ff
+
+        b2 =
+            String.fromInt ff ++ "," ++ String.fromInt (dH - ff)
+
+        path =
+            String.join " " [ "M", p1, "C", b1, b2, p2 ]
+    in
+    S.path [ aD path ] []
+        :: dSquare
+        |> S.g [ aClass "digit", aTranslate x y ]
+
+
+three : Int -> Int -> Html Msg
+three x y =
+    let
+        l1 =
+            S.line [ aX1 0, aY1 (dH // 2), aX2 (dW // 2), aY2 0 ] []
+
+        l2 =
+            S.line [ aX1 0, aY1 (dH // 2), aX2 (dW // 2), aY2 dH ] []
+    in
+    [ l1, l2 ]
+        ++ dSquare
+        |> S.g [ aClass "digit", aTranslate x y ]
 
 
 
 -- dimensions
 
 
-actualWidth : Int -> Int
-actualWidth d =
-    toFloat actualHeight * toFloat (fullWidth d) / toFloat fullHeight |> round
-
-
-actualHeight : Int
-actualHeight =
-    32
-
-
 fullWidth : Int -> Int
 fullWidth d =
-    dniWidth * d + 2 * margin
+    dW * d + 2 * margin
 
 
 fullHeight : Int
 fullHeight =
-    1000
+    50
 
 
 margin : Int
 margin =
-    50
+    8
 
 
-dniWidth : Int
-dniWidth =
-    dniHeight
+dW : Int
+dW =
+    dH
 
 
-dniHeight : Int
-dniHeight =
+dH : Int
+dH =
     fullHeight - 2 * margin
 
 
-dniY : Int
-dniY =
+dX : Int -> Int
+dX position =
+    margin + dW * position
+
+
+dY : Int
+dY =
     margin
 
 
 
 -- SVG helpers
-
-
-aX : Int -> Attribute msg
-aX x =
-    SA.x (String.fromInt x)
-
-
-aY : Int -> Attribute msg
-aY y =
-    SA.y (String.fromInt y)
 
 
 aX1 : Int -> Attribute msg
@@ -208,6 +292,26 @@ aY2 y =
     SA.y2 (String.fromInt y)
 
 
+aCx : Int -> Attribute msg
+aCx x =
+    SA.cx (String.fromInt x)
+
+
+aCy : Int -> Attribute msg
+aCy y =
+    SA.cy (String.fromInt y)
+
+
+aR : Int -> Attribute msg
+aR r =
+    SA.r (String.fromInt r)
+
+
+aD : String -> Attribute msg
+aD path =
+    SA.d path
+
+
 aWidth : Int -> Attribute msg
 aWidth w =
     SA.width (String.fromInt w)
@@ -227,6 +331,13 @@ aViewBox w h =
                 |> String.join " "
     in
     SA.viewBox arg
+
+
+aTranslate : Int -> Int -> Attribute msg
+aTranslate x y =
+    [ "translate(", String.fromInt x, ",", String.fromInt y, ")" ]
+        |> String.join ""
+        |> SA.transform
 
 
 aId : String -> Attribute msg
