@@ -5428,44 +5428,30 @@ var $author$project$Dni$aWidth = function (w) {
 	return $elm$svg$Svg$Attributes$width(
 		$elm$core$String$fromInt(w));
 };
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
-var $author$project$Dni$combine = F2(
-	function (d1, d2) {
-		return A2(
-			$elm$svg$Svg$g,
-			_List_Nil,
-			_List_fromArray(
-				[d1, d2]));
-	});
-var $author$project$Dni$fullHeight = 50;
-var $author$project$Dni$margin = 8;
+var $author$project$Dni$fullHeight = 44;
+var $author$project$Dni$margin = 5;
 var $author$project$Dni$dH = $author$project$Dni$fullHeight - (2 * $author$project$Dni$margin);
 var $author$project$Dni$dW = $author$project$Dni$dH;
 var $author$project$Dni$dX = function (position) {
 	return $author$project$Dni$margin + ($author$project$Dni$dW * position);
 };
 var $author$project$Dni$dY = $author$project$Dni$margin;
+var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
+var $author$project$Dni$aTranslate = function (position) {
+	var y = $elm$core$String$fromInt($author$project$Dni$dY);
+	var x = $elm$core$String$fromInt(
+		$author$project$Dni$dX(position));
+	return $elm$svg$Svg$Attributes$transform(
+		A2(
+			$elm$core$String$join,
+			'',
+			_List_fromArray(
+				['translate(', x, ',', y, ')'])));
+};
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$Dni$aClass = function (c) {
 	return $elm$svg$Svg$Attributes$class(c);
 };
-var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
-var $author$project$Dni$aTranslate = F2(
-	function (x, y) {
-		return $elm$svg$Svg$Attributes$transform(
-			A2(
-				$elm$core$String$join,
-				'',
-				_List_fromArray(
-					[
-						'translate(',
-						$elm$core$String$fromInt(x),
-						',',
-						$elm$core$String$fromInt(y),
-						')'
-					])));
-	});
 var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var $author$project$Dni$aX1 = function (x) {
 	return $elm$svg$Svg$Attributes$x1(
@@ -5486,208 +5472,149 @@ var $author$project$Dni$aY2 = function (y) {
 	return $elm$svg$Svg$Attributes$y2(
 		$elm$core$String$fromInt(y));
 };
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $author$project$Dni$dSquare = _List_fromArray(
-	[
-		A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1(0),
-				$author$project$Dni$aY1(0),
-				$author$project$Dni$aX2($author$project$Dni$dW),
-				$author$project$Dni$aY2(0)
-			]),
-		_List_Nil),
-		A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1($author$project$Dni$dW),
-				$author$project$Dni$aY1(0),
-				$author$project$Dni$aX2($author$project$Dni$dW),
-				$author$project$Dni$aY2($author$project$Dni$dH)
-			]),
-		_List_Nil),
-		A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1($author$project$Dni$dW),
-				$author$project$Dni$aY1($author$project$Dni$dH),
-				$author$project$Dni$aX2(0),
-				$author$project$Dni$aY2($author$project$Dni$dH)
-			]),
-		_List_Nil),
-		A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1(0),
-				$author$project$Dni$aY1($author$project$Dni$dH),
-				$author$project$Dni$aX2(0),
-				$author$project$Dni$aY2(0)
-			]),
-		_List_Nil)
-	]);
 var $author$project$Dni$hW = ($author$project$Dni$dW / 2) | 0;
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
 var $author$project$Dni$qH = ($author$project$Dni$dH / 4) | 0;
-var $author$project$Dni$four = F2(
-	function (x, y) {
-		var l2 = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$author$project$Dni$aX1($author$project$Dni$hW),
-					$author$project$Dni$aY1($author$project$Dni$qH),
-					$author$project$Dni$aX2($author$project$Dni$dW),
-					$author$project$Dni$aY2($author$project$Dni$qH)
-				]),
-			_List_Nil);
-		var l1 = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$author$project$Dni$aX1($author$project$Dni$hW),
-					$author$project$Dni$aY1($author$project$Dni$dH),
-					$author$project$Dni$aX2($author$project$Dni$hW),
-					$author$project$Dni$aY2($author$project$Dni$qH)
-				]),
-			_List_Nil);
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$author$project$Dni$aClass('digit'),
-					A2($author$project$Dni$aTranslate, x, y)
-				]),
-			_Utils_ap(
-				_List_fromArray(
-					[l1, l2]),
-				$author$project$Dni$dSquare));
-	});
-var $author$project$Dni$one = F2(
-	function (x, y) {
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$author$project$Dni$aClass('digit'),
-					A2($author$project$Dni$aTranslate, x, y)
-				]),
-			A2(
-				$elm$core$List$cons,
-				A2(
-					$elm$svg$Svg$line,
-					_List_fromArray(
-						[
-							$author$project$Dni$aX1($author$project$Dni$hW),
-							$author$project$Dni$aY1(0),
-							$author$project$Dni$aX2($author$project$Dni$hW),
-							$author$project$Dni$aY2($author$project$Dni$dH)
-						]),
-					_List_Nil),
-				$author$project$Dni$dSquare));
-	});
+var $author$project$Dni$four = function () {
+	var l2 = A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1($author$project$Dni$hW),
+				$author$project$Dni$aY1($author$project$Dni$qH),
+				$author$project$Dni$aX2($author$project$Dni$dW),
+				$author$project$Dni$aY2($author$project$Dni$qH),
+				$author$project$Dni$aClass('digit')
+			]),
+		_List_Nil);
+	var l1 = A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1($author$project$Dni$hW),
+				$author$project$Dni$aY1($author$project$Dni$dH),
+				$author$project$Dni$aX2($author$project$Dni$hW),
+				$author$project$Dni$aY2($author$project$Dni$qH),
+				$author$project$Dni$aClass('digit')
+			]),
+		_List_Nil);
+	return _List_fromArray(
+		[l1, l2]);
+}();
+var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
+var $elm$core$List$singleton = function (value) {
+	return _List_fromArray(
+		[value]);
+};
+var $author$project$Dni$one = $elm$core$List$singleton(
+	A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1($author$project$Dni$hW),
+				$author$project$Dni$aY1(0),
+				$author$project$Dni$aX2($author$project$Dni$hW),
+				$author$project$Dni$aY2($author$project$Dni$dH),
+				$author$project$Dni$aClass('digit')
+			]),
+		_List_Nil));
 var $author$project$Dni$hH = ($author$project$Dni$dH / 2) | 0;
-var $author$project$Dni$aRotate = F2(
-	function (x, y) {
-		var cy = y + $author$project$Dni$hH;
-		var cx = x + $author$project$Dni$hW;
-		return $elm$svg$Svg$Attributes$transform(
-			A2(
-				$elm$core$String$join,
-				'',
-				_List_fromArray(
-					[
-						'rotate(-90,',
-						$elm$core$String$fromInt(cx),
-						',',
-						$elm$core$String$fromInt(cy),
-						')'
-					])));
-	});
-var $author$project$Dni$rotate = F3(
-	function (x, y, dig) {
-		return A2(
+var $author$project$Dni$aRotate = function () {
+	var cy = $elm$core$String$fromInt($author$project$Dni$hH);
+	var cx = $elm$core$String$fromInt($author$project$Dni$hW);
+	return $elm$svg$Svg$Attributes$transform(
+		A2(
+			$elm$core$String$join,
+			'',
+			_List_fromArray(
+				['rotate(-90,', cx, ',', cy, ')'])));
+}();
+var $author$project$Dni$rotate = function (digs) {
+	return $elm$core$List$singleton(
+		A2(
 			$elm$svg$Svg$g,
 			_List_fromArray(
-				[
-					A2($author$project$Dni$aRotate, x, y)
-				]),
-			_List_fromArray(
-				[dig]));
-	});
-var $author$project$Dni$three = F2(
-	function (x, y) {
-		var l2 = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$author$project$Dni$aX1(0),
-					$author$project$Dni$aY1($author$project$Dni$hH),
-					$author$project$Dni$aX2($author$project$Dni$hW),
-					$author$project$Dni$aY2($author$project$Dni$dH)
-				]),
-			_List_Nil);
-		var l1 = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$author$project$Dni$aX1(0),
-					$author$project$Dni$aY1($author$project$Dni$hH),
-					$author$project$Dni$aX2($author$project$Dni$hW),
-					$author$project$Dni$aY2(0)
-				]),
-			_List_Nil);
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$author$project$Dni$aClass('digit'),
-					A2($author$project$Dni$aTranslate, x, y)
-				]),
-			_Utils_ap(
-				_List_fromArray(
-					[l1, l2]),
-				$author$project$Dni$dSquare));
-	});
+				[$author$project$Dni$aRotate]),
+			digs));
+};
+var $author$project$Dni$three = function () {
+	var l2 = A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1(0),
+				$author$project$Dni$aY1($author$project$Dni$hH),
+				$author$project$Dni$aX2($author$project$Dni$hW),
+				$author$project$Dni$aY2($author$project$Dni$dH),
+				$author$project$Dni$aClass('digit')
+			]),
+		_List_Nil);
+	var l1 = A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1(0),
+				$author$project$Dni$aY1($author$project$Dni$hH),
+				$author$project$Dni$aX2($author$project$Dni$hW),
+				$author$project$Dni$aY2(0),
+				$author$project$Dni$aClass('digit')
+			]),
+		_List_Nil);
+	return _List_fromArray(
+		[l1, l2]);
+}();
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $author$project$Dni$aD = function (path) {
 	return $elm$svg$Svg$Attributes$d(path);
 };
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$core$Basics$round = _Basics_round;
-var $author$project$Dni$two = F2(
-	function (x, y) {
-		var p2 = '0,' + $elm$core$String$fromInt($author$project$Dni$dH);
-		var p1 = '0,0';
-		var ff = $elm$core$Basics$round($author$project$Dni$dW / 3.0);
-		var b2 = $elm$core$String$fromInt(ff) + (',' + $elm$core$String$fromInt($author$project$Dni$dH - ff));
-		var b1 = $elm$core$String$fromInt(ff) + (',' + $elm$core$String$fromInt(ff));
-		var path = A2(
-			$elm$core$String$join,
-			' ',
-			_List_fromArray(
-				['M', p1, 'C', b1, b2, p2]));
-		return A2(
-			$elm$svg$Svg$g,
+var $author$project$Dni$two = function () {
+	var p2 = '0,' + $elm$core$String$fromInt($author$project$Dni$dH);
+	var p1 = '0,0';
+	var ff = $elm$core$Basics$round($author$project$Dni$dW / 3.0);
+	var b2 = $elm$core$String$fromInt(ff) + (',' + $elm$core$String$fromInt($author$project$Dni$dH - ff));
+	var b1 = $elm$core$String$fromInt(ff) + (',' + $elm$core$String$fromInt(ff));
+	var path = A2(
+		$elm$core$String$join,
+		' ',
+		_List_fromArray(
+			['M', p1, 'C', b1, b2, p2]));
+	return $elm$core$List$singleton(
+		A2(
+			$elm$svg$Svg$path,
 			_List_fromArray(
 				[
-					$author$project$Dni$aClass('digit'),
-					A2($author$project$Dni$aTranslate, x, y)
+					$author$project$Dni$aD(path)
 				]),
-			A2(
-				$elm$core$List$cons,
-				A2(
-					$elm$svg$Svg$path,
-					_List_fromArray(
-						[
-							$author$project$Dni$aD(path)
-						]),
-					_List_Nil),
-				$author$project$Dni$dSquare));
-	});
+			_List_Nil));
+}();
+var $author$project$Dni$vRails = _List_fromArray(
+	[
+		A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1($author$project$Dni$dW),
+				$author$project$Dni$aY1(0),
+				$author$project$Dni$aX2($author$project$Dni$dW),
+				$author$project$Dni$aY2($author$project$Dni$dH),
+				$author$project$Dni$aClass('rails')
+			]),
+		_List_Nil),
+		A2(
+		$elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				$author$project$Dni$aX1(0),
+				$author$project$Dni$aY1($author$project$Dni$dH),
+				$author$project$Dni$aX2(0),
+				$author$project$Dni$aY2(0),
+				$author$project$Dni$aClass('rails')
+			]),
+		_List_Nil)
+	]);
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $author$project$Dni$aCx = function (x) {
 	return $elm$svg$Svg$Attributes$cx(
@@ -5704,212 +5631,111 @@ var $author$project$Dni$aR = function (r) {
 		$elm$core$String$fromInt(r));
 };
 var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
-var $author$project$Dni$zero = F2(
-	function (x, y) {
+var $author$project$Dni$zero = $elm$core$List$singleton(
+	A2(
+		$elm$svg$Svg$circle,
+		_List_fromArray(
+			[
+				$author$project$Dni$aCx($author$project$Dni$hW),
+				$author$project$Dni$aCy($author$project$Dni$hH),
+				$author$project$Dni$aR(1)
+			]),
+		_List_Nil));
+var $author$project$Dni$digit = F2(
+	function (position, d) {
+		var digs = function () {
+			switch (d) {
+				case 1:
+					return $author$project$Dni$one;
+				case 2:
+					return $author$project$Dni$two;
+				case 3:
+					return $author$project$Dni$three;
+				case 4:
+					return $author$project$Dni$four;
+				case 5:
+					return $author$project$Dni$rotate($author$project$Dni$one);
+				case 6:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$one),
+						$author$project$Dni$one);
+				case 7:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$one),
+						$author$project$Dni$two);
+				case 8:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$one),
+						$author$project$Dni$three);
+				case 9:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$one),
+						$author$project$Dni$four);
+				case 10:
+					return $author$project$Dni$rotate($author$project$Dni$two);
+				case 11:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$two),
+						$author$project$Dni$one);
+				case 12:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$two),
+						$author$project$Dni$two);
+				case 13:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$two),
+						$author$project$Dni$three);
+				case 14:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$two),
+						$author$project$Dni$four);
+				case 15:
+					return $author$project$Dni$rotate($author$project$Dni$three);
+				case 16:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$three),
+						$author$project$Dni$one);
+				case 17:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$three),
+						$author$project$Dni$two);
+				case 18:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$three),
+						$author$project$Dni$three);
+				case 19:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$three),
+						$author$project$Dni$four);
+				case 20:
+					return $author$project$Dni$rotate($author$project$Dni$four);
+				case 21:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$four),
+						$author$project$Dni$one);
+				case 22:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$four),
+						$author$project$Dni$two);
+				case 23:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$four),
+						$author$project$Dni$three);
+				case 24:
+					return _Utils_ap(
+						$author$project$Dni$rotate($author$project$Dni$four),
+						$author$project$Dni$four);
+				default:
+					return $author$project$Dni$zero;
+			}
+		}();
 		return A2(
 			$elm$svg$Svg$g,
 			_List_fromArray(
 				[
-					$author$project$Dni$aClass('digit'),
-					A2($author$project$Dni$aTranslate, x, y)
+					$author$project$Dni$aTranslate(position)
 				]),
-			A2(
-				$elm$core$List$cons,
-				A2(
-					$elm$svg$Svg$circle,
-					_List_fromArray(
-						[
-							$author$project$Dni$aCx($author$project$Dni$hW),
-							$author$project$Dni$aCy($author$project$Dni$hH),
-							$author$project$Dni$aR(1)
-						]),
-					_List_Nil),
-				$author$project$Dni$dSquare));
-	});
-var $author$project$Dni$digit = F2(
-	function (position, d) {
-		var y = $author$project$Dni$dY;
-		var x = $author$project$Dni$dX(position);
-		switch (d) {
-			case 1:
-				return A2($author$project$Dni$one, x, y);
-			case 2:
-				return A2($author$project$Dni$two, x, y);
-			case 3:
-				return A2($author$project$Dni$three, x, y);
-			case 4:
-				return A2($author$project$Dni$four, x, y);
-			case 5:
-				return A3(
-					$author$project$Dni$rotate,
-					x,
-					y,
-					A2($author$project$Dni$one, x, y));
-			case 6:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$one, x, y)),
-					A2($author$project$Dni$one, x, y));
-			case 7:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$one, x, y)),
-					A2($author$project$Dni$two, x, y));
-			case 8:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$one, x, y)),
-					A2($author$project$Dni$three, x, y));
-			case 9:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$one, x, y)),
-					A2($author$project$Dni$four, x, y));
-			case 10:
-				return A3(
-					$author$project$Dni$rotate,
-					x,
-					y,
-					A2($author$project$Dni$two, x, y));
-			case 11:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$two, x, y)),
-					A2($author$project$Dni$one, x, y));
-			case 12:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$two, x, y)),
-					A2($author$project$Dni$two, x, y));
-			case 13:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$two, x, y)),
-					A2($author$project$Dni$three, x, y));
-			case 14:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$two, x, y)),
-					A2($author$project$Dni$four, x, y));
-			case 15:
-				return A3(
-					$author$project$Dni$rotate,
-					x,
-					y,
-					A2($author$project$Dni$three, x, y));
-			case 16:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$three, x, y)),
-					A2($author$project$Dni$one, x, y));
-			case 17:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$three, x, y)),
-					A2($author$project$Dni$two, x, y));
-			case 18:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$three, x, y)),
-					A2($author$project$Dni$three, x, y));
-			case 19:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$three, x, y)),
-					A2($author$project$Dni$four, x, y));
-			case 20:
-				return A3(
-					$author$project$Dni$rotate,
-					x,
-					y,
-					A2($author$project$Dni$four, x, y));
-			case 21:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$four, x, y)),
-					A2($author$project$Dni$one, x, y));
-			case 22:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$four, x, y)),
-					A2($author$project$Dni$two, x, y));
-			case 23:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$four, x, y)),
-					A2($author$project$Dni$three, x, y));
-			case 24:
-				return A2(
-					$author$project$Dni$combine,
-					A3(
-						$author$project$Dni$rotate,
-						x,
-						y,
-						A2($author$project$Dni$four, x, y)),
-					A2($author$project$Dni$four, x, y));
-			default:
-				return A2($author$project$Dni$zero, x, y);
-		}
+			_Utils_ap(digs, $author$project$Dni$vRails));
 	});
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $author$project$Dni$digits_ = F2(
@@ -5936,66 +5762,48 @@ var $author$project$Dni$digits = function (n) {
 var $author$project$Dni$fullWidth = function (d) {
 	return ($author$project$Dni$dW * d) + (2 * $author$project$Dni$margin);
 };
-var $author$project$Dni$frame = function (d) {
-	var w = $author$project$Dni$fullWidth(d);
-	var h = $author$project$Dni$fullHeight;
+var $author$project$Dni$snick = 4;
+var $author$project$Dni$hRails = function (d) {
+	var y2 = $author$project$Dni$fullHeight - $author$project$Dni$margin;
+	var y1 = $author$project$Dni$margin;
+	var x2 = ($author$project$Dni$fullWidth(d) - $author$project$Dni$margin) + $author$project$Dni$snick;
+	var x1 = $author$project$Dni$margin - $author$project$Dni$snick;
 	return A2(
 		$elm$svg$Svg$g,
-		_List_fromArray(
-			[
-				$author$project$Dni$aClass('frame')
-			]),
+		_List_Nil,
 		_List_fromArray(
 			[
 				A2(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$author$project$Dni$aX1(0),
-						$author$project$Dni$aY1(0),
-						$author$project$Dni$aX2(w),
-						$author$project$Dni$aY2(0)
+						$author$project$Dni$aX1(x1),
+						$author$project$Dni$aY1(y1),
+						$author$project$Dni$aX2(x2),
+						$author$project$Dni$aY2(y1),
+						$author$project$Dni$aClass('rails')
 					]),
 				_List_Nil),
 				A2(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$author$project$Dni$aX1(w),
-						$author$project$Dni$aY1(0),
-						$author$project$Dni$aX2(w),
-						$author$project$Dni$aY2(h)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$author$project$Dni$aX1(w),
-						$author$project$Dni$aY1(h),
-						$author$project$Dni$aX2(0),
-						$author$project$Dni$aY2(h)
-					]),
-				_List_Nil),
-				A2(
-				$elm$svg$Svg$line,
-				_List_fromArray(
-					[
-						$author$project$Dni$aX1(0),
-						$author$project$Dni$aY1(h),
-						$author$project$Dni$aX2(0),
-						$author$project$Dni$aY2(0)
+						$author$project$Dni$aX1(x1),
+						$author$project$Dni$aY1(y2),
+						$author$project$Dni$aX2(x2),
+						$author$project$Dni$aY2(y2),
+						$author$project$Dni$aClass('rails')
 					]),
 				_List_Nil)
 			]));
 };
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $author$project$Dni$dniSvg = function (m) {
-	var ds = A2(
+	var dniDigits = A2(
 		$elm$core$List$indexedMap,
 		$author$project$Dni$digit,
 		$author$project$Dni$digits(m.t));
-	var d = $elm$core$List$length(ds);
+	var d = $elm$core$List$length(dniDigits);
 	return A2(
 		$elm$svg$Svg$svg,
 		_List_fromArray(
@@ -6011,8 +5819,8 @@ var $author$project$Dni$dniSvg = function (m) {
 			]),
 		A2(
 			$elm$core$List$cons,
-			$author$project$Dni$frame(d),
-			ds));
+			$author$project$Dni$hRails(d),
+			dniDigits));
 };
 var $author$project$Dni$view = function (m) {
 	return A2(
@@ -6047,7 +5855,7 @@ var $author$project$Dni$view = function (m) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('col')
+						$elm$html$Html$Attributes$class('col pb-2')
 					]),
 				_List_fromArray(
 					[

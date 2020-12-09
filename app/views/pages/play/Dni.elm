@@ -94,7 +94,7 @@ view m =
         [ div [ class "col" ]
             [ button [ class "btn btn-success btn-sm mr-3" ] [ text (String.fromInt m.counter) ]
             ]
-        , div [ class "col" ]
+        , div [ class "col pb-2" ]
             [ dniSvg m
             ]
         , div [ class "col" ]
@@ -110,32 +110,36 @@ view m =
 dniSvg : Model -> Html Msg
 dniSvg m =
     let
-        ds =
+        dniDigits =
             m.counter
                 |> digits
                 |> List.indexedMap digit
 
         d =
-            List.length ds
+            List.length dniDigits
     in
     S.svg [ aWidth (fullWidth d), aHeight fullHeight, aViewBox (fullWidth d) fullHeight, aId "dni" ]
-        (frame d :: ds)
+        (hRails d :: dniDigits)
 
 
-frame : Int -> Html Msg
-frame d =
+hRails : Int -> Html Msg
+hRails d =
     let
-        w =
-            fullWidth d
+        x1 =
+            margin - snick
 
-        h =
-            fullHeight
+        y1 =
+            margin
+
+        x2 =
+            fullWidth d - margin + snick
+
+        y2 =
+            fullHeight - margin
     in
-    S.g [ aClass "frame" ]
-        [ S.line [ aX1 0, aY1 0, aX2 w, aY2 0 ] []
-        , S.line [ aX1 w, aY1 0, aX2 w, aY2 h ] []
-        , S.line [ aX1 w, aY1 h, aX2 0, aY2 h ] []
-        , S.line [ aX1 0, aY1 h, aX2 0, aY2 0 ] []
+    S.g []
+        [ S.line [ aX1 x1, aY1 y1, aX2 x2, aY2 y1, aClass "rails" ] []
+        , S.line [ aX1 x1, aY1 y2, aX2 x2, aY2 y2, aClass "rails" ] []
         ]
 
 
@@ -143,117 +147,110 @@ frame d =
 -- digit images
 
 
-dSquare : List (Html Msg)
-dSquare =
-    [ S.line [ aX1 0, aY1 0, aX2 dW, aY2 0 ] []
-    , S.line [ aX1 dW, aY1 0, aX2 dW, aY2 dH ] []
-    , S.line [ aX1 dW, aY1 dH, aX2 0, aY2 dH ] []
-    , S.line [ aX1 0, aY1 dH, aX2 0, aY2 0 ] []
+vRails : List (Html Msg)
+vRails =
+    [ S.line [ aX1 dW, aY1 0, aX2 dW, aY2 dH, aClass "rails" ] []
+    , S.line [ aX1 0, aY1 dH, aX2 0, aY2 0, aClass "rails" ] []
     ]
 
 
 digit : Int -> Int -> Html Msg
 digit position d =
     let
-        x =
-            dX position
+        digs =
+            case d of
+                1 ->
+                    one
 
-        y =
-            dY
+                2 ->
+                    two
+
+                3 ->
+                    three
+
+                4 ->
+                    four
+
+                5 ->
+                    rotate one
+
+                6 ->
+                    rotate one ++ one
+
+                7 ->
+                    rotate one ++ two
+
+                8 ->
+                    rotate one ++ three
+
+                9 ->
+                    rotate one ++ four
+
+                10 ->
+                    rotate two
+
+                11 ->
+                    rotate two ++ one
+
+                12 ->
+                    rotate two ++ two
+
+                13 ->
+                    rotate two ++ three
+
+                14 ->
+                    rotate two ++ four
+
+                15 ->
+                    rotate three
+
+                16 ->
+                    rotate three ++ one
+
+                17 ->
+                    rotate three ++ two
+
+                18 ->
+                    rotate three ++ three
+
+                19 ->
+                    rotate three ++ four
+
+                20 ->
+                    rotate four
+
+                21 ->
+                    rotate four ++ one
+
+                22 ->
+                    rotate four ++ two
+
+                23 ->
+                    rotate four ++ three
+
+                24 ->
+                    rotate four ++ four
+
+                _ ->
+                    zero
     in
-    case d of
-        1 ->
-            one x y
-
-        2 ->
-            two x y
-
-        3 ->
-            three x y
-
-        4 ->
-            four x y
-
-        5 ->
-            rotate x y <| one x y
-
-        6 ->
-            combine (rotate x y <| one x y) (one x y)
-
-        7 ->
-            combine (rotate x y <| one x y) (two x y)
-
-        8 ->
-            combine (rotate x y <| one x y) (three x y)
-
-        9 ->
-            combine (rotate x y <| one x y) (four x y)
-
-        10 ->
-            rotate x y <| two x y
-
-        11 ->
-            combine (rotate x y <| two x y) (one x y)
-
-        12 ->
-            combine (rotate x y <| two x y) (two x y)
-
-        13 ->
-            combine (rotate x y <| two x y) (three x y)
-
-        14 ->
-            combine (rotate x y <| two x y) (four x y)
-
-        15 ->
-            rotate x y <| three x y
-
-        16 ->
-            combine (rotate x y <| three x y) (one x y)
-
-        17 ->
-            combine (rotate x y <| three x y) (two x y)
-
-        18 ->
-            combine (rotate x y <| three x y) (three x y)
-
-        19 ->
-            combine (rotate x y <| three x y) (four x y)
-
-        20 ->
-            rotate x y <| four x y
-
-        21 ->
-            combine (rotate x y <| four x y) (one x y)
-
-        22 ->
-            combine (rotate x y <| four x y) (two x y)
-
-        23 ->
-            combine (rotate x y <| four x y) (three x y)
-
-        24 ->
-            combine (rotate x y <| four x y) (four x y)
-
-        _ ->
-            zero x y
+    digs
+        ++ vRails
+        |> S.g [ aTranslate position ]
 
 
-zero : Int -> Int -> Html Msg
-zero x y =
-    S.circle [ aCx hW, aCy hH, aR 1 ] []
-        :: dSquare
-        |> S.g [ aClass "digit", aTranslate x y ]
+zero : List (Html Msg)
+zero =
+    List.singleton <| S.circle [ aCx hW, aCy hH, aR 1 ] []
 
 
-one : Int -> Int -> Html Msg
-one x y =
-    S.line [ aX1 hW, aY1 0, aX2 hW, aY2 dH ] []
-        :: dSquare
-        |> S.g [ aClass "digit", aTranslate x y ]
+one : List (Html Msg)
+one =
+    List.singleton <| S.line [ aX1 hW, aY1 0, aX2 hW, aY2 dH, aClass "digit" ] []
 
 
-two : Int -> Int -> Html Msg
-two x y =
+two : List (Html Msg)
+two =
     let
         p1 =
             "0,0"
@@ -273,47 +270,36 @@ two x y =
         path =
             String.join " " [ "M", p1, "C", b1, b2, p2 ]
     in
-    S.path [ aD path ] []
-        :: dSquare
-        |> S.g [ aClass "digit", aTranslate x y ]
+    List.singleton <| S.path [ aD path ] []
 
 
-three : Int -> Int -> Html Msg
-three x y =
+three : List (Html Msg)
+three =
     let
         l1 =
-            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 0 ] []
+            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 0, aClass "digit" ] []
 
         l2 =
-            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 dH ] []
+            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 dH, aClass "digit" ] []
     in
     [ l1, l2 ]
-        ++ dSquare
-        |> S.g [ aClass "digit", aTranslate x y ]
 
 
-four : Int -> Int -> Html Msg
-four x y =
+four : List (Html Msg)
+four =
     let
         l1 =
-            S.line [ aX1 hW, aY1 dH, aX2 hW, aY2 qH ] []
+            S.line [ aX1 hW, aY1 dH, aX2 hW, aY2 qH, aClass "digit" ] []
 
         l2 =
-            S.line [ aX1 hW, aY1 qH, aX2 dW, aY2 qH ] []
+            S.line [ aX1 hW, aY1 qH, aX2 dW, aY2 qH, aClass "digit" ] []
     in
     [ l1, l2 ]
-        ++ dSquare
-        |> S.g [ aClass "digit", aTranslate x y ]
 
 
-rotate : Int -> Int -> Html Msg -> Html Msg
-rotate x y dig =
-    S.g [ aRotate x y ] [ dig ]
-
-
-combine : Html Msg -> Html Msg -> Html Msg
-combine d1 d2 =
-    S.g [] [ d1, d2 ]
+rotate : List (Html Msg) -> List (Html Msg)
+rotate digs =
+    List.singleton <| S.g [ aRotate ] digs
 
 
 
@@ -327,12 +313,12 @@ fullWidth d =
 
 fullHeight : Int
 fullHeight =
-    50
+    44
 
 
 margin : Int
 margin =
-    8
+    5
 
 
 dW : Int
@@ -368,6 +354,11 @@ dX position =
 dY : Int
 dY =
     margin
+
+
+snick : Int
+snick =
+    4
 
 
 
@@ -435,23 +426,32 @@ aViewBox w h =
     SA.viewBox arg
 
 
-aTranslate : Int -> Int -> Attribute msg
-aTranslate x y =
-    [ "translate(", String.fromInt x, ",", String.fromInt y, ")" ]
+aTranslate : Int -> Attribute msg
+aTranslate position =
+    let
+        x =
+            dX position |> String.fromInt
+
+        y =
+            dY |> String.fromInt
+    in
+    [ "translate(", x, ",", y, ")" ]
         |> String.join ""
         |> SA.transform
 
 
-aRotate : Int -> Int -> Attribute msg
-aRotate x y =
+aRotate : Attribute msg
+aRotate =
     let
         cx =
-            x + hW
+            String.fromInt hW
 
         cy =
-            y + hH
+            String.fromInt hH
     in
-    SA.transform <| String.join "" [ "rotate(-90,", String.fromInt cx, ",", String.fromInt cy, ")" ]
+    [ "rotate(-90,", cx, ",", cy, ")" ]
+        |> String.join ""
+        |> SA.transform
 
 
 aId : String -> Attribute msg
