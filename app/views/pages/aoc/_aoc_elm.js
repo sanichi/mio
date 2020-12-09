@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 8;
+var $author$project$Main$defaultDay = 9;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -15433,6 +15433,156 @@ var $author$project$Y20D08$answer = F2(
 			$author$project$Y20D08$execute(console).s) : $elm$core$String$fromInt(
 			A2($author$project$Y20D08$repair, 0, console));
 	});
+var $elm$core$Set$fromList = function (list) {
+	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
+};
+var $author$project$Y20D09$valid = F2(
+	function (num, preamble) {
+		return A2(
+			$elm$core$List$member,
+			num,
+			A2(
+				$elm$core$List$map,
+				$elm$core$List$sum,
+				A2(
+					$elm$core$List$map,
+					$elm$core$Set$toList,
+					A2(
+						$elm$core$List$filter,
+						function (s) {
+							return $elm$core$Set$size(s) === 2;
+						},
+						A2(
+							$elm$core$List$map,
+							$elm$core$Set$fromList,
+							A2($author$project$Util$combinations, 2, preamble))))));
+	});
+var $author$project$Y20D09$findFirst = F3(
+	function (len, preamble, numbers) {
+		findFirst:
+		while (true) {
+			if (numbers.b) {
+				var num = numbers.a;
+				var rest = numbers.b;
+				if (_Utils_cmp(
+					$elm$core$List$length(preamble),
+					len) < 0) {
+					var $temp$len = len,
+						$temp$preamble = A2($elm$core$List$cons, num, preamble),
+						$temp$numbers = rest;
+					len = $temp$len;
+					preamble = $temp$preamble;
+					numbers = $temp$numbers;
+					continue findFirst;
+				} else {
+					if (A2($author$project$Y20D09$valid, num, preamble)) {
+						var preamble_ = $elm$core$List$reverse(
+							A2(
+								$elm$core$List$drop,
+								1,
+								$elm$core$List$reverse(preamble)));
+						var $temp$len = len,
+							$temp$preamble = A2($elm$core$List$cons, num, preamble_),
+							$temp$numbers = rest;
+						len = $temp$len;
+						preamble = $temp$preamble;
+						numbers = $temp$numbers;
+						continue findFirst;
+					} else {
+						return $elm$core$Maybe$Just(num);
+					}
+				}
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		}
+	});
+var $author$project$Y20D09$findSum = F3(
+	function (target, len, numbers) {
+		findSum:
+		while (true) {
+			if (_Utils_cmp(
+				$elm$core$List$length(numbers),
+				len) < 0) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				if (numbers.b) {
+					var num = numbers.a;
+					var rest = numbers.b;
+					var chunk = A2($elm$core$List$take, len, numbers);
+					var total = $elm$core$List$sum(chunk);
+					if (_Utils_cmp(total, target) < 0) {
+						var $temp$target = target,
+							$temp$len = len + 1,
+							$temp$numbers = numbers;
+						target = $temp$target;
+						len = $temp$len;
+						numbers = $temp$numbers;
+						continue findSum;
+					} else {
+						if (_Utils_cmp(total, target) > 0) {
+							if (len > 2) {
+								var $temp$target = target,
+									$temp$len = len - 1,
+									$temp$numbers = rest;
+								target = $temp$target;
+								len = $temp$len;
+								numbers = $temp$numbers;
+								continue findSum;
+							} else {
+								var $temp$target = target,
+									$temp$len = 2,
+									$temp$numbers = rest;
+								target = $temp$target;
+								len = $temp$len;
+								numbers = $temp$numbers;
+								continue findSum;
+							}
+						} else {
+							var min = A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$List$minimum(chunk));
+							var max = A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$List$maximum(chunk));
+							return $elm$core$Maybe$Just(min + max);
+						}
+					}
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			}
+		}
+	});
+var $author$project$Y20D09$parse = function (input) {
+	return A2(
+		$elm$core$List$filterMap,
+		$elm$core$String$toInt,
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.bQ;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('[1-9]\\d*'),
+				input)));
+};
+var $author$project$Y20D09$answer = F2(
+	function (part, input) {
+		var numbers = $author$project$Y20D09$parse(input);
+		var first = A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			A3($author$project$Y20D09$findFirst, 25, _List_Nil, numbers));
+		return (part === 1) ? $elm$core$String$fromInt(first) : $elm$core$String$fromInt(
+			A2(
+				$elm$core$Maybe$withDefault,
+				0,
+				A3($author$project$Y20D09$findSum, first, 2, numbers)));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -15452,6 +15602,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D07$answer, part, input);
 			case 8:
 				return A2($author$project$Y20D08$answer, part, input);
+			case 9:
+				return A2($author$project$Y20D09$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
@@ -15642,10 +15794,6 @@ var $author$project$Main$failed = F3(
 			case '2016-11-1':
 				return true;
 			case '2016-11-2':
-				return true;
-			case '2016-23-1':
-				return true;
-			case '2016-23-2':
 				return true;
 			default:
 				return false;

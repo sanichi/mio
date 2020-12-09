@@ -68,7 +68,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    8
+    9
 
 
 initModel : Model
@@ -817,12 +817,6 @@ failed year day part =
             True
 
         "2016-11-2" ->
-            True
-
-        "2016-23-1" ->
-            True
-
-        "2016-23-2" ->
             True
 
         _ ->
