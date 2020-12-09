@@ -126,13 +126,13 @@ hRails : Int -> Html Msg
 hRails d =
     let
         x1 =
-            margin - snick
+            0
 
         y1 =
             margin
 
         x2 =
-            fullWidth d - margin + snick
+            fullWidth d
 
         y2 =
             fullHeight - margin
@@ -354,11 +354,6 @@ dX position =
 dY : Int
 dY =
     margin
-
-
-snick : Int
-snick =
-    4
 
 
 

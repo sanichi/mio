@@ -5762,12 +5762,11 @@ var $author$project$Dni$digits = function (n) {
 var $author$project$Dni$fullWidth = function (d) {
 	return ($author$project$Dni$dW * d) + (2 * $author$project$Dni$margin);
 };
-var $author$project$Dni$snick = 4;
 var $author$project$Dni$hRails = function (d) {
 	var y2 = $author$project$Dni$fullHeight - $author$project$Dni$margin;
 	var y1 = $author$project$Dni$margin;
-	var x2 = ($author$project$Dni$fullWidth(d) - $author$project$Dni$margin) + $author$project$Dni$snick;
-	var x1 = $author$project$Dni$margin - $author$project$Dni$snick;
+	var x2 = $author$project$Dni$fullWidth(d);
+	var x1 = 0;
 	return A2(
 		$elm$svg$Svg$g,
 		_List_Nil,
