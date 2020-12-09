@@ -281,13 +281,25 @@ three =
 four : List (Html Msg)
 four =
     let
-        l1 =
-            S.line [ aX1 hW, aY1 dH, aX2 hW, aY2 qH, aClass "digit" ] []
+        p1 =
+            [ hW, dH ]
+                |> List.map String.fromInt
+                |> String.join ","
 
-        l2 =
-            S.line [ aX1 hW, aY1 qH, aX2 dW, aY2 qH, aClass "digit" ] []
+        p2 =
+            [ hW, qH ]
+                |> List.map String.fromInt
+                |> String.join ","
+
+        p3 =
+            [ dW, qH ]
+                |> List.map String.fromInt
+                |> String.join ","
+
+        path =
+            String.join " " [ "M", p1, "L", p2, "L", p3 ]
     in
-    [ l1, l2 ]
+    S.path [ aD path ] [] |> List.singleton
 
 
 rotate : List (Html Msg) -> List (Html Msg)

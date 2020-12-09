@@ -5448,6 +5448,58 @@ var $author$project$Dni$aTranslate = function (position) {
 			_List_fromArray(
 				['translate(', x, ',', y, ')'])));
 };
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $author$project$Dni$aD = function (path) {
+	return $elm$svg$Svg$Attributes$d(path);
+};
+var $author$project$Dni$hW = ($author$project$Dni$dW / 2) | 0;
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $author$project$Dni$qH = ($author$project$Dni$dH / 4) | 0;
+var $elm$core$List$singleton = function (value) {
+	return _List_fromArray(
+		[value]);
+};
+var $author$project$Dni$four = function () {
+	var p3 = A2(
+		$elm$core$String$join,
+		',',
+		A2(
+			$elm$core$List$map,
+			$elm$core$String$fromInt,
+			_List_fromArray(
+				[$author$project$Dni$dW, $author$project$Dni$qH])));
+	var p2 = A2(
+		$elm$core$String$join,
+		',',
+		A2(
+			$elm$core$List$map,
+			$elm$core$String$fromInt,
+			_List_fromArray(
+				[$author$project$Dni$hW, $author$project$Dni$qH])));
+	var p1 = A2(
+		$elm$core$String$join,
+		',',
+		A2(
+			$elm$core$List$map,
+			$elm$core$String$fromInt,
+			_List_fromArray(
+				[$author$project$Dni$hW, $author$project$Dni$dH])));
+	var path = A2(
+		$elm$core$String$join,
+		' ',
+		_List_fromArray(
+			['M', p1, 'L', p2, 'L', p3]));
+	return $elm$core$List$singleton(
+		A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$author$project$Dni$aD(path)
+				]),
+			_List_Nil));
+}();
+var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$Dni$aClass = function (c) {
 	return $elm$svg$Svg$Attributes$class(c);
@@ -5472,41 +5524,7 @@ var $author$project$Dni$aY2 = function (y) {
 	return $elm$svg$Svg$Attributes$y2(
 		$elm$core$String$fromInt(y));
 };
-var $author$project$Dni$hW = ($author$project$Dni$dW / 2) | 0;
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $author$project$Dni$qH = ($author$project$Dni$dH / 4) | 0;
-var $author$project$Dni$four = function () {
-	var l2 = A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1($author$project$Dni$hW),
-				$author$project$Dni$aY1($author$project$Dni$qH),
-				$author$project$Dni$aX2($author$project$Dni$dW),
-				$author$project$Dni$aY2($author$project$Dni$qH),
-				$author$project$Dni$aClass('digit')
-			]),
-		_List_Nil);
-	var l1 = A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$author$project$Dni$aX1($author$project$Dni$hW),
-				$author$project$Dni$aY1($author$project$Dni$dH),
-				$author$project$Dni$aX2($author$project$Dni$hW),
-				$author$project$Dni$aY2($author$project$Dni$qH),
-				$author$project$Dni$aClass('digit')
-			]),
-		_List_Nil);
-	return _List_fromArray(
-		[l1, l2]);
-}();
-var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
-var $elm$core$List$singleton = function (value) {
-	return _List_fromArray(
-		[value]);
-};
 var $author$project$Dni$one = $elm$core$List$singleton(
 	A2(
 		$elm$svg$Svg$line,
@@ -5564,11 +5582,6 @@ var $author$project$Dni$three = function () {
 	return _List_fromArray(
 		[l1, l2]);
 }();
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $author$project$Dni$aD = function (path) {
-	return $elm$svg$Svg$Attributes$d(path);
-};
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Dni$two = function () {
 	var p2 = '0,' + $elm$core$String$fromInt($author$project$Dni$dH);
