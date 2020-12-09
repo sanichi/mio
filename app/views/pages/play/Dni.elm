@@ -100,7 +100,7 @@ view m =
         , div [ class "col" ]
             [ div [ class "float-right" ]
                 [ button [ class "btn btn-primary btn-sm ml-1", onClick DniIncrement ] [ text "+" ]
-                , button [ class "btn btn-warning btn-sm ml-1", onClick DniCycle ] [ text (String.fromInt m.increment) ]
+                , button [ class "btn btn-secondary btn-sm ml-1", onClick DniCycle ] [ text (String.fromInt m.increment) ]
                 , button [ class "btn btn-danger btn-sm ml-1", onClick DniDecrement ] [ text "-" ]
                 ]
             ]
@@ -171,20 +171,83 @@ digit position d =
         3 ->
             three x y
 
+        4 ->
+            four x y
+
+        5 ->
+            rotate x y <| one x y
+
+        6 ->
+            combine (rotate x y <| one x y) (one x y)
+
+        7 ->
+            combine (rotate x y <| one x y) (two x y)
+
+        8 ->
+            combine (rotate x y <| one x y) (three x y)
+
+        9 ->
+            combine (rotate x y <| one x y) (four x y)
+
+        10 ->
+            rotate x y <| two x y
+
+        11 ->
+            combine (rotate x y <| two x y) (one x y)
+
+        12 ->
+            combine (rotate x y <| two x y) (two x y)
+
+        13 ->
+            combine (rotate x y <| two x y) (three x y)
+
+        14 ->
+            combine (rotate x y <| two x y) (four x y)
+
+        15 ->
+            rotate x y <| three x y
+
+        16 ->
+            combine (rotate x y <| three x y) (one x y)
+
+        17 ->
+            combine (rotate x y <| three x y) (two x y)
+
+        18 ->
+            combine (rotate x y <| three x y) (three x y)
+
+        19 ->
+            combine (rotate x y <| three x y) (four x y)
+
+        20 ->
+            rotate x y <| four x y
+
+        21 ->
+            combine (rotate x y <| four x y) (one x y)
+
+        22 ->
+            combine (rotate x y <| four x y) (two x y)
+
+        23 ->
+            combine (rotate x y <| four x y) (three x y)
+
+        24 ->
+            combine (rotate x y <| four x y) (four x y)
+
         _ ->
             zero x y
 
 
 zero : Int -> Int -> Html Msg
 zero x y =
-    S.circle [ aCx (dW // 2), aCy (dH // 2), aR 1 ] []
+    S.circle [ aCx hW, aCy hH, aR 1 ] []
         :: dSquare
         |> S.g [ aClass "digit", aTranslate x y ]
 
 
 one : Int -> Int -> Html Msg
 one x y =
-    S.line [ aX1 (dW // 2), aY1 0, aX2 (dW // 2), aY2 dH ] []
+    S.line [ aX1 hW, aY1 0, aX2 hW, aY2 dH ] []
         :: dSquare
         |> S.g [ aClass "digit", aTranslate x y ]
 
@@ -219,14 +282,38 @@ three : Int -> Int -> Html Msg
 three x y =
     let
         l1 =
-            S.line [ aX1 0, aY1 (dH // 2), aX2 (dW // 2), aY2 0 ] []
+            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 0 ] []
 
         l2 =
-            S.line [ aX1 0, aY1 (dH // 2), aX2 (dW // 2), aY2 dH ] []
+            S.line [ aX1 0, aY1 hH, aX2 hW, aY2 dH ] []
     in
     [ l1, l2 ]
         ++ dSquare
         |> S.g [ aClass "digit", aTranslate x y ]
+
+
+four : Int -> Int -> Html Msg
+four x y =
+    let
+        l1 =
+            S.line [ aX1 hW, aY1 dH, aX2 hW, aY2 qH ] []
+
+        l2 =
+            S.line [ aX1 hW, aY1 qH, aX2 dW, aY2 qH ] []
+    in
+    [ l1, l2 ]
+        ++ dSquare
+        |> S.g [ aClass "digit", aTranslate x y ]
+
+
+rotate : Int -> Int -> Html Msg -> Html Msg
+rotate x y dig =
+    S.g [ aRotate x y ] [ dig ]
+
+
+combine : Html Msg -> Html Msg -> Html Msg
+combine d1 d2 =
+    S.g [] [ d1, d2 ]
 
 
 
@@ -256,6 +343,21 @@ dW =
 dH : Int
 dH =
     fullHeight - 2 * margin
+
+
+hW : Int
+hW =
+    dW // 2
+
+
+hH : Int
+hH =
+    dH // 2
+
+
+qH : Int
+qH =
+    dH // 4
 
 
 dX : Int -> Int
@@ -338,6 +440,18 @@ aTranslate x y =
     [ "translate(", String.fromInt x, ",", String.fromInt y, ")" ]
         |> String.join ""
         |> SA.transform
+
+
+aRotate : Int -> Int -> Attribute msg
+aRotate x y =
+    let
+        cx =
+            x + hW
+
+        cy =
+            y + hH
+    in
+    SA.transform <| String.join "" [ "rotate(-90,", String.fromInt cx, ",", String.fromInt cy, ")" ]
 
 
 aId : String -> Attribute msg
