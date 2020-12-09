@@ -5854,7 +5854,7 @@ var $author$project$Dni$view = function (m) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('col pb-2')
+						$elm$html$Html$Attributes$class('col')
 					]),
 				_List_fromArray(
 					[

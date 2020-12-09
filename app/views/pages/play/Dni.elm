@@ -94,7 +94,7 @@ view m =
         [ div [ class "col" ]
             [ button [ class "btn btn-success btn-sm mr-3" ] [ text (String.fromInt m.counter) ]
             ]
-        , div [ class "col pb-2" ]
+        , div [ class "col" ]
             [ dniSvg m
             ]
         , div [ class "col" ]
@@ -234,12 +234,12 @@ digit position d =
 
 zero : List (Html Msg)
 zero =
-    List.singleton <| S.circle [ aCx hW, aCy hH, aR 1 ] []
+    S.circle [ aCx hW, aCy hH, aR 1 ] [] |> List.singleton
 
 
 one : List (Html Msg)
 one =
-    List.singleton <| S.line [ aX1 hW, aY1 0, aX2 hW, aY2 dH, aClass "digit" ] []
+    S.line [ aX1 hW, aY1 0, aX2 hW, aY2 dH, aClass "digit" ] [] |> List.singleton
 
 
 two : List (Html Msg)
@@ -263,7 +263,7 @@ two =
         path =
             String.join " " [ "M", p1, "C", b1, b2, p2 ]
     in
-    List.singleton <| S.path [ aD path ] []
+    S.path [ aD path ] [] |> List.singleton
 
 
 three : List (Html Msg)
@@ -292,7 +292,7 @@ four =
 
 rotate : List (Html Msg) -> List (Html Msg)
 rotate digs =
-    List.singleton <| S.g [ aRotate ] digs
+    S.g [ aRotate ] digs |> List.singleton
 
 
 vRails : List (Html Msg)
