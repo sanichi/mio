@@ -147,13 +147,6 @@ hRails d =
 -- digit images
 
 
-vRails : List (Html Msg)
-vRails =
-    [ S.line [ aX1 dW, aY1 0, aX2 dW, aY2 dH, aClass "rails" ] []
-    , S.line [ aX1 0, aY1 dH, aX2 0, aY2 0, aClass "rails" ] []
-    ]
-
-
 digit : Int -> Int -> Html Msg
 digit position d =
     let
@@ -300,6 +293,13 @@ four =
 rotate : List (Html Msg) -> List (Html Msg)
 rotate digs =
     List.singleton <| S.g [ aRotate ] digs
+
+
+vRails : List (Html Msg)
+vRails =
+    [ S.line [ aX1 dW, aY1 0, aX2 dW, aY2 dH, aClass "rails" ] []
+    , S.line [ aX1 0, aY1 dH, aX2 0, aY2 0, aClass "rails" ] []
+    ]
 
 
 
