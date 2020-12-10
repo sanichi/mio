@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 9;
+var $author$project$Main$defaultDay = 10;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -15583,6 +15583,164 @@ var $author$project$Y20D09$answer = F2(
 				0,
 				A3($author$project$Y20D09$findSum, first, 2, numbers)));
 	});
+var $author$project$Y20D10$extendAndSort = function (numbers) {
+	var target = 3 + A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		$elm$core$List$maximum(numbers));
+	return $elm$core$List$sort(
+		A2($elm$core$List$cons, target, numbers));
+};
+var $author$project$Y20D10$arrangements = F3(
+	function (start, finish, numbers) {
+		if (numbers.b) {
+			var num = numbers.a;
+			var rest = numbers.b;
+			if ((num - start) > 3) {
+				return 0;
+			} else {
+				var without = (_Utils_cmp(
+					finish - start,
+					3 + $elm$core$List$length(rest)) > 0) ? 0 : A3($author$project$Y20D10$arrangements, start, finish, rest);
+				var _with = A3($author$project$Y20D10$arrangements, num, finish, rest);
+				return _with + without;
+			}
+		} else {
+			return ((finish - start) > 3) ? 0 : 1;
+		}
+	});
+var $author$project$Y20D10$runArrangements = function (run) {
+	return A3(
+		$author$project$Y20D10$arrangements,
+		0,
+		run + 1,
+		A2(
+			$elm$core$List$indexedMap,
+			F2(
+				function (i, _v0) {
+					return i + 1;
+				}),
+			A2($elm$core$List$repeat, run, $elm$core$Maybe$Nothing)));
+};
+var $author$project$Y20D10$runsOfOnes = F4(
+	function (prev, run, ones, numbers) {
+		runsOfOnes:
+		while (true) {
+			if (numbers.b) {
+				var num = numbers.a;
+				var rest = numbers.b;
+				if ((num - prev) === 1) {
+					var $temp$prev = num,
+						$temp$run = run + 1,
+						$temp$ones = ones,
+						$temp$numbers = rest;
+					prev = $temp$prev;
+					run = $temp$run;
+					ones = $temp$ones;
+					numbers = $temp$numbers;
+					continue runsOfOnes;
+				} else {
+					if (run > 1) {
+						var $temp$prev = num,
+							$temp$run = 0,
+							$temp$ones = A2($elm$core$List$cons, run - 1, ones),
+							$temp$numbers = rest;
+						prev = $temp$prev;
+						run = $temp$run;
+						ones = $temp$ones;
+						numbers = $temp$numbers;
+						continue runsOfOnes;
+					} else {
+						var $temp$prev = num,
+							$temp$run = 0,
+							$temp$ones = ones,
+							$temp$numbers = rest;
+						prev = $temp$prev;
+						run = $temp$run;
+						ones = $temp$ones;
+						numbers = $temp$numbers;
+						continue runsOfOnes;
+					}
+				}
+			} else {
+				return (run > 0) ? A2($elm$core$List$cons, run, ones) : ones;
+			}
+		}
+	});
+var $author$project$Y20D10$numberOfArrangements = function (numbers) {
+	return $elm$core$List$product(
+		A2(
+			$elm$core$List$map,
+			$author$project$Y20D10$runArrangements,
+			A4(
+				$author$project$Y20D10$runsOfOnes,
+				0,
+				0,
+				_List_Nil,
+				$author$project$Y20D10$extendAndSort(numbers))));
+};
+var $author$project$Y20D10$getDiffs_ = F3(
+	function (prev, numbers, diffs) {
+		getDiffs_:
+		while (true) {
+			if (numbers.b) {
+				var num = numbers.a;
+				var rest = numbers.b;
+				var diff = num - prev;
+				var times = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					A2($elm$core$Dict$get, diff, diffs));
+				var newDiffs = A3($elm$core$Dict$insert, diff, times + 1, diffs);
+				var $temp$prev = num,
+					$temp$numbers = rest,
+					$temp$diffs = newDiffs;
+				prev = $temp$prev;
+				numbers = $temp$numbers;
+				diffs = $temp$diffs;
+				continue getDiffs_;
+			} else {
+				return diffs;
+			}
+		}
+	});
+var $author$project$Y20D10$getDiffs = function (numbers) {
+	return A3($author$project$Y20D10$getDiffs_, 0, numbers, $elm$core$Dict$empty);
+};
+var $author$project$Y20D10$onesAndThrees = function (numbers) {
+	var diffs = $author$project$Y20D10$getDiffs(
+		$author$project$Y20D10$extendAndSort(numbers));
+	var ones = A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		A2($elm$core$Dict$get, 1, diffs));
+	var threes = A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		A2($elm$core$Dict$get, 3, diffs));
+	return ones * threes;
+};
+var $author$project$Y20D10$parse = function (input) {
+	return A2(
+		$elm$core$List$filterMap,
+		$elm$core$String$toInt,
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.bQ;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('[1-9]\\d*'),
+				input)));
+};
+var $author$project$Y20D10$answer = F2(
+	function (part, input) {
+		var numbers = $author$project$Y20D10$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			$author$project$Y20D10$onesAndThrees(numbers)) : $elm$core$String$fromInt(
+			$author$project$Y20D10$numberOfArrangements(numbers));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -15604,6 +15762,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D08$answer, part, input);
 			case 9:
 				return A2($author$project$Y20D09$answer, part, input);
+			case 10:
+				return A2($author$project$Y20D10$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
