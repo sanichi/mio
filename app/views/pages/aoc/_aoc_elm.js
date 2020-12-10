@@ -15679,9 +15679,9 @@ var $author$project$Y20D10$numberOfArrangements = function (numbers) {
 				_List_Nil,
 				$author$project$Y20D10$extendAndSort(numbers))));
 };
-var $author$project$Y20D10$getDiffs_ = F3(
-	function (prev, numbers, diffs) {
-		getDiffs_:
+var $author$project$Y20D10$getDiffs = F3(
+	function (prev, diffs, numbers) {
+		getDiffs:
 		while (true) {
 			if (numbers.b) {
 				var num = numbers.a;
@@ -15693,22 +15693,22 @@ var $author$project$Y20D10$getDiffs_ = F3(
 					A2($elm$core$Dict$get, diff, diffs));
 				var newDiffs = A3($elm$core$Dict$insert, diff, times + 1, diffs);
 				var $temp$prev = num,
-					$temp$numbers = rest,
-					$temp$diffs = newDiffs;
+					$temp$diffs = newDiffs,
+					$temp$numbers = rest;
 				prev = $temp$prev;
-				numbers = $temp$numbers;
 				diffs = $temp$diffs;
-				continue getDiffs_;
+				numbers = $temp$numbers;
+				continue getDiffs;
 			} else {
 				return diffs;
 			}
 		}
 	});
-var $author$project$Y20D10$getDiffs = function (numbers) {
-	return A3($author$project$Y20D10$getDiffs_, 0, numbers, $elm$core$Dict$empty);
-};
 var $author$project$Y20D10$onesAndThrees = function (numbers) {
-	var diffs = $author$project$Y20D10$getDiffs(
+	var diffs = A3(
+		$author$project$Y20D10$getDiffs,
+		0,
+		$elm$core$Dict$empty,
 		$author$project$Y20D10$extendAndSort(numbers));
 	var ones = A2(
 		$elm$core$Maybe$withDefault,

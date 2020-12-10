@@ -28,7 +28,7 @@ onesAndThrees numbers =
         diffs =
             numbers
                 |> extendAndSort
-                |> getDiffs
+                |> getDiffs 0 Dict.empty
 
         ones =
             Dict.get 1 diffs |> Maybe.withDefault 0
@@ -39,13 +39,8 @@ onesAndThrees numbers =
     ones * threes
 
 
-getDiffs : List Int -> Dict Int Int
-getDiffs numbers =
-    getDiffs_ 0 numbers Dict.empty
-
-
-getDiffs_ : Int -> List Int -> Dict Int Int -> Dict Int Int
-getDiffs_ prev numbers diffs =
+getDiffs : Int -> Dict Int Int -> List Int -> Dict Int Int
+getDiffs prev diffs numbers =
     case numbers of
         num :: rest ->
             let
@@ -58,7 +53,7 @@ getDiffs_ prev numbers diffs =
                 newDiffs =
                     Dict.insert diff (times + 1) diffs
             in
-            getDiffs_ num rest newDiffs
+            getDiffs num newDiffs rest
 
         _ ->
             diffs
