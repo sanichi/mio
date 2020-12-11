@@ -125,11 +125,11 @@ near part r c seats =
 spoke : Int -> Int -> Int -> Int -> Int -> Seats -> Maybe Seat
 spoke r c dr dc n seats =
     case get (r + n * dr) (c + n * dc) seats of
-        Just Floor ->
-            spoke r c dr dc (n + 1) seats
-
         Nothing ->
             Nothing
+
+        Just Floor ->
+            spoke r c dr dc (n + 1) seats
 
         Just seat ->
             Just seat
