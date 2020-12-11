@@ -27,7 +27,7 @@ type alias Seats =
     Array Row
 
 
-type alias Area =
+type alias Iteration =
     { seats : Seats
     , changes : Int
     }
@@ -35,35 +35,34 @@ type alias Area =
 
 choose : Int -> Seats -> Int
 choose part seats =
-    let
-        area =
-            rotate part 0 0 seats (Area seats 0)
-    in
-    if area.changes == 0 then
-        occupied area.seats
-
-    else
-        choose part area.seats
+    Iteration seats 0
+        |> shuffle part 0 0 seats
+        |> .seats
+        |> occupied
 
 
-rotate : Int -> Int -> Int -> Seats -> Area -> Area
-rotate part r c seats area =
+shuffle : Int -> Int -> Int -> Seats -> Iteration -> Iteration
+shuffle part r c seats area =
     case Array.get r seats of
         Just row ->
             case Array.get c row of
                 Just seat ->
                     area
                         |> update part r c seat seats
-                        |> rotate part r (c + 1) seats
+                        |> shuffle part r (c + 1) seats
 
                 Nothing ->
-                    rotate part (r + 1) 0 seats area
+                    shuffle part (r + 1) 0 seats area
 
         Nothing ->
-            area
+            if area.changes == 0 then
+                area
+
+            else
+                shuffle part 0 0 area.seats { area | changes = 0 }
 
 
-update : Int -> Int -> Int -> Seat -> Seats -> Area -> Area
+update : Int -> Int -> Int -> Seat -> Seats -> Iteration -> Iteration
 update part r c seat seats area =
     if seat == Floor then
         area
