@@ -15746,21 +15746,31 @@ var $author$project$Y20D11$Data = F2(
 		return {K: changes, S: seats};
 	});
 var $author$project$Y20D11$Occupied = 2;
+var $elm$core$Array$filter = F2(
+	function (isGood, array) {
+		return $elm$core$Array$fromList(
+			A3(
+				$elm$core$Array$foldr,
+				F2(
+					function (x, xs) {
+						return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+					}),
+				_List_Nil,
+				array));
+	});
 var $author$project$Y20D11$occupied_ = function (row) {
-	return $elm$core$List$sum(
+	return $elm$core$Array$length(
 		A2(
-			$elm$core$List$map,
-			function (s) {
-				return (s === 2) ? 1 : 0;
+			$elm$core$Array$filter,
+			function (seat) {
+				return seat === 2;
 			},
-			$elm$core$Array$toList(row)));
+			row));
 };
 var $author$project$Y20D11$occupied = function (seats) {
 	return $elm$core$List$sum(
-		A2(
-			$elm$core$List$map,
-			$author$project$Y20D11$occupied_,
-			$elm$core$Array$toList(seats)));
+		$elm$core$Array$toList(
+			A2($elm$core$Array$map, $author$project$Y20D11$occupied_, seats)));
 };
 var $author$project$Y20D11$Empty = 1;
 var $author$project$Y20D11$Floor = 0;

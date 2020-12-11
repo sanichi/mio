@@ -157,24 +157,16 @@ put r c seat seats =
 occupied : Seats -> Int
 occupied seats =
     seats
+        |> Array.map occupied_
         |> Array.toList
-        |> List.map occupied_
         |> List.sum
 
 
 occupied_ : Row -> Int
 occupied_ row =
     row
-        |> Array.toList
-        |> List.map
-            (\s ->
-                if s == Occupied then
-                    1
-
-                else
-                    0
-            )
-        |> List.sum
+        |> Array.filter (\seat -> seat == Occupied)
+        |> Array.length
 
 
 parse : String -> Seats
