@@ -15741,7 +15741,7 @@ var $author$project$Y20D10$answer = F2(
 			$author$project$Y20D10$onesAndThrees(numbers)) : $elm$core$String$fromInt(
 			$author$project$Y20D10$numberOfArrangements(numbers));
 	});
-var $author$project$Y20D11$Iteration = F2(
+var $author$project$Y20D11$Data = F2(
 	function (seats, changes) {
 		return {K: changes, S: seats};
 	});
@@ -15844,34 +15844,34 @@ var $author$project$Y20D11$put = F4(
 		}
 	});
 var $author$project$Y20D11$update = F6(
-	function (part, r, c, seat, seats, area) {
+	function (part, r, c, seat, seats, data) {
 		if (!seat) {
-			return area;
+			return data;
 		} else {
 			var number = A4($author$project$Y20D11$near, part, r, c, seats);
 			switch (seat) {
 				case 1:
 					return (!number) ? _Utils_update(
-						area,
+						data,
 						{
-							K: area.K + 1,
-							S: A4($author$project$Y20D11$put, r, c, 2, area.S)
-						}) : area;
+							K: data.K + 1,
+							S: A4($author$project$Y20D11$put, r, c, 2, data.S)
+						}) : data;
 				case 2:
 					var threshold = (part === 1) ? 4 : 5;
 					return (_Utils_cmp(number, threshold) > -1) ? _Utils_update(
-						area,
+						data,
 						{
-							K: area.K + 1,
-							S: A4($author$project$Y20D11$put, r, c, 1, area.S)
-						}) : area;
+							K: data.K + 1,
+							S: A4($author$project$Y20D11$put, r, c, 1, data.S)
+						}) : data;
 				default:
-					return area;
+					return data;
 			}
 		}
 	});
 var $author$project$Y20D11$shuffle = F5(
-	function (part, r, c, seats, area) {
+	function (part, r, c, seats, data) {
 		shuffle:
 		while (true) {
 			var _v0 = A2($elm$core$Array$get, r, seats);
@@ -15886,36 +15886,36 @@ var $author$project$Y20D11$shuffle = F5(
 						r,
 						c + 1,
 						seats,
-						A6($author$project$Y20D11$update, part, r, c, seat, seats, area));
+						A6($author$project$Y20D11$update, part, r, c, seat, seats, data));
 				} else {
 					var $temp$part = part,
 						$temp$r = r + 1,
 						$temp$c = 0,
 						$temp$seats = seats,
-						$temp$area = area;
+						$temp$data = data;
 					part = $temp$part;
 					r = $temp$r;
 					c = $temp$c;
 					seats = $temp$seats;
-					area = $temp$area;
+					data = $temp$data;
 					continue shuffle;
 				}
 			} else {
-				if (!area.K) {
-					return area;
+				if (!data.K) {
+					return data;
 				} else {
 					var $temp$part = part,
 						$temp$r = 0,
 						$temp$c = 0,
-						$temp$seats = area.S,
-						$temp$area = _Utils_update(
-						area,
+						$temp$seats = data.S,
+						$temp$data = _Utils_update(
+						data,
 						{K: 0});
 					part = $temp$part;
 					r = $temp$r;
 					c = $temp$c;
 					seats = $temp$seats;
-					area = $temp$area;
+					data = $temp$data;
 					continue shuffle;
 				}
 			}
@@ -15930,7 +15930,7 @@ var $author$project$Y20D11$choose = F2(
 				0,
 				0,
 				seats,
-				A2($author$project$Y20D11$Iteration, seats, 0)).S);
+				A2($author$project$Y20D11$Data, seats, 0)).S);
 	});
 var $author$project$Y20D11$toRow = function (input) {
 	return $elm$core$Array$fromList(

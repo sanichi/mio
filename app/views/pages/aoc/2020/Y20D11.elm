@@ -27,7 +27,7 @@ type alias Seats =
     Array Row
 
 
-type alias Iteration =
+type alias Data =
     { seats : Seats
     , changes : Int
     }
@@ -35,37 +35,37 @@ type alias Iteration =
 
 choose : Int -> Seats -> Int
 choose part seats =
-    Iteration seats 0
+    Data seats 0
         |> shuffle part 0 0 seats
         |> .seats
         |> occupied
 
 
-shuffle : Int -> Int -> Int -> Seats -> Iteration -> Iteration
-shuffle part r c seats area =
+shuffle : Int -> Int -> Int -> Seats -> Data -> Data
+shuffle part r c seats data =
     case Array.get r seats of
         Just row ->
             case Array.get c row of
                 Just seat ->
-                    area
+                    data
                         |> update part r c seat seats
                         |> shuffle part r (c + 1) seats
 
                 Nothing ->
-                    shuffle part (r + 1) 0 seats area
+                    shuffle part (r + 1) 0 seats data
 
         Nothing ->
-            if area.changes == 0 then
-                area
+            if data.changes == 0 then
+                data
 
             else
-                shuffle part 0 0 area.seats { area | changes = 0 }
+                shuffle part 0 0 data.seats { data | changes = 0 }
 
 
-update : Int -> Int -> Int -> Seat -> Seats -> Iteration -> Iteration
-update part r c seat seats area =
+update : Int -> Int -> Int -> Seat -> Seats -> Data -> Data
+update part r c seat seats data =
     if seat == Floor then
-        area
+        data
 
     else
         let
@@ -75,10 +75,10 @@ update part r c seat seats area =
         case seat of
             Empty ->
                 if number == 0 then
-                    { area | seats = put r c Occupied area.seats, changes = area.changes + 1 }
+                    { data | seats = put r c Occupied data.seats, changes = data.changes + 1 }
 
                 else
-                    area
+                    data
 
             Occupied ->
                 let
@@ -90,13 +90,13 @@ update part r c seat seats area =
                             5
                 in
                 if number >= threshold then
-                    { area | seats = put r c Empty area.seats, changes = area.changes + 1 }
+                    { data | seats = put r c Empty data.seats, changes = data.changes + 1 }
 
                 else
-                    area
+                    data
 
             Floor ->
-                area
+                data
 
 
 near : Int -> Int -> Int -> Seats -> Int
