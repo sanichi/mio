@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 11;
+var $author$project$Main$defaultDay = 12;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -15981,6 +15981,285 @@ var $author$project$Y20D11$answer = F2(
 				part,
 				$author$project$Y20D11$parse(input)));
 	});
+var $author$project$Y20D12$distance = function (ferry) {
+	return $elm$core$Basics$abs(ferry.H) + $elm$core$Basics$abs(ferry.I);
+};
+var $author$project$Y20D12$East = 2;
+var $author$project$Y20D12$Ferry = F3(
+	function (x, y, d) {
+		return {aJ: d, H: x, I: y};
+	});
+var $author$project$Y20D12$initFerry = A3($author$project$Y20D12$Ferry, 0, 0, 2);
+var $author$project$Y20D12$Waypoint = F2(
+	function (x, y) {
+		return {H: x, I: y};
+	});
+var $author$project$Y20D12$initWaypoint = A2($author$project$Y20D12$Waypoint, 10, 1);
+var $author$project$Y20D12$initCombo = _Utils_Tuple2($author$project$Y20D12$initFerry, $author$project$Y20D12$initWaypoint);
+var $author$project$Y20D12$L = 5;
+var $author$project$Y20D12$R = 4;
+var $author$project$Y20D12$North = 0;
+var $author$project$Y20D12$South = 1;
+var $author$project$Y20D12$West = 3;
+var $author$project$Y20D12$rotateFerry = F3(
+	function (ferry, a, n) {
+		var direction = function () {
+			if (n === 180) {
+				var _v0 = ferry.aJ;
+				switch (_v0) {
+					case 0:
+						return 1;
+					case 1:
+						return 0;
+					case 2:
+						return 3;
+					default:
+						return 2;
+				}
+			} else {
+				if (((a === 5) && (n === 90)) || ((a === 4) && (n === 270))) {
+					var _v1 = ferry.aJ;
+					switch (_v1) {
+						case 0:
+							return 3;
+						case 1:
+							return 2;
+						case 2:
+							return 0;
+						default:
+							return 1;
+					}
+				} else {
+					if (((a === 4) && (n === 90)) || ((a === 5) && (n === 270))) {
+						var _v2 = ferry.aJ;
+						switch (_v2) {
+							case 0:
+								return 2;
+							case 1:
+								return 3;
+							case 2:
+								return 1;
+							default:
+								return 0;
+						}
+					} else {
+						return ferry.aJ;
+					}
+				}
+			}
+		}();
+		return _Utils_update(
+			ferry,
+			{aJ: direction});
+	});
+var $author$project$Y20D12$navigate1 = F2(
+	function (ferry, instructions) {
+		navigate1:
+		while (true) {
+			if (instructions.b) {
+				var instruction = instructions.a;
+				var rest = instructions.b;
+				var update = function () {
+					switch (instruction.a) {
+						case 0:
+							var _v2 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								ferry,
+								{I: ferry.I + n});
+						case 1:
+							var _v3 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								ferry,
+								{I: ferry.I - n});
+						case 2:
+							var _v4 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								ferry,
+								{H: ferry.H + n});
+						case 3:
+							var _v5 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								ferry,
+								{H: ferry.H - n});
+						case 5:
+							var _v6 = instruction.a;
+							var n = instruction.b;
+							return A3($author$project$Y20D12$rotateFerry, ferry, 5, n);
+						case 4:
+							var _v7 = instruction.a;
+							var n = instruction.b;
+							return A3($author$project$Y20D12$rotateFerry, ferry, 4, n);
+						default:
+							var _v8 = instruction.a;
+							var n = instruction.b;
+							var _v9 = ferry.aJ;
+							switch (_v9) {
+								case 0:
+									return _Utils_update(
+										ferry,
+										{I: ferry.I + n});
+								case 1:
+									return _Utils_update(
+										ferry,
+										{I: ferry.I - n});
+								case 2:
+									return _Utils_update(
+										ferry,
+										{H: ferry.H + n});
+								default:
+									return _Utils_update(
+										ferry,
+										{H: ferry.H - n});
+							}
+					}
+				}();
+				var $temp$ferry = update,
+					$temp$instructions = rest;
+				ferry = $temp$ferry;
+				instructions = $temp$instructions;
+				continue navigate1;
+			} else {
+				return ferry;
+			}
+		}
+	});
+var $author$project$Y20D12$rotateWaypoint = F3(
+	function (w, a, n) {
+		return (n === 180) ? A2($author$project$Y20D12$Waypoint, -w.H, -w.I) : ((((a === 5) && (n === 90)) || ((a === 4) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, -w.I, w.H) : ((((a === 4) && (n === 90)) || ((a === 5) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, w.I, -w.H) : w));
+	});
+var $author$project$Y20D12$navigate2 = F2(
+	function (combo, instructions) {
+		navigate2:
+		while (true) {
+			if (instructions.b) {
+				var instruction = instructions.a;
+				var rest = instructions.b;
+				var _v1 = combo;
+				var f = _v1.a;
+				var w = _v1.b;
+				var ferry = function () {
+					if (instruction.a === 6) {
+						var _v10 = instruction.a;
+						var n = instruction.b;
+						return _Utils_update(
+							f,
+							{H: f.H + (n * w.H), I: f.I + (n * w.I)});
+					} else {
+						return f;
+					}
+				}();
+				var waypoint = function () {
+					switch (instruction.a) {
+						case 0:
+							var _v3 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								w,
+								{I: w.I + n});
+						case 1:
+							var _v4 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								w,
+								{I: w.I - n});
+						case 2:
+							var _v5 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								w,
+								{H: w.H + n});
+						case 3:
+							var _v6 = instruction.a;
+							var n = instruction.b;
+							return _Utils_update(
+								w,
+								{H: w.H - n});
+						case 5:
+							var _v7 = instruction.a;
+							var n = instruction.b;
+							return A3($author$project$Y20D12$rotateWaypoint, w, 5, n);
+						case 4:
+							var _v8 = instruction.a;
+							var n = instruction.b;
+							return A3($author$project$Y20D12$rotateWaypoint, w, 4, n);
+						default:
+							return w;
+					}
+				}();
+				var $temp$combo = _Utils_Tuple2(ferry, waypoint),
+					$temp$instructions = rest;
+				combo = $temp$combo;
+				instructions = $temp$instructions;
+				continue navigate2;
+			} else {
+				return combo;
+			}
+		}
+	});
+var $author$project$Y20D12$E = 2;
+var $author$project$Y20D12$F = 6;
+var $author$project$Y20D12$N = 0;
+var $author$project$Y20D12$S = 1;
+var $author$project$Y20D12$W = 3;
+var $author$project$Y20D12$parse = function (input) {
+	return A2(
+		$elm$core$List$filterMap,
+		function (m) {
+			if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
+				var act = m.a.a;
+				var _v1 = m.b;
+				var num = _v1.a.a;
+				var n = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					$elm$core$String$toInt(num));
+				var a = function () {
+					switch (act) {
+						case 'N':
+							return 0;
+						case 'S':
+							return 1;
+						case 'E':
+							return 2;
+						case 'W':
+							return 3;
+						case 'L':
+							return 5;
+						case 'R':
+							return 4;
+						default:
+							return 6;
+					}
+				}();
+				return $elm$core$Maybe$Just(
+					_Utils_Tuple2(a, n));
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		},
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.bY;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('([NSEWLRF])([1-9]\\d*)'),
+				input)));
+};
+var $author$project$Y20D12$answer = F2(
+	function (part, input) {
+		var instructions = $author$project$Y20D12$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			$author$project$Y20D12$distance(
+				A2($author$project$Y20D12$navigate1, $author$project$Y20D12$initFerry, instructions))) : $elm$core$String$fromInt(
+			$author$project$Y20D12$distance(
+				A2($author$project$Y20D12$navigate2, $author$project$Y20D12$initCombo, instructions).a));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -16006,6 +16285,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D10$answer, part, input);
 			case 11:
 				return A2($author$project$Y20D11$answer, part, input);
+			case 12:
+				return A2($author$project$Y20D12$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
