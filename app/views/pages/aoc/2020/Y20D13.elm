@@ -66,7 +66,11 @@ contest schedule =
     in
     case solution of
         Just t ->
-            -- Elm can't handle large numbers - see Ruby solution below
+            -- String.fromInt t
+            -- Though it works fine with the toy examples, basic Elm can't handle large numbers
+            -- and the chineseRemainder algorithm terminated with a faulty solution when given
+            -- my part 2 input. I resorted to an algorithm written in a different language using
+            -- the mods and remainders calculated by this Elm code - see below.
             "526090562196173"
 
         Nothing ->
@@ -163,6 +167,7 @@ example5 =
 --   series.inject( :+ ) % max
 -- end
 --
+-- # data extracted from my Elm program
 -- mods = [13,41,37,419,19,23,29,421,17]
 -- rems = [0,38,30,406,6,10,16,377,7]
 --
