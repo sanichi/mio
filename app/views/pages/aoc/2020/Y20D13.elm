@@ -136,6 +136,7 @@ example5 =
 
 
 -- Ruby solution that can handle large numbers
+-- from https://rosettacode.org/wiki/Chinese_remainder_theorem
 --
 -- def extended_gcd(a, b)
 --   last_remainder, remainder = a.abs, b.abs
