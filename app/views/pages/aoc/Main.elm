@@ -68,7 +68,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    12
+    13
 
 
 initModel : Model
@@ -855,6 +855,9 @@ getNote year day =
 
         "2016-23" ->
             Just "There was a strange error after converting from 0.18 to 0.19 which I couldn't figure out so I abandoned this one even though it had been working."
+
+        "2020-13" ->
+            Just "Because Elm can't handle large integers it could only solve the toy examples. I had to use a Chinese Remainder algorithm from another language (I found one in Ruby) that could handle large integers for part 2."
 
         _ ->
             Nothing
