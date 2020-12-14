@@ -859,5 +859,8 @@ getNote year day =
         "2020-13" ->
             Just "Because Elm can't handle large integers it could only solve the toy examples. I had to use a Chinese Remainder algorithm from another language (I found one in Ruby) that could handle large integers for part 2."
 
+        "2020-14" ->
+            Just "Had to avoid Elm for this one because of large integers and instead managed it with a quick Ruby script."
+
         _ ->
             Nothing
