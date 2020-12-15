@@ -67,19 +67,18 @@ play upto game =
             turn =
                 game.turn + 1
 
+            last =
+                case Dict.get game.last game.before of
+                    Nothing ->
+                        0
+
+                    Just previous ->
+                        game.turn - previous
+
             before =
                 Dict.insert game.last game.turn game.before
         in
-        case Dict.get game.last game.before of
-            Nothing ->
-                play upto (Game turn 0 before)
-
-            Just previous ->
-                let
-                    last =
-                        game.turn - previous
-                in
-                play upto (Game turn last before)
+        play upto (Game turn last before)
 
 
 parse : String -> List Int

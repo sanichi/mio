@@ -16545,23 +16545,21 @@ var $author$project$Y20D15$play = F2(
 				return game.aN;
 			} else {
 				var turn = game.aC + 1;
+				var last = function () {
+					var _v0 = A2($elm$core$Dict$get, game.aN, game.al);
+					if (_v0.$ === 1) {
+						return 0;
+					} else {
+						var previous = _v0.a;
+						return game.aC - previous;
+					}
+				}();
 				var before = A3($elm$core$Dict$insert, game.aN, game.aC, game.al);
-				var _v0 = A2($elm$core$Dict$get, game.aN, game.al);
-				if (_v0.$ === 1) {
-					var $temp$upto = upto,
-						$temp$game = A3($author$project$Y20D15$Game, turn, 0, before);
-					upto = $temp$upto;
-					game = $temp$game;
-					continue play;
-				} else {
-					var previous = _v0.a;
-					var last = game.aC - previous;
-					var $temp$upto = upto,
-						$temp$game = A3($author$project$Y20D15$Game, turn, last, before);
-					upto = $temp$upto;
-					game = $temp$game;
-					continue play;
-				}
+				var $temp$upto = upto,
+					$temp$game = A3($author$project$Y20D15$Game, turn, last, before);
+				upto = $temp$upto;
+				game = $temp$game;
+				continue play;
 			}
 		}
 	});
