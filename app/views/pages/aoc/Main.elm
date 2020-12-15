@@ -68,7 +68,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    14
+    15
 
 
 initModel : Model
@@ -76,7 +76,7 @@ initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 25 }
-        , { year = 2020, days = List.range 1 defaultDay }
+        , { year = defaultYear, days = List.range 1 defaultDay }
         ]
     , year = defaultYear
     , day = defaultDay
@@ -796,6 +796,9 @@ speed year day part =
 
         "2020-11-2" ->
             1
+
+        "2020-15-2" ->
+            2
 
         _ ->
             0
