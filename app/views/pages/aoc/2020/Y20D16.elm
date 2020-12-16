@@ -8,17 +8,17 @@ import Util
 answer : Int -> String -> String
 answer part input =
     let
-        tickets =
+        data =
             parse input
     in
     if part == 1 then
-        tickets
-            |> sum
+        data
+            |> sumInvalid
             |> String.fromInt
 
     else
-        tickets
-            |> multiply "departure"
+        data
+            |> multiplySelected "departure"
             |> String.fromInt
 
 
@@ -34,38 +34,75 @@ type alias Ticket =
 
 
 type alias Tickets =
+    List Ticket
+
+
+type alias Data =
     { rules : List Rule
     , mine : Ticket
-    , near : List Ticket
+    , near : Tickets
     }
 
 
-type alias PossiblePositions =
-    Dict Int (Dict String Int)
-
-
-type alias Positions =
+type alias IndexToName =
     Dict Int String
 
 
-sum : Tickets -> Int
-sum tickets =
-    tickets.near
-        |> List.map (findInvalid tickets.rules)
+type alias Possibles =
+    Dict String Int
+
+
+type alias IndexToPossibles =
+    Dict Int Possibles
+
+
+sumInvalid : Data -> Int
+sumInvalid data =
+    data.near
+        |> List.map (findInvalid data.rules)
         |> List.concat
         |> List.sum
 
 
-multiply : String -> Tickets -> Int
-multiply start tickets =
+findInvalid : List Rule -> Ticket -> List Int
+findInvalid rules ticket =
+    List.filterMap (noValidRules rules) ticket
+
+
+noValidRules : List Rule -> Int -> Maybe Int
+noValidRules rules num =
+    case rules of
+        rule :: rest ->
+            if valid rule num then
+                Nothing
+
+            else
+                noValidRules rest num
+
+        _ ->
+            Just num
+
+
+valid : Rule -> Int -> Bool
+valid rule num =
+    ok num rule.r1 || ok num rule.r2
+
+
+ok : Int -> ( Int, Int ) -> Bool
+ok num ( min, max ) =
+    num <= max && num >= min
+
+
+multiplySelected : String -> Data -> Int
+multiplySelected start data =
     let
-        positions =
-            rulePositions tickets
+        indexToName =
+            getIndexToName data
     in
-    tickets.mine
+    data.mine
         |> List.indexedMap
             (\index num ->
-                case Dict.get index positions of
+                case Dict.get index indexToName of
                     Just name ->
                         if String.startsWith start name then
                             num
@@ -79,23 +116,40 @@ multiply start tickets =
         |> List.product
 
 
-rulePositions : Tickets -> Positions
-rulePositions tickets =
+getIndexToName : Data -> IndexToName
+getIndexToName data =
     let
-        list =
-            List.filter (\ticket -> findInvalid tickets.rules ticket == []) tickets.near
+        validTickets =
+            List.filter (\ticket -> findInvalid data.rules ticket == []) data.near
 
-        possible =
-            rulePositionsFromTickets list tickets.rules Dict.empty
+        possibles =
+            getPossibles validTickets data.rules Dict.empty
 
         len =
-            List.length list
+            List.length validTickets
     in
-    rulePositionsFromPossible len possible Dict.empty
+    possiblesToNames len possibles Dict.empty
 
 
-rulePositionsFromPossible : Int -> PossiblePositions -> Positions -> Positions
-rulePositionsFromPossible len possible positions =
+getPossibles : Tickets -> List Rule -> IndexToPossibles -> IndexToPossibles
+getPossibles tickets rules possibles =
+    case tickets of
+        ticket :: rest ->
+            let
+                indexNums =
+                    List.indexedMap (\index num -> ( index, num )) ticket
+
+                possibles_ =
+                    possiblesFromIndexNums indexNums rules possibles
+            in
+            getPossibles rest rules possibles_
+
+        _ ->
+            possibles
+
+
+possiblesToNames : Int -> IndexToPossibles -> IndexToName -> IndexToName
+possiblesToNames len possible positions =
     let
         certain =
             possible
@@ -128,41 +182,23 @@ rulePositionsFromPossible len possible positions =
 
         reduced =
             possible
-                |> removeIndexes (Dict.keys certain)
+                |> pruneInexes (Dict.keys certain)
                 |> Dict.map
                     (\index dict ->
-                        removeNames (Dict.values certain) dict
+                        pruneNames (Dict.values certain) dict
                     )
     in
     if Dict.size certain > 0 then
         positions
             |> Dict.union certain
-            |> rulePositionsFromPossible len reduced
+            |> possiblesToNames len reduced
 
     else
         positions
 
 
-rulePositionsFromTickets : List Ticket -> List Rule -> PossiblePositions -> PossiblePositions
-rulePositionsFromTickets tickets rules positions =
-    case tickets of
-        ticket :: rest ->
-            let
-                indexNums =
-                    ticket
-                        |> List.indexedMap (\index num -> ( index, num ))
-
-                newPositions =
-                    rulePositionsFromIndexNums indexNums rules positions
-            in
-            rulePositionsFromTickets rest rules newPositions
-
-        _ ->
-            positions
-
-
-rulePositionsFromIndexNums : List ( Int, Int ) -> List Rule -> PossiblePositions -> PossiblePositions
-rulePositionsFromIndexNums indexNums rules positions =
+possiblesFromIndexNums : List ( Int, Int ) -> List Rule -> IndexToPossibles -> IndexToPossibles
+possiblesFromIndexNums indexNums rules possibles =
     case indexNums of
         ( index, num ) :: rest ->
             let
@@ -171,22 +207,22 @@ rulePositionsFromIndexNums indexNums rules positions =
                         |> List.filter (\rule -> valid rule num)
                         |> List.map .name
 
-                newPositions =
-                    rulePositionsFromIndexNames names index positions
+                possibles_ =
+                    possiblesFromIndexNames names index possibles
             in
-            rulePositionsFromIndexNums rest rules newPositions
+            possiblesFromIndexNums rest rules possibles_
 
         _ ->
-            positions
+            possibles
 
 
-rulePositionsFromIndexNames : List String -> Int -> PossiblePositions -> PossiblePositions
-rulePositionsFromIndexNames names index positions =
+possiblesFromIndexNames : List String -> Int -> IndexToPossibles -> IndexToPossibles
+possiblesFromIndexNames names index possibles =
     case names of
         name :: rest ->
             let
                 counts =
-                    Dict.get index positions |> Maybe.withDefault Dict.empty
+                    Dict.get index possibles |> Maybe.withDefault Dict.empty
 
                 current =
                     Dict.get name counts |> Maybe.withDefault 0
@@ -194,84 +230,54 @@ rulePositionsFromIndexNames names index positions =
                 update =
                     Dict.insert name (current + 1) counts
 
-                newPositions =
-                    Dict.insert index update positions
+                possibles_ =
+                    Dict.insert index update possibles
             in
-            rulePositionsFromIndexNames rest index newPositions
+            possiblesFromIndexNames rest index possibles_
 
         _ ->
-            positions
+            possibles
 
 
-findInvalid : List Rule -> Ticket -> List Int
-findInvalid rules ticket =
-    ticket
-        |> List.filterMap (noRulesValid rules)
-
-
-noRulesValid : List Rule -> Int -> Maybe Int
-noRulesValid rules num =
-    case rules of
-        rule :: rest ->
-            if valid rule num then
-                Nothing
-
-            else
-                noRulesValid rest num
-
-        _ ->
-            Just num
-
-
-valid : Rule -> Int -> Bool
-valid rule num =
-    ok num rule.r1 || ok num rule.r2
-
-
-ok : Int -> ( Int, Int ) -> Bool
-ok num ( min, max ) =
-    num <= max && num >= min
-
-
-removeNames : List String -> Dict String Int -> Dict String Int
-removeNames names dict =
-    case names of
-        name :: rest ->
-            dict
-                |> Dict.remove name
-                |> removeNames rest
-
-        _ ->
-            dict
-
-
-removeIndexes : List Int -> PossiblePositions -> PossiblePositions
-removeIndexes indexes dict =
+pruneInexes : List Int -> IndexToPossibles -> IndexToPossibles
+pruneInexes indexes dict =
     case indexes of
         index :: rest ->
             dict
                 |> Dict.remove index
-                |> removeIndexes rest
+                |> pruneInexes rest
 
         _ ->
             dict
 
 
-parse : String -> Tickets
+pruneNames : List String -> Possibles -> Possibles
+pruneNames names dict =
+    case names of
+        name :: rest ->
+            dict
+                |> Dict.remove name
+                |> pruneNames rest
+
+        _ ->
+            dict
+
+
+parse : String -> Data
 parse input =
     input
         |> Regex.split (Util.regex "\\n")
-        |> parse_ 0 (Tickets [] [] [])
+        |> parse_ 0 (Data [] [] [])
 
 
-parse_ : Int -> Tickets -> List String -> Tickets
-parse_ state tickets lines =
+parse_ : Int -> Data -> List String -> Data
+parse_ state data lines =
     case lines of
         line :: rest ->
             case state of
                 0 ->
                     if String.contains "your ticket" line then
-                        parse_ 1 tickets rest
+                        parse_ 1 data rest
 
                     else
                         let
@@ -286,51 +292,51 @@ parse_ state tickets lines =
                                     rule =
                                         Rule name ( toInt r11, toInt r12 ) ( toInt r21, toInt r22 )
 
-                                    tickets_ =
-                                        { tickets | rules = rule :: tickets.rules }
+                                    data_ =
+                                        { data | rules = rule :: data.rules }
                                 in
-                                parse_ state tickets_ rest
+                                parse_ state data_ rest
 
                             _ ->
-                                parse_ state tickets rest
+                                parse_ state data rest
 
                 1 ->
                     if String.contains "nearby tickets" line then
-                        parse_ 2 tickets rest
+                        parse_ 2 data rest
 
                     else
                         let
                             mine =
                                 toInts line
 
-                            tickets_ =
+                            data_ =
                                 if List.length mine > 0 then
-                                    { tickets | mine = mine }
+                                    { data | mine = mine }
 
                                 else
-                                    tickets
+                                    data
                         in
-                        parse_ state tickets_ rest
+                        parse_ state data_ rest
 
                 2 ->
                     let
                         near =
                             toInts line
 
-                        tickets_ =
+                        data_ =
                             if List.length near > 0 then
-                                { tickets | near = near :: tickets.near }
+                                { data | near = near :: data.near }
 
                             else
-                                tickets
+                                data
                     in
-                    parse_ state tickets_ rest
+                    parse_ state data_ rest
 
                 _ ->
-                    parse_ state tickets rest
+                    parse_ state data rest
 
         _ ->
-            tickets
+            data
 
 
 toInt : String -> Int

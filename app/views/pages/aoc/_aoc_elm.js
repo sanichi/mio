@@ -16583,9 +16583,9 @@ var $author$project$Y20D16$valid = F2(
 	function (rule, num) {
 		return A2($author$project$Y20D16$ok, num, rule.E) || A2($author$project$Y20D16$ok, num, rule.F);
 	});
-var $author$project$Y20D16$noRulesValid = F2(
+var $author$project$Y20D16$noValidRules = F2(
 	function (rules, num) {
-		noRulesValid:
+		noValidRules:
 		while (true) {
 			if (rules.b) {
 				var rule = rules.a;
@@ -16597,7 +16597,7 @@ var $author$project$Y20D16$noRulesValid = F2(
 						$temp$num = num;
 					rules = $temp$rules;
 					num = $temp$num;
-					continue noRulesValid;
+					continue noValidRules;
 				}
 			} else {
 				return $elm$core$Maybe$Just(num);
@@ -16608,8 +16608,97 @@ var $author$project$Y20D16$findInvalid = F2(
 	function (rules, ticket) {
 		return A2(
 			$elm$core$List$filterMap,
-			$author$project$Y20D16$noRulesValid(rules),
+			$author$project$Y20D16$noValidRules(rules),
 			ticket);
+	});
+var $author$project$Y20D16$possiblesFromIndexNames = F3(
+	function (names, index, possibles) {
+		possiblesFromIndexNames:
+		while (true) {
+			if (names.b) {
+				var name = names.a;
+				var rest = names.b;
+				var counts = A2(
+					$elm$core$Maybe$withDefault,
+					$elm$core$Dict$empty,
+					A2($elm$core$Dict$get, index, possibles));
+				var current = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					A2($elm$core$Dict$get, name, counts));
+				var update = A3($elm$core$Dict$insert, name, current + 1, counts);
+				var possibles_ = A3($elm$core$Dict$insert, index, update, possibles);
+				var $temp$names = rest,
+					$temp$index = index,
+					$temp$possibles = possibles_;
+				names = $temp$names;
+				index = $temp$index;
+				possibles = $temp$possibles;
+				continue possiblesFromIndexNames;
+			} else {
+				return possibles;
+			}
+		}
+	});
+var $author$project$Y20D16$possiblesFromIndexNums = F3(
+	function (indexNums, rules, possibles) {
+		possiblesFromIndexNums:
+		while (true) {
+			if (indexNums.b) {
+				var _v1 = indexNums.a;
+				var index = _v1.a;
+				var num = _v1.b;
+				var rest = indexNums.b;
+				var names = A2(
+					$elm$core$List$map,
+					function ($) {
+						return $.bt;
+					},
+					A2(
+						$elm$core$List$filter,
+						function (rule) {
+							return A2($author$project$Y20D16$valid, rule, num);
+						},
+						rules));
+				var possibles_ = A3($author$project$Y20D16$possiblesFromIndexNames, names, index, possibles);
+				var $temp$indexNums = rest,
+					$temp$rules = rules,
+					$temp$possibles = possibles_;
+				indexNums = $temp$indexNums;
+				rules = $temp$rules;
+				possibles = $temp$possibles;
+				continue possiblesFromIndexNums;
+			} else {
+				return possibles;
+			}
+		}
+	});
+var $author$project$Y20D16$getPossibles = F3(
+	function (tickets, rules, possibles) {
+		getPossibles:
+		while (true) {
+			if (tickets.b) {
+				var ticket = tickets.a;
+				var rest = tickets.b;
+				var indexNums = A2(
+					$elm$core$List$indexedMap,
+					F2(
+						function (index, num) {
+							return _Utils_Tuple2(index, num);
+						}),
+					ticket);
+				var possibles_ = A3($author$project$Y20D16$possiblesFromIndexNums, indexNums, rules, possibles);
+				var $temp$tickets = rest,
+					$temp$rules = rules,
+					$temp$possibles = possibles_;
+				tickets = $temp$tickets;
+				rules = $temp$rules;
+				possibles = $temp$possibles;
+				continue getPossibles;
+			} else {
+				return possibles;
+			}
+		}
 	});
 var $elm$core$Dict$map = F2(
 	function (func, dict) {
@@ -16630,33 +16719,33 @@ var $elm$core$Dict$map = F2(
 				A2($elm$core$Dict$map, func, right));
 		}
 	});
-var $author$project$Y20D16$removeIndexes = F2(
+var $author$project$Y20D16$pruneInexes = F2(
 	function (indexes, dict) {
 		if (indexes.b) {
 			var index = indexes.a;
 			var rest = indexes.b;
 			return A2(
-				$author$project$Y20D16$removeIndexes,
+				$author$project$Y20D16$pruneInexes,
 				rest,
 				A2($elm$core$Dict$remove, index, dict));
 		} else {
 			return dict;
 		}
 	});
-var $author$project$Y20D16$removeNames = F2(
+var $author$project$Y20D16$pruneNames = F2(
 	function (names, dict) {
 		if (names.b) {
 			var name = names.a;
 			var rest = names.b;
 			return A2(
-				$author$project$Y20D16$removeNames,
+				$author$project$Y20D16$pruneNames,
 				rest,
 				A2($elm$core$Dict$remove, name, dict));
 		} else {
 			return dict;
 		}
 	});
-var $author$project$Y20D16$rulePositionsFromPossible = F3(
+var $author$project$Y20D16$possiblesToNames = F3(
 	function (len, possible, positions) {
 		var certain = $elm$core$Dict$fromList(
 			A2(
@@ -16701,131 +16790,42 @@ var $author$project$Y20D16$rulePositionsFromPossible = F3(
 			F2(
 				function (index, dict) {
 					return A2(
-						$author$project$Y20D16$removeNames,
+						$author$project$Y20D16$pruneNames,
 						$elm$core$Dict$values(certain),
 						dict);
 				}),
 			A2(
-				$author$project$Y20D16$removeIndexes,
+				$author$project$Y20D16$pruneInexes,
 				$elm$core$Dict$keys(certain),
 				possible));
 		return ($elm$core$Dict$size(certain) > 0) ? A3(
-			$author$project$Y20D16$rulePositionsFromPossible,
+			$author$project$Y20D16$possiblesToNames,
 			len,
 			reduced,
 			A2($elm$core$Dict$union, certain, positions)) : positions;
 	});
-var $author$project$Y20D16$rulePositionsFromIndexNames = F3(
-	function (names, index, positions) {
-		rulePositionsFromIndexNames:
-		while (true) {
-			if (names.b) {
-				var name = names.a;
-				var rest = names.b;
-				var counts = A2(
-					$elm$core$Maybe$withDefault,
-					$elm$core$Dict$empty,
-					A2($elm$core$Dict$get, index, positions));
-				var current = A2(
-					$elm$core$Maybe$withDefault,
-					0,
-					A2($elm$core$Dict$get, name, counts));
-				var update = A3($elm$core$Dict$insert, name, current + 1, counts);
-				var newPositions = A3($elm$core$Dict$insert, index, update, positions);
-				var $temp$names = rest,
-					$temp$index = index,
-					$temp$positions = newPositions;
-				names = $temp$names;
-				index = $temp$index;
-				positions = $temp$positions;
-				continue rulePositionsFromIndexNames;
-			} else {
-				return positions;
-			}
-		}
-	});
-var $author$project$Y20D16$rulePositionsFromIndexNums = F3(
-	function (indexNums, rules, positions) {
-		rulePositionsFromIndexNums:
-		while (true) {
-			if (indexNums.b) {
-				var _v1 = indexNums.a;
-				var index = _v1.a;
-				var num = _v1.b;
-				var rest = indexNums.b;
-				var names = A2(
-					$elm$core$List$map,
-					function ($) {
-						return $.bt;
-					},
-					A2(
-						$elm$core$List$filter,
-						function (rule) {
-							return A2($author$project$Y20D16$valid, rule, num);
-						},
-						rules));
-				var newPositions = A3($author$project$Y20D16$rulePositionsFromIndexNames, names, index, positions);
-				var $temp$indexNums = rest,
-					$temp$rules = rules,
-					$temp$positions = newPositions;
-				indexNums = $temp$indexNums;
-				rules = $temp$rules;
-				positions = $temp$positions;
-				continue rulePositionsFromIndexNums;
-			} else {
-				return positions;
-			}
-		}
-	});
-var $author$project$Y20D16$rulePositionsFromTickets = F3(
-	function (tickets, rules, positions) {
-		rulePositionsFromTickets:
-		while (true) {
-			if (tickets.b) {
-				var ticket = tickets.a;
-				var rest = tickets.b;
-				var indexNums = A2(
-					$elm$core$List$indexedMap,
-					F2(
-						function (index, num) {
-							return _Utils_Tuple2(index, num);
-						}),
-					ticket);
-				var newPositions = A3($author$project$Y20D16$rulePositionsFromIndexNums, indexNums, rules, positions);
-				var $temp$tickets = rest,
-					$temp$rules = rules,
-					$temp$positions = newPositions;
-				tickets = $temp$tickets;
-				rules = $temp$rules;
-				positions = $temp$positions;
-				continue rulePositionsFromTickets;
-			} else {
-				return positions;
-			}
-		}
-	});
-var $author$project$Y20D16$rulePositions = function (tickets) {
-	var list = A2(
+var $author$project$Y20D16$getIndexToName = function (data) {
+	var validTickets = A2(
 		$elm$core$List$filter,
 		function (ticket) {
 			return _Utils_eq(
-				A2($author$project$Y20D16$findInvalid, tickets.aT, ticket),
+				A2($author$project$Y20D16$findInvalid, data.aT, ticket),
 				_List_Nil);
 		},
-		tickets.at);
-	var possible = A3($author$project$Y20D16$rulePositionsFromTickets, list, tickets.aT, $elm$core$Dict$empty);
-	var len = $elm$core$List$length(list);
-	return A3($author$project$Y20D16$rulePositionsFromPossible, len, possible, $elm$core$Dict$empty);
+		data.at);
+	var possibles = A3($author$project$Y20D16$getPossibles, validTickets, data.aT, $elm$core$Dict$empty);
+	var len = $elm$core$List$length(validTickets);
+	return A3($author$project$Y20D16$possiblesToNames, len, possibles, $elm$core$Dict$empty);
 };
-var $author$project$Y20D16$multiply = F2(
-	function (start, tickets) {
-		var positions = $author$project$Y20D16$rulePositions(tickets);
+var $author$project$Y20D16$multiplySelected = F2(
+	function (start, data) {
+		var indexToName = $author$project$Y20D16$getIndexToName(data);
 		return $elm$core$List$product(
 			A2(
 				$elm$core$List$indexedMap,
 				F2(
 					function (index, num) {
-						var _v0 = A2($elm$core$Dict$get, index, positions);
+						var _v0 = A2($elm$core$Dict$get, index, indexToName);
 						if (!_v0.$) {
 							var name = _v0.a;
 							return A2($elm$core$String$startsWith, start, name) ? num : 1;
@@ -16833,9 +16833,9 @@ var $author$project$Y20D16$multiply = F2(
 							return 1;
 						}
 					}),
-				tickets.a0));
+				data.a0));
 	});
-var $author$project$Y20D16$Tickets = F3(
+var $author$project$Y20D16$Data = F3(
 	function (rules, mine, near) {
 		return {a0: mine, at: near, aT: rules};
 	});
@@ -16864,7 +16864,7 @@ var $author$project$Y20D16$toInts = function (str) {
 				str)));
 };
 var $author$project$Y20D16$parse_ = F3(
-	function (state, tickets, lines) {
+	function (state, data, lines) {
 		parse_:
 		while (true) {
 			if (lines.b) {
@@ -16874,10 +16874,10 @@ var $author$project$Y20D16$parse_ = F3(
 					case 0:
 						if (A2($elm$core$String$contains, 'your ticket', line)) {
 							var $temp$state = 1,
-								$temp$tickets = tickets,
+								$temp$data = data,
 								$temp$lines = rest;
 							state = $temp$state;
-							tickets = $temp$tickets;
+							data = $temp$data;
 							lines = $temp$lines;
 							continue parse_;
 						} else {
@@ -16910,24 +16910,24 @@ var $author$project$Y20D16$parse_ = F3(
 									_Utils_Tuple2(
 										$author$project$Y20D16$toInt(r21),
 										$author$project$Y20D16$toInt(r22)));
-								var tickets_ = _Utils_update(
-									tickets,
+								var data_ = _Utils_update(
+									data,
 									{
-										aT: A2($elm$core$List$cons, rule, tickets.aT)
+										aT: A2($elm$core$List$cons, rule, data.aT)
 									});
 								var $temp$state = state,
-									$temp$tickets = tickets_,
+									$temp$data = data_,
 									$temp$lines = rest;
 								state = $temp$state;
-								tickets = $temp$tickets;
+								data = $temp$data;
 								lines = $temp$lines;
 								continue parse_;
 							} else {
 								var $temp$state = state,
-									$temp$tickets = tickets,
+									$temp$data = data,
 									$temp$lines = rest;
 								state = $temp$state;
-								tickets = $temp$tickets;
+								data = $temp$data;
 								lines = $temp$lines;
 								continue parse_;
 							}
@@ -16935,50 +16935,50 @@ var $author$project$Y20D16$parse_ = F3(
 					case 1:
 						if (A2($elm$core$String$contains, 'nearby tickets', line)) {
 							var $temp$state = 2,
-								$temp$tickets = tickets,
+								$temp$data = data,
 								$temp$lines = rest;
 							state = $temp$state;
-							tickets = $temp$tickets;
+							data = $temp$data;
 							lines = $temp$lines;
 							continue parse_;
 						} else {
 							var mine = $author$project$Y20D16$toInts(line);
-							var tickets_ = ($elm$core$List$length(mine) > 0) ? _Utils_update(
-								tickets,
-								{a0: mine}) : tickets;
+							var data_ = ($elm$core$List$length(mine) > 0) ? _Utils_update(
+								data,
+								{a0: mine}) : data;
 							var $temp$state = state,
-								$temp$tickets = tickets_,
+								$temp$data = data_,
 								$temp$lines = rest;
 							state = $temp$state;
-							tickets = $temp$tickets;
+							data = $temp$data;
 							lines = $temp$lines;
 							continue parse_;
 						}
 					case 2:
 						var near = $author$project$Y20D16$toInts(line);
-						var tickets_ = ($elm$core$List$length(near) > 0) ? _Utils_update(
-							tickets,
+						var data_ = ($elm$core$List$length(near) > 0) ? _Utils_update(
+							data,
 							{
-								at: A2($elm$core$List$cons, near, tickets.at)
-							}) : tickets;
+								at: A2($elm$core$List$cons, near, data.at)
+							}) : data;
 						var $temp$state = state,
-							$temp$tickets = tickets_,
+							$temp$data = data_,
 							$temp$lines = rest;
 						state = $temp$state;
-						tickets = $temp$tickets;
+						data = $temp$data;
 						lines = $temp$lines;
 						continue parse_;
 					default:
 						var $temp$state = state,
-							$temp$tickets = tickets,
+							$temp$data = data,
 							$temp$lines = rest;
 						state = $temp$state;
-						tickets = $temp$tickets;
+						data = $temp$data;
 						lines = $temp$lines;
 						continue parse_;
 				}
 			} else {
-				return tickets;
+				return data;
 			}
 		}
 	});
@@ -16986,26 +16986,26 @@ var $author$project$Y20D16$parse = function (input) {
 	return A3(
 		$author$project$Y20D16$parse_,
 		0,
-		A3($author$project$Y20D16$Tickets, _List_Nil, _List_Nil, _List_Nil),
+		A3($author$project$Y20D16$Data, _List_Nil, _List_Nil, _List_Nil),
 		A2(
 			$elm$regex$Regex$split,
 			$author$project$Util$regex('\\n'),
 			input));
 };
-var $author$project$Y20D16$sum = function (tickets) {
+var $author$project$Y20D16$sumInvalid = function (data) {
 	return $elm$core$List$sum(
 		$elm$core$List$concat(
 			A2(
 				$elm$core$List$map,
-				$author$project$Y20D16$findInvalid(tickets.aT),
-				tickets.at)));
+				$author$project$Y20D16$findInvalid(data.aT),
+				data.at)));
 };
 var $author$project$Y20D16$answer = F2(
 	function (part, input) {
-		var tickets = $author$project$Y20D16$parse(input);
+		var data = $author$project$Y20D16$parse(input);
 		return (part === 1) ? $elm$core$String$fromInt(
-			$author$project$Y20D16$sum(tickets)) : $elm$core$String$fromInt(
-			A2($author$project$Y20D16$multiply, 'departure', tickets));
+			$author$project$Y20D16$sumInvalid(data)) : $elm$core$String$fromInt(
+			A2($author$project$Y20D16$multiplySelected, 'departure', data));
 	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
