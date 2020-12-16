@@ -15,6 +15,7 @@ import Y20D12
 import Y20D13
 import Y20D14
 import Y20D15
+import Y20D16
 
 
 answer : Int -> Int -> String -> String
@@ -64,6 +65,9 @@ answer day part input =
 
         15 ->
             Y20D15.answer part input
+
+        16 ->
+            Y20D16.answer part input
 
         _ ->
             "year 2020, day " ++ String.fromInt day ++ ": not available"
