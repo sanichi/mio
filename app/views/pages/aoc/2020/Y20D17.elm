@@ -50,7 +50,7 @@ cycle dim n cube =
             wuus =
                 wRange dim n
         in
-        { cube | active = Dict.empty }
+        cube
             |> cycleWuus n wuus cube.active
             |> cycle dim (n + 1)
 
@@ -117,7 +117,7 @@ cycleCols w z y cols active cube =
                 cube_ =
                     if Dict.member i active then
                         if n == 2 || n == 3 then
-                            { cube | active = Dict.insert i True cube.active }
+                            cube
 
                         else
                             { cube | active = Dict.remove i cube.active }
@@ -126,7 +126,7 @@ cycleCols w z y cols active cube =
                         { cube | active = Dict.insert i True cube.active }
 
                     else
-                        { cube | active = Dict.remove i cube.active }
+                        cube
             in
             cycleCols w z y rest active cube_
 
