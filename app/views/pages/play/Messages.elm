@@ -8,5 +8,7 @@ type Msg
     | DniIncrement
     | DniDecrement
     | DniCycle
+    | MagicIncrement
+    | MagicDecrement
     | RandomRequest
     | RandomResponse Int

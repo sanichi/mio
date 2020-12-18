@@ -8,6 +8,7 @@ import Dni
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Encode exposing (Value)
+import Magic
 import Messages exposing (Msg(..))
 import Randoms
 
@@ -43,6 +44,7 @@ subscriptions model =
 type alias Model =
     { dni : Dni.Model
     , counter : Counter.Model
+    , magic : Magic.Model
     , randoms : Randoms.Model
     }
 
@@ -51,6 +53,7 @@ initModel : Model
 initModel =
     { dni = Dni.init
     , counter = Counter.init
+    , magic = Magic.init
     , randoms = Randoms.init
     }
 
@@ -63,6 +66,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ panel "D‘ni" (Dni.view model.dni)
+        , panel "Magic" (Magic.view model.magic)
         , panel "Counter" (Counter.view model.counter)
         , panel "Randoms" (Randoms.view model.randoms)
         ]
@@ -100,6 +104,12 @@ update msg model =
 
         DniCycle ->
             ( { model | dni = Dni.cycle model.dni }, Cmd.none )
+
+        MagicIncrement ->
+            ( { model | magic = Magic.increment model.magic }, Cmd.none )
+
+        MagicDecrement ->
+            ( { model | magic = Magic.decrement model.magic }, Cmd.none )
 
         RandomRequest ->
             ( model, Randoms.request )
