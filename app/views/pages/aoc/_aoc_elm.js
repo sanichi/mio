@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 17;
+var $author$project$Main$defaultDay = 18;
 var $author$project$Main$defaultYear = 2020;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -17408,6 +17408,150 @@ var $author$project$Y20D17$answer = F2(
 			$author$project$Y20D17$count(
 				A3($author$project$Y20D17$cycle, 4, 0, cube)));
 	});
+var $elm$core$String$trim = _String_trim;
+var $author$project$Y20D18$parse = function (input) {
+	return A2(
+		$elm$core$List$filter,
+		function (e) {
+			return $elm$core$String$length(e) > 0;
+		},
+		A2(
+			$elm$core$List$map,
+			$elm$core$String$trim,
+			A2(
+				$elm$regex$Regex$split,
+				$author$project$Util$regex('\\n'),
+				input)));
+};
+var $author$project$Y20D18$Mult = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Y20D18$Plus = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Y20D18$eval_ = F2(
+	function (val, terms) {
+		eval_:
+		while (true) {
+			if (terms.b) {
+				var term = terms.a;
+				var rest = terms.b;
+				if (!term.$) {
+					var num = term.a;
+					var $temp$val = val + num,
+						$temp$terms = rest;
+					val = $temp$val;
+					terms = $temp$terms;
+					continue eval_;
+				} else {
+					var num = term.a;
+					var $temp$val = val * num,
+						$temp$terms = rest;
+					val = $temp$val;
+					terms = $temp$terms;
+					continue eval_;
+				}
+			} else {
+				return val;
+			}
+		}
+	});
+var $author$project$Y20D18$eval = function (expression) {
+	var val = A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		$elm$core$String$toInt(
+			A2(
+				$elm$core$Maybe$withDefault,
+				'0',
+				$elm$core$List$head(
+					A2(
+						$elm$core$List$map,
+						function ($) {
+							return $.bZ;
+						},
+						A2(
+							$elm$regex$Regex$find,
+							$author$project$Util$regex('^[1-9]\\d*'),
+							expression))))));
+	var terms = A2(
+		$elm$core$List$filterMap,
+		function (m) {
+			if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
+				var op = m.a.a;
+				var _v1 = m.b;
+				var num_ = _v1.a.a;
+				var num = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					$elm$core$String$toInt(num_));
+				return (op === '+') ? $elm$core$Maybe$Just(
+					$author$project$Y20D18$Plus(num)) : $elm$core$Maybe$Just(
+					$author$project$Y20D18$Mult(num));
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		},
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.b3;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('(\\+|\\*) ([1-9]\\d*)'),
+				expression)));
+	return A2($author$project$Y20D18$eval_, val, terms);
+};
+var $author$project$Y20D18$reduce = F2(
+	function (part, expression) {
+		reduce:
+		while (true) {
+			var replacePluses = function (m) {
+				return $elm$core$String$fromInt(
+					$author$project$Y20D18$eval(m.bZ));
+			};
+			var replaceBrackets = function (m) {
+				var _v0 = m.b3;
+				if ((_v0.b && (!_v0.a.$)) && (!_v0.b.b)) {
+					var expr = _v0.a.a;
+					return $elm$core$String$fromInt(
+						$author$project$Y20D18$eval(expr));
+				} else {
+					return '0';
+				}
+			};
+			var reducedPluses = (part === 1) ? expression : A3(
+				$elm$regex$Regex$replace,
+				$author$project$Util$regex('[1-9]\\d*( \\+ [1-9]\\d*)+'),
+				replacePluses,
+				expression);
+			var reducedBrackets = A3(
+				$elm$regex$Regex$replace,
+				$author$project$Util$regex('\\(([^()]+)\\)'),
+				replaceBrackets,
+				reducedPluses);
+			var finished = (part === 1) ? (!A2($elm$core$String$contains, '(', reducedBrackets)) : (!(A2($elm$core$String$contains, '(', reducedBrackets) || A2($elm$core$String$contains, '+', reducedBrackets)));
+			if (finished) {
+				return $author$project$Y20D18$eval(reducedBrackets);
+			} else {
+				var $temp$part = part,
+					$temp$expression = reducedBrackets;
+				part = $temp$part;
+				expression = $temp$expression;
+				continue reduce;
+			}
+		}
+	});
+var $author$project$Y20D18$answer = F2(
+	function (part, input) {
+		return $elm$core$String$fromInt(
+			$elm$core$List$sum(
+				A2(
+					$elm$core$List$map,
+					$author$project$Y20D18$reduce(part),
+					$author$project$Y20D18$parse(input))));
+	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -17445,6 +17589,8 @@ var $author$project$Y20$answer = F3(
 				return A2($author$project$Y20D16$answer, part, input);
 			case 17:
 				return A2($author$project$Y20D17$answer, part, input);
+			case 18:
+				return A2($author$project$Y20D18$answer, part, input);
 			default:
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
