@@ -91,8 +91,8 @@ consume book rules message =
     case rules of
         rule :: rest ->
             case rule.trm of
-                Just c ->
-                    if String.startsWith c message then
+                Just trm ->
+                    if String.startsWith trm message then
                         consume book rest (String.dropLeft 1 message)
 
                     else

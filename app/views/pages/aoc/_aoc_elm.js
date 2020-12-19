@@ -17565,8 +17565,8 @@ var $author$project$Y20D19$consume = F3(
 				var rest = rules.b;
 				var _v1 = rule.bR;
 				if (!_v1.$) {
-					var c = _v1.a;
-					if (A2($elm$core$String$startsWith, c, message)) {
+					var trm = _v1.a;
+					if (A2($elm$core$String$startsWith, trm, message)) {
 						var $temp$book = book,
 							$temp$rules = rest,
 							$temp$message = A2($elm$core$String$dropLeft, 1, message);
