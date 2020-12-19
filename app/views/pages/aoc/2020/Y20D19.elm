@@ -24,26 +24,22 @@ answer part input =
 
 
 type alias Sequence =
-    List Int
+    List String
 
 
 type alias Rule =
-    { str : Maybe String
+    { trm : Maybe String
     , seq : Maybe Sequence
     , alt : Maybe Sequence
     }
 
 
-type alias Rules =
-    List Rule
-
-
 type alias Book =
-    Dict Int Rule
+    Dict String Rule
 
 
 type alias Data =
-    { rules : Book
+    { book : Book
     , messages : List String
     }
 
@@ -51,7 +47,7 @@ type alias Data =
 count : Data -> Int
 count data =
     data.messages
-        |> List.map (test data.rules)
+        |> List.map (test data.book)
         |> List.filter identity
         |> List.length
 
@@ -59,27 +55,30 @@ count data =
 edit : Data -> Data
 edit data =
     let
-        rule8 =
-            Rule Nothing (Just [ 42 ]) (Just [ 42, 8 ])
+        r8 =
+            Rule Nothing (Just [ "42" ]) (Just [ "42", "8" ])
 
-        rule11 =
-            Rule Nothing (Just [ 42, 31 ]) (Just [ 42, 11, 31 ])
+        r11 =
+            Rule Nothing (Just [ "42", "31" ]) (Just [ "42", "11", "31" ])
 
         book =
-            data.rules
-                |> Dict.insert 8 rule8
-                |> Dict.insert 11 rule11
+            data.book
+                |> Dict.insert "8" r8
+                |> Dict.insert "11" r11
     in
-    { data | rules = book }
+    { data | book = book }
 
 
 test : Book -> String -> Bool
 test book message =
     let
-        rules =
-            [ Rule Nothing (Just [ 0 ]) Nothing ]
+        start =
+            [ Rule Nothing (Just [ "0" ]) Nothing ]
+
+        remainder =
+            consume book start message
     in
-    case expand book rules message of
+    case remainder of
         Just "" ->
             True
 
@@ -87,14 +86,14 @@ test book message =
             False
 
 
-expand : Book -> Rules -> String -> Maybe String
-expand book rules message =
+consume : Book -> List Rule -> String -> Maybe String
+consume book rules message =
     case rules of
         rule :: rest ->
-            case rule.str of
+            case rule.trm of
                 Just c ->
                     if String.startsWith c message then
-                        expand book rest (String.dropLeft 1 message)
+                        consume book rest (String.dropLeft 1 message)
 
                     else
                         Nothing
@@ -106,7 +105,7 @@ expand book rules message =
                                 seqRules =
                                     List.filterMap (\num -> Dict.get num book) seq
                             in
-                            expand book (seqRules ++ rest) message
+                            consume book (seqRules ++ rest) message
 
                         [ Just seq, Just alt ] ->
                             let
@@ -114,14 +113,14 @@ expand book rules message =
                                     List.filterMap (\num -> Dict.get num book) seq
 
                                 seqTry =
-                                    expand book (seqRules ++ rest) message
+                                    consume book (seqRules ++ rest) message
                             in
                             if seqTry == Nothing then
                                 let
                                     altRules =
                                         List.filterMap (\num -> Dict.get num book) alt
                                 in
-                                expand book (altRules ++ rest) message
+                                consume book (altRules ++ rest) message
 
                             else
                                 seqTry
@@ -149,7 +148,7 @@ parseLine data lines =
             let
                 data_ =
                     if Regex.contains (Util.regex "^\\d+:") line then
-                        { data | rules = parseRule line data.rules }
+                        { data | book = parseRule line data.book }
 
                     else
                         { data | messages = line :: data.messages }
@@ -161,7 +160,7 @@ parseLine data lines =
 
 
 parseRule : String -> Book -> Book
-parseRule line rules =
+parseRule line book =
     let
         m =
             line
@@ -171,35 +170,22 @@ parseRule line rules =
                 |> Maybe.withDefault []
     in
     case m of
-        [ Just num, Nothing, seq, alt ] ->
-            Dict.insert (toInt num) (Rule Nothing (toSeq seq) (toSeq alt)) rules
+        [ Just num, Just trm, Nothing, Nothing ] ->
+            Dict.insert num (Rule (Just trm) Nothing Nothing) book
 
-        [ Just num, str, Nothing, Nothing ] ->
-            Dict.insert (toInt num) (Rule str Nothing Nothing) rules
+        [ Just num, Nothing, Just seq, Nothing ] ->
+            Dict.insert num (Rule Nothing (toSeq seq) Nothing) book
+
+        [ Just num, Nothing, Just seq, Just alt ] ->
+            Dict.insert num (Rule Nothing (toSeq seq) (toSeq alt)) book
 
         _ ->
-            rules
+            book
 
 
-toSeq : Maybe String -> Maybe Sequence
-toSeq m =
-    case m of
-        Just list ->
-            list
-                |> String.split " "
-                |> List.map String.toInt
-                |> List.map (Maybe.withDefault 0)
-                |> Just
-
-        Nothing ->
-            Nothing
-
-
-toInt : String -> Int
-toInt str =
-    str
-        |> String.toInt
-        |> Maybe.withDefault 0
+toSeq : String -> Maybe Sequence
+toSeq list =
+    Just (String.split " " list)
 
 
 example : String
