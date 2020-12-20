@@ -18,37 +18,56 @@ answer part input =
             |> String.fromInt
 
     else
-        "working on it"
+        example
+            |> parse
+            |> product
+            |> String.fromInt
+
+
+type alias Id =
+    Int
+
+
+type alias Edge =
+    String
+
+
+type alias ImageRow =
+    String
+
+
+type alias Image =
+    List ImageRow
 
 
 type alias Images =
-    Dict Int (List String)
+    Dict Id Image
 
 
 type alias Edges =
-    Dict Int (Set String)
+    Dict Id (Set Edge)
 
 
-type alias Stats =
-    Dict String (Set Int)
+type alias EdgeConnections =
+    Dict Edge (Set Id)
 
 
-type alias Counts =
-    Dict Int Int
+type alias ImageConnections =
+    Dict Id (Set Id)
 
 
 type alias Data =
     { images : Images
     , edges : Edges
-    , stats : Stats
-    , counts : Counts
+    , edgeConnections : EdgeConnections
+    , imageConnections : ImageConnections
     }
 
 
 product : Data -> Int
 product data =
-    data.counts
-        |> Dict.filter (\id num -> num == 4)
+    data.imageConnections
+        |> Dict.filter (\id ids -> Set.size ids == 2)
         |> Dict.toList
         |> List.map Tuple.first
         |> List.product
@@ -70,16 +89,16 @@ parse input =
         edges =
             Dict.map edgesFromImages images
 
-        stats =
-            statsFromEdges (Dict.toList edges) Dict.empty
+        edgeConnections =
+            edgeConnectionsFromEdges (Dict.toList edges) Dict.empty
 
-        counts =
-            countsFromStats (Dict.toList stats) Dict.empty
+        imageConnections =
+            imageConnectionsFromEdgeConnections (Dict.toList edgeConnections) Dict.empty
     in
-    Data images edges stats counts
+    Data images edges edgeConnections imageConnections
 
 
-parse_ : List String -> Maybe Int -> Images -> Images
+parse_ : List String -> Maybe Id -> Images -> Images
 parse_ lines mid images =
     case lines of
         line :: rest ->
@@ -143,7 +162,7 @@ parse_ lines mid images =
             images
 
 
-edgesFromImages : Int -> List String -> Set String
+edgesFromImages : Id -> Image -> Set Edge
 edgesFromImages id rows =
     let
         top =
@@ -182,63 +201,68 @@ edgesFromImages id rows =
     Set.fromList (combined ++ reversed)
 
 
-statsFromEdges : List ( Int, Set String ) -> Stats -> Stats
-statsFromEdges pairs stats =
+edgeConnectionsFromEdges : List ( Id, Set Edge ) -> EdgeConnections -> EdgeConnections
+edgeConnectionsFromEdges pairs edgeConnections =
     case pairs of
         ( id, edges ) :: rest ->
-            stats
-                |> statsFromEdges_ id (Set.toList edges)
-                |> statsFromEdges rest
+            edgeConnections
+                |> edgeConnectionsFromEdges_ id (Set.toList edges)
+                |> edgeConnectionsFromEdges rest
 
         _ ->
-            stats
+            edgeConnections
 
 
-statsFromEdges_ : Int -> List String -> Stats -> Stats
-statsFromEdges_ id edges stats =
+edgeConnectionsFromEdges_ : Id -> List Edge -> EdgeConnections -> EdgeConnections
+edgeConnectionsFromEdges_ id edges edgeConnections =
     case edges of
         edge :: rest ->
             let
                 ids =
-                    stats
+                    edgeConnections
                         |> Dict.get edge
                         |> Maybe.withDefault Set.empty
                         |> Set.insert id
             in
-            stats
+            edgeConnections
                 |> Dict.insert edge ids
-                |> statsFromEdges_ id rest
+                |> edgeConnectionsFromEdges_ id rest
 
         _ ->
-            stats
+            edgeConnections
 
 
-countsFromStats : List ( String, Set Int ) -> Counts -> Counts
-countsFromStats pairs counts =
+imageConnectionsFromEdgeConnections : List ( Edge, Set Id ) -> ImageConnections -> ImageConnections
+imageConnectionsFromEdgeConnections pairs imageConnections =
     case pairs of
         ( edge, ids ) :: rest ->
-            if Set.size ids == 1 then
-                let
-                    id =
-                        ids
-                            |> Set.toList
-                            |> List.head
-                            |> Maybe.withDefault 0
+            case Set.toList ids of
+                [ id1, id2 ] ->
+                    let
+                        s1 =
+                            imageConnections
+                                |> Dict.get id1
+                                |> Maybe.withDefault Set.empty
+                                |> Set.insert id2
 
-                    count =
-                        counts
-                            |> Dict.get id
-                            |> Maybe.withDefault 0
-                in
-                counts
-                    |> Dict.insert id (count + 1)
-                    |> countsFromStats rest
+                        s2 =
+                            imageConnections
+                                |> Dict.get id2
+                                |> Maybe.withDefault Set.empty
+                                |> Set.insert id1
 
-            else
-                countsFromStats rest counts
+                        imageConnections_ =
+                            imageConnections
+                                |> Dict.insert id1 s1
+                                |> Dict.insert id2 s2
+                    in
+                    imageConnectionsFromEdgeConnections rest imageConnections_
+
+                _ ->
+                    imageConnectionsFromEdgeConnections rest imageConnections
 
         _ ->
-            counts
+            imageConnections
 
 
 example : String
