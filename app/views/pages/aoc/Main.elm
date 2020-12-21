@@ -495,7 +495,7 @@ speedDescription time =
             "Answer should be returned instantly"
 
         1 ->
-            "Won't take more than a few seconds"
+            "Won‘t take more than a few seconds"
 
         2 ->
             "Will take more like a minute"
@@ -831,6 +831,9 @@ failed year day part =
         "2016-11-2" ->
             True
 
+        "2020-20-2" ->
+            True
+
         _ ->
             False
 
@@ -845,28 +848,31 @@ getNote year day =
     in
     case key of
         "2015-12" ->
-            Just "For part 2 I couldn't see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead."
+            Just "For part 2 I couldn‘t see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead."
 
         "2015-22" ->
-            Just "I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn't face trying to redo it all in Elm."
+            Just "I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn‘t face trying to redo it all in Elm."
 
         "2016-11" ->
-            Just "I didn't have much of a clue about this one so quickly admitted defeat and spent my time on other things that day."
+            Just "I didn‘t have much of a clue about this one so quickly admitted defeat and spent my time on other things that day."
 
         "2016-14" ->
-            Just "I left part 2 running for nearly 24 hours and it still hadn't finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that's not the whole story since 100 times 20 seconds is only about half an hour."
+            Just "I left part 2 running for nearly 24 hours and it still hadn‘t finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that‘s not the whole story since 100 times 20 seconds is only about half an hour."
 
         "2016-16" ->
             Just "The Elm program for part 2 crashed my browser window after a few minutes (presumably out of memory) so instead I wrote a Perl 5 program which got the answer in less than a minute while using almost 3GB of memory."
 
         "2016-23" ->
-            Just "There was a strange error after converting from 0.18 to 0.19 which I couldn't figure out so I abandoned this one even though it had been working."
+            Just "There was a strange error after converting from 0.18 to 0.19 which I couldn‘t figure out so I abandoned this one even though it had been working."
 
         "2020-13" ->
-            Just "Elm can't handle 64-bit integers and could only solve the toy examples. For the proper part 2 problem, a Chinese Remainder algorithm from another language (I picked Ruby) had to be used."
+            Just "Elm can‘t handle 64-bit integers and could only solve the toy examples. For the proper part 2 problem, a Chinese Remainder algorithm from another language (I picked Ruby) had to be used."
 
         "2020-14" ->
             Just "Had to avoid Elm for this one because it involves 64-bit integers. A quick Ruby script did the job."
+
+        "2020-20" ->
+            Just "I couldn‘t figure out part 2 so used someone else‘s solution (kudoes to Github user Sharparam)."
 
         _ ->
             Nothing

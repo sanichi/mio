@@ -17865,7 +17865,6 @@ var $author$project$Y20D19$answer = F2(
 			$author$project$Y20D19$count(
 				$author$project$Y20D19$edit(data)));
 	});
-var $author$project$Y20D20$example = '\nTile 2311:\n..##.#..#.\n##..#.....\n#...##..#.\n####.#...#\n##.##.###.\n##...#.###\n.#.#.#..##\n..#....#..\n###...#.#.\n..###..###\n\nTile 1951:\n#.##...##.\n#.####...#\n.....#..##\n#...######\n.##.#....#\n.###.#####\n###.##.##.\n.###....#.\n..#.#..#.#\n#...##.#..\n\nTile 1171:\n####...##.\n#..##.#..#\n##.#..#.#.\n.###.####.\n..###.####\n.##....##.\n.#...####.\n#.##.####.\n####..#...\n.....##...\n\nTile 1427:\n###.##.#..\n.#..#.##..\n.#.##.#..#\n#.#.#.##.#\n....#...##\n...##..##.\n...#.#####\n.#.####.#.\n..#..###.#\n..##.#..#.\n\nTile 1489:\n##.#.#....\n..##...#..\n.##..##...\n..#...#...\n#####...#.\n#..#.#.#.#\n...#.#.#..\n##.#...##.\n..##.##.##\n###.##.#..\n\nTile 2473:\n#....####.\n#..#.##...\n#.##..#...\n######.#.#\n.#...#.#.#\n.#########\n.###.#..#.\n########.#\n##...##.#.\n..###.#.#.\n\nTile 2971:\n..#.#....#\n#...###...\n#.#.###...\n##.##..#..\n.#####..##\n.#..####.#\n#..#.#..#.\n..####.###\n..#.#.###.\n...#.#.#.#\n\nTile 2729:\n...#.#.#.#\n####.#....\n..#.#.....\n....#..#.#\n.##..##.#.\n.#.####...\n####.#.#..\n##.####...\n##..#.##..\n#.##...##.\n\nTile 3079:\n#.#.#####.\n.#..######\n..#.......\n######....\n####.#..#.\n.#...#.##.\n#.#####.##\n..#.###...\n..#.......\n..#.###...\n    ';
 var $author$project$Y20D20$Data = F4(
 	function (images, edges, edgeConnections, imageConnections) {
 		return {bZ: edgeConnections, b_: edges, bt: imageConnections, b2: images};
@@ -18139,9 +18138,7 @@ var $author$project$Y20D20$answer = F2(
 	function (part, input) {
 		var data = $author$project$Y20D20$parse(input);
 		return (part === 1) ? $elm$core$String$fromInt(
-			$author$project$Y20D20$product(data)) : $elm$core$String$fromInt(
-			$author$project$Y20D20$product(
-				$author$project$Y20D20$parse($author$project$Y20D20$example)));
+			$author$project$Y20D20$product(data)) : '2489';
 	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
@@ -18371,6 +18368,8 @@ var $author$project$Main$failed = F3(
 			case '2016-11-1':
 				return true;
 			case '2016-11-2':
+				return true;
+			case '2020-20-2':
 				return true;
 			default:
 				return false;
@@ -18696,7 +18695,7 @@ var $author$project$Main$speedDescription = function (time) {
 		case 0:
 			return 'Answer should be returned instantly';
 		case 1:
-			return 'Won\'t take more than a few seconds';
+			return 'Won‘t take more than a few seconds';
 		case 2:
 			return 'Will take more like a minute';
 		case 3:
@@ -18931,21 +18930,23 @@ var $author$project$Main$getNote = F2(
 					[year, day])));
 		switch (key) {
 			case '2015-12':
-				return $elm$core$Maybe$Just('For part 2 I couldn\'t see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead.');
+				return $elm$core$Maybe$Just('For part 2 I couldn‘t see any way to filter out the \"red\" parts of the object in Elm so did it in Perl instead.');
 			case '2015-22':
-				return $elm$core$Maybe$Just('I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn\'t face trying to redo it all in Elm.');
+				return $elm$core$Maybe$Just('I found this problem highly annoying as there were so many fiddly details to take care of. After many iteratons of a Perl 5 program eventually produced the right answers, I couldn‘t face trying to redo it all in Elm.');
 			case '2016-11':
-				return $elm$core$Maybe$Just('I didn\'t have much of a clue about this one so quickly admitted defeat and spent my time on other things that day.');
+				return $elm$core$Maybe$Just('I didn‘t have much of a clue about this one so quickly admitted defeat and spent my time on other things that day.');
 			case '2016-14':
-				return $elm$core$Maybe$Just('I left part 2 running for nearly 24 hours and it still hadn\'t finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that\'s not the whole story since 100 times 20 seconds is only about half an hour.');
+				return $elm$core$Maybe$Just('I left part 2 running for nearly 24 hours and it still hadn‘t finished. So, giving up on that, I wrote a Perl 5 program based on the same algorithm and it only took 20 seconds! I estimate MD5 digests are roughly 100 times faster in Perl 5 than in Elm, so that‘s not the whole story since 100 times 20 seconds is only about half an hour.');
 			case '2016-16':
 				return $elm$core$Maybe$Just('The Elm program for part 2 crashed my browser window after a few minutes (presumably out of memory) so instead I wrote a Perl 5 program which got the answer in less than a minute while using almost 3GB of memory.');
 			case '2016-23':
-				return $elm$core$Maybe$Just('There was a strange error after converting from 0.18 to 0.19 which I couldn\'t figure out so I abandoned this one even though it had been working.');
+				return $elm$core$Maybe$Just('There was a strange error after converting from 0.18 to 0.19 which I couldn‘t figure out so I abandoned this one even though it had been working.');
 			case '2020-13':
-				return $elm$core$Maybe$Just('Elm can\'t handle 64-bit integers and could only solve the toy examples. For the proper part 2 problem, a Chinese Remainder algorithm from another language (I picked Ruby) had to be used.');
+				return $elm$core$Maybe$Just('Elm can‘t handle 64-bit integers and could only solve the toy examples. For the proper part 2 problem, a Chinese Remainder algorithm from another language (I picked Ruby) had to be used.');
 			case '2020-14':
 				return $elm$core$Maybe$Just('Had to avoid Elm for this one because it involves 64-bit integers. A quick Ruby script did the job.');
+			case '2020-20':
+				return $elm$core$Maybe$Just('I couldn‘t figure out part 2 so used someone else‘s solution (kudoes to Github user Sharparam).');
 			default:
 				return $elm$core$Maybe$Nothing;
 		}
