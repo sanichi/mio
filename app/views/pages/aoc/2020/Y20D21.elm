@@ -44,14 +44,14 @@ type alias Data =
 part1 : Data -> String
 part1 data =
     let
+        allIngredients =
+            data.foods
+                |> List.foldl (\a b -> Set.union a b) Set.empty
+
         ingredientsWithAlergens =
             data.a2i
                 |> Dict.values
                 |> Set.fromList
-
-        allIngredients =
-            data.foods
-                |> List.foldl (\a b -> Set.union a b) Set.empty
 
         ingredientsWithoutAlergens =
             ingredientsWithAlergens
