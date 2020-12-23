@@ -68,7 +68,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    22
+    23
 
 
 initModel : Model
@@ -805,6 +805,9 @@ speed year day part =
 
         "2020-22-2" ->
             1
+
+        "2020-23-2" ->
+            2
 
         _ ->
             0
