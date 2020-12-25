@@ -6,7 +6,6 @@ en:
     date: Date
     mass: Weight
     new: New
-    old: Old Weight
     start: Morning
     options:
       all: All
