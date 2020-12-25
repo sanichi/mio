@@ -6,12 +6,9 @@ import Util
 
 answer : Int -> String -> String
 answer part input =
-    let
-        keys =
-            parse input
-    in
     if part == 1 then
-        keys
+        input
+            |> parse
             |> secret
             |> String.fromInt
 

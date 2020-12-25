@@ -19095,9 +19095,9 @@ var $author$project$Y20D25$secret = function (keys) {
 };
 var $author$project$Y20D25$answer = F2(
 	function (part, input) {
-		var keys = $author$project$Y20D25$parse(input);
 		return (part === 1) ? $elm$core$String$fromInt(
-			$author$project$Y20D25$secret(keys)) : 'no part two for this day';
+			$author$project$Y20D25$secret(
+				$author$project$Y20D25$parse(input))) : 'no part two for this day';
 	});
 var $author$project$Y20$answer = F3(
 	function (day, part, input) {
