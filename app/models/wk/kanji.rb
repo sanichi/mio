@@ -59,6 +59,12 @@ module Wk
       "[#{display || character}](/wk/kanjis/#{id})"
     end
 
+    def image_path
+      file = Rails.root + "public" + "images" + "#{character}.jpg"
+      return nil unless file.file?
+      "/images/#{character}.jpg"
+    end
+
     def self.update(days=nil)
       updates = 0
       creates = 0
