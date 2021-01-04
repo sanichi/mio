@@ -66,8 +66,8 @@ view : Model -> Html Msg
 view model =
     div []
         [ panel "D‘ni" (Dni.view model.dni)
-        , panel "Magic" (Magic.view model.magic)
         , panel "Randoms" (Randoms.view model.randoms)
+        , panel "Magic" (Magic.view model.magic)
         , panel "Counter" (Counter.view model.counter)
         ]
 

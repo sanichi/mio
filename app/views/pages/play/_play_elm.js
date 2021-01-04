@@ -6205,12 +6205,12 @@ var $author$project$Main$view = function (model) {
 				$author$project$Dni$view(model.p)),
 				A2(
 				$author$project$Main$panel,
-				'Magic',
-				$author$project$Magic$view(model.N)),
-				A2(
-				$author$project$Main$panel,
 				'Randoms',
 				$author$project$Randoms$view(model.M)),
+				A2(
+				$author$project$Main$panel,
+				'Magic',
+				$author$project$Magic$view(model.N)),
 				A2(
 				$author$project$Main$panel,
 				'Counter',
