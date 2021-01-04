@@ -5225,7 +5225,7 @@ var $author$project$Magic$init = A2(
 	0,
 	$elm$core$Array$fromList(
 		_List_fromArray(
-			['53', '371', '5141', '99481', '8520280'])));
+			['0', '53', '371', '5141', '99481', '8520280'])));
 var $author$project$Randoms$init = 0;
 var $author$project$Main$initModel = {t: $author$project$Counter$init, p: $author$project$Dni$init, N: $author$project$Magic$init, M: $author$project$Randoms$init};
 var $elm$json$Json$Encode$null = _Json_encodeNull;
@@ -6209,12 +6209,12 @@ var $author$project$Main$view = function (model) {
 				$author$project$Magic$view(model.N)),
 				A2(
 				$author$project$Main$panel,
-				'Counter',
-				$author$project$Counter$view(model.t)),
+				'Randoms',
+				$author$project$Randoms$view(model.M)),
 				A2(
 				$author$project$Main$panel,
-				'Randoms',
-				$author$project$Randoms$view(model.M))
+				'Counter',
+				$author$project$Counter$view(model.t))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

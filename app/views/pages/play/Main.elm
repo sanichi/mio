@@ -67,8 +67,8 @@ view model =
     div []
         [ panel "D‘ni" (Dni.view model.dni)
         , panel "Magic" (Magic.view model.magic)
-        , panel "Counter" (Counter.view model.counter)
         , panel "Randoms" (Randoms.view model.randoms)
+        , panel "Counter" (Counter.view model.counter)
         ]
 
 
