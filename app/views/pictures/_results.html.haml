@@ -12,4 +12,4 @@
               - row.each do |picture|
                 %td{width: wd}
                   = link_to picture do
-                    = image_tag picture.direct_thumbnail_path, width: wd, height: wd, title: picture.title, alt: picture.title
+                    = image_tag picture.path, width: wd, height: wd, title: picture.title, alt: picture.title

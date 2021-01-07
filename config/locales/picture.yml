@@ -4,7 +4,6 @@ en:
     edit: Edit Picture
     file: Image File
     new: New Picture
-    original: Original
     person: "Person %{number}"
     picture: Picture
     pictures: Pictures
