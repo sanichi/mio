@@ -7,7 +7,6 @@
     [:answer3,    t("question.answer3"),  :text,   maxlength: Question::MAX_ANSWER],
     [:answer4,    t("question.answer4"),  :text,   maxlength: Question::MAX_ANSWER],
     [:solution,   t("question.solution"), :select, menu: question_solution_menu(question.solution, question.new_record?)],
-    [:picture,    t("question.picture"),  :file],
     [:audio,      t("question.audio"),    :text,   maxlength: Question::MAX_AUDIO],
     [:note,       t("question.note"),     :area,   rows: 15],
   ]

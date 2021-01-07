@@ -41,7 +41,7 @@ class QuestionsController < ApplicationController
   end
 
   def strong_params
-    params.require(:question).permit(:problem_id, :question, :answer1, :answer2, :answer3, :answer4, :solution, :note, :picture, :audio)
+    params.require(:question).permit(:problem_id, :question, :answer1, :answer2, :answer3, :answer4, :solution, :note, :audio)
   end
 
   def url_for_problem(question)

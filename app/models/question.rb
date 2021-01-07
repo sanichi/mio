@@ -7,11 +7,8 @@ class Question < ApplicationRecord
   MAX_AUDIO = 20
   MAX_QUESTION = 255
   MAX_PIC_SIZE = 1.megabyte
-  PIC_TYPES = "jpe?g|gif|png"
 
   belongs_to :problem
-
-  has_one_attached :picture, dependent: :purge
 
   before_validation :normalize_attributes
 
@@ -20,7 +17,6 @@ class Question < ApplicationRecord
   validates :solution, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 4 }
   validates :audio, length: { maximum: MAX_AUDIO }, format: { with: /\A[-A-Za-z_\d]+\.(mp3|m4a)\z/ }, allow_nil: true
   validate  :must_either_be_a_question_or_an_audio
-  validate  :check_picture
   validate  :check_audio
 
   default_scope { order(:id) }
@@ -67,6 +63,12 @@ class Question < ApplicationRecord
     indx && indx < qids.size - 1 ? qids[indx + 1] : nil
   end
 
+  def image_path
+    fend = "jpg"
+    fend = "png" if [3].include?(id)
+    "/questions/#{id}.#{fend}"
+  end
+
   def audio_path(abs: false)
     return nil unless audio.present?
     path = "system/audio/jlpt/n#{1 + problem.level}/#{audio}"
@@ -99,14 +101,6 @@ class Question < ApplicationRecord
     self.audio = nil if audio.blank?
     note&.strip!
     note&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
-  end
-
-  def check_picture
-    if picture.attached?
-      errors.add(:picture, "invalid content type (#{picture.content_type})") unless picture.content_type =~ /\Aimage\/(#{PIC_TYPES})\z/
-      errors.add(:picture, "invalid filename (#{picture.filename})")         unless picture.filename.to_s =~ /\.(#{PIC_TYPES})\z/i
-      errors.add(:picture, "too large an image size (#{picture.byte_size})") unless picture.byte_size < MAX_PIC_SIZE
-    end
   end
 
   def check_audio

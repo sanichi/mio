@@ -18,10 +18,10 @@
       #solution.badge.badge-info{"data-solution" => question.solution}= "?"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
-  - if question.picture.attached?
+  - if [114, 120, 123, 3, 70, 74, 78, 81, 93, 96, 116, 121, 124, 57, 71, 75, 79, 82, 94, 97, 117, 122, 125, 58, 73, 76, 80, 85, 95, 98].include? question.id
     .card-body
       .offset-md-1.col-md-10.offset-lg-2.col-lg-8.text-center
-        = image_tag @question.picture, class: "img-fluid"
+        = image_tag @question.image_path, class: "img-fluid"
   - if question.audio.present? && question.question.present?
     .card-body.text-center
       %audio{controls: "true"}
