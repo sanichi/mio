@@ -1,7 +1,7 @@
 = render "utils/title", key: "pages.magic", header: true
 
 - content_for :javascript do
-  = render "magic_elm.min.js"
-  = render "magic.js"
+  = render partial: "magic_elm.min", formats: :js
+  = render partial: "magic", formats: :js
 
 .div{id: "elm-app"}

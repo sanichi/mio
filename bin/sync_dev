@@ -4,36 +4,22 @@ use strict;
 # Setup.
 my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
 my $tss_app = '/var/www/me.mio/current';
-my $tss_img = "$tss_app/public/system/pictures";
-my $tss_aud = "$tss_app/public/system/audio";
 my $tss_db  = 'mio_production';
 my $tmp_sql = '/tmp/mio.sql';
-my $tmp_img = '/tmp/img.tar.gz';
-my $tmp_aud = '/tmp/aud.tar.gz';
 my $loc_app = '/Users/mjo/Projects/app/mio';
-my $loc_img = "$loc_app/public/system/pictures";
-my $loc_aud = "$loc_app/public/system/audio";
 my $loc_db  = 'mio_development';
 
 # Sanity check.
 &check(-d $loc_app, "directory $loc_app does not exist");
-&check(-d $loc_img, "directory $loc_img does not exist");
-&check(-d $loc_aud, "directory $loc_aud does not exist");
 
 # Generate data on server.
 &run("ssh $ssh_usr 'pg_dump $tss_db --no-owner --no-privileges --clean --file $tmp_sql'", "couldn't export DB on server");
-&run("ssh $ssh_usr 'cd $tss_img; tar -zcf $tmp_img .'", "couldn't archive images on server");
-&run("ssh $ssh_usr 'cd $tss_aud; tar -zcf $tmp_aud .'", "couldn't archive audio on server");
 
 # Remove old local data.
 &run("rm -f $tmp_sql", "couldn't remove $tmp_sql") if -f $tmp_sql;
-&run("rm -f $tmp_img", "couldn't remove $tmp_img") if -f $tmp_img;
-&run("rm -f $tmp_aud", "couldn't remove $tmp_aud") if -f $tmp_aud;
 
 # Copy new data from server.
 &run("scp $ssh_usr:$tmp_sql $tmp_sql", "couldn't copy SQL export from server");
-&run("scp $ssh_usr:$tmp_img $tmp_img", "couldn't copy image archive from server");
-&run("scp $ssh_usr:$tmp_aud $tmp_aud", "couldn't copy audio archive from server");
 
 # Does this all look good so far?
 my $ans = &ask('Proceed with sync [yN]', qr/^(Y(es)?|No?|)$/i);
@@ -41,10 +27,6 @@ exit unless $ans =~ /^Y(es)?/i;
 
 # Install data locally.
 &run("psql -q $loc_db < $tmp_sql", "couldn't import SQL to development DB");
-&run("rm -rf $loc_img/*", "couldn't delete old images");
-&run("rm -rf $loc_aud/*", "couldn't delete old audio");
-&run("tar -zxf $tmp_img -C $loc_img", "couldn't extract images to $loc_img");
-&run("tar -zxf $tmp_aud -C $loc_aud", "couldn't extract audio to $loc_aud");
 
 #
 # Utilities.

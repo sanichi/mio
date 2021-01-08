@@ -1,7 +1,7 @@
 = render "utils/title", text: @problem.description
 
 - content_for :javascript do
-  = render "questions/answers.js"
+  = render partial: "questions/answers", formats: :js
 
 .card
   .card-header

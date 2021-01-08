@@ -1,7 +1,7 @@
 = render "utils/title", text: @note.title
 
 - content_for :javascript do
-  = render "random.js"
+  = render partial: "random", formats: :js
 
 .card
   .card-header

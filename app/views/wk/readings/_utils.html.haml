@@ -1,4 +1,4 @@
 = content_for :javascript do
-  = render "wk/readings/play_utils.js"
+  = render partial: "wk/readings/play_utils", formats: :js
   - if can?(:edit, Wk::Reading)
-    = render "wk/readings/update_utils.js"
+    = render partial: "wk/readings/update_utils", formats: :js

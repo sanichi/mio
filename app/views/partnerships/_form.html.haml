@@ -1,5 +1,5 @@
 - content_for :javascript do
-  = render "couples_completer.js", realm: partnership.realm
+  = render partial: "couples_completer", formats: :js, locals: { realm: partnership.realm }
 
 :ruby
   inputs = [

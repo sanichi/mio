@@ -1,7 +1,7 @@
 
 - number = picture.people.size + 3
 - content_for :javascript do
-  = render "person_completer.js", number: number, realm: picture.realm
+  = render partial: "person_completer", formats: :js, locals: { number: number, realm: picture.realm }
 
 :ruby
   inputs = [

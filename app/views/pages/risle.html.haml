@@ -2,7 +2,7 @@
 
 - if can?(:park, Flat) || params[:p]
   - content_for :javascript do
-    = render "risle.js"
+    = render partial: "risle", formats: :js
 
 %svg#risle{version: "1.1", viewBox: "0 0 2000 1000"}
   %title Rennies Isle Map

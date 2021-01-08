@@ -71,7 +71,7 @@ class Question < ApplicationRecord
 
   def audio_path(abs: false)
     return nil unless audio.present?
-    path = "system/audio/jlpt/n#{1 + problem.level}/#{audio}"
+    path = "audio/jlpt/n#{1 + problem.level}/#{audio}"
     abs ? (Rails.root + "public" + path).to_s : "/#{path}"
   end
 

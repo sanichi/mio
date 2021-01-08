@@ -1,8 +1,8 @@
 = render "utils/title", key: "pages.board"
 
 - content_for :javascript do
-  = render "board_elm.min.js"
-  = render "board.js"
+  = render partial: "board_elm.min", formats: :js
+  = render partial: "board", formats: :js
 
 - (1..5).each do |id|
   .row.mb-3

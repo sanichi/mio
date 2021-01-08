@@ -1,6 +1,6 @@
 - content_for :javascript do
-  = render "play_elm.min.js"
-  = render "play.js"
+  = render partial: "play_elm.min", formats: :js
+  = render partial: "play", formats: :js
 
 .row
   %div{class: center(lg: 6, md: 8, sm: 10)}

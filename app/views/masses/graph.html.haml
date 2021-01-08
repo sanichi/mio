@@ -1,7 +1,7 @@
 - content_for :head do
   = javascript_include_tag "https://www.google.com/jsapi"
 - content_for :javascript do
-  = render "draw_graph.js", mgd: @mgd
+  = render partial: "draw_graph", formats: :js, locals: { mgd: @mgd }
 
 = render "utils/title", key: "mass.data"
 

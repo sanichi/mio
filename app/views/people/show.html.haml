@@ -1,6 +1,6 @@
 = render "utils/title", text: @person.name(full: false), header: true
 - content_for :javascript do
-  = render "relation_completer.js", id: @person.id
+  = render partial: "relation_completer", formats: :js, locals: { id: @person.id }
 
 .btn-toolbar.justify-content-center
   .btn-group.mr-1

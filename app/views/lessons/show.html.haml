@@ -4,8 +4,8 @@
 
 - unless boards.empty?
   = content_for :javascript do
-    = render "pages/board_elm.min.js"
-    = render "utils/board/boards.js", fens: boards
+    = render partial: "pages/board_elm.min", formats: :js
+    = render partial: "utils/board/boards", formats: :js, locals: { fens: boards }
 
 
 .card

@@ -1,5 +1,5 @@
 - content_for :javascript do
-  = render "parent_completer.js", max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm
+  = render partial: "parent_completer", formats: :js, locals: { max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm }
 
 :ruby
   inputs = [

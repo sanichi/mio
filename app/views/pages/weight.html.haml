@@ -1,8 +1,8 @@
 = render "utils/title", key: "mass.mass"
 
 - content_for :javascript do
-  = render "weight_elm.min.js"
-  = render "weight.js"
+  = render partial: "weight_elm.min", formats: :js
+  = render partial: "weight", formats: :js
 
 .row.mb-3
   .div{class: center(xs: 12)}

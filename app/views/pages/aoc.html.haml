@@ -1,8 +1,8 @@
 = render "utils/title", key: "pages.aoc.title", header: true
 
 - content_for :javascript do
-  = render "aoc_elm.min.js"
-  = render "aoc.js", year: params[:year], day: params[:day]
+  = render partial: "aoc_elm.min", formats: :js
+  = render partial: "aoc", formats: :js, locals: { year: params[:year], day: params[:day] }
 
 %hr
 

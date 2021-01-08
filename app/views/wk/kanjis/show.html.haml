@@ -3,7 +3,7 @@
 
 - if @kanji.kvg_xml.present?
   = content_for :javascript do
-    = render "kvg_button.js"
+    = render partial: "kvg_button", formats: :js
 
 %h1.text-center.display-1
   = @kanji.linked_character
