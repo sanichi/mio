@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_09_121559) do
+ActiveRecord::Schema.define(version: 2021_01_09_135303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_121559) do
     t.boolean "portrait", default: false
     t.string "title"
     t.integer "realm", limit: 2, default: 0
+    t.string "image", limit: 20
   end
 
   create_table "problems", force: :cascade do |t|

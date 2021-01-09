@@ -2,6 +2,7 @@ class Picture < ApplicationRecord
   include Constrainable
   include Remarkable
 
+  MAX_IMAGE = 20
   MAX_TITLE = 50
   SIZE = { tn: 100, xs: 300, sm: 600, md: 900, lg: 1200 }
 
@@ -10,6 +11,8 @@ class Picture < ApplicationRecord
   before_validation :normalize_attributes
 
   validates :realm, numericality: { integer_only: true, greater_than_or_equal_to: Person::MIN_REALM, less_than_or_equal_to: Person::MAX_REALM }
+  validates :image, length: { maximum: MAX_IMAGE }, format: { with: /\A[-A-Za-z_\d]+\.(jpg|png|gif)\z/ }, uniqueness: true
+  validate :check_image
   validate :check_people_realm
 
   default_scope { order(id: :desc) }
@@ -36,12 +39,10 @@ class Picture < ApplicationRecord
     self.people = new_ids.map{ |id| Person.find_by(id: id) }.compact
   end
 
-  def path(thumbnail: true)
-    fend = "jpg"
-    fend = "png" if [360,359,358,353,352,62,61,60,9].include?(id)
-    tumb =
-    tumb = "t" if thumbnail
-    "/people/#{id}#{tumb}.#{fend}"
+  def path(thumbnail: true, abs: false)
+    file = thumbnail ? image.sub('.', 't.') : image
+    path = "people/#{file}"
+    abs ? (Rails.root + "public" + path).to_s : "/#{path}"
   end
 
   def self.hidden_class(nm)
@@ -87,5 +88,12 @@ class Picture < ApplicationRecord
 
   def check_people_realm
     errors.add(:realm, "not all people from this realm") unless people.all? { |p| p.realm == realm }
+  end
+
+  def check_image
+    if image.present? && !Rails.env.test?
+      errors.add(:image, "full image does not exist") unless File.file?(path(abs: true, thumbnail: false))
+      errors.add(:image, "thumbnail does not exist") unless File.file?(path(abs: true, thumbnail: true))
+    end
   end
 end
