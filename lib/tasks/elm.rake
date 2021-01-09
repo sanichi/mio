@@ -25,7 +25,7 @@ namespace :elm do
 
   def compile_and_minify(name, args, main="Main")
     js = "_#{name}_elm.js"
-    min = "../_#{name}_elm.min.js"
+    min = "../_#{name}_elm_min.js"
     opt = args[:debug].present? ? "" : "--optimize"
     if system("elm make #{main}.elm #{opt} --output #{js}")
       File.open(min, "w") do |file|
