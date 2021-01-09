@@ -6,6 +6,7 @@ en:
     answer4: Answer 4
     audio: Audio
     edit: Edit Question
+    image: Image
     new: New Question
     note: Note
     picture: Picture
@@ -13,6 +14,6 @@ en:
     solution: Solution
     icons:
       edit: ✎
-      last: ◀︎
+      last: ←
       new: ✚
-      next: ▶︎
+      next: →

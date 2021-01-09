@@ -8,6 +8,7 @@
     [:answer4,    t("question.answer4"),  :text,   maxlength: Question::MAX_ANSWER],
     [:solution,   t("question.solution"), :select, menu: question_solution_menu(question.solution, question.new_record?)],
     [:audio,      t("question.audio"),    :text,   maxlength: Question::MAX_AUDIO],
+    [:image,      t("question.image"),    :text,   maxlength: Question::MAX_IMAGE],
     [:note,       t("question.note"),     :area,   rows: 15],
   ]
   cancel = url_for controller: "problems", action: "show", id: question.problem.id, question_id: question.id

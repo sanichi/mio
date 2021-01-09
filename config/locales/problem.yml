@@ -38,8 +38,8 @@ en:
       - Immediate Reply
     icons:
       edit: ✎
-      last: ◀︎
-      next: ▶︎
+      last: ←
+      next: →
 jp:
   problem:
     categories:
