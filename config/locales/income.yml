@@ -2,6 +2,7 @@ en:
   income:
     edit: Edit Income
     finish: End
+    graph: Income Chart
     income: Income
     incomes: Incomes
     joint: Joint

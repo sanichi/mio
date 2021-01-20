@@ -3,7 +3,7 @@
 - content_for :javascript do
   = render partial: "graph", formats: :js, locals: { igd: @igd }
 
-= render "utils/title", key: "income.incomes"
+= render "utils/title", key: "income.graph"
 
 #chart{style: "height: #{@igd.full_height}px"}
 
