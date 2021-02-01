@@ -1,0 +1,20 @@
+= render "utils/title", text: @team.name
+
+.row
+  .offset-md-3.col-md-6
+    %table{class: "table table-bordered table-striped table-sm"}
+      %tbody
+        %tr
+          %th= t("team.name")
+          %td= @team.name
+        %tr
+          %th= t("team.short")
+          %td= @team.short
+        %tr
+          %th= t("team.slug")
+          %td= @team.slug
+
+.text-center.mt-3
+  = link_to t("team.teams"), last_search(teams_path), class: "btn btn-success"
+  - if can?(:edit, Team)
+    = link_to t("edit"), edit_team_path(@team), class: "btn btn-info"
