@@ -5,10 +5,10 @@ google.load("visualization", "1", { packages:["corechart"] });
 google.setOnLoadCallback(drawChart);
 
 // Create the raw data (in the mass-graph-data object).
-var raw_data = <%= render "raw_data.js", mgd: mgd %>;
+var raw_data = <%= render partial: "raw_data", formats: :js, locals: { mgd: mgd } %>;
 
 // Create options that depend on the current state (in mgd).
-var dynamic_options = <%= render "dynamic_options.js", mgd: mgd %>;
+var dynamic_options = <%= render partial: "dynamic_options", formats: :js, locals: { mgd: mgd } %>;
 
 // Callback that instantiates the scatter chart, passes in the data and draws it.
 function drawChart()
@@ -34,7 +34,7 @@ function drawChart()
       1: { pointShape: { type: "diamond" } }
     }
   };
-  
+
   // Mix the fixed and dynamic options.
   $.extend(options, dynamic_options);
 
