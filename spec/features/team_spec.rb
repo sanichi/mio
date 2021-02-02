@@ -15,6 +15,7 @@ describe Team do
       fill_in t("team.name"), with: data.name
       fill_in t("team.short"), with: data.short
       fill_in t("team.slug"), with: data.slug
+      select data.division, from: t("team.division")
 
       click_button t("save")
 
@@ -26,12 +27,14 @@ describe Team do
       expect(t.name).to eq data.name
       expect(t.short).to eq data.short
       expect(t.slug).to eq data.slug
+      expect(t.division).to eq data.division
     end
 
     it "failure" do
       click_link t("team.new")
       fill_in t("team.name"), with: data.name
       fill_in t("team.short"), with: data.short
+      select data.division, from: t("team.division")
       click_button t("save")
 
       expect(page).to have_title t("team.new")

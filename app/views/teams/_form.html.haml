@@ -1,7 +1,8 @@
 :ruby
   inputs = [
-    [:name,  t("team.name"),  :text, maxlength: Team::MAX_NAME],
-    [:short, t("team.short"), :text, maxlength: Team::MAX_SHORT],
-    [:slug,  t("team.slug"),  :text, maxlength: Team::MAX_NAME],
+    [:name,     t("team.name"),     :text,   maxlength: Team::MAX_NAME],
+    [:short,    t("team.short"),    :text,   maxlength: Team::MAX_SHORT],
+    [:slug,     t("team.slug"),     :text,   maxlength: Team::MAX_NAME],
+    [:division, t("team.division"), :select, menu: team_division_menu(team)],
   ]
 = render "utils/crud/form", object: team, index: teams_path, inputs: inputs, title: title

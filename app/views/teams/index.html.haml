@@ -12,7 +12,8 @@
       %thead
         %tr.d-flex
           %th.col-7= t("team.name")
-          %th.col-5= t("team.short")
+          %th.col-4= t("team.short")
+          %th.col-1.text-center= t("team.abbrev.division")
       %tbody{id: "results"}
         = render "results", teams: @teams
 

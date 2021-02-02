@@ -1,8 +1,11 @@
 en:
   team:
+    division: Division
     edit: Edit Team
     name: Full Name
     new: New Team
     short: Short Name
     slug: BBC Slug
     teams: Teams
+    abbrev:
+      division: D

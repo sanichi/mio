@@ -42,6 +42,6 @@ class TeamsController < ApplicationController
   end
 
   def strong_params
-    params.require(:team).permit(:name, :slug, :short)
+    params.require(:team).permit(:name, :slug, :short, :division)
   end
 end

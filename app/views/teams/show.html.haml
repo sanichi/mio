@@ -13,6 +13,9 @@
         %tr
           %th= t("team.slug")
           %td= @team.slug
+        %tr
+          %th= t("team.division")
+          %td= @team.division
 
 .text-center.mt-3
   = link_to t("team.teams"), last_search(teams_path), class: "btn btn-success"

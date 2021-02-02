@@ -1,5 +1,6 @@
 - teams.matches.each do |team|
   %tr.d-flex
     %td.col-7= link_to team.name, team
-    %td.col-5= team.short
-= render "utils/pagination_links", pager: teams, columns: 2
+    %td.col-4= team.short
+    %td.col-1.text-center= team.division
+= render "utils/pagination_links", pager: teams, columns: 3
