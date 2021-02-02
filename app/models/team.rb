@@ -25,6 +25,52 @@ class Team < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def results
+    url = "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures"
+    uri = URI.parse(url)
+    begin
+      # get the response
+      response = Net::HTTP.get_response(uri)
+      body = response.body
+
+      # pick out the line containing the data
+      if body =~ /<script>Morph\.toInit\.payloads\.push\(function\(\) \{ Morph\.setPayload\('\/data\/bbc-morph-football-scores-match-list-data([^<]+)/
+        script = $1
+      else
+        raise "can't find script"
+      end
+
+      # try to extract the JSON from this
+      if script =~ /(\{"meta":\{.*\}\]\}\]\}\}\]\}\})/
+        json = $1
+      else
+        raise "can't get JSON"
+      end
+
+      # parse and return the JSON
+      data = JSON.parse(json)
+      raise "json data is not a hash" unless data.is_a?(Hash)
+
+      # this should have a body hash
+      body = data['body']
+      raise "can't find body" unless body.is_a?(Hash)
+
+      # this should have matchData array
+      matchData = body['matchData']
+      raise "can't find matchData" unless matchData.is_a?(Array) && matchData.size > 0
+
+      # this should be an array of hashes with tournamentDatesWithEvents entries
+      tournamentDatesWithEvents = matchData.map do |md|
+        md.is_a?(Hash) ? md['tournamentDatesWithEvents'] : nil
+      end.compact
+      raise "can't get tournamentDatesWithEvents" unless tournamentDatesWithEvents.size == matchData.size
+
+      tournamentDatesWithEvents
+    rescue => e
+      e.message
+    end
+  end
+
   private
 
   def normalize_attributes
