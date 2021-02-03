@@ -8,4 +8,9 @@ module MatchHelper
     opts.unshift [t("any"), ""]
     options_for_select(opts)
   end
+
+  def match_played_menu
+    opts = [[t("any"), 0], [t("match.played"), 1], [t("match.unplayed"), 2]]
+    options_for_select(opts)
+  end
 end

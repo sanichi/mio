@@ -21,15 +21,32 @@ class Match < ApplicationRecord
     end
   end
 
+  def summary
+    "#{home_team.short}-#{away_team.short} #{score} #{date}"
+  end
+
   def self.search(params, path, opt={})
     matches = by_date
     if (season = params[:season].to_i) > 0
       matches = matches.where(season: season)
     end
     if (team_id = params[:team_id].to_i) > 0
-      matches = matches.where("away_team_id = ? OR away_team_id = ?", team_id, team_id)
+      matches = matches.where("home_team_id = ? OR away_team_id = ?", team_id, team_id)
+    end
+    case params[:played].to_i
+      when 1 then matches = matches.where("home_score IS NOT NULL AND away_score IS NOT NULL")
+      when 2 then matches = matches.where("home_score IS NULL AND away_score IS NULL")
     end
     paginate(matches, params, path, opt)
+  end
+
+  def self.current_season
+    today = Date.today
+    if today.month <= 8
+      today.year - 1
+    else
+      today.year
+    end
   end
 
   private

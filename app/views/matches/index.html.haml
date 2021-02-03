@@ -4,6 +4,7 @@
   inputs = [
     [:season,  t("match.season"), :select, menu: match_season_menu],
     [:team_id, t("team.team"),    :select, menu: team_menu],
+    [:played,  t("match.played"), :select, menu: match_played_menu],
   ]
 = render "utils/search/form", index: matches_path, inputs: inputs
 

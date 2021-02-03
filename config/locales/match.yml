@@ -4,5 +4,7 @@ en:
     date: Date
     home: Home
     matches: Matches
+    played: Played
     season: Season
     score: Score
+    unplayed: Unplayed

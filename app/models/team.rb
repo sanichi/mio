@@ -36,7 +36,7 @@ class Team < ApplicationRecord
     end
     url = "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures/#{month}"
     uri = URI.parse(url)
-    sleep(0.1)
+    sleep(0.2)
     begin
       # get the response
       response = Net::HTTP.get_response(uri)
@@ -102,9 +102,10 @@ class Team < ApplicationRecord
             # extract what we want from this hash
             {
               date: Date.parse(item["startTime"][0,10]),
-              home: item["homeTeam"]["name"]["full"],
-              away: item["awayTeam"]["name"]["full"],
-              score: "%s-%s" % [item["homeTeam"]["scores"]["score"], item["awayTeam"]["scores"]["score"]]
+              home_team: item["homeTeam"]["name"]["full"],
+              away_team: item["awayTeam"]["name"]["full"],
+              home_score: item["homeTeam"]["scores"]["score"],
+              away_score: item["awayTeam"]["scores"]["score"],
             }
           else
             nil
