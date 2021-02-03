@@ -25,9 +25,14 @@ class Team < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def results
-    url = "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures"
+  def monthResults(month="")
+    unless month =~ /\A20\d\d-(0[1-9]|1[0-2])\z/
+      today = Date.today
+      month = '%d-%02d' % [today.year, today.month]
+    end
+    url = "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures/#{month}"
     uri = URI.parse(url)
+    sleep(0.1)
     begin
       # get the response
       response = Net::HTTP.get_response(uri)
@@ -44,7 +49,11 @@ class Team < ApplicationRecord
       if script =~ /(\{"meta":\{.*\}\]\}\]\}\}\]\}\})/
         json = $1
       else
-        raise "can't get JSON"
+        if body =~ /No fixtures found for this date/
+          return []
+        else
+          raise "can't get JSON"
+        end
       end
 
       # parse and return the JSON
@@ -60,15 +69,58 @@ class Team < ApplicationRecord
       raise "can't find matchData" unless matchData.is_a?(Array) && matchData.size > 0
 
       # this should be an array of hashes with tournamentDatesWithEvents entries
-      tournamentDatesWithEvents = matchData.map do |md|
+      datesWithEvents = matchData.map do |md|
         md.is_a?(Hash) ? md['tournamentDatesWithEvents'] : nil
       end.compact
-      raise "can't get tournamentDatesWithEvents" unless tournamentDatesWithEvents.size == matchData.size
+      raise "can't get datesWithEvents" unless datesWithEvents.size == matchData.size
 
-      tournamentDatesWithEvents
+      # each array element is a hash keyed on one or more dates
+      events = datesWithEvents.map do |td|
+        td.keys.map do |date|
+          item = td[date]
+
+          # each hash value is an array of hashes
+          if item.is_a?(Array) && item.size == 1 && item.first.is_a?(Hash)
+            item = item.first
+          else
+            raise "date data is not a single element array of hashes"
+          end
+
+          # each hash has round and events keys and we want the value for the latter
+          if item.is_a?(Hash) && item["events"].is_a?(Array) && item["events"].size == 1
+            item = item["events"].first
+          else
+            raise "date data element does not have an 'events' array"
+          end
+
+          # we only want Premier League games
+          if item["tournamentName"]["full"] == "Premier League"
+            # extract what we want from this hash
+            {
+              date: Date.parse(item["startTime"][0,10]),
+              home: item["homeTeam"]["name"]["full"],
+              away: item["awayTeam"]["name"]["full"],
+              score: "%s-%s" % [item["homeTeam"]["scores"]["score"], item["awayTeam"]["scores"]["score"]]
+            }
+          else
+            nil
+          end
+        end
+      end.flatten.compact
+
+      events
     rescue => e
       e.message
     end
+  end
+
+  def seasonResults
+    today = Date.today
+    year = today.year - (today.month <= 8 ? 1 : 0)
+    first = (9..12).map{ |m| [year, m] }
+    second = (1..8).map{ |m| [year + 1, m] }
+    months = (first + second).map { |ym| "%s-%02d" % ym }
+    months.map{ |m| monthResults(m) }.flatten
   end
 
   private
