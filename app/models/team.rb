@@ -17,8 +17,9 @@ class Team < ApplicationRecord
   validates :slug, presence: true, length: { maximum: MAX_NAME }, uniqueness: true, format: { with: /\A[a-z]+(-[a-z]+)*\z/ }
   validates :division, numericality: { integer_only: true, more_than_or_equal_to: MIN_DIVISION, less_than_or_equal_to: MAX_DIVISION }
 
-  scope :by_name,  -> { order(:name) }
-  scope :by_short, -> { order(:short) }
+  scope :by_name,    -> { order(:name) }
+  scope :by_short,   -> { order(:short) }
+  scope :by_created, -> { order(:created_at) }
 
   def self.search(params, path, opt={})
     matches = by_name
