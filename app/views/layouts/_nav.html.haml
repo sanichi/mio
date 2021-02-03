@@ -48,7 +48,7 @@
             = link_to t("income.incomes"),   graph_incomes_path if can?(:read, Income)
             = link_to t("expense.expenses"), expenses_path      if can?(:read, Expense)
 
-      -  if [:aoc, :env, :play, :weight].map{ |p| can?(p, :page) }.any? || [Lesson, Login, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
+      -  if [:aoc, :env, :play, :weight].map{ |p| can?(p, :page) }.any? || [Lesson, Login, Match, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
         %li.dropdown
           = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
           .dropdown-menu
@@ -58,6 +58,7 @@
             = link_to t("pages.aoc.short"),    aoc_path       if can?(:aoc, :page)
             = link_to t("pages.play"),         play_path      if can?(:play, :page)
             = link_to t("team.teams"),         teams_path     if can?(:read, Team)
+            = link_to t("match.matches"),      matches_path   if can?(:read, Match)
             = link_to t("user.users"),         users_path     if can?(:read, User)
             = link_to t("login.logins"),       logins_path    if can?(:read, Login)
             = link_to t("pages.env"),          env_path       if can?(:env, :page)

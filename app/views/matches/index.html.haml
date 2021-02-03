@@ -1,0 +1,14 @@
+= render "utils/title", key: "match.matches"
+
+:ruby
+  inputs = [
+    [:season,  t("match.season"), :select, menu: match_season_menu],
+    [:team_id, t("team.team"),    :select, menu: team_menu],
+  ]
+= render "utils/search/form", index: matches_path, inputs: inputs
+
+.row.mt-3
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    %table{class: "table table-bordered table-striped table-sm"}
+      %tbody{id: "results"}
+        = render "results", matches: @matches

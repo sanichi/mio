@@ -1,0 +1,11 @@
+- matches.matches.each do |match|
+  %tr
+    %td.text-center= match_season(match.season)
+    %td.text-center= match.date.strftime("%b %-d")
+    %td.text-right= match.home_team.short
+    %td.text-center= match.score
+    %td.text-left= match.away_team.short
+    %td.text-center= match.created_at.strftime("%b %-d")
+    %td.text-center= match.updated_at.strftime("%b %-d")
+
+= render "utils/pagination_links", pager: matches, columns: 5
