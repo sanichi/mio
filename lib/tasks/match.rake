@@ -1,6 +1,6 @@
 namespace :match do
   def log(str, error=false)
-    msg = "%s: %s%s%s" % [Time.now.strftime("%Y-%m-%d %H-%M-%S"), "MATCH", error ? " ERROR " : " ", str]
+    msg = "%s%s%s" % ["MATCH", error ? " ERROR " : " ", str]
     Rails.logger.info msg
   end
 
