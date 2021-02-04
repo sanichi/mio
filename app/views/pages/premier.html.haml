@@ -1,0 +1,28 @@
+= render "utils/title", key: "pages.premier.name", header: true
+
+.row.mt-3
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    %table{class: "table table-bordered table-striped table-sm"}
+      %thead
+        %tr
+          %th
+          %th.text-center= t("pages.premier.played")
+          %th.text-center= t("pages.premier.won")
+          %th.text-center= t("pages.premier.drawn")
+          %th.text-center= t("pages.premier.lost")
+          %th.text-center= t("pages.premier.for")
+          %th.text-center= t("pages.premier.against")
+          %th.text-center= t("pages.premier.diff")
+          %th.text-center= t("pages.premier.points")
+      %tbody
+        - @teams.each do |t|
+          %tr
+            %th= t.short
+            %td.text-center= t.played
+            %td.text-center= t.won
+            %td.text-center= t.drawn
+            %td.text-center= t.lost
+            %td.text-center= t.for
+            %td.text-center= t.against
+            %td.text-center= t.diff
+            %th.text-center= t.points

@@ -2,6 +2,10 @@ class Team < ApplicationRecord
   include Constrainable
   include Pageable
 
+  [:won, :diff, :drawn, :lost, :played, :points, :for, :against].each do |a|
+    attribute a, :integer, default: 0
+  end
+
   MAX_NAME = 30
   MAX_SHORT = 15
   MAX_DIVISION = 4
@@ -128,11 +132,61 @@ class Team < ApplicationRecord
     months.map{ |m| monthResults(m) }.flatten
   end
 
+  def get_stats(season)
+    home_matches.where(season: season).each do |m|
+      us = m.home_score || next
+      them = m.away_score || next
+      goals us, them
+    end
+    away_matches.where(season: season).each do |m|
+      us = m.away_score || next
+      them = m.home_score || next
+      goals us, them
+    end
+    self
+  end
+
+  def self.sort!(teams)
+    teams.sort! do |a,b|
+      if b.points > a.points
+        1
+      elsif b.points < a.points
+        -1
+      else
+        if b.diff > a.diff
+          1
+        elsif b.diff < a.diff
+          -1
+        else
+          b.name <=> a.name
+        end
+      end
+    end
+  end
+
   private
 
   def normalize_attributes
     name&.squish!
     slug&.squish!
     short&.squish!
+  end
+
+  def goals(us, them)
+    self.played += 1
+    self.for += us
+    self.against += them
+    self.diff += us - them
+    if us > them
+      self.won += 1
+      self.points += 3
+    end
+    if us == them
+      self.drawn += 1
+      self.points += 1
+    end
+    if us < them
+      self.lost += 1
+    end
   end
 end

@@ -15,6 +15,16 @@ en:
       title: Advent of Code
       year: Year
       year_day: Year/Day
+    premier:
+      against: A
+      drawn: D
+      for: F
+      diff: D
+      lost: L
+      name: Premier
+      played: P
+      points: P
+      won: W
     risle:
       map: Rennie's Isle Map
       name: Rennie's Isle
