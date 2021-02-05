@@ -1,0 +1,11 @@
+:ruby
+  if team == match.home_team
+    opponent = match.away_team.short
+    venue = "H"
+  else
+    opponent = match.home_team.short
+    venue = "A"
+  end
+  title = "#{opponent} #{match.date.strftime('%-d %b')}"
+
+%button.btn.btn-light.btn-sm{title: title, "data-toggle" => "tooltip", "data-placement" => "left"}= venue

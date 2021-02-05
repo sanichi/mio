@@ -5,6 +5,8 @@ class Team < ApplicationRecord
   [:won, :diff, :drawn, :lost, :played, :points, :for, :against].each do |a|
     attribute a, :integer, default: 0
   end
+  attribute :latest_results
+  attribute :upcoming_fixtures
 
   MAX_NAME = 30
   MAX_SHORT = 15
@@ -132,22 +134,24 @@ class Team < ApplicationRecord
     months.map{ |m| monthResults(m) }.flatten
   end
 
-  def get_stats(season)
-    home_matches.where(season: season).each do |m|
-      us = m.home_score || next
-      them = m.away_score || next
-      goals us, them
-    end
-    away_matches.where(season: season).each do |m|
-      us = m.away_score || next
-      them = m.home_score || next
-      goals us, them
-    end
+  def stats(season)
+    # stats from completed matches plus recent results
+    home = home_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+    away = away_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+    home.each { |m| goals m.home_score, m.away_score }
+    away.each { |m| goals m.away_score, m.home_score }
+    self.latest_results = (home.take(5) + away.take(5)).sort_by{ |m| m.date }.reverse.take(5).reverse
+
+    # upcoming fixtures not yet played
+    home = home_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
+    away = away_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
+    self.upcoming_fixtures = (home.reverse.take(5) + away.reverse.take(5)).sort_by{ |m| m.date }.take(5)
+
     self
   end
 
-  def self.sort!(teams)
-    teams.sort! do |a,b|
+  def self.stats(season)
+    Team.where(division: 1).map{ |t| t.stats(season) }.sort do |a,b|
       if b.points > a.points
         1
       elsif b.points < a.points

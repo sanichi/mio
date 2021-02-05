@@ -16,7 +16,6 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @teams = Team.where(division: 1).all.map{ |t| t.get_stats(2020) }
-    Team.sort!(@teams)
+    @teams = Team.stats(2020)
   end
 end

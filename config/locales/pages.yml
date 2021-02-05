@@ -21,9 +21,10 @@ en:
       for: F
       diff: D
       lost: L
-      name: Premier
+      name: Premier League
       played: P
       points: P
+      short: Premier
       won: W
     risle:
       map: Rennie's Isle Map

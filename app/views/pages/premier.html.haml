@@ -1,11 +1,14 @@
 = render "utils/title", key: "pages.premier.name", header: true
 
+- content_for :javascript do
+  = render partial: "premier_tooltips", formats: :js
+
 .row.mt-3
-  %div{class: center(xl: 6, lg: 8, md: 10)}
+  %div{class: center(xl: 8, lg: 10)}
     %table{class: "table table-bordered table-striped table-sm"}
       %thead
         %tr
-          %th
+          %th.shrink
           %th.text-center= t("pages.premier.played")
           %th.text-center= t("pages.premier.won")
           %th.text-center= t("pages.premier.drawn")
@@ -14,10 +17,12 @@
           %th.text-center= t("pages.premier.against")
           %th.text-center= t("pages.premier.diff")
           %th.text-center= t("pages.premier.points")
+          %th.shrink
+          %th.shrink
       %tbody
         - @teams.each do |t|
           %tr
-            %th= t.short
+            %th.shrink= t.short
             %td.text-center= t.played
             %td.text-center= t.won
             %td.text-center= t.drawn
@@ -26,3 +31,9 @@
             %td.text-center= t.against
             %td.text-center= t.diff
             %th.text-center= t.points
+            %td.shrink.text-monospace
+              - t.latest_results.each do |m|
+                = render "premier_latest", team: t, match: m
+            %td.shrink.text-monospace
+              - t.upcoming_fixtures.each do |m|
+                = render "premier_upcoming", team: t, match: m
