@@ -19,6 +19,6 @@ class Ability
 
     can :read, [Favourite]
     can [:read, :graph], Mass
-    can [:aoc, :pam, :play, :risle, :weight], :page
+    can [:aoc, :pam, :play, :premier, :risle, :weight], :page
   end
 end
