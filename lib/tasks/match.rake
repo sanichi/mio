@@ -74,7 +74,6 @@ namespace :match do
     team = Team.find_by(name: name) || Team.find_by(short: name)
     @print = true
     if team
-      report "scraping #{team.name}"
       scrape(team, "monthly", Match.current_season)
     else
       report "could't find '#{name}'", true
