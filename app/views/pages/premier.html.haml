@@ -13,12 +13,12 @@
           %th.text-center= t("pages.premier.won")
           %th.text-center= t("pages.premier.drawn")
           %th.text-center= t("pages.premier.lost")
-          %th.text-center= t("pages.premier.for")
-          %th.text-center= t("pages.premier.against")
-          %th.text-center= t("pages.premier.diff")
+          %th.text-center.d-none.d-sm-table-cell= t("pages.premier.for")
+          %th.text-center.d-none.d-sm-table-cell= t("pages.premier.against")
+          %th.text-center.d-none.d-sm-table-cell= t("pages.premier.diff")
           %th.text-center= t("pages.premier.points")
           %th.shrink
-          %th.shrink
+          %th.shrink.d-none.d-md-table-cell
       %tbody
         - @teams.each do |t|
           %tr
@@ -27,13 +27,13 @@
             %td.text-center= t.won
             %td.text-center= t.drawn
             %td.text-center= t.lost
-            %td.text-center= t.for
-            %td.text-center= t.against
-            %td.text-center= t.diff
+            %td.text-center.d-none.d-sm-table-cell= t.for
+            %td.text-center.d-none.d-sm-table-cell= t.against
+            %td.text-center.d-none.d-sm-table-cell= t.diff
             %th.text-center= t.points
             %td.shrink.text-monospace
               - t.latest_results.each do |m|
                 = render "premier_latest", team: t, match: m
-            %td.shrink.text-monospace
+            %td.shrink.text-monospace.d-none.d-md-table-cell
               - t.upcoming_fixtures.each do |m|
                 = render "premier_upcoming", team: t, match: m
