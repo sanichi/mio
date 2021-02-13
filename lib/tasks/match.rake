@@ -61,6 +61,8 @@ namespace :match do
     end
   end
 
+  # Meant for nightly cron. For example:
+  # 0 22 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails match:all >> log/cron.log 2>&1
   desc "scrape monthly or seasonal data for all the premier league teams"
   task :all, [:scope] => :environment do |task, args|
     scope = args[:scope] == "s" ? "seasonal" : "monthly"
@@ -68,6 +70,9 @@ namespace :match do
     Team.where(division: 1).all.each { |team| scrape(team, scope, Match.current_season) }
   end
 
+  # Meant for quick update initiated from development laptop. For examle:
+  # bin/cap production match:one # default is Man City
+  # bin/cap production match:one\[Liverpool\]
   desc "scrape monthly data for one premier league team"
   task :one, [:name] => :environment do |task, args|
     name = args[:name].present? ? args[:name] : "Manchester City"
