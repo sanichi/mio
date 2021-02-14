@@ -76,7 +76,7 @@ namespace :match do
   desc "scrape monthly data for one premier league team"
   task :one, [:name] => :environment do |task, args|
     name = args[:name].present? ? args[:name] : "Manchester City"
-    team = Team.find_by(name: name) || Team.find_by(short: name)
+    team = Team.find_by(name: name) || Team.find_by(short: name) || Team.find_by(slug: name)
     @print = true
     if team
       scrape(team, "monthly", Match.current_season)
