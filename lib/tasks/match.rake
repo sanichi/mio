@@ -84,4 +84,19 @@ namespace :match do
       report "could't find '#{name}'", true
     end
   end
+
+  # Meant to check for changes in layout of page. For examle:
+  # bin/cap production match:check # default is Man City
+  # bin/cap production match:check\[Man Utd\]
+  desc "check page layout for one premier league team"
+  task :check, [:name] => :environment do |task, args|
+    name = args[:name].present? ? args[:name] : "Manchester City"
+    team = Team.find_by(name: name) || Team.find_by(short: name) || Team.find_by(slug: name)
+    if team
+      puts "found #{team.name}"
+      team.checkResults
+    else
+      puts "could't find '#{name}'"
+    end
+  end
 end

@@ -36,13 +36,8 @@ class Team < ApplicationRecord
   end
 
   def monthResults(month="")
-    unless month =~ /\A20\d\d-(0[1-9]|1[0-2])\z/
-      today = Date.today
-      month = '%d-%02d' % [today.year, today.month]
-    end
-    url = "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures/#{month}"
-    uri = URI.parse(url)
-    sleep(0.2)
+    uri = get_uri(month)
+    sleep(0.2) # potentially this method run many times sequentially so be nice
     begin
       # get the response
       response = Net::HTTP.get_response(uri)
@@ -85,7 +80,7 @@ class Team < ApplicationRecord
       raise "can't get datesWithEvents" unless datesWithEvents.size == matchData.size
 
       # each array element is a hash keyed on one or more dates
-      events = datesWithEvents.map do |td|
+      datesWithEvents.map do |td|
         td.keys.map do |date|
           item = td[date]
 
@@ -118,8 +113,55 @@ class Team < ApplicationRecord
           end
         end
       end.flatten.compact
+    rescue => e
+      e.message
+    end
+  end
 
-      events
+  def checkResults(month="")
+    uri = get_uri(month)
+    begin
+      # get the response
+      response = Net::HTTP.get_response(uri)
+      body = response.body
+
+      # how many characters and lines
+      puts "got #{body.length} characters"
+      puts "got #{body.split("\n").length} lines"
+
+      # how many scripts
+      scripts = body.scan(/<script[^>]*>(.*?)<\/script>/).map(&:first)
+      puts "got #{scripts.length} scripts"
+
+      # elimnate any that don't have anything to do with our team
+      scripts.filter! do |s|
+        [name, "home", "away", "score"].map{ |w| s.include?(w) }.all?
+      end
+      puts "got #{scripts.length} potentially relevant script#{scripts.length == 1 ? '' : 's'}"
+
+      # loop through each relevant script
+      scripts.each do |s|
+        # attemt to extract the JSON
+        m = s.match(/\A(.*?)(\{\s*".*[\]}]{4}\})/)
+        if m
+          start, json = m.captures
+          puts "start: #{start}"
+          data = begin
+            JSON.parse(json)
+          rescue => p
+            p.message
+          end
+          if data.is_a?(String)
+            puts "couldn't parse JSON (#{data})"
+          else
+            puts "parsed JSON"
+            puts JSON.generate(data, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '})
+          end
+        else
+          puts "can't find JSON in ..."
+          puts s
+        end
+      end
     rescue => e
       e.message
     end
@@ -192,5 +234,13 @@ class Team < ApplicationRecord
     if us < them
       self.lost += 1
     end
+  end
+
+  def get_uri(month)
+    unless month =~ /\A20\d\d-(0[1-9]|1[0-2])\z/
+      today = Date.today
+      month = '%d-%02d' % [today.year, today.month]
+    end
+    URI.parse "https://www.bbc.co.uk/sport/football/teams/#{slug}/scores-fixtures/#{month}"
   end
 end
