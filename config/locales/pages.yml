@@ -15,6 +15,10 @@ en:
       title: Advent of Code
       year: Year
       year_day: Year/Day
+    prefectures:
+      desc: Interactive map with information about major Japanese regions
+      name: Prefectures
+      title: Prefectures of Japan
     premier:
       against: A
       drawn: D
