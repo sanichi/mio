@@ -1,22 +1,11 @@
 
-function highlight_region(region, flag) {
-  var id = region.attr("id");
-  if (flag) {
-    $('#' + id + '-info').show();
-    console.log("in " + id);
-  } else {
-    $('#' + id + '-info').hide();
-    console.log("out " + id);
-  }
-}
-
 $(function() {
-  $('path.region').hover(
-    function() {
-      highlight_region($(this), true);
-    }, function() {
-      highlight_region($(this), false);
-    }
-  );
   $('div.info').hide();
+  $('#start-info').show();
+  $('path.region').click(function() {
+    $('div.info').hide();
+    var id = $(this).attr("id");
+    $('#' + id + '-info').show();
+  });
+  $('[data-toggle="tooltip"]').tooltip();
 });

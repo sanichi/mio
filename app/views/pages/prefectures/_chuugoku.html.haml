@@ -1,0 +1,8 @@
+- p = "pages/prefectures/wiki"
+
+%h4= render p, region: "中国地方", kana: "ちゅうごく", page: "Chūgoku_region", pop: 7.6
+%ul
+  %li
+    = render p, region: "島根県", kana: "しまね", page: "Shimane_Prefecture", pop: 0.7
+    %ul
+      %li= render p, region: "松江市", kana: "まつえ", page: "Matsue", pop: 0.2
