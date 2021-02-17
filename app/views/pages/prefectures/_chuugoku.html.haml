@@ -1,8 +1,25 @@
 - p = "pages/prefectures/wiki"
 
-%h4= render p, region: "中国地方", kana: "ちゅうごく", page: "Chūgoku_region", pop: 7.6
+%h4= render p, region: "中国地方", kana: "ちゅうごくちほう", page: "Chūgoku_region", pop: 7.6
 %ul
   %li
-    = render p, region: "島根県", kana: "しまね", page: "Shimane_Prefecture", pop: 0.7
+    = render p, region: "広島県", kana: "ひろしまけん", page: "Hiroshima_Prefecture", pop: 2.8
     %ul
-      %li= render p, region: "松江市", kana: "まつえ", page: "Matsue", pop: 0.2
+      %li= render p, region: "広島市", kana: "ひろしまし", page: "Hiroshima", pop: 1.2
+  %li
+    = render p, region: "岡山県", kana: "おかやまけん", page: "Okayama_Prefecture", pop: 1.9
+    %ul
+      %li= render p, region: "岡山市", kana: "おかやまし", page: "Okayama", pop: 0.7
+  %li
+    = render p, region: "山口県", kana: "やまぐちけん", page: "Yamaguchi_Prefecture", pop: 1.4
+    %ul
+      %li= render p, region: "山口市", kana: "やまぐちし", page: "Yamaguchi", pop: 0.2
+      %li= render p, region: "下関市", kana: "しものせきし", page: "Shimonoseki", pop: 0.3
+  %li
+    = render p, region: "島根県", kana: "しまねけん", page: "Shimane_Prefecture", pop: 0.7
+    %ul
+      %li= render p, region: "松江市", kana: "まつえし", page: "Matsue", pop: 0.2
+  %li
+    = render p, region: "鳥取県", kana: "とっとりけん", page: "Tottori_Prefecture", pop: 0.6
+    %ul
+      %li= render p, region: "鳥取市", kana: "とっとりし", page: "Tottori_(city)", pop: 0.2
