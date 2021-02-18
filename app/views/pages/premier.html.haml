@@ -1,7 +1,7 @@
 = render "utils/title", key: "pages.premier.name", header: true
 
 - content_for :javascript do
-  = render partial: "premier_tooltips", formats: :js
+  = render partial: "pages/premier/tooltips", formats: :js
 
 .row.mt-3
   %div{class: center(xl: 8, lg: 10)}
@@ -33,7 +33,7 @@
             %th.text-center= t.points
             %td.shrink.text-monospace.d-none.d-md-table-cell
               - t.latest_results.each do |m|
-                = render "premier_latest", team: t, match: m
+                = render "pages/premier/latest", team: t, match: m
             %td.shrink.text-monospace
               - t.upcoming_fixtures.each do |m|
-                = render "premier_upcoming", team: t, match: m
+                = render "pages/premier/upcoming", team: t, match: m
