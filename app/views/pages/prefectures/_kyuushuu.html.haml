@@ -1,0 +1,12 @@
+- p = "pages/prefectures/wiki"
+
+%h4= render p, region: "九州地方", kana: "きゅうしゅうちほう", page: "Kyushu", pop: 14.3
+%ul
+  %li
+    = render p, region: "福岡県", kana: "ふくおかけん", page: "Fukuoka_Prefecture", pop: 5.1
+    %ul
+      %li= render p, region: "福岡市", kana: "ふくおかし", page: "Fukuoka", pop: 2.6
+  %li
+    = render p, region: "長崎県", kana: "ながさきけん", page: "Nagasaki_Prefecture", pop: 1.3
+    %ul
+      %li= render p, region: "長崎市", kana: "なかさきし", page: "Nagasaki", pop: 0.4
