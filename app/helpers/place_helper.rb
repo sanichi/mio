@@ -15,6 +15,19 @@ module PlaceHelper
     options_for_select(opts, selected)
   end
 
+  def place_kanji_menu(selected)
+    opts = Place.pluck(:jname)
+                .join("")
+                .split("")
+                .tally
+                .select{ |k,v| v > 1 && !k.match?(/市|地|方|県/)}
+                .sort_by{ |k, v| v }
+                .reverse
+                .map{|p| ["#{p.first} (#{p.last})", p.first]}
+    opts.unshift [t("all"), ""]
+    options_for_select(opts, selected)
+  end
+
 
   def place_region_menu(place)
     # what are the appropriate categories of any regions to which this place could belong

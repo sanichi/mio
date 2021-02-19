@@ -35,8 +35,11 @@ class Place < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end
-    if (cat = params["cat"]).present?
+    if (cat = params[:cat]).present?
       matches = matches.where(category: cat)
+    end
+    if (kanji = params[:kanji]).present?
+      matches = matches.where("jname ILIKE '%%%s%%'", kanji)
     end
     paginate(matches, params, path, opt)
   end
