@@ -1,11 +1,13 @@
 en:
   place:
     category: Type
+    children: Children
     edit: Edit Place
     ename: English
     jname: Japanese
     level: Level
     new: New Place
+    region: Parent
     places: Places
     pop: Population
     reading: Reading

@@ -28,6 +28,20 @@
         %tr
           %th= t("place.pop")
           %td= @place.pop
+        %tr
+          %th= t("place.region")
+          %td
+            - if @place.region
+              = link_to @place.region.jname, @place.region
+            - else
+              = t("none")
+        %tr
+          %th= t("place.children")
+          %td
+            - regions = @place.subregions.by_pop
+            - regions.each_with_index do |p, i|
+              = succeed(i == regions.length - 1 ? "" : ",") do
+                = link_to p.jname, p
 
 .text-center.mt-3
   = link_to t("place.places"), last_search(places_path), class: "btn btn-success"

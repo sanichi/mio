@@ -19,12 +19,18 @@ class Place < ApplicationRecord
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
 
+  validate :check_region
+
   scope :by_ename,   -> { order(:ename) }
   scope :by_pop,     -> { order(pop: :desc) }
   scope :by_created, -> { order(:created_at) }
 
   def self.search(params, path, opt={})
-    matches = by_ename
+    matches =
+      case params[:order]
+      when "pop" then by_pop
+      else            by_ename
+      end
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end
@@ -42,5 +48,14 @@ class Place < ApplicationRecord
     jname&.squish!
     reading&.squish!
     wiki&.squish!
+    self.region_id = nil if region_id.to_i == 0
+  end
+
+  def check_region
+    return unless region.present?
+    my_level = CATS[category].to_i
+    errors.add(:region_id, "top level can't have a parent") if my_level == 0
+    their_level = CATS[region.category].to_i
+    errors.add(:region_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
   end
 end

@@ -2,7 +2,8 @@
 
 :ruby
   inputs = [
-    [:q, t("search"), :text, size: 16, autofocus: true],
+    [:q,     t("search"), :text,   size: 16, autofocus: true],
+    [:order, t("order"),  :select, menu: place_order_menu(params[:order])],
   ]
 = render "utils/search/form", index: places_path, inputs: inputs
 
