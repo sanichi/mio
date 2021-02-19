@@ -4,10 +4,17 @@ module PlaceHelper
     options_for_select(opts, place.category)
   end
 
+  def place_category_search_menu(selected)
+    opts = Place::CATS.keys.map{ |c| [t("place.categories.#{c}"), c] }
+    opts.unshift [t("all"), ""]
+    options_for_select(opts, selected)
+  end
+
   def place_order_menu(selected)
     opts = [["by name", "ename"], ["by population", "pop"]]
     options_for_select(opts, selected)
   end
+
 
   def place_region_menu(place)
     # what are the appropriate categories of any regions to which this place could belong

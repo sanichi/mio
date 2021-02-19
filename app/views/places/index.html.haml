@@ -2,21 +2,21 @@
 
 :ruby
   inputs = [
-    [:q,     t("search"), :text,   size: 16, autofocus: true],
-    [:order, t("order"),  :select, menu: place_order_menu(params[:order])],
+    [:q,     t("search"),         :text,   size: 16, autofocus: true],
+    [:cat,   t("place.category"), :select, menu: place_category_search_menu(params[:cat])],
+    [:order, t("order"),          :select, menu: place_order_menu(params[:order])],
   ]
 = render "utils/search/form", index: places_path, inputs: inputs
 
 .row.mt-3
-  .col-12.col-md-10.offset-md-1.col-lg-8.offset-lg-2.col-xl-6.offset-xl-3
+  %div{class: center(xs: 12, sm: 10, md: 8, lg: 6, xl: 4)}
     %table{class: "table table-bordered table-striped table-sm mt-3"}
       %thead
         %tr
           %th= t("place.jname", locale: "jp")
-          %th= t("place.ename", locale: "jp")
-          %th= t("place.category", locale: "jp")
           %th= t("place.region", locale: "jp")
           %th.text-center= t("place.population", locale: "jp")
+          %th= t("place.ename", locale: "jp")
       %tbody{id: "results"}
         = render "results", places: @places
 

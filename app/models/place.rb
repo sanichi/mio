@@ -35,6 +35,9 @@ class Place < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end
+    if (cat = params["cat"]).present?
+      matches = matches.where(category: cat)
+    end
     paginate(matches, params, path, opt)
   end
 

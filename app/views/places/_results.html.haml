@@ -1,8 +1,7 @@
 - places.matches.each do |place|
   %tr
     %td= link_to place.jname, place
-    %td= render "wiki", place: place
-    %td= t("place.categories.#{place.category}")
     %td= link_to place.region.jname, place.region if place.region
     %td.text-center= place.millions
-= render "utils/pagination_links", pager: places, columns: 5
+    %td= render "wiki", place: place
+= render "utils/pagination_links", pager: places, columns: 4
