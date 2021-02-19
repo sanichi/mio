@@ -16,14 +16,18 @@ module PlaceHelper
   end
 
   def place_kanji_menu(selected)
-    opts = Place.pluck(:jname)
-                .join("")
-                .split("")
-                .tally
-                .select{ |k,v| v > 1 && !k.match?(/市|地|方|県/)}
-                .sort_by{ |k, v| v }
-                .reverse
-                .map{|p| ["#{p.first} (#{p.last})", p.first]}
+    regs = Place.where(category: "region").pluck(:jname).map{ |n| n.delete_suffix("地方") }
+    prfs = Place.where(category: "prefecture").pluck(:jname).map{ |n| n.delete_suffix("県") }
+    cits = Place.where(category: "city").pluck(:jname).map{ |n| n.delete_suffix("市") }
+    nams = regs + prfs + cits
+    opts = nams.uniq
+               .join("")
+               .split("")
+               .tally
+               .select{ |k,v| v > 1 }
+               .sort_by{ |k,v| v }
+               .reverse
+               .map{ |k,v| ["#{k} (#{v})", k] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
