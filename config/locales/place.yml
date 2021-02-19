@@ -1,0 +1,16 @@
+en:
+  place:
+    category: Type
+    edit: Edit Place
+    ename: English
+    jname: Japanese
+    level: Level
+    new: New Place
+    places: Places
+    pop: Population
+    reading: Reading
+    wiki: Wiki Link
+    categories:
+      city: City
+      prefecture: Prefecture
+      region: Region

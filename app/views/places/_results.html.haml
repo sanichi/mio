@@ -1,0 +1,7 @@
+- places.matches.each do |place|
+  %tr
+    %td= link_to place.jname, place
+    %td= render "wiki", place: place
+    %td= t("place.categories.#{place.category}")
+    %td= place.millions
+= render "utils/pagination_links", pager: places, columns: 4

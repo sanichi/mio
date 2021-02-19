@@ -1,0 +1,35 @@
+= render "utils/title", text: @place.jname
+
+.row
+  .offset-md-3.col-md-6
+    %table{class: "table table-bordered table-striped table-sm"}
+      %tbody
+        %tr
+          %th= t("place.jname")
+          %td
+            = @place.jname
+            = precede("(") do
+              = succeed(")") do
+                = @place.reading
+        %tr
+          %th= t("place.ename")
+          %td= @place.ename
+        %tr
+          %th= t("place.wiki")
+          %td= @place.wiki
+        %tr
+          %th= t("place.category")
+          %td
+            = t("place.categories.#{@place.category}")
+            = precede("(") do
+              = succeed(")") do
+                = t("place.level")
+                = Place::CATS[@place.category]
+        %tr
+          %th= t("place.pop")
+          %td= @place.pop
+
+.text-center.mt-3
+  = link_to t("place.places"), last_search(places_path), class: "btn btn-success"
+  - if can?(:edit, Team)
+    = link_to t("edit"), edit_place_path(@place), class: "btn btn-info"

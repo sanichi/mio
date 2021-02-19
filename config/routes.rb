@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get :tree, on: :collection
   end
   resources :pictures
+  resources :places
   resources :problems
   resources :questions
   resources :sessions, only: [:create]

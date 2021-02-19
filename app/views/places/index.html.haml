@@ -1,0 +1,23 @@
+= render "utils/title", key: "place.places"
+
+:ruby
+  inputs = [
+    [:q, t("search"), :text, size: 16, autofocus: true],
+  ]
+= render "utils/search/form", index: places_path, inputs: inputs
+
+.row.mt-3
+  .col-12.col-md-10.offset-md-1.col-lg-8.offset-lg-2.col-xl-6.offset-xl-3
+    %table{class: "table table-bordered table-striped table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("place.jname")
+          %th= t("place.ename")
+          %th= t("place.category")
+          %th= t("place.pop")
+      %tbody{id: "results"}
+        = render "results", places: @places
+
+- if can?(:create, Place)
+  .text-center.mt3
+    = link_to t("place.new"), new_place_path, class: "btn btn-info"
