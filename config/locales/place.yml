@@ -16,3 +16,10 @@ en:
       city: City
       prefecture: Prefecture
       region: Region
+jp:
+  place:
+    category: 種類
+    ename: 英語
+    jname: 日本語
+    population: 人口
+    region: 親

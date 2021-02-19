@@ -29,8 +29,9 @@ class Place < ApplicationRecord
     matches =
       case params[:order]
       when "pop" then by_pop
-      else            by_ename
+                 else by_ename
       end
+    matches = matches.includes(:region)
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end

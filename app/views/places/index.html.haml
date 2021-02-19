@@ -12,10 +12,11 @@
     %table{class: "table table-bordered table-striped table-sm mt-3"}
       %thead
         %tr
-          %th= t("place.jname")
-          %th= t("place.ename")
-          %th= t("place.category")
-          %th= t("place.pop")
+          %th= t("place.jname", locale: "jp")
+          %th= t("place.ename", locale: "jp")
+          %th= t("place.category", locale: "jp")
+          %th= t("place.region", locale: "jp")
+          %th.text-center= t("place.population", locale: "jp")
       %tbody{id: "results"}
         = render "results", places: @places
 
