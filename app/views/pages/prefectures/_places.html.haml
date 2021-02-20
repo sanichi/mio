@@ -1,0 +1,9 @@
+- children = place.subregions
+
+- if level == 0
+  %h4= render "pages/prefectures/wiki_link", place: place
+  = render "pages/prefectures/children", children: place.subregions, level: level + 1
+- else
+  %li
+    = render "pages/prefectures/wiki_link", place: place
+    = render "pages/prefectures/children", children: place.subregions, level: level + 1

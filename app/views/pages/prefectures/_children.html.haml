@@ -1,0 +1,4 @@
+- unless children.empty?
+  %ul
+    - children.each do |child|
+      = render "pages/prefectures/places", place: child, level: level

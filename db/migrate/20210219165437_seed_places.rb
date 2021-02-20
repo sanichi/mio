@@ -3,7 +3,7 @@ class SeedPlaces < ActiveRecord::Migration[6.1]
     # Chuukoku
     r = Place.create!(jname: "中国地方", reading: "ちゅうごくちほう", ename: "Chuugoku", category: "region", wiki: "Chūgoku_region", pop: 76)
     p = Place.create!(jname: "広島県", reading: "ひろしまけん", ename: "Hiroshima Prefecture", category: "prefecture", wiki: "Hiroshima_Prefecture", pop: 28, region: r)
-    c = Place.create!(jname: "広島市", reading: "ひろしまし", ename: "Hiroshima", category: "city", wiki: "Hiroshima", pop: 1.2, region: p)
+    c = Place.create!(jname: "広島市", reading: "ひろしまし", ename: "Hiroshima", category: "city", wiki: "Hiroshima", pop: 12, region: p)
     p = Place.create!(jname: "岡山県", reading: "おかやまけん", ename: "Okayama Prefecture", category: "prefecture", wiki: "Okayama_Prefecture", pop: 19, region: r)
     c = Place.create!(jname: "岡山市", reading: "おかやまし", ename: "Okayama", category: "city", wiki: "Okayama", pop: 7, region: p)
     p = Place.create!(jname: "山口県", reading: "やまぐちけん", ename: "Yamaguchi Prefecture", category: "prefecture", wiki: "Yamaguchi_Prefecture", pop: 14, region: r)
@@ -28,7 +28,7 @@ class SeedPlaces < ActiveRecord::Migration[6.1]
     c = Place.create!(jname: "長崎市", reading: "なかさきし", ename: "Nagasaki", category: "city", wiki: "Nagasaki", pop: 4, region: p)
     p = Place.create!(jname: "大分県", reading: "おおいたけん", ename: "Ōita Prefecture", category: "prefecture", wiki: "Ōita_Prefecture", pop: 11, region: r)
     c = Place.create!(jname: "大分市", reading: "おおいたし", ename: "Ōita", category: "city", wiki: "Ōita_(city)", pop: 5, region: p)
-    p = Place.create!(jname: "宮崎県", reading: "みやざきけん", ename: "Miyazaki Prefecture", category: "prefecture", wiki: "Miyazaki_Prefecture", pop: 1, region: r)
+    p = Place.create!(jname: "宮崎県", reading: "みやざきけん", ename: "Miyazaki Prefecture", category: "prefecture", wiki: "Miyazaki_Prefecture", pop: 10, region: r)
     c = Place.create!(jname: "宮崎市", reading: "みやざきし", ename: "Miyazaki", category: "city", wiki: "Miyazaki_(city)", pop: 4, region: p)
     p = Place.create!(jname: "佐賀県", reading: "さがけん", ename: "Saga Prefecture", category: "prefecture", wiki: "Saga_Prefecture", pop: 8, region: r)
     c = Place.create!(jname: "佐賀市", reading: "さがし", ename: "Saga", category: "city", wiki: "Saga_(city)", pop: 2, region: p)
