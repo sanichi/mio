@@ -1,7 +1,7 @@
 en:
   place:
     category: Type
-    children: Children
+    child: Child
     edit: Edit Place
     ename: English
     jname: Japanese
