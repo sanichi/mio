@@ -274,7 +274,7 @@
     %div.info#start-info
       %p Click a region for details and links, hover over text for readings.
     %div.info#hokkaido-info
-      %p Hokkaido
+      = render "pages/prefectures/places", place: Place.find_by(ename: "Hokkaido"), level: 0
     %div.info#touhoku-info
       %p Touhoku
     %div.info#kanto-info
