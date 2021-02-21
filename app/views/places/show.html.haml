@@ -34,14 +34,12 @@
         %tr
           %th= t("place.pop")
           %td= @place.millions
-        %tr
-          %th= t("place.region")
-          %td
-            - if p = @place.region
+        - if p = @place.region
+          %tr
+            %th= t("place.region")
+            %td
               = link_to p.jname, p
               = "(#{p.ename} #{p.millions})"
-            - else
-              = t("none")
         - @place.subregions.by_pop.each do |p|
           %tr
             %th= t("place.child")
