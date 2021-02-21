@@ -17,7 +17,7 @@ en:
       year_day: Year/Day
     prefectures:
       desc: Interactive map with information about major Japanese regions
-      name: Prefectures
+      name: Map
       title: Prefectures of Japan
     premier:
       against: A
