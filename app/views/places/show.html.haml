@@ -19,10 +19,7 @@
                 = link_to c, k
         %tr
           %th= t("place.ename")
-          %td= @place.ename
-        %tr
-          %th= t("place.wiki")
-          %td= @place.wiki
+          %td= render "wiki", place: @place
         %tr
           %th= t("place.category")
           %td
