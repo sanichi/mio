@@ -136,9 +136,12 @@ module Wk
                 wk_audios[pn].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
               end
             else
-              # TODO: 両腕, 8715 currently has a mismatched pronunciation (no matching reading)
-              # here we want to make sure this is the only one
-              check(wk_id, "problem other than with 8715") { |v| v == 8715 }
+              # known current problems:
+              # TODO: 両腕, 8715
+              # TODO: 早口, 3429
+              # TODO: 少女, 7518
+              # here we want to make sure these are the only ones
+              check(wk_id, "unexpected problem with readings for #{wk_id}") { |v| [8715, 3439, 7518].include?(v) }
               stats["skipped known problems"] += 1
             end
           end
