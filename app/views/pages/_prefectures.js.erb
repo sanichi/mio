@@ -3,9 +3,15 @@ $(function() {
   $('div.info').hide();
   $('#start-info').show();
   $('path.region').click(function() {
+    console.log('here a');
     $('div.info').hide();
     var id = $(this).attr("id");
     $('#' + id + '-info').show();
+    if ($('#prefectures').attr('viewBox') == '<%= vb %>') {
+      $('#prefectures').attr('viewBox', $(this).attr("data-box"));
+    } else {
+      $('#prefectures').attr('viewBox', '<%= vb %>');
+    }
   });
   $('[data-toggle="tooltip"]').tooltip();
 });
