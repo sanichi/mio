@@ -22,12 +22,7 @@
           %td= render "wiki", place: @place
         %tr
           %th= t("place.category")
-          %td
-            = t("place.categories.#{@place.category}")
-            = precede("(") do
-              = succeed(")") do
-                = t("place.level")
-                = Place::CATS[@place.category]
+          %td= t("place.categories.#{@place.category}")
         %tr
           %th= t("place.pop")
           %td= @place.millions
