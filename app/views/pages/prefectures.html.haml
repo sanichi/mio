@@ -242,7 +242,7 @@
     %div.info#hokkaido-info
       = render "pages/prefectures/places", place: Place.find_by(ename: "Hokkaido"), level: 0
     %div.info#touhoku-info
-      %p Touhoku
+      = render "pages/prefectures/places", place: Place.find_by(ename: "Touhoku"), level: 0
     %div.info#kanto-info
       %p Kanto
     %div.info#chuubu-info

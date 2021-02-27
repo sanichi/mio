@@ -2,8 +2,8 @@
 
 - if level == 0
   %h4= render "pages/prefectures/link", place: place
-  = render "pages/prefectures/children", children: place.subregions, level: level + 1
+  = render "pages/prefectures/children", children: place.subregions.by_pop, level: level + 1
 - else
   %li
     = render "pages/prefectures/link", place: place
-    = render "pages/prefectures/children", children: place.subregions, level: level + 1
+    = render "pages/prefectures/children", children: place.subregions.by_pop, level: level + 1
