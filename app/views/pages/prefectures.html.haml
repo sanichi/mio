@@ -5,7 +5,7 @@
   = render partial: "prefectures", formats: :js, locals: { vb: vb }
 
 .row.mt-3
-  .col-6
+  .col-12.col-md-6.mt-3
     %svg#prefectures{version: "1.1", viewBox: vb}
       %title= t("pages.prefectures.title")
       %desc= t("pages.prefectures.desc")
@@ -221,10 +221,20 @@
       %text.ken{x: "116", y: "880", title: "ひろしま", "data-toggle" => "tooltip"}= "広島"
 
       -# Shikoku
-      %text.ken{x: "160", y: "888", title: "かがわ", "data-toggle" => "tooltip"}= "香川"
-      %text.ken{x: "152", y: "940", title: "こうち", "data-toggle" => "tooltip"}= "高知"
+      -# Kagawa
+      %circle.shi{cx: "188", cy: "883", r: "6"}
+      %text.shi{x: "185", y: "873", title: "たかまつ", "data-toggle" => "tooltip"}= "高松"
+      %text.ken{x: "160", y: "892", title: "かがわ", "data-toggle" => "tooltip"}= "香川"
+      -# Tokushima
+      %circle.ken{cx: "210", cy: "892", r: "6"}
       %text.ken{x: "182", y: "910", title: "とくしま", "data-toggle" => "tooltip"}= "徳島"
-      %text.ken{x: "120", y: "912", title: "えひめ", "data-toggle" => "tooltip"}= "愛媛"
+      -# Kochi
+      %circle.ken{cx: "170", cy: "920", r: "6"}
+      %text.ken{x: "156", y: "936", title: "こうち", "data-toggle" => "tooltip"}= "高知"
+      -# Ehime
+      %circle.shi{cx: "140", cy: "904", r: "6"}
+      %text.shi{x: "130", y: "902", title: "まつやま", "data-toggle" => "tooltip"}= "松山"
+      %text.ken{x: "114", y: "926", title: "えひめ", "data-toggle" => "tooltip"}= "愛媛"
 
       -# Kyuushuu and Okinawa
       -# Miyazaki
@@ -253,10 +263,10 @@
       -# Okinawa
       %line.separator{x1: "106", x2: "128", y1: "1040", y2: "990"}
       %circle.shi{cx: "130", cy: "1032", r: "6"}
-      %text.shi{x: "135", y: "1045", title: "那覇", "data-toggle" => "tooltip"}= "那覇市"
+      %text.shi{x: "135", y: "1045", title: "なは", "data-toggle" => "tooltip"}= "那覇"
       %text.ken{x: "122", y: "1026", title: "おきなわ", "data-toggle" => "tooltip"}= "沖縄"
 
-  .col-6
+  .col-12.col-md-6.mt-3
     %div.info#start-info
       %p Click a region for details and links, hover over text for readings.
     %div.info#hokkaido-info
