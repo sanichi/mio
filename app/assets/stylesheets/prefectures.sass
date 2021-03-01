@@ -29,9 +29,6 @@
   #kyuushuu, #okinawa
     fill: #b4b4b4
 
-  #separator
-    fill: #999999
-
   #boundary
     fill: none
     stroke: #ffffff
@@ -40,11 +37,33 @@
     stroke-linejoin: miter
     stroke-miterlimit: 4
 
+  circle
+    stroke: white
+    stroke-width: 1
+
+  circle.ken
+    fill: green
+
+  circle.shi
+    fill: red
+
+  line.separator
+    fill: none
+    stroke: gray
+    stroke-width: 1
+    stroke-dasharray: 2
+
+  // temporary until we can get rid of remaining old stuff
   g.text
     fill: black
 
   text
     fill: black
     font-family: Verdana
-    font-size: 20px
     text-anchor: left
+
+  text.ken
+    font-size: 20px
+
+  text.shi
+    font-size: 10px
