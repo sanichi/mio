@@ -43,6 +43,8 @@
       %path{d: "M 424.45809,842.30124 400.34713,791.45862", :style => "fill:none;stroke:#000000;stroke-width:0.49417421;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"}
 
       -# Hokkaido
+      %circle.shi{cx: "416", cy: "415", r: "6"}
+      %text.shi{x: "390", y: "410", title: "さっぽろ", "data-toggle" => "tooltip"}= "札幌"
       %text.ken{x: "435", y: "408", title: "ほっかいどう", "data-toggle" => "tooltip"}= "北海道"
 
       -# Touhoku
@@ -214,57 +216,68 @@
         %path{d: "m 226.12032,843.42303 c 0,-0.94909 0.26382,-1.65207 0.79145,-2.10892 0.44077,-0.37964 0.97805,-0.56946 1.61186,-0.56946 0.70458,0 1.28047,0.23084 1.72768,0.69252 0.44719,0.46168 0.67079,1.09951 0.6708,1.91347 -1e-5,0.65955 -0.0989,1.17833 -0.2968,1.55636 -0.19786,0.37803 -0.48581,0.67161 -0.86383,0.88073 -0.37804,0.20913 -0.79065,0.31369 -1.23785,0.31369 -0.71746,0 -1.29737,-0.23004 -1.73975,-0.69011 -0.44237,-0.46007 -0.66356,-1.12283 -0.66356,-1.98828 z m 0.89279,0 c 0,0.65633 0.14317,1.14777 0.42951,1.47432 0.28634,0.32656 0.64667,0.48983 1.08101,0.48983 0.43111,0 0.78984,-0.16408 1.07618,-0.49224 0.28633,-0.32816 0.4295,-0.82845 0.4295,-1.50086 0,-0.6338 -0.14397,-1.11398 -0.43192,-1.44054 -0.28795,-0.32655 -0.64587,-0.48983 -1.07376,-0.48983 -0.43434,0 -0.79467,0.16248 -1.08101,0.48742 -0.28634,0.32495 -0.42951,0.81558 -0.42951,1.4719 z"}
 
       -# Chuugoku
-      %text.ken{x: "160", y: "829", title: "とっとり", "data-toggle" => "tooltip"}= "鳥取"
-      %text.ken{x: "66", y: "897", title: "やまぐち", "data-toggle" => "tooltip"}= "山口"
-      %text.ken{x: "155", y: "860", title: "おかやま", "data-toggle" => "tooltip"}= "岡山"
-      %text.ken{x: "90", y: "853", title: "しまね", "data-toggle" => "tooltip"}= "島根"
+      -# Hiroshima
+      %circle.ken{cx: "120", cy: "880", r: "6"}
       %text.ken{x: "116", y: "880", title: "ひろしま", "data-toggle" => "tooltip"}= "広島"
+      -# Okayama
+      %circle.ken{cx: "182", cy: "867", r: "6"}
+      %text.ken{x: "155", y: "860", title: "おかやま", "data-toggle" => "tooltip"}= "岡山"
+      -# Tottori
+      %circle.ken{cx: "192", cy: "823", r: "6"}
+      %text.ken{x: "160", y: "829", title: "とっとり", "data-toggle" => "tooltip"}= "鳥取"
+      -# Yamaguchi
+      %circle.ken{cx: "90", cy: "890", r: "6"}
+      %text.ken{x: "66", y: "897", title: "やまぐち", "data-toggle" => "tooltip"}= "山口"
+      -# Shimane
+      %circle.shi{cx: "150", cy: "830", r: "6"}
+      %text.shi{x: "140", y: "820", title: "まつえ", "data-toggle" => "tooltip"}= "松江"
+      %text.ken{x: "90", y: "853", title: "しまね", "data-toggle" => "tooltip"}= "島根"
 
       -# Shikoku
-      -# Kagawa
-      %circle.shi{cx: "188", cy: "883", r: "6"}
-      %text.shi{x: "185", y: "873", title: "たかまつ", "data-toggle" => "tooltip"}= "高松"
-      %text.ken{x: "160", y: "892", title: "かがわ", "data-toggle" => "tooltip"}= "香川"
       -# Tokushima
       %circle.ken{cx: "210", cy: "892", r: "6"}
       %text.ken{x: "182", y: "910", title: "とくしま", "data-toggle" => "tooltip"}= "徳島"
-      -# Kochi
-      %circle.ken{cx: "170", cy: "920", r: "6"}
-      %text.ken{x: "156", y: "936", title: "こうち", "data-toggle" => "tooltip"}= "高知"
       -# Ehime
       %circle.shi{cx: "140", cy: "904", r: "6"}
       %text.shi{x: "130", y: "902", title: "まつやま", "data-toggle" => "tooltip"}= "松山"
       %text.ken{x: "114", y: "926", title: "えひめ", "data-toggle" => "tooltip"}= "愛媛"
+      -# Kagawa
+      %circle.shi{cx: "188", cy: "883", r: "6"}
+      %text.shi{x: "195", y: "874", title: "たかまつ", "data-toggle" => "tooltip"}= "高松"
+      %text.ken{x: "160", y: "892", title: "かがわ", "data-toggle" => "tooltip"}= "香川"
+      -# Kochi
+      %circle.ken{cx: "170", cy: "920", r: "6"}
+      %text.ken{x: "156", y: "936", title: "こうち", "data-toggle" => "tooltip"}= "高知"
 
       -# Kyuushuu and Okinawa
-      -# Miyazaki
-      %circle.ken{cx: "89", cy: "1006", r: "6"}
-      %text.ken{x: "80", y: "995", title: "みやざき", "data-toggle" => "tooltip"}= "宮崎"
+      -# Fukuoka
+      %circle.ken{cx: "45", cy: "924", r: "6"}
+      %circle.shi{cx: "61", cy: "908", r: "6"}
+      %text.shi{x: "26", y: "902", title: "きたきゅうしゅう", "data-toggle" => "tooltip"}= "北九州"
+      %text.ken{x: "35", y: "925", title: "ふくおか", "data-toggle" => "tooltip"}= "福岡"
+      -# Ooita
+      %circle.ken{cx: "96", cy: "942", r: "6"}
+      %text.ken{x: "83", y: "946", title: "おおいた", "data-toggle" => "tooltip"}= "大分"
       -# Kagoshima
       %circle.ken{cx: "56", cy: "1026", r: "6"}
       %text.ken{x: "10", y: "1017", title: "かごしま", "data-toggle" => "tooltip"}= "鹿児島"
       -# Kumamoto
       %circle.ken{cx: "56", cy: "962", r: "6"}
       %text.ken{x: "30", y: "992", title: "くまもと", "data-toggle" => "tooltip"}= "熊本"
-      -# Ooita
-      %circle.ken{cx: "96", cy: "942", r: "6"}
-      %text.ken{x: "83", y: "946", title: "おおいた", "data-toggle" => "tooltip"}= "大分"
       -# Nagasaki
       %circle.ken{cx: "22", cy: "968", r: "6"}
       %text.ken{x: "10", y: "970", title: "ながさき", "data-toggle" => "tooltip"}= "長崎"
-      -# Saga
-      %circle.ken{cx: "41", cy: "940", r: "6"}
-      %text.ken{x: "16", y: "948", title: "さが", "data-toggle" => "tooltip"}= "佐賀"
-      -# Fukuoka
-      %circle.ken{cx: "45", cy: "924", r: "6"}
-      %circle.shi{cx: "61", cy: "908", r: "6"}
-      %text.shi{x: "26", y: "902", title: "きたきゅうしゅう", "data-toggle" => "tooltip"}= "北九州"
-      %text.ken{x: "35", y: "925", title: "ふくおか", "data-toggle" => "tooltip"}= "福岡"
       -# Okinawa
       %line.separator{x1: "106", x2: "128", y1: "1040", y2: "990"}
       %circle.shi{cx: "130", cy: "1032", r: "6"}
       %text.shi{x: "135", y: "1045", title: "なは", "data-toggle" => "tooltip"}= "那覇"
       %text.ken{x: "122", y: "1026", title: "おきなわ", "data-toggle" => "tooltip"}= "沖縄"
+      -# Miyazaki
+      %circle.ken{cx: "89", cy: "1006", r: "6"}
+      %text.ken{x: "80", y: "995", title: "みやざき", "data-toggle" => "tooltip"}= "宮崎"
+      -# Saga
+      %circle.ken{cx: "41", cy: "940", r: "6"}
+      %text.ken{x: "16", y: "948", title: "さが", "data-toggle" => "tooltip"}= "佐賀"
 
   .col-12.col-md-6.mt-3
     %div.info#start-info
