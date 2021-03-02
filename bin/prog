@@ -3,7 +3,7 @@ name = "app/views/pages/prefectures.html.haml"
 file = File.open(name)
 data = file.read
 
-data.gsub!(/(-?\d+\.\d{4,6})/) do |m|
+data.gsub!(/(-?\d+\.\d{3,6})/) do |m|
   $1.to_f.round(1).to_s
 end
 
