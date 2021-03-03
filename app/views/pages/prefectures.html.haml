@@ -305,7 +305,7 @@
     %div.info#chuubu-info
       %p Chuubu
     %div.info#kansai-info
-      %p Kansai
+      = render "pages/prefectures/places", place: Place.find_by(ename: "Kansai"), level: 0
     %div.info#chuugoku-info
       = render "pages/prefectures/places", place: Place.find_by(ename: "Chuugoku"), level: 0
     %div.info#shikoku-info
