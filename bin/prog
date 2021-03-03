@@ -3,8 +3,12 @@ name = "app/views/pages/prefectures.html.haml"
 file = File.open(name)
 data = file.read
 
-data.gsub!(/(-?\d+\.\d{3,6})/) do |m|
-  $1.to_f.round(1).to_s
+data.gsub!(/text\.ken\{x: "(\d+)"/) do |m|
+  "text.ken{x: \"#{$1.to_i + 20}\""
+end
+
+data.gsub!(/text\.shi\{x: "(\d+)"/) do |m|
+  "text.shi{x: \"#{$1.to_i + 10}\""
 end
 
 File.open(name, "w") do |f|
