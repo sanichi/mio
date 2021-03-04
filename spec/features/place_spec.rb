@@ -18,6 +18,7 @@ describe Place do
       fill_in t("place.wiki"), with: data.wiki
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
+      fill_in t("place.vbox"), with: data.vbox
 
       click_button t("save")
 
@@ -32,6 +33,7 @@ describe Place do
       expect(t.wiki).to eq data.wiki
       expect(t.pop).to eq data.pop
       expect(t.category).to eq data.category
+      expect(t.vbox).to eq data.vbox
     end
 
     it "failure" do
@@ -42,6 +44,7 @@ describe Place do
       # fill_in t("place.wiki"), with: data.wiki
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
+      fill_in t("place.vbox"), with: data.vbox
 
       click_button t("save")
 

@@ -3,9 +3,11 @@ class Place < ApplicationRecord
   include Pageable
 
   MAX_NAME = 30
+  MAX_VBOX = 17
   MAX_WIKI = 50
   MIN_POP = 1 # in units of 100,000
   CATS = {"region" => 0, "prefecture" => 1, "city" => 2}
+  DEF_VBOX = "-100 300 750 750"
 
   has_many :subregions, class_name: "Place", foreign_key: "region_id"
   belongs_to :region, class_name: "Place", optional: true
@@ -15,6 +17,7 @@ class Place < ApplicationRecord
   validates :ename, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
   validates :jname, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
   validates :reading, presence: true, length: { maximum: MAX_NAME }
+  validates :vbox, length: { maximum: MAX_VBOX }, format: { with: /\A-?(0|[1-9]\d{0,2}) ([1-9]\d{0,3}) ([1-9]\d{0,2}) ([1-9]\d{0,2})\z/ }, uniqueness: true, allow_nil: true
   validates :wiki, presence: true, length: { maximum: MAX_WIKI }, uniqueness: true
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
@@ -54,7 +57,9 @@ class Place < ApplicationRecord
     ename&.squish!
     jname&.squish!
     reading&.squish!
+    vbox&.squish!
     wiki&.squish!
+    self.vbox = nil unless vbox.present?
     self.region_id = nil if region_id.to_i == 0
   end
 

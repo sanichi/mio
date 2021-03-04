@@ -42,6 +42,6 @@ class PlacesController < ApplicationController
   end
 
   def strong_params
-    params.require(:place).permit(:ename, :jname, :reading, :wiki, :category, :pop, :region_id)
+    params.require(:place).permit(:ename, :jname, :reading, :wiki, :category, :pop, :region_id, :vbox)
   end
 end

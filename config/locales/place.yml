@@ -12,6 +12,7 @@ en:
     places: Places
     pop: Population
     reading: Reading
+    vbox: ViewBox
     wiki: Wiki Link
     categories:
       city: City

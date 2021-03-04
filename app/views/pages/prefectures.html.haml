@@ -1,6 +1,6 @@
 = render "utils/title", key: "pages.prefectures.title"
 
-- vb = "-100 300 750 750"
+- vb = Place::DEF_VBOX
 - content_for :javascript do
   = render partial: "prefectures", formats: :js, locals: { vb: vb }
 

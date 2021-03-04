@@ -6,5 +6,6 @@ FactoryBot.define do
     wiki     { Faker::Lorem.characters(number: 10) }
     category { Place::CATS.keys.sample }
     pop      { 1 + rand(1000) }
+    vbox     { ["#{rand(750) - 100} #{rand(750) + 300} #{rand(750) + 1} #{rand(750) + 1}", nil].sample}
   end
 end
