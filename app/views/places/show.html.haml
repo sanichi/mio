@@ -1,13 +1,15 @@
 = render "utils/title", text: @place.jname
 
-= render "map", vb: @place.vb
+- content_for :javascript do
+  = render partial: "map", formats: :js
 
-.row.mt-3
-  .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped table-sm"}
+.row
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    = render "map", vb: @place.vb
+    %table.table.table-bordered.table-striped.table-sm
       %tbody
         %tr
-          %th= t("place.jname")
+          %th= t("name")
           %td
             %strong= @place.jname
             = precede("(") do
@@ -20,31 +22,34 @@
               - if k = Wk::Kanji.find_by(character: c)
                 = link_to c, k
         %tr
-          %th= t("place.ename")
-          %td= render "wiki", place: @place
-        %tr
           %th= t("place.category")
           %td= t("place.categories.#{@place.category}")
         %tr
           %th= t("place.pop")
           %td= @place.millions
         %tr
-          %th= t("place.vbox")
-          %td= @place.vbox
-        - if p = @place.region
+          %th= t("place.wiki")
+          %td= render "wiki", place: @place
+        - if @place.vbox.present?
           %tr
-            %th= t("place.region")
+            %th= t("place.vbox")
+            %td= @place.vbox
+        - if p = @place.parent
+          %tr
+            %th= t("place.categories.#{p.category}")
             %td
               = link_to p.jname, p
               = "(#{p.ename} #{p.millions})"
-        - @place.subregions.by_pop.each do |p|
+        - @place.children.by_pop.each do |p|
           %tr
-            %th= t("place.child")
+            %th= t("place.categories.#{p.category}")
             %td
               = link_to p.jname, p
               = "(#{p.ename} #{p.millions})"
 
 .text-center.mt-3
   = link_to t("place.places"), last_search(places_path), class: "btn btn-success"
-  - if can?(:edit, Team)
+  - if can?(:prefectures, :page)
+    = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success"
+  - if can?(:edit, Place)
     = link_to t("edit"), edit_place_path(@place), class: "btn btn-info"

@@ -9,8 +9,8 @@ class Place < ApplicationRecord
   CATS = {"region" => 0, "prefecture" => 1, "city" => 2}
   DEF_VBOX = "-100 300 750 750"
 
-  has_many :subregions, class_name: "Place", foreign_key: "region_id"
-  belongs_to :region, class_name: "Place", optional: true
+  has_many :children, class_name: "Place", foreign_key: "region_id"
+  belongs_to :parent, class_name: "Place", foreign_key: "region_id", optional: true
 
   before_validation :normalize_attributes
 
@@ -34,7 +34,7 @@ class Place < ApplicationRecord
       when "pop" then by_pop
                  else by_ename
       end
-    matches = matches.includes(:region)
+    matches = matches.includes(:parent).includes(:children)
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end
@@ -52,7 +52,7 @@ class Place < ApplicationRecord
   end
 
   def vb
-    vbox.present?? vbox : (region.present?? region.vb : DEF_VBOX)
+    vbox.present?? vbox : (parent.present?? parent.vb : DEF_VBOX)
   end
 
   private
@@ -68,7 +68,7 @@ class Place < ApplicationRecord
   end
 
   def check_region
-    return unless region.present?
+    return unless parent.present?
     my_level = CATS[category].to_i
     errors.add(:region_id, "top level can't have a parent") if my_level == 0
     their_level = CATS[region.category].to_i
