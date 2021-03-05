@@ -38,7 +38,11 @@ class PlacesController < ApplicationController
   private
 
   def find_place
-    @place = Place.find(params[:id])
+    if action_name == "show" && params[:id].to_i == 0
+      @place = Place.find_by!(jname: params[:id])
+    else
+      @place = Place.find(params[:id])
+    end
   end
 
   def strong_params

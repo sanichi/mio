@@ -14,8 +14,8 @@ class Place < ApplicationRecord
 
   before_validation :normalize_attributes
 
-  validates :ename, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
-  validates :jname, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
+  validates :ename, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
+  validates :jname, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
   validates :reading, presence: true, length: { maximum: MAX_NAME }
   validates :vbox, length: { maximum: MAX_VBOX }, format: { with: /\A-?(0|[1-9]\d{0,2}) ([1-9]\d{0,3}) ([1-9]\d{0,2}) ([1-9]\d{0,2})\z/ }, uniqueness: true, allow_nil: true
   validates :wiki, presence: true, length: { maximum: MAX_WIKI }, uniqueness: true
