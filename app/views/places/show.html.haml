@@ -1,6 +1,8 @@
 = render "utils/title", text: @place.jname
 
-.row
+= render "map", vb: @place.vb
+
+.row.mt-3
   .offset-md-3.col-md-6
     %table{class: "table table-bordered table-striped table-sm"}
       %tbody

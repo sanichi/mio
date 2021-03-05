@@ -51,6 +51,10 @@ class Place < ApplicationRecord
     "%.1f" % (pop / 10.0)
   end
 
+  def vb
+    vbox.present?? vbox : (region.present?? region.vb : DEF_VBOX)
+  end
+
   private
 
   def normalize_attributes

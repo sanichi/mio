@@ -1,0 +1,7 @@
+
+$(function() {
+  $('path.region').click(function() {
+    window.location.href = "/places/" + $(this).attr("data-jname");
+  });
+  $('[data-toggle="tooltip"]').tooltip();
+});
