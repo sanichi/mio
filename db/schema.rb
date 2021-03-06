@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_175337) do
+ActiveRecord::Schema.define(version: 2021_03_06_124034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,11 +202,11 @@ ActiveRecord::Schema.define(version: 2021_03_04_175337) do
     t.string "wiki", limit: 50
     t.string "category", limit: 10
     t.integer "pop", limit: 2
-    t.bigint "region_id"
+    t.bigint "parent_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "vbox", limit: 20
-    t.index ["region_id"], name: "index_places_on_region_id"
+    t.index ["parent_id"], name: "index_places_on_parent_id"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -403,5 +403,5 @@ ActiveRecord::Schema.define(version: 2021_03_04_175337) do
 
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
-  add_foreign_key "places", "places", column: "region_id"
+  add_foreign_key "places", "places", column: "parent_id"
 end

@@ -33,8 +33,8 @@ module PlaceHelper
   end
 
 
-  def place_region_menu(place)
-    # what are the appropriate categories of any regions to which this place could belong
+  def place_parent_menu(place)
+    # what are the appropriate categories of any parents to which this place could belong
     if place.category.present?
       level_above = Place::CATS[place.category] - 1
       if level_above < 0
@@ -47,7 +47,7 @@ module PlaceHelper
       cats = Place::CATS.select{ |k,v| v < max }.keys
     end
 
-    # given those categories, what are the actual regions to which this could belomng
+    # given those categories, what are the actual parents to which this could belomng
     if cats.empty?
       opts = []
     else
@@ -55,6 +55,6 @@ module PlaceHelper
     end
     opts.unshift [t("none"), 0]
 
-    options_for_select(opts, place.region_id)
+    options_for_select(opts, place.parent_id)
   end
 end

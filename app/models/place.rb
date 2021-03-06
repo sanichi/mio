@@ -9,8 +9,8 @@ class Place < ApplicationRecord
   CATS = {"region" => 0, "prefecture" => 1, "city" => 2}
   DEF_VBOX = "-100 300 750 750"
 
-  has_many :children, class_name: "Place", foreign_key: "region_id"
-  belongs_to :parent, class_name: "Place", foreign_key: "region_id", optional: true
+  has_many :children, class_name: "Place", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "Place", optional: true
 
   before_validation :normalize_attributes
 
@@ -22,7 +22,7 @@ class Place < ApplicationRecord
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
 
-  validate :check_region
+  validate :check_parent
 
   scope :by_ename,   -> { order(:ename) }
   scope :by_pop,     -> { order(pop: :desc) }
@@ -64,14 +64,14 @@ class Place < ApplicationRecord
     vbox&.squish!
     wiki&.squish!
     self.vbox = nil unless vbox.present?
-    self.region_id = nil if region_id.to_i == 0
+    self.parent_id = nil if parent_id.to_i == 0
   end
 
-  def check_region
+  def check_parent
     return unless parent.present?
     my_level = CATS[category].to_i
-    errors.add(:region_id, "top level can't have a parent") if my_level == 0
+    errors.add(:parent_id, "top level can't have a parent") if my_level == 0
     their_level = CATS[parent.category].to_i
-    errors.add(:region_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
+    errors.add(:parent_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
   end
 end

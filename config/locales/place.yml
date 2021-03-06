@@ -8,7 +8,7 @@ en:
     kanji: Kanji
     level: Level
     new: New Place
-    region: Parent
+    parent: Parent
     places: Places
     pop: Population
     reading: Reading
@@ -23,5 +23,5 @@ jp:
     category: 種類
     ename: 英語
     jname: 日本語
+    parent: 親
     population: 人口
-    region: 親

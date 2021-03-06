@@ -6,7 +6,7 @@
     [:pop,       t("place.pop"),      :text],
     [:wiki,      t("place.wiki"),     :text,   maxlength: Place::MAX_WIKI],
     [:category,  t("place.category"), :select, menu: place_category_menu(place)],
-    [:region_id, t("place.region"),   :select, menu: place_region_menu(place)],
+    [:parent_id, t("place.parent"),   :select, menu: place_parent_menu(place)],
     [:vbox,      t("place.vbox"),     :text,   maxlength: Place::MAX_VBOX],
   ]
 = render "utils/crud/form", object: place, index: places_path, inputs: inputs, title: title
