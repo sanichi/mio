@@ -10,11 +10,7 @@
       %tbody
         %tr
           %th= t("name")
-          %td
-            %strong= @place.jname
-            = precede("(") do
-              = succeed(")") do
-                = @place.reading
+          %td= render "name", place: @place, reading: true, capital: true
         %tr
           %th= t("place.kanji")
           %td

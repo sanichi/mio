@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe Place do
-  let(:data) { build(:place) }
-  let!(:place) { create(:place) }
+  let(:data)        { build(:place) }
+  let!(:place)      { create(:place) }
+  let!(:city)       { create(:place, category: "city", capital: false) }
+  let!(:prefecture) { create(:place, category: "prefecture") }
 
   before(:each) do
     login
@@ -19,10 +21,15 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      if data.capital
+        check t("place.capital")
+      else
+        uncheck t("place.capital")
+      end
 
       click_button t("save")
 
-      expect(Place.count).to eq 2
+      expect(Place.count).to eq 4
       t = Place.by_created.last
 
       expect(page).to have_title data.jname
@@ -34,6 +41,7 @@ describe Place do
       expect(t.pop).to eq data.pop
       expect(t.category).to eq data.category
       expect(t.vbox).to eq data.vbox
+      expect(t.capital).to eq data.capital
     end
 
     it "failure" do
@@ -45,17 +53,22 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      if data.capital
+        check t("place.capital")
+      else
+        uncheck t("place.capital")
+      end
 
       click_button t("save")
 
       expect(page).to have_title t("place.new")
-      expect(Place.count).to eq 1
+      expect(Place.count).to eq 3
       expect_error(page, "blank")
     end
   end
 
   context "edit" do
-    it "success" do
+    it "jname" do
       visit place_path(place)
       click_link t("edit")
 
@@ -65,23 +78,54 @@ describe Place do
 
       expect(page).to have_title data.jname
 
-      expect(Place.count).to eq 1
-      t = Place.by_created.last
+      place.reload
+      expect(place.jname).to eq data.jname
+    end
 
-      expect(t.jname).to eq data.jname
+    it "capital" do
+      expect(city.capital).to be(false)
+
+      visit place_path(city)
+      click_link t("edit")
+
+      expect(page).to have_title t("place.edit")
+      check t("place.capital")
+      click_button t("save")
+
+      expect(page).to have_title city.jname
+
+      city.reload
+      expect(city.capital).to be(true)
+    end
+
+    it "capital error" do
+      expect(prefecture.capital).to be(false)
+
+      visit place_path(prefecture)
+      click_link t("edit")
+
+      expect(page).to have_title t("place.edit")
+      check t("place.capital")
+      click_button t("save")
+
+      expect(page).to have_title t("place.edit")
+      expect_error(page, "only cities")
+
+      prefecture.reload
+      expect(prefecture.capital).to be(false)
     end
   end
 
   context "delete" do
     it "success" do
-      expect(Place.count).to eq 1
+      expect(Place.count).to eq 3
 
       visit place_path(place)
       click_link t("edit")
       click_link t("delete")
 
       expect(page).to have_title t("place.places")
-      expect(Place.count).to eq 0
+      expect(Place.count).to eq 2
     end
   end
 end

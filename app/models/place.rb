@@ -23,6 +23,7 @@ class Place < ApplicationRecord
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
 
   validate :check_parent
+  validate :check_capital
 
   scope :by_ename,   -> { order(:ename) }
   scope :by_pop,     -> { order(pop: :desc) }
@@ -73,5 +74,10 @@ class Place < ApplicationRecord
     errors.add(:parent_id, "top level can't have a parent") if my_level == 0
     their_level = CATS[parent.category].to_i
     errors.add(:parent_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
+  end
+
+  def check_capital
+    return unless capital
+    errors.add(:capital, "only cities can be capitals") unless category == "city"
   end
 end

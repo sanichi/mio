@@ -1,0 +1,10 @@
+- defined?(link)     || link = false
+- defined?(capital)  || capital = false
+- defined?(reading)  || reading = false
+
+= link_to_if link, place.jname, place
+- if reading
+  = surround("(", ")") do
+    = place.reading
+- if capital && place.capital
+  = t("place.symbols.capital")

@@ -1,5 +1,6 @@
 en:
   place:
+    capital: Capital
     category: Type
     child: Child
     edit: Edit Place
@@ -18,6 +19,8 @@ en:
       city: City
       prefecture: Prefecture
       region: Region
+    symbols:
+      capital: ©
 jp:
   place:
     category: 種類

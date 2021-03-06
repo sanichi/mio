@@ -1,6 +1,6 @@
 - places.matches.each do |place|
   %tr
-    %td= link_to place.jname, place
+    %td= render "name", place: place, link: true, capital: true
     %td= link_to place.parent.jname, place.parent if place.parent
     %td.text-center= place.millions
     %td= render "wiki", place: place
