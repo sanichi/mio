@@ -3,6 +3,9 @@ $(function() {
   $('path.region').click(function() {
     window.location.href = '/places/' + $(this).attr('data-jname');
   });
+  $('circle').click(function() {
+    window.location.href = '/places/' + $(this).attr('data-jname');
+  });
   $('rect#background').click(function() {
     window.location.href = '/prefectures';
   });

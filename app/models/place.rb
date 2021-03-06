@@ -71,7 +71,7 @@ class Place < ApplicationRecord
     return unless parent.present?
     my_level = CATS[category].to_i
     errors.add(:region_id, "top level can't have a parent") if my_level == 0
-    their_level = CATS[region.category].to_i
+    their_level = CATS[parent.category].to_i
     errors.add(:region_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
   end
 end
