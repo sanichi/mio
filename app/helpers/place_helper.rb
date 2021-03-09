@@ -17,8 +17,8 @@ module PlaceHelper
 
   def place_kanji_menu(selected)
     regs = Place.where(category: "region").pluck(:jname).map{ |n| n.delete_suffix("地方") }
-    prfs = Place.where(category: "prefecture").pluck(:jname).map{ |n| n.sub(/(県|府)\z/, "") }
-    cits = Place.where(category: "city").pluck(:jname).map{ |n| n.delete_suffix("市") }
+    prfs = Place.where(category: "prefecture").pluck(:jname).map{ |n| n.sub(/(県|府|都)\z/, "") }
+    cits = Place.where(category: "city").pluck(:jname).map{ |n| n.sub(/(市|特別区)\z/, "") }
     nams = regs + prfs + cits
     opts = nams.uniq
                .join("")
