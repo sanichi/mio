@@ -6,7 +6,7 @@ class Place < ApplicationRecord
   MAX_VBOX = 17
   MAX_WIKI = 50
   MIN_POP = 1 # in units of 100,000
-  CATS = {"region" => 0, "prefecture" => 1, "city" => 2}
+  CATS = {"region" => 0, "prefecture" => 1, "designated" => 2, "core" => 2, "city" => 2}
   DEF_VBOX = "-100 300 750 750"
 
   has_many :children, class_name: "Place", foreign_key: "parent_id"
@@ -78,6 +78,6 @@ class Place < ApplicationRecord
 
   def check_capital
     return unless capital
-    errors.add(:capital, "only cities can be capitals") unless category == "city"
+    errors.add(:capital, "only cities can be capitals") unless CATS[category].to_i == 2
   end
 end

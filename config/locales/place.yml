@@ -17,6 +17,8 @@ en:
     wiki: Wiki Link
     categories:
       city: City
+      core: Core City
+      designated: Designated City
       prefecture: Prefecture
       region: Region
     symbols:
