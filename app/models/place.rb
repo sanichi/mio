@@ -39,8 +39,10 @@ class Place < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{ename jname reading})
       matches = matches.where(sql)
     end
-    if (cat = params[:cat]).present?
-      matches = matches.where(category: cat)
+    if CATS.has_key?(params[:cat])
+      matches = matches.where(category: params[:cat])
+    elsif params[:cat] == "cities"
+      matches = matches.where(category: ["city", "core", "designated"])
     end
     if (kanji = params[:kanji]).present?
       matches = matches.where("jname ILIKE '%%%s%%'", kanji)

@@ -16,6 +16,7 @@ en:
     vbox: ViewBox
     wiki: Wiki Link
     categories:
+      cities: All Cities
       city: City
       core: Core City
       designated: Designated City

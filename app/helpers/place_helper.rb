@@ -7,6 +7,7 @@ module PlaceHelper
   def place_category_search_menu(selected)
     opts = Place::CATS.keys.map{ |c| [t("place.categories.#{c}"), c] }
     opts.unshift [t("all"), ""]
+    opts.push [t("place.categories.cities"), "cities"]
     options_for_select(opts, selected)
   end
 
