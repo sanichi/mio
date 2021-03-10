@@ -11,12 +11,13 @@
         %tr
           %th= t("name")
           %td= render "name", place: @place, reading: true, capital: true
-        %tr
-          %th= t("place.kanji")
-          %td
-            - @place.jname.split("").each do |c|
-              - if k = Wk::Kanji.find_by(character: c)
-                = link_to c, k
+        - if can?(:read, Wk::Kanji)
+          %tr
+            %th= t("place.kanji")
+            %td
+              - @place.jname.split("").each do |c|
+                - if k = Wk::Kanji.find_by(character: c)
+                  = link_to c, k
         %tr
           %th= t("place.category")
           %td= t("place.categories.#{@place.category}")

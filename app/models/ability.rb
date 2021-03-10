@@ -17,8 +17,8 @@ class Ability
       can :read, Tutorial, draft: false
     end
 
-    can :read, [Favourite]
+    can :read, [Favourite, Place]
     can [:read, :graph], Mass
-    can [:aoc, :pam, :play, :premier, :risle, :weight], :page
+    can [:aoc, :pam, :play, :premier, :prefectures, :risle, :weight], :page
   end
 end
