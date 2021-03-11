@@ -58,6 +58,10 @@ class Place < ApplicationRecord
     vbox.present?? vbox : (parent.present?? parent.vb : DEF_VBOX)
   end
 
+  def wiki_link
+    "https://en.wikipedia.org/wiki/#{wiki}"
+  end
+
   private
 
   def normalize_attributes
