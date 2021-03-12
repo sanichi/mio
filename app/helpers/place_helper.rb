@@ -5,14 +5,14 @@ module PlaceHelper
   end
 
   def place_category_search_menu(selected)
-    opts = Place::CATS.keys.map{ |c| [t("place.categories.#{c}"), c] }
-    opts.unshift [t("all"), ""]
-    opts.push [t("place.categories.cities"), "cities"]
+    opts = Place::CATS.keys.map{ |c| [t("place.categories.#{c}", locale: "jp"), c] }
+    opts.unshift [t("all", locale: "jp"), ""]
+    opts.push [t("place.categories.cities", locale: "jp"), "cities"]
     options_for_select(opts, selected)
   end
 
   def place_order_menu(selected)
-    opts = [["by name", "ename"], ["by population", "pop"]]
+    opts = [[t("place.ename", locale: "jp"), "ename"], [t("place.pop", locale: "jp"), "pop"]]
     options_for_select(opts, selected)
   end
 
@@ -27,7 +27,7 @@ module PlaceHelper
                 .sort_by{ |k,v| v }
                 .reverse
                 .map{ |k,v| ["#{k} (#{v})", k] }
-    opts.unshift [t("all"), ""]
+    opts.unshift [t("all", locale: "jp"), ""]
     options_for_select(opts, selected)
   end
 

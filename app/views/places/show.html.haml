@@ -9,23 +9,20 @@
     %table.table.table-bordered.table-striped.table-sm
       %tbody
         %tr
-          %th= t("name")
-          %td= render "name", place: @place, reading: true, capital: true
+          %th= t("name", locale: "jp")
+          %td= render "name", place: @place, reading: true, pop: true, capital: true
         - if can?(:read, Wk::Kanji)
           %tr
-            %th= t("place.kanji")
+            %th= t("place.kanji", locale: "jp")
             %td
               - @place.jname.split("").each do |c|
                 - if k = Wk::Kanji.find_by(character: c)
                   = link_to c, k
         %tr
-          %th= t("place.category")
-          %td= t("place.categories.#{@place.category}")
+          %th= t("place.category", locale: "jp")
+          %td= t("place.categories.#{@place.category}", locale: "jp")
         %tr
-          %th= t("place.pop")
-          %td= @place.millions
-        %tr
-          %th= t("place.wiki")
+          %th= t("place.wiki", locale: "jp")
           %td= render "wiki", place: @place
         - if @place.vbox.present?
           %tr
@@ -33,13 +30,13 @@
             %td= @place.vbox
         - if p = @place.parent
           %tr
-            %th= t("place.categories.#{p.category}")
+            %th= t("place.categories.#{p.category}", locale: "jp")
             %td
               = link_to p.jname, p
               = p.millions
         - @place.children.by_pop.each do |p|
           %tr
-            %th= t("place.categories.#{p.category}")
+            %th= t("place.categories.#{p.category}", locale: "jp")
             %td
               = link_to p.jname, p
               = p.millions

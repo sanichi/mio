@@ -1,10 +1,13 @@
 - defined?(link)     || link = false
 - defined?(capital)  || capital = false
 - defined?(reading)  || reading = false
+- defined?(pop)      || pop = false
 
 = link_to_if link, place.jname, place
 - if reading
   = surround("(", ")") do
     = place.reading
+- if pop
+  = place.millions
 - if capital && place.capital
   = t("place.symbols.capital")

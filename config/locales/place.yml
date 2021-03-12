@@ -29,5 +29,15 @@ jp:
     category: 種類
     ename: 英語
     jname: 日本語
+    kanji: 漢字
+    name: 名前
     parent: 親
-    population: 人口
+    pop: 人口
+    wiki: ウィキリンク
+    categories:
+      cities: 全ての年
+      city: 都市
+      core: 中核市
+      designated: 指定都市
+      prefecture: 県
+      region: 地域

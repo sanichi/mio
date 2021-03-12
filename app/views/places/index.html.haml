@@ -10,13 +10,13 @@
 = render "utils/search/form", index: places_path, inputs: inputs
 
 .row.mt-3
-  %div{class: center(xs: 12, sm: 10, md: 8, lg: 6, xl: 4)}
+  %div{class: center(xs: 12, md: 10, lg: 8, xl: 6)}
     %table{class: "table table-bordered table-striped table-sm mt-3"}
       %thead
         %tr
           %th= t("place.jname", locale: "jp")
           %th= t("place.parent", locale: "jp")
-          %th.text-center= t("place.population", locale: "jp")
+          %th.text-center= t("place.pop", locale: "jp")
           %th= t("place.ename", locale: "jp")
       %tbody{id: "results"}
         = render "results", places: @places
