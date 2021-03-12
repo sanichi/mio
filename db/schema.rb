@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_06_155101) do
+ActiveRecord::Schema.define(version: 2021_03_12_091208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "borders", force: :cascade do |t|
+    t.bigint "from_id"
+    t.bigint "to_id"
+    t.string "direction", limit: 10
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["from_id"], name: "index_borders_on_from_id"
+    t.index ["to_id"], name: "index_borders_on_to_id"
+  end
 
   create_table "buckets", id: :serial, force: :cascade do |t|
     t.string "name", limit: 50
@@ -402,6 +412,8 @@ ActiveRecord::Schema.define(version: 2021_03_06_155101) do
     t.index ["reading_id"], name: "index_yomis_on_reading_id"
   end
 
+  add_foreign_key "borders", "places", column: "from_id"
+  add_foreign_key "borders", "places", column: "to_id"
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
   add_foreign_key "places", "places", column: "parent_id"

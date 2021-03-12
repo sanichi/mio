@@ -11,6 +11,8 @@ class Place < ApplicationRecord
 
   has_many :children, class_name: "Place", foreign_key: "parent_id"
   belongs_to :parent, class_name: "Place", optional: true
+  has_many :borders, foreign_key: "from_id"
+  has_many :neighbours, through: :borders, source: "to"
 
   before_validation :normalize_attributes
 
