@@ -32,7 +32,7 @@ Place.where(category: "prefecture").where.not(jname: exceptions).each do |p|
         pp = ps[$1]
         direction = $2 || "unknown"
         if pp
-          puts "create(#{p.id}, #{pp.id}, '#{direction}')"
+          puts "Border.create!(from_id: #{p.id}, to_id: #{pp.id}, direction: '#{direction}')"
         else
           puts "can't find prefecture #{$1}"
         end

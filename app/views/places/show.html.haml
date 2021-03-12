@@ -43,6 +43,11 @@
             %td
               = link_to p.jname, p
               = "(#{p.ename} #{p.millions})"
+        - if @place.category == "prefecture"
+          - @place.borders.by_direction.each do |b|
+            %tr
+              %th= t("border.directions.#{b.direction}", locale: "jp")
+              %td= link_to b.to.jname, b.to
 
 .text-center.mt-3
   = link_to t("place.places"), last_search(places_path), class: "btn btn-success"

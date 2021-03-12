@@ -8,9 +8,24 @@ class Border < ApplicationRecord
 
   validates :from_id, numericality: { integer_only: true, greater_than: 0 }
   validates :to_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: :from_id }
-  validates :direction, inclusion: { in: DIRS }
+  validates :direction, inclusion: { in: DIRS }, uniqueness: { scope: :from_id }
 
   validate :check_places
+
+  scope :by_direction, -> { order(:direction) }
+
+  def self.opposite(direction)
+    case direction
+    when "east"      then "west"
+    when "north"     then "south"
+    when "northeast" then "southwest"
+    when "northwest" then "southeast"
+    when "south"     then "north"
+    when "southeast" then "northwest"
+    when "southwest" then "northeast"
+                     else "east"
+    end
+  end
 
   private
 

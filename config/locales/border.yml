@@ -1,0 +1,22 @@
+en:
+  border:
+    directions:
+      east: E
+      north: N
+      northeast: NW
+      northwest: NW
+      south: S
+      southeast: SE
+      southwest: SW
+      west: E
+jp:
+  border:
+    directions:
+      east: 東
+      north: 北
+      northeast: 東北
+      northwest: 西北
+      south: 南
+      southeast: 南東
+      southwest: 南西
+      west: 西
