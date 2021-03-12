@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+#
+# Quick one-off script run on local and/or live machine.
+#   montauk> bin/rails r bin/run
+#   thessaloniki> RAILS_ENV=production bin/rails r bin/run
+#
+
+exceptions = []
+exceptions.push "北海道" # no land borders
+exceptions.push "沖縄県" # no land borders
+exceptions.push "東京都" # not a normal prefecture
+exceptions.push "青森県" # different wording
+
+# get all prefectures by ename
+ps = Place.where(category: "prefecture").each_with_object({}) { |p, h| h[p.ename] = p }
+
+# address any deliberate differences between our names and WP's
+ps["Tokyo"] = ps["Tokyo Metropolis"]
+
+Place.where(category: "prefecture").where.not(jname: exceptions).each do |p|
+  uri = URI.parse(URI::DEFAULT_PARSER.escape(p.wiki_link))
+  sleep(0.1)
+  begin
+    response = Net::HTTP.get_response(uri)
+    body = response.body.force_encoding("UTF-8")
+
+    if body =~ /(#{p.ename} borders .*?)\./
+      puts "# #{p.ename}"
+      s = $1
+      # <a href="/wiki/Aichi_Prefecture" title="Aichi Prefecture">Aichi Prefecture</a> to the south
+      s.gsub!(/<a href="[^"]+"(?: class="mw-redirect")? title="[^"]+">([^<]+)<\/a> (?:to the (\w+)|and)/) do
+        pp = ps[$1]
+        direction = $2 || "unknown"
+        if pp
+          puts "create(#{p.id}, #{pp.id}, '#{direction}')"
+        else
+          puts "can't find prefecture #{$1}"
+        end
+        " "
+      end
+      puts "# #{s}" if s.match(/href/)
+    else
+      raise "can't find 'borders'"
+    end
+  rescue => e
+    puts "#{p.ename}: #{e.message}"
+  end
+end
