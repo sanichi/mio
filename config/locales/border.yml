@@ -14,8 +14,8 @@ jp:
     directions:
       east: 東
       north: 北
-      northeast: 東北
-      northwest: 西北
+      northeast: 北東
+      northwest: 北西
       south: 南
       southeast: 南東
       southwest: 南西
