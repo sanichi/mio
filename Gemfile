@@ -10,7 +10,7 @@ gem 'uglifier', '~> 4.2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'cancancan', '~> 3.0'
 gem 'redcarpet', '~> 3.5'
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 2.0'
 gem 'chronic', '~> 0.10'
 gem 'date_validator', '~> 0.9'
 gem 'jquery-ui-rails', '~> 6.0'
@@ -20,7 +20,7 @@ gem 'oga', '~> 3.0'
 gem 'ruby-progressbar', '~> 1.10'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 4.0'
+  gem 'rspec-rails', '~> 5.0'
   gem 'capybara', '~> 3.28'
   gem 'byebug', platforms: :mri
   gem 'launchy', '~> 2.5'
@@ -38,4 +38,5 @@ group :development do
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen', '~> 3.2'
+  gem 'awesome_print', '~> 1.9'
 end
