@@ -1,0 +1,12 @@
+- tests.matches.each do |test|
+  %tr
+    %td= test_type(test)
+    %td= render "subject", test: test
+    %td.text-center= test.attempts
+    %td.text-center= test.poor
+    %td.text-center= test.fair
+    %td.text-center= test.good
+    %td.text-center= test.excellent
+    %td.text-center= test.level
+    %td.text-center= test_due(test.due)
+= render "utils/pagination_links", pager: tests, columns: 9

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_12_114455) do
+ActiveRecord::Schema.define(version: 2021_03_19_095357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,6 +272,21 @@ ActiveRecord::Schema.define(version: 2021_03_12_114455) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "division", limit: 2, default: 1
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.bigint "testable_id"
+    t.string "testable_type"
+    t.integer "attempts", limit: 2, default: 0
+    t.integer "poor", limit: 2, default: 0
+    t.integer "fair", limit: 2, default: 0
+    t.integer "good", limit: 2, default: 0
+    t.integer "excellent", limit: 2, default: 0
+    t.integer "level", limit: 2, default: 0
+    t.datetime "due"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["testable_type", "testable_id"], name: "index_tests_on_testable_type_and_testable_id"
   end
 
   create_table "tutorials", force: :cascade do |t|

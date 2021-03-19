@@ -1,0 +1,25 @@
+= render "utils/title", key: "test.tests"
+
+:ruby
+  inputs = [
+    [:type,  t("test.type"), :select, menu: test_type_menu(params[:type])],
+    [:order, t("order"),     :select, menu: test_order_menu(params[:order])],
+  ]
+= render "utils/search/form", index: tests_path, inputs: inputs
+
+.row.mt-3
+  %div{class: center(xs: 12, md: 10, lg: 8, xl: 6)}
+    %table{class: "table table-bordered table-striped table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("test.type")
+          %th= t("test.subject")
+          %th.text-center= t("test.short.attempts")
+          %th.text-center= t("test.short.poor")
+          %th.text-center= t("test.short.fair")
+          %th.text-center= t("test.short.good")
+          %th.text-center= t("test.short.excellent")
+          %th.text-center= t("test.short.level")
+          %th.text-center= t("test.short.due")
+      %tbody{id: "results"}
+        = render "results", tests: @tests

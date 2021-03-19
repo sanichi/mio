@@ -1,0 +1,26 @@
+en:
+  test:
+    attempts: Attempts
+    excellent: Excellent
+    due: Due
+    fair: Fair
+    good: Good
+    level: Level
+    new: New
+    poor: Poor
+    subject: Subject
+    tests: Tests
+    type: Type
+    short:
+      attempts: A
+      due: D
+      excellent: E
+      fair: F
+      good: G
+      level: L
+      poor: P
+    types:
+      border: Border
+      example: Example
+      place: Place
+      unknown: Unknown

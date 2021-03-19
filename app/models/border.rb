@@ -5,6 +5,9 @@ class Border < ApplicationRecord
 
   belongs_to :from, class_name: "Place"
   belongs_to :to, class_name: "Place"
+  has_one :test, as: :testable, dependent: :destroy
+
+  after_create { create_test! }
 
   validates :from_id, numericality: { integer_only: true, greater_than: 0 }
   validates :to_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: :from_id }
