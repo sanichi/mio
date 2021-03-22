@@ -1,5 +1,8 @@
 module TestHelper
   NUMBER = [5, 10, 1, 2, 20]
+  NEW = "test_new"
+  OLD = "test_old"
+  ANS = "test_answers"
 
   def test_number_menu(selected)
     opts = NUMBER.map { |n| [n.to_s, n] }
@@ -13,14 +16,17 @@ module TestHelper
   end
 
   def test_last_menu(selected)
-    opts = Test::LAST.map{ |l| [t("test.#{l}"), l] }
+    opts = Test::ANSWERS.map{ |l| [t("test.answers.#{l}"), l] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
 
   def test_order_menu(selected)
-    opts = %w/due new level attempts poor fair good excellent/.map do |o|
+    opts = %w/due new level attempts/.map do |o|
       [o == "updated" ? t(o) : t("test.#{o}"), o]
+    end
+    Test::ANSWERS.each do |o|
+      opts.push [t("test.answers.#{o}"), o] unless o == "skip"
     end
     options_for_select(opts, selected)
   end
@@ -70,6 +76,62 @@ module TestHelper
           end
         end
       end
+    end
+  end
+
+  def test_new_save(ids)
+    session[NEW] = ids.join("_")
+  end
+
+  def test_new_review_ids
+    session[NEW].to_s.split("_").map(&:to_i).select{ |i| i > 0 }
+  end
+
+  def test_new_review?
+    !test_new_review_ids.empty?
+  end
+
+  def test_new_use
+    session[OLD] = session[NEW]
+    session[ANS] = ""
+  end
+
+  def test_review_ids
+    session[OLD].to_s.split("_").map(&:to_i).select{ |i| i > 0 }
+  end
+
+  def test_review?
+    !test_review_ids.empty?
+  end
+
+  def test_answers
+    session[ANS].to_s.split("_").select{ |a| Test::ANSWERS.include?(a) }
+  end
+
+  def test_index
+    test_answers.length
+  end
+
+  def test_add_answer(last)
+    if session[ANS].present?
+      session[ANS] += "_#{last}"
+    else
+      session[ANS] = last
+    end
+  end
+
+  def test_style(ans)
+    case ans
+    when "poor"
+      "danger"
+    when "fair"
+      "warning"
+    when "good"
+      "success"
+    when "excellent"
+      "primary"
+    else
+      "light"
     end
   end
 end

@@ -1,19 +1,23 @@
 en:
   test:
     attempts: Attempts
-    excellent: Excellent
+    complete: Complete
     due: Due
-    fair: Fair
-    good: Good
     last: Last
     level: Level
     new: New
     number: Number
-    poor: Poor
-    skip: Skip
+    resume: Resume
+    review: Review
     subject: Subject
     tests: Tests
     type: Type
+    answers:
+      excellent: Excellent
+      fair: Fair
+      good: Good
+      poor: Poor
+      skip: Skip
     short:
       attempts: A
       due: D

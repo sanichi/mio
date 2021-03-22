@@ -41,7 +41,10 @@ Rails.application.routes.draw do
   resources :questions
   resources :sessions, only: [:create]
   resources :teams
-  resources :tests, only: [:index]
+  resources :tests, only: [:index, :update] do
+    get :review, on: :collection
+    get :resume, on: :collection
+  end
   resources :tutorials
   resources :users
   namespace :wk do

@@ -25,3 +25,9 @@
           %th.text-center= t("test.short.due")
       %tbody{id: "results"}
         = render "results", tests: @tests
+
+.text-center.mt3
+  - if test_new_review?
+    = link_to t("test.review"), review_tests_path, class: "btn btn-info"
+  - if test_review?
+    = link_to t("test.resume"), resume_tests_path, class: "btn btn-info"
