@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_095357) do
+ActiveRecord::Schema.define(version: 2021_03_22_111844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_095357) do
     t.datetime "due"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "last", limit: 10
     t.index ["testable_type", "testable_id"], name: "index_tests_on_testable_type_and_testable_id"
   end
 

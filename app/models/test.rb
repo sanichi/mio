@@ -3,11 +3,13 @@ class Test < ApplicationRecord
 
   MAX_LEVEL = 9
   MIN_LEVEL = 0
+  LAST = %w/poor fair good excellent skip/
 
   belongs_to :testable, polymorphic: true
 
   validates :attempts, :poor, :fair, :good, :excellent, numericality: { integer_only: true, more_than_or_equal_to: 0 }
   validates :level, numericality: { integer_only: true, more_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }
+  validates :last, inclusion: { in: LAST }, allow_nil: true
 
   scope :by_new,       -> { order(due:        :desc) }
   scope :by_due,       -> { order(due:        :asc)  }
@@ -54,6 +56,7 @@ class Test < ApplicationRecord
       else
         matches
       end
+    matches = matches.where(last: params[:last]) if LAST.include? params[:last]
     paginate(matches, params, path, opt)
   end
 end

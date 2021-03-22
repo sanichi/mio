@@ -4,6 +4,7 @@
   inputs = [
     [:type,   t("test.type"),   :select, menu: test_type_menu(params[:type])],
     [:order,  t("order"),       :select, menu: test_order_menu(params[:order])],
+    [:last,   t("test.last"),   :select, menu: test_last_menu(params[:last])],
     [:number, t("test.number"), :select, menu: test_number_menu(params[:number])],
   ]
 = render "utils/search/form", index: tests_path, inputs: inputs

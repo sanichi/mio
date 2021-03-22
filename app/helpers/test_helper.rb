@@ -12,6 +12,12 @@ module TestHelper
     options_for_select(opts, selected)
   end
 
+  def test_last_menu(selected)
+    opts = Test::LAST.map{ |l| [t("test.#{l}"), l] }
+    opts.unshift [t("all"), ""]
+    options_for_select(opts, selected)
+  end
+
   def test_order_menu(selected)
     opts = %w/due new level attempts poor fair good excellent/.map do |o|
       [o == "updated" ? t(o) : t("test.#{o}"), o]

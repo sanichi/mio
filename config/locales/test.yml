@@ -5,10 +5,12 @@ en:
     due: Due
     fair: Fair
     good: Good
+    last: Last
     level: Level
     new: New
     number: Number
     poor: Poor
+    skip: Skip
     subject: Subject
     tests: Tests
     type: Type
