@@ -1,4 +1,11 @@
 module TestHelper
+  NUMBER = [5, 10, 1, 2, 20]
+
+  def test_number_menu(selected)
+    opts = NUMBER.map { |n| [n.to_s, n] }
+    options_for_select(opts, selected)
+  end
+
   def test_type_menu(selected)
     opts = %w/example place border/.map{ |t| [t("test.types.#{t}"), t] }
     opts.unshift [t("all"), ""]
@@ -27,9 +34,7 @@ module TestHelper
 
   def test_due(time)
     return "" unless time.present?
-
     count = time.to_f - Time.now.to_f
-
     if count <= 0.0
       "now"
     else
