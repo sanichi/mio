@@ -1,8 +1,9 @@
 module TestHelper
-  NUMBER = [1, 2, 5, 10]
+  NUMBERS = [1, 2, 5, 10]
+  DEFAULT = NUMBERS[2]
 
   def test_number_menu(selected)
-    opts = NUMBER.map { |n| [n.to_s, n] }
+    opts = NUMBERS.map { |n| [n.to_s, n] }
     options_for_select(opts, selected)
   end
 

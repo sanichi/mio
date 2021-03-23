@@ -2,7 +2,7 @@ class TestsController < ApplicationController
   authorize_resource
 
   def index
-    params[:number] = TestHelper::NUMBER[2] unless TestHelper::NUMBER.include?(params[:number].to_i)
+    params[:number] = TestHelper::DEFAULT unless TestHelper::NUMBERS.include?(params[:number].to_i)
     @tests = Test.search(params, tests_path, per_page: params[:number])
     remember_last_search(tests_path)
   end
