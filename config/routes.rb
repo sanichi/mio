@@ -43,7 +43,6 @@ Rails.application.routes.draw do
   resources :teams
   resources :tests, only: [:index, :update] do
     get :review, on: :collection
-    get :resume, on: :collection
   end
   resources :tutorials
   resources :users

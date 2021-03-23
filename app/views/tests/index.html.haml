@@ -7,7 +7,7 @@
     [:last,   t("test.last"),   :select, menu: test_last_menu(params[:last])],
     [:number, t("test.number"), :select, menu: test_number_menu(params[:number])],
   ]
-= render "utils/search/form", index: tests_path, inputs: inputs
+= render "utils/search/form", index: tests_path, inputs: inputs, remote: false
 
 .row.mt-3
   %div{class: center(xs: 12, md: 10, lg: 8, xl: 6)}
@@ -26,8 +26,7 @@
       %tbody{id: "results"}
         = render "results", tests: @tests
 
-.text-center.mt3
-  - if test_new_review?
-    = link_to t("test.review"), review_tests_path, class: "btn btn-info"
-  - if test_review?
-    = link_to t("test.resume"), resume_tests_path, class: "btn btn-info"
+- ids = @tests.matches.map(&:id)
+- unless ids.empty?
+  .text-center.mt3
+    = link_to t("test.review"), review_tests_path(ids: ids), class: "btn btn-info"

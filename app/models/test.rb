@@ -62,6 +62,10 @@ class Test < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def qa
+    ["who am I", "a genius"]
+  end
+
   private
 
   def update_stats

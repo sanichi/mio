@@ -9,11 +9,12 @@ en:
     number: Number
     resume: Resume
     review: Review
+    show: Show Answer
     subject: Subject
     tests: Tests
     type: Type
     answers:
-      excellent: Excellent
+      excellent: Fab
       fair: Fair
       good: Good
       poor: Poor
