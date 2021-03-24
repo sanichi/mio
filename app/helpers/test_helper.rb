@@ -14,7 +14,7 @@ module TestHelper
   end
 
   def test_last_menu(selected)
-    opts = Test::ANSWERS.map{ |l| [t("test.answers.#{l}"), l] }
+    opts = Test::ANSWERS.map{ |l| [t("test.scores.#{l}"), l] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end

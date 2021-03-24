@@ -13,12 +13,6 @@ en:
     subject: Subject
     tests: Tests
     type: Type
-    answers:
-      excellent: Fab
-      fair: Fair
-      good: Good
-      poor: Poor
-      skip: Skip
     order:
       attempts: Attempts
       new: New
@@ -26,6 +20,12 @@ en:
       skipped: Skipped
       today: Today
       updated: Updated
+    scores:
+      excellent: Fab
+      fair: Fair
+      good: Good
+      poor: Poor
+      skip: Skip
     short:
       attempts: A
       due: D
@@ -41,3 +41,11 @@ en:
       example: Example
       place: Place
       unknown: Unknown
+jp:
+  test:
+    questions:
+      border: "%{prefecture}の<b>%{direction}</b>の県は何ですか"
+      example: "日本語で「<b>%{english}</b>」は何と言いますか"
+      region: "<b>%{place}</b>の都道府県はなんですか"
+      prefecture: "<b>%{place}</b>のどの都市ですか"
+      city: "<b>%{place}</b>はどの都道府県ですか"

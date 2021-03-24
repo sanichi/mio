@@ -13,19 +13,18 @@
 .row.mt-4
   %div{class: center(xs: 12, md: 10, xl: 8)}
     - @tests.each_with_index.reverse_each do |t, i|
-      - q, a = t.qa
       - n = i + 1
       .row.border{id: "test-#{t.id}"}
         .col-1.text-center
           %button.btn.btn-sm.mt-2{id: "row-number-#{t.id}", class: skip}= n
         .col-11
           .row.border-left.border-bottom.p-2
-            .col-12= q
+            .col-12= render "question", test: t
           .row.border-left.border-bottom.p-2{id: "answer-#{t.id}"}
-            .col-12= a
+            .col-12= render "answer", test: t
           .row.border-left.border-bottom.p-2{id: "show-#{t.id}"}
             .col-12.text-center
-              %button.btn.btn-sm.btn-outline-dark.show{"data-tid" => t.id}= t("test.show")
+              %button.btn.btn-sm.btn-dark.show{"data-tid" => t.id}= t("test.show")
           .row.border-left.border-bottom.p-2{id: "buttons-#{t.id}"}
             = render "buttons", test: t
 

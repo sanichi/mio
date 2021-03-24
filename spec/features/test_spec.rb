@@ -24,7 +24,7 @@ describe Test do
     expect(page).to have_title t("test.review")
 
     click_button t("test.show")
-    click_button t("test.answers.poor")
+    click_button t("test.scores.poor")
     expect(Test.where(attempts: 0).count).to eq 5
     expect(Test.where(last: "poor").count).to eq 1
     test = Test.find_by(last: "poor")
@@ -33,7 +33,7 @@ describe Test do
     expect(test.due).to_not be_nil
 
     click_button t("test.show")
-    click_button t("test.answers.fair")
+    click_button t("test.scores.fair")
     expect(Test.where(attempts: 0).count).to eq 4
     expect(Test.where(last: "fair").count).to eq 1
     test = Test.find_by(last: "fair")
@@ -42,7 +42,7 @@ describe Test do
     expect(test.due).to_not be_nil
 
     click_button t("test.show")
-    click_button t("test.answers.good")
+    click_button t("test.scores.good")
     expect(Test.where(attempts: 0).count).to eq 3
     expect(Test.where(last: "good").count).to eq 1
     test = Test.find_by(last: "good")
@@ -51,7 +51,7 @@ describe Test do
     expect(test.due).to_not be_nil
 
     click_button t("test.show")
-    click_button t("test.answers.excellent")
+    click_button t("test.scores.excellent")
     expect(Test.where(attempts: 0).count).to eq 2
     expect(Test.where(last: "excellent").count).to eq 1
     test = Test.find_by(last: "excellent")
@@ -60,7 +60,7 @@ describe Test do
     expect(test.due).to_not be_nil
 
     click_button t("test.show")
-    click_button t("test.answers.skip")
+    click_button t("test.scores.skip")
     expect(Test.where(attempts: 0).count).to eq 2
     expect(Test.where(last: "skip").count).to eq 1
     test = Test.find_by(last: "skip")
@@ -70,7 +70,7 @@ describe Test do
 
     expect(page).to_not have_selector(:link_or_button, t("test.show"))
     Test::ANSWERS.each do |a|
-      expect(page).to_not have_selector(:link_or_button, t("test.answers.#{a}"))
+      expect(page).to_not have_selector(:link_or_button, t("test.scores.#{a}"))
     end
   end
 end

@@ -1,0 +1,22 @@
+- target = "peek"
+
+- case test.testable_type
+  - when "Border"
+    - border = test.testable
+    = link_to border.to.jname, border.to, target: target
+  - when "Wk::Example"
+    - example = test.testable
+    = example.japanese_html(target: target)
+  - when "Place"
+    - place = test.testable
+    - case place.category
+      - when "region"
+        = place.children.by_pop.map{ |p| link_to p.jname, p, target: target }.join(", ").html_safe
+      - when "prefecture"
+        = place.children.by_pop.map{ |p| link_to p.jname, p, target: target }.join(", ").html_safe
+      - when "city", "core", "designated"
+        link_to place.parent.jname, place.parent, target: target
+      - else
+        = "not implemented"
+  - else
+    = "not implemented"

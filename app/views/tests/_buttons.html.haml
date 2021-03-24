@@ -3,4 +3,4 @@
   .col-2.text-center
     = form_for test, remote: true do |f|
       = f.hidden_field(:last, value: a)
-      = f.submit t("test.answers.#{a}"), class: "btn btn-sm #{test_btn_style(a)}"
+      = f.submit t("test.scores.#{a}"), class: "btn btn-sm #{test_btn_style(a)}"

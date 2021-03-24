@@ -1,0 +1,24 @@
+- target = "peek"
+
+- case test.testable_type
+  - when "Border"
+    - border = test.testable
+    - prefecture = link_to border.from.jname, border.from, target: target
+    - direction = t("border.directions.#{border.direction}", locale: "jp")
+    = t("test.questions.border", prefecture: prefecture, direction: direction, locale: "jp").html_safe
+  - when "Wk::Example"
+    - example = test.testable
+    = t("test.questions.example", english: example.english, locale: "jp").html_safe
+  - when "Place"
+    - place = test.testable
+    - case place.category
+      - when "region"
+        = t("test.questions.region", place: place.jname, locale: "jp").html_safe
+      - when "prefecture"
+        = t("test.questions.prefecture", place: place.jname, locale: "jp").html_safe
+      - when "city", "core", "designated"
+        = t("test.questions.city", place: place.jname, locale: "jp").html_safe
+      - else
+        = "not implemented"
+  - else
+    = "not implemented"

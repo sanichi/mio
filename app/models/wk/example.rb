@@ -40,8 +40,9 @@ module Wk
       end
     end
 
-    def japanese_html(bold: nil)
+    def japanese_html(bold: nil, target: nil)
       current = current_vocabs
+      target = %(target="#{target}") if target
       japanese.gsub(PATTERN) do |match|
         display = $1
         characters = $2 || display
@@ -50,7 +51,7 @@ module Wk
         else
           vocab = current[characters]
           if vocab
-            %(<a href="/wk/vocabs/#{characters}">#{display}</a>)
+            %(<a href="/wk/vocabs/#{characters}" #{target}>#{display}</a>)
           else
             match
           end
