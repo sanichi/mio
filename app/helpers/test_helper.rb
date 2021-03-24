@@ -20,12 +20,7 @@ module TestHelper
   end
 
   def test_order_menu(selected)
-    opts = %w/due new level attempts/.map do |o|
-      [o == "updated" ? t(o) : t("test.#{o}"), o]
-    end
-    Test::ANSWERS.each do |o|
-      opts.push [t("test.answers.#{o}"), o] unless o == "skip"
-    end
+    opts = %w/now new today skipped attempts updated/.map { |o| [t("test.order.#{o}"), o] }
     options_for_select(opts, selected)
   end
 

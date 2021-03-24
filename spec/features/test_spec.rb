@@ -16,6 +16,7 @@ describe Test do
     login
     click_link t("wk.japanese", locale: "jp")
     click_link t("test.tests")
+    select t("test.order.new"), from: t("order")
     expect(page).to have_title t("test.tests")
     expect(page.all(:css, 'tbody#results tr').size).to eq TestHelper::DEFAULT + 1 # 1 extra for the next page controls
 

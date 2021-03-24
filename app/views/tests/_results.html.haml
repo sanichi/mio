@@ -8,5 +8,6 @@
     %td.text-center= test.good
     %td.text-center= test.excellent
     %td.text-center= test.level
-    %td.text-center= test_due(test.due)
-= render "utils/pagination_links", pager: tests, columns: 9
+    %td.text-center= t("test.short.#{test.last}") if test.last.present?
+    %td.text-center= test_due(test.due) if test.due.present?
+= render "utils/pagination_links", pager: tests, columns: 10

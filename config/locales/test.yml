@@ -19,14 +19,23 @@ en:
       good: Good
       poor: Poor
       skip: Skip
+    order:
+      attempts: Attempts
+      new: New
+      now: Now
+      skipped: Skipped
+      today: Today
+      updated: Updated
     short:
       attempts: A
       due: D
-      excellent: E
+      excellent: F
       fair: F
       good: G
+      last: L
       level: L
       poor: P
+      skip: S
     types:
       border: Border
       example: Example
