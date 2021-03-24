@@ -1,5 +1,9 @@
+- defined?(only) || only = nil
+- defined?(except) || except = nil
+
 - Test::ANSWERS.each do |a|
-  .col.text-center
-    = form_for test, remote: true do |f|
-      = f.hidden_field(:last, value: a)
-      = f.submit t("test.scores.#{a}"), class: "btn btn-sm #{test_btn_style(a)}"
+  - if (only && a == only) || (except && a != except)
+    .col.text-center
+      = form_for test, remote: true do |f|
+        = f.hidden_field(:last, value: a)
+        = f.submit t("test.scores.#{a}"), class: "btn btn-sm #{test_btn_style(a)}"

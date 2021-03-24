@@ -12,6 +12,7 @@ function next_test() {
         }
         $('#answer-' + tid).hide();
         $('#buttons-' + tid).hide();
+        $('#skip-' + tid).hide();
       }
       else if (idx > curr_idx)
       {
@@ -29,6 +30,7 @@ function update_numbers(tid, new_style) {
     $('#row-number-' + tid).removeClass(skip_style).addClass(new_style);
   }
   $('#buttons-' + tid).hide();
+  $('#skip-' + tid).hide();
 }
 
 $(function() {
@@ -36,6 +38,7 @@ $(function() {
     var tid = $(this).attr('data-tid');
     $('#answer-' + tid).show();
     $('#buttons-' + tid).show();
+    $('#skip-' + tid).show();
     $('#show-' + tid).hide();
   });
   next_test();
