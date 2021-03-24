@@ -15,9 +15,9 @@
     - @tests.each_with_index.reverse_each do |t, i|
       - n = i + 1
       .row.border{id: "test-#{t.id}"}
-        .col-1.text-center
-          %button.btn.btn-sm.mt-2{id: "row-number-#{t.id}", class: skip}= n
-        .col-11
+        .col-2.col-sm-1.text-center
+          %button.btn.btn-sm.mt-4{id: "row-number-#{t.id}", class: skip}= n
+        .col-10.col-sm-11
           .row.border-left.border-bottom.p-2
             .col-12= render "question", test: t
           .row.border-left.border-bottom.p-2{id: "answer-#{t.id}"}
