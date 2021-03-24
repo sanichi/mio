@@ -26,9 +26,7 @@
             .col-12.text-center
               %button.btn.btn-sm.btn-dark.show{"data-tid" => t.id}= t("test.show")
           .row.border-left.border-bottom.p-2{id: "buttons-#{t.id}"}
-            = render "buttons", test: t, except: "skip"
-          .row.border-left.border-bottom.p-2{id: "skip-#{t.id}"}
-            = render "buttons", test: t, only: "skip"
+            = render "buttons", test: t
 
 .text-center.mt-4
   = link_to t("test.tests"), last_search(tests_path), class: "btn btn-info"
