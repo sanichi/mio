@@ -28,14 +28,19 @@ en:
       skip: Skip
     short:
       attempts: A
+      border: B
       due: D
+      example: E
       excellent: F
       fair: F
       good: G
       last: L
       level: L
+      place: P
       poor: P
       skip: S
+      type: T
+      unknown: U
     types:
       border: Border
       example: Example

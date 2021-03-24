@@ -1,6 +1,6 @@
 - tests.matches.each do |test|
   %tr
-    %td= test_type(test)
+    %td.text-center= test_type(test)
     %td= render "subject", test: test
     %td.text-center= test.attempts
     %td.text-center= test.poor

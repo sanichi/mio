@@ -27,13 +27,13 @@ module TestHelper
   def test_type(test)
     case test.testable_type
     when "Wk::Example"
-      t("test.types.example")
+      t("test.short.example")
     when "Place"
-      t("test.types.place")
+      t("test.short.place")
     when "Border"
-      t("test.types.border")
+      t("test.short.border")
     else
-      t("test.types.unknown")
+      t("test.short.unknown")
     end
   end
 
