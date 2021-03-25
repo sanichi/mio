@@ -18,8 +18,9 @@ en:
       new: New
       now: Now
       skipped: Skipped
-      today: Today
+      today: Next 24h
       updated: Updated
+      week: Next Week
     scores:
       excellent: Fab
       fair: Fair

@@ -25,6 +25,8 @@ class Test < ApplicationRecord
         where(due: nil)
       when "today"
         where("due > ?", Time.now).where("due < ?", Time.now + 1.day).order(due: :asc)
+      when "week"
+        where("due > ?", Time.now).where("due < ?", Time.now + 1.week).order(due: :asc)
       when "attempts"
         order(attempts: :desc)
       when "skipped"
