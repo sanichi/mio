@@ -13,8 +13,12 @@ class TestsController < ApplicationController
 
   def update
     @test = Test.find(params[:id])
-    unless @test.update(strong_params)
-      @error = @test.errors.full_messages.join(", ")
+    if params[:test][:last] == "skip"
+      @test.update_column(:last, "skip") # doesn't changed updated_at
+    else
+      unless @test.update(strong_params)
+        @error = @test.errors.full_messages.join(", ")
+      end
     end
   end
 
