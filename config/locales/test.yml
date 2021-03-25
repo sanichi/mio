@@ -42,10 +42,12 @@ en:
       type: T
       unknown: U
     types:
-      border: Border
-      example: Example
-      place: Place
-      unknown: Unknown
+      border: Borders
+      city: Cities
+      example: Examples
+      place: Places
+      prefecture: Prefectures
+      region: Regions
 jp:
   test:
     questions:

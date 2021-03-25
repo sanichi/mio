@@ -7,6 +7,11 @@ class Test < ApplicationRecord
 
   belongs_to :testable, polymorphic: true
 
+  scope :places, ->(level) do
+    filter = Place::CATS.select{|t,l| l == level}.keys.join("', '")
+    where(testable_type: "Place").joins("INNER JOIN places ON testable_id = places.id AND places.category IN ('#{filter}')")
+  end
+
   after_update :update_stats
 
   validates :attempts, :poor, :fair, :good, :excellent, numericality: { integer_only: true, more_than_or_equal_to: 0 }
@@ -37,6 +42,12 @@ class Test < ApplicationRecord
         matches.where(testable_type: "Place")
       when "border"
         matches.where(testable_type: "Border")
+      when "region"
+        matches.places(0)
+      when "prefecture"
+        matches.places(1)
+      when "city"
+        matches.places(2)
       else
         matches
       end
