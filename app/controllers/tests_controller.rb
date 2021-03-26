@@ -8,7 +8,8 @@ class TestsController < ApplicationController
   end
 
   def review
-    @tests = Test.includes(:testable).where(id: params[:ids])
+    tests = Test.includes(:testable).where(id: params[:ids])
+    @tests = same_order(tests, params[:ids])
   end
 
   def update
@@ -26,5 +27,10 @@ class TestsController < ApplicationController
 
   def strong_params
     params.require(:test).permit(:last)
+  end
+
+  def same_order(tests, ids)
+    lookup = ids.each_with_index.each_with_object({}) { |(id, i), h| h[id.to_i] = i }
+    tests.sort_by { |t| lookup[t.id] }
   end
 end
