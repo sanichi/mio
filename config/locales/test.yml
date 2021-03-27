@@ -3,6 +3,7 @@ en:
     attempts: Attempts
     complete: Complete
     due: Due
+    filter: Filter
     last: Last
     level: Level
     new: New

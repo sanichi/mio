@@ -1,5 +1,6 @@
 class Test < ApplicationRecord
   include Pageable
+  include Constrainable
 
   MAX_LEVEL = 9
   MIN_LEVEL = 0
@@ -7,16 +8,34 @@ class Test < ApplicationRecord
 
   belongs_to :testable, polymorphic: true
 
-  scope :places, ->(level) do
-    filter = Place::CATS.select{|t,l| l == level}.keys.join("', '")
-    where(testable_type: "Place").joins("INNER JOIN places ON testable_id = places.id AND places.category IN ('#{filter}')")
-  end
-
   after_update :update_stats
 
   validates :attempts, :poor, :fair, :good, :excellent, numericality: { integer_only: true, more_than_or_equal_to: 0 }
   validates :level, numericality: { integer_only: true, more_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }
   validates :last, inclusion: { in: ANSWERS }, allow_nil: true
+
+  scope :inner_example, -> { joins("INNER JOIN wk_examples ON testable_id = wk_examples.id AND testable_type = 'Wk::Example'") }
+  scope :inner_place, -> { joins("INNER JOIN places ON testable_id = places.id AND testable_type = 'Place'") }
+  scope :place_level, ->(level) { where("places.category IN (?)", Place::CATS.select{|t,l| l == level}.keys) }
+  scope :match_place, ->(filter, level=nil) do
+    sql = cross_constraint(filter, %w/ename jname/, table: "places")
+    if sql && level
+      inner_place.place_level(level).where(sql)
+    elsif level
+      inner_place.place_level(level)
+    elsif sql
+      inner_place.inner_place.where(sql)
+    else
+      where(testable_type: "Place")
+    end
+  end
+  scope :match_example, ->(filter) do
+    if sql = cross_constraint(filter, %w/english japanese/, table: "wk_examples")
+      inner_example.where(sql)
+    else
+      where(testable_type: "Wk::Example")
+    end
+  end
 
   def self.search(params, path, opt={})
     matches =
@@ -39,17 +58,17 @@ class Test < ApplicationRecord
     matches =
       case params[:type]
       when "example"
-        matches.where(testable_type: "Wk::Example")
+        match_example(params[:filter])
       when "place"
-        matches.where(testable_type: "Place")
+        matches.match_place(params[:filter])
       when "border"
         matches.where(testable_type: "Border")
       when "region"
-        matches.places(0)
+        matches.match_place(params[:filter], 0)
       when "prefecture"
-        matches.places(1)
+        matches.match_place(params[:filter], 1)
       when "city"
-        matches.places(2)
+        matches.match_place(params[:filter], 2)
       else
         matches
       end
