@@ -14,26 +14,35 @@ class Test < ApplicationRecord
   validates :level, numericality: { integer_only: true, more_than_or_equal_to: MIN_LEVEL, less_than_or_equal_to: MAX_LEVEL }
   validates :last, inclusion: { in: ANSWERS }, allow_nil: true
 
-  scope :inner_example, -> { joins("INNER JOIN wk_examples ON testable_id = wk_examples.id AND testable_type = 'Wk::Example'") }
-  scope :inner_place, -> { joins("INNER JOIN places ON testable_id = places.id AND testable_type = 'Place'") }
+  scope :inner, ->(table,type) { joins("INNER JOIN #{table} AS t1 ON testable_id = t1.id AND testable_type = '#{type}'") }
+  scope :inner_example, -> { inner("wk_examples", "Wk::Example") }
+  scope :inner_border, -> { inner("borders", "Border").joins("INNER JOIN places AS t2 ON t1.from_id = t2.id") }
+  scope :inner_place, -> { inner("places", "Place") }
   scope :place_level, ->(level) { where("places.category IN (?)", Place::CATS.select{|t,l| l == level}.keys) }
-  scope :match_place, ->(filter, level=nil) do
-    sql = cross_constraint(filter, %w/ename jname/, table: "places")
+  scope :match_example, ->(filter) do
+    if sql = cross_constraint(filter, %w/english japanese/, table: "t1")
+      inner_example.where(sql)
+    else
+      where(testable_type: "Wk::Example")
+    end
+  end
+  scope :match_border, ->(filter) do
+    if sql = cross_constraint(filter, %w/ename jname/, table: "t2")
+      inner_border.where(sql)
+    else
+      where(testable_type: "Border")
+    end
+  end
+  scope :match_place, ->(filter,level=nil) do
+    sql = cross_constraint(filter, %w/ename jname/, table: "t1")
     if sql && level
       inner_place.place_level(level).where(sql)
     elsif level
       inner_place.place_level(level)
     elsif sql
-      inner_place.inner_place.where(sql)
+      inner_place.where(sql)
     else
       where(testable_type: "Place")
-    end
-  end
-  scope :match_example, ->(filter) do
-    if sql = cross_constraint(filter, %w/english japanese/, table: "wk_examples")
-      inner_example.where(sql)
-    else
-      where(testable_type: "Wk::Example")
     end
   end
 
@@ -58,11 +67,11 @@ class Test < ApplicationRecord
     matches =
       case params[:type]
       when "example"
-        match_example(params[:filter])
+        matches.match_example(params[:filter])
       when "place"
         matches.match_place(params[:filter])
       when "border"
-        matches.where(testable_type: "Border")
+        matches.match_border(params[:filter])
       when "region"
         matches.match_place(params[:filter], 0)
       when "prefecture"
