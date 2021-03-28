@@ -15,13 +15,14 @@ en:
     tests: Tests
     type: Type
     order:
-      attempts: Attempts
+      best: Best
       new: New
       now: Now
       skipped: Skipped
       today: Next 24h
       updated: Previous
       week: Next Week
+      worst: Worst
     scores:
       excellent: Fab
       fair: Fair

@@ -50,13 +50,15 @@ class Test < ApplicationRecord
     matches =
       case params[:order]
       when "new"
-        where(due: nil)
+        where(attempts: 0)
       when "today"
         where("due > ?", Time.now).where("due < ?", Time.now + 1.day).order(due: :asc)
       when "week"
         where("due > ?", Time.now).where("due < ?", Time.now + 1.week).order(due: :asc)
-      when "attempts"
-        order(attempts: :desc)
+      when "best"
+        where("attempts > 0").order(level: :desc, attempts: :asc)
+      when "worst"
+        where("attempts > 0").order(attempts: :desc, level: :asc)
       when "skipped"
         where(last: "skip").order(due: :asc)
       when "updated"

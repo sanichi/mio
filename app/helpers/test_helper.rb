@@ -20,7 +20,7 @@ module TestHelper
   end
 
   def test_order_menu(selected)
-    opts = %w/now new today week skipped updated attempts/.map { |o| [t("test.order.#{o}"), o] }
+    opts = %w/now new today week best worst skipped updated/.map { |o| [t("test.order.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
