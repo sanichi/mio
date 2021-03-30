@@ -21,6 +21,7 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      fill_in t("place.notes"), with: data.notes
       if data.capital
         check t("place.capital")
       else
@@ -42,6 +43,7 @@ describe Place do
       expect(t.category).to eq data.category
       expect(t.vbox).to eq data.vbox
       expect(t.capital).to eq data.capital
+      expect(t.notes).to eq data.notes
     end
 
     it "failure" do
@@ -53,6 +55,7 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      fill_in t("place.notes"), with: data.notes
       if data.capital
         check t("place.capital")
       else

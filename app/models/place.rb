@@ -1,6 +1,7 @@
 class Place < ApplicationRecord
   include Constrainable
   include Pageable
+  include Remarkable
 
   MAX_NAME = 30
   MAX_VBOX = 17
@@ -67,6 +68,10 @@ class Place < ApplicationRecord
     "https://en.wikipedia.org/wiki/#{wiki}"
   end
 
+  def notes_html
+    to_html(notes)
+  end
+
   private
 
   def normalize_attributes
@@ -75,6 +80,9 @@ class Place < ApplicationRecord
     reading&.squish!
     vbox&.squish!
     wiki&.squish!
+    notes&.lstrip!
+    notes&.rstrip!
+    notes&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
     self.vbox = nil unless vbox.present?
     self.parent_id = nil if parent_id.to_i == 0
   end

@@ -47,6 +47,9 @@
               %td
                 = link_to b.to.jname, b.to
                 = b.to.millions
+        - if @place.notes.present?
+          %tr
+            %td{colspan: 2}= @place.notes_html
 
 .text-center.mt-3
   = link_to t("place.places"), last_search(places_path), class: "btn btn-success"

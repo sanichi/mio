@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_22_111844) do
+ActiveRecord::Schema.define(version: 2021_03_30_103831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2021_03_22_111844) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "vbox", limit: 20
     t.boolean "capital", default: false
+    t.text "notes"
     t.index ["parent_id"], name: "index_places_on_parent_id"
   end
 
