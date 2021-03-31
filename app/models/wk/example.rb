@@ -66,8 +66,8 @@ module Wk
     private
 
     def clean_up
-      english&.gsub!(/\s|　/, "")
-      japanese&.squish!
+      english&.squish!
+      japanese&.gsub!(/\s|　/, "")
     end
 
     def current_vocabs
