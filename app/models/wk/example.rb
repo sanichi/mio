@@ -66,7 +66,7 @@ module Wk
     private
 
     def clean_up
-      english&.squish!
+      english&.gsub!(/\s|　/, "")
       japanese&.squish!
     end
 
