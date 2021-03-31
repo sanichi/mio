@@ -42,7 +42,7 @@ class Place < ApplicationRecord
                  else by_ename
       end
     matches = matches.includes(:parent).includes(:children)
-    if sql = cross_constraint(params[:q], %w{ename jname reading})
+    if sql = cross_constraint(params[:q], %w{ename jname reading notes})
       matches = matches.where(sql)
     end
     if CATS.has_key?(params[:cat])
