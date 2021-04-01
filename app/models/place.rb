@@ -2,6 +2,7 @@ class Place < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Vocabable
 
   MAX_NAME = 30
   MAX_VBOX = 17
@@ -69,7 +70,7 @@ class Place < ApplicationRecord
   end
 
   def notes_html
-    to_html(notes)
+    to_html(link_vocabs(notes))
   end
 
   private
