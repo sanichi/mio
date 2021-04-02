@@ -2,8 +2,9 @@ class Test < ApplicationRecord
   include Pageable
   include Constrainable
 
-  MAX_LEVEL = 9
+  DELTAS = %w/9h 1d 2d 4d 1w 2w 1m 2m 3m 4m/
   MIN_LEVEL = 0
+  MAX_LEVEL = DELTAS.length - 1
   ANSWERS = %w/poor fair good excellent skip/
 
   belongs_to :testable, polymorphic: true
@@ -87,20 +88,9 @@ class Test < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  private
-
-  def update_stats
-    return unless ANSWERS.include?(last)
-    return if last == "skip"
-    update_column(:attempts, attempts + 1)
-    update_column(last, send(last) + 1)
-    update_level
-    update_due
-  end
-
-  def update_level
+  def next_level(answer)
     new_level = level
-    case last
+    case answer
     when "poor"
       new_level -= 2
     when "fair"
@@ -112,33 +102,61 @@ class Test < ApplicationRecord
     end
     new_level = MIN_LEVEL if new_level < MIN_LEVEL
     new_level = MAX_LEVEL if new_level > MAX_LEVEL
-    update_column(:level, new_level)
+    new_level
+  end
+
+  def btn(answer, size)
+    if Rails.env.test?
+      if ANSWERS.include?(answer)
+        I18n.t("test.scores.#{answer}")
+      else
+        I18n.t("test.scores.skip")
+      end
+    else
+      if ANSWERS.include?(answer) && answer != "skip"
+        delta = DELTAS[next_level(answer)]
+        case size
+        when "sm"
+          delta
+        else
+          "%s %s" % [I18n.t("test.scores.#{answer}"), delta]
+        end
+      else
+        case size
+        when "sm"
+          I18n.t("test.short.skip")
+        else
+          I18n.t("test.scores.skip")
+        end
+      end
+    end
+  end
+
+  private
+
+  def update_stats
+    return unless ANSWERS.include?(last) && last != "skip"
+    update_column(:attempts, attempts + 1)
+    update_column(last, send(last) + 1)
+    update_column(:level, next_level(last))
+    update_due
   end
 
   def update_due
     new_due = Time.now
-    case level
-    when 0
-      new_due += 12.hours
-    when 1
-      new_due += 1.day
-    when 2
-      new_due += 2.days
-    when 3
-      new_due += 4.days
-    when 4
-      new_due += 8.days
-    when 5
-      new_due += 16.days
-    when 6
-      new_due += 1.month
-    when 7
-      new_due += 2.months
-    when 8
-      new_due += 3.months
-    when 9
-      new_due += 4.months
+    if DELTAS[level] =~ /\A([1-9]\d*)([hdwm])\z/
+      n = $1.to_i
+      case $2
+      when 'h'
+        new_due += n.hours
+      when 'd'
+        new_due += n.days
+      when 'w'
+        new_due += n.weeks
+      when 'm'
+        new_due += n.months
+      end
+      update_column(:due, new_due)
     end
-    update_column(:due, new_due)
   end
 end
