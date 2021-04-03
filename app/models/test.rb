@@ -117,13 +117,15 @@ class Test < ApplicationRecord
         delta = DELTAS[next_level(answer)]
         case size
         when "sm"
+          I18n.t("test.short.#{answer}")
+        when "md"
           delta
         else
           "%s %s" % [I18n.t("test.scores.#{answer}"), delta]
         end
       else
         case size
-        when "sm"
+        when "sm", "md"
           I18n.t("test.short.skip")
         else
           I18n.t("test.scores.skip")

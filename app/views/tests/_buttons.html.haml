@@ -3,5 +3,6 @@
     = form_for test, remote: true do |f|
       = f.hidden_field(:last, value: a)
       - btn = "btn btn-sm #{test_btn_style(a)}"
-      = f.submit test.btn(a, "lg"), class: "d-none d-sm-inline #{btn}"
+      = f.submit test.btn(a, "lg"), class: "d-none d-md-inline d-#{btn}"
+      = f.submit test.btn(a, "md"), class: "d-none d-sm-inline d-md-none #{btn}"
       = f.submit test.btn(a, "sm"), class: "d-inline d-sm-none #{btn}"
