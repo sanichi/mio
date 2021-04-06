@@ -19,7 +19,7 @@ class Test < ApplicationRecord
   scope :inner_example, -> { inner("wk_examples", "Wk::Example") }
   scope :inner_border, -> { inner("borders", "Border").joins("INNER JOIN places AS t2 ON t1.from_id = t2.id") }
   scope :inner_place, -> { inner("places", "Place") }
-  scope :place_level, ->(level) { where("places.category IN (?)", Place::CATS.select{|t,l| l == level}.keys) }
+  scope :place_level, ->(level) { where("t1.category IN (?)", Place::CATS.select{|t,l| l == level}.keys) }
   scope :match_example, ->(filter) do
     if sql = cross_constraint(filter, %w/english japanese/, table: "t1")
       inner_example.where(sql)
