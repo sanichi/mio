@@ -46,6 +46,7 @@ namespace :match do
             match.update_column(:away_score, r[:away_score])
             updates+= 1
           end
+          match.touch if updates > 0
           report "#{updates == 0 ? 'matched' : 'updated'} #{match.summary}"
         else
           begin
