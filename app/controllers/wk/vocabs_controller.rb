@@ -11,6 +11,10 @@ module Wk
       end
     end
 
+    def show
+      @homos = Reading.where(characters: @vocab.readings.pluck(:characters)).map(&:vocab).uniq.reject{ |v| v == @vocab }
+    end
+
     def update
       if @vocab.update(strong_params)
         @vocab.update_column(:last_noted, Time.now)

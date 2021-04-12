@@ -14,6 +14,12 @@
         %td
           = reading.characters
           = render "wk/readings/audio", reading: reading
+    - @homos.each do |homo|
+      %tr
+        %td= t("wk.vocab.homo")
+        %td
+          = link_to homo.characters, homo
+          = render "wk/readings/audio", reading: homo.readings.first
     %tr
       %td= t("wk.vocab.parts")
       %td= @vocab.parts_of_speech
