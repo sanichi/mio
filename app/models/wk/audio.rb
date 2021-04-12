@@ -3,7 +3,7 @@ module Wk
     MAX_FILE = 64
     DEFAULT_BASE = "https://cdn.wanikani.com/audios/"
 
-    has_one :vocab
+    belongs_to :reading
 
     validates :file, presence: true, length: { maximum: MAX_FILE }, uniqueness: true
 

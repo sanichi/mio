@@ -23,7 +23,7 @@ module Wk
     validates :accent_pattern, numericality: { integer_only: true, greater_than_or_equal_to: MIN_ACCENT_PATTERN, less_than_or_equal_to: MAX_ACCENT_PATTERN }, allow_nil: true
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }
 
-    has_one :vocab
+    belongs_to :vocab
     has_many :audios, dependent: :destroy
 
     default_scope { order(primary: :desc) }
