@@ -6,6 +6,7 @@ module Wk
 
     MAX_MEANING = 128
     MAX_READING = 128
+    IMAGES = Rails.root + "public" + "images"
 
     has_and_belongs_to_many :radicals
     has_and_belongs_to_many :similar_kanjis, class_name: "Kanji", association_foreign_key: "similar_id"
@@ -43,6 +44,9 @@ module Wk
       if (level = params[:level].to_i) > 0
         matches = matches.where(level: level)
       end
+      if params[:image] == "kayo"
+        matches = matches.where(character: images)
+      end
       paginate(matches, params, path, opt)
     end
 
@@ -60,9 +64,13 @@ module Wk
     end
 
     def image_path
-      file = Rails.root + "public" + "images" + "#{character}.jpg"
+      file = IMAGES + "#{character}.jpg"
       return nil unless file.file?
       "/images/#{character}.jpg"
+    end
+
+    def self.images
+      IMAGES.glob("?.jpg").map(&:to_s).map{|n| n[-5]}
     end
 
     def self.update(days=nil)

@@ -16,6 +16,11 @@ module WkHelper
     options_for_select(opts, selected)
   end
 
+  def wk_kanji_image_menu(selected)
+    opts = [[t("all"), ""], [t("wk.kanji.image"), "kayo"]]
+    options_for_select(opts, selected)
+  end
+
   def wk_vocab_order_menu(selected)
     opts = %w/level reading last_updated/.map { |i| [t("wk.#{i}"), i] }
     opts.insert 1, [t("wk.vocab.characters"), "characters"]
