@@ -6,7 +6,7 @@ FactoryBot.define do
     wiki     { Faker::Lorem.characters(number: 10) }
     category { Place::CATS.keys.sample }
     capital  { category == "city" ? [true, false].sample : false }
-    pop      { 1 + rand(1000) }
+    pop      { category == "attraction" ? 0 : 1 + rand(1000) }
     vbox     { ["#{rand(750) - 100} #{rand(750) + 300} #{rand(750) + 1} #{rand(750) + 1}", nil].sample}
     notes    { Faker::Lorem.paragraphs(number: 3) }
   end

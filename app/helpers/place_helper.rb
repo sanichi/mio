@@ -38,6 +38,8 @@ module PlaceHelper
       level_above = Place::CATS[place.category] - 1
       if level_above < 0
         cats = []
+      elsif level_above == 2
+        cats = Place::CATS.select{ |k,v| v == 2 || v == 1 }.keys
       else
         cats = Place::CATS.select{ |k,v| v == level_above }.keys
       end

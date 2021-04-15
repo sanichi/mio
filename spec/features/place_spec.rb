@@ -5,6 +5,7 @@ describe Place do
   let!(:place)      { create(:place) }
   let!(:city)       { create(:place, category: "city", capital: false) }
   let!(:prefecture) { create(:place, category: "prefecture") }
+  let!(:attraction) { create(:place, category: "attraction") }
 
   before(:each) do
     login
@@ -30,7 +31,7 @@ describe Place do
 
       click_button t("save")
 
-      expect(Place.count).to eq 4
+      expect(Place.count).to eq 5
       t = Place.by_created.last
 
       expect(page).to have_title data.jname
@@ -65,7 +66,7 @@ describe Place do
       click_button t("save")
 
       expect(page).to have_title t("place.new")
-      expect(Place.count).to eq 3
+      expect(Place.count).to eq 4
       expect_error(page, "blank")
     end
   end
@@ -115,20 +116,20 @@ describe Place do
       expect_error(page, "only cities")
 
       prefecture.reload
-      expect(prefecture.capital).to be(false)
+      expect(prefecture.capital).to be false
     end
   end
 
   context "delete" do
     it "success" do
-      expect(Place.count).to eq 3
+      expect(Place.count).to eq 4
 
       visit place_path(place)
       click_link t("edit")
       click_link t("delete")
 
       expect(page).to have_title t("place.places")
-      expect(Place.count).to eq 2
+      expect(Place.count).to eq 3
     end
   end
 end

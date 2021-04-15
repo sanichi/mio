@@ -17,6 +17,7 @@ en:
     vbox: ViewBox
     wiki: Wiki Link
     categories:
+      attraction: Attraction
       cities: All Cities
       city: City
       core: Core City
@@ -36,6 +37,7 @@ jp:
     pop: 人口
     wiki: ウィキリンク
     categories:
+      attraction: 観光名所
       cities: 全ての都市
       city: 都市
       core: 中核市

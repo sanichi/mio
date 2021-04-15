@@ -7,9 +7,16 @@ class Place < ApplicationRecord
   MAX_NAME = 30
   MAX_VBOX = 17
   MAX_WIKI = 50
-  MIN_POP = 1 # in units of 100,000
-  CATS = {"region" => 0, "prefecture" => 1, "designated" => 2, "core" => 2, "city" => 2}
+  MIN_POP = 0 # in units of 100,000
   DEF_VBOX = "-100 300 750 750"
+  CATS = {
+    "region" => 0,
+    "prefecture" => 1,
+    "designated" => 2,
+    "core" => 2,
+    "city" => 2,
+    "attraction" => 3,
+  }
 
   has_many :children, class_name: "Place", foreign_key: "parent_id"
   belongs_to :parent, class_name: "Place", optional: true
@@ -31,6 +38,7 @@ class Place < ApplicationRecord
 
   validate :check_parent
   validate :check_capital
+  validate :check_pop
 
   scope :by_ename,   -> { order(:ename) }
   scope :by_pop,     -> { order(pop: :desc) }
@@ -84,6 +92,7 @@ class Place < ApplicationRecord
     notes&.lstrip!
     notes&.rstrip!
     notes&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+    self.pop = 0 if category == "attraction"
     self.vbox = nil unless vbox.present?
     self.parent_id = nil if parent_id.to_i == 0
   end
@@ -93,11 +102,21 @@ class Place < ApplicationRecord
     my_level = CATS[category].to_i
     errors.add(:parent_id, "top level can't have a parent") if my_level == 0
     their_level = CATS[parent.category].to_i
-    errors.add(:parent_id, "invalid parent level (#{their_level}) for level (#{my_level})") unless my_level == their_level + 1
+    unless my_level == their_level + 1 || (my_level == 1 && their_level == 3)
+      errors.add(:parent_id, "invalid parent level (#{their_level}) for level (#{my_level})")
+    end
   end
 
   def check_capital
     return unless capital
     errors.add(:capital, "only cities can be capitals") unless CATS[category].to_i == 2
+  end
+
+  def check_pop
+    if category == "attraction"
+      errors.add(:pop, "attractions should have no population") unless pop == 0
+    else
+      errors.add(:pop, "non-attractions should have non-zero population") unless pop > 0
+    end
   end
 end

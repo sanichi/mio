@@ -39,7 +39,7 @@
             %th= t("place.categories.#{p.category}", locale: "jp")
             %td
               = link_to p.jname, p
-              = p.millions
+              = p.millions unless p.pop == 0
         - if @place.category == "prefecture"
           - @place.borders.by_direction.each do |b|
             %tr
