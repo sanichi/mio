@@ -22,6 +22,8 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      fill_in t("place.mark_position"), with: data.mark_position
+      fill_in t("place.text_position"), with: data.text_position
       fill_in t("place.notes"), with: data.notes
       if data.capital
         check t("place.capital")
@@ -43,6 +45,8 @@ describe Place do
       expect(t.pop).to eq data.pop
       expect(t.category).to eq data.category
       expect(t.vbox).to eq data.vbox
+      expect(t.mark_position).to eq data.mark_position
+      expect(t.text_position).to eq data.text_position
       expect(t.capital).to eq data.capital
       expect(t.notes).to eq data.notes
     end
@@ -56,6 +60,8 @@ describe Place do
       fill_in t("place.pop"), with: data.pop
       select t("place.categories.#{data.category}"), from: t("place.category")
       fill_in t("place.vbox"), with: data.vbox
+      fill_in t("place.mark_position"), with: data.mark_position
+      fill_in t("place.text_position"), with: data.text_position
       fill_in t("place.notes"), with: data.notes
       if data.capital
         check t("place.capital")

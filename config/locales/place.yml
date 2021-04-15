@@ -8,12 +8,14 @@ en:
     jname: Japanese
     kanji: Kanji
     level: Level
+    mark_position: Mark Position
     new: New Place
     notes: Notes
     parent: Parent
     places: Places
     pop: Population
     reading: Reading
+    text_position: Text Position
     vbox: ViewBox
     wiki: Wiki Link
     categories:
@@ -32,9 +34,11 @@ jp:
     ename: 英語
     jname: 日本語
     kanji: 漢字
+    mark_position: マーク位置
     name: 名前
     parent: 親
     pop: 人口
+    text_position: テキスト位置
     wiki: ウィキリンク
     categories:
       attraction: 観光名所

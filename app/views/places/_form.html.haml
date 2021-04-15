@@ -1,14 +1,16 @@
 :ruby
   inputs = [
-    [:jname,     t("place.jname"),    :text,   maxlength: Place::MAX_NAME],
-    [:reading,   t("place.reading"),  :text,   maxlength: Place::MAX_NAME],
-    [:ename,     t("place.ename"),    :text,   maxlength: Place::MAX_NAME],
-    [:pop,       t("place.pop"),      :text],
-    [:wiki,      t("place.wiki"),     :text,   maxlength: Place::MAX_WIKI],
-    [:category,  t("place.category"), :select, menu: place_category_menu(place)],
-    [:capital,   t("place.capital"),  :check],
-    [:parent_id, t("place.parent"),   :select, menu: place_parent_menu(place)],
-    [:vbox,      t("place.vbox"),     :text,   maxlength: Place::MAX_VBOX],
-    [:notes,     t("place.notes"),    :area,   rows: 10],
+    [:jname,         t("place.jname"),         :text,   maxlength: Place::MAX_NAME],
+    [:reading,       t("place.reading"),       :text,   maxlength: Place::MAX_NAME],
+    [:ename,         t("place.ename"),         :text,   maxlength: Place::MAX_NAME],
+    [:pop,           t("place.pop"),           :text],
+    [:wiki,          t("place.wiki"),          :text,   maxlength: Place::MAX_WIKI],
+    [:category,      t("place.category"),      :select, menu: place_category_menu(place)],
+    [:capital,       t("place.capital"),       :check],
+    [:parent_id,     t("place.parent"),        :select, menu: place_parent_menu(place)],
+    [:vbox,          t("place.vbox"),          :text,   maxlength: Place::MAX_VBOX],
+    [:mark_position, t("place.mark_position"), :text,   maxlength: Place::MAX_POSN],
+    [:text_position, t("place.text_position"), :text,   maxlength: Place::MAX_POSN],
+    [:notes,         t("place.notes"),         :area,   rows: 10],
   ]
 = render "utils/crud/form", object: place, index: places_path, inputs: inputs, title: title

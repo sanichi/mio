@@ -28,6 +28,14 @@
           %tr
             %th= t("place.vbox")
             %td= @place.vbox
+        - if @place.mark_position.present?
+          %tr
+            %th= t("place.mark_position", locale: "jp")
+            %td= @place.mark_position
+        - if @place.text_position.present?
+          %tr
+            %th= t("place.text_position", locale: "jp")
+            %td= @place.text_position
         - if p = @place.parent
           %tr
             %th= t("place.categories.#{p.category}", locale: "jp")

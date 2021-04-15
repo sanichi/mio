@@ -5,44 +5,50 @@
 #   thessaloniki> RAILS_ENV=production bin/rails r bin/run
 #
 
-exceptions = []
-exceptions.push "北海道" # no land borders
-exceptions.push "沖縄県" # no land borders
-exceptions.push "東京都" # not a normal prefecture
-exceptions.push "青森県" # different wording
+circs = 0
+texts = 0
 
-# get all prefectures by ename
-ps = Place.where(category: "prefecture").each_with_object({}) { |p, h| h[p.ename] = p }
-
-# address any deliberate differences between our names and WP's
-ps["Tokyo"] = ps["Tokyo Metropolis"]
-
-Place.where(category: "prefecture").where.not(jname: exceptions).each do |p|
-  uri = URI.parse(URI::DEFAULT_PARSER.escape(p.wiki_link))
-  sleep(0.1)
-  begin
-    response = Net::HTTP.get_response(uri)
-    body = response.body.force_encoding("UTF-8")
-
-    if body =~ /(#{p.ename} borders .*?)\./
-      puts "# #{p.ename}"
-      s = $1
-      # <a href="/wiki/Aichi_Prefecture" title="Aichi Prefecture">Aichi Prefecture</a> to the south
-      s.gsub!(/<a href="[^"]+"(?: class="mw-redirect")? title="[^"]+">([^<]+)<\/a> (?:to the (\w+)|and)/) do
-        pp = ps[$1]
-        direction = $2 || "unknown"
-        if pp
-          puts "Border.create!(from_id: #{p.id}, to_id: #{pp.id}, direction: '#{direction}')"
-        else
-          puts "can't find prefecture #{$1}"
-        end
-        " "
+name = "app/views/places/_map.html.haml"
+File.readlines(name).each do |line|
+  case line
+  when /text\.(ken|shi)\{x: "(-?\d+)", y: "(\d+)", title: "[^"]+", "data-toggle" => "tooltip"}= "([^"]+)"/
+    cat, x, y, nam = $1, $2.to_i, $3.to_i, $4
+    name =
+      case nam
+      when "東京"
+        "東京都"
+      when "北海道"
+        "北海道"
+      when "京都"
+        "京都府"
+      when "大阪"
+        "大阪府"
+      else
+        nam + (cat == "shi" ? "市" : "県")
       end
-      puts "# #{s}" if s.match(/href/)
+    place = Place.find_by(jname: name)
+    if place
+      texts+= 1
+      place.text_position = "#{x},#{y}"
+      unless place.save
+        puts "text: #{name} #{place.text_position}"
+      end
     else
-      raise "can't find 'borders'"
+      raise "can't find #{cat}/#{nam}"
     end
-  rescue => e
-    puts "#{p.ename}: #{e.message}"
+  when /circle\.(ken|shi|atr)\{"data-jname" => "([^"]+)", cx: "(-?\d+)", cy: "(\d+)", r: "\d"/
+    cat, name, x, y = $1, $2, $3.to_i, $4.to_i
+    place = Place.find_by(jname: name)
+    if place
+      circs+= 1
+      place.mark_position = "#{x},#{y}"
+      unless place.save
+        puts "mark: #{name} #{place.mark_position}"
+      end
+    else
+      raise "can't find #{cat}/#{name}"
+    end
   end
 end
+
+puts "#{texts}, #{circs}"

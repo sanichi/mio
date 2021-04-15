@@ -7,8 +7,10 @@ class Place < ApplicationRecord
   MAX_NAME = 30
   MAX_VBOX = 17
   MAX_WIKI = 50
+  MAX_POSN = 9
   MIN_POP = 0 # in units of 100,000
-  DEF_VBOX = "-100 300 750 750"
+  X, Y, W, H = [-100, 300, 750, 750]
+  DEF_VBOX = "#{X} #{Y} #{W} #{H}"
   CATS = {
     "region" => 0,
     "prefecture" => 1,
@@ -40,7 +42,7 @@ class Place < ApplicationRecord
   validates :wiki, presence: true, length: { maximum: MAX_WIKI }, uniqueness: true
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
-  validates :mark_position, :text_position, format: { with: /\A(0|-?[1-9]\d{1,2}),[1-9]\d\d\z/ }, allow_nil: true
+  validates :mark_position, :text_position, length: { maximum: MAX_POSN }, format: { with: /\A(0|-?[1-9]\d{0,2}),[1-9]\d{2,3}\z/ }, allow_nil: true
 
   validate :check_parent
   validate :check_capital
@@ -99,10 +101,10 @@ class Place < ApplicationRecord
     notes&.rstrip!
     notes&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
     self.pop = 0 if attraction?
-    self.vbox = nil unless vbox.present?
+    self.vbox = nil if vbox.blank?
     self.parent_id = nil if parent_id.to_i == 0
-    self.text_position = nil if region? || attraction?
-    self.mark_position = nil if region? || prefecture?
+    self.text_position = nil if text_position.blank?
+    self.mark_position = nil if mark_position.blank?
   end
 
   def check_parent
