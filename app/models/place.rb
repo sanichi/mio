@@ -66,7 +66,7 @@ class Place < ApplicationRecord
   end
 
   def millions
-    "%.1f" % (pop / 10.0)
+    pop == 0 ? "" : "%.1f" % (pop / 10.0)
   end
 
   def vb
