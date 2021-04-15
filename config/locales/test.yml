@@ -54,6 +54,7 @@ en:
 jp:
   test:
     questions:
+      attraction: "<b>%{place}</b>はどこですか"
       border: "%{prefecture}の<b>%{direction}</b>の県は何ですか"
       example: "日本語で「<b>%{english}</b>」は何と言いますか"
       region: "<b>%{place}</b>の都道府県はなんですか"

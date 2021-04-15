@@ -14,9 +14,9 @@
         = place.children.by_pop.map{ |p| link_to p.jname, p, target: target }.join(", ").html_safe
       - when "prefecture"
         = place.children.by_pop.map{ |p| link_to p.jname, p, target: target }.join(", ").html_safe
-      - when "city", "core", "designated"
+      - when "city", "core", "designated", "attraction"
         = link_to place.parent.jname, place.parent, target: target
       - else
-        = "not implemented"
+        = t("todo")
   - else
-    = "not implemented"
+    = t("todo")

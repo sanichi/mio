@@ -18,7 +18,9 @@
         = t("test.questions.prefecture", place: place.jname, locale: "jp").html_safe
       - when "city", "core", "designated"
         = t("test.questions.city", place: place.jname, locale: "jp").html_safe
+      - when "attraction"
+        = t("test.questions.attraction", place: place.jname, locale: "jp").html_safe
       - else
-        = "not implemented"
+        = t("todo")
   - else
-    = "not implemented"
+    = t("todo")
