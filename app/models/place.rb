@@ -17,6 +17,11 @@ class Place < ApplicationRecord
     "city" => 2,
     "attraction" => 3,
   }
+  CATS.keys.each do |cat|
+    define_method "#{cat}?" do
+      self.category == cat
+    end
+  end
 
   has_many :children, class_name: "Place", foreign_key: "parent_id"
   belongs_to :parent, class_name: "Place", optional: true
@@ -35,6 +40,7 @@ class Place < ApplicationRecord
   validates :wiki, presence: true, length: { maximum: MAX_WIKI }, uniqueness: true
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
+  validates :mark_position, :text_position, format: { with: /\A(0|-?[1-9]\d{1,2}),[1-9]\d\d\z/ }, allow_nil: true
 
   validate :check_parent
   validate :check_capital
@@ -92,9 +98,11 @@ class Place < ApplicationRecord
     notes&.lstrip!
     notes&.rstrip!
     notes&.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
-    self.pop = 0 if category == "attraction"
+    self.pop = 0 if attraction?
     self.vbox = nil unless vbox.present?
     self.parent_id = nil if parent_id.to_i == 0
+    self.text_position = nil if region? || attraction?
+    self.mark_position = nil if region? || prefecture?
   end
 
   def check_parent
@@ -108,12 +116,12 @@ class Place < ApplicationRecord
   end
 
   def check_capital
-    return unless capital
+    return unless capital?
     errors.add(:capital, "only cities can be capitals") unless CATS[category].to_i == 2
   end
 
   def check_pop
-    if category == "attraction"
+    if attraction?
       errors.add(:pop, "attractions should have no population") unless pop == 0
     else
       errors.add(:pop, "non-attractions should have non-zero population") unless pop > 0
