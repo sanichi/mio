@@ -4,7 +4,7 @@
   = render partial: "move", formats: :js, locals: { place: @place }
 
 .row
-  %div{class: center(xl: 6, lg: 8, md: 10)}
+  %div{class: center(xl: 5, lg: 6, md: 7, sm: 8, xs: 9)}
     %p.text-center
       %select#delta{size: 1, name: "direction"}
         - [1, 2, 4, 8, 16].each do |d|
