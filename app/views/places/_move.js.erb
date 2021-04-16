@@ -1,0 +1,12 @@
+$(function() {
+  $('.shifter').on('click', function(e) {
+    var direction = $(e.target).data('direction');
+    var type = $(e.target).data('type');
+    var delta = $('#delta').val();
+    $.ajax({
+      url: '/places/<%= place.id %>/shift',
+      type: 'patch',
+      data: { direction: direction, type: type, delta: delta },
+    });
+  });
+});

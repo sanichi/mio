@@ -108,6 +108,24 @@ class Place < ApplicationRecord
     text_position&.match(POSITION) && $2
   end
 
+  def move(type, direction, delta)
+    d = delta.to_i
+    return unless d > 0
+    dx = direction == "e" ? d : (direction == "w" ? -d : 0)
+    dy = direction == "s" ? d : (direction == "n" ? -d : 0)
+    return if dx == 0 && dy == 0
+    case type
+    when "mark"
+      if mark_y
+        update_column(:mark_position, "%d,%d" % [mark_x.to_i + dx, mark_y.to_i + dy])
+      end
+    when "text"
+      if text_y
+        update_column(:text_position, "%d,%d" % [text_x.to_i + dx, text_y.to_i + dy])
+      end
+    end
+  end
+
   def sjname
     case category
     when "region"

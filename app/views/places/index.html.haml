@@ -21,6 +21,7 @@
       %tbody{id: "results"}
         = render "results", places: @places
 
-- if can?(:create, Place)
-  .text-center.mt3
+.text-center.mt3
+  = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success"
+  - if can?(:create, Place)
     = link_to t("place.new"), new_place_path, class: "btn btn-info"

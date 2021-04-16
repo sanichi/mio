@@ -36,7 +36,10 @@ Rails.application.routes.draw do
     get :tree, on: :collection
   end
   resources :pictures
-  resources :places
+  resources :places do
+    get :move, on: :member
+    patch :shift, on: :member
+  end
   resources :problems
   resources :questions
   resources :sessions, only: [:create]

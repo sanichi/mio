@@ -1,6 +1,6 @@
 class PlacesController < ApplicationController
   authorize_resource
-  before_action :find_place, only: [:show, :edit, :update, :destroy]
+  before_action :find_place, only: [:show, :edit, :update, :destroy, :move, :shift]
 
   def index
     remember_last_search(places_path)
@@ -37,6 +37,15 @@ class PlacesController < ApplicationController
   def destroy
     @place.destroy
     redirect_to places_path
+  end
+
+  def move
+    @elements = Place.map_elements.to_a
+  end
+
+  def shift
+    @place.move(params[:type], params[:direction], params[:delta])
+    @elements = Place.map_elements.to_a
   end
 
   private

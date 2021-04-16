@@ -1,0 +1,26 @@
+= render "utils/title", text: @place.jname, header: true
+
+- content_for :javascript do
+  = render partial: "move", formats: :js, locals: { place: @place }
+
+.row
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    %p.text-center
+      %select#delta{size: 1, name: "direction"}
+        - [1, 2, 4, 8, 16].each do |d|
+          %option{value: d}= d
+    - if @place.mark_y
+      %p.text-center
+        - %w/e w n s/.each do |d|
+          %button.btn.btn-sm.btn-success.shifter{"data-direction" => d, "data-type" => "mark"}= t("place.directions.#{d}")
+    - if @place.text_y
+      %p.text-center
+        - %w/e w n s/.each do |d|
+          %button.btn.btn-sm.btn-dark.shifter{"data-direction" => d, "data-type" => "text"}= t("place.directions.#{d}")
+    %div#map
+      = render "map", vb: @place.vb, elements: @elements
+
+.text-center.mt-3
+  = link_to @place.jname, @place, class: "btn btn-secondary"
+  = link_to t("place.places"), last_search(places_path), class: "btn btn-success"
+  = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success"
