@@ -18,4 +18,8 @@ class PagesController < ApplicationController
   def premier
     @teams = Team.stats(2020)
   end
+
+  def prefectures
+    @elements = Place.map_elements.to_a
+  end
 end

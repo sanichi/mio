@@ -11,6 +11,8 @@ class Place < ApplicationRecord
   MIN_POP = 0 # in units of 100,000
   X, Y, W, H = [-100, 300, 750, 750]
   DEF_VBOX = "#{X} #{Y} #{W} #{H}"
+  POSITION = /\A(0|-?[1-9]\d{0,2}),([1-9]\d{2,3})\z/
+
   CATS = {
     "region" => 0,
     "prefecture" => 1,
@@ -42,15 +44,16 @@ class Place < ApplicationRecord
   validates :wiki, presence: true, length: { maximum: MAX_WIKI }, uniqueness: true
   validates :category, inclusion: { in: CATS.keys }
   validates :pop, numericality: { integer_only: true, more_than_or_equal_to: MIN_POP }
-  validates :mark_position, :text_position, length: { maximum: MAX_POSN }, format: { with: /\A(0|-?[1-9]\d{0,2}),[1-9]\d{2,3}\z/ }, allow_nil: true
+  validates :mark_position, :text_position, length: { maximum: MAX_POSN }, format: { with: POSITION }, allow_nil: true
 
   validate :check_parent
   validate :check_capital
   validate :check_pop
 
-  scope :by_ename,   -> { order(:ename) }
-  scope :by_pop,     -> { order(pop: :desc) }
-  scope :by_created, -> { order(:created_at) }
+  scope :by_ename,     -> { order(:ename) }
+  scope :by_pop,       -> { order(pop: :desc) }
+  scope :by_created,   -> { order(:created_at) }
+  scope :map_elements, -> { where("mark_position IS NOT NULL OR text_position IS NOT NULL") }
 
   def self.search(params, path, opt={})
     matches =
@@ -87,6 +90,39 @@ class Place < ApplicationRecord
 
   def notes_html
     to_html(link_vocabs(notes))
+  end
+
+  def mark_x
+    mark_position&.match(POSITION) && $1
+  end
+
+  def mark_y
+    mark_position&.match(POSITION) && $2
+  end
+
+  def text_x
+    text_position&.match(POSITION) && $1
+  end
+
+  def text_y
+    text_position&.match(POSITION) && $2
+  end
+
+  def sjname
+    case category
+    when "region"
+      jname.sub(/地方\z/, "")
+    when "prefecture"
+      jname.sub(/(県|府|都)\z/, "")
+    when "attraction"
+      jname
+    else
+      jname.sub(/(市|都|特別区)\z/, "")
+    end
+  end
+
+  def name_echo?
+    parent.present? && sjname == parent.sjname
   end
 
   private

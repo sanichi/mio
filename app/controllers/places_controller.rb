@@ -7,6 +7,10 @@ class PlacesController < ApplicationController
     @places = Place.search(params, places_path, per_page: 10)
   end
 
+  def show
+    @elements = Place.map_elements.to_a
+  end
+
   def new
     @place = Place.new
   end

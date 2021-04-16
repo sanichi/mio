@@ -5,6 +5,9 @@
 #   thessaloniki> RAILS_ENV=production bin/rails r bin/run
 #
 
+# don't let this run again accidentally
+raise "currently disabled"
+
 circs = 0
 texts = 0
 
