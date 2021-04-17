@@ -27,6 +27,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.0'
   gem 'faker', '~> 2.10'
   gem 'selenium-webdriver'
+  gem 'rexml' # selenium needs this explicitly since ruby 3.0 (used to be a bundled gem)
 end
 
 group :test do
