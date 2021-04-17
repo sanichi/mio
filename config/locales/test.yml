@@ -45,6 +45,7 @@ en:
       type: T
       unknown: U
     types:
+      attraction: Attractions
       border: Borders
       city: Cities
       example: Examples

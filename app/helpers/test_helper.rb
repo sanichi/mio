@@ -8,7 +8,7 @@ module TestHelper
   end
 
   def test_type_menu(selected)
-    opts = %w/border city example place prefecture region/.map{ |t| [t("test.types.#{t}"), t] }
+    opts = %w/border example place region prefecture city attraction/.map{ |t| [t("test.types.#{t}"), t] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end

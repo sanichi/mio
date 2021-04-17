@@ -81,6 +81,8 @@ class Test < ApplicationRecord
         matches.match_place(params[:filter], 1)
       when "city"
         matches.match_place(params[:filter], 2)
+      when "attraction"
+        matches.match_place(params[:filter], 3)
       else
         matches
       end
