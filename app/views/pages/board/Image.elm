@@ -33,10 +33,17 @@ fromModel model =
         board =
             chessboard model.scheme model.position.error
 
-        move =
+        point =
             pointer model.position.move model.orientation
+
+        board_ =
+            if model.pointer then
+                [ board, point ]
+
+            else
+                [ board ]
     in
-    board :: move :: notation ++ pieces ++ marks ++ controls
+    board_ ++ notation ++ pieces ++ marks ++ controls
 
 
 fromPiece : Colour -> Piece -> Svg Msg

@@ -7,6 +7,7 @@ type alias Preferences =
     { fen : String
     , orientation : String
     , notation : Bool
+    , pointer : Bool
     , marks : List String
     , scheme : String
     }
@@ -19,17 +20,18 @@ decode value =
 
 flagsDecoder : Decoder Preferences
 flagsDecoder =
-    D.map5 Preferences
+    D.map6 Preferences
         (D.field "fen" D.string |> withDefault default.fen)
         (D.field "orientation" D.string |> withDefault default.orientation)
         (D.field "notation" D.bool |> withDefault default.notation)
+        (D.field "pointer" D.bool |> withDefault default.pointer)
         (D.field "marks" (D.list D.string) |> withDefault default.marks)
         (D.field "scheme" D.string |> withDefault default.scheme)
 
 
 default : Preferences
 default =
-    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False [] "default"
+    Preferences "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "white" False True [] "default"
 
 
 

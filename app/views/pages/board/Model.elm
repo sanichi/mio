@@ -11,6 +11,7 @@ type alias Model =
     { position : Position
     , orientation : Colour
     , notation : Bool
+    , pointer : Bool
     , marks : List Mark
     , scheme : Scheme
     }
@@ -28,13 +29,16 @@ init preferences =
         notation =
             preferences.notation
 
+        pointer =
+            preferences.pointer
+
         marks =
             Mark.fromList preferences.marks
 
         scheme =
             Scheme.fromString preferences.scheme
     in
-    Model position orientation notation marks scheme
+    Model position orientation notation pointer marks scheme
 
 
 flipOrientation : Model -> Model
