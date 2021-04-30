@@ -2,10 +2,12 @@
   if team == match.home_team
     opponent = match.away_team.short
     venue = "H"
+    style = "primary"
   else
     opponent = match.home_team.short
     venue = "A"
+    style = "danger"
   end
   title = "#{opponent} #{match.date.strftime('%-d %b')}"
 
-%button.btn.btn-light.btn-sm.btn-tiny{title: title, "data-toggle" => "tooltip", "data-placement" => "top"}= venue
+%button.btn.btn-sm.btn-tiny{title: title, class: "btn-outline-#{style}", "data-toggle" => "tooltip", "data-placement" => "top"}= venue
