@@ -9,4 +9,15 @@ namespace :match do
       end
     end
   end
+
+  desc "Update all teams matches (cron does this anyway but if you can't wait)"
+  task :all => 'deploy:set_rails_env' do |task|
+    on primary(:app) do
+      within current_path do
+        with :rails_env => fetch(:rails_env) do
+          rake "match:all"
+        end
+      end
+    end
+  end
 end
