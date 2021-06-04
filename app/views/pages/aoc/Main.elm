@@ -293,13 +293,11 @@ view model =
                 |> Maybe.withDefault ""
     in
     div []
-        [ div [ class "row" ]
-            [ div [ class "col" ]
-                [ Html.form [ class "form-inline justify-content-around" ]
-                    [ select [ class "form-control", onYearChange ] yearOptions
-                    , select [ class "form-control", onDayChange ] dayOptions
-                    ]
-                ]
+        [ Html.form [ class "row g-3" ]
+            [ div [ class "offset-1 col-5 offset-sm-2 col-sm-4 offset-md-3 col-md-3 offset-lg-4 col-lg-2" ]
+                [ select [ class "form-select", onYearChange ] yearOptions ]
+            , div [ class "col-5 col-sm-4 col-md-3 col-lg-2" ]
+                [ select [ class "form-select", onDayChange ] dayOptions ]
             ]
         , hr [] []
         , div [ class "row" ]

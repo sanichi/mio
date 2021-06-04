@@ -1,21 +1,23 @@
-= render "utils/title", key: "user.users", header: true
+= render "utils/title", key: "user.users"
 
-.row.mt-3
+.row
   %div{class: center(lg: 6, md: 8, sm: 10)}
-  .offset-md-2.col-md-8.offset-xl-3.col-xl-6
-    %table{class: "table table-bordered table-striped table-sm"}
-      %thead
-        %tr
-          %th= t("email")
-          %th= t("name")
-          %th= t("user.role")
-      %tbody
-        - @users.each do |user|
-          %tr
-            %td= link_to user.email, user
-            %td= user.name
-            %td= t("user.roles.#{user.role}")
-
-- if can?(:create, User)
-  .text-center
-    = link_to t("user.new"), new_user_path, class: "btn btn-info"
+    %section
+      .header.text-center
+        %h3= t("user.users")
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %thead
+            %tr
+              %th= t("email")
+              %th= t("name")
+              %th= t("user.role")
+          %tbody
+            - @users.each do |user|
+              %tr
+                %td= link_to user.email, user
+                %td= user.name
+                %td= t("user.roles.#{user.role}")
+      - if can?(:create, User)
+        .footer
+          = link_to t("user.new"), new_user_path, class: "btn btn-primary btn-sm"

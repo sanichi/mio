@@ -5,7 +5,7 @@
     [:alt,       t("misa.alt"),       :text,   maxlength: Misa::MAX_URL],
     [:minutes,   t("misa.minutes"),   :text,   maxlength: Misa::MAX_MINUTES],
     [:published, t("misa.published"), :text],
-    [:series,    t("misa.series"),    :text,   maxlength: Misa::MAX_SERIES],
+    [:series,    t("misa.series"),    :list,   data: misa_series_list],
     [:number,    t("misa.number"),    :text,   maxlength: Misa::MAX_NUMBER],
     [:japanese,  t("misa.japanese"),  :check],
     [:note,      t("misa.note"),      :area,   rows: 30],

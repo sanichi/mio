@@ -1,3 +1,3 @@
 = form_tag wk_verb_pairs_path, method: :get, class: "form-inline dropdown-item nav-link" do
-  = label_tag :pquery, t("wk.verb_pair.verb_pair"), class: "sr-only"
+  = label_tag :pquery, t("wk.verb_pair.verb_pair"), class: "visually-hidden"
   = text_field_tag :pquery, params[:pquery], class: "form-control", placeholder: t("wk.verb_pair.verb_pair"), size: 8

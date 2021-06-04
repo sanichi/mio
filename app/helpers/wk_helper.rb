@@ -1,6 +1,6 @@
 module WkHelper
   def wk_level_menu(selected)
-    opts = (0..Wk::MAX_LEVEL).to_a.map { |l| [l, l] }
+    opts = (1..Wk::MAX_LEVEL).to_a.map { |l| [l, l] }
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end

@@ -1,24 +1,24 @@
 = render "utils/title", text: @picture.title
 
-= render "prev_next", picture: @picture
-
-.row.mt-3
-  .offset-1.col-10.text-center
-    = image_tag @picture.path(thumbnail: false), class: "img-fluid"
-    - if @picture.portrait
-      %div{title: t("picture.portrait"), class: "text-center"}= "☐"
-
-- people = @picture.people.by_last_name
-- if @picture.description.present? || !people.empty?
-  .card.mt-3
-    .card-header
-      = t("notes")
-    .card-body
-      = @picture.description_html
-      - unless people.empty?
-        %p
-          = succeed(":") do
-            = t("picture.in")
-        %ul
-          - people.each_with_index do |p, i|
-            %li= link_to p.name(reversed: true, with_years: true, with_married_name: true), tree_people_path(id: p.id)
+.row
+  %div{class: center(xs: 10)}
+    %section
+      .header.text-center
+        %h3= @picture.title
+      .body
+        = render "prev_next", picture: @picture
+      .body.border-top.text-center
+        = image_tag @picture.path(thumbnail: false), class: "img-fluid"
+        - if @picture.portrait
+          .text-center{title: t("picture.portrait")}= "☐"
+      - people = @picture.people.by_last_name
+      - if @picture.description.present? || !people.empty?
+        .body.border-top
+          = @picture.description_html
+          - unless people.empty?
+            %p
+              = succeed(":") do
+                = t("picture.in")
+            %ul
+              - people.each_with_index do |p, i|
+                %li= link_to p.name(reversed: true, with_years: true, with_married_name: true), tree_people_path(id: p.id)

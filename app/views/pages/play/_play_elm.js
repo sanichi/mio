@@ -5478,7 +5478,7 @@ var $author$project$Counter$view = function (counter) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('float-right')
+						$elm$html$Html$Attributes$class('float-end')
 					]),
 				_List_fromArray(
 					[
@@ -5486,7 +5486,7 @@ var $author$project$Counter$view = function (counter) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
+								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ms-1'),
 								$elm$html$Html$Events$onClick($author$project$Messages$CounterIncrement)
 							]),
 						_List_fromArray(
@@ -5497,7 +5497,7 @@ var $author$project$Counter$view = function (counter) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ml-1'),
+								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ms-1'),
 								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
 							]),
 						_List_fromArray(
@@ -5508,7 +5508,7 @@ var $author$project$Counter$view = function (counter) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ms-1'),
 								$elm$html$Html$Events$onClick($author$project$Messages$CounterDecrement)
 							]),
 						_List_fromArray(
@@ -5975,7 +5975,7 @@ var $author$project$Dni$view = function (m) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-success btn-sm mr-3')
+								$elm$html$Html$Attributes$class('btn btn-success btn-sm me-3')
 							]),
 						_List_fromArray(
 							[
@@ -6005,7 +6005,7 @@ var $author$project$Dni$view = function (m) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('float-right')
+								$elm$html$Html$Attributes$class('float-end')
 							]),
 						_List_fromArray(
 							[
@@ -6013,7 +6013,7 @@ var $author$project$Dni$view = function (m) {
 								$elm$html$Html$button,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
+										$elm$html$Html$Attributes$class('btn btn-primary btn-sm ms-1'),
 										$elm$html$Html$Events$onClick($author$project$Messages$DniIncrement)
 									]),
 								_List_fromArray(
@@ -6024,7 +6024,7 @@ var $author$project$Dni$view = function (m) {
 								$elm$html$Html$button,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ml-1'),
+										$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ms-1'),
 										$elm$html$Html$Events$onClick($author$project$Messages$DniCycle)
 									]),
 								_List_fromArray(
@@ -6036,7 +6036,7 @@ var $author$project$Dni$view = function (m) {
 								$elm$html$Html$button,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+										$elm$html$Html$Attributes$class('btn btn-danger btn-sm ms-1'),
 										$elm$html$Html$Events$onClick($author$project$Messages$DniDecrement)
 									]),
 								_List_fromArray(
@@ -6103,10 +6103,10 @@ var $elm$core$Maybe$withDefault = F2(
 var $author$project$Magic$view = function (model) {
 	var upButton = $author$project$Magic$high(model) ? _List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ml-1')
+			$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ms-1')
 		]) : _List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('btn btn-primary btn-sm ml-1'),
+			$elm$html$Html$Attributes$class('btn btn-primary btn-sm ms-1'),
 			$elm$html$Html$Events$onClick($author$project$Messages$MagicIncrement)
 		]);
 	var magic = A2(
@@ -6116,10 +6116,10 @@ var $author$project$Magic$view = function (model) {
 	var pair = magic + (' ↔︎ ' + $elm$core$String$reverse(magic));
 	var downButton = $author$project$Magic$low(model) ? _List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ml-1')
+			$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ms-1')
 		]) : _List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('btn btn-danger btn-sm ml-1'),
+			$elm$html$Html$Attributes$class('btn btn-danger btn-sm ms-1'),
 			$elm$html$Html$Events$onClick($author$project$Messages$MagicDecrement)
 		]);
 	return A2(
@@ -6141,7 +6141,7 @@ var $author$project$Magic$view = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('float-right')
+						$elm$html$Html$Attributes$class('float-end')
 					]),
 				_List_fromArray(
 					[
@@ -6184,7 +6184,7 @@ var $author$project$Randoms$view = function (rand) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('btn btn-warning btn-sm float-right'),
+						$elm$html$Html$Attributes$class('btn btn-warning btn-sm float-end'),
 						$elm$html$Html$Events$onClick($author$project$Messages$RandomRequest)
 					]),
 				_List_fromArray(

@@ -7,9 +7,7 @@ describe Partnership do
 
   before(:each) do
     login
-    click_link t("partnership.partnerships")
-    select t("person.realms")[data.realm], from: t("person.realm")
-    click_button t("search")
+    visit partnerships_path(realm: data.realm)
   end
 
   context "create" do

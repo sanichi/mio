@@ -7,11 +7,10 @@
     = render partial: "pages/board_elm_min", formats: :js
     = render partial: "utils/board/boards", formats: :js, locals: { fens: boards }
 
-
-.card
-  .card-header
-    = @lesson.chapter_and_links
-    .float-right
+%section
+  .header
+    %h4.d-inline= @lesson.chapter_and_links
+    .float-end
       .small
         = @lesson.series
         = t("symbol.katakana_middle_dot")
@@ -26,18 +25,16 @@
           = link_to t("lesson.abbrev.book"), @lesson.book, target: "lesson_book"
           = t("symbol.katakana_middle_dot")
         = link_to "##{@lesson.chapter_no}", @lesson.link, target: "lesson_link"
-
   - unless comments.empty?
-    .card-body
+    .body
       - comments.each do |html|
         - if html.match(/\AFEN__(\d+)\z/)
           = render "utils/board/board", id: $1
         - else
           = html
-
-.text-center.mt-3
-  = link_to t("lesson.lessons"), last_search(lessons_path), class: "btn btn-success"
-  - if can?(:edit, Lesson)
-    = link_to t("edit"), edit_lesson_path(@lesson), class: "btn btn-info"
-  - if can?(:delete, Lesson)
-    = link_to t("delete"), @lesson, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+  .footer
+    = link_to t("lesson.lessons"), last_search(lessons_path), class: "btn btn-success btn-sm"
+    - if can?(:edit, Lesson)
+      = link_to t("edit"), edit_lesson_path(@lesson), class: "btn btn-primary btn-sm"
+    - if can?(:delete, Lesson)
+      = link_to t("delete"), @lesson, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }

@@ -1,31 +1,34 @@
-= render "utils/title", text: t("partnership.partnership")
+= render "utils/title", key: "partnership.partnership"
 
 .row
-  .offset-md-2.col-md-8
-    %table{class: "table table-bordered table-striped"}
-      %tbody
-        %tr
-          %th= t("partnership.husband")
-          %td= link_to @partnership.husband.name, @partnership.husband
-        %tr
-          %th= t("partnership.wife")
-          %td= link_to @partnership.wife.name, @partnership.wife
-        %tr
-          %th= t("partnership.wedding")
-          %td= @partnership.wedding_plus
-        - if @partnership.divorce.present?
-          %tr
-            %th= t("partnership.divorce")
-            %td= @partnership.divorce_plus
-        %tr
-          %th= t("partnership.marriage")
-          %td= t(@partnership.marriage ? "yes" : "no")
-        %tr
-          %th= t("person.realm")
-          %td= t("person.realms")[@partnership.realm]
-
-.text-center.margin_top
-  - if can?(:manage, Partnership)
-    = link_to t("edit"), edit_partnership_path(@partnership), class: "btn btn-info"
-    = link_to t("person.people"), last_search(people_path), class: "btn btn-success"
-    = link_to t("partnership.partnerships"), last_search(partnerships_path), class: "btn btn-success"
+  %div{class: center(lg: 10, xl: 8)}
+    %section
+      .header.text-center
+        %h3= t("partnership.partnership")
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %tbody
+            %tr
+              %th= t("partnership.husband")
+              %td= link_to @partnership.husband.name, @partnership.husband
+            %tr
+              %th= t("partnership.wife")
+              %td= link_to @partnership.wife.name, @partnership.wife
+            %tr
+              %th= t("partnership.wedding")
+              %td= @partnership.wedding_plus
+            - if @partnership.divorce.present?
+              %tr
+                %th= t("partnership.divorce")
+                %td= @partnership.divorce_plus
+            %tr
+              %th= t("partnership.marriage")
+              %td= t(@partnership.marriage ? "yes" : "no")
+            %tr
+              %th= t("person.realm")
+              %td= t("person.realms")[@partnership.realm]
+      - if can?(:manage, Partnership)
+        .footer
+          = link_to t("edit"), edit_partnership_path(@partnership), class: "btn btn-primary btn-sm"
+          = link_to t("person.people"), last_search(people_path), class: "btn btn-success btn-sm"
+          = link_to t("partnership.partnerships"), last_search(partnerships_path), class: "btn btn-success btn-sm"

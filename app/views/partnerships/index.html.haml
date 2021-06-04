@@ -1,32 +1,38 @@
+:ruby
+  lo = Layout.new(
+    xs: [3,3,3,3],
+  ).to_a
+  inputs = [
+    [:male,    t("person.male"),         :text,   lo[0], size: 12],
+    [:female,  t("person.female"),       :text,   lo[1], size: 12],
+    [:wedding, t("partnership.wedding"), :text,   lo[2], size: 12],
+    [:realm,   t("person.realm"),        :select, lo[3], menu: person_realm_menu(params[:realm])],
+  ]
+
 = render "utils/title", key: "partnership.partnerships"
 
-:ruby
-  inputs = [
-    [:male,    t("person.male"),         :text,   size: 12],
-    [:female,  t("person.female"),       :text,   size: 12],
-    [:wedding, t("partnership.wedding"), :text,   size: 12],
-    [:realm,   t("person.realm"),        :select, menu: person_realm_menu(params[:realm])],
-  ]
-= render "utils/search/form", index: partnerships_path, inputs: inputs, remote: false
-
-.row.mt-3
+.row
   %div{class: center(xl: 6, lg: 8, md: 10)}
-    %table{class: "table table-bordered table-striped table-sm"}
-      %thead
-        %tr
-          %th= t("partnership.husband")
-          %th= t("partnership.wife")
-          %th= t("partnership.wedding")
-      %tbody{id: "results"}
-        = render "results", partnerships: @partnerships
-
-.text-center
-  - if can?(:create, Partnership)
-    = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "btn btn-info"
-  = render "utils/help_button"
-  = link_to t("person.people"), people_path, class: "btn btn-success"
-  = link_to t("picture.pictures"), pictures_path, class: "btn btn-success"
-  = link_to t("person.tree"), tree_people_path, class: "btn btn-success"
+    %section
+      .header.text-center
+        %h3= t("partnership.partnerships")
+      .body
+        = render "utils/search/form", index: partnerships_path, inputs: inputs, remote: false
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th= t("partnership.husband")
+              %th= t("partnership.wife")
+              %th= t("partnership.wedding")
+          %tbody{id: "results"}
+            = render "results", partnerships: @partnerships
+      .footer
+        - if can?(:create, Partnership)
+          = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "btn btn-primary btn-sm"
+        = render "utils/help_button", extra: "btn-sm"
+        = link_to t("person.people"), people_path, class: "btn btn-success btn-sm"
+        = link_to t("picture.pictures"), pictures_path, class: "btn btn-success btn-sm"
+        = link_to t("person.tree"), tree_people_path, class: "btn btn-success btn-sm"
 
 - content_for :help_title do
   = "How to Search for Partnerships"

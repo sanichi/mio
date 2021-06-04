@@ -1,9 +1,11 @@
-= render "utils/title", key: "pages.aoc.title", header: true
+= render "utils/title", key: "pages.aoc.title"
 
 - content_for :javascript do
   = render partial: "aoc_elm_min", formats: :js
   = render partial: "aoc", formats: :js, locals: { year: params[:year], day: params[:day] }
 
-%hr
-
-.div{id: "elm-app"}
+%section
+  .header.text-center
+    %h3= t("pages.aoc.title")
+  .body
+    #elm-app

@@ -4,11 +4,11 @@
     = form_for vocab, html: { class: "crud" } do |form|
       %section
         .header.text-center
-          %h4.d-inline= vocab.characters
+          %h3.d-inline= vocab.characters
         .body
           -# custom version of utils/crud/_area
-          = form.label :notes, t("notes")
-          = form.text_area :notes, rows: 20
+          = form.label :notes, t("notes"), class: "form-label"
+          = form.text_area :notes, rows: 20, class: "form-control"
         .footer
           -# custom version of utils/crud/_buttons
           = form.submit t("save"), class: "btn btn-primary btn-sm"

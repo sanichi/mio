@@ -1,7 +1,7 @@
 - defined?(term)        || term = :term
 - defined?(placeholder) || placeholder = t("search")
 
-= label_tag select_id, label
+= label_tag select_id, label, class: "form-label"
 .row
-  .col-6= select_tag param, menu, id: select_id
-  .col-6= text_field_tag term, "", id: completer_id, placeholder: placeholder
+  .col-6= select_tag param, menu, id: select_id, class: "form-select"
+  .col-6= text_field_tag term, "", id: completer_id, placeholder: placeholder, class: "form-control"

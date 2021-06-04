@@ -1,26 +1,34 @@
+:ruby
+  lo = Layout.new(
+    xl: [2,2,2],
+    md: [3,3,3],
+    xs: [4,4,4],
+  ).to_a
+  inputs = [
+    [:q,      t("query"),       :text,   lo[0], size: 16, placeholder: t("search"), autofocus: true],
+    [:series, t("misa.series"), :select, lo[1], menu: misa_series_menu(params[:series])],
+    [:order,  t("order"),       :select, lo[2], menu: misa_search_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "misa.misas"
 
-:ruby
-  inputs = [
-    [:q,      t("query"),       :text,   size: 16, placeholder: t("search"), autofocus: true],
-    [:series, t("misa.series"), :select, menu: misa_series_menu(params[:series])],
-    [:order,  t("order"),       :select, menu: misa_search_order_menu(params[:order])],
-  ]
-= render "utils/search/form", index: misas_path, inputs: inputs
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    %tr
-      %th= t("misa.title")
-      %th= t("misa.series")
-      %th.text-center= t("misa.abbrev.number")
-      %th.text-center= t("misa.abbrev.lines")
-      %th.text-center= t("misa.abbrev.minutes")
-      %th.text-center= t("misa.abbrev.published")
-      %th.text-center= t("misa.abbrev.url")
-  %tbody{id: "results"}
-    = render "results", misas: @misas
-
-- if can?(:create, Misa)
-  .text-center.mt-3
-    = link_to t("misa.new"), new_misa_path, class: "btn btn-info"
+%section
+  .header.text-center
+    %h3= t("misa.misas")
+  .body
+    = render "utils/search/form", index: misas_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("misa.title")
+          %th= t("misa.series")
+          %th.text-center= t("misa.abbrev.number")
+          %th.text-center= t("misa.abbrev.lines")
+          %th.text-center= t("misa.abbrev.minutes")
+          %th.text-center= t("misa.abbrev.published")
+          %th.text-center= t("misa.abbrev.url")
+      %tbody{id: "results"}
+        = render "results", misas: @misas
+  - if can?(:create, Misa)
+    .footer
+      = link_to t("misa.new"), new_misa_path, class: "btn btn-primary btn-sm"

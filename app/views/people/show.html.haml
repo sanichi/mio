@@ -1,73 +1,75 @@
-= render "utils/title", text: @person.name(full: false), header: true
 - content_for :javascript do
   = render partial: "relation_completer", formats: :js, locals: { id: @person.id }
 
-.btn-toolbar.justify-content-center
-  .btn-group.mr-1
-    = link_to t("person.tree"), tree_people_path(id: @person.id), class: "btn btn-success"
-    = link_to t("person.people"), last_search(people_path), class: "btn btn-success"
-    = link_to t("picture.pictures"), last_search(pictures_path), class: "btn btn-success"
-  .btn-group.mr-1
-    - if can?(:manage, Person)
-      = link_to t("edit"), edit_person_path(@person), class: "btn btn-info"
-    - if can?(:create, Picture)
-      = link_to t("picture.new"), new_picture_path(person_id: @person.id, realm: @person.realm), class: "btn btn-info"
-    - if can?(:create, Partnership)
-      = link_to t("partnership.new"), new_partnership_path(person_id: @person.id, realm: @person.realm), class: "btn btn-info"
+= render "utils/title", text: @person.name(full: false)
 
-.row.mt-3
-  .col-sm-10.offset-sm-1.col-md-8.offset-md-2
-    %table{class: "table table-bordered table-striped"}
-      %tbody
-        %tr
-          %th= t("person.last_name")
-          %td= @person.last_name
-        %tr
-          %th= t("person.first_names")
-          %td= @person.first_names
-        %tr
-          %th= t("person.known_as")
-          %td= @person.known_as
-        - if @person.married_name
-          %tr
-            %th= t("person.married_name")
-            %td= @person.married_name
-        %tr
-          %th= t("person.gender")
-          %td= t("person.#{@person.male ? '' : 'fe'}male")
-        %tr
-          %th= t("person.born")
-          %td= @person.born_plus
-        - if @person.died.present?
-          %tr
-            %th= t("person.died")
-            %td= @person.died_plus
-        - if @person.father.present?
-          %tr
-            %th= t("person.father")
-            %td= link_to @person.father.name(full: false), @person.father
-        - if @person.mother.present?
-          %tr
-            %th= t("person.mother")
-            %td= link_to @person.mother.name(full: false), @person.mother
-        = render "people", people: @person.siblings, label: t("person.siblings")
-        = render "partners", partnerships: @person.partnerships, male: @person.male, label: t("person.partners")
-        = render "people", people: @person.children, label: t("person.children")
-        %tr
-          %th= t("person.realm")
-          %td= t("person.realms")[@person.realm]
-        %tr
-          %th= t("person.relationship_to")
-          %td.form-inline
-            .input-group.input-group-sm
-              = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 25
-            = "&nbsp;&nbsp;".html_safe
-            %span#relative
-
-= render "pictures/results", pictures: @person.pictures
-
-- if @person.notes.present?
-  .card.mt-3
-    .card-header
-      = t("notes")
-    .card-body= @person.notes_html
+.row
+  %div{class: center(sm: 10, md: 8)}
+    %section
+      .header.text-center
+        %h3= @person.name(full: false)
+      - if @person.pictures.count > 0
+        .body
+          = render "pictures/results", pictures: @person.pictures
+      .body.border-top
+        .btn-toolbar.justify-content-center
+          .btn-group.me-1
+            = link_to t("person.tree"), tree_people_path(id: @person.id), class: "btn btn-success btn-sm"
+            = link_to t("person.people"), last_search(people_path), class: "btn btn-success btn-sm"
+            = link_to t("picture.pictures"), last_search(pictures_path), class: "btn btn-success btn-sm"
+          .btn-group.me-1
+            - if can?(:manage, Person)
+              = link_to t("edit"), edit_person_path(@person), class: "btn btn-primary btn-sm"
+            - if can?(:create, Picture)
+              = link_to t("picture.new"), new_picture_path(person_id: @person.id, realm: @person.realm), class: "btn btn-primary btn-sm"
+            - if can?(:create, Partnership)
+              = link_to t("partnership.new"), new_partnership_path(person_id: @person.id, realm: @person.realm), class: "btn btn-primary btn-sm"
+        %table{class: "table table-bordered table-sm mt-3"}
+          %tbody
+            %tr
+              %th= t("person.last_name")
+              %td= @person.last_name
+            %tr
+              %th= t("person.first_names")
+              %td= @person.first_names
+            %tr
+              %th= t("person.known_as")
+              %td= @person.known_as
+            - if @person.married_name
+              %tr
+                %th= t("person.married_name")
+                %td= @person.married_name
+            %tr
+              %th= t("person.gender")
+              %td= t("person.#{@person.male ? '' : 'fe'}male")
+            %tr
+              %th= t("person.born")
+              %td= @person.born_plus
+            - if @person.died.present?
+              %tr
+                %th= t("person.died")
+                %td= @person.died_plus
+            - if @person.father.present?
+              %tr
+                %th= t("person.father")
+                %td= link_to @person.father.name(full: false), @person.father
+            - if @person.mother.present?
+              %tr
+                %th= t("person.mother")
+                %td= link_to @person.mother.name(full: false), @person.mother
+            = render "people", people: @person.siblings, label: t("person.siblings")
+            = render "partners", partnerships: @person.partnerships, male: @person.male, label: t("person.partners")
+            = render "people", people: @person.children, label: t("person.children")
+            %tr
+              %th= t("person.realm")
+              %td= t("person.realms")[@person.realm]
+            %tr
+              %th= t("person.relationship_to")
+              %td.form-inline
+                .input-group.input-group-sm
+                  = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 25
+                = "&nbsp;&nbsp;".html_safe
+                %span#relative
+            - if @person.notes.present?
+              %tr
+                %td.note{colspan: 2}= @person.notes_html

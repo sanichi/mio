@@ -1,19 +1,22 @@
 = render "utils/title", key: "mass.data"
 
 .row
-  .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped table-sm"}
-      %thead
-        %tr
-          %th.text-center= t("mass.date")
-          %th.text-center= t("mass.start")
-          %th.text-center= t("mass.finish")
-          - if can?(:create, Mass)
-            %th
-      %tbody{id: "results"}
-        = render "results", masses: @masses, unit: @unit
-
-.text-center
-  %span{id: "control_buttons"}= render "control_buttons", masses: @masses, unit: @unit
-  - if can?(:create, Mass)
-    = link_to t("mass.new"), new_mass_path, class: "btn btn-info"
+  %div{class: center(sm: 10, md: 8, lg: 6)}
+    %section
+      .header.text-center
+        %h3= t("mass.data")
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %thead
+            %tr
+              %th.text-center= t("mass.date")
+              %th.text-center= t("mass.start")
+              %th.text-center= t("mass.finish")
+              - if can?(:create, Mass)
+                %th
+          %tbody{id: "results"}
+            = render "results", masses: @masses, unit: @unit
+      .footer
+        %span{id: "control_buttons"}= render "control_buttons", masses: @masses, unit: @unit
+        - if can?(:create, Mass)
+          = link_to t("mass.new"), new_mass_path, class: "btn btn-primary btn-sm"

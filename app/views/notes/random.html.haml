@@ -6,7 +6,7 @@
 .card
   .card-header
     %h4.d-inline= @note.title
-    .float-right
+    .float-end
       = link_to t("next"), random_notes_path, class: "btn btn-primary btn-sm"
       = link_to t("note.note"), @note, class: "btn btn-success btn-sm"
   .card-body.text-center

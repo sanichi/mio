@@ -1,7 +1,7 @@
 :ruby
   inputs = [
     [:title,  t("note.title"),  :text, maxlength: Note::MAX_TITLE],
-    [:series, t("note.series"), :text, maxlength: Note::MAX_SERIES],
+    [:series, t("note.series"), :list, data: note_series_list],
     [:number, t("note.number"), :text, maxlength: Note::MAX_NUMBER],
     [:stuff,  t("note.stuff"),  :area, rows: 40],
   ]

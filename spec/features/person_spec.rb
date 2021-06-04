@@ -9,9 +9,7 @@ describe Person do
 
   before(:each) do
     login
-    click_link t("person.people")
-    select t("person.realms")[data.realm], from: t("person.realm")
-    click_button t("search")
+    visit people_path(realm: data.realm)
   end
 
   context "create" do

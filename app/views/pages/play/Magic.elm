@@ -43,17 +43,17 @@ view model =
     let
         upButton =
             if high model then
-                [ class "btn btn-secondary btn-sm ml-1" ]
+                [ class "btn btn-secondary btn-sm ms-1" ]
 
             else
-                [ class "btn btn-primary btn-sm ml-1", onClick MagicIncrement ]
+                [ class "btn btn-primary btn-sm ms-1", onClick MagicIncrement ]
 
         downButton =
             if low model then
-                [ class "btn btn-secondary btn-sm ml-1" ]
+                [ class "btn btn-secondary btn-sm ms-1" ]
 
             else
-                [ class "btn btn-danger btn-sm ml-1", onClick MagicDecrement ]
+                [ class "btn btn-danger btn-sm ms-1", onClick MagicDecrement ]
 
         magic =
             model.magic
@@ -65,7 +65,7 @@ view model =
     in
     div []
         [ button [ class "btn btn-success btn-sm" ] [ text pair ]
-        , div [ class "float-right" ]
+        , div [ class "float-end" ]
             [ button upButton [ text "↑" ]
             , button downButton [ text "↓" ]
             ]

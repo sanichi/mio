@@ -1,20 +1,22 @@
+:ruby
+  lo = Layout.new( xl: [2], md: [3], xs: [4]).to_a
+  inputs = [[:q, t("search"), :text, lo[0], autofocus: true]]
+
 = render "utils/title", key: "tutorial.tutorials"
 
-:ruby
-  inputs = [
-    [:q, t("search"), :text, size: 16, autofocus: true],
-  ]
-= render "utils/search/form", index: tutorials_path, inputs: inputs
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    %tr.d-flex
-      %th.col-1.text-center= t("tutorial.number")
-      %th.col-2.text-center= t("date")
-      %th.col-9= t("tutorial.summary")
-  %tbody{id: "results"}
-    = render "results", tutorials: @tutorials
-
-- if can?(:create, Tutorial)
-  .text-center.mt3
-    = link_to t("tutorial.new"), new_tutorial_path, class: "btn btn-info"
+%section
+  .header.text-center
+    %h3= t("tutorial.tutorials")
+  .body
+    = render "utils/search/form", index: tutorials_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr.d-flex
+          %th.col-1.text-center= t("tutorial.number")
+          %th.col-2.text-center= t("date")
+          %th.col-9= t("tutorial.summary")
+      %tbody{id: "results"}
+        = render "results", tutorials: @tutorials
+  - if can?(:create, Tutorial)
+    .footer
+      = link_to t("tutorial.new"), new_tutorial_path, class: "btn btn-primary btn-sm"

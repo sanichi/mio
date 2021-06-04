@@ -1,19 +1,21 @@
 = render "utils/title", text: @note.title
 
-.card
-  .card-header
-    %h4.d-inline= @note.title
-    .float-right
-      = @note.series_number(links: true)
-  .card-body
-    %article= @note.stuff_html
-
-.text-center.mt-3
-  = link_to t("note.notes"), last_search(notes_path), class: "btn btn-success"
-  = link_to t("random"), random_notes_path, class: "btn btn-primary"
-  - if can?(:edit, Note)
-    = link_to t("edit"), edit_note_path(@note), class: "btn btn-info"
-    - if @note.shiftable?
-      = link_to t("note.shift"), nedit_note_path(@note), class: "btn btn-info"
-  - if can?(:delete, Note)
-    = link_to t("delete"), @note, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+.row
+  %div{class: center(lg: 10, xx: 8)}
+    %section
+      .header
+        %h5.d-inline= @note.title
+        %small.float-end
+          = @note.series_number(links: true)
+      .body
+        %article= @note.stuff_html
+      .footer
+        = link_to t("note.notes"), last_search(notes_path), class: "btn btn-success btn-sm"
+        = link_to t("random"), random_notes_path, class: "btn btn-primary btn-sm"
+        - if can?(:edit, Note)
+          = link_to t("edit"), edit_note_path(@note), class: "btn btn-primary btn-sm"
+          - if @note.shiftable?
+            = link_to t("note.shift"), nedit_note_path(@note), class: "btn btn-primary btn-sm"
+        - if can?(:delete, Note)
+          = link_to t("delete"), @note, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+    

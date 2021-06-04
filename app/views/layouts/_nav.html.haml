@@ -1,84 +1,85 @@
 %nav
-  %button{type: "button", "data-toggle" => "collapse", "data-target" => "#navbar"}
-    %span
-  #navbar.collapse.navbar-collapse
-    %ul.left
+  .container-fluid
+    %button{type: "button", "data-bs-toggle" => "collapse", "data-bs-target" => "#navbar"}
+      %span
+    #navbar.collapse.navbar-collapse
+      %ul.me-auto
 
-      - if can?(:read, Favourite)
-        %li= link_to t("home"), favourites_path
+        - if can?(:read, Favourite)
+          %li= link_to t("home"), favourites_path
 
-      - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place, Problem, Test].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
-        %li.dropdown
-          = link_to t("wk.japanese", locale: "jp"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = render "wk/vocabs/dropdown_menu"                         if can?(:read, Wk::Vocab)
-            = render "wk/kanjis/dropdown_menu"                         if can?(:read, Wk::Kanji)
-            = render "wk/radicals/dropdown_menu"                       if can?(:read, Wk::Radical)
-            = render "wk/verb_pairs/dropdown_menu"                     if can?(:read, Wk::VerbPair)
-            = link_to t("misa.misas"),              misas_path         if can?(:read, Misa)
-            = link_to t("note.notes"),              notes_path         if can?(:read, Note)
-            = link_to t("wk.example.examples"),     wk_examples_path   if can?(:read, Wk::Example)
-            = link_to t("wk.group.groups"),         wk_groups_path     if can?(:read, Wk::Group)
-            = link_to t("place.places"),            places_path        if can?(:read, Place)
-            = link_to t("pages.prefectures.name"),  prefectures_path   if can?(:prefectures, :page)
-            = link_to t("test.tests"),              tests_path         if can?(:read, Test)
-            = link_to t("wk.verb_pair.verb_pairs"), wk_verb_pairs_path if can?(:read, Wk::VerbPair)
-            = link_to t("problem.problems"),        problems_path      if can?(:read, Problem)
+        - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place, Problem, Test].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
+          %li.dropdown
+            = link_to t("wk.japanese", locale: "jp"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= render "wk/vocabs/dropdown_menu"                         if can?(:read, Wk::Vocab)
+              %li= render "wk/kanjis/dropdown_menu"                         if can?(:read, Wk::Kanji)
+              %li= render "wk/radicals/dropdown_menu"                       if can?(:read, Wk::Radical)
+              %li= render "wk/verb_pairs/dropdown_menu"                     if can?(:read, Wk::VerbPair)
+              %li= link_to t("misa.misas"),              misas_path         if can?(:read, Misa)
+              %li= link_to t("note.notes"),              notes_path         if can?(:read, Note)
+              %li= link_to t("wk.example.examples"),     wk_examples_path   if can?(:read, Wk::Example)
+              %li= link_to t("wk.group.groups"),         wk_groups_path     if can?(:read, Wk::Group)
+              %li= link_to t("place.places"),            places_path        if can?(:read, Place)
+              %li= link_to t("pages.prefectures.name"),  prefectures_path   if can?(:prefectures, :page)
+              %li= link_to t("test.tests"),              tests_path         if can?(:read, Test)
+              %li= link_to t("wk.verb_pair.verb_pairs"), wk_verb_pairs_path if can?(:read, Wk::VerbPair)
+              %li= link_to t("problem.problems"),        problems_path      if can?(:read, Problem)
 
-      - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to t("family"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("person.tree"),              tree_people_path       if can?(:tree, Person)
-            = link_to t("person.people"),            people_path            if can?(:read, Person)
-            = link_to t("picture.pictures"),         pictures_path          if can?(:read, Picture)
-            = link_to t("partnership.partnerships"), partnerships_path      if can?(:read, Partnership)
-            = link_to t("person.checks.title"),      checks_people_path     if can?(:checks, Person)
+        - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
+          %li.dropdown
+            = link_to t("family"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= link_to t("person.tree"),              tree_people_path       if can?(:tree, Person)
+              %li= link_to t("person.people"),            people_path            if can?(:read, Person)
+              %li= link_to t("picture.pictures"),         pictures_path          if can?(:read, Picture)
+              %li= link_to t("partnership.partnerships"), partnerships_path      if can?(:read, Partnership)
+              %li= link_to t("person.checks.title"),      checks_people_path     if can?(:checks, Person)
 
-      - if [Flat].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, :page) }.any?
-        %li.dropdown
-          = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("map"),        risle_path  if can?(:risle, :page)
-            = link_to t("pages.pam"),  pam_path    if can?(:pam, :page)
-            = link_to t("flat.flats"), flats_path  if can?(:read, Flat)
-            = link_to t("flat.deeds"), deeds_path  if can?(:deeds, :page)
+        - if [Flat].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, :page) }.any?
+          %li.dropdown
+            = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= link_to t("map"),        risle_path  if can?(:risle, :page)
+              %li= link_to t("pages.pam"),  pam_path    if can?(:pam, :page)
+              %li= link_to t("flat.flats"), flats_path  if can?(:read, Flat)
+              %li= link_to t("flat.deeds"), deeds_path  if can?(:deeds, :page)
 
-      - if [Income, Expense].map{|c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to t("money"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("income.incomes"),   graph_incomes_path if can?(:read, Income)
-            = link_to t("expense.expenses"), expenses_path      if can?(:read, Expense)
+        - if [Income, Expense].map{|c| can?(:read, c) }.any?
+          %li.dropdown
+            = link_to t("money"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= link_to t("income.incomes"),   graph_incomes_path if can?(:read, Income)
+              %li= link_to t("expense.expenses"), expenses_path      if can?(:read, Expense)
 
-      -  if [:aoc, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Lesson, Login, Match, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
-        %li.dropdown
-          = link_to t("other"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("mass.mass"),              weight_path      if can?(:weight, :page)
-            = link_to t("lesson.lessons"),         lessons_path     if can?(:read, Lesson)
-            = link_to t("tutorial.tutorials"),     tutorials_path   if can?(:read, Tutorial)
-            = link_to t("pages.aoc.short"),        aoc_path         if can?(:aoc, :page)
-            = link_to t("pages.play"),             play_path        if can?(:play, :page)
-            = link_to t("team.teams"),             teams_path       if can?(:read, Team)
-            = link_to t("match.matches"),          matches_path     if can?(:read, Match)
-            = link_to t("pages.premier.short"),    premier_path     if can?(:premier, :page)
-            = link_to t("user.users"),             users_path       if can?(:read, User)
-            = link_to t("login.logins"),           logins_path      if can?(:read, Login)
-            = link_to t("pages.env"),              env_path         if can?(:env, :page)
+        -  if [:aoc, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Lesson, Login, Match, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
+          %li.dropdown
+            = link_to t("other"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= link_to t("mass.mass"),              weight_path      if can?(:weight, :page)
+              %li= link_to t("lesson.lessons"),         lessons_path     if can?(:read, Lesson)
+              %li= link_to t("tutorial.tutorials"),     tutorials_path   if can?(:read, Tutorial)
+              %li= link_to t("pages.aoc.short"),        aoc_path         if can?(:aoc, :page)
+              %li= link_to t("pages.play"),             play_path        if can?(:play, :page)
+              %li= link_to t("team.teams"),             teams_path       if can?(:read, Team)
+              %li= link_to t("match.matches"),          matches_path     if can?(:read, Match)
+              %li= link_to t("pages.premier.short"),    premier_path     if can?(:premier, :page)
+              %li= link_to t("user.users"),             users_path       if can?(:read, User)
+              %li= link_to t("login.logins"),           logins_path      if can?(:read, Login)
+              %li= link_to t("pages.env"),              env_path         if can?(:env, :page)
 
-      - if current_user.admin?
-        %li.dropdown
-          = link_to t("old"), "#", class: "dropdown-toggle", "data-toggle" => "dropdown"
-          .dropdown-menu
-            = link_to t("mass.mass"),      graph_masses_path
-            = link_to t("pages.magic"),    magic_path
-            = link_to t("bucket.buckets"), buckets_path
-            = link_to t("pages.board"),    board_path
+        - if current_user.admin?
+          %li.dropdown
+            = link_to t("old"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            %ul.dropdown-menu
+              %li= link_to t("mass.mass"),      graph_masses_path
+              %li= link_to t("pages.magic"),    magic_path
+              %li= link_to t("bucket.buckets"), buckets_path
+              %li= link_to t("pages.board"),    board_path
 
-    %ul.right
-      %li
-        - if authenticated?
-          = link_to t("session.sign_out", user: current_user.initials), sign_out_path
-        - else
-          = link_to t("session.sign_in"), sign_in_path
+      %ul.ms-auto
+        %li
+          - if authenticated?
+            = link_to t("session.sign_out", user: current_user.initials), sign_out_path
+          - else
+            = link_to t("session.sign_in"), sign_in_path

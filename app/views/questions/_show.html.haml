@@ -4,14 +4,14 @@
 - number = question.number(qids)
 - qids_param = qids ? JSON.generate(qids) : nil
 
-.card
-  .card-header
+%section
+  .header
     - if question.question.present?
       = question.question
     - elsif question.audio.present?
       %audio{controls: "true"}
         %source{src: question.audio_path, type: question.audio_type}
-    .float-right
+    .float-end
       = link_to_if last, t("question.icons.last"), { controller: "questions", action: "show", id: last, qids: qids_param }, remote: true
       = link_to_if nixt, t("question.icons.next"), { controller: "questions", action: "show", id: nixt, qids: qids_param }, remote: true
       = "#{number} of #{count}"
@@ -19,11 +19,11 @@
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
   - if question.image.present?
-    .card-body
+    .body
       .offset-md-1.col-md-10.offset-lg-2.col-lg-8.text-center
         = image_tag @question.image_path, class: "img-fluid"
   - if question.audio.present? && question.question.present?
-    .card-body.text-center
+    .body.text-center
       %audio{controls: "true"}
         %source{src: question.audio_path, type: question.audio_type}
   - if question.any_answers?
@@ -33,4 +33,4 @@
       = render "questions/answer", question: question, number: 3
       = render "questions/answer", question: question, number: 4
   - if question.note.present?
-    .card-body= question.note_html
+    .body= question.note_html

@@ -7,34 +7,32 @@
     = render partial: "pages/board_elm_min", formats: :js
     = render partial: "utils/board/boards", formats: :js, locals: { fens: boards }
 
-- if @prev || @next
-  %p.text-center
-    %button.btn-success
-      - if @prev
-        = link_to @prev, class: "badge badge-light" do
-          = t("tutorial.prev")
-          = @prev.number
-      - if @prev && @next
+%section
+  .header
+    %h4.d-inline= t("tutorial.title", number: @tutorial.number)
+    .float-end
+      - if @prev || @next
+        - if @prev
+          = link_to @prev, class: "btn btn-success btn-sm" do
+            = t("tutorial.prev")
+            = @prev.number
+        - if @prev && @next
+          = "&nbsp;".html_safe
+        - if @next
+          = link_to @next, class: "btn btn-success btn-sm" do
+            = @next.number
+            = t("tutorial.next")
         = "&nbsp;".html_safe
-      - if @next
-        = link_to @next, class: "badge badge-light" do
-          = @next.number
-          = t("tutorial.next")
-
-.card
-  .card-header
-    = t("tutorial.title", number: @tutorial.number)
-    .float-right= @tutorial.date.strftime("%Y-%m-%d")
-  .card-body
+      = @tutorial.date.strftime("%Y-%m-%d")
+  .body
     - comments.each do |html|
       - if html.match(/\AFEN__(\d+)\z/)
         = render "utils/board/board", id: $1
       - else
         = html
-
-.text-center.mt-3
-  = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success"
-  - if can?(:edit, Tutorial)
-    = link_to t("edit"), edit_tutorial_path(@tutorial), class: "btn btn-info"
-  - if can?(:delete, Tutorial)
-    = link_to t("delete"), @tutorial, class: "btn btn-danger", method: :delete, data: { confirm: t("sure") }
+  .footer
+    = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success btn-sm"
+    - if can?(:edit, Tutorial)
+      = link_to t("edit"), edit_tutorial_path(@tutorial), class: "btn btn-primary btn-sm"
+    - if can?(:delete, Tutorial)
+      = link_to t("delete"), @tutorial, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }

@@ -1,15 +1,20 @@
-= render "utils/title", key: "login.logins", header: true
-
 :ruby
+  lo = Layout.new(xs: [3,3,3]).to_a
   inputs = [
-    [:date,  t("date"),     :text, size: 16],
-    [:email, t("email"),    :text, size: 16],
-    [:ip,    t("login.ip"), :text, size: 16],
+    [:date,  t("date"),     :text, lo[0]],
+    [:email, t("email"),    :text, lo[1]],
+    [:ip,    t("login.ip"), :text, lo[2]],
   ]
-= render "utils/search/form", index: logins_path, inputs: inputs
 
-.row.mt-3
+= render "utils/title", key: "login.logins"
+
+.row
   %div{class: center(xl: 6, lg: 8, md: 10)}
-    %table{class: "table table-bordered table-striped table-sm"}
-      %tbody{id: "results"}
-        = render "results", logins: @logins
+    %section
+      .header.text-center
+        %h3= t("login.logins")
+      .body
+        = render "utils/search/form", index: logins_path, inputs: inputs
+        %table{class: "table table-bordered table-sm mt-3"}
+          %tbody{id: "results"}
+            = render "results", logins: @logins

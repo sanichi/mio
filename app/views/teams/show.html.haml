@@ -1,23 +1,27 @@
 = render "utils/title", text: @team.name
 
 .row
-  .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped table-sm"}
-      %tbody
-        %tr
-          %th= t("team.name")
-          %td= @team.name
-        %tr
-          %th= t("team.short")
-          %td= @team.short
-        %tr
-          %th= t("team.slug")
-          %td= @team.slug
-        %tr
-          %th= t("team.division")
-          %td= @team.division
+  %div{class: center(md: 10, lg: 8, xl: 6)}
+    %section
+      .header.text-center
+        %h3= @team.name
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %tbody
+            %tr
+              %th= t("team.name")
+              %td= @team.name
+            %tr
+              %th= t("team.short")
+              %td= @team.short
+            %tr
+              %th= t("team.slug")
+              %td= @team.slug
+            %tr
+              %th= t("team.division")
+              %td= @team.division
 
-.text-center.mt-3
-  = link_to t("team.teams"), last_search(teams_path), class: "btn btn-success"
-  - if can?(:edit, Team)
-    = link_to t("edit"), edit_team_path(@team), class: "btn btn-info"
+      .footer
+        = link_to t("team.teams"), last_search(teams_path), class: "btn btn-success btn-sm"
+        - if can?(:edit, Team)
+          = link_to t("edit"), edit_team_path(@team), class: "btn btn-primary btn-sm"

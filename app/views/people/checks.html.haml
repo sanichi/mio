@@ -1,33 +1,37 @@
-= render "utils/title", key: "person.checks.title", header: true
+= render "utils/title", key: "person.checks.title"
 
 .row
-  .col-lg-8.offset-lg-2.col-md-10.offset-md-1
-    - @checks.public_methods(false).select{|m| m.match(/\Apeople_/)}.each do |check|
-      %h4= t("person.checks.#{check}")
-      - people = @checks.send(check)
-      %ul
-        - if people.empty?
-          %li= t("none")
-        - else
-          - people.each do |p|
-            %li= link_to p.name(with_years: true, reversed: true), p
-    - @checks.public_methods(false).select{|m| m.match(/\Apartners_/)}.each do |check|
-      %h4= t("person.checks.#{check}")
-      - partnerships = @checks.send(check)
-      %ul
-        - if partnerships.empty?
-          %li= t("none")
-        - else
-          - partnerships.each do |p|
-            %li
-              = link_to p do
-                = "%s ● %s" % [p.husband.name(with_years: true, reversed: true), p.wife.name(with_years: true, reversed: true)]
-    - @checks.public_methods(false).select{|m| m.match(/\Apictures_/)}.each do |check|
-      %h4= t("person.checks.#{check}")
-      - pictures = @checks.send(check)
-      %ul
-        - if pictures.empty?
-          %li= t("none")
-        - else
-          - pictures.each do |p|
-            %li= link_to p.image.filename, p
+  %div{class: center(lg: 8, md: 10)}
+    %section
+      .header.text-center
+        %h3= t("person.checks.title")
+      .body
+        - @checks.public_methods(false).select{|m| m.match(/\Apeople_/)}.each do |check|
+          %h4= t("person.checks.#{check}")
+          - people = @checks.send(check)
+          %ul
+            - if people.empty?
+              %li= t("none")
+            - else
+              - people.each do |p|
+                %li= link_to p.name(with_years: true, reversed: true), p
+        - @checks.public_methods(false).select{|m| m.match(/\Apartners_/)}.each do |check|
+          %h4= t("person.checks.#{check}")
+          - partnerships = @checks.send(check)
+          %ul
+            - if partnerships.empty?
+              %li= t("none")
+            - else
+              - partnerships.each do |p|
+                %li
+                  = link_to p do
+                    = "%s ● %s" % [p.husband.name(with_years: true, reversed: true), p.wife.name(with_years: true, reversed: true)]
+        - @checks.public_methods(false).select{|m| m.match(/\Apictures_/)}.each do |check|
+          %h4= t("person.checks.#{check}")
+          - pictures = @checks.send(check)
+          %ul
+            - if pictures.empty?
+              %li= t("none")
+            - else
+              - pictures.each do |p|
+                %li= link_to p.image, p

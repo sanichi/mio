@@ -1,23 +1,24 @@
-= render "utils/title", text: t("misa.misa")
+= render "utils/title", key: "misa.misa"
 
-.card
-  .card-header
-    = @misa.title
-    .float-right
-      = @misa.series_number
-      = @misa.published
-      - if @misa.url
-        = link_to t("misa.abbrev.url"), @misa.url, target: t("misa.target")
-      - if @misa.alt
-        = link_to t("misa.abbrev.alt"), @misa.alt, target: t("misa.target")
-      = @misa.minutes
-      - if @misa.japanese
-        = t("misa.abbrev.japanese")
-  - if @misa.note.present?
-    .card-body
-      %article= @misa.note_html
-
-.text-center.mt-3
-  = link_to t("misa.misas"), last_search(misas_path), class: "btn btn-success"
-  - if can?(:edit, Misa)
-    = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-info"
+.row
+  %div{class: center(lg: 10, xx: 8)}
+    %section
+      .header
+        %h5.d-inline= @misa.title
+        %small.float-end
+          = @misa.series_number
+          = @misa.published
+          - if @misa.url
+            = link_to t("misa.abbrev.url"), @misa.url, target: t("misa.target")
+          - if @misa.alt
+            = link_to t("misa.abbrev.alt"), @misa.alt, target: t("misa.target")
+          = @misa.minutes
+          - if @misa.japanese
+            = t("misa.abbrev.japanese")
+      - if @misa.note.present?
+        .body
+          %article= @misa.note_html
+      .footer
+        = link_to t("misa.misas"), last_search(misas_path), class: "btn btn-success btn-sm"
+        - if can?(:edit, Misa)
+          = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-primary btn-sm"

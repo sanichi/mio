@@ -1,26 +1,30 @@
-= render "utils/title", text: @place.jname, header: true
+= render "utils/title", text: @place.jname
 
 - content_for :javascript do
   = render partial: "move", formats: :js, locals: { place: @place }
 
 .row
-  %div{class: center(xl: 5, lg: 6, md: 7, sm: 8, xs: 9)}
-    %p.text-center
-      %select#delta{size: 1, name: "direction"}
-        - [1, 2, 4, 8, 16].each do |d|
-          %option{value: d}= d
-    - if @place.mark_y
-      %p.text-center
-        - %w/e w n s/.each do |d|
-          %button.btn.btn-sm.btn-success.shifter{"data-direction" => d, "data-type" => "mark"}= t("place.directions.#{d}")
-    - if @place.text_y
-      %p.text-center
-        - %w/e w n s/.each do |d|
-          %button.btn.btn-sm.btn-dark.shifter{"data-direction" => d, "data-type" => "text"}= t("place.directions.#{d}")
-    %div#map
-      = render "map", vb: @place.vb, elements: @elements
-
-.text-center.mt-3
-  = link_to @place.jname, @place, class: "btn btn-secondary"
-  = link_to t("place.places"), last_search(places_path), class: "btn btn-success"
-  = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success"
+  %div{class: center(xx: 4, xl: 5, lg: 6, md: 7, sm: 8, xs: 9)}
+    %section
+      .header.text-center
+        %h3= @place.jname
+      .body
+        .row
+          %div{class: center(xs: 4)}
+            %select#delta.form-select{name: "direction"}
+              - [1, 2, 4, 8, 16].each do |d|
+                %option{value: d}= d
+        - if @place.mark_y
+          %p.text-center.mt-3
+            - %w/e w n s/.each do |d|
+              %button.btn.btn-sm.btn-success.shifter{"data-direction" => d, "data-type" => "mark"}= t("place.directions.#{d}")
+        - if @place.text_y
+          %p.text-center
+            - %w/e w n s/.each do |d|
+              %button.btn.btn-sm.btn-dark.shifter{"data-direction" => d, "data-type" => "text"}= t("place.directions.#{d}")
+      .body.border-top
+        %div#map= render "map", vb: @place.vb, elements: @elements
+      .footer
+        = link_to @place.jname, @place, class: "btn btn-secondary btn-sm"
+        = link_to t("place.places"), last_search(places_path), class: "btn btn-success btn-sm"
+        = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success btn-sm"

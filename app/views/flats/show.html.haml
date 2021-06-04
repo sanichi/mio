@@ -1,35 +1,35 @@
-= render "utils/title", text: t("flat.flat"), header: true
+= render "utils/title", key: "flat.flat"
 
 .row
-  .offset-md-3.col-md-6
-    %table{class: "table table-bordered table-striped table-sm"}
-      %tbody
-        %tr
-          %th= t("flat.building")
-          %td= @flat.building
-        %tr
-          %th= t("flat.number")
-          %td= @flat.number
-        %tr
-          %th= t("flat.block")
-          %td= @flat.block
-        %tr
-          %th= t("flat.bay")
-          %td= @flat.bay
-        %tr
-          %th= t("flat.category")
-          %td= @flat.category
-        %tr
-          %th= t("flat.name")
-          %td= @flat.name
-
-.text-center
-  = link_to t("flat.flats"), last_search(flats_path), class: "btn btn-success"
-  - if can?(:manage, Flat)
-    = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-info"
-
-- if @flat.notes.present?
-  .card.mt-3
-    .card-header
-      = t("notes")
-    .card-body= @flat.notes_html
+  %div{class: center(sm: 10, md: 8, lg: 6)}
+    %section
+      .header.text-center
+        %h1= t("flat.flat")
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %tbody
+            %tr
+              %th= t("flat.building")
+              %td= @flat.building
+            %tr
+              %th= t("flat.number")
+              %td= @flat.number
+            %tr
+              %th= t("flat.block")
+              %td= @flat.block
+            %tr
+              %th= t("flat.bay")
+              %td= @flat.bay
+            %tr
+              %th= t("flat.category")
+              %td= @flat.category
+            %tr
+              %th= t("flat.name")
+              %td= @flat.name
+            - if @flat.notes.present?
+              %tr
+                %td{colspan: 2}=@flat.notes_html
+      .footer
+        = link_to t("flat.flats"), last_search(flats_path), class: "btn btn-success btn-sm"
+        - if can?(:manage, Flat)
+          = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-primary btn-sm"

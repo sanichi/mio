@@ -1,30 +1,38 @@
-= render "utils/title", key: "flat.flats", header: true
-
 :ruby
+  lo = Layout.new(
+    xl: [[3,3,3],[3,3,3],[3]],
+    md: [[4,4,4],[4,4,4],[4]],
+    xs: [[6,6],[6,6],[6,6],[6]],
+  ).to_a
   inputs = [
-    [:building, t("flat.building"), :text,   size: 5],
-    [:number,   t("flat.number"),   :text,   size: 5],
-    [:block,    t("flat.block"),    :text,   size: 5],
-    [:bay,      t("flat.bay"),      :text,   size: 5],
-    [:category, t("flat.category"), :text,   size: 5],
-    [:name,     t("flat.name"),     :text,   size: 5],
-    [:order,    t("order"),         :select, menu: flat_search_order_menu(params[:order])],
+    [:building, t("flat.building"), :text,   lo[0]],
+    [:number,   t("flat.number"),   :text,   lo[1]],
+    [:block,    t("flat.block"),    :text,   lo[2]],
+    [:bay,      t("flat.bay"),      :text,   lo[3]],
+    [:category, t("flat.category"), :text,   lo[4]],
+    [:name,     t("flat.name"),     :text,   lo[5]],
+    [:order,    t("order"),         :select, lo[6], menu: flat_search_order_menu(params[:order])],
   ]
-= render "utils/search/form", index: flats_path, inputs: inputs
 
-.row.mt-3
-  .col-md-8.offset-md-2
-    %table{class: "table table-bordered table-striped table-sm"}
-      %thead
-        %tr
-          %th.text-center= t("flat.address")
-          %th.text-center= t("flat.block")
-          %th.text-center= t("flat.bay")
-          %th.text-center= t("flat.category")
-          %th.text-center= t("flat.name")
-      %tbody{id: "results"}
-        = render "results", flats: @flats
+= render "utils/title", key: "flat.flats"
 
-- if can?(:create, Flat)
-  .text-center.mt3
-    = link_to t("flat.new"), new_flat_path, class: "btn btn-info"
+.row
+  %div{class: center(sm: 10, lg: 8)}
+    %section
+      .header.text-center
+        %h3= t("flat.flats")
+      .body
+        = render "utils/search/form", index: flats_path, inputs: inputs
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th.text-center= t("flat.address")
+              %th.text-center= t("flat.block")
+              %th.text-center= t("flat.bay")
+              %th.text-center= t("flat.category")
+              %th.text-center= t("flat.name")
+          %tbody{id: "results"}
+            = render "results", flats: @flats
+      - if can?(:create, Flat)
+        .footer
+          = link_to t("flat.new"), new_flat_path, class: "btn btn-primary btn-sm"

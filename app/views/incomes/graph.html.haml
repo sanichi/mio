@@ -5,11 +5,14 @@
 
 = render "utils/title", key: "income.graph"
 
-#chart{style: "height: #{@igd.full_height}px"}
-
-.text-center.mt-3
-  = link_to t("list"), incomes_path, class: "btn btn-success"
-  - if @scope != "total"
-    = link_to t("total"), graph_incomes_path(scope: "total"), class: "btn btn-success"
-  - else
-    = link_to t("income.joint"), graph_incomes_path(scope: "joint"), class: "btn btn-success"
+%section
+  .header.text-center
+    %h3= t("income.graph")
+  .body
+    #chart{style: "height: #{@igd.full_height}px"}
+  .footer
+    = link_to t("list"), incomes_path, class: "btn btn-success btn-sm"
+    - if @scope != "total"
+      = link_to t("total"), graph_incomes_path(scope: "total"), class: "btn btn-success btn-sm"
+    - else
+      = link_to t("income.joint"), graph_incomes_path(scope: "joint"), class: "btn btn-success btn-sm"

@@ -1,23 +1,31 @@
+:ruby
+  lo = Layout.new(
+    xx: [2,2,1],
+    xl: [3,3,2],
+    md: [4,4,2],
+    xs: [4,4,4],
+  ).to_a
+  inputs = [
+    [:name,        t("name"),        :text,   lo[0], placeholder: t("name")],
+    [:description, t("description"), :text,   lo[1], placeholder: t("description")],
+    [:realm,       t("wk.level"),    :select, lo[2], menu: person_realm_menu(params[:realm])],
+  ]
+
 = render "utils/title", key: "picture.pictures"
 
-= form_tag pictures_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :name, t("name"), class: "sr-only"
-  = text_field_tag :name, params[:name], class: "form-control mr-1 mb-1", placeholder: t("name"), size: 16
-  = label_tag :description, t("description"), class: "sr-only"
-  = text_field_tag :description, params[:description], class: "form-control mr-1 mb-1", placeholder: t("description"), size: 16
-  = label_tag :realm, t("person.realm"), class: "sr-only"
-  = select_tag :realm, person_realm_menu(params[:realm]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
-  = render "utils/help_button", extra: "mb-1"
-
-#results.mt-3
-  = render "results", pictures: @pictures
-
-.text-center.mt-3
-  - if can?(:create, Picture)
-    = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "btn btn-info"
-  = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "btn btn-success"
-  = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "btn btn-success"
+%section
+  .header.text-center
+    %h3= t("picture.pictures")
+  .body
+    = render "utils/search/form", index: pictures_path, inputs: inputs, remote: false
+    #results.mt-3
+      = render "results", pictures: @pictures
+  .footer
+    - if can?(:create, Picture)
+      = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "btn btn-primary btn-sm"
+    = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
+    = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
+    = render "utils/help_button", extra: "btn-sm"
 
 - content_for :help_title do
   How to Search and View Pictures

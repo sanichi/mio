@@ -1,30 +1,34 @@
-= render "wk/readings/utils"
+:ruby
+  lo = Layout.new(
+    lg: [2,2,1,2,1,2],
+    md: [[3,3,2],[3,1,2]],
+    xs: [[4,3,3],[4,3,3]],
+  ).to_a
+  inputs = [
+    [:vquery, t("wk.vocab.vocab"), :text,   lo[0], placeholder: t("wk.vocab.vocab")],
+    [:notes,  t("wk.vocab.notes"), :text,   lo[1], placeholder: t("wk.vocab.notes")],
+    [:level,  t("wk.level"),       :select, lo[2], menu: wk_level_menu(params[:level])],
+    [:parts,  t("wk.vocab.parts"), :select, lo[3], menu: wk_vocab_parts_menu(params[:parts]), multiple: true, size: 4],
+    [:id,     t("wk.id"),          :text,   lo[4], placeholder: t("wk.short.id")],
+    [:order,  t("order"),          :select, lo[5], menu: wk_vocab_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "wk.vocab.vocabs"
+= render "wk/readings/utils"
 
-= form_tag wk_vocabs_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :vquery, t("wk.vocab.vocab"), class: "sr-only"
-  = text_field_tag :vquery, params[:vquery], class: "form-control mr-1 mb-1", placeholder: t("wk.vocab.vocab"), size: 16, autofocus: true
-  = label_tag :notes, t("wk.vocab.notes"), class: "sr-only"
-  = text_field_tag :notes, params[:notes], class: "form-control mr-1 mb-1", placeholder: t("wk.vocab.notes"), size: 10, autofocus: true
-  = label_tag :level, t("wk.level"), class: "sr-only"
-  = select_tag :level, wk_level_menu(params[:level]), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :parts, t("wk.vocab.parts"), class: "sr-only"
-  = select_tag :parts, wk_vocab_parts_menu(params[:parts]), class: "form-control mr-1 mb-1", multiple: true, size: 1
-  = label_tag :order, t("order"), class: "sr-only"
-  = select_tag :order, wk_vocab_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :id, t("wk.id"), class: "sr-only"
-  = text_field_tag :id, params[:id], class: "form-control mr-1 mb-1", placeholder: t("wk.short.id"), size: 5
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    = render "table_header"
-  %tbody#accent_updates
-    = render "table_rows", vocabs: @vocabs.matches
-    = render "utils/pagination_links", pager: @vocabs, columns: 4
-
-.text-center
-  = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success"
-  = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
-  = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "btn btn-success"
-  = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success"
+%section
+  .header.text-center
+    %h3= t("wk.vocab.vocabs")
+  .body
+    = render "utils/search/form", index: wk_vocabs_path, inputs: inputs, remote: false
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        = render "table_header"
+      %tbody#accent_updates
+        = render "table_rows", vocabs: @vocabs.matches
+        = render "utils/pagination_links", pager: @vocabs, columns: 4
+  .footer
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success btn-sm"

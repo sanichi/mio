@@ -1,23 +1,23 @@
-= render "utils/title", text: t("bucket.bucket")
+= render "utils/title", key: "bucket.bucket"
 
 .row
-  .offset-md-2.col-md-8
-    %table{class: "table table-bordered"}
-      %tbody
-        %tr
-          %th= t("bucket.name")
-          %td= @bucket.name
-        %tr
-          %th= t("bucket.mark")
-          %td= t("bucket.level")[@bucket.mark]
-        %tr
-          %th= t("bucket.sandra")
-          %td= t("bucket.level")[@bucket.sandra]
-        - if @bucket.notes.present?
-          %tr
-            %td{colspan: 2}= @bucket.notes_html
-
-.text-center
-  - if can?(:update, @bucket)
-    = link_to t("edit"), edit_bucket_path(@bucket), class: "btn btn-info"
-  = link_to t("bucket.buckets"), last_search(buckets_path), class: "btn btn-success"
+  %div{class: center(xl: 6, lg: 8, md: 10)}
+    %section
+      .header.text-center
+        %h3= @bucket.name
+      .body
+        %table{class: "table table-bordered tb-sm"}
+          %tbody
+            %tr
+              %th= t("bucket.mark")
+              %td= t("bucket.level")[@bucket.mark]
+            %tr
+              %th= t("bucket.sandra")
+              %td= t("bucket.level")[@bucket.sandra]
+            - if @bucket.notes.present?
+              %tr
+                %td{colspan: 2}= @bucket.notes_html
+      .footer
+        - if can?(:update, @bucket)
+          = link_to t("edit"), edit_bucket_path(@bucket), class: "btn btn-primary btn-sm"
+        = link_to t("bucket.buckets"), last_search(buckets_path), class: "btn btn-success btn-sm"

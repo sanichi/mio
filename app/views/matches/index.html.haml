@@ -1,15 +1,19 @@
+:ruby
+  lo = Layout.new(xs: [2,3,3]).to_a
+  inputs = [
+    [:season,  t("match.season"), :select, lo[0], menu: match_season_menu],
+    [:team_id, t("team.team"),    :select, lo[1], menu: team_menu],
+    [:played,  t("match.played"), :select, lo[2], menu: match_played_menu],
+  ]
+
 = render "utils/title", key: "match.matches"
 
-:ruby
-  inputs = [
-    [:season,  t("match.season"), :select, menu: match_season_menu],
-    [:team_id, t("team.team"),    :select, menu: team_menu],
-    [:played,  t("match.played"), :select, menu: match_played_menu],
-  ]
-= render "utils/search/form", index: matches_path, inputs: inputs
-
-.row.mt-3
+.row
   %div{class: center(xl: 6, lg: 8, md: 10)}
-    %table{class: "table table-bordered table-striped table-sm"}
-      %tbody{id: "results"}
-        = render "results", matches: @matches
+    %section
+      .header.text-center
+        %h3= t("match.matches")
+      .body
+        = render "utils/search/form", index: matches_path, inputs: inputs
+        %table{class: "table table-bordered table-sm mt-3"}
+          %tbody{id: "results"}= render "results", matches: @matches

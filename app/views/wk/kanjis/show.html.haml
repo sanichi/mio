@@ -1,75 +1,64 @@
 = render "wk/readings/utils"
 = render "utils/title", text: @kanji.character
 
-- if @kanji.kvg_xml.present?
-  = content_for :javascript do
-    = render partial: "kvg_button", formats: :js
-
-%h1.text-center.display-1
-  = @kanji.linked_character
-  - if @kanji.kvg_xml.present?
-    = render inline: @kanji.kvg_xml
-
-- if @kanji.kvg_frames.present?
-  %div.text-center.mb-3{style: "overflow-x: auto"}
-    = render inline: @kanji.kvg_frames
-
-- if path = @kanji.image_path
-  %img.mb-3{src: path, width: "100%"}
-
-%table{class: "table table-bordered"}
-  %tbody
-    %tr.d-flex
-      %td.col-3= t("wk.meaning")
-      %td.col-9= @kanji.meaning
-    %tr.d-flex
-      %td.col-3= t("wk.reading")
-      %td.col-9= @kanji.reading
-    %tr.d-flex
-      %td.col-3= t("wk.radical.radicals")
-      %td.col-9
-        - @kanji.radicals.each do |radical|
-          = link_to radical.character_name, radical
-    %tr.d-flex
-      %td.col-3= t("wk.kanji.similar")
-      %td.col-9{style: "font-size: 2em"}
-        - @kanji.similar_kanjis.each do |kanji|
-          = link_to kanji.character, kanji
-    %tr.d-flex
-      %td.col-3= t("wk.hint.meaning")
-      %td.col-9= @kanji.meaning_mnemonic.html_safe
-    %tr.d-flex
-      %td.col-3= t("wk.hint.reading")
-      %td.col-9= @kanji.reading_mnemonic.html_safe
-    %tr.d-flex
-      %td.col-3= t("wk.links")
-      %td.col-9
-        = link_to t("wk.jisho.text"), t("wk.jisho.url.kanji", kanji: @kanji.character), target: "external"
-        = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.kanji", kanji: @kanji.character), target: "external"
-        - if @daily
-          = link_to t("wk.daily.text"), t("wk.daily.url", id: @daily.id)
-    %tr.d-flex
-      %td.col-3= t("wk.level")
-      %td.col-9= @kanji.level
-    %tr.d-flex
-      %td.col-3= t("wk.id")
-      %td.col-9= @kanji.wk_id
-    %tr.d-flex
-      %td.col-3= t("wk.last_updated")
-      %td.col-9= @kanji.last_updated
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    = render "wk/vocabs/table_header"
-  %tbody#accent_updates
-    = render "wk/vocabs/table_rows", vocabs: @vocabs
-
-.text-center
-  = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success"
-  = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
-  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
-  - if @kanji.kvg_xml.present?
-    = link_to t("wk.kanji.kvg"), "#", class: "btn btn-warning", id: "toggle_kvg"
-
-- if @kanji.kvg_xml.present?
-  %pre#kvg.mt-3= @kanji.kvg_xml
+%section
+  .header.text-center
+    %h1.display-1
+      = @kanji.linked_character
+      - if @kanji.kvg_xml.present?
+        = render inline: @kanji.kvg_xml
+  .body
+    - if @kanji.kvg_frames.present?
+      .text-center.mb-3{style: "overflow-x: auto"}
+        = render inline: @kanji.kvg_frames
+    - if path = @kanji.image_path
+      %img.mb-3{src: path, width: "100%"}
+    %table{class: "table table-bordered"}
+      %tbody
+        %tr.d-flex
+          %td.col-3= t("wk.meaning")
+          %td.col-9= @kanji.meaning
+        %tr.d-flex
+          %td.col-3= t("wk.reading")
+          %td.col-9= @kanji.reading
+        %tr.d-flex
+          %td.col-3= t("wk.radical.radicals")
+          %td.col-9
+            - @kanji.radicals.each do |radical|
+              = link_to radical.character_name, radical
+        %tr.d-flex
+          %td.col-3= t("wk.kanji.similar")
+          %td.col-9{style: "font-size: 2em"}
+            - @kanji.similar_kanjis.each do |kanji|
+              = link_to kanji.character, kanji
+        %tr.d-flex
+          %td.col-3= t("wk.hint.meaning")
+          %td.col-9= @kanji.meaning_mnemonic.html_safe
+        %tr.d-flex
+          %td.col-3= t("wk.hint.reading")
+          %td.col-9= @kanji.reading_mnemonic.html_safe
+        %tr.d-flex
+          %td.col-3= t("wk.links")
+          %td.col-9
+            = link_to t("wk.jisho.text"), t("wk.jisho.url.kanji", kanji: @kanji.character), target: "external"
+            = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.kanji", kanji: @kanji.character), target: "external"
+            - if @daily
+              = link_to t("wk.daily.text"), t("wk.daily.url", id: @daily.id)
+        %tr.d-flex
+          %td.col-3= t("wk.level")
+          %td.col-9= @kanji.level
+        %tr.d-flex
+          %td.col-3= t("wk.id")
+          %td.col-9= @kanji.wk_id
+        %tr.d-flex
+          %td.col-3= t("wk.last_updated")
+          %td.col-9= @kanji.last_updated
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          = render "wk/vocabs/table_header"
+        %tbody#accent_updates
+          = render "wk/vocabs/table_rows", vocabs: @vocabs
+  .footer
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"

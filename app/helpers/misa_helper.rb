@@ -9,4 +9,8 @@ module MisaHelper
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end
+
+  def misa_series_list
+    Misa.pluck(:series).uniq.compact.sort
+  end
 end

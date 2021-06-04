@@ -1,6 +1,6 @@
 - defined?(term) || term = :term
 
-= form.label param, label
+= form.label param, label, class: "form-label"
 .row
-  .col-6= form.select param, menu, {}, { size: nil }
-  .col-6= text_field_tag term, "", id: "#{param}_completer"
+  .col-6= form.select param, menu, {}, { class: "form-select", size: nil }
+  .col-6= text_field_tag term, "", id: "#{param}_completer", class: "form-control"

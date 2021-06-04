@@ -1,33 +1,41 @@
-= render "utils/title", key: "favourite.favourites", header: true
-
 :ruby
+  lo = Layout.new(
+    lg: [2,2,2,2],
+    md: [3,3,3,3],
+    xs: [[4,4,4],[4]]
+  ).to_a
   inputs = [
-    [:query,    t("query"),              :text,   size: 20, placeholder: "#{t("name")}/#{t("favourite.note")}"],
-    [:category, t("favourite.category"), :select, menu: favourite_category_search_menu(params[:category])],
-    [:year,     t("year"),               :text,   size: 7],
-    [:order,    t("order"),              :select, menu: favourite_order_menu(params[:order])],
+    [:query,    t("query"),              :text,   lo[0], size: 20, placeholder: "#{t("name")}/#{t("favourite.note")}"],
+    [:category, t("favourite.category"), :select, lo[1], menu: favourite_category_search_menu(params[:category])],
+    [:year,     t("year"),               :text,   lo[2], size: 7],
+    [:order,    t("order"),              :select, lo[3], menu: favourite_order_menu(params[:order])],
   ]
-= render "utils/search/form", index: favourites_path, inputs: inputs
 
-%table.table.table-bordered.table-striped.table-sm.mt-3
-  %thead
-    %tr
-      %th= t("name")
-      %th.d-none.d-lg-table-cell= t("favourite.note")
-      %th.text-center= t("favourite.category")
-      %th.text-center= t("year")
-      %th.text-center
-        %span.d-none.d-md-inline= t("favourite.sandra")
-        %span.d-md-none= t("favourite.abbr.sandra")
-      %th.text-center
-        %span.d-none.d-md-inline= t("favourite.mark")
-        %span.d-md-none= t("favourite.abbr.mark")
-      %th.text-center
-        %span.d-none.d-md-inline= t("total")
-        %span.d-md-none= t("favourite.abbr.total")
-  %tbody#results
-    = render "results", favourites: @favourites
+= render "utils/title", key: "favourite.favourites"
 
-- if can?(:create, Favourite)
-  .text-center.mt-3
-    = link_to t("favourite.new"), new_favourite_path, class: "btn btn-info"
+%section.mt-3
+  .header.text-center
+    %h3= t("favourite.favourites")
+  .body
+    = render "utils/search/form", index: favourites_path, inputs: inputs
+    %table.table.table-bordered.table-sm.mt-3
+      %thead
+        %tr
+          %th= t("name")
+          %th.d-none.d-lg-table-cell= t("favourite.note")
+          %th.text-center= t("favourite.category")
+          %th.text-center= t("year")
+          %th.text-center
+            %span.d-none.d-md-inline= t("favourite.sandra")
+            %span.d-md-none= t("favourite.abbr.sandra")
+          %th.text-center
+            %span.d-none.d-md-inline= t("favourite.mark")
+            %span.d-md-none= t("favourite.abbr.mark")
+          %th.text-center
+            %span.d-none.d-md-inline= t("total")
+            %span.d-md-none= t("favourite.abbr.total")
+      %tbody#results
+        = render "results", favourites: @favourites
+  - if can?(:create, Favourite)
+    .footer
+      = link_to t("favourite.new"), new_favourite_path, class: "btn btn-primary btn-sm"

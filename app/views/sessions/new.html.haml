@@ -1,12 +1,11 @@
 = render "utils/title", key: "session.sign_in"
 
 .row
-  .col-md-8.offset-md-2
-    = form_tag sessions_path, class: "form-horizontal" do
-      .form-group.row
-        = label_tag :email, t("email"), class: "col-form-label col-md-4"
-        .col-md-4= text_field_tag :email, params[:email], class: "form-control", type: "email", placeholder: t("email")
-      .form-group.row
-        = label_tag :password, t("session.password"), class: "col-form-label col-md-4"
-        .col-md-4= text_field_tag :password, params[:password], class: "form-control", type: "password", placeholder: t("session.password")
-      = submit_tag t("session.sign_in"), class: "btn btn-success"
+  %div{class: center(xx: 3, xl: 4, lg: 5, md: 6, sm: 7, xs: 8)}
+    = form_with url: sessions_path, local: true, html: { class: "crud" } do |f|
+      %section
+        .body
+          .mb-3= render "utils/crud/text", form: f, label: t("email"), param: :email
+          .mb-3= render "utils/crud/password", form: f, label: t("session.password")
+        .footer
+          .text-center= f.submit t("session.sign_in"), class: "btn btn-primary"

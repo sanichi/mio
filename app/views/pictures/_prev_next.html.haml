@@ -1,14 +1,15 @@
 - list = session[:picture_ids].to_s
 - prv = Picture.find_by(id: $1.to_i) if list.match(/_(\d+)_#{picture.id}_/)
 - nxt = Picture.find_by(id: $1.to_i) if list.match(/_#{picture.id}_(\d+)_/)
+
 .btn-toolbar.justify-content-center
   - if prv || nxt
-    .btn-group.mr-1
-      = link_to t("symbol.prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'}"
-      = link_to t("symbol.next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'}"
-  .btn-group.mr-1
-    = link_to t("picture.pictures"), last_search(pictures_path), class: "btn btn-success"
-    = link_to t("person.people"), last_search(people_path), class: "btn btn-success"
-  .btn-group.mr-1
+    .btn-group.me-1
+      = link_to t("symbol.prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'} btn-sm"
+      = link_to t("symbol.next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'} btn-sm"
+  .btn-group.me-1
+    = link_to t("picture.pictures"), last_search(pictures_path), class: "btn btn-success btn-sm"
+    = link_to t("person.people"), last_search(people_path), class: "btn btn-success btn-sm"
+  .btn-group.me-1
     - if can?(:manage, picture)
-      = link_to t("edit"), edit_picture_path(picture), class: "btn btn-info"
+      = link_to t("edit"), edit_picture_path(picture), class: "btn btn-primary btn-sm"

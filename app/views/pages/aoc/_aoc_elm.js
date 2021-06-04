@@ -20009,10 +20009,10 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$div,
+				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('row')
+						$elm$html$Html$Attributes$class('row g-3')
 					]),
 				_List_fromArray(
 					[
@@ -20020,35 +20020,35 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col')
+								$elm$html$Html$Attributes$class('offset-1 col-5 offset-sm-2 col-sm-4 offset-md-3 col-md-3 offset-lg-4 col-lg-2')
 							]),
 						_List_fromArray(
 							[
 								A2(
-								$elm$html$Html$form,
+								$elm$html$Html$select,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-inline justify-content-around')
+										$elm$html$Html$Attributes$class('form-select'),
+										onYearChange
 									]),
+								yearOptions)
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-5 col-sm-4 col-md-3 col-lg-2')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$select,
 								_List_fromArray(
 									[
-										A2(
-										$elm$html$Html$select,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('form-control'),
-												onYearChange
-											]),
-										yearOptions),
-										A2(
-										$elm$html$Html$select,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('form-control'),
-												onDayChange
-											]),
-										dayOptions)
-									]))
+										$elm$html$Html$Attributes$class('form-select'),
+										onDayChange
+									]),
+								dayOptions)
 							]))
 					])),
 				A2($elm$html$Html$hr, _List_Nil, _List_Nil),

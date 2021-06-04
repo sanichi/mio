@@ -1,1 +1,5 @@
-= select_tag param, menu, class: "form-control mr-1 mb-1 auto-submit"
+- defined?(multiple) || multiple = false
+- defined?(auto)     || auto = true
+- auto_submit = auto && !multiple ? "auto-submit" : ""
+
+= select_tag param, menu, class: "form-select #{auto_submit}", multiple: multiple

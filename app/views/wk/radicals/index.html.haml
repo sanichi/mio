@@ -1,19 +1,26 @@
+:ruby
+  lo = Layout.new(
+    xx: [1,1,1,1],
+    xl: [2,1,1,2],
+    lg: [2,2,2,2],
+    sm: [[3,3],[3,3]],
+    xs: [[4,4],[4,4]],
+  ).to_a
+  inputs = [
+    [:rquery, t("wk.radical.radical"), :text,   lo[0], placeholder: t("wk.radical.radical")],
+    [:level,  t("wk.level"),           :select, lo[1], menu: wk_level_menu(params[:level])],
+    [:id,     t("wk.id"),              :text,   lo[2], placeholder: t("wk.short.id")],
+    [:order,  t("order"),              :select, lo[3], menu: wk_radical_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "wk.radical.radicals"
 
-= form_tag wk_radicals_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :rquery, t("wk.radical.radical"), class: "sr-only"
-  = text_field_tag :rquery, params[:rquery], class: "form-control mr-1 mb-1", placeholder: t("wk.radical.radical"), size: 16, autofocus: true
-  = label_tag :id, t("wk.id"), class: "sr-only"
-  = text_field_tag :id, params[:id], class: "form-control mr-1 mb-1", placeholder: t("wk.short.id"), size: 5
-  = label_tag :level, t("wk.level"), class: "sr-only"
-  = select_tag :level, wk_level_menu(params[:level]), class: "form-control mr-1 mb-1 auto-submit"
-  = label_tag :order, t("order"), class: "sr-only"
-  = select_tag :order, wk_radical_order_menu(params[:order]), class: "form-control mr-1 mb-1 auto-submit"
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
-
-.row
-  .offset-lg-1.col-lg-10.offset-xl-2.col-xl-8
-    %table{class: "table table-bordered table-striped table-sm mt-3"}
+%section
+  .header.text-center
+    %h3= t("wk.radical.radicals")
+  .body
+    = render "utils/search/form", index: wk_radicals_path, inputs: inputs, remote: false
+    %table{class: "table table-bordered table-sm mt-3"}
       %thead
         %tr.d-flex
           %th.col-2.text-center= t("wk.radical.name")
@@ -22,7 +29,6 @@
           %th.col-1.text-center= t("wk.level")
       %tbody
         = render "results", radicals: @radicals
-
-.text-center
-  = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
-  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
+  .footer
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"

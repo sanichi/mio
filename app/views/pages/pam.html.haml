@@ -1,7 +1,14 @@
-= form_tag pam_path, method: :get, class: "form-inline justify-content-center" do
-  = label_tag :q, t("search"), class: "sr-only"
-  = text_field_tag :q, params[:q], class: "form-control mr-1 mb-1", placeholder: t("search"), size: 16
-  = button_tag t("search"), type: "submit", class: "btn btn-success mr-1 mb-1"
+:ruby
+  lo = Layout.new(xl: [2], md: [4], xs: [6]).to_a
+  inputs = [[:q, t("search"), :text, lo[0], placeholder: t("search")]]
 
-- if @answer
-  %h1.text-center.mt-3= @answer
+= render "utils/title", key: "pages.pam"
+
+%section
+  .header.text-center
+    %h3= t("pages.pam")
+  .body
+    = render "utils/search/form", index: pam_path, inputs: inputs, remote: false
+  - if @answer
+    .footer.text-center
+      %h3= @answer

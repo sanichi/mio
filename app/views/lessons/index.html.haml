@@ -1,21 +1,23 @@
+:ruby
+  lo = Layout.new( xl: [2], md: [3], xs: [4]).to_a
+  inputs = [[:q, t("search"), :text, lo[0], autofocus: true]]
+
 = render "utils/title", key: "lesson.lessons"
 
-:ruby
-  inputs = [
-    [:q, t("search"), :text, size: 16, autofocus: true],
-  ]
-= render "utils/search/form", index: lessons_path, inputs: inputs
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    %tr
-      %th= t("lesson.series")
-      %th= t("lesson.section")
-      %th= t("lesson.chapter")
-      %th.text-center= t("lesson.abbrev.complete")
-  %tbody{id: "results"}
-    = render "results", lessons: @lessons
-
-- if can?(:create, Lesson)
-  .text-center.mt3
-    = link_to t("lesson.new"), new_lesson_path, class: "btn btn-info"
+%section
+  .header.text-center
+    %h3= t("lesson.lessons")
+  .body
+    = render "utils/search/form", index: lessons_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("lesson.series")
+          %th= t("lesson.section")
+          %th= t("lesson.chapter")
+          %th.text-center= t("lesson.abbrev.complete")
+      %tbody{id: "results"}
+        = render "results", lessons: @lessons
+  - if can?(:create, Lesson)
+    .footer
+      = link_to t("lesson.new"), new_lesson_path, class: "btn btn-primary btn-sm"

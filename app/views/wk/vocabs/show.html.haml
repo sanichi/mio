@@ -1,58 +1,59 @@
 = render "wk/readings/utils"
 = render "utils/title", text: @vocab.characters
 
-%h1.text-center= @vocab.linked_characters
-
-%table{class: "table table-bordered"}
-  %tbody#accent_updates
-    %tr
-      %td= t("wk.meaning")
-      %td= @vocab.meaning
-    - @vocab.readings.each do |reading|
-      %tr
-        %td= t("wk.reading")
-        %td
-          = reading.characters
-          = render "wk/readings/audio", reading: reading
-    - @homos.each do |homo|
-      %tr
-        %td= t("wk.vocab.homo")
-        %td
-          = link_to homo.characters, homo
-          = render "wk/readings/audio", reading: homo.readings.first
-          = homo.meaning
-    %tr
-      %td= t("wk.vocab.parts")
-      %td= @vocab.parts_of_speech
-    %tr
-      %td= t("wk.hint.meaning")
-      %td= @vocab.meaning_mnemonic.html_safe
-    %tr
-      %td= t("wk.hint.reading")
-      %td= @vocab.reading_mnemonic.html_safe
-    %tr
-      %td= t("wk.links")
-      %td
-        = link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", vocab: @vocab.characters), target: "external"
-        = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.vocab", vocab: @vocab.characters), target: "external"
-    %tr
-      %td= t("wk.level")
-      %td= @vocab.level
-    %tr
-      %td= t("wk.id")
-      %td= @vocab.wk_id
-    %tr
-      %td= t("wk.last_updated")
-      %td= @vocab.last_updated
-    - if @vocab.any_notes?
-      %tr
-        %td.col-12{colspan: 2}= @vocab.notes_html
-
-.text-center
-  - if can?(:manage, Wk::Vocab)
-    = link_to t("wk.vocab.edit"), edit_wk_vocab_path(@vocab), class: "btn btn-info"
-  = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success"
-  = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success"
-  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
-  = link_to t("wk.example.examples"), wk_examples_path(query: @vocab.characters), class: "btn btn-success"
-  = link_to t("wk.group.groups"), wk_groups_path(query: @vocab.characters), class: "btn btn-success"
+%section
+  .header.text-center
+    %h1= @vocab.linked_characters
+  .body
+    %table{class: "table table-bordered"}
+      %tbody#accent_updates
+        %tr
+          %td= t("wk.meaning")
+          %td= @vocab.meaning
+        - @vocab.readings.each do |reading|
+          %tr
+            %td= t("wk.reading")
+            %td
+              = reading.characters
+              = render "wk/readings/audio", reading: reading
+        - @homos.each do |homo|
+          %tr
+            %td= t("wk.vocab.homo")
+            %td
+              = link_to homo.characters, homo
+              = render "wk/readings/audio", reading: homo.readings.first
+              = homo.meaning
+        %tr
+          %td= t("wk.vocab.parts")
+          %td= @vocab.parts_of_speech
+        %tr
+          %td= t("wk.hint.meaning")
+          %td= @vocab.meaning_mnemonic.html_safe
+        %tr
+          %td= t("wk.hint.reading")
+          %td= @vocab.reading_mnemonic.html_safe
+        %tr
+          %td= t("wk.links")
+          %td
+            = link_to t("wk.jisho.text"), t("wk.jisho.url.vocab", vocab: @vocab.characters), target: "external"
+            = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.vocab", vocab: @vocab.characters), target: "external"
+        %tr
+          %td= t("wk.level")
+          %td= @vocab.level
+        %tr
+          %td= t("wk.id")
+          %td= @vocab.wk_id
+        %tr
+          %td= t("wk.last_updated")
+          %td= @vocab.last_updated
+        - if @vocab.any_notes?
+          %tr
+            %td.col-12{colspan: 2}= @vocab.notes_html
+  .footer
+    - if can?(:manage, Wk::Vocab)
+      = link_to t("wk.vocab.edit"), edit_wk_vocab_path(@vocab), class: "btn btn-primary btn-sm"
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.example.examples"), wk_examples_path(query: @vocab.characters), class: "btn btn-success btn-sm"
+    = link_to t("wk.group.groups"), wk_groups_path(query: @vocab.characters), class: "btn btn-success btn-sm"

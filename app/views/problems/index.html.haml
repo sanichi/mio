@@ -1,24 +1,30 @@
+:ruby
+  lo = Layout.new(
+    xs: [3,3,3,3],
+  ).to_a
+  inputs = [
+    [:level,       t("problem.level"),       :select, lo[0], menu: problem_level_menu(params[:level], search: true)],
+    [:category,    t("problem.category"),    :select, lo[1], menu: problem_category_menu(params[:category], search: true)],
+    [:subcategory, t("problem.subcategory"), :select, lo[2], menu: problem_subcategory_menu(params[:subcategory], search: true)],
+    [:question,    t("question.question"),   :text,   lo[3], size: 16],
+  ]
+
 = render "utils/title", key: "problem.problems"
 
-:ruby
-  inputs = [
-    [:level,       t("problem.level"),       :select, menu: problem_level_menu(params[:level], search: true)],
-    [:category,    t("problem.category"),    :select, menu: problem_category_menu(params[:category], search: true)],
-    [:subcategory, t("problem.subcategory"), :select, menu: problem_subcategory_menu(params[:subcategory], search: true)],
-    [:question,    t("question.question"),   :text,   size: 16],
-  ]
-= render "utils/search/form", index: problems_path, inputs: inputs
-
-.row.mt-3
-  .col-md-10.offset-md-1.col-lg-8.offset-lg-2.col-xl-6.offset-xl-3
-    %table{class: "table table-bordered table-striped table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("problem.description")
-          %th
-      %tbody{id: "results"}
-        = render "results", problems: @problems
-
-- if can?(:create, Problem)
-  .text-center.mt3
-    = link_to t("problem.new"), new_problem_path, class: "btn btn-info"
+.row
+  %div{class: center(md: 10, lg: 8, xl: 6)}
+    %section
+      .header.text-center
+        %h3= t("problem.problems")
+      .body
+        = render "utils/search/form", index: problems_path, inputs: inputs
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th= t("problem.description")
+              %th
+          %tbody{id: "results"}
+            = render "results", problems: @problems
+      - if can?(:create, Problem)
+        .footer
+          = link_to t("problem.new"), new_problem_path, class: "btn btn-primary btn-sm"

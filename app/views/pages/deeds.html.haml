@@ -1,10 +1,15 @@
-= render "utils/title", key: "flat.deeds", header: true
+= render "utils/title", key: "flat.deeds"
 
-= render "pages/deeds/toc"
-= render "pages/deeds/title_page"
-= render "pages/deeds/plans"
-= render "pages/deeds/section", letter: "A", section: "PROPERY"
-= render "pages/deeds/section", letter: "B", section: "PROPRIETORSHIP"
-= render "pages/deeds/section", letter: "C", section: "CHARGES"
-= render "pages/deeds/section", letter: "D", section: "BURDENS"
-= render "pages/deeds/notes"
+%section
+  .header.text-center
+    %h1
+      = t("flat.deeds")
+  .body
+    = render "pages/deeds/toc"
+    = render "pages/deeds/title_page"
+    = render "pages/deeds/plans"
+    = render "pages/deeds/section", letter: "A", section: "PROPERY"
+    = render "pages/deeds/section", letter: "B", section: "PROPRIETORSHIP"
+    = render "pages/deeds/section", letter: "C", section: "CHARGES"
+    = render "pages/deeds/section", letter: "D", section: "BURDENS"
+    = render "pages/deeds/notes"

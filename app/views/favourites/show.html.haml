@@ -1,32 +1,35 @@
-= render "utils/title", text: @favourite.name, header: true
+= render "utils/title", text: @favourite.name
 
 .row
   .offset-lg-1.col-lg-10.offset-xl-2.col-xl-8
-    %table{class: "table table-bordered table-striped"}
-      %tbody
-        %tr
-          %th= t("name")
-          %td= @favourite.name
-        %tr
-          %th= t("favourite.category")
-          %td= t("favourite.categories")[@favourite.category]
-        %tr
-          %th= t("year")
-          %td= @favourite.year
-        %tr
-          %th= t("favourite.sandra")
-          %td= @favourite.sandra
-        %tr
-          %th= t("favourite.mark")
-          %td= @favourite.mark
-        - if @favourite.link.present?
-          %tr
-            %th= t("favourite.link")
-            %td= link_to @favourite.link, @favourite.link, target: "_external"
-        %tr
-          %td{colspan: 2}= @favourite.note_html
-
-.text-center
-  = link_to t("favourite.favourites"), last_search(favourites_path), class: "btn btn-success"
-  - if can?(:manage, Favourite)
-    = link_to t("edit"), edit_favourite_path(@favourite), class: "btn btn-info"
+    %section
+      .header.text-center
+        %h3= @favourite.name
+      .body
+        %table{class: "table table-bordered"}
+          %tbody
+            %tr
+              %th= t("name")
+              %td= @favourite.name
+            %tr
+              %th= t("favourite.category")
+              %td= t("favourite.categories")[@favourite.category]
+            %tr
+              %th= t("year")
+              %td= @favourite.year
+            %tr
+              %th= t("favourite.sandra")
+              %td= @favourite.sandra
+            %tr
+              %th= t("favourite.mark")
+              %td= @favourite.mark
+            - if @favourite.link.present?
+              %tr
+                %th= t("favourite.link")
+                %td= link_to @favourite.link, @favourite.link, target: "_external"
+            %tr
+              %td{colspan: 2}= @favourite.note_html
+      .footer
+        = link_to t("favourite.favourites"), last_search(favourites_path), class: "btn btn-success btn-sm"
+        - if can?(:manage, Favourite)
+          = link_to t("edit"), edit_favourite_path(@favourite), class: "btn btn-primary btn-sm"

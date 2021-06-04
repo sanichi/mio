@@ -1,27 +1,34 @@
+:ruby
+  lo = Layout.new(
+    xs: [3,3,3,3],
+    md: [2,2,2,2],
+  ).to_a
+  inputs = [
+    [:q,     t("search"),         :text,   lo[0], size: 16, autofocus: true],
+    [:cat,   t("place.category"), :select, lo[1], menu: place_category_search_menu(params[:cat])],
+    [:kanji, t("place.kanji"),    :select, lo[2], menu: place_kanji_menu(params[:kanji])],
+    [:order, t("order"),          :select, lo[3], menu: place_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "place.places"
 
-:ruby
-  inputs = [
-    [:q,     t("search"),         :text,   size: 16, autofocus: true],
-    [:cat,   t("place.category"), :select, menu: place_category_search_menu(params[:cat])],
-    [:kanji, t("place.kanji"),    :select, menu: place_kanji_menu(params[:kanji])],
-    [:order, t("order"),          :select, menu: place_order_menu(params[:order])],
-  ]
-= render "utils/search/form", index: places_path, inputs: inputs
-
-.row.mt-3
-  %div{class: center(xs: 12, md: 10, lg: 8, xl: 6)}
-    %table{class: "table table-bordered table-striped table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("place.jname", locale: "jp")
-          %th= t("place.parent", locale: "jp")
-          %th.text-center= t("place.pop", locale: "jp")
-          %th= t("place.ename", locale: "jp")
-      %tbody{id: "results"}
-        = render "results", places: @places
-
-.text-center.mt3
-  = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success"
-  - if can?(:create, Place)
-    = link_to t("place.new"), new_place_path, class: "btn btn-info"
+.row
+  %div{class: center(md: 10, lg: 8, xl: 6)}
+    %section
+      .header.text-center
+        %h3= t("place.places")
+      .body
+        = render "utils/search/form", index: places_path, inputs: inputs
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th= t("place.jname", locale: "jp")
+              %th= t("place.parent", locale: "jp")
+              %th.text-center= t("place.pop", locale: "jp")
+              %th= t("place.ename", locale: "jp")
+          %tbody{id: "results"}
+            = render "results", places: @places
+      .footer
+        = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success btn-sm"
+        - if can?(:create, Place)
+          = link_to t("place.new"), new_place_path, class: "btn btn-primary btn-sm"

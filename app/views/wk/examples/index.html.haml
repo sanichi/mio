@@ -1,22 +1,26 @@
+:ruby
+  lo = Layout.new(xs: [6], md: [4], xl: [2]).to_a
+  inputs = [
+    [:query, t("wk.example.example"), :text, lo[0], autofocus: true, placeholder: t("search")],
+  ]
+
 = render "utils/title", key: "wk.example.examples"
 
-:ruby
-  inputs = [
-    [:query, t("wk.example.example"), :text, autofocus: true],
-  ]
-= render "utils/search/form", index: wk_examples_path, inputs: inputs
-
-%table{class: "table table-bordered table-striped table-sm mt-3"}
-  %thead
-    %tr
-      %th= t("wk.example.japanese")
-      %th= t("wk.example.english")
-      %th
-  %tbody{id: "results"}
-    = render "results", examples: @examples
-
-.text-center.mt3
-  = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success"
-  = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success"
-  - if can?(:create, Wk::Example)
-    = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-info"
+%section
+  .header.text-center
+    %h3= t("wk.example.examples")
+  .body
+    = render "utils/search/form", index: wk_examples_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("wk.example.japanese")
+          %th= t("wk.example.english")
+          %th
+      %tbody{id: "results"}
+        = render "results", examples: @examples
+  .footer
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success btn-sm"
+    - if can?(:create, Wk::Example)
+      = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-primary btn-sm"
