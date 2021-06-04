@@ -3,7 +3,7 @@ en:
     board: Board
     env: Env
     magic: Magic Numbers
-    pam: Parking
+    pam: Pam
     play: Elm Play
     aoc:
       answers: Answers
