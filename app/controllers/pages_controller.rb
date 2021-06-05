@@ -17,7 +17,8 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @teams = Team.stats(2020)
+    @season = helpers.check_season(params[:season])
+    @teams = Team.stats(@season)
   end
 
   def prefectures

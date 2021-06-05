@@ -193,7 +193,11 @@ class Team < ApplicationRecord
   end
 
   def self.stats(season)
-    Team.where(division: 1).map{ |t| t.stats(season) }.sort do |a,b|
+    if season == Match.current_season
+      Team.where(division: 1)
+    else
+      Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }
+    end.map{ |t| t.stats(season) }.sort do |a,b|
       if b.points > a.points
         1
       elsif b.points < a.points
@@ -204,7 +208,7 @@ class Team < ApplicationRecord
         elsif b.diff < a.diff
           -1
         else
-          b.name <=> a.name
+          a.short <=> b.short
         end
       end
     end

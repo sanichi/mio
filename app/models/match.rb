@@ -1,6 +1,8 @@
 class Match < ApplicationRecord
   include Pageable
 
+  FIRST_SEASON = 2020
+
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
 
@@ -42,7 +44,7 @@ class Match < ApplicationRecord
 
   def self.current_season
     today = Date.today
-    if today.month <= 8
+    if today.month <= 5
       today.year - 1
     else
       today.year

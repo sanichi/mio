@@ -20,4 +20,20 @@ module PagesHelper
       flats.push [rite[i], rx, ry] if rite[i]
     end
   end
+
+  def season_menu(selected)
+    current = Match.current_season
+    opts = (Match::FIRST_SEASON..current).to_a.reverse.map{ |y| [y, y] }
+    options_for_select(opts, selected)
+  end
+
+  def check_season(candidate)
+    candidate = candidate.to_i
+    current = Match.current_season
+    if candidate < Match::FIRST_SEASON || candidate > current
+      current
+    else
+      candidate
+    end
+  end
 end
