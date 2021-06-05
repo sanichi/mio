@@ -22,18 +22,17 @@ module PagesHelper
   end
 
   def season_menu(selected)
-    current = Match.current_season
-    opts = (Match::FIRST_SEASON..current).to_a.reverse.map{ |y| [y, y] }
+    opts = Match.seasons.reverse.map do |y|
+      [y.to_s + "/" + (y+1).to_s[-2,2], y]
+    end
     options_for_select(opts, selected)
   end
 
   def check_season(candidate)
-    candidate = candidate.to_i
-    current = Match.current_season
-    if candidate < Match::FIRST_SEASON || candidate > current
-      current
+    if Match.seasons.include?(candidate.to_i)
+      candidate.to_i
     else
-      candidate
+      Match.current_season
     end
   end
 end

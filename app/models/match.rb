@@ -51,6 +51,10 @@ class Match < ApplicationRecord
     end
   end
 
+  def self.seasons
+    (Match::FIRST_SEASON..Match.current_season).to_a
+  end
+
   private
 
   def team_cant_play_itself

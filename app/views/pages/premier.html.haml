@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(xl: [2], md: [3], xs: [4]).to_a.first
+  lo = Layout.new(md: [2], xs: [4]).to_a.first
   inputs = [[:season, t("match.season"), :select, lo, menu: season_menu(@season)]]
 
 - content_for :javascript do
