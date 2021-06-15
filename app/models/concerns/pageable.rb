@@ -7,6 +7,7 @@ module Pageable
       page = params[:page].to_i > 0 ? params[:page].to_i : 1
       per_page = opt[:per_page].to_i
       per_page = 10 if per_page == 0
+      locale = %w/en jp/.include?(opt[:locale].to_s) ? opt[:locale] : :en
       remote = opt[:remote] ? true : false
       page = 1 + count / per_page if page > 1 && (page - 1) * per_page >= count
       if matches.respond_to?(:limit)
@@ -15,14 +16,14 @@ module Pageable
       else
         matches = matches[per_page * (page - 1), per_page]
       end
-      Pager.new(matches, params, path, per_page, page, count, remote, opt[:extra])
+      Pager.new(matches, params, path, per_page, page, count, remote, locale, opt[:extra])
     end
   end
 
   class Pager
-    attr_reader :matches, :count, :remote, :extra
+    attr_reader :matches, :count, :remote, :locale, :extra
 
-    def initialize(matches, params, path, per_page, page, count, remote, extra)
+    def initialize(matches, params, path, per_page, page, count, remote, locale, extra)
       @matches  = matches
       @params   = params.reject{ |key,val| %w[action controller button utf8].include?(key) }
       @path     = path
@@ -30,6 +31,7 @@ module Pageable
       @page     = page
       @count    = count
       @remote   = remote
+      @locale   = locale
       @extra    = extra
     end
 

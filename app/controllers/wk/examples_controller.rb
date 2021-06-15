@@ -5,7 +5,7 @@ module Wk
 
     def index
       remember_last_search(wk_examples_path)
-      @examples = Wk::Example.search(params, wk_examples_path, per_page: 15)
+      @examples = Wk::Example.search(params, wk_examples_path, per_page: 15, locale: :jp)
     end
 
     def new

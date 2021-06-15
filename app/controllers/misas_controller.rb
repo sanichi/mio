@@ -4,7 +4,7 @@ class MisasController < ApplicationController
 
   def index
     remember_last_search(misas_path)
-    @misas = Misa.search(params, misas_path, per_page: 20)
+    @misas = Misa.search(params, misas_path, per_page: 20, locale: :jp)
   end
 
   def new

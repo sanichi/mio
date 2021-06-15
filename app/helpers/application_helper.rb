@@ -1,11 +1,12 @@
 module ApplicationHelper
   def pagination_links(pager)
+    locale = pager.locale
     links = Array.new
-    links.push(link_to t("pagination.frst"), pager.frst_page, remote: pager.remote, id: "pagn_frst") if pager.after_start?
-    links.push(link_to t("pagination.next"), pager.next_page, remote: pager.remote, id: "pagn_next") if pager.before_end?
-    links.push(link_to t("pagination.prev"), pager.prev_page, remote: pager.remote, id: "pagn_prev") if pager.after_start?
-    links.push(link_to t("pagination.last"), pager.last_page, remote: pager.remote, id: "pagn_last") if pager.before_end?
-    raw "#{pager.min_and_max} #{t('pagination.of')} #{pager.count} #{links.size > 0 ? '∙' : ''} #{links.join(' ∙ ')}"
+    links.push(link_to t("pagination.frst", locale: locale), pager.frst_page, remote: pager.remote, id: "pagn_frst") if pager.after_start?
+    links.push(link_to t("pagination.next", locale: locale), pager.next_page, remote: pager.remote, id: "pagn_next") if pager.before_end?
+    links.push(link_to t("pagination.prev", locale: locale), pager.prev_page, remote: pager.remote, id: "pagn_prev") if pager.after_start?
+    links.push(link_to t("pagination.last", locale: locale), pager.last_page, remote: pager.remote, id: "pagn_last") if pager.before_end?
+    raw "#{pager.min_and_max} #{t('pagination.of', locale: locale)} #{pager.count} #{links.size > 0 ? '∙' : ''} #{links.join(' ∙ ')}"
   end
 
   def nobr(str)

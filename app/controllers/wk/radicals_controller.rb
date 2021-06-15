@@ -4,7 +4,7 @@ module Wk
 
     def index
       remember_last_search(wk_radicals_path)
-      @radicals = Wk::Radical.search(params, wk_radicals_path, per_page: 15)
+      @radicals = Wk::Radical.search(params, wk_radicals_path, per_page: 15, locale: :jp)
       if @radicals.count == 1
         redirect_to @radicals.matches.first
       end

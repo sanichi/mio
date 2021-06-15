@@ -87,3 +87,9 @@ jp:
   all: 全て
   any: なんでも
   name: 名前
+  pagination:
+    frst: 最初
+    next: 次
+    prev: 前
+    last: 最終
+    of: /

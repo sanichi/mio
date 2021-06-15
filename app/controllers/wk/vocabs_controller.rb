@@ -5,7 +5,7 @@ module Wk
 
     def index
       remember_last_search(wk_vocabs_path)
-      @vocabs = Wk::Vocab.search(params, wk_vocabs_path, per_page: 15)
+      @vocabs = Wk::Vocab.search(params, wk_vocabs_path, per_page: 15, locale: :jp)
       if @vocabs.count == 1
         redirect_to @vocabs.matches.first
       end

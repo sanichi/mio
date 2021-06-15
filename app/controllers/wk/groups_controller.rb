@@ -5,7 +5,7 @@ module Wk
 
     def index
       remember_last_search(wk_groups_path)
-      @groups = Wk::Group.search(params, wk_groups_path, per_page: 15)
+      @groups = Wk::Group.search(params, wk_groups_path, per_page: 15, locale: :jp)
     end
 
     def new

@@ -4,7 +4,7 @@ class NotesController < ApplicationController
 
   def index
     remember_last_search(notes_path)
-    @notes = Note.search(params, notes_path, per_page: 20)
+    @notes = Note.search(params, notes_path, per_page: 20, locale: :jp)
   end
 
   def random

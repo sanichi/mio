@@ -3,7 +3,7 @@ class ProblemsController < ApplicationController
   before_action :find_problem, only: [:show, :edit, :update, :destroy]
 
   def index
-    @problems = Problem.search(params, problems_path, per_page: 15)
+    @problems = Problem.search(params, problems_path, per_page: 15, locale: :jp)
   end
 
   def new
