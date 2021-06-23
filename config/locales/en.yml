@@ -63,6 +63,7 @@ en:
     prev: previous
     last: last
     of: of
+    separator: ∙
   period:
     month: Monthly
     period: Period
@@ -92,4 +93,5 @@ jp:
     next: 次
     prev: 前
     last: 最終
-    of: /
+    of: ∙
+    separator: ∙
