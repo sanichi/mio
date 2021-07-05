@@ -3977,7 +3977,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.az);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aA);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.am === next.am
-							&& curr.ac === next.ac
-							&& curr.aj.a === next.aj.a
+							&& curr.an === next.an
+							&& curr.ad === next.ad
+							&& curr.ak.a === next.ak.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aI: 'hidden', aA: 'visibilitychange' }
+		? { aI: 'hidden', aB: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aI: 'mozHidden', aA: 'mozvisibilitychange' }
+		? { aI: 'mozHidden', aB: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aI: 'msHidden', aA: 'msvisibilitychange' }
+		? { aI: 'msHidden', aB: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aI: 'webkitHidden', aA: 'webkitvisibilitychange' }
-		: { aI: 'hidden', aA: 'visibilitychange' };
+		? { aI: 'webkitHidden', aB: 'webkitvisibilitychange' }
+		: { aI: 'hidden', aB: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aq: _Browser_getScene(),
-		at: {
-			av: _Browser_window.pageXOffset,
-			aw: _Browser_window.pageYOffset,
-			au: _Browser_doc.documentElement.clientWidth,
-			ab: _Browser_doc.documentElement.clientHeight
+		ar: _Browser_getScene(),
+		au: {
+			aw: _Browser_window.pageXOffset,
+			ax: _Browser_window.pageYOffset,
+			av: _Browser_doc.documentElement.clientWidth,
+			ac: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		au: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ab: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		av: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ac: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aq: {
-				au: node.scrollWidth,
-				ab: node.scrollHeight
+			ar: {
+				av: node.scrollWidth,
+				ac: node.scrollHeight
 			},
-			at: {
-				av: node.scrollLeft,
-				aw: node.scrollTop,
-				au: node.clientWidth,
-				ab: node.clientHeight
+			au: {
+				aw: node.scrollLeft,
+				ax: node.scrollTop,
+				av: node.clientWidth,
+				ac: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aq: _Browser_getScene(),
-			at: {
-				av: x,
-				aw: y,
-				au: _Browser_doc.documentElement.clientWidth,
-				ab: _Browser_doc.documentElement.clientHeight
+			ar: _Browser_getScene(),
+			au: {
+				aw: x,
+				ax: y,
+				av: _Browser_doc.documentElement.clientWidth,
+				ac: _Browser_doc.documentElement.clientHeight
 			},
-			aD: {
-				av: x + rect.left,
-				aw: y + rect.top,
-				au: rect.width,
-				ab: rect.height
+			aE: {
+				aw: x + rect.left,
+				ax: y + rect.top,
+				av: rect.width,
+				ac: rect.height
 			}
 		};
 	});
@@ -4944,7 +4944,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aa: fragment, ac: host, ag: path, aj: port_, am: protocol, an: query};
+		return {ab: fragment, ad: host, ah: path, ak: port_, an: protocol, ao: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5225,7 +5225,7 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Types$initModel = function (flags) {
-	return {aG: 0, _: flags._, ah: 0, K: 0};
+	return {_: 0, aa: flags.aa, ai: 0, K: 0};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5246,7 +5246,7 @@ var $elm$time$Time$Every = F2(
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {al: processes, as: taggers};
+		return {am: processes, at: taggers};
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5538,7 +5538,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.al;
+		var processes = _v0.am;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -5607,7 +5607,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.as);
+		var _v0 = A2($elm$core$Dict$get, interval, state.at);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -5674,7 +5674,7 @@ var $author$project$Ports$gotFocus = _Platform_incomingPort(
 												$elm$json$Json$Decode$andThen,
 												function (families) {
 													return $elm$json$Json$Decode$succeed(
-														{aF: families, aH: father, aL: mother, aM: olderSiblings, aR: person, aY: youngerSiblings});
+														{aG: families, aH: father, aL: mother, aM: olderSiblings, aR: person, aY: youngerSiblings});
 												},
 												A2(
 													$elm$json$Json$Decode$field,
@@ -5687,7 +5687,7 @@ var $author$project$Ports$gotFocus = _Platform_incomingPort(
 																	$elm$json$Json$Decode$andThen,
 																	function (children) {
 																		return $elm$json$Json$Decode$succeed(
-																			{aB: children, aQ: partner});
+																			{aC: children, aQ: partner});
 																	},
 																	A2(
 																		$elm$json$Json$Decode$field,
@@ -5921,7 +5921,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{_: focus, K: 0}),
+						{_: 0, aa: focus, K: 0}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
 				var id = msg.a;
@@ -5932,7 +5932,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ah: model.ah + 1}),
+						{ai: model.ai + 1}),
 					$elm$core$Platform$Cmd$none);
 			case 4:
 				return _Utils_Tuple2(
@@ -5951,7 +5951,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: index}),
+						{_: index}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -6660,7 +6660,7 @@ var $author$project$Tree$childrenBoxes = F5(
 			return _Utils_Tuple2(_List_Nil, _List_Nil);
 		} else {
 			var family = item.a;
-			var people = family.aB;
+			var people = family.aC;
 			if ($elm$core$Array$isEmpty(people)) {
 				return _Utils_Tuple2(_List_Nil, _List_Nil);
 			} else {
@@ -7116,10 +7116,10 @@ var $author$project$Tree$siblingBoxes = F4(
 			_Utils_ap(verticalLinks, horizontalLinks));
 	});
 var $author$project$Tree$tree = function (model) {
-	var focus = model._;
+	var focus = model.aa;
 	var center = $author$project$Config$defaultCenter + model.K;
-	var focusBox = A5($author$project$Tree$box, focus.aR, model.ah, center, 2, true);
-	var _v0 = A4($author$project$Tree$partnerBoxes, focusBox, focus.aF, model.aG, model.ah);
+	var focusBox = A5($author$project$Tree$box, focus.aR, model.ai, center, 2, true);
+	var _v0 = A4($author$project$Tree$partnerBoxes, focusBox, focus.aG, model._, model.ai);
 	var _v1 = _v0.a;
 	var partBoxes = _v1.a;
 	var partLinks = _v1.b;
@@ -7130,18 +7130,18 @@ var $author$project$Tree$tree = function (model) {
 		$author$project$Tree$siblingBoxes,
 		focusBox,
 		focus.aY,
-		model.ah,
+		model.ai,
 		$elm$core$Maybe$Just(shiftRight));
 	var ySibBoxes = _v3.a;
 	var ySibLinks = _v3.b;
-	var _v4 = A4($author$project$Tree$parentBoxes, focusBox, focus.aH, focus.aL, model.ah);
+	var _v4 = A4($author$project$Tree$parentBoxes, focusBox, focus.aH, focus.aL, model.ai);
 	var fatherBox = _v4.a;
 	var motherBox = _v4.b;
 	var parentLinks = _v4.c;
-	var _v5 = A4($author$project$Tree$siblingBoxes, focusBox, focus.aM, model.ah, $elm$core$Maybe$Nothing);
+	var _v5 = A4($author$project$Tree$siblingBoxes, focusBox, focus.aM, model.ai, $elm$core$Maybe$Nothing);
 	var oSibBoxes = _v5.a;
 	var oSibLinks = _v5.b;
-	var _v6 = A5($author$project$Tree$childrenBoxes, focusBox, focus.aF, model.aG, model.ah, parentPoint);
+	var _v6 = A5($author$project$Tree$childrenBoxes, focusBox, focus.aG, model._, model.ai, parentPoint);
 	var childBoxes = _v6.a;
 	var childLinks = _v6.b;
 	var allBoxes = _Utils_ap(
@@ -7215,7 +7215,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 		$elm$json$Json$Decode$andThen,
 		function (focus) {
 			return $elm$json$Json$Decode$succeed(
-				{_: focus});
+				{aa: focus});
 		},
 		A2(
 			$elm$json$Json$Decode$field,
@@ -7239,7 +7239,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 														$elm$json$Json$Decode$andThen,
 														function (families) {
 															return $elm$json$Json$Decode$succeed(
-																{aF: families, aH: father, aL: mother, aM: olderSiblings, aR: person, aY: youngerSiblings});
+																{aG: families, aH: father, aL: mother, aM: olderSiblings, aR: person, aY: youngerSiblings});
 														},
 														A2(
 															$elm$json$Json$Decode$field,
@@ -7252,7 +7252,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 																			$elm$json$Json$Decode$andThen,
 																			function (children) {
 																				return $elm$json$Json$Decode$succeed(
-																					{aB: children, aQ: partner});
+																					{aC: children, aQ: partner});
 																			},
 																			A2(
 																				$elm$json$Json$Decode$field,

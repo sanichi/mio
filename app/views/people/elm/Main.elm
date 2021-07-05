@@ -72,7 +72,7 @@ update msg model =
             ( model, Ports.getFocus id )
 
         GotFocus focus ->
-            ( { model | focus = focus, shift = 0 }, Cmd.none )
+            ( { model | focus = focus, shift = 0, family = 0 }, Cmd.none )
 
         DisplayPerson id ->
             ( model, Ports.displayPerson id )
