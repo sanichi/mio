@@ -17,6 +17,11 @@ en:
       examples: Examples
       new: New Example
       japanese: Japanese
+    japandict:
+      text: JapanDict
+      url:
+        kanji: 'https://www.japandict.com/kanji/%{kanji}?lang=eng'
+        vocab: 'https://www.japandict.com/?s=%{vocab}&lang=eng'
     jisho:
       text: Jisho
       url:

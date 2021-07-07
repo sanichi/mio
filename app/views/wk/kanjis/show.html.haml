@@ -40,8 +40,8 @@
         %tr.d-flex
           %td.col-3= t("wk.links")
           %td.col-9
-            = link_to t("wk.jisho.text"), t("wk.jisho.url.kanji", kanji: @kanji.character), target: "external"
-            = link_to t("wk.kanshudo.text"), t("wk.kanshudo.url.kanji", kanji: @kanji.character), target: "external"
+            - %w/kanshudo jisho japandict/.each do |x|
+              = link_to t("wk.#{x}.text"), t("wk.#{x}.url.kanji", kanji: @kanji.character), target: "external"
             - if @daily
               = link_to t("wk.daily.text"), t("wk.daily.url", id: @daily.id)
         %tr.d-flex
