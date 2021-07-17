@@ -9,26 +9,20 @@
         %table{class: "table table-bordered"}
           %tbody
             %tr
-              %th= t("name")
-              %td= @favourite.name
+              %td= t("name")
+              %th{colspan: 3}= link_to_if @favourite.link.present?, @favourite.name, @favourite.link, target: "_external"
             %tr
-              %th= t("favourite.category")
-              %td= t("favourite.categories")[@favourite.category]
+              %td= t("favourite.category")
+              %th= t("favourite.categories")[@favourite.category]
+              %td= t("year")
+              %th= @favourite.year
             %tr
-              %th= t("year")
-              %td= @favourite.year
+              %td= t("favourite.sandra")
+              %th= @favourite.sandra
+              %td= t("favourite.mark")
+              %th= @favourite.mark
             %tr
-              %th= t("favourite.sandra")
-              %td= @favourite.sandra
-            %tr
-              %th= t("favourite.mark")
-              %td= @favourite.mark
-            - if @favourite.link.present?
-              %tr
-                %th= t("favourite.link")
-                %td= link_to @favourite.link, @favourite.link, target: "_external"
-            %tr
-              %td{colspan: 2}= @favourite.note_html
+              %td{colspan: 4}= @favourite.note_html
       .footer
         = link_to t("favourite.favourites"), last_search(favourites_path), class: "btn btn-success btn-sm"
         - if can?(:manage, Favourite)
