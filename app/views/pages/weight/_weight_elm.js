@@ -6746,6 +6746,14 @@ var $author$project$Transform$fromData = F4(
 var $justinmimbs$date$Date$Months = 1;
 var $justinmimbs$date$Date$Weeks = 2;
 var $justinmimbs$date$Date$Years = 0;
+var $justinmimbs$date$Date$fromRataDie = function (rd) {
+	return rd;
+};
+var $author$project$Transform$dateFromRataDie = F2(
+	function (du, rd) {
+		var fudge = (!du) ? 7 : 0;
+		return $justinmimbs$date$Date$fromRataDie(rd + fudge);
+	});
 var $author$project$Transform$Level = F2(
 	function (val, label) {
 		return {bb: label, bo: val};
@@ -7497,9 +7505,6 @@ var $justinmimbs$date$Date$language_en = {
 var $justinmimbs$date$Date$format = function (pattern) {
 	return A2($justinmimbs$date$Date$formatWithLanguage, $justinmimbs$date$Date$language_en, pattern);
 };
-var $justinmimbs$date$Date$fromRataDie = function (rd) {
-	return rd;
-};
 var $author$project$Transform$dlevels = F5(
 	function (t, du, dn, l, ls) {
 		dlevels:
@@ -7527,7 +7532,7 @@ var $author$project$Transform$dlevels = F5(
 					continue dlevels;
 				} else {
 					var i = A2($author$project$Transform$d2i, t, l);
-					var d = $justinmimbs$date$Date$fromRataDie(l);
+					var d = A2($author$project$Transform$dateFromRataDie, du, l);
 					var s = function () {
 						switch (du) {
 							case 0:
@@ -7557,16 +7562,16 @@ var $author$project$Transform$dlevels = F5(
 		}
 	});
 var $author$project$Transform$levelsd = function (t) {
+	var days = t.Q - t.F;
+	var _v0 = (days <= 31) ? _Utils_Tuple2(1, 2) : ((days <= 62) ? _Utils_Tuple2(2, 2) : ((days <= 125) ? _Utils_Tuple2(1, 1) : ((days <= 250) ? _Utils_Tuple2(2, 1) : ((days <= 400) ? _Utils_Tuple2(4, 1) : ((days <= 800) ? _Utils_Tuple2(8, 1) : _Utils_Tuple2(1, 0))))));
+	var dn = _v0.a;
+	var du = _v0.b;
 	var l = $justinmimbs$date$Date$toRataDie(
 		function (y) {
 			return A3($justinmimbs$date$Date$fromCalendarDate, y, 0, 1);
 		}(
 			$justinmimbs$date$Date$year(
-				$justinmimbs$date$Date$fromRataDie(t.F))));
-	var days = t.Q - t.F;
-	var _v0 = (days <= 31) ? _Utils_Tuple2(1, 2) : ((days <= 62) ? _Utils_Tuple2(2, 2) : ((days <= 125) ? _Utils_Tuple2(1, 1) : ((days <= 250) ? _Utils_Tuple2(2, 1) : ((days <= 400) ? _Utils_Tuple2(4, 1) : ((days <= 800) ? _Utils_Tuple2(8, 1) : _Utils_Tuple2(1, 0))))));
-	var dn = _v0.a;
-	var du = _v0.b;
+				A2($author$project$Transform$dateFromRataDie, du, t.F))));
 	return A5($author$project$Transform$dlevels, t, du, dn, l, _List_Nil);
 };
 var $elm$svg$Svg$Attributes$textAnchor = _VirtualDom_attribute('text-anchor');

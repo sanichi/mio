@@ -1,7 +1,7 @@
 module Transform exposing (Transform, fromData, levelsd, levelsk, transform)
 
 import Data exposing (Data, Datum)
-import Date exposing (Unit(..))
+import Date exposing (Date, Unit(..))
 import Start exposing (Start)
 import Time exposing (Month(..))
 import Units exposing (Unit(..))
@@ -84,7 +84,7 @@ levelsd t =
 
         l =
             t.dLow
-                |> Date.fromRataDie
+                |> dateFromRataDie du
                 |> Date.year
                 |> (\y -> Date.fromCalendarDate y Jan 1)
                 |> Date.toRataDie
@@ -148,7 +148,7 @@ dlevels t du dn l ls =
                     d2i t l
 
                 d =
-                    Date.fromRataDie l
+                    dateFromRataDie du l
 
                 s =
                     case du of
@@ -190,3 +190,10 @@ jlevels t u d l ls =
                     Units.format u l
             in
             jlevels t u d nl (Level j s :: ls)
+
+dateFromRataDie : Date.Unit -> Int -> Date
+dateFromRataDie du rd =
+    let
+        fudge = if du == Years then 7 else 0
+    in
+        Date.fromRataDie (rd + fudge)
