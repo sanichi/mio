@@ -64,9 +64,12 @@ module Wk
     end
 
     def image_path
-      file = IMAGES + "#{character}.jpg"
-      return nil unless file.file?
-      "/images/#{character}.jpg"
+      %w/jpg gif/.each do |type|
+        file = "#{character}.#{type}"
+        path = IMAGES + file
+        return "/images/#{file}" if path.file?
+      end
+      nil
     end
 
     def self.images
