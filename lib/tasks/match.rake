@@ -24,7 +24,7 @@ namespace :match do
     report "doing #{team.short}"
     results = scope == "monthly" ? team.monthResults : team.seasonResults
     unless results.is_a?(Array)
-      report result, true
+      report results, true
       return
     end
     results.each do |r|

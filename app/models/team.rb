@@ -62,57 +62,56 @@ class Team < ApplicationRecord
       end
 
       # parse and return the JSON
-      data = JSON.parse(json)
-      raise "json data is not a hash" unless data.is_a?(Hash)
+      data = JSON.parse(json, symbolize_names: true)
 
-      # this should have a body hash
-      body = data['body']
-      raise "can't find body" unless body.is_a?(Hash)
+      # get the array of tournaments
+      case data
+      in body: { matchData: Array => tournaments }
+      else
+        raise "can't get tournaments"
+      end
 
-      # this should have matchData array
-      matchData = body['matchData']
-      raise "can't find matchData" unless matchData.is_a?(Array) && matchData.size > 0
-
-      # this should be an array of hashes with tournamentDatesWithEvents entries
-      datesWithEvents = matchData.map do |md|
-        md.is_a?(Hash) ? md['tournamentDatesWithEvents'] : nil
-      end.compact
-      raise "can't get datesWithEvents" unless datesWithEvents.size == matchData.size
-
-      # each array element is a hash keyed on one or more dates
-      datesWithEvents.map do |td|
-        td.keys.map do |date|
-          item = td[date]
-
-          # each hash value is an array of hashes
-          if item.is_a?(Array) && item.size == 1 && item.first.is_a?(Hash)
-            item = item.first
-          else
-            raise "date data is not a single element array of hashes"
-          end
-
-          # each hash has round and events keys and we want the value for the latter
-          if item.is_a?(Hash) && item["events"].is_a?(Array) && item["events"].size == 1
-            item = item["events"].first
-          else
-            raise "date data element does not have an 'events' array"
-          end
-
-          # we only want Premier League games
-          if item["tournamentName"]["full"] == "Premier League"
-            # extract what we want from this hash
-            {
-              date: Date.parse(item["startTime"][0,10]),
-              home_team: item["homeTeam"]["name"]["full"],
-              away_team: item["awayTeam"]["name"]["full"],
-              home_score: item["homeTeam"]["scores"]["score"],
-              away_score: item["awayTeam"]["scores"]["score"],
-            }
-          else
-            nil
-          end
+      # extract events from the premier league tournamants
+      events = tournaments.map do |tournament|
+        case tournament
+        in tournamentDatesWithEvents: Hash => dates, tournamentMeta: { tournamentSlug: "premier-league" }
+          dates.values.flatten
+        else
+          nil
         end
-      end.flatten.compact
+      end.compact.reduce([], :concat)
+      raise "can't get events" unless events.size > 0
+
+      # turn these events into hashes of just the data we want (team names and scores)
+      events.map do |event|
+        case event
+        in
+          {
+            events: [
+              {
+                startTime: String => time,
+                homeTeam: {
+                  name: { full: String => home_team },
+                  scores: { fullTime: home_score },
+                },
+                awayTeam: {
+                  name: { full: String => away_team },
+                  scores: { fullTime: away_score },
+                },
+              }
+            ]
+          }
+          {
+            date: Date.parse(time[0,10]),
+            home_team: home_team,
+            away_team: away_team,
+            home_score: home_score,
+            away_score: away_score,
+          }
+        else
+          raise "can't match event"
+        end
+      end
     rescue => e
       e.message
     end
