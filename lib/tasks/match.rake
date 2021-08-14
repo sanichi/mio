@@ -20,7 +20,7 @@ namespace :match do
     team
   end
 
-  def scrape(team, scope, season)
+  def scrape(team, scope)
     report "doing #{team.short}"
     results = scope == "monthly" ? team.monthResults : team.seasonResults
     unless results.is_a?(Array)
@@ -31,7 +31,7 @@ namespace :match do
       if r.is_a?(Hash)
         home_team = find_team(r[:home_team]) || next
         away_team = find_team(r[:away_team]) || next
-        match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)
+        match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: Match.current_season)
         if match
           updates = 0
           if r[:date].present? && match.date != r[:date]
@@ -50,7 +50,7 @@ namespace :match do
           report "#{updates == 0 ? 'matched' : 'updated'} #{match.summary}"
         else
           begin
-            match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: season, date: r[:date], home_score: r[:home_score], away_score: r[:away_score])
+            match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: Match.current_season, date: r[:date], home_score: r[:home_score], away_score: r[:away_score])
             report "created #{match.summary}"
           rescue => e
             report "#{r} #{e.message}", true
@@ -70,7 +70,7 @@ namespace :match do
     scope = args[:scope] == "s" ? "seasonal" : "monthly"
     @print = args[:print] == 'p'
     report "starting #{scope} scrape"
-    Team.where(division: 1).all.each { |team| scrape(team, scope, Match.current_season) }
+    Team.where(division: 1).all.each { |team| scrape(team, scope) }
   end
 
   # Meant for quick update initiated from development laptop. For examle:
@@ -82,7 +82,7 @@ namespace :match do
     team = Team.find_by(name: name) || Team.find_by(short: name) || Team.find_by(slug: name)
     @print = true
     if team
-      scrape(team, "monthly", Match.current_season)
+      scrape(team, "monthly")
     else
       report "could't find '#{name}'", true
     end
