@@ -44,7 +44,7 @@ class Match < ApplicationRecord
 
   def self.current_season
     today = Date.today
-    if today.month <= 5
+    if today.month <= 6
       today.year - 1
     else
       today.year

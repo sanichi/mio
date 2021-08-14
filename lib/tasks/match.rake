@@ -62,11 +62,13 @@ namespace :match do
     end
   end
 
-  # Meant for nightly cron. For example:
+  # Meant for nightly cron and one seasonal-wide to start with. For example:
   # 0 22 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails match:all >> log/cron.log 2>&1
+  # cd /var/www/me.mio/current; RAILS_ENV=production bin/rails match:all\[s,p\]
   desc "scrape monthly or seasonal data for all the premier league teams"
-  task :all, [:scope] => :environment do |task, args|
+  task :all, [:scope, :print] => :environment do |task, args|
     scope = args[:scope] == "s" ? "seasonal" : "monthly"
+    @print = args[:print] == 'p'
     report "starting #{scope} scrape"
     Team.where(division: 1).all.each { |team| scrape(team, scope, Match.current_season) }
   end

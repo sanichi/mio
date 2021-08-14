@@ -167,10 +167,9 @@ class Team < ApplicationRecord
   end
 
   def seasonResults
-    today = Date.today
-    year = today.year - (today.month <= 8 ? 1 : 0)
-    first = (9..12).map{ |m| [year, m] }
-    second = (1..8).map{ |m| [year + 1, m] }
+    year = Match.current_season
+    first = (8..12).map{ |m| [year, m] }
+    second = (1..6).map{ |m| [year + 1, m] }
     months = (first + second).map { |ym| "%s-%02d" % ym }
     months.map{ |m| monthResults(m) }.flatten
   end
