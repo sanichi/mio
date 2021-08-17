@@ -1,8 +1,8 @@
-module Model exposing (Model, changeStart, changeUnits, debugMsg, init)
+module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, init, pointMsg, updatePoint)
 
 import Data exposing (Data)
-import Date exposing (Date)
 import Preferences exposing (Preferences)
+import Shared exposing (maxX, maxY)
 import Start exposing (Start)
 import Units exposing (Unit)
 
@@ -12,6 +12,7 @@ type alias Model =
     , debug : Bool
     , start : Start
     , units : Unit
+    , point : ( Int, Int )
     }
 
 
@@ -29,8 +30,11 @@ init preferences =
 
         units =
             Units.fromString preferences.units
+
+        point =
+            ( 500, 220 )
     in
-    Model data debug start units
+    Model data debug start units point
 
 
 debugMsg : Model -> String
@@ -42,6 +46,14 @@ debugMsg model =
         ]
 
 
+pointMsg : Model -> String
+pointMsg model =
+    String.join ","
+        [ String.fromInt <| Tuple.first model.point
+        , String.fromInt <| Tuple.second model.point
+        ]
+
+
 changeUnits : String -> Model -> Model
 changeUnits units model =
     { model | units = Units.fromString units }
@@ -50,3 +62,43 @@ changeUnits units model =
 changeStart : Int -> Model -> Model
 changeStart start model =
     { model | start = Start.fromInt start }
+
+
+changePoint : ( Int, Int ) -> Model -> Model
+changePoint ( dx, dy ) model =
+    let
+        ( x, y ) =
+            model.point
+    in
+    { model | point = restrict ( x + dx, y + dy ) }
+
+
+updatePoint : ( Int, Int ) -> Model -> Model
+updatePoint point model =
+    { model | point = restrict point }
+
+
+restrict : ( Int, Int ) -> ( Int, Int )
+restrict ( i, j ) =
+    let
+        x =
+            if i < 0 then
+                0
+
+            else if i > maxX then
+                maxX
+
+            else
+                i
+
+        y =
+            if j < 0 then
+                0
+
+            else if j > maxY then
+                maxY
+
+            else
+                j
+    in
+    ( x, y )

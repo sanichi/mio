@@ -134,6 +134,12 @@ svg#weight
       font-size: 14px
       opacity: 0.5
 
+  // Cross.
+  g.cross
+    line
+      stroke: #555
+      stroke-width: 1
+
   // Points.
   g.points
     circle
@@ -146,11 +152,16 @@ svg#weight
       fill: red
 
   // All text.
-  text
   font-family: $font-family-sans-serif
   font-weight: normal
   text-anchor: middle
   fill: black
+
+  // Info text
+  text.info
+    text-anchor: end
+    font-size: 14px
+    opacity: 0.5
 
   // Debug text
   text.debug

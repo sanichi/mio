@@ -1,9 +1,9 @@
 module View exposing (box, fromModel)
 
 import Data exposing (Datum)
-import Html exposing (Html)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
+import Shared exposing (maxX, maxY)
 import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
 import Transform exposing (Transform)
@@ -18,11 +18,17 @@ fromModel m =
         d =
             debug m
 
+        i =
+            info m
+
+        x =
+            cross m
+
         f =
             frame
 
         dl =
-            levelsd m t
+            levelsd t
 
         kl =
             levelsk m t
@@ -31,7 +37,7 @@ fromModel m =
             points m t
 
         c =
-            [ f, dl, kl, p ]
+            [ f, dl, kl, p, i, x ]
     in
     if m.debug then
         d :: c
@@ -45,6 +51,23 @@ debug m =
     S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
 
 
+info : Model -> Svg Msg
+info m =
+    S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| Model.pointMsg m ]
+
+
+cross : Model -> Svg Msg
+cross m =
+    let
+        ( x, y ) =
+            m.point
+    in
+    S.g [ cc "cross" ]
+        [ S.line [ x1 (x - crossWidth), y1 y, x2 (x + crossWidth), y2 y ] []
+        , S.line [ x1 x, y1 (y - crossWidth), x2 x, y2 (y + crossWidth) ] []
+        ]
+
+
 frame : Svg Msg
 frame =
     S.g [ cc "frame" ]
@@ -55,8 +78,8 @@ frame =
         ]
 
 
-levelsd : Model -> Transform -> Svg Msg
-levelsd m t =
+levelsd : Transform -> Svg Msg
+levelsd t =
     let
         levels =
             Transform.levelsd t
@@ -101,7 +124,7 @@ points : Model -> Transform -> Svg Msg
 points m t =
     let
         d2p =
-            point t
+            transform t
 
         morning =
             m.data
@@ -199,14 +222,24 @@ debugTextY =
     20
 
 
+infoTextX : Int
+infoTextX =
+    width
+
+
+infoTextY : Int
+infoTextY =
+    -10
+
+
 height : Int
 height =
-    440
+    maxY
 
 
 width : Int
 width =
-    1000
+    maxX
 
 
 margin : Int
@@ -214,8 +247,13 @@ margin =
     40
 
 
-point : Transform -> Datum -> Svg Msg
-point t d =
+crossWidth : Int
+crossWidth =
+    10
+
+
+transform : Transform -> Datum -> Svg Msg
+transform t d =
     let
         ( x, y ) =
             Transform.transform t d

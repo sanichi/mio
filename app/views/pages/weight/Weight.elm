@@ -23,7 +23,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -62,14 +62,22 @@ update msg model =
         ChangeStart start ->
             ( Model.changeStart start model, Cmd.none )
 
+        ChangePoint delta ->
+            ( Model.changePoint delta model, Cmd.none )
+
+        UpdatePoint point ->
+            ( Model.updatePoint point model, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Platform.Sub.batch
         [ Ports.changeUnits ChangeUnits
         , Ports.changeStart ChangeStart
+        , Ports.changePoint ChangePoint
+        , Ports.updatePoint UpdatePoint
         ]
