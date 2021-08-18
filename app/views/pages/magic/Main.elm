@@ -18,7 +18,7 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -80,8 +80,8 @@ update msg model =
 -- COMMANDS & SUBSCRIPTIONS
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Ports.continue Continue
 
 

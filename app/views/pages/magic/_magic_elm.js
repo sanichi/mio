@@ -5151,9 +5151,7 @@ var $elm$json$Json$Decode$null = _Json_decodeNull;
 var $author$project$Ports$continue = _Platform_incomingPort(
 	'continue',
 	$elm$json$Json$Decode$null(0));
-var $author$project$Main$subscriptions = function (model) {
-	return $author$project$Ports$continue($author$project$Main$Continue);
-};
+var $author$project$Main$subscriptions = $author$project$Ports$continue($author$project$Main$Continue);
 var $elm$core$Basics$pow = _Basics_pow;
 var $elm$core$String$reverse = _String_reverse;
 var $elm$core$List$sum = function (numbers) {
@@ -5399,5 +5397,12 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{aw: $author$project$Main$init, aC: $author$project$Main$subscriptions, aE: $author$project$Main$update, aF: $author$project$Main$view});
+	{
+		aw: $author$project$Main$init,
+		aC: function (_v0) {
+			return $author$project$Main$subscriptions;
+		},
+		aE: $author$project$Main$update,
+		aF: $author$project$Main$view
+	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));
