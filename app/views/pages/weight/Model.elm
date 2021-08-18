@@ -3,7 +3,7 @@ module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, i
 import Data exposing (Data)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
-import Transform
+import Transform exposing (Transform)
 import Units exposing (Unit)
 
 
@@ -12,6 +12,7 @@ type alias Model =
     , debug : Bool
     , start : Start
     , units : Unit
+    , transform : Transform
     , point : ( Int, Int )
     }
 
@@ -31,10 +32,13 @@ init preferences =
         units =
             Units.fromString preferences.units
 
+        transform =
+            Transform.fromData data start
+
         point =
             ( 500, 220 )
     in
-    Model data debug start units point
+    Model data debug start units transform point
 
 
 debugMsg : Model -> String
@@ -61,7 +65,7 @@ changeUnits units model =
 
 changeStart : Int -> Model -> Model
 changeStart start model =
-    { model | start = Start.fromInt start }
+    { model | start = Start.fromInt start, transform = Transform.fromData model.data start }
 
 
 changePoint : ( Int, Int ) -> Model -> Model

@@ -13,7 +13,7 @@ fromModel : Model -> List (Svg Msg)
 fromModel m =
     let
         t =
-            Transform.fromData m.data m.start
+            m.transform
 
         d =
             debug m
