@@ -2,6 +2,7 @@ module Data exposing
     ( Data
     , Datum
     , combine
+    , dateFormat
     , dateMax
     , dateMin
     , kiloMinMax
@@ -26,6 +27,13 @@ type alias Data =
 combine : List Float -> List String -> Data
 combine kilos dates =
     combine_ [] kilos dates
+
+
+dateFormat : Int -> String
+dateFormat rata =
+    rata
+        |> Date.fromRataDie
+        |> Date.format "y-MM-dd"
 
 
 dateMin : Data -> Start -> Int

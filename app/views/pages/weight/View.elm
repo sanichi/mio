@@ -7,6 +7,7 @@ import Shared exposing (maxX, maxY)
 import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
 import Transform exposing (Transform)
+import Units
 
 
 fromModel : Model -> List (Svg Msg)
@@ -19,7 +20,7 @@ fromModel m =
             debug m
 
         i =
-            info m
+            info m t
 
         x =
             cross m
@@ -51,9 +52,19 @@ debug m =
     S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
 
 
-info : Model -> Svg Msg
-info m =
-    S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| Model.pointMsg m ]
+info : Model -> Transform -> Svg Msg
+info m t =
+    let
+        datum =
+            Transform.reverse t m.point
+
+        date =
+            Data.dateFormat datum.rata
+
+        weight =
+            Units.format2 m.units datum.kilo
+    in
+    S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ weight ]
 
 
 cross : Model -> Svg Msg

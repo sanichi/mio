@@ -1,4 +1,4 @@
-module Transform exposing (Transform, fromData, levelsd, levelsk, transform)
+module Transform exposing (Transform, fromData, levelsd, levelsk, reverse, transform)
 
 import Data exposing (Data, Datum)
 import Date exposing (Date, Unit(..))
@@ -52,6 +52,11 @@ fromData data start width height =
 transform : Transform -> Datum -> ( Int, Int )
 transform t d =
     ( d2i t d.rata, k2j t d.kilo )
+
+
+reverse : Transform -> ( Int, Int ) -> Datum
+reverse t ( x, y ) =
+    Datum (j2k t y) (i2d t x) True
 
 
 levelsd : Transform -> Levels
@@ -117,6 +122,15 @@ d2i t d =
         |> round
 
 
+i2d : Transform -> Int -> Int
+i2d t x =
+    x
+        |> toFloat
+        |> (\z -> z / t.dFac)
+        |> round
+        |> (+) t.dLow
+
+
 k2j : Transform -> Float -> Int
 k2j t k =
     k
@@ -124,6 +138,15 @@ k2j t k =
         |> (*) t.kFac
         |> round
         |> (-) t.kHit
+
+
+j2k : Transform -> Int -> Float
+j2k t y =
+    y
+        |> (-) t.kHit
+        |> toFloat
+        |> (\z -> z / t.kFac)
+        |> (+) t.kLow
 
 
 dlevels : Transform -> Date.Unit -> Int -> Int -> Levels -> Levels
@@ -191,9 +214,15 @@ jlevels t u d l ls =
             in
             jlevels t u d nl (Level j s :: ls)
 
+
 dateFromRataDie : Date.Unit -> Int -> Date
 dateFromRataDie du rd =
     let
-        fudge = if du == Years then 7 else 0
+        fudge =
+            if du == Years then
+                7
+
+            else
+                0
     in
-        Date.fromRataDie (rd + fudge)
+    Date.fromRataDie (rd + fudge)

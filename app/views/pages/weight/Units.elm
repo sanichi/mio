@@ -1,4 +1,4 @@
-module Units exposing (Unit(..), delta, format, fromString, toString)
+module Units exposing (Unit(..), delta, format, format2, fromString, toString)
 
 import Regex exposing (Regex)
 
@@ -46,26 +46,55 @@ format : Unit -> Float -> String
 format u k =
     case u of
         Kg ->
-            round k |> String.fromInt
+            decimal k 1
 
         Lb ->
-            round (k * kg2lb) |> String.fromInt
+            decimal (k * kg2lb) 1
 
         Bm ->
-            round (k * kg2bm) |> String.fromInt
+            decimal (k * kg2bm) 1
 
         St ->
-            let
-                num =
-                    round (10.0 * k * kg2st)
+            decimal (k * kg2st) 10
 
-                whole =
-                    String.fromInt (num // 10)
 
-                decimal =
-                    String.fromInt (remainderBy 10 num)
-            in
-            String.join "" [ whole, ".", decimal ]
+format2 : Unit -> Float -> String
+format2 u k =
+    let
+        num =
+            case u of
+                Kg ->
+                    decimal k 10
+
+                Lb ->
+                    decimal (k * kg2lb) 1
+
+                Bm ->
+                    decimal (k * kg2bm) 10
+
+                St ->
+                    decimal (k * kg2st) 10
+    in
+    num ++ toString u
+
+
+decimal : Float -> Int -> String
+decimal w d =
+    if d == 1 then
+        String.fromInt <| round w
+
+    else
+        let
+            num =
+                round (toFloat d * w)
+
+            whole =
+                String.fromInt (num // d)
+
+            fraction =
+                String.fromInt (remainderBy d num)
+        in
+        String.join "" [ whole, ".", fraction ]
 
 
 fromString : String -> Unit
