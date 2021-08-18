@@ -86,7 +86,7 @@ extend size cups =
         last =
             cups.next
                 |> Dict.toList
-                |> List.filter (\( c1, c2 ) -> c2 == cups.current)
+                |> List.filter (\( _, c2 ) -> c2 == cups.current)
                 |> List.map Tuple.first
                 |> List.head
                 |> Maybe.withDefault 0
@@ -167,6 +167,7 @@ link list cups =
             cups
 
 
-example : String
-example =
-    "389125467"
+
+-- example : String
+-- example =
+--     "389125467"

@@ -54,25 +54,31 @@ count rgx string =
     Regex.find rgx string |> List.length
 
 
+stringRgx : Regex
 stringRgx =
     regex "[a-z]{10,}"
 
 
+vowelRgx : Regex
 vowelRgx =
     regex "[aeiou]"
 
 
+dubleRgx : Regex
 dubleRgx =
     regex "(.)\\1"
 
 
+badieRgx : Regex
 badieRgx =
     regex "(:?ab|cd|pq|xy)"
 
 
+pairsRgx : Regex
 pairsRgx =
     regex "(..).*\\1"
 
 
+twipsRgx : Regex
 twipsRgx =
     regex "(.).\\1"

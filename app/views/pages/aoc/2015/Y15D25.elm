@@ -1,7 +1,7 @@
 module Y15D25 exposing (answer)
 
 import Regex exposing (findAtMost)
-import Util exposing (onlyOnePart, regex)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String

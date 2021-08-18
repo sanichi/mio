@@ -2,7 +2,7 @@ module Y16D24 exposing (answer)
 
 import Dict exposing (Dict)
 import Regex exposing (find)
-import Util exposing (combinations, permutations, regex)
+import Util exposing (regex)
 
 
 answer : Int -> String -> String

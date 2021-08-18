@@ -73,7 +73,7 @@ part2 : Data -> String
 part2 data =
     data.a2i
         |> Dict.toList
-        |> List.sortBy (\( alergen, ingredient ) -> alergen)
+        |> List.sortBy (\( alergen, _ ) -> alergen)
         |> List.map Tuple.second
         |> String.join ","
 
@@ -156,7 +156,7 @@ reduce a2is a2i =
     let
         certain =
             a2is
-                |> Dict.filter (\alergen ingredients -> Set.size ingredients == 1)
+                |> Dict.filter (\_ ingredients -> Set.size ingredients == 1)
                 |> Dict.toList
                 |> List.map
                     (\( alergen, ingredients ) ->
@@ -187,16 +187,17 @@ reduce a2is a2i =
 
             a2is_ =
                 a2is
-                    |> Dict.map (\alergen ingredients -> Set.diff ingredients done)
+                    |> Dict.map (\_ ingredients -> Set.diff ingredients done)
         in
         reduce a2is_ a2i_
 
 
-example : String
-example =
-    """
-mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
-trh fvjkl sbzzf mxmxvkd (contains dairy)
-sqjhc fvjkl (contains soy)
-sqjhc mxmxvkd sbzzf (contains fish)
-    """
+
+-- example : String
+-- example =
+--     """
+-- mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+-- trh fvjkl sbzzf mxmxvkd (contains dairy)
+-- sqjhc fvjkl (contains soy)
+-- sqjhc mxmxvkd sbzzf (contains fish)
+--     """

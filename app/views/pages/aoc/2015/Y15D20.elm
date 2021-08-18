@@ -1,6 +1,5 @@
 module Y15D20 exposing (answer)
 
-import Dict
 import Regex exposing (findAtMost)
 import Util exposing (regex)
 

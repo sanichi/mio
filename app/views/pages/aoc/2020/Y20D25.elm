@@ -77,6 +77,7 @@ transform n subject value =
         transform (n - 1) subject (remainderBy 20201227 (subject * value))
 
 
-example : String
-example =
-    "5764801 17807724"
+
+-- example : String
+-- example =
+--     "5764801 17807724"

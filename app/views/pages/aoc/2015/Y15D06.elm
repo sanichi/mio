@@ -246,6 +246,7 @@ type alias Instruction =
     }
 
 
+badInstruction : Instruction
 badInstruction =
     { action = Toggle
     , from = ( 1, 1 )
@@ -257,5 +258,6 @@ type alias Model =
     ( Array Int, Array Int )
 
 
+initModel : Model
 initModel =
     ( Array.repeat 1000000 0, Array.repeat 1000000 0 )

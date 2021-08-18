@@ -158,7 +158,7 @@ expand : Tiles -> Tiles
 expand tiles =
     let
         blacks =
-            Dict.filter (\position tile -> tile == black) tiles
+            Dict.filter (\_ tile -> tile == black) tiles
 
         positions =
             Dict.keys blacks
@@ -287,27 +287,28 @@ parseSteps input =
         |> List.map .match
 
 
-example : String
-example =
-    """
-sesenwnenenewseeswwswswwnenewsewsw
-neeenesenwnwwswnenewnwwsewnenwseswesw
-seswneswswsenwwnwse
-nwnwneseeswswnenewneswwnewseswneseene
-swweswneswnenwsewnwneneseenw
-eesenwseswswnenwswnwnwsewwnwsene
-sewnenenenesenwsewnenwwwse
-wenwwweseeeweswwwnwwe
-wsweesenenewnwwnwsenewsenwwsesesenwne
-neeswseenwwswnwswswnw
-nenwswwsewswnenenewsenwsenwnesesenew
-enewnwewneswsewnwswenweswnenwsenwsw
-sweneswneswneneenwnewenewwneswswnese
-swwesenesewenwneswnwwneseswwne
-enesenwswwswneneswsenwnewswseenwsese
-wnwnesenesenenwwnenwsewesewsesesew
-nenewswnwewswnenesenwnesewesw
-eneswnwswnwsenenwnwnwwseeswneewsenese
-neswnwewnwnwseenwseesewsenwsweewe
-wseweeenwnesenwwwswnew
-    """
+
+-- example : String
+-- example =
+--     """
+-- sesenwnenenewseeswwswswwnenewsewsw
+-- neeenesenwnwwswnenewnwwsewnenwseswesw
+-- seswneswswsenwwnwse
+-- nwnwneseeswswnenewneswwnewseswneseene
+-- swweswneswnenwsewnwneneseenw
+-- eesenwseswswnenwswnwnwsewwnwsene
+-- sewnenenenesenwsewnenwwwse
+-- wenwwweseeeweswwwnwwe
+-- wsweesenenewnwwnwsenewsenwwsesesenwne
+-- neeswseenwwswnwswswnw
+-- nenwswwsewswnenenewsenwsenwnesesenew
+-- enewnwewneswsewnwswenweswnenwsenwsw
+-- sweneswneswneneenwnewenewwneswswnese
+-- swwesenesewenwneswnwwneseswwne
+-- enesenwswwswneneswsenwnewswseenwsese
+-- wnwnesenesenenwwnenwsewesewsesesew
+-- nenewswnwewswnenesenwnesewesw
+-- eneswnwswnwsenenwnwnwwseeswneewsenese
+-- neswnwewnwnwseenwseesewsenwsweewe
+-- wseweeenwnesenwwwswnew
+--     """

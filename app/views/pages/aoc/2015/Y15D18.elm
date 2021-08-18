@@ -179,14 +179,5 @@ type alias Model =
     }
 
 
-initModel : Model
-initModel =
-    { lights = Array.empty
-    , size = 0
-    , maxIndex = 0
-    , stuck = False
-    }
-
-
 type alias Cell =
     ( Int, Int )

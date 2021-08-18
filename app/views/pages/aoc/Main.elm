@@ -22,7 +22,7 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -254,8 +254,8 @@ prepareAnswer part =
     Ports.prepareAnswer part
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Platform.Sub.batch
         [ Ports.newData NewData
         , Ports.startAnswer Answer
@@ -515,9 +515,6 @@ viewHelp show =
         let
             trows =
                 List.map viewIcon [ 0, 1, 2, 3, 4 ]
-
-            help =
-                " Icon Descriptions"
         in
         div [ class "row" ]
             [ div [ class "offset-1 col-10 offset-lg-2 col-lg-8" ]

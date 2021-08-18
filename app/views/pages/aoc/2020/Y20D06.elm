@@ -83,22 +83,19 @@ parsePerson input =
         |> Dict.fromList
 
 
-example : String
-example =
-    """
-        abc
 
-        a
-        b
-        c
-
-        ab
-        ac
-
-        a
-        a
-        a
-        a
-
-        b
-    """
+-- example : String
+-- example =
+--     """
+--         abc
+--         a
+--         b
+--         c
+--         ab
+--         ac
+--         a
+--         a
+--         a
+--         a
+--         b
+--     """

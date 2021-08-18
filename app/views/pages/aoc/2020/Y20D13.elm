@@ -65,7 +65,7 @@ contest schedule =
             Arithmetic.chineseRemainder pairs
     in
     case solution of
-        Just t ->
+        Just _ ->
             -- String.fromInt t
             -- Though it works fine with the toy examples, basic Elm can't handle large numbers
             -- and the chineseRemainder algorithm terminated with a faulty solution when given
@@ -108,37 +108,25 @@ parse input =
             Schedule 0 []
 
 
-example : String
-example =
-    "939\\n7,13,x,x,59,x,31,19"
 
-
-example1 : String
-example1 =
-    "1\\n17,x,13,19"
-
-
-example2 : String
-example2 =
-    "1\\n67,7,59,61"
-
-
-example3 : String
-example3 =
-    "1\\n67,x,7,59,61"
-
-
-example4 : String
-example4 =
-    "1\\n67,7,x,59,61"
-
-
-example5 : String
-example5 =
-    "1\\n1789,37,47,1889"
-
-
-
+-- example : String
+-- example =
+--     "939\\n7,13,x,x,59,x,31,19"
+-- example1 : String
+-- example1 =
+--     "1\\n17,x,13,19"
+-- example2 : String
+-- example2 =
+--     "1\\n67,7,59,61"
+-- example3 : String
+-- example3 =
+--     "1\\n67,x,7,59,61"
+-- example4 : String
+-- example4 =
+--     "1\\n67,7,x,59,61"
+-- example5 : String
+-- example5 =
+--     "1\\n1789,37,47,1889"
 -- Ruby solution that can handle large numbers
 -- from https://rosettacode.org/wiki/Chinese_remainder_theorem
 --

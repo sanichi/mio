@@ -82,14 +82,11 @@ parseLine line model =
 pairs : List a -> List ( a, a )
 pairs list =
     case list of
-        [] ->
-            []
-
-        x :: [] ->
-            []
-
         x :: (y :: rest) ->
             ( x, y ) :: pairs (y :: rest)
+
+        _ ->
+            []
 
 
 key : String -> String -> String
@@ -103,6 +100,7 @@ type alias Model =
     }
 
 
+initModel : Model
 initModel =
     { distances = Dict.empty
     , cities = []

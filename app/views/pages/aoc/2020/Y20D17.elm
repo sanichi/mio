@@ -314,6 +314,7 @@ index xyz =
         |> String.join "-"
 
 
-example : String
-example =
-    ".#. ..# ###"
+
+-- example : String
+-- example =
+--     ".#. ..# ###"

@@ -59,7 +59,7 @@ increment p =
 
                 b2 =
                     case b1 of
-                        Just ( char, string ) ->
+                        Just ( char, _ ) ->
                             Char.toCode char
                                 |> (+) 1
                                 |> Char.fromCode
@@ -84,7 +84,7 @@ increment p =
 
                 b2 =
                     case b1 of
-                        Just ( char, string ) ->
+                        Just ( char, _ ) ->
                             Char.toCode char
                                 |> (+) 1
                                 |> Char.fromCode

@@ -121,7 +121,7 @@ reverse instruction =
         RotateBased c ->
             RotateBasedInverse c
 
-        RotateBasedInverse c ->
+        RotateBasedInverse _ ->
             NoOp
 
         ReversePosition i1 i2 ->
@@ -477,7 +477,7 @@ toInt str =
 toChar : String -> Char
 toChar str =
     case String.uncons str of
-        Just ( c, s ) ->
+        Just ( c, _ ) ->
             c
 
         Nothing ->

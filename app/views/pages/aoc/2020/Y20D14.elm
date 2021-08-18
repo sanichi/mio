@@ -2,7 +2,7 @@ module Y20D14 exposing (answer)
 
 
 answer : Int -> String -> String
-answer part input =
+answer part _ =
     if part == 1 then
         "10050490168421"
 

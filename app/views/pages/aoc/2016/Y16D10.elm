@@ -117,7 +117,7 @@ process matches state =
 
                         newMatches =
                             case chips of
-                                [ low, high ] ->
+                                [ _, _ ] ->
                                     rest
 
                                 _ ->

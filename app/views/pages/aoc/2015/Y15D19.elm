@@ -155,21 +155,26 @@ count rgx model =
     find rgx model.molecule |> List.length
 
 
+ruleRgx : Regex
 ruleRgx =
     regex "(e|[A-Z][a-z]?) => ((?:[A-Z][a-z]?)+)"
 
 
+moleRgx : Regex
 moleRgx =
     regex "((?:[A-Z][a-z]?){10,})"
 
 
+atomRgx : Regex
 atomRgx =
     regex "[A-Z][a-z]?"
 
 
+bracRgx : Regex
 bracRgx =
     regex "(Ar|Rn)"
 
 
+comaRgx : Regex
 comaRgx =
     regex "Y"

@@ -166,6 +166,7 @@ type alias Model =
     }
 
 
+initModel : Model
 initModel =
     { happiness = Dict.empty
     , people = Set.empty

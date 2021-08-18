@@ -71,6 +71,7 @@ convert_ n f chars =
             n
 
 
-example : String
-example =
-    "BFFFBBFRRR FFFBBBFRRR BBFFBBFRLL"
+
+-- example : String
+-- example =
+--     "BFFFBBFRRR FFFBBBFRRR BBFFBBFRLL"

@@ -4,5 +4,5 @@ import Util
 
 
 answer : Int -> String -> String
-answer part input =
+answer _ _ =
     Util.failed

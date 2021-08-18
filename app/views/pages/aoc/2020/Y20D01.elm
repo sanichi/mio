@@ -45,6 +45,7 @@ parse input =
         |> List.filterMap String.toInt
 
 
-example : String
-example =
-    "1721 979 366 299 675 1456"
+
+-- example : String
+-- example =
+--     "1721 979 366 299 675 1456"
