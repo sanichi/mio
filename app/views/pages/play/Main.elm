@@ -23,7 +23,7 @@ main =
         { init = \_ -> ( initModel, initTasks )
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -32,8 +32,8 @@ initTasks =
     Randoms.request
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Randoms.respond
 
 

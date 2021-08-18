@@ -5242,9 +5242,7 @@ var $author$project$Messages$RandomResponse = function (a) {
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Ports$random_response = _Platform_incomingPort('random_response', $elm$json$Json$Decode$int);
 var $author$project$Randoms$respond = $author$project$Ports$random_response($author$project$Messages$RandomResponse);
-var $author$project$Main$subscriptions = function (model) {
-	return $author$project$Randoms$respond;
-};
+var $author$project$Main$subscriptions = $author$project$Randoms$respond;
 var $author$project$Dni$cycle = function (m) {
 	var update = function () {
 		var _v0 = m.z;
@@ -6222,7 +6220,9 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 		aS: function (_v0) {
 			return _Utils_Tuple2($author$project$Main$initModel, $author$project$Main$initTasks);
 		},
-		aZ: $author$project$Main$subscriptions,
+		aZ: function (_v1) {
+			return $author$project$Main$subscriptions;
+		},
 		a$: $author$project$Main$update,
 		a0: $author$project$Main$view
 	});
