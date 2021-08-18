@@ -2,8 +2,8 @@ module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, i
 
 import Data exposing (Data)
 import Preferences exposing (Preferences)
-import Shared exposing (maxX, maxY)
 import Start exposing (Start)
+import Transform
 import Units exposing (Unit)
 
 
@@ -85,8 +85,8 @@ restrict ( i, j ) =
             if i < 0 then
                 0
 
-            else if i > maxX then
-                maxX
+            else if i > Transform.width then
+                Transform.width
 
             else
                 i
@@ -95,8 +95,8 @@ restrict ( i, j ) =
             if j < 0 then
                 0
 
-            else if j > maxY then
-                maxY
+            else if j > Transform.height then
+                Transform.height
 
             else
                 j

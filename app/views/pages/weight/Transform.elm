@@ -1,4 +1,4 @@
-module Transform exposing (Transform, fromData, levelsd, levelsk, reverse, transform)
+module Transform exposing (Transform, fromData, height, levelsd, levelsk, reverse, transform, width)
 
 import Data exposing (Data, Datum)
 import Date exposing (Date, Unit(..))
@@ -14,7 +14,6 @@ type alias Transform =
     , kLow : Float
     , kHgh : Float
     , kFac : Float
-    , kHit : Int
     }
 
 
@@ -28,8 +27,8 @@ type alias Levels =
     List Level
 
 
-fromData : Data -> Start -> Int -> Int -> Transform
-fromData data start width height =
+fromData : Data -> Start -> Transform
+fromData data start =
     let
         dLow =
             Data.dateMin data start
@@ -46,7 +45,7 @@ fromData data start width height =
         kFac =
             toFloat height / (kHgh - kLow)
     in
-    Transform dLow dHgh dFac kLow kHgh kFac height
+    Transform dLow dHgh dFac kLow kHgh kFac
 
 
 transform : Transform -> Datum -> ( Int, Int )
@@ -137,13 +136,13 @@ k2j t k =
         |> (\y -> y - t.kLow)
         |> (*) t.kFac
         |> round
-        |> (-) t.kHit
+        |> (-) height
 
 
 j2k : Transform -> Int -> Float
 j2k t y =
     y
-        |> (-) t.kHit
+        |> (-) height
         |> toFloat
         |> (\z -> z / t.kFac)
         |> (+) t.kLow
@@ -226,3 +225,13 @@ dateFromRataDie du rd =
                 0
     in
     Date.fromRataDie (rd + fudge)
+
+
+width : Int
+width =
+    1000
+
+
+height : Int
+height =
+    440

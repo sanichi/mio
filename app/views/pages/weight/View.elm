@@ -3,7 +3,6 @@ module View exposing (box, fromModel)
 import Data exposing (Datum)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
-import Shared exposing (maxX, maxY)
 import Svg as S exposing (Attribute, Svg)
 import Svg.Attributes as A
 import Transform exposing (Transform)
@@ -14,7 +13,7 @@ fromModel : Model -> List (Svg Msg)
 fromModel m =
     let
         t =
-            Transform.fromData m.data m.start width height
+            Transform.fromData m.data m.start
 
         d =
             debug m
@@ -245,12 +244,12 @@ infoTextY =
 
 height : Int
 height =
-    maxY
+    Transform.height
 
 
 width : Int
 width =
-    maxX
+    Transform.width
 
 
 margin : Int
