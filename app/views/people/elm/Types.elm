@@ -1,7 +1,6 @@
 module Types exposing (..)
 
 import Array exposing (Array)
-import Config
 
 
 type alias Model =

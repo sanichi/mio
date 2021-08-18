@@ -5894,14 +5894,12 @@ var $author$project$Ports$gotFocus = _Platform_incomingPort(
 								$elm$json$Json$Decode$array($elm$json$Json$Decode$string)));
 					},
 					A2($elm$json$Json$Decode$field, 'years', $elm$json$Json$Decode$string))))));
-var $author$project$Main$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$batch(
-		_List_fromArray(
-			[
-				$author$project$Ports$gotFocus($author$project$Messages$GotFocus),
-				A2($elm$time$Time$every, $author$project$Config$changePicture, $author$project$Messages$Tick)
-			]));
-};
+var $author$project$Main$subscriptions = $elm$core$Platform$Sub$batch(
+	_List_fromArray(
+		[
+			$author$project$Ports$gotFocus($author$project$Messages$GotFocus),
+			A2($elm$time$Time$every, $author$project$Config$changePicture, $author$project$Messages$Tick)
+		]));
 var $author$project$Config$deltaShift = 100;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $author$project$Ports$displayPerson = _Platform_outgoingPort('displayPerson', $elm$json$Json$Encode$int);
@@ -6653,8 +6651,8 @@ var $elm$core$Array$slice = F3(
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
 };
-var $author$project$Tree$childrenBoxes = F5(
-	function (focusBox, families, index, picture, parentPoint) {
+var $author$project$Tree$childrenBoxes = F4(
+	function (families, index, picture, parentPoint) {
 		var item = A2($elm$core$Array$get, index, families);
 		if (item.$ === 1) {
 			return _Utils_Tuple2(_List_Nil, _List_Nil);
@@ -6751,7 +6749,7 @@ var $author$project$Tree$linkT = F3(
 				$elm$svg$Svg$line,
 				_List_fromArray(
 					[
-						$elm$svg$Svg$Attributes$x1(bx2),
+						$elm$svg$Svg$Attributes$x1(bx1),
 						$elm$svg$Svg$Attributes$y1(by1),
 						$elm$svg$Svg$Attributes$x2(bx2),
 						$elm$svg$Svg$Attributes$y2(by2)
@@ -6771,6 +6769,15 @@ var $author$project$Tree$parentBoxes = F4(
 		var rightMotherBox = A2($author$project$Tree$shiftBox, center - motherBox.j.a.a, motherBox);
 		var parentLinks = A3($author$project$Tree$linkT, leftFatherBox, rightMotherBox, focusBox);
 		return _Utils_Tuple3(leftFatherBox, rightMotherBox, parentLinks);
+	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
 	});
 var $author$project$Tree$linkM = F2(
 	function (bx1, bx2) {
@@ -6880,19 +6887,16 @@ var $author$project$Tree$partnerBoxes = F4(
 				if (switchBox.$ === 1) {
 					return 0;
 				} else {
-					var bx = switchBox.a;
 					return halfFocusWidth + ((switchWidth / 2) | 0);
 				}
 			}();
-			var shiftedSwitchBox = function () {
-				if (switchBox.$ === 1) {
-					return $elm$core$Maybe$Nothing;
-				} else {
-					var bx = switchBox.a;
+			var shiftedSwitchBox = A2(
+				$elm$core$Maybe$andThen,
+				function (sb) {
 					return $elm$core$Maybe$Just(
-						A2($author$project$Tree$shiftBox, switchShift, bx));
-				}
-			}();
+						A2($author$project$Tree$shiftBox, switchShift, sb));
+				},
+				switchBox);
 			var links = function () {
 				if (shiftedSwitchBox.$ === 1) {
 					return A2($author$project$Tree$linkM, focusBox, shiftedPartnerBox);
@@ -7096,7 +7100,6 @@ var $author$project$Tree$siblingBoxes = F4(
 			if (shift.$ === 1) {
 				return $elm$core$List$head(shiftedBoxes);
 			} else {
-				var s = shift.a;
 				return $elm$core$List$head(
 					$elm$core$List$reverse(shiftedBoxes));
 			}
@@ -7141,7 +7144,7 @@ var $author$project$Tree$tree = function (model) {
 	var _v5 = A4($author$project$Tree$siblingBoxes, focusBox, focus.aM, model.ai, $elm$core$Maybe$Nothing);
 	var oSibBoxes = _v5.a;
 	var oSibLinks = _v5.b;
-	var _v6 = A5($author$project$Tree$childrenBoxes, focusBox, focus.aG, model._, model.ai, parentPoint);
+	var _v6 = A4($author$project$Tree$childrenBoxes, focus.aG, model._, model.ai, parentPoint);
 	var childBoxes = _v6.a;
 	var childLinks = _v6.b;
 	var allBoxes = _Utils_ap(
@@ -7206,7 +7209,9 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 				$author$project$Types$initModel(flags),
 				$author$project$Main$initTasks);
 		},
-		aT: $author$project$Main$subscriptions,
+		aT: function (_v0) {
+			return $author$project$Main$subscriptions;
+		},
 		aV: $author$project$Main$update,
 		aW: $author$project$Main$view
 	});

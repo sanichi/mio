@@ -63,7 +63,7 @@ tree model =
             siblingBoxes focusBox focus.youngerSiblings model.picture (Just shiftRight)
 
         ( childBoxes, childLinks ) =
-            childrenBoxes focusBox focus.families model.family model.picture parentPoint
+            childrenBoxes focus.families model.family model.picture parentPoint
 
         allBoxes =
             [ focusBox, fatherBox, motherBox ] ++ List.concat [ oSibBoxes, ySibBoxes, partBoxes, childBoxes ]
@@ -364,7 +364,7 @@ siblingBoxes focusBox people picture shift =
                 Nothing ->
                     List.head shiftedBoxes
 
-                Just s ->
+                Just _ ->
                     List.reverse shiftedBoxes |> List.head
 
         horizontalLinks =
@@ -416,16 +416,11 @@ partnerBoxes focusBox families index picture =
                         Nothing ->
                             0
 
-                        Just bx ->
+                        Just _ ->
                             halfFocusWidth + switchWidth // 2
 
                 shiftedSwitchBox =
-                    case switchBox of
-                        Nothing ->
-                            Nothing
-
-                        Just bx ->
-                            Just (shiftBox switchShift bx)
+                    Maybe.andThen (\sb -> Just (shiftBox switchShift sb)) switchBox
 
                 partnerShift =
                     halfFocusWidth + switchWidth + partnerWidth // 2
@@ -463,8 +458,8 @@ partnerBoxes focusBox families index picture =
             ( ( boxes, links ), ( siblingShift, parentPoint ) )
 
 
-childrenBoxes : Box -> Families -> Int -> Int -> Point -> ( List Box, List (Svg Msg) )
-childrenBoxes focusBox families index picture parentPoint =
+childrenBoxes : Families -> Int -> Int -> Point -> ( List Box, List (Svg Msg) )
+childrenBoxes families index picture parentPoint =
     let
         item =
             Array.get index families
@@ -576,7 +571,7 @@ linkT left right below =
             second below.top.inner |> String.fromInt
     in
     [ line [ x1 ax1, y1 ay1, x2 ax2, y2 ay2 ] []
-    , line [ x1 bx2, y1 by1, x2 bx2, y2 by2 ] []
+    , line [ x1 bx1, y1 by1, x2 bx2, y2 by2 ] []
     ]
 
 

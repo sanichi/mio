@@ -12,7 +12,7 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Time
 import Tree
-import Types exposing (Flags, Focus, Model, initModel)
+import Types exposing (Flags, Model, initModel)
 
 
 
@@ -25,7 +25,7 @@ main =
         { init = \flags -> ( initModel flags, initTasks )
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -34,8 +34,8 @@ initTasks =
     Cmd.none
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Platform.Sub.batch
         [ Ports.gotFocus GotFocus
         , Time.every Config.changePicture Tick
