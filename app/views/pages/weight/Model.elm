@@ -1,6 +1,6 @@
 module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, init, pointMsg, updatePoint)
 
-import Data exposing (Data)
+import Data exposing (Data, Datum)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
 import Transform exposing (Transform)
@@ -9,11 +9,11 @@ import Units exposing (Unit)
 
 type alias Model =
     { data : Data
-    , debug : Bool
     , start : Start
     , units : Unit
     , transform : Transform
     , point : ( Int, Int )
+    , debug : Bool
     }
 
 
@@ -22,9 +22,6 @@ init preferences =
     let
         data =
             Data.combine preferences.kilos preferences.dates
-
-        debug =
-            preferences.debug
 
         start =
             Start.fromInt preferences.start
@@ -36,9 +33,12 @@ init preferences =
             Transform.fromData data start
 
         point =
-            ( 500, 220 )
+            startPoint (List.head data) transform
+
+        debug =
+            preferences.debug
     in
-    Model data debug start units transform point
+    Model data start units transform point debug
 
 
 debugMsg : Model -> String
@@ -66,6 +66,16 @@ changeUnits units model =
 changeStart : Int -> Model -> Model
 changeStart start model =
     { model | start = Start.fromInt start, transform = Transform.fromData model.data start }
+
+
+startPoint : Maybe Datum -> Transform -> ( Int, Int )
+startPoint md t =
+    case md of
+        Just d ->
+            restrict <| Transform.transform t d
+
+        Nothing ->
+            ( Transform.width // 2, Transform.height // 2 )
 
 
 changePoint : ( Int, Int ) -> Model -> Model

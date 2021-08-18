@@ -5489,7 +5489,7 @@ var $author$project$Preferences$decode = function (value) {
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
 var $author$project$Model$Model = F6(
-	function (data, debug, start, units, transform, point) {
+	function (data, start, units, transform, point, debug) {
 		return {T: data, aj: debug, E: point, P: start, aQ: transform, Q: units};
 	});
 var $author$project$Data$Datum = F3(
@@ -6539,14 +6539,55 @@ var $author$project$Units$stones = A2(
 var $author$project$Units$fromString = function (str) {
 	return A2($elm$regex$Regex$contains, $author$project$Units$pounds, str) ? 1 : (A2($elm$regex$Regex$contains, $author$project$Units$stones, str) ? 2 : (A2($elm$regex$Regex$contains, $author$project$Units$bmi, str) ? 3 : 0));
 };
+var $author$project$Model$restrict = function (_v0) {
+	var i = _v0.a;
+	var j = _v0.b;
+	var y = (j < 0) ? 0 : ((_Utils_cmp(j, $author$project$Transform$height) > 0) ? $author$project$Transform$height : j);
+	var x = (i < 0) ? 0 : ((_Utils_cmp(i, $author$project$Transform$width) > 0) ? $author$project$Transform$width : i);
+	return _Utils_Tuple2(x, y);
+};
+var $elm$core$Basics$round = _Basics_round;
+var $author$project$Transform$d2i = F2(
+	function (t, d) {
+		return $elm$core$Basics$round(
+			t.R * function (x) {
+				return x - t.B;
+			}(d));
+	});
+var $author$project$Transform$k2j = F2(
+	function (t, k) {
+		return $author$project$Transform$height - $elm$core$Basics$round(
+			t.V * function (y) {
+				return y - t.D;
+			}(k));
+	});
+var $author$project$Transform$transform = F2(
+	function (t, d) {
+		return _Utils_Tuple2(
+			A2($author$project$Transform$d2i, t, d.O),
+			A2($author$project$Transform$k2j, t, d.p));
+	});
+var $author$project$Model$startPoint = F2(
+	function (md, t) {
+		if (!md.$) {
+			var d = md.a;
+			return $author$project$Model$restrict(
+				A2($author$project$Transform$transform, t, d));
+		} else {
+			return _Utils_Tuple2(($author$project$Transform$width / 2) | 0, ($author$project$Transform$height / 2) | 0);
+		}
+	});
 var $author$project$Model$init = function (preferences) {
 	var units = $author$project$Units$fromString(preferences.Q);
 	var start = $author$project$Start$fromInt(preferences.P);
-	var point = _Utils_Tuple2(500, 220);
 	var debug = preferences.aj;
 	var data = A2($author$project$Data$combine, preferences.bb, preferences.a1);
 	var transform = A2($author$project$Transform$fromData, data, start);
-	return A6($author$project$Model$Model, data, debug, start, units, transform, point);
+	var point = A2(
+		$author$project$Model$startPoint,
+		$elm$core$List$head(data),
+		transform);
+	return A6($author$project$Model$Model, data, start, units, transform, point, debug);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -6608,13 +6649,6 @@ var $author$project$Weight$subscriptions = $elm$core$Platform$Sub$batch(
 			$author$project$Ports$changePoint($author$project$Messages$ChangePoint),
 			$author$project$Ports$updatePoint($author$project$Messages$UpdatePoint)
 		]));
-var $author$project$Model$restrict = function (_v0) {
-	var i = _v0.a;
-	var j = _v0.b;
-	var y = (j < 0) ? 0 : ((_Utils_cmp(j, $author$project$Transform$height) > 0) ? $author$project$Transform$height : j);
-	var x = (i < 0) ? 0 : ((_Utils_cmp(i, $author$project$Transform$width) > 0) ? $author$project$Transform$width : i);
-	return _Utils_Tuple2(x, y);
-};
 var $author$project$Model$changePoint = F2(
 	function (_v0, model) {
 		var dx = _v0.a;
@@ -7585,7 +7619,6 @@ var $author$project$Data$dateFormat = function (rata) {
 		'y-MM-dd',
 		$justinmimbs$date$Date$fromRataDie(rata));
 };
-var $elm$core$Basics$round = _Basics_round;
 var $author$project$Units$decimal = F2(
 	function (w, d) {
 		if (d === 1) {
@@ -7699,13 +7732,6 @@ var $justinmimbs$date$Date$add = F3(
 			default:
 				return rd + n;
 		}
-	});
-var $author$project$Transform$d2i = F2(
-	function (t, d) {
-		return $elm$core$Basics$round(
-			t.R * function (x) {
-				return x - t.B;
-			}(d));
 	});
 var $author$project$Transform$dlevels = F5(
 	function (t, du, dn, l, ls) {
@@ -7842,13 +7868,6 @@ var $author$project$Units$format = F2(
 				return A2($author$project$Units$decimal, k * $author$project$Units$kg2st, 10);
 		}
 	});
-var $author$project$Transform$k2j = F2(
-	function (t, k) {
-		return $author$project$Transform$height - $elm$core$Basics$round(
-			t.V * function (y) {
-				return y - t.D;
-			}(k));
-	});
 var $author$project$Transform$jlevels = F5(
 	function (t, u, d, l, ls) {
 		jlevels:
@@ -7963,12 +7982,6 @@ var $author$project$View$r = function (d) {
 	return $elm$svg$Svg$Attributes$r(
 		$elm$core$String$fromInt(d));
 };
-var $author$project$Transform$transform = F2(
-	function (t, d) {
-		return _Utils_Tuple2(
-			A2($author$project$Transform$d2i, t, d.O),
-			A2($author$project$Transform$k2j, t, d.p));
-	});
 var $author$project$View$transform = F2(
 	function (t, d) {
 		var _v0 = A2($author$project$Transform$transform, t, d);
