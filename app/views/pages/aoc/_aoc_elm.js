@@ -10332,13 +10332,22 @@ var $elm$core$List$filterMap = F2(
 			_List_Nil,
 			xs);
 	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
 var $author$project$Y16D04$potentialRoom = function (room) {
-	if (!room.$) {
-		var r = room.a;
-		return (r.aD > 0) ? $elm$core$Maybe$Just(r) : $elm$core$Maybe$Nothing;
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
+	return A2(
+		$elm$core$Maybe$andThen,
+		function (r) {
+			return (r.aD > 0) ? $elm$core$Maybe$Just(r) : $elm$core$Maybe$Nothing;
+		},
+		room);
 };
 var $author$project$Y16D04$parse = function (input) {
 	return A2(
@@ -15761,43 +15770,21 @@ var $author$project$Y20D11$Empty = 1;
 var $author$project$Y20D11$Floor = 0;
 var $author$project$Y20D11$get = F3(
 	function (r, c, seats) {
-		var _v0 = A2($elm$core$Array$get, r, seats);
-		if (!_v0.$) {
-			var row = _v0.a;
-			return A2($elm$core$Array$get, c, row);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
+		return A2(
+			$elm$core$Maybe$andThen,
+			function (row) {
+				return A2($elm$core$Array$get, c, row);
+			},
+			A2($elm$core$Array$get, r, seats));
 	});
 var $author$project$Y20D11$spoke = F6(
 	function (r, c, dr, dc, n, seats) {
-		spoke:
-		while (true) {
-			var _v0 = A3($author$project$Y20D11$get, r + (n * dr), c + (n * dc), seats);
-			if (_v0.$ === 1) {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				if (!_v0.a) {
-					var _v1 = _v0.a;
-					var $temp$r = r,
-						$temp$c = c,
-						$temp$dr = dr,
-						$temp$dc = dc,
-						$temp$n = n + 1,
-						$temp$seats = seats;
-					r = $temp$r;
-					c = $temp$c;
-					dr = $temp$dr;
-					dc = $temp$dc;
-					n = $temp$n;
-					seats = $temp$seats;
-					continue spoke;
-				} else {
-					var seat = _v0.a;
-					return $elm$core$Maybe$Just(seat);
-				}
-			}
-		}
+		return A2(
+			$elm$core$Maybe$andThen,
+			function (s) {
+				return (!s) ? A6($author$project$Y20D11$spoke, r, c, dr, dc, n + 1, seats) : $elm$core$Maybe$Just(s);
+			},
+			A3($author$project$Y20D11$get, r + (n * dr), c + (n * dc), seats));
 	});
 var $author$project$Y20D11$near = F4(
 	function (part, r, c, seats) {
@@ -16452,13 +16439,13 @@ var $author$project$Y20D13$parse = function (input) {
 				$elm$core$List$indexedMap,
 				F2(
 					function (i, m) {
-						if (!m.$) {
-							var id = m.a;
-							return $elm$core$Maybe$Just(
-								A2($author$project$Y20D13$Bus, id, i));
-						} else {
-							return $elm$core$Maybe$Nothing;
-						}
+						return A2(
+							$elm$core$Maybe$andThen,
+							function (id) {
+								return $elm$core$Maybe$Just(
+									A2($author$project$Y20D13$Bus, id, i));
+							},
+							m);
 					}),
 				ids));
 		return A2($author$project$Y20D13$Schedule, start, buses);
@@ -16735,15 +16722,15 @@ var $author$project$Y20D16$possiblesToNames = F3(
 			A2(
 				$elm$core$List$filterMap,
 				function (_v4) {
-					var index = _v4.a;
-					var maybeName = _v4.b;
-					if (!maybeName.$) {
-						var name = maybeName.a;
-						return $elm$core$Maybe$Just(
-							_Utils_Tuple2(index, name));
-					} else {
-						return $elm$core$Maybe$Nothing;
-					}
+					var id = _v4.a;
+					var name = _v4.b;
+					return A2(
+						$elm$core$Maybe$andThen,
+						function (n) {
+							return $elm$core$Maybe$Just(
+								_Utils_Tuple2(id, n));
+						},
+						name);
 				},
 				$elm$core$Dict$toList(
 					A2(

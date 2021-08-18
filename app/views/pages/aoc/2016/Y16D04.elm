@@ -135,13 +135,12 @@ convertToMaybeRoom matches =
 
 potentialRoom : Maybe Room -> Maybe Room
 potentialRoom room =
-    case room of
-        Just r ->
+    Maybe.andThen
+        (\r ->
             if r.sector > 0 then
                 Just r
 
             else
                 Nothing
-
-        Nothing ->
-            Nothing
+        )
+        room

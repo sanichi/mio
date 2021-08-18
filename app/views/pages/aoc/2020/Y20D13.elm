@@ -91,15 +91,7 @@ parse input =
             let
                 buses =
                     ids
-                        |> List.indexedMap
-                            (\i m ->
-                                case m of
-                                    Just id ->
-                                        Just (Bus id i)
-
-                                    Nothing ->
-                                        Nothing
-                            )
+                        |> List.indexedMap (\i m -> Maybe.andThen (\id -> Just (Bus id i)) m)
                         |> List.filterMap identity
             in
             Schedule start buses

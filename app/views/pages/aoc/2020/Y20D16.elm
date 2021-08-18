@@ -169,15 +169,7 @@ possiblesToNames len possible positions =
                             Nothing
                     )
                 |> Dict.toList
-                |> List.filterMap
-                    (\( index, maybeName ) ->
-                        case maybeName of
-                            Just name ->
-                                Just ( index, name )
-
-                            Nothing ->
-                                Nothing
-                    )
+                |> List.filterMap (\( id, name ) -> Maybe.andThen (\n -> Just ( id, n )) name)
                 |> Dict.fromList
 
         reduced =

@@ -123,25 +123,23 @@ near part r c seats =
 
 spoke : Int -> Int -> Int -> Int -> Int -> Seats -> Maybe Seat
 spoke r c dr dc n seats =
-    case get (r + n * dr) (c + n * dc) seats of
-        Nothing ->
-            Nothing
+    seats
+        |> get (r + n * dr) (c + n * dc)
+        |> Maybe.andThen
+            (\s ->
+                if s == Floor then
+                    spoke r c dr dc (n + 1) seats
 
-        Just Floor ->
-            spoke r c dr dc (n + 1) seats
-
-        Just seat ->
-            Just seat
+                else
+                    Just s
+            )
 
 
 get : Int -> Int -> Seats -> Maybe Seat
 get r c seats =
-    case Array.get r seats of
-        Just row ->
-            Array.get c row
-
-        Nothing ->
-            Nothing
+    seats
+        |> Array.get r
+        |> Maybe.andThen (\row -> Array.get c row)
 
 
 put : Int -> Int -> Seat -> Seats -> Seats
