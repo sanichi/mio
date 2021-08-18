@@ -22,7 +22,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> subscriptions
         }
 
 
@@ -74,6 +74,6 @@ update msg model =
 -- SUBSCRIPTIONS
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Sub Msg
+subscriptions =
     Sub.none

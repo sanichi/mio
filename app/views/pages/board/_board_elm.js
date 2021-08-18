@@ -6238,9 +6238,7 @@ var $author$project$Board$init = function (flags) {
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Board$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
-};
+var $author$project$Board$subscriptions = $elm$core$Platform$Sub$none;
 var $author$project$Colour$not = function (colour) {
 	return (colour === 1) ? 0 : 1;
 };
@@ -8015,5 +8013,12 @@ var $author$project$Board$view = function (model) {
 		$author$project$Image$fromModel(model));
 };
 var $author$project$Board$main = $elm$browser$Browser$element(
-	{aM: $author$project$Board$init, a0: $author$project$Board$subscriptions, a3: $author$project$Board$update, a4: $author$project$Board$view});
+	{
+		aM: $author$project$Board$init,
+		a0: function (_v0) {
+			return $author$project$Board$subscriptions;
+		},
+		a3: $author$project$Board$update,
+		a4: $author$project$Board$view
+	});
 _Platform_export({'Board':{'init':$author$project$Board$main($elm$json$Json$Decode$value)(0)}});}(this));
