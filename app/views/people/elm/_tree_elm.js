@@ -6770,15 +6770,6 @@ var $author$project$Tree$parentBoxes = F4(
 		var parentLinks = A3($author$project$Tree$linkT, leftFatherBox, rightMotherBox, focusBox);
 		return _Utils_Tuple3(leftFatherBox, rightMotherBox, parentLinks);
 	});
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (!maybeValue.$) {
-			var value = maybeValue.a;
-			return callback(value);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
 var $author$project$Tree$linkM = F2(
 	function (bx1, bx2) {
 		var j2 = $elm$core$String$fromInt(bx2.j.b.b);
@@ -6798,6 +6789,16 @@ var $author$project$Tree$linkM = F2(
 					]),
 				_List_Nil)
 			]);
+	});
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
 	});
 var $author$project$Config$switchBoxHeight = 30;
 var $author$project$Messages$SwitchFamily = function (a) {
@@ -6891,11 +6892,8 @@ var $author$project$Tree$partnerBoxes = F4(
 				}
 			}();
 			var shiftedSwitchBox = A2(
-				$elm$core$Maybe$andThen,
-				function (sb) {
-					return $elm$core$Maybe$Just(
-						A2($author$project$Tree$shiftBox, switchShift, sb));
-				},
+				$elm$core$Maybe$map,
+				$author$project$Tree$shiftBox(switchShift),
 				switchBox);
 			var links = function () {
 				if (shiftedSwitchBox.$ === 1) {

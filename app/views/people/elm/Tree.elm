@@ -420,8 +420,9 @@ partnerBoxes focusBox families index picture =
                             halfFocusWidth + switchWidth // 2
 
                 shiftedSwitchBox =
-                    Maybe.andThen (\sb -> Just (shiftBox switchShift sb)) switchBox
+                    Maybe.map (shiftBox switchShift) switchBox
 
+                -- Maybe.andThen (\sb -> Just (shiftBox switchShift sb)) switchBox
                 partnerShift =
                     halfFocusWidth + switchWidth + partnerWidth // 2
 

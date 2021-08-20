@@ -16440,10 +16440,9 @@ var $author$project$Y20D13$parse = function (input) {
 				F2(
 					function (i, m) {
 						return A2(
-							$elm$core$Maybe$andThen,
+							$elm$core$Maybe$map,
 							function (id) {
-								return $elm$core$Maybe$Just(
-									A2($author$project$Y20D13$Bus, id, i));
+								return A2($author$project$Y20D13$Bus, id, i);
 							},
 							m);
 					}),
@@ -16725,10 +16724,9 @@ var $author$project$Y20D16$possiblesToNames = F3(
 					var id = _v4.a;
 					var name = _v4.b;
 					return A2(
-						$elm$core$Maybe$andThen,
+						$elm$core$Maybe$map,
 						function (n) {
-							return $elm$core$Maybe$Just(
-								_Utils_Tuple2(id, n));
+							return _Utils_Tuple2(id, n);
 						},
 						name);
 				},
