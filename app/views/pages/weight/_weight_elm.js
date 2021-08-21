@@ -6646,21 +6646,15 @@ var $author$project$Weight$subscriptions = $elm$core$Platform$Sub$batch(
 		[
 			$author$project$Ports$changeUnits($author$project$Messages$ChangeUnits),
 			$author$project$Ports$changeStart($author$project$Messages$ChangeStart),
-			$author$project$Ports$changePoint($author$project$Messages$ChangePoint),
-			$author$project$Ports$updatePoint($author$project$Messages$UpdatePoint)
+			$author$project$Ports$updatePoint($author$project$Messages$UpdatePoint),
+			$author$project$Ports$changePoint($author$project$Messages$ChangePoint)
 		]));
 var $author$project$Model$changePoint = F2(
-	function (_v0, model) {
-		var dx = _v0.a;
-		var dy = _v0.b;
-		var _v1 = model.E;
-		var x = _v1.a;
-		var y = _v1.b;
+	function (point, model) {
 		return _Utils_update(
 			model,
 			{
-				E: $author$project$Model$restrict(
-					_Utils_Tuple2(x + dx, y + dy))
+				E: $author$project$Model$restrict(point)
 			});
 	});
 var $author$project$Model$changeStart = F2(
@@ -6681,11 +6675,17 @@ var $author$project$Model$changeUnits = F2(
 			});
 	});
 var $author$project$Model$updatePoint = F2(
-	function (point, model) {
+	function (_v0, model) {
+		var dx = _v0.a;
+		var dy = _v0.b;
+		var _v1 = model.E;
+		var x = _v1.a;
+		var y = _v1.b;
 		return _Utils_update(
 			model,
 			{
-				E: $author$project$Model$restrict(point)
+				E: $author$project$Model$restrict(
+					_Utils_Tuple2(x + dx, y + dy))
 			});
 	});
 var $author$project$Weight$update = F2(
@@ -6701,15 +6701,15 @@ var $author$project$Weight$update = F2(
 				return _Utils_Tuple2(
 					A2($author$project$Model$changeStart, start, model),
 					$elm$core$Platform$Cmd$none);
-			case 2:
+			case 3:
 				var delta = msg.a;
 				return _Utils_Tuple2(
-					A2($author$project$Model$changePoint, delta, model),
+					A2($author$project$Model$updatePoint, delta, model),
 					$elm$core$Platform$Cmd$none);
 			default:
 				var point = msg.a;
 				return _Utils_Tuple2(
-					A2($author$project$Model$updatePoint, point, model),
+					A2($author$project$Model$changePoint, point, model),
 					$elm$core$Platform$Cmd$none);
 		}
 	});

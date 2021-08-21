@@ -20,17 +20,21 @@ $(function() {
     switch (e.keyCode) {
       case 72: // h
       case 37: // left arrow
-        app.ports.changePoint.send([-d,0]);
+        app.ports.updatePoint.send([-d,0]);
         break;
       case 76: // l
       case 39: // right arrow
-        app.ports.changePoint.send([d,0]);
+        app.ports.updatePoint.send([d,0]);
         break;
       case 74: // j
-        app.ports.changePoint.send([0,d]);
+      case 40: // down arrow
+        e.preventDefault(); // otherwise down arrow may scroll page
+        app.ports.updatePoint.send([0,d]);
         break;
       case 75: // k
-        app.ports.changePoint.send([0,-d]);
+      case 38: // up arrow
+        e.preventDefault(); // otherwise up arrow may scroll page
+        app.ports.updatePoint.send([0,-d]);
         break;
     }
   });
@@ -39,6 +43,6 @@ $(function() {
     pt.x = e.clientX;
     pt.y = e.clientY;
     var qt = pt.matrixTransform(this.getScreenCTM().inverse());
-    app.ports.updatePoint.send([Math.round(qt.x), Math.round(qt.y)]);
+    app.ports.changePoint.send([Math.round(qt.x), Math.round(qt.y)]);
   });
 });

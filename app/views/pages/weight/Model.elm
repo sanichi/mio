@@ -78,8 +78,8 @@ startPoint md t =
             ( Transform.width // 2, Transform.height // 2 )
 
 
-changePoint : ( Int, Int ) -> Model -> Model
-changePoint ( dx, dy ) model =
+updatePoint : ( Int, Int ) -> Model -> Model
+updatePoint ( dx, dy ) model =
     let
         ( x, y ) =
             model.point
@@ -87,8 +87,8 @@ changePoint ( dx, dy ) model =
     { model | point = restrict ( x + dx, y + dy ) }
 
 
-updatePoint : ( Int, Int ) -> Model -> Model
-updatePoint point model =
+changePoint : ( Int, Int ) -> Model -> Model
+changePoint point model =
     { model | point = restrict point }
 
 
