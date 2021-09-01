@@ -62,11 +62,11 @@ update msg model =
         ChangeStart start ->
             ( Model.changeStart start model, Cmd.none )
 
-        UpdatePoint delta ->
-            ( Model.updatePoint delta model, Cmd.none )
+        UpdateCross delta ->
+            ( Model.updateCross delta model, Cmd.none )
 
-        ChangePoint point ->
-            ( Model.changePoint point model, Cmd.none )
+        ChangeCross point ->
+            ( Model.changeCross point model, Cmd.none )
 
 
 
@@ -78,6 +78,6 @@ subscriptions =
     Platform.Sub.batch
         [ Ports.changeUnits ChangeUnits
         , Ports.changeStart ChangeStart
-        , Ports.updatePoint UpdatePoint
-        , Ports.changePoint ChangePoint
+        , Ports.updateCross UpdateCross
+        , Ports.changeCross ChangeCross
         ]

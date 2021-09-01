@@ -1,4 +1,4 @@
-module Transform exposing (Transform, fromData, height, levelsd, levelsk, reverse, transform, width)
+module Transform exposing (Transform, fromData, height, levelsd, levelsk, restrict, reverse, transform, width)
 
 import Data exposing (Data, Datum)
 import Date exposing (Date, Unit(..))
@@ -56,6 +56,32 @@ transform t d =
 reverse : Transform -> ( Int, Int ) -> Datum
 reverse t ( x, y ) =
     Datum (j2k t y) (i2d t x) True
+
+
+restrict : ( Int, Int ) -> ( Int, Int )
+restrict ( i, j ) =
+    let
+        x =
+            if i < 0 then
+                0
+
+            else if i > width then
+                width
+
+            else
+                i
+
+        y =
+            if j < 0 then
+                0
+
+            else if j > height then
+                height
+
+            else
+                j
+    in
+    ( x, y )
 
 
 levelsd : Transform -> Levels

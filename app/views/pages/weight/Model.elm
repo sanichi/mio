@@ -1,4 +1,4 @@
-module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, init, updatePoint)
+module Model exposing (Model, changeCross, changeStart, changeUnits, debugMsg, init, updateCross)
 
 import Data exposing (Data, Datum)
 import Preferences exposing (Preferences)
@@ -12,7 +12,7 @@ type alias Model =
     , start : Start
     , units : Unit
     , transform : Transform
-    , point : ( Int, Int )
+    , cross : Datum
     , debug : Bool
     }
 
@@ -32,13 +32,13 @@ init preferences =
         transform =
             Transform.fromData data start
 
-        point =
-            startPoint (List.head data) transform
+        cross =
+            startCross (List.head data) transform
 
         debug =
             preferences.debug
     in
-    Model data start units transform point debug
+    Model data start units transform cross debug
 
 
 debugMsg : Model -> String
@@ -60,51 +60,34 @@ changeStart start model =
     { model | start = Start.fromInt start, transform = Transform.fromData model.data start }
 
 
-startPoint : Maybe Datum -> Transform -> ( Int, Int )
-startPoint md t =
+startCross : Maybe Datum -> Transform -> Datum
+startCross md t =
     case md of
-        Just d ->
-            restrict <| Transform.transform t d
+        Just datum ->
+            datum
 
         Nothing ->
-            ( Transform.width // 2, Transform.height // 2 )
+            Transform.reverse t ( Transform.width // 2, Transform.height // 2 )
 
 
-updatePoint : ( Int, Int ) -> Model -> Model
-updatePoint ( dx, dy ) model =
+updateCross : ( Int, Int ) -> Model -> Model
+updateCross ( dx, dy ) model =
     let
         ( x, y ) =
-            model.point
+            model.cross
+                |> Transform.transform model.transform
+                |> Transform.restrict
+
+        cross =
+            Transform.reverse model.transform ( x + dx, y + dy )
     in
-    { model | point = restrict ( x + dx, y + dy ) }
+    { model | cross = cross }
 
 
-changePoint : ( Int, Int ) -> Model -> Model
-changePoint point model =
-    { model | point = restrict point }
-
-
-restrict : ( Int, Int ) -> ( Int, Int )
-restrict ( i, j ) =
+changeCross : ( Int, Int ) -> Model -> Model
+changeCross point model =
     let
-        x =
-            if i < 0 then
-                0
-
-            else if i > Transform.width then
-                Transform.width
-
-            else
-                i
-
-        y =
-            if j < 0 then
-                0
-
-            else if j > Transform.height then
-                Transform.height
-
-            else
-                j
+        cross =
+            Transform.reverse model.transform point
     in
-    ( x, y )
+    { model | cross = cross }

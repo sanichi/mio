@@ -19,7 +19,7 @@ fromModel m =
             info m
 
         x =
-            point m
+            cross m
 
         f =
             frame
@@ -52,7 +52,10 @@ info : Model -> Svg Msg
 info m =
     let
         datum =
-            Transform.reverse m.transform m.point
+            m.cross
+                |> Transform.transform m.transform
+                |> Transform.restrict
+                |> Transform.reverse m.transform
 
         date =
             Data.dateFormat datum.rata
@@ -63,11 +66,13 @@ info m =
     S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ weight ]
 
 
-point : Model -> Svg Msg
-point m =
+cross : Model -> Svg Msg
+cross m =
     let
         ( x, y ) =
-            m.point
+            m.cross
+                |> Transform.transform m.transform
+                |> Transform.restrict
     in
     S.g [ cc "cross" ]
         [ S.line [ x1 (x - crossWidth), y1 y, x2 (x + crossWidth), y2 y ] []

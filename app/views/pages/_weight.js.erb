@@ -16,25 +16,25 @@ $(function() {
     app.ports.changeStart.send(parseInt($('#start').val()));
   });
   $(window).keydown(function(e) {
-    var d = e.shiftKey ? 10 : 1
+    var d = e.shiftKey ? 20 : 6
     switch (e.keyCode) {
       case 72: // h
       case 37: // left arrow
-        app.ports.updatePoint.send([-d,0]);
+        app.ports.updateCross.send([-d,0]);
         break;
       case 76: // l
       case 39: // right arrow
-        app.ports.updatePoint.send([d,0]);
+        app.ports.updateCross.send([d,0]);
         break;
       case 74: // j
       case 40: // down arrow
         e.preventDefault(); // otherwise down arrow may scroll page
-        app.ports.updatePoint.send([0,d]);
+        app.ports.updateCross.send([0,d]);
         break;
       case 75: // k
       case 38: // up arrow
         e.preventDefault(); // otherwise up arrow may scroll page
-        app.ports.updatePoint.send([0,-d]);
+        app.ports.updateCross.send([0,-d]);
         break;
     }
   });
@@ -43,6 +43,6 @@ $(function() {
     pt.x = e.clientX;
     pt.y = e.clientY;
     var qt = pt.matrixTransform(this.getScreenCTM().inverse());
-    app.ports.changePoint.send([Math.round(qt.x), Math.round(qt.y)]);
+    app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
   });
 });
