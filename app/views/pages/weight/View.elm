@@ -12,29 +12,26 @@ import Units
 fromModel : Model -> List (Svg Msg)
 fromModel m =
     let
-        t =
-            m.transform
-
         d =
             debug m
 
         i =
-            info m t
+            info m
 
         x =
-            cross m
+            point m
 
         f =
             frame
 
         dl =
-            levelsd t
+            levelsd m
 
         kl =
-            levelsk m t
+            levelsk m
 
         p =
-            points m t
+            points m
 
         c =
             [ f, dl, kl, p, i, x ]
@@ -51,11 +48,11 @@ debug m =
     S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
 
 
-info : Model -> Transform -> Svg Msg
-info m t =
+info : Model -> Svg Msg
+info m =
     let
         datum =
-            Transform.reverse t m.point
+            Transform.reverse m.transform m.point
 
         date =
             Data.dateFormat datum.rata
@@ -66,8 +63,8 @@ info m t =
     S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ weight ]
 
 
-cross : Model -> Svg Msg
-cross m =
+point : Model -> Svg Msg
+point m =
     let
         ( x, y ) =
             m.point
@@ -88,11 +85,11 @@ frame =
         ]
 
 
-levelsd : Transform -> Svg Msg
-levelsd t =
+levelsd : Model -> Svg Msg
+levelsd m =
     let
         levels =
-            Transform.levelsd t
+            Transform.levelsd m.transform
 
         level2line =
             \l -> S.line [ x1 l.val, y1 0, x2 l.val, y2 height ] []
@@ -109,11 +106,11 @@ levelsd t =
     lines ++ labels |> S.g [ cc "axes" ]
 
 
-levelsk : Model -> Transform -> Svg Msg
-levelsk m t =
+levelsk : Model -> Svg Msg
+levelsk m =
     let
         levels =
-            Transform.levelsk t m.units
+            Transform.levelsk m.transform m.units
 
         level2line =
             \l -> S.line [ x1 -3, y1 l.val, x2 width, y2 l.val ] []
@@ -130,9 +127,12 @@ levelsk m t =
     lines ++ labels |> S.g [ cc "axes" ]
 
 
-points : Model -> Transform -> Svg Msg
-points m t =
+points : Model -> Svg Msg
+points m =
     let
+        t =
+            m.transform
+
         d2p =
             transform t
 

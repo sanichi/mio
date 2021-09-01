@@ -1,4 +1,4 @@
-module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, init, pointMsg, updatePoint)
+module Model exposing (Model, changePoint, changeStart, changeUnits, debugMsg, init, updatePoint)
 
 import Data exposing (Data, Datum)
 import Preferences exposing (Preferences)
@@ -47,14 +47,6 @@ debugMsg model =
         [ String.fromInt <| List.length model.data
         , Units.toString model.units
         , String.fromInt model.start
-        ]
-
-
-pointMsg : Model -> String
-pointMsg model =
-    String.join ","
-        [ String.fromInt <| Tuple.first model.point
-        , String.fromInt <| Tuple.second model.point
         ]
 
 
