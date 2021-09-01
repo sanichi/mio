@@ -16,7 +16,7 @@ $(function() {
     app.ports.changeStart.send(parseInt($('#start').val()));
   });
   $(window).keydown(function(e) {
-    var d = e.shiftKey ? 20 : 6
+    var d = e.shiftKey ? 10 : 1
     switch (e.keyCode) {
       case 72: // h
       case 37: // left arrow
@@ -29,12 +29,12 @@ $(function() {
       case 74: // j
       case 40: // down arrow
         e.preventDefault(); // otherwise down arrow may scroll page
-        app.ports.updateCross.send([0,d]);
+        app.ports.updateCross.send([0,-d]);
         break;
       case 75: // k
       case 38: // up arrow
         e.preventDefault(); // otherwise up arrow may scroll page
-        app.ports.updateCross.send([0,-d]);
+        app.ports.updateCross.send([0,d]);
         break;
     }
   });

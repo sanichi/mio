@@ -73,13 +73,18 @@ startCross md t =
 updateCross : ( Int, Int ) -> Model -> Model
 updateCross ( dx, dy ) model =
     let
-        ( x, y ) =
-            model.cross
-                |> Transform.transform model.transform
-                |> Transform.restrict
+        dd =
+            1 * dx
+
+        dk =
+            0.1 * toFloat dy
 
         cross =
-            Transform.reverse model.transform ( x + dx, y + dy )
+            model.cross
+                |> (\c -> { c | rata = c.rata + dd, kilo = c.kilo + dk })
+                |> Transform.transform model.transform
+                |> Transform.restrict
+                |> Transform.reverse model.transform
     in
     { model | cross = cross }
 

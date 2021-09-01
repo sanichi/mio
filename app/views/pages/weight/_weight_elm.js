@@ -6702,14 +6702,20 @@ var $author$project$Model$updateCross = F2(
 	function (_v0, model) {
 		var dx = _v0.a;
 		var dy = _v0.b;
-		var _v1 = $author$project$Transform$restrict(
-			A2($author$project$Transform$transform, model.K, model.N));
-		var x = _v1.a;
-		var y = _v1.b;
+		var dk = 0.1 * dy;
+		var dd = 1 * dx;
 		var cross = A2(
 			$author$project$Transform$reverse,
 			model.K,
-			_Utils_Tuple2(x + dx, y + dy));
+			$author$project$Transform$restrict(
+				A2(
+					$author$project$Transform$transform,
+					model.K,
+					function (c) {
+						return _Utils_update(
+							c,
+							{p: c.p + dk, P: c.P + dd});
+					}(model.N))));
 		return _Utils_update(
 			model,
 			{N: cross});
