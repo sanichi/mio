@@ -57,7 +57,14 @@ changeUnits units model =
 
 changeStart : Int -> Model -> Model
 changeStart start model =
-    { model | start = Start.fromInt start, transform = Transform.fromData model.data start }
+    let
+        transform =
+            Transform.fromData model.data start
+
+        cross =
+            Transform.restrict transform model.cross
+    in
+    { model | start = Start.fromInt start, transform = transform, cross = cross }
 
 
 startCross : Maybe Datum -> Transform -> Datum
@@ -82,9 +89,7 @@ updateCross ( dx, dy ) model =
         cross =
             model.cross
                 |> (\c -> { c | rata = c.rata + dd, kilo = c.kilo + dk })
-                |> Transform.transform model.transform
-                |> Transform.restrict
-                |> Transform.reverse model.transform
+                |> Transform.restrict model.transform
     in
     { model | cross = cross }
 
@@ -93,6 +98,8 @@ changeCross : ( Int, Int ) -> Model -> Model
 changeCross point model =
     let
         cross =
-            Transform.reverse model.transform point
+            point
+                |> Transform.reverse model.transform
+                |> Transform.restrict model.transform
     in
     { model | cross = cross }

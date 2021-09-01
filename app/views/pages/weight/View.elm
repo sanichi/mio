@@ -51,17 +51,11 @@ debug m =
 info : Model -> Svg Msg
 info m =
     let
-        datum =
-            m.cross
-                |> Transform.transform m.transform
-                |> Transform.restrict
-                |> Transform.reverse m.transform
-
         date =
-            Data.dateFormat datum.rata
+            Data.dateFormat m.cross.rata
 
         weight =
-            Units.format2 m.units datum.kilo
+            Units.format2 m.units m.cross.kilo
     in
     S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ weight ]
 
@@ -70,9 +64,7 @@ cross : Model -> Svg Msg
 cross m =
     let
         ( x, y ) =
-            m.cross
-                |> Transform.transform m.transform
-                |> Transform.restrict
+            Transform.transform m.transform m.cross
     in
     S.g [ cc "cross" ]
         [ S.line [ x1 (x - crossWidth), y1 y, x2 (x + crossWidth), y2 y ] []

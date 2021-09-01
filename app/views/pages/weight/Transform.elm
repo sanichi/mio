@@ -58,9 +58,12 @@ reverse t ( x, y ) =
     Datum (j2k t y) (i2d t x) True
 
 
-restrict : ( Int, Int ) -> ( Int, Int )
-restrict ( i, j ) =
+restrict : Transform -> Datum -> Datum
+restrict t d =
     let
+        ( i, j ) =
+            transform t d
+
         x =
             if i < 0 then
                 0
@@ -81,7 +84,7 @@ restrict ( i, j ) =
             else
                 j
     in
-    ( x, y )
+    reverse t ( x, y )
 
 
 levelsd : Transform -> Levels
