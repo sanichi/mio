@@ -231,7 +231,7 @@ debugTextY =
 
 infoTextX : Int
 infoTextX =
-    width
+    width // 2
 
 
 infoTextY : Int

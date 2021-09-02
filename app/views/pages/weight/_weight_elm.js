@@ -7695,7 +7695,7 @@ var $author$project$Units$format2 = F2(
 			num,
 			$author$project$Units$toString(u));
 	});
-var $author$project$View$infoTextX = $author$project$View$width;
+var $author$project$View$infoTextX = ($author$project$View$width / 2) | 0;
 var $author$project$View$infoTextY = -10;
 var $author$project$View$info = function (m) {
 	var weight = A2($author$project$Units$format2, m.R, m.B.p);
