@@ -6,7 +6,7 @@ port module Ports exposing (..)
 port getData : ( Int, Int ) -> Cmd msg
 
 
-port doWait : Int -> Cmd msg
+port startThink : Int -> Cmd msg
 
 
 port useRuby : List Int -> Cmd msg
@@ -19,7 +19,7 @@ port useRuby : List Int -> Cmd msg
 port gotData : (String -> msg) -> Sub msg
 
 
-port doneWait : (Int -> msg) -> Sub msg
+port startedThink : (Int -> msg) -> Sub msg
 
 
 port gotRuby : (( Int, String ) -> msg) -> Sub msg

@@ -114,8 +114,8 @@ type Msg
     = SelectYear Int
     | SelectDay Int
     | GotData String
-    | DoWait Int
-    | DoneWait Int
+    | StartThink Int
+    | StartedThink Int
     | GotAnswer ( Int, String )
     | ShowHelp
     | HideHelp
@@ -141,10 +141,10 @@ update msg model =
         GotData data ->
             ( { model | data = data }, none )
 
-        DoWait part ->
-            ( { model | thinks = thinking part }, batch [ doWait part ] )
+        StartThink part ->
+            ( { model | thinks = thinking part }, batch [ startThink part ] )
 
-        DoneWait part ->
+        StartedThink part ->
             let
                 answer =
                     getAnswer model part model.data
@@ -153,38 +153,36 @@ update msg model =
                 ( model, useRuby model part )
 
             else
-                let
-                    ( answer1, answer2 ) =
-                        model.answers
-
-                    answers =
-                        if part == 1 then
-                            ( Just answer, answer2 )
-
-                        else
-                            ( answer1, Just answer )
-                in
-                ( { model | answers = answers, thinks = ( False, False ) }, none )
+                ( gotAnswer part answer model, none )
 
         GotAnswer ( part, answer ) ->
-            let
-                ( answer1, answer2 ) =
-                    model.answers
-
-                answers =
-                    if part == 1 then
-                        ( Just answer, answer2 )
-
-                    else
-                        ( answer1, Just answer )
-            in
-            ( { model | answers = answers, thinks = ( False, False ) }, none )
+            ( gotAnswer part answer model, none )
 
         ShowHelp ->
             ( { model | help = True }, none )
 
         HideHelp ->
             ( { model | help = False }, none )
+
+
+
+-- cxxxxx
+
+
+gotAnswer : Int -> String -> Model -> Model
+gotAnswer part answer model =
+    let
+        ( answer1, answer2 ) =
+            model.answers
+
+        answers =
+            if part == 1 then
+                ( Just answer, answer2 )
+
+            else
+                ( answer1, Just answer )
+    in
+    { model | answers = answers, thinks = ( False, False ) }
 
 
 newProblem : Int -> Int -> Model
@@ -259,22 +257,22 @@ getData model =
     Ports.getData ( model.year, model.day )
 
 
-doWait : Int -> Cmd Msg
-doWait part =
-    Ports.doWait part
-
-
 useRuby : Model -> Int -> Cmd Msg
 useRuby model part =
     Ports.useRuby [ model.year, model.day, part ]
+
+
+startThink : Int -> Cmd Msg
+startThink part =
+    Ports.startThink part
 
 
 subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
         [ Ports.gotData GotData
-        , Ports.doneWait DoneWait
         , Ports.gotRuby GotAnswer
+        , Ports.startedThink StartedThink
         ]
 
 
@@ -440,7 +438,7 @@ viewAnswer model part =
                             symbol =
                                 speedIndicator time
                         in
-                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (DoWait part) ] [ text symbol ]
+                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (StartThink part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then

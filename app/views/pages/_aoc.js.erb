@@ -30,9 +30,11 @@ $(function() {
       app.ports.gotRuby.send([ydp[2], answer]);
     });
   });
-  app.ports.doWait.subscribe(function(part) {
+  app.ports.startThink.subscribe(function(part) {
+    // this timeout is here so elm will pause long enough to display
+    // the "thinking" gif before it starts calculating the answer
     setTimeout(function() {
-      app.ports.doneWait.send(part);
+      app.ports.startedThink.send(part);
     }, 100);
   });
 });
