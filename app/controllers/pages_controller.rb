@@ -24,4 +24,24 @@ class PagesController < ApplicationController
   def prefectures
     @elements = Place.map_elements.to_a
   end
+
+  def ruby
+    year = params[:year].to_i
+    day  = params[:day].to_i
+    part = params[:part].to_i
+    answer = nil
+    begin
+      raise "invalid part" unless part == 1 || part == 2
+      @part = part
+      file = Rails.root + "public/aoc/#{year}/#{day}.txt"
+      raise "no data" unless file.file?
+      @data = file.read
+      file = Rails.root + "lib/aoc/y#{year}d#{day}.rb"
+      raise "no code" unless file.file?
+      answer = eval(file.read)
+    rescue => e
+      answer = e.message
+    end
+    render plain: answer
+  end
 end
