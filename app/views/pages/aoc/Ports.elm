@@ -1,6 +1,6 @@
 port module Ports exposing (..)
 
--- JS to Elm or Elm to Elm
+-- Elm to JS or Elm to Elm
 
 
 port getData : ( Int, Int ) -> Cmd msg
@@ -9,11 +9,17 @@ port getData : ( Int, Int ) -> Cmd msg
 port prepare : Int -> Cmd msg
 
 
+port useRuby : List Int -> Cmd msg
 
--- Elm to JS
+
+
+-- JS to Elm
 
 
 port gotData : (String -> msg) -> Sub msg
 
 
-port answer : (Int -> msg) -> Sub msg
+port getAnswer : (Int -> msg) -> Sub msg
+
+
+port gotAnswer : (( Int, String ) -> msg) -> Sub msg

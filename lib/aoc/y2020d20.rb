@@ -195,9 +195,9 @@ end
 
 corners = match_count.select { _2 == 2 }.map { |id, _| tiles[id] }
 
-answer = corners.map(&:id).reduce(:*) if @part == 1
-
-if @part == 2
+if @part == 1
+  answer = corners.map(&:id).reduce(:*)
+else
   begin
     width = Float::INFINITY
     height = Float::INFINITY

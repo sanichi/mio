@@ -6,17 +6,33 @@ $(function() {
       day: '<%= day %>'
     }
   });
-  app.ports.getData.subscribe(function(year_day) {
-    var year = year_day[0];
-    var day = year_day[1];
+  app.ports.getData.subscribe(function(yd) {
+    var year = yd[0];
+    var day  = yd[1];
     var file = '/aoc/' + year + '/' + day + '.txt';
-    $.ajax({url: file}).done(function(data) {
+    $.ajax({
+      url: file,
+      dataType: 'text'
+    }).done(function(data) {
       app.ports.gotData.send(data);
+    });
+  });
+  app.ports.useRuby.subscribe(function(ydp) {
+    $.ajax({
+      url: '/ruby',
+      data: {
+        year: ydp[0],
+        day:  ydp[1],
+        part: ydp[2]
+      },
+      dataType: 'text'
+    }).done(function(answer) {
+      app.ports.gotAnswer.send([ydp[2], answer]);
     });
   });
   app.ports.prepare.subscribe(function(part) {
     setTimeout(function() {
-      app.ports.answer.send(part);
+      app.ports.getAnswer.send(part);
     }, 100);
   });
 });

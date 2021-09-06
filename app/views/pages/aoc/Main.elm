@@ -114,7 +114,8 @@ type Msg
     = SelectYear Int
     | SelectDay Int
     | GotData String
-    | Answer Int
+    | GotAnswer ( Int, String )
+    | GetAnswer Int
     | Prepare Int
     | ShowHelp
     | HideHelp
@@ -143,11 +144,30 @@ update msg model =
         Prepare part ->
             ( { model | thinks = thinking part }, batch [ prepare part ] )
 
-        Answer part ->
+        GetAnswer part ->
             let
                 answer =
                     getAnswer model part model.data
+            in
+            if String.startsWith "use ruby" answer then
+                ( model, useRuby model part )
 
+            else
+                let
+                    ( answer1, answer2 ) =
+                        model.answers
+
+                    answers =
+                        if part == 1 then
+                            ( Just answer, answer2 )
+
+                        else
+                            ( answer1, Just answer )
+                in
+                ( { model | answers = answers, thinks = ( False, False ) }, none )
+
+        GotAnswer ( part, answer ) ->
+            let
                 ( answer1, answer2 ) =
                     model.answers
 
@@ -244,11 +264,17 @@ prepare part =
     Ports.prepare part
 
 
+useRuby : Model -> Int -> Cmd Msg
+useRuby model part =
+    Ports.useRuby [ model.year, model.day, part ]
+
+
 subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
         [ Ports.gotData GotData
-        , Ports.answer Answer
+        , Ports.getAnswer GetAnswer
+        , Ports.gotAnswer GotAnswer
         ]
 
 
@@ -821,9 +847,6 @@ failed year day part =
         "2016-11-2" ->
             True
 
-        "2020-20-2" ->
-            True
-
         _ ->
             False
 
@@ -862,7 +885,7 @@ getNote year day =
             Just "Had to avoid Elm for this one because it involves 64-bit integers. A quick Ruby script did the job."
 
         "2020-20" ->
-            Just "I couldn‘t figure out part 2 so used someone else‘s solution (kudoes to Github user Sharparam)."
+            Just "I couldn‘t figure out part 2 and used Github user Sharparam‘s ruby solution."
 
         _ ->
             Nothing
