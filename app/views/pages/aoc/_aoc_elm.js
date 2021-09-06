@@ -5444,21 +5444,22 @@ var $author$project$Main$init = function (flags) {
 		$author$project$Main$getData(model));
 };
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$GetAnswer = function (a) {
+var $author$project$Main$DoneWait = function (a) {
 	return {$: 4, a: a};
 };
 var $author$project$Main$GotAnswer = function (a) {
-	return {$: 3, a: a};
+	return {$: 5, a: a};
 };
 var $author$project$Main$GotData = function (a) {
 	return {$: 2, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $author$project$Ports$getAnswer = _Platform_incomingPort('getAnswer', $elm$json$Json$Decode$int);
+var $author$project$Ports$doneWait = _Platform_incomingPort('doneWait', $elm$json$Json$Decode$int);
+var $author$project$Ports$gotData = _Platform_incomingPort('gotData', $elm$json$Json$Decode$string);
 var $elm$json$Json$Decode$index = _Json_decodeIndex;
-var $author$project$Ports$gotAnswer = _Platform_incomingPort(
-	'gotAnswer',
+var $author$project$Ports$gotRuby = _Platform_incomingPort(
+	'gotRuby',
 	A2(
 		$elm$json$Json$Decode$andThen,
 		function (_v0) {
@@ -5471,15 +5472,18 @@ var $author$project$Ports$gotAnswer = _Platform_incomingPort(
 				A2($elm$json$Json$Decode$index, 1, $elm$json$Json$Decode$string));
 		},
 		A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$int)));
-var $author$project$Ports$gotData = _Platform_incomingPort('gotData', $elm$json$Json$Decode$string);
 var $author$project$Main$subscriptions = $elm$core$Platform$Sub$batch(
 	_List_fromArray(
 		[
 			$author$project$Ports$gotData($author$project$Main$GotData),
-			$author$project$Ports$getAnswer($author$project$Main$GetAnswer),
-			$author$project$Ports$gotAnswer($author$project$Main$GotAnswer)
+			$author$project$Ports$doneWait($author$project$Main$DoneWait),
+			$author$project$Ports$gotRuby($author$project$Main$GotAnswer)
 		]));
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $author$project$Ports$doWait = _Platform_outgoingPort('doWait', $elm$json$Json$Encode$int);
+var $author$project$Main$doWait = function (part) {
+	return $author$project$Ports$doWait(part);
+};
 var $author$project$Y15D01$count = F2(
 	function (floor, instructions) {
 		count:
@@ -19153,10 +19157,6 @@ var $author$project$Main$getAnswer = F3(
 		}
 	});
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Ports$prepare = _Platform_outgoingPort('prepare', $elm$json$Json$Encode$int);
-var $author$project$Main$prepare = function (part) {
-	return $author$project$Ports$prepare(part);
-};
 var $author$project$Main$thinking = function (part) {
 	return (part === 1) ? _Utils_Tuple2(true, false) : _Utils_Tuple2(false, true);
 };
@@ -19199,7 +19199,7 @@ var $author$project$Main$update = F2(
 						model,
 						{aa: data}),
 					$elm$core$Platform$Cmd$none);
-			case 5:
+			case 3:
 				var part = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -19210,7 +19210,7 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$batch(
 						_List_fromArray(
 							[
-								$author$project$Main$prepare(part)
+								$author$project$Main$doWait(part)
 							])));
 			case 4:
 				var part = msg.a;
@@ -19237,7 +19237,7 @@ var $author$project$Main$update = F2(
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 3:
+			case 5:
 				var _v2 = msg.a;
 				var part = _v2.a;
 				var answer = _v2.b;
@@ -19334,8 +19334,8 @@ var $author$project$Main$toInt = function (str) {
 		0,
 		$elm$core$String$toInt(str));
 };
-var $author$project$Main$Prepare = function (a) {
-	return {$: 5, a: a};
+var $author$project$Main$DoWait = function (a) {
+	return {$: 3, a: a};
 };
 var $author$project$Main$failed = F3(
 	function (year, day, part) {
@@ -19550,7 +19550,7 @@ var $author$project$Main$viewAnswer = F2(
 								[
 									$elm$html$Html$Attributes$class('btn btn-' + (colour + ' btn-sm')),
 									$elm$html$Html$Events$onClick(
-									$author$project$Main$Prepare(part))
+									$author$project$Main$DoWait(part))
 								]),
 							_List_fromArray(
 								[

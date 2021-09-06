@@ -114,9 +114,9 @@ type Msg
     = SelectYear Int
     | SelectDay Int
     | GotData String
+    | DoWait Int
+    | DoneWait Int
     | GotAnswer ( Int, String )
-    | GetAnswer Int
-    | Prepare Int
     | ShowHelp
     | HideHelp
 
@@ -141,10 +141,10 @@ update msg model =
         GotData data ->
             ( { model | data = data }, none )
 
-        Prepare part ->
-            ( { model | thinks = thinking part }, batch [ prepare part ] )
+        DoWait part ->
+            ( { model | thinks = thinking part }, batch [ doWait part ] )
 
-        GetAnswer part ->
+        DoneWait part ->
             let
                 answer =
                     getAnswer model part model.data
@@ -259,9 +259,9 @@ getData model =
     Ports.getData ( model.year, model.day )
 
 
-prepare : Int -> Cmd Msg
-prepare part =
-    Ports.prepare part
+doWait : Int -> Cmd Msg
+doWait part =
+    Ports.doWait part
 
 
 useRuby : Model -> Int -> Cmd Msg
@@ -273,8 +273,8 @@ subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
         [ Ports.gotData GotData
-        , Ports.getAnswer GetAnswer
-        , Ports.gotAnswer GotAnswer
+        , Ports.doneWait DoneWait
+        , Ports.gotRuby GotAnswer
         ]
 
 
@@ -440,7 +440,7 @@ viewAnswer model part =
                             symbol =
                                 speedIndicator time
                         in
-                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (Prepare part) ] [ text symbol ]
+                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (DoWait part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then

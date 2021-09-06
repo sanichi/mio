@@ -27,12 +27,12 @@ $(function() {
       },
       dataType: 'text'
     }).done(function(answer) {
-      app.ports.gotAnswer.send([ydp[2], answer]);
+      app.ports.gotRuby.send([ydp[2], answer]);
     });
   });
-  app.ports.prepare.subscribe(function(part) {
+  app.ports.doWait.subscribe(function(part) {
     setTimeout(function() {
-      app.ports.getAnswer.send(part);
+      app.ports.doneWait.send(part);
     }, 100);
   });
 });
