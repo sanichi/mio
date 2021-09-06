@@ -11,12 +11,12 @@ $(function() {
     var day = year_day[1];
     var file = '/aoc/' + year + '/' + day + '.txt';
     $.ajax({url: file}).done(function(data) {
-      app.ports.newData.send(data);
+      app.ports.gotData.send(data);
     });
   });
-  app.ports.prepareAnswer.subscribe(function(part) {
+  app.ports.prepare.subscribe(function(part) {
     setTimeout(function() {
-      app.ports.startAnswer.send(part);
+      app.ports.answer.send(part);
     }, 100);
   });
 });

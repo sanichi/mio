@@ -40,7 +40,7 @@ type alias Model =
     { years : List Year
     , year : Int
     , day : Int
-    , data : Maybe String
+    , data : String
     , answers : Answers
     , thinks : Thinks
     , help : Bool
@@ -80,21 +80,11 @@ initModel =
         ]
     , year = defaultYear
     , day = defaultDay
-    , data = Nothing
-    , answers = initAnswers
-    , thinks = initThinks
+    , data = ""
+    , answers = ( Nothing, Nothing )
+    , thinks = ( False, False )
     , help = False
     }
-
-
-initAnswers : Answers
-initAnswers =
-    ( Nothing, Nothing )
-
-
-initThinks : Thinks
-initThinks =
-    ( False, False )
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -123,7 +113,7 @@ init flags =
 type Msg
     = SelectYear Int
     | SelectDay Int
-    | NewData String
+    | GotData String
     | Answer Int
     | Prepare Int
     | ShowHelp
@@ -147,28 +137,28 @@ update msg model =
             in
             ( newModel, batch [ getData newModel ] )
 
-        NewData data ->
-            ( { model | data = Just data }, none )
+        GotData data ->
+            ( { model | data = data }, none )
 
         Prepare part ->
-            ( { model | thinks = thinking part }, batch [ prepareAnswer part ] )
+            ( { model | thinks = thinking part }, batch [ prepare part ] )
 
         Answer part ->
             let
-                data =
-                    Maybe.withDefault "" model.data
-
                 answer =
-                    getAnswer model part data
+                    getAnswer model part model.data
+
+                ( answer1, answer2 ) =
+                    model.answers
 
                 answers =
                     if part == 1 then
-                        ( Just answer, model.answers |> Tuple.second )
+                        ( Just answer, answer2 )
 
                     else
-                        ( model.answers |> Tuple.first, Just answer )
+                        ( answer1, Just answer )
             in
-            ( { model | answers = answers, thinks = initThinks }, none )
+            ( { model | answers = answers, thinks = ( False, False ) }, none )
 
         ShowHelp ->
             ( { model | help = True }, none )
@@ -249,16 +239,16 @@ getData model =
     Ports.getData ( model.year, model.day )
 
 
-prepareAnswer : Int -> Cmd Msg
-prepareAnswer part =
-    Ports.prepareAnswer part
+prepare : Int -> Cmd Msg
+prepare part =
+    Ports.prepare part
 
 
 subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
-        [ Ports.newData NewData
-        , Ports.startAnswer Answer
+        [ Ports.gotData GotData
+        , Ports.answer Answer
         ]
 
 
@@ -287,10 +277,6 @@ view model =
 
         onDayChange =
             toInt >> SelectDay |> Events.onInput
-
-        data =
-            model.data
-                |> Maybe.withDefault ""
     in
     div []
         [ Html.form [ class "row g-3" ]
@@ -326,7 +312,7 @@ view model =
         , hr [] []
         , div [ class "row" ]
             [ div [ class "col" ]
-                [ pre [] [ text data ]
+                [ pre [] [ text model.data ]
                 ]
             ]
         ]
@@ -408,12 +394,9 @@ viewAnswer model part =
 
         display =
             if noSolution then
-                let
-                    data =
-                        model.data
-                            |> Maybe.withDefault ""
-                in
-                getAnswer model part data |> text
+                model.data
+                    |> getAnswer model part
+                    |> text
 
             else if busy then
                 img [ src "/images/loader.gif" ] []
