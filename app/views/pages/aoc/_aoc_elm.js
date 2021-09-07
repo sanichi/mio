@@ -18122,7 +18122,7 @@ var $author$project$Y20D20$answer = F2(
 	function (part, input) {
 		var data = $author$project$Y20D20$parse(input);
 		return (part === 1) ? $elm$core$String$fromInt(
-			$author$project$Y20D20$product(data)) : 'use ruby - see https://bitbucket.org/sanichi/mio/src/main/lib/aoc/y2020d20.rb';
+			$author$project$Y20D20$product(data)) : 'use ruby - see https://bitbucket.org/sanichi/mio/src/main/app/models/aoc/y2020d20.rb';
 	});
 var $author$project$Y20D21$Data = F2(
 	function (a2i, foods) {

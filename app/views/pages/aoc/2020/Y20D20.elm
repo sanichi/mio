@@ -18,7 +18,7 @@ answer part input =
             |> String.fromInt
 
     else
-        "use ruby - see https://bitbucket.org/sanichi/mio/src/main/lib/aoc/y2020d20.rb"
+        "use ruby - see https://bitbucket.org/sanichi/mio/src/main/app/models/aoc/y2020d20.rb"
 
 
 type alias Id =
