@@ -30,18 +30,23 @@ class PagesController < ApplicationController
     day  = params[:day].to_i
     part = params[:part].to_i
     answer = nil
+
     begin
       raise "invalid part" unless part == 1 || part == 2
-      @part = part
+
       file = Rails.root + "public/aoc/#{year}/#{day}.txt"
       raise "no data" unless file.file?
-      @data = file.read
-      file = Rails.root + "lib/aoc/y#{year}d#{day}.rb"
-      raise "no code" unless file.file?
-      answer = eval(file.read)
+      input = file.read
+
+      klass = "Aoc::Y#{year}d#{day}"
+      raise "no class" unless Object.const_defined?(klass)
+      obj = klass.constantize.new(input)
+
+      answer = obj.answer(part)
     rescue => e
       answer = e.message
     end
+
     render plain: answer
   end
 end
