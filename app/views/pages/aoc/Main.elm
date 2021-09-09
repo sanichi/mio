@@ -115,9 +115,9 @@ type Msg
     = SelectYear Int
     | SelectDay Int
     | GotData String
-    | StartThink Int
-    | StartedThink Int
-    | GotAnswer ( Int, String )
+    | DoPause Int
+    | DonePause Int
+    | GotRuby ( Int, String )
     | ShowHelp
     | HideHelp
 
@@ -142,21 +142,21 @@ update msg model =
         GotData data ->
             ( { model | data = data }, none )
 
-        StartThink part ->
+        DoPause part ->
             if useRuby model.year model.day part then
                 ( { model | thinks = thinking part }, getRuby model part )
 
             else
-                ( { model | thinks = thinking part }, startThink part )
+                ( { model | thinks = thinking part }, doPause part )
 
-        StartedThink part ->
+        DonePause part ->
             let
                 answer =
                     getAnswer model part model.data
             in
             ( gotAnswer part answer model, none )
 
-        GotAnswer ( part, answer ) ->
+        GotRuby ( part, answer ) ->
             ( gotAnswer part answer model, none )
 
         ShowHelp ->
@@ -259,17 +259,17 @@ getRuby model part =
     Ports.getRuby [ model.year, model.day, part ]
 
 
-startThink : Int -> Cmd Msg
-startThink part =
-    Ports.startThink part
+doPause : Int -> Cmd Msg
+doPause part =
+    Ports.doPause part
 
 
 subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
         [ Ports.gotData GotData
-        , Ports.gotRuby GotAnswer
-        , Ports.startedThink StartedThink
+        , Ports.gotRuby GotRuby
+        , Ports.donePause DonePause
         ]
 
 
@@ -435,7 +435,7 @@ viewAnswer model part =
                             symbol =
                                 speedIndicator time
                         in
-                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (StartThink part) ] [ text symbol ]
+                        span [ class ("btn btn-" ++ colour ++ " btn-sm"), Events.onClick (DoPause part) ] [ text symbol ]
 
                     Just ans ->
                         if String.length ans > 32 then

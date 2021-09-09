@@ -5444,19 +5444,20 @@ var $author$project$Main$init = function (flags) {
 		$author$project$Main$getData(model));
 };
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$GotAnswer = function (a) {
-	return {$: 5, a: a};
+var $author$project$Main$DonePause = function (a) {
+	return {$: 4, a: a};
 };
 var $author$project$Main$GotData = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Main$StartedThink = function (a) {
-	return {$: 4, a: a};
+var $author$project$Main$GotRuby = function (a) {
+	return {$: 5, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $author$project$Ports$donePause = _Platform_incomingPort('donePause', $elm$json$Json$Decode$int);
 var $author$project$Ports$gotData = _Platform_incomingPort('gotData', $elm$json$Json$Decode$string);
 var $elm$json$Json$Decode$index = _Json_decodeIndex;
-var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Ports$gotRuby = _Platform_incomingPort(
 	'gotRuby',
 	A2(
@@ -5471,14 +5472,17 @@ var $author$project$Ports$gotRuby = _Platform_incomingPort(
 				A2($elm$json$Json$Decode$index, 1, $elm$json$Json$Decode$string));
 		},
 		A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$int)));
-var $author$project$Ports$startedThink = _Platform_incomingPort('startedThink', $elm$json$Json$Decode$int);
 var $author$project$Main$subscriptions = $elm$core$Platform$Sub$batch(
 	_List_fromArray(
 		[
 			$author$project$Ports$gotData($author$project$Main$GotData),
-			$author$project$Ports$gotRuby($author$project$Main$GotAnswer),
-			$author$project$Ports$startedThink($author$project$Main$StartedThink)
+			$author$project$Ports$gotRuby($author$project$Main$GotRuby),
+			$author$project$Ports$donePause($author$project$Main$DonePause)
 		]));
+var $author$project$Ports$doPause = _Platform_outgoingPort('doPause', $elm$json$Json$Encode$int);
+var $author$project$Main$doPause = function (part) {
+	return $author$project$Ports$doPause(part);
+};
 var $author$project$Y15D01$count = F2(
 	function (floor, instructions) {
 		count:
@@ -19179,10 +19183,6 @@ var $author$project$Main$gotAnswer = F3(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Ports$startThink = _Platform_outgoingPort('startThink', $elm$json$Json$Encode$int);
-var $author$project$Main$startThink = function (part) {
-	return $author$project$Ports$startThink(part);
-};
 var $author$project$Main$thinking = function (part) {
 	return (part === 1) ? _Utils_Tuple2(true, false) : _Utils_Tuple2(false, true);
 };
@@ -19238,7 +19238,7 @@ var $author$project$Main$update = F2(
 						{
 							U: $author$project$Main$thinking(part)
 						}),
-					$author$project$Main$startThink(part));
+					$author$project$Main$doPause(part));
 			case 4:
 				var part = msg.a;
 				var answer = A3($author$project$Main$getAnswer, model, part, model.aa);
@@ -19329,7 +19329,7 @@ var $author$project$Main$toInt = function (str) {
 		0,
 		$elm$core$String$toInt(str));
 };
-var $author$project$Main$StartThink = function (a) {
+var $author$project$Main$DoPause = function (a) {
 	return {$: 3, a: a};
 };
 var $author$project$Main$failed = F3(
@@ -19547,7 +19547,7 @@ var $author$project$Main$viewAnswer = F2(
 								[
 									$elm$html$Html$Attributes$class('btn btn-' + (colour + ' btn-sm')),
 									$elm$html$Html$Events$onClick(
-									$author$project$Main$StartThink(part))
+									$author$project$Main$DoPause(part))
 								]),
 							_List_fromArray(
 								[
