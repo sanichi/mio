@@ -4,9 +4,10 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import Platform.Cmd exposing (batch, none)
+import Platform.Cmd exposing (none)
 import Platform.Sub
 import Ports
+import Util exposing (unique)
 import Y15
 import Y16
 import Y20
@@ -129,31 +130,31 @@ update msg model =
                 newModel =
                     newProblem year model.day
             in
-            ( newModel, batch [ getData newModel ] )
+            ( newModel, getData newModel )
 
         SelectDay day ->
             let
                 newModel =
                     newProblem model.year day
             in
-            ( newModel, batch [ getData newModel ] )
+            ( newModel, getData newModel )
 
         GotData data ->
             ( { model | data = data }, none )
 
         StartThink part ->
-            ( { model | thinks = thinking part }, batch [ startThink part ] )
+            if useRuby model.year model.day part then
+                ( { model | thinks = thinking part }, getRuby model part )
+
+            else
+                ( { model | thinks = thinking part }, startThink part )
 
         StartedThink part ->
             let
                 answer =
                     getAnswer model part model.data
             in
-            if String.startsWith "use ruby" answer then
-                ( model, useRuby model part )
-
-            else
-                ( gotAnswer part answer model, none )
+            ( gotAnswer part answer model, none )
 
         GotAnswer ( part, answer ) ->
             ( gotAnswer part answer model, none )
@@ -163,10 +164,6 @@ update msg model =
 
         HideHelp ->
             ( { model | help = False }, none )
-
-
-
--- cxxxxx
 
 
 gotAnswer : Int -> String -> Model -> Model
@@ -257,9 +254,9 @@ getData model =
     Ports.getData ( model.year, model.day )
 
 
-useRuby : Model -> Int -> Cmd Msg
-useRuby model part =
-    Ports.useRuby [ model.year, model.day, part ]
+getRuby : Model -> Int -> Cmd Msg
+getRuby model part =
+    Ports.getRuby [ model.year, model.day, part ]
 
 
 startThink : Int -> Cmd Msg
@@ -571,13 +568,14 @@ failedIndicator failedFlag =
 
 viewLinks : Model -> Html Msg
 viewLinks model =
+    let
+        links =
+            probLink model
+                :: codeLinks model
+                |> List.intersperse (text " • ")
+    in
     tr []
-        [ td [ class "text-center" ]
-            [ probLink model
-            , text " • "
-            , codeLink model
-            ]
-        ]
+        [ td [ class "text-center" ] links ]
 
 
 probLink : Model -> Html Msg
@@ -589,59 +587,63 @@ probLink model =
         day =
             model.day |> String.fromInt
 
-        scheme =
-            "https://"
-
-        domain =
-            "adventofcode.com/"
-
-        path =
-            year ++ "/day/"
-
-        file =
-            day
-
         link =
-            scheme ++ domain ++ path ++ file
+            "https://adventofcode.com/" ++ year ++ "/day/" ++ day
     in
     a [ href link, target "external" ] [ text "Problem" ]
 
 
-codeLink : Model -> Html Msg
-codeLink model =
+codeLinks : Model -> List (Html Msg)
+codeLinks model =
     let
         year =
-            model.year |> String.fromInt
+            String.fromInt model.year
 
+        day =
+            String.fromInt model.day
+
+        prefix =
+            "https://bitbucket.org/sanichi/mio/src/main/app/"
+    in
+    [ 1, 2 ]
+        |> List.map (useRuby model.year model.day)
+        |> unique
+        |> List.map
+            (\b ->
+                if b then
+                    rubyLink prefix year day
+
+                else
+                    elmLink prefix year day
+            )
+
+
+elmLink : String -> String -> String -> Html Msg
+elmLink prefix year day =
+    let
         shortYear =
             String.right 2 year
 
-        day =
-            model.day |> String.fromInt
-
         paddedDay =
-            if model.day > 9 then
+            if String.length day == 2 then
                 day
 
             else
                 "0" ++ day
 
-        scheme =
-            "https://"
-
-        domain =
-            "bitbucket.org/"
-
-        path =
-            "sanichi/mio/src/main/app/views/pages/aoc/" ++ year ++ "/"
-
-        file =
-            "Y" ++ shortYear ++ "D" ++ paddedDay ++ ".elm"
-
         link =
-            scheme ++ domain ++ path ++ file
+            prefix ++ "views/pages/aoc/" ++ year ++ "/Y" ++ shortYear ++ "D" ++ paddedDay ++ ".elm"
     in
-    a [ href link, target "external2" ] [ text "Code" ]
+    a [ href link, target "external2" ] [ text "Elm" ]
+
+
+rubyLink : String -> String -> String -> Html Msg
+rubyLink prefix year day =
+    let
+        link =
+            prefix ++ "models/aoc/y" ++ year ++ "d" ++ day ++ ".rb"
+    in
+    a [ href link, target "external2" ] [ text "Ruby" ]
 
 
 viewNote : Model -> Html Msg
@@ -805,6 +807,9 @@ speed year day part =
         "2020-17-2" ->
             1
 
+        "2020-20-2" ->
+            1
+
         "2020-22-2" ->
             1
 
@@ -821,8 +826,8 @@ speed year day part =
             0
 
 
-failed : Int -> Int -> Int -> Bool
-failed year day part =
+useRuby : Int -> Int -> Int -> Bool
+useRuby year day part =
     let
         key =
             [ year, day, part ]
@@ -830,19 +835,7 @@ failed year day part =
                 |> String.join "-"
     in
     case key of
-        "2015-12-2" ->
-            True
-
-        "2015-22-1" ->
-            True
-
-        "2015-22-2" ->
-            True
-
-        "2016-11-1" ->
-            True
-
-        "2016-11-2" ->
+        "2020-20-2" ->
             True
 
         _ ->
@@ -887,3 +880,31 @@ getNote year day =
 
         _ ->
             Nothing
+
+
+failed : Int -> Int -> Int -> Bool
+failed year day part =
+    let
+        key =
+            [ year, day, part ]
+                |> List.map String.fromInt
+                |> String.join "-"
+    in
+    case key of
+        "2015-12-2" ->
+            True
+
+        "2015-22-1" ->
+            True
+
+        "2015-22-2" ->
+            True
+
+        "2016-11-1" ->
+            True
+
+        "2016-11-2" ->
+            True
+
+        _ ->
+            False

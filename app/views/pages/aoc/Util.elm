@@ -5,6 +5,7 @@ module Util exposing
     , onlyOnePart
     , permutations
     , regex
+    , unique
     )
 
 import Regex exposing (Regex)
@@ -89,3 +90,16 @@ select s =
 
         x :: xs ->
             ( x, xs ) :: List.map (\( y, ys ) -> ( y, x :: ys )) (select xs)
+
+
+unique : List a -> List a
+unique list =
+    let
+        incUnique elem lst =
+            if List.member elem lst then
+                lst
+
+            else
+                elem :: lst
+    in
+    List.foldr incUnique [] list

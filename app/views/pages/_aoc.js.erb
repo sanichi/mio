@@ -17,7 +17,7 @@ $(function() {
       app.ports.gotData.send(data);
     });
   });
-  app.ports.useRuby.subscribe(function(ydp) {
+  app.ports.getRuby.subscribe(function(ydp) {
     $.ajax({
       url: '/ruby',
       data: {

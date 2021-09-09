@@ -9,7 +9,7 @@ port getData : ( Int, Int ) -> Cmd msg
 port startThink : Int -> Cmd msg
 
 
-port useRuby : List Int -> Cmd msg
+port getRuby : List Int -> Cmd msg
 
 
 
