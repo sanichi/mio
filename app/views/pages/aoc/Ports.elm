@@ -1,6 +1,6 @@
 port module Ports exposing (..)
 
--- Elm to JS or Elm to Elm
+-- Elm to JS
 
 
 port getData : ( Int, Int ) -> Cmd msg
