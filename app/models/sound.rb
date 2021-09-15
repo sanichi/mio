@@ -95,7 +95,7 @@ class Sound < ApplicationRecord
   def normalize_attributes
     name&.gsub!(/\s/, "")
     if note.blank?
-      note = nil
+      self.note = nil
     else
       note.lstrip!
       note.rstrip!

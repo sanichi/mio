@@ -1,8 +1,17 @@
 class SoundsController < ApplicationController
-  load_and_authorize_resource only: [:index, :show, :quick_level_update]
+  load_and_authorize_resource only: [:index, :show, :edit, :update, :quick_level_update]
 
   def index
     @sounds = Sound.search(@sounds, params, sounds_path, per_page: 10)
+  end
+
+  def update
+    if @sound.update(strong_params)
+      redirect_to @sound
+    else
+      failure @sound
+      render :edit
+    end
   end
 
   def quick_level_update

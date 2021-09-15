@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :problems
   resources :questions
   resources :sessions, only: [:create]
-  resources :sounds, only: [:index, :show] do
+  resources :sounds, only: [:index, :show, :edit, :update] do
     patch :quick_level_update, on: :member
   end
   resources :teams

@@ -1,6 +1,7 @@
 en:
   sound:
     category: Group
+    edit: Edit Note
     level: Level
     name: Name
     sounds: Sounds
