@@ -1,0 +1,10 @@
+:ruby
+  color = case level
+    when 1 then "success"
+    when 2 then "info"
+    when 3 then "secondary"
+    when 4 then "warning"
+    else        "danger"
+  end
+
+%button.btn.btn-sm{class: "btn-#{color}"}= level

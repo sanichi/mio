@@ -1,8 +1,9 @@
 en:
   sound:
+    category: Group
     level: Level
     name: Name
-
+    sounds: Sounds
     categories:
       grammar: Grammar
       kanji: Kanji

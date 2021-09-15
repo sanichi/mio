@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   resources :problems
   resources :questions
   resources :sessions, only: [:create]
+  resources :sounds, only: [:index, :show]
   resources :teams
   resources :tests, only: [:index, :update] do
     get :review, on: :collection

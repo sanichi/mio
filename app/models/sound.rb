@@ -3,7 +3,7 @@ class Sound < ApplicationRecord
   include Pageable
   include Remarkable
 
-  BASE = Rails.root + "public/audio/boutwell"
+  BASE = "audio/boutwell"
   CATEGORIES = %w/kanji grammar vocab reading patterns/
   LEVELS = (1..5).to_a
   MAX_NAME = 100
@@ -14,19 +14,35 @@ class Sound < ApplicationRecord
   validates :level, inclusion: { in: LEVELS }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
 
-  def self.search(params, path, opt={})
-    matches = case params[:order]
-    when "name"
-      order(:categorty, :name)
+  def self.search(matches, params, path, opt={})
+    case params[:order]
     when "level"
-      order(level: :desc)
+      matches = matches.order(level: :desc)
     else
-      order(updated_at: :desc)
+      matches = matches.order(:category, :name)
     end
-    if sql = cross_constraint(params[:q], %w{name note})
+    if CATEGORIES.include?(params[:category])
+      matches = matches.where(category: params[:category])
+    end
+    if LEVELS.include?(params[:level].to_i)
+      matches = matches.where(level: params[:level].to_i)
+    end
+    if sql = cross_constraint(params[:query], %w{name note})
       matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)
+  end
+
+  def short_name
+    name.sub(/\.\w+\z/, "")
+  end
+
+  def path
+    "/#{BASE}/#{category}/#{name}"
+  end
+
+  def type
+    "audio/#{name =~ /\.mp3\z/ ? 'mpeg' : 'mp4'}"
   end
 
   def note_html
@@ -45,7 +61,7 @@ class Sound < ApplicationRecord
         raise "#{spath.to_s} doesn't have any mp3s" unless sfiles.size > 0
         sfiles.each do |sfile|
           sound = Sound.create!(name: sfile.basename, category: c)
-          tpath = BASE + c
+          tpath = Rails.root + "public" + BASE + c
           tpath.mkpath unless tpath.directory?
           tfile = tpath + sound.name
           FileUtils.copy(sfile, tfile)
@@ -53,7 +69,7 @@ class Sound < ApplicationRecord
       end
     elsif Rails.env.production?
       CATEGORIES.each do |c|
-        path = BASE + c
+        path = Rails.root + "public" + BASE + c
         files = path.glob("*.mp3")
         raise "#{path.to_s} doesn't have any mp3s" unless files.size > 0
         files.each do |file|

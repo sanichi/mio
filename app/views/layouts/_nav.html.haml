@@ -21,6 +21,7 @@
               %li= link_to t("wk.example.examples"),     wk_examples_path   if can?(:read, Wk::Example)
               %li= link_to t("wk.group.groups"),         wk_groups_path     if can?(:read, Wk::Group)
               %li= link_to t("place.places"),            places_path        if can?(:read, Place)
+              %li= link_to t("sound.sounds"),            sounds_path        if can?(:read, Sound)
               %li= link_to t("pages.prefectures.name"),  prefectures_path   if can?(:prefectures, :page)
               %li= link_to t("test.tests"),              tests_path         if can?(:read, Test)
               %li= link_to t("wk.verb_pair.verb_pairs"), wk_verb_pairs_path if can?(:read, Wk::VerbPair)

@@ -1,0 +1,30 @@
+:ruby
+  lo = Layout.new(
+    xl: [2,2,2,2],
+    md: [3,3,2,2],
+    xs: [[4,4],[3,3]],
+  ).to_a
+  inputs = [
+    [:query,    t("query"),          :text,   lo[0], placeholder: t("search"), autofocus: true],
+    [:category, t("sound.category"), :select, lo[1], menu: sound_category_menu(params[:category])],
+    [:level,    t("sound.level"),    :select, lo[2], menu: sound_level_menu(params[:level])],
+    [:order,    t("order"),          :select, lo[3], menu: sound_order_menu(params[:order])],
+  ]
+
+= render "utils/title", key: "sound.sounds"
+
+%section
+  .header.text-center
+    %h3= t("sound.sounds")
+  .body
+    = render "utils/search/form", index: sounds_path, inputs: inputs
+    .row
+      %div{class: center(md: 10, lg: 8, xl: 6)}
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th= t("sound.category")
+              %th= t("sound.name")
+              %th.text-center= t("sound.level")
+          %tbody{id: "results"}
+            = render "results", sounds: @sounds
