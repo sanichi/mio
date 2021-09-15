@@ -33,6 +33,13 @@ class Sound < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def update_level!(delta)
+    if delta == 1 || delta == -1
+      new_level = level + delta
+      update_column(:level, new_level) if LEVELS.include?(new_level)
+    end
+  end
+
   def short_name
     name.sub(/\.\w+\z/, "")
   end

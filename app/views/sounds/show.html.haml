@@ -1,11 +1,15 @@
 = render "utils/title", text: @sound.short_name
 
+- content_for :javascript do
+  = render partial: "level_update", formats: :js, locals: { id: @sound.id }
+
 .row
   %div{class: center(lg: 10, xx: 8)}
     %section
       .header.text-center
         %h5.d-inline= @sound.short_name
-        = render "level", level: @sound.level
+        %span#level
+          = render "level", level: @sound.level
       .body
         %audio.d-table.ms-auto.me-auto{controls: "true"}
           %source{src: @sound.path, type: @sound.type}
