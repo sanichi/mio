@@ -1,0 +1,11 @@
+en:
+  sound:
+    level: Level
+    name: Name
+
+    categories:
+      grammar: Grammar
+      kanji: Kanji
+      patterns: Sentence Patterns
+      reading: Reading
+      vocab: Vocabulary
