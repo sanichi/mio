@@ -2,6 +2,7 @@ class Sound < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include Vocabable
 
   BASE = "audio/boutwell"
   CATEGORIES = %w/kanji grammar vocab reading patterns/
@@ -53,7 +54,7 @@ class Sound < ApplicationRecord
   end
 
   def note_html
-    to_html(note)
+    to_html(link_vocabs(note))
   end
 
   def self.init
