@@ -25,6 +25,7 @@
             %tr
               %th= t("sound.category")
               %th= t("sound.name")
+              %th.text-center= t("sound.length")
               %th.text-center= t("sound.level")
           %tbody{id: "results"}
             = render "results", sounds: @sounds

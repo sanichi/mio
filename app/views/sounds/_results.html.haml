@@ -2,5 +2,6 @@
   %tr
     %td= t("sound.categories.#{sound.category}")
     %td= link_to sound.short_name, sound
+    %td.text-center= sound.length
     %td.text-center= render "level", level: sound.level
-= render "utils/pagination_links", pager: sounds, columns: 3
+= render "utils/pagination_links", pager: sounds, columns: 4

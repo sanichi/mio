@@ -2,6 +2,7 @@ en:
   sound:
     category: Group
     edit: Edit Note
+    length: Length
     level: Level
     name: Name
     sounds: Sounds

@@ -14,6 +14,7 @@ class Sound < ApplicationRecord
   validates :category, inclusion: { in: CATEGORIES }
   validates :level, inclusion: { in: LEVELS }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
+  validates :length, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
   def self.search(matches, params, path, opt={})
     case params[:order]
@@ -47,6 +48,10 @@ class Sound < ApplicationRecord
 
   def path
     "/#{BASE}/#{category}/#{name}"
+  end
+
+  def file
+    Rails.root + "public" + BASE + category + name
   end
 
   def type
