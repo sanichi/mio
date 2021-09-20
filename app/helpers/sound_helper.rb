@@ -1,6 +1,6 @@
 module SoundHelper
   def sound_order_menu(selected)
-    opts = %w/name level/.map { |o| [t("sound.#{o}"), o] }
+    opts = %w/level name/.map { |o| [t("sound.#{o}"), o] }
     options_for_select(opts, selected)
   end
 

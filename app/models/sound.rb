@@ -18,10 +18,10 @@ class Sound < ApplicationRecord
 
   def self.search(matches, params, path, opt={})
     case params[:order]
-    when "level"
-      matches = matches.order(level: :desc, category: :asc, name: :asc)
-    else
+    when "name"
       matches = matches.order(:category, :name)
+    else
+      matches = matches.order(level: :desc, category: :asc, name: :asc)
     end
     if CATEGORIES.include?(params[:category])
       matches = matches.where(category: params[:category])
