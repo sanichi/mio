@@ -5,6 +5,7 @@ en:
     length: Length
     level: Level
     name: Name
+    ordinal: Ordinal
     sounds: Sounds
     categories:
       grammar: Grammar

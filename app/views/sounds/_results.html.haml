@@ -1,5 +1,6 @@
 - sounds.matches.each do |sound|
   %tr
+    %td.text-center= sound.ordinal
     %td= t("sound.categories.#{sound.category}")
     %td= link_to sound.short_name, sound
     %td.text-center= sound.length

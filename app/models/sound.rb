@@ -15,13 +15,16 @@ class Sound < ApplicationRecord
   validates :level, inclusion: { in: LEVELS }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { scope: :category }
   validates :length, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
+  validates :ordinal, numericality: { integer_only: true, greater_than: 0 }
 
   def self.search(matches, params, path, opt={})
     case params[:order]
     when "name"
       matches = matches.order(:category, :name)
+    when "ordinal"
+      matches = matches.order(:ordinal)
     else
-      matches = matches.order(level: :desc, category: :asc, name: :asc)
+      matches = matches.order(level: :desc, ordinal: :asc)
     end
     if CATEGORIES.include?(params[:category])
       matches = matches.where(category: params[:category])
