@@ -5,7 +5,7 @@ class Sound < ApplicationRecord
   include Vocabable
 
   BASE = "audio/boutwell"
-  CATEGORIES = %w/kanji grammar vocab reading patterns/
+  CATEGORIES = %w/grammar kanji patterns reading vocab/
   LEVELS = (1..5).to_a
   MAX_NAME = 100
 
