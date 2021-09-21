@@ -7,9 +7,13 @@
   %div{class: center(lg: 10, xx: 8)}
     %section
       .header.text-center
+        - if @prev
+          = link_to t("symbol.prev"), @prev, class: "float-start"
         %h5.d-inline= @sound.short_name
         %span.ms-2#level
           = render "level", level: @sound.level
+        - if @next
+          = link_to t("symbol.next"), @next, class: "float-end"
       .body
         %audio.d-table.ms-auto.me-auto{controls: "true"}
           %source{src: @sound.path, type: @sound.type}

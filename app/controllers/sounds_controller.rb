@@ -5,6 +5,11 @@ class SoundsController < ApplicationController
     @sounds = Sound.search(@sounds, params, sounds_path, per_page: 10)
   end
 
+  def show
+    @prev = Sound.find_by(ordinal: @sound.ordinal - 1)
+    @next = Sound.find_by(ordinal: @sound.ordinal + 1)
+  end
+
   def update
     if @sound.update(strong_params)
       redirect_to @sound
