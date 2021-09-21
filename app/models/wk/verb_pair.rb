@@ -47,6 +47,10 @@ module Wk
     end
 
     def okay?
+      return true if transitive.characters == "汚す" && intransitive.characters == "汚れる"
+      return true if transitive.characters == "出す" && intransitive.characters == "出る"
+      return true if transitive.characters == "消す" && intransitive.characters == "消える"
+      return true if transitive.characters == "入れる" && intransitive.characters == "入る"
       transitive.reading.delete_suffix(transitive_suffix) == intransitive.reading.delete_suffix(intransitive_suffix)
     end
 
@@ -101,6 +105,7 @@ module Wk
               cats[pair.category] += 1
             else
               cats["rejected"] += 1
+              # puts "rejected #{tv.characters} #{iv.characters}"
             end
           end
         end
