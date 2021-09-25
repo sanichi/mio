@@ -58,8 +58,19 @@ changeUnits units model =
 changeStart : Int -> Model -> Model
 changeStart start model =
     let
+        lastCross =
+            model.cross
+
+        dummyCross =
+            case List.head model.data of
+                Just datum ->
+                    { lastCross | rata = datum.rata }
+
+                Nothing ->
+                    lastCross
+
         transform =
-            Transform.fromData model.data start
+            Transform.fromData (dummyCross :: model.data) start
 
         cross =
             Transform.restrict transform model.cross

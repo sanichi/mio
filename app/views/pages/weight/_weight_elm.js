@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.Q.I === region.al.I)
+	if (region.R.I === region.al.I)
 	{
-		return 'on line ' + region.Q.I;
+		return 'on line ' + region.R.I;
 	}
-	return 'on lines ' + region.Q.I + ' through ' + region.al.I;
+	return 'on lines ' + region.R.I + ' through ' + region.al.I;
 }
 
 
@@ -5409,7 +5409,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F5(
 	function (debug, dates, kilos, start, units) {
-		return {a1: dates, ak: debug, bb: kilos, Q: start, R: units};
+		return {a1: dates, ak: debug, bb: kilos, R: start, S: units};
 	});
 var $author$project$Preferences$default = A5($author$project$Preferences$Preferences, false, _List_Nil, _List_Nil, 3, 'kg');
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
@@ -5467,11 +5467,11 @@ var $author$project$Preferences$flagsDecoder = A6(
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$float))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.Q,
+		$author$project$Preferences$default.R,
 		A2($elm$json$Json$Decode$field, 'start', $elm$json$Json$Decode$int)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.R,
+		$author$project$Preferences$default.S,
 		A2($elm$json$Json$Decode$field, 'units', $elm$json$Json$Decode$string)));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
@@ -5490,11 +5490,11 @@ var $author$project$Preferences$decode = function (value) {
 };
 var $author$project$Model$Model = F6(
 	function (data, start, units, transform, cross, debug) {
-		return {B: cross, U: data, ak: debug, Q: start, L: transform, R: units};
+		return {w: cross, O: data, ak: debug, R: start, L: transform, S: units};
 	});
 var $author$project$Data$Datum = F3(
 	function (kilo, rata, even) {
-		return {a4: even, p: kilo, P: rata};
+		return {a4: even, p: kilo, Q: rata};
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -6385,7 +6385,7 @@ var $author$project$Data$combine = F2(
 	});
 var $author$project$Transform$Transform = F6(
 	function (dLow, dHgh, dFac, kLow, kHgh, kFac) {
-		return {S: dFac, T: dHgh, C: dLow, W: kFac, X: kHgh, E: kLow};
+		return {T: dFac, U: dHgh, C: dLow, W: kFac, X: kHgh, E: kLow};
 	});
 var $elm$core$Basics$clamp = F3(
 	function (low, high, number) {
@@ -6408,7 +6408,7 @@ var $author$project$Data$dateMax = function (data) {
 	return 1 + A2(
 		$elm$core$Maybe$withDefault,
 		$author$project$Data$defaultMax,
-		$elm$core$List$head(data)).P;
+		$elm$core$List$head(data)).Q;
 };
 var $author$project$Data$defaultMin = function () {
 	var rata = $justinmimbs$date$Date$toRataDie(
@@ -6417,7 +6417,7 @@ var $author$project$Data$defaultMin = function () {
 }();
 var $author$project$Data$dateMin = F2(
 	function (data, start) {
-		return (!start) ? $author$project$Data$defaultMin.P : function (x) {
+		return (!start) ? $author$project$Data$defaultMin.Q : function (x) {
 			return x - (30 * start);
 		}(
 			$author$project$Data$dateMax(data));
@@ -6434,7 +6434,7 @@ var $author$project$Data$limits = F3(
 			if (data.b) {
 				var d = data.a;
 				var rest = data.b;
-				if (_Utils_cmp(d.P, cutoff) < 0) {
+				if (_Utils_cmp(d.Q, cutoff) < 0) {
 					return sofar;
 				} else {
 					var minKilo = function () {
@@ -6544,7 +6544,7 @@ var $author$project$Transform$i2d = F2(
 	function (t, x) {
 		return t.C + $elm$core$Basics$round(
 			function (z) {
-				return z / t.S;
+				return z / t.T;
 			}(x));
 	});
 var $author$project$Transform$j2k = F2(
@@ -6576,8 +6576,8 @@ var $author$project$Model$startCross = F2(
 		}
 	});
 var $author$project$Model$init = function (preferences) {
-	var units = $author$project$Units$fromString(preferences.R);
-	var start = $author$project$Start$fromInt(preferences.Q);
+	var units = $author$project$Units$fromString(preferences.S);
+	var start = $author$project$Start$fromInt(preferences.R);
 	var debug = preferences.ak;
 	var data = A2($author$project$Data$combine, preferences.bb, preferences.a1);
 	var transform = A2($author$project$Transform$fromData, data, start);
@@ -6650,7 +6650,7 @@ var $author$project$Weight$subscriptions = $elm$core$Platform$Sub$batch(
 var $author$project$Transform$d2i = F2(
 	function (t, d) {
 		return $elm$core$Basics$round(
-			t.S * function (x) {
+			t.T * function (x) {
 				return x - t.C;
 			}(d));
 	});
@@ -6664,7 +6664,7 @@ var $author$project$Transform$k2j = F2(
 var $author$project$Transform$transform = F2(
 	function (t, d) {
 		return _Utils_Tuple2(
-			A2($author$project$Transform$d2i, t, d.P),
+			A2($author$project$Transform$d2i, t, d.Q),
 			A2($author$project$Transform$k2j, t, d.p));
 	});
 var $author$project$Transform$restrict = F2(
@@ -6687,17 +6687,32 @@ var $author$project$Model$changeCross = F2(
 			A2($author$project$Transform$reverse, model.L, point));
 		return _Utils_update(
 			model,
-			{B: cross});
+			{w: cross});
 	});
 var $author$project$Model$changeStart = F2(
 	function (start, model) {
-		var transform = A2($author$project$Transform$fromData, model.U, start);
-		var cross = A2($author$project$Transform$restrict, transform, model.B);
+		var lastCross = model.w;
+		var dummyCross = function () {
+			var _v0 = $elm$core$List$head(model.O);
+			if (!_v0.$) {
+				var datum = _v0.a;
+				return _Utils_update(
+					lastCross,
+					{Q: datum.Q});
+			} else {
+				return lastCross;
+			}
+		}();
+		var transform = A2(
+			$author$project$Transform$fromData,
+			A2($elm$core$List$cons, dummyCross, model.O),
+			start);
+		var cross = A2($author$project$Transform$restrict, transform, model.w);
 		return _Utils_update(
 			model,
 			{
-				B: cross,
-				Q: $author$project$Start$fromInt(start),
+				w: cross,
+				R: $author$project$Start$fromInt(start),
 				L: transform
 			});
 	});
@@ -6706,7 +6721,7 @@ var $author$project$Model$changeUnits = F2(
 		return _Utils_update(
 			model,
 			{
-				R: $author$project$Units$fromString(units)
+				S: $author$project$Units$fromString(units)
 			});
 	});
 var $author$project$Model$updateCross = F2(
@@ -6721,11 +6736,11 @@ var $author$project$Model$updateCross = F2(
 			function (c) {
 				return _Utils_update(
 					c,
-					{p: c.p + dk, P: c.P + dd});
-			}(model.B));
+					{p: c.p + dk, Q: c.Q + dd});
+			}(model.w));
 		return _Utils_update(
 			model,
-			{B: cross});
+			{w: cross});
 	});
 var $author$project$Weight$update = F2(
 	function (msg, model) {
@@ -6793,7 +6808,7 @@ var $author$project$View$y2 = function (i) {
 		$elm$core$String$fromInt(i));
 };
 var $author$project$View$cross = function (m) {
-	var _v0 = A2($author$project$Transform$transform, m.L, m.B);
+	var _v0 = A2($author$project$Transform$transform, m.L, m.w);
 	var x = _v0.a;
 	var y = _v0.b;
 	return A2(
@@ -6845,9 +6860,9 @@ var $author$project$Model$debugMsg = function (model) {
 		_List_fromArray(
 			[
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.U)),
-				$author$project$Units$toString(model.R),
-				$elm$core$String$fromInt(model.Q)
+				$elm$core$List$length(model.O)),
+				$author$project$Units$toString(model.S),
+				$elm$core$String$fromInt(model.R)
 			]));
 };
 var $author$project$View$debugTextX = ($author$project$View$width / 2) | 0;
@@ -7230,7 +7245,7 @@ var $justinmimbs$date$Date$formatField = F4(
 							$elm$core$String$fromInt(
 								$justinmimbs$date$Date$monthNumber(date)));
 					case 3:
-						return language.O(
+						return language.P(
 							$justinmimbs$date$Date$month(date));
 					case 4:
 						return language.Z(
@@ -7239,7 +7254,7 @@ var $justinmimbs$date$Date$formatField = F4(
 						return A2(
 							$elm$core$String$left,
 							1,
-							language.O(
+							language.P(
 								$justinmimbs$date$Date$month(date)));
 					default:
 						return '';
@@ -7302,13 +7317,13 @@ var $justinmimbs$date$Date$formatField = F4(
 			case 'E':
 				switch (length) {
 					case 1:
-						return language.A(
+						return language.B(
 							$justinmimbs$date$Date$weekday(date));
 					case 2:
-						return language.A(
+						return language.B(
 							$justinmimbs$date$Date$weekday(date));
 					case 3:
-						return language.A(
+						return language.B(
 							$justinmimbs$date$Date$weekday(date));
 					case 4:
 						return language.ae(
@@ -7317,13 +7332,13 @@ var $justinmimbs$date$Date$formatField = F4(
 						return A2(
 							$elm$core$String$left,
 							1,
-							language.A(
+							language.B(
 								$justinmimbs$date$Date$weekday(date)));
 					case 6:
 						return A2(
 							$elm$core$String$left,
 							2,
-							language.A(
+							language.B(
 								$justinmimbs$date$Date$weekday(date)));
 					default:
 						return '';
@@ -7636,12 +7651,12 @@ var $justinmimbs$date$Date$weekdayToName = function (wd) {
 var $justinmimbs$date$Date$language_en = {
 	V: $justinmimbs$date$Date$withOrdinalSuffix,
 	Z: $justinmimbs$date$Date$monthToName,
-	O: A2(
+	P: A2(
 		$elm$core$Basics$composeR,
 		$justinmimbs$date$Date$monthToName,
 		$elm$core$String$left(3)),
 	ae: $justinmimbs$date$Date$weekdayToName,
-	A: A2(
+	B: A2(
 		$elm$core$Basics$composeR,
 		$justinmimbs$date$Date$weekdayToName,
 		$elm$core$String$left(3))
@@ -7698,8 +7713,8 @@ var $author$project$Units$format2 = F2(
 var $author$project$View$infoTextX = ($author$project$View$width / 2) | 0;
 var $author$project$View$infoTextY = -10;
 var $author$project$View$info = function (m) {
-	var weight = A2($author$project$Units$format2, m.R, m.B.p);
-	var date = $author$project$Data$dateFormat(m.B.P);
+	var weight = A2($author$project$Units$format2, m.S, m.w.p);
+	var date = $author$project$Data$dateFormat(m.w.Q);
 	return A2(
 		$elm$svg$Svg$text_,
 		_List_fromArray(
@@ -7751,7 +7766,7 @@ var $author$project$Transform$dlevels = F5(
 	function (t, du, dn, l, ls) {
 		dlevels:
 		while (true) {
-			if (_Utils_cmp(l, t.T) > 0) {
+			if (_Utils_cmp(l, t.U) > 0) {
 				return ls;
 			} else {
 				var nl = $justinmimbs$date$Date$toRataDie(
@@ -7804,7 +7819,7 @@ var $author$project$Transform$dlevels = F5(
 		}
 	});
 var $author$project$Transform$levelsd = function (t) {
-	var days = t.T - t.C;
+	var days = t.U - t.C;
 	var _v0 = (days <= 31) ? _Utils_Tuple2(1, 2) : ((days <= 62) ? _Utils_Tuple2(2, 2) : ((days <= 125) ? _Utils_Tuple2(1, 1) : ((days <= 250) ? _Utils_Tuple2(2, 1) : ((days <= 400) ? _Utils_Tuple2(4, 1) : ((days <= 800) ? _Utils_Tuple2(8, 1) : _Utils_Tuple2(1, 0))))));
 	var dn = _v0.a;
 	var du = _v0.b;
@@ -7930,7 +7945,7 @@ var $author$project$Transform$levelsk = F2(
 		return A5($author$project$Transform$jlevels, t, u, d, l, _List_Nil);
 	});
 var $author$project$View$levelsk = function (m) {
-	var levels = A2($author$project$Transform$levelsk, m.L, m.R);
+	var levels = A2($author$project$Transform$levelsk, m.L, m.S);
 	var level2line = function (l) {
 		return A2(
 			$elm$svg$Svg$line,
@@ -8019,18 +8034,18 @@ var $author$project$View$points = function (m) {
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return d.a4 && (_Utils_cmp(d.P, t.C) > -1);
+				return d.a4 && (_Utils_cmp(d.Q, t.C) > -1);
 			},
-			m.U));
+			m.O));
 	var morning = A2(
 		$elm$core$List$map,
 		d2p,
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return (!d.a4) && (_Utils_cmp(d.P, t.C) > -1);
+				return (!d.a4) && (_Utils_cmp(d.Q, t.C) > -1);
 			},
-			m.U));
+			m.O));
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
