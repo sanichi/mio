@@ -7964,7 +7964,7 @@ var $author$project$View$levelsk = function (m) {
 			$elm$svg$Svg$text_,
 			_List_fromArray(
 				[
-					$author$project$View$xx(-8),
+					$author$project$View$xx(-7),
 					$author$project$View$yy(l.bp + 5),
 					$author$project$View$cc('ylabel')
 				]),

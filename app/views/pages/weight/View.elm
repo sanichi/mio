@@ -116,7 +116,7 @@ levelsk m =
             List.map level2line levels
 
         level2label =
-            \l -> S.text_ [ xx -8, yy (l.val + 5), cc "ylabel" ] [ S.text l.label ]
+            \l -> S.text_ [ xx -7, yy (l.val + 5), cc "ylabel" ] [ S.text l.label ]
 
         labels =
             List.map level2label levels
