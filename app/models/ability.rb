@@ -10,6 +10,8 @@ class Ability
     if user.family?
       can [:read, :tree, :checks, :match, :relative], Person
       can :read, [Picture, Partnership]
+      can :deeds, :page
+
     end
 
     if user.chess?
