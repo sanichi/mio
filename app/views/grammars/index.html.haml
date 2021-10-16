@@ -1,0 +1,32 @@
+:ruby
+  lo = Layout.new(
+    xl: [2,2,2],
+    md: [3,2,3],
+    xs: [4,2,4],
+  ).to_a
+  inputs = [
+    [:query, t("query"),         :text,   lo[0], placeholder: t("search"), autofocus: true],
+    [:level, t("grammar.level"), :select, lo[1], menu: grammar_level_menu(params[:level])],
+    [:order, t("order"),         :select, lo[2], menu: grammar_order_menu(params[:order])],
+  ]
+
+= render "utils/title", key: "grammar.grammar"
+
+%section
+  .header.text-center
+    %h3= t("grammar.grammar")
+  .body
+    = render "utils/search/form", index: grammars_path, inputs: inputs
+    .row
+      %div{class: center(md: 10, lg: 8, xl: 6)}
+        %table{class: "table table-bordered table-sm mt-3"}
+          %thead
+            %tr
+              %th= t("grammar.title")
+              %th.text-center= t("grammar.examples")
+              %th.text-center= t("grammar.level")
+          %tbody{id: "results"}
+            = render "results", grammars: @grammars
+  - if can?(:create, Grammar)
+    .footer
+      = link_to t("grammar.new"), new_grammar_path, class: "btn btn-primary btn-sm"

@@ -1,0 +1,6 @@
+- grammars.matches.each do |grammar|
+  %tr
+    %td= link_to grammar.title, grammar
+    %td.text-center= grammar.examples.size
+    %td.text-center= render "level", level: grammar.level
+= render "utils/pagination_links", pager: grammars, columns: 3

@@ -19,6 +19,7 @@
               %li= link_to t("misa.misas"),              misas_path         if can?(:read, Misa)
               %li= link_to t("note.notes"),              notes_path         if can?(:read, Note)
               %li= link_to t("wk.example.examples"),     wk_examples_path   if can?(:read, Wk::Example)
+              %li= link_to t("grammar.grammar"),         grammars_path      if can?(:read, Grammar)
               %li= link_to t("wk.group.groups"),         wk_groups_path     if can?(:read, Wk::Group)
               %li= link_to t("place.places"),            places_path        if can?(:read, Place)
               %li= link_to t("sound.sounds"),            sounds_path        if can?(:read, Sound)

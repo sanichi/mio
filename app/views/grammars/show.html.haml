@@ -1,0 +1,15 @@
+= render "utils/title", text: @grammar.title
+
+.row
+  %div{class: center(lg: 10, xx: 8)}
+    %section
+      .header
+        %h5.d-inline= @grammar.title
+      .body
+        %article= @grammar.note_html
+      .footer
+        = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
+        - if can?(:edit, @grammar)
+          = link_to t("edit"), edit_grammar_path(@grammar), class: "btn btn-primary btn-sm"
+        - if can?(:delete, @grammar)
+          = link_to t("delete"), @grammar, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats
+  resources :grammars
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
