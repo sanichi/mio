@@ -42,7 +42,9 @@ class Grammar < ApplicationRecord
   end
 
   def note_html
-    to_html(link_vocabs(note))
+    markdown = note || ""
+    markdown += "Regexp: `#{regexp}`\n\n" if regexp.present?
+    to_html(link_vocabs(markdown))
   end
 
   private
