@@ -1,0 +1,31 @@
+var id = <%= id %>;
+
+$(function() {
+  $(window).keydown(function(e) {
+    var delta = 0;
+    switch (e.keyCode) {
+      case 72: // h
+      case 74: // j
+      case 37: // left arrow
+      case 40: // down arrow
+        e.preventDefault(); // otherwise down arrow may scroll page
+        delta = 1;
+        break;
+      case 76: // l
+      case 75: // k
+      case 39: // right arrow
+      case 38: // up arrow
+        e.preventDefault(); // otherwise up arrow may scroll page
+        delta = -1;
+        break;
+    }
+    if (delta != 0) {
+      $.ajax({
+        url: '/grammars/' + id + '/quick_level_update',
+        type: 'patch',
+        data: { delta: delta },
+        dataType: 'script'
+      });
+    }
+  });
+});

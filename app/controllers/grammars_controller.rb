@@ -28,6 +28,10 @@ class GrammarsController < ApplicationController
     redirect_to grammars_path
   end
 
+  def quick_level_update
+    @grammar.update_level!(params[:delta].to_i)
+  end
+
   private
 
   def resource_params

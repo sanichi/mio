@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   resources :expenses, except: [:show]
   resources :favourites
   resources :flats
-  resources :grammars
+  resources :grammars do
+    patch :quick_level_update, on: :member
+  end
   resources :incomes, except: [:show] do
     get :graph, on: :collection
   end
