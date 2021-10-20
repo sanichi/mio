@@ -28,6 +28,13 @@ class GrammarsController < ApplicationController
     redirect_to grammars_path
   end
 
+  def show
+    if @grammar
+      @next = Grammar.find_by(id: @grammar.id + 1)
+      @prev = Grammar.find_by(id: @grammar.id - 1)
+    end
+  end
+
   def quick_level_update
     @grammar.update_level!(params[:delta].to_i)
   end

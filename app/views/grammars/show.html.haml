@@ -8,8 +8,13 @@
     %section
       .header
         %h5.d-inline= @grammar.title
-        %span.float-end#level
-          = render "level", level: @grammar.level
+        .float-end
+          - if @prev
+            = link_to t("symbol.prev"), @prev
+          %span#level
+            = render "level", level: @grammar.level
+          - if @next
+            = link_to t("symbol.next"), @next
       .body
         %article= @grammar.note_html
       .footer
