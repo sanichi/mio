@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :flats
   resources :grammars do
     patch :quick_level_update, on: :member
+    delete :remove_example, on: :member
   end
   resources :incomes, except: [:show] do
     get :graph, on: :collection

@@ -17,6 +17,19 @@
             = link_to t("symbol.next"), @next
       .body
         %article= @grammar.note_html
+        - unless @examples.empty?
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("wk.example.japanese")
+                %th= t("wk.example.english")
+                %th
+            %tbody{id: "results"}
+              - @examples.each do |example|
+                %tr{id: "example-#{example.id}"}
+                  %td= example.japanese_html
+                  %td= example.english
+                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, data: { confirm: t("sure") }, class: "btn btn-sm btn-danger"
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
         - if can?(:edit, @grammar)

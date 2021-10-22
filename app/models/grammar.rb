@@ -9,6 +9,7 @@ class Grammar < ApplicationRecord
   MAX_REGEXP = 30
 
   before_validation :normalize_attributes
+  after_save :reset_examples_on_regexp_change
 
   validates :level, inclusion: { in: LEVELS }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
@@ -41,6 +42,21 @@ class Grammar < ApplicationRecord
     end
   end
 
+  def update_examples
+    if regexp.present?
+      last_example = Wk::Example.maximum(:id).to_i
+      if last_example_checked < last_example
+        re = Regexp.new(regexp)
+        new_examples = Wk::Example.where("id > #{last_example_checked}").filter_map do |e|
+          e.id if e.japanese.match?(re)
+        end
+        update_column(:examples, examples.concat(new_examples)) unless new_examples.empty?
+        update_column(:last_example_checked, last_example)
+      end
+    end
+    Wk::Example.where(id: examples).includes([:vocabs]).to_a
+  end
+
   def note_html
     extra = regexp.present? ? "Regexp: `#{regexp}`\n\n" : ""
     markdown = (note || "").prepend(extra)
@@ -67,6 +83,13 @@ class Grammar < ApplicationRecord
       Regexp.new(regexp)
     rescue RegexpError
       errors.add(:regexp, "invalid")
+    end
+  end
+
+  def reset_examples_on_regexp_change
+    if regexp_previously_changed?
+      update_column(:examples, []) unless examples.empty?
+      update_column(:last_example_checked, 0) unless last_example_checked == 0
     end
   end
 end

@@ -30,6 +30,7 @@ class GrammarsController < ApplicationController
 
   def show
     if @grammar
+      @examples = @grammar.update_examples
       @next = Grammar.find_by(id: @grammar.id + 1)
       @prev = Grammar.find_by(id: @grammar.id - 1)
     end
@@ -37,6 +38,11 @@ class GrammarsController < ApplicationController
 
   def quick_level_update
     @grammar.update_level!(params[:delta].to_i)
+  end
+
+  def remove_example
+    @example_id = params[:example_id].to_i
+    @grammar.update_column(:examples, @grammar.examples.delete_if{ |e| e == @example_id })
   end
 
   private
