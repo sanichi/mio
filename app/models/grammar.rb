@@ -6,7 +6,7 @@ class Grammar < ApplicationRecord
 
   LEVELS = (1..5).to_a
   MAX_TITLE = 100
-  MAX_REGEXP = 30
+  MAX_REGEXP = 50
 
   before_validation :normalize_attributes
   after_save :reset_examples_on_regexp_change
