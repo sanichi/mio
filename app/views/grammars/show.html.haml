@@ -29,7 +29,7 @@
                 %tr{id: "example-#{example.id}"}
                   %td= example.japanese_html
                   %td= example.english
-                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-sm btn-danger"
+                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-sm btn-danger btn-dimmed"
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
         = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success btn-sm"
