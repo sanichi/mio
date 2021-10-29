@@ -137,11 +137,11 @@ module Wk
               end
             else
               # known current problems:
-              # TODO: 両腕, 8715
-              # TODO: 早口, 3429
-              # TODO: 少女, 7518
+              # Okay: 両腕, 8715
+              # Okay: 早口, 3429
+              # Okay: 少女, 7518
               # here we want to make sure these are the only ones
-              check(wk_id, "unexpected problem with readings for #{wk_id}") { |v| [8715, 3439, 7518].include?(v) }
+              check(wk_id, "unexpected problem with readings for #{wk_id}") { |v| [].include?(v) }
               stats["skipped known problems"] += 1
             end
           end
@@ -173,7 +173,7 @@ module Wk
         extra[key] = "(#{new_wk_ids.sort.join(',')})".truncate(max_extra)
       end
       if days.nil? && old_wk_ids.size > 0
-        key = "DB vocabs not in WK"
+        key = "DB vocabs no longer in WK"
         stats[key] = old_wk_ids.size
         extra[key] = "(#{old_wk_ids.sort.join(',')})".truncate(max_extra)
       end

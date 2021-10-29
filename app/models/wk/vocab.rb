@@ -168,6 +168,7 @@ module Wk
     def self.update(days=nil)
       updates = 0
       creates = 0
+      old_wk_ids = Vocab.pluck(:wk_id)
 
       url, since = start_url("vocabulary", days)
       puts
@@ -253,6 +254,7 @@ module Wk
             vocab.save!
             creates += 1
           else
+            old_wk_ids.delete(wk_id)
             changes = vocab.changes
             updates += 1 if vocab.update_performed?(changes)
           end
@@ -261,6 +263,9 @@ module Wk
 
       puts "updates: #{updates}"
       puts "creates: #{creates}"
+      if days.nil?
+        puts "DB vocabs no longer in WK #{old_wk_ids.size}: #{old_wk_ids.sort.join(',')}"
+      end
     end
 
     def update_performed?(changes)

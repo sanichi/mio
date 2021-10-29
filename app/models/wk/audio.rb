@@ -1,7 +1,7 @@
 module Wk
   class Audio < ActiveRecord::Base
     MAX_FILE = 64
-    DEFAULT_BASE = "https://cdn.wanikani.com/audios/"
+    DEFAULT_BASE = "https://files.wanikani.com/"
 
     belongs_to :reading
 
