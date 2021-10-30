@@ -4,7 +4,7 @@
   %div{class: center(lg: 10, xl: 8, xx: 6)}
     %section
       .header.text-center
-        %h1= @radical.character_name(linked: true)
+        %h1{class: @radical.hidden ? 'hidden' : ''}= @radical.character_name(linked: true)
       .body
         %table{class: "table table-bordered"}
           %tbody

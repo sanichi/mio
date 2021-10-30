@@ -69,10 +69,13 @@ module Wk
 
           data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
 
+          check(data, "#{context} doesn't have a hidden field") { |v| v.has_key?("hidden_at") }
+          radical.hidden = !!data["hidden_at"]
           meanings = check(data["meanings"], "#{context} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
           meanings.keep_if { |m| m.is_a?(Hash) && m["primary"] == true }
           check(meanings, "#{context} doesn't have any primary meanings") { |v| v.size > 0 }
           name = check(meanings[0]["meaning"], "#{context} first meaning has no name") { |v| v.is_a?(String) && v.present? }
+          name += "-h" if radical.hidden # otherwise name is not unique for at least one hidden radical
           radical.name = check(name, "#{context} name is too long (#{name.length})") { |v| v.length <= MAX_NAME }
           context[-1,1] = ", #{radical.name})"
 
@@ -119,6 +122,7 @@ module Wk
       changes = self.changes
 
       puts "radical #{wk_id}:"
+      show_change(changes, "hidden")
       show_change(changes, "name")
       show_change(changes, "character")
       show_change(changes, "level")

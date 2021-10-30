@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_16_104326) do
+ActiveRecord::Schema.define(version: 2021_10_30_143116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -404,6 +404,7 @@ ActiveRecord::Schema.define(version: 2021_10_16_104326) do
     t.string "name", limit: 32
     t.string "character", limit: 1
     t.date "last_updated"
+    t.boolean "hidden", default: false
     t.index ["wk_id"], name: "index_wk_radicals_on_wk_id", unique: true
   end
 
