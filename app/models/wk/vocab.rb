@@ -297,6 +297,99 @@ module Wk
       end
     end
 
+    # bin/rails r 'Wk::Vocab.subject(3440)' 足りない
+    # bin/rails r 'Wk::Vocab.subject(3359)' 悪女 (hidden)
+    def self.subject(wk_id)
+      puts "wk vocab id.. #{wk_id}"
+      begin
+        data = get_subject("vocabulary", wk_id)
+
+        # Hidden or not.
+        check(data, "doesn't have a hidden_at field") { |v| v.has_key?("hidden_at") }
+        hidden = !!data["hidden_at"]
+
+        # Characters
+        characters = check(data["characters"], "doesn't have valid characters") { |v| v.is_a?(String) && v.present? && v.length <= MAX_CHARACTERS }
+
+        # Level
+        level = check(data["level"], "doesn't have a valid level") { |v| v.is_a?(Integer) && v > 0 && v <= MAX_LEVEL }
+
+        # Meanings
+        meanings = check(data["meanings"], "doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
+        primary = []
+        secondary = []
+        meanings.each do |m|
+          if m.is_a?(Hash) && m["meaning"].is_a?(String) && m["meaning"].present?
+            meaning = m["meaning"]
+            if m["primary"]
+              primary.push(meaning)
+            else
+              secondary.push(meaning)
+            end
+          end
+        end
+        check(primary, "doesn't have a primary meaning") { |v| v.is_a?(Array) && v.size > 0 }
+        meaning = primary.concat(secondary).join(", ")
+        meaning = check(meaning.downcase, "meaning is too long (#{meaning.length})") { |v| v.length <= MAX_MEANING }
+
+        # Readings
+        readings = check(data["readings"], "doesn't have a readings array") { |v| v.is_a?(Array) && v.size > 0 }
+        primary_readings = []
+        secondary_readings = []
+        readings.each do |r|
+          check(r, "has an invalid reading") { |v| v.is_a?(Hash) && v["reading"].is_a?(String) && v["reading"].present? && (v["primary"] == true || v["primary"] == false) }
+          if r["primary"]
+            primary_readings.push(r["reading"])
+          else
+            secondary_readings.push(r["reading"])
+          end
+        end
+        check(primary, "doesn't have any primary readings") { |v| v.is_a?(Array) && v.size > 0 }
+        reading = primary_readings.concat(secondary_readings).join(", ")
+        check(reading, "reading is too long (#{reading.length})") { |v| v.length <= MAX_READING }
+
+        # Mnemonics
+        meaning_mnemonic = check(data["meaning_mnemonic"], "doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
+        reading_mnemonic = check(data["reading_mnemonic"], "doesn't have a reading mnemonic") { |v| v.is_a?(String) && v.present? }
+
+        # Parts of speech
+        check(data["parts_of_speech"], "doesn't have any parts of speech") { |v| v.is_a?(Array) && v.size > 0 }
+        parts = []
+        data["parts_of_speech"].each do |part|
+          parts.push(check(PARTS[part], "has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
+        end
+        correct_parts(characters, parts)
+        parts = check(parts.join(","), "parts of speech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
+
+        # Audios
+        audios = primary_readings.concat(secondary_readings).each_with_object({}) { |k, h| h[k] = [] }
+        adata = check(data["pronunciation_audios"], "doesn't have an audios array") { |v| v.is_a?(Array) }
+        adata.each do |a|
+          check(a, "has an invalid audio") { |v| v.is_a?(Hash) && v["url"].is_a?(String) && v["url"].starts_with?("http") && v["metadata"].is_a?(Hash) && v["content_type"].is_a?(String) && v["content_type"].present? && v["metadata"]["pronunciation"].is_a?(String) }
+          pn = a["metadata"]["pronunciation"]
+          if audios.has_key?(pn) && a["content_type"] == "audio/mpeg"
+            audios[pn].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
+          end
+        end
+
+        puts "hidden....... #{hidden}"
+        puts "characters... #{characters}"
+        puts "level........ #{level}"
+        puts "meaning...... #{meaning}"
+        puts "readings..... #{reading}"
+        puts "p-readings... #{primary_readings.join(',')}"
+        puts "s-readings... #{secondary_readings.join(',')}"
+        audios.each do |r,f|
+          puts "audio........ #{r}: #{f.join(', ')}"
+        end
+        puts "m-mnemonic... #{meaning_mnemonic.truncate(80)}"
+        puts "r-mnemonic... #{reading_mnemonic.truncate(80)}"
+        puts "parts........ #{parts}"
+      rescue => e
+        puts e.message
+      end
+    end
+
     private
 
     def clean_up

@@ -4,6 +4,8 @@ module Wanikani
   @@continue = false
 
   module ClassMethods
+    API = "https://api.wanikani.com/v2/subjects"
+
     def get_subjects(url)
       sleep 1.1 # max is 60 requests per second
 
@@ -32,6 +34,29 @@ module Wanikani
       [data, next_url]
     end
 
+    def get_subject(type, id)
+      url = subject_url(type, id)
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      req = Net::HTTP::Get.new(uri.request_uri)
+      req["Wanikani-Revision"] = "20170710"
+      req["Authorization"] = "Bearer #{Rails.application.credentials.wani_kani[:api2]}"
+      res = http.request(req)
+      raise "response content has wrong type (#{res.content_type})" unless res.content_type == "application/json"
+      hash = ActiveSupport::JSON.decode(res.body)
+      raise "response is not a hash #{hash.class}" unless hash&.is_a?(Hash)
+      error = hash["error"]
+      raise "response indicates an error (#{error})" if error
+      wk_id = hash["id"]
+      raise "response didn't echo the correct integer id (#{wk_id})" unless wk_id.is_a?(Integer) && wk_id == id
+      data = hash["data"]
+      raise "response has no data hash (#{data.class})" unless data.is_a?(Hash)
+
+      data
+    end
+
     def check(value, error)
       raise error unless yield value
       return value
@@ -46,7 +71,11 @@ module Wanikani
       end
       params[:updated_after] = "#{since.to_s}T00:00:00Z" if since.is_a?(Date)
       params = params.map{ |k, v| "#{k}=#{v}" }.join("&")
-      ["https://api.wanikani.com/v2/subjects?#{params}", since]
+      ["#{API}?#{params}", since]
+    end
+
+    def subject_url(type, id)
+      "#{API}/#{id}?types=#{type}"
     end
   end
 
