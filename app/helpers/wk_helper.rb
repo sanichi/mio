@@ -58,4 +58,9 @@ module WkHelper
     opts.unshift [t("select"), ""] if new_record
     options_for_select(opts, selected)
   end
+
+  def wk_hidden_menu(selected)
+    opts = %w/all hidden visible/.map { |o| [t(o), o] }
+    options_for_select(opts, selected)
+  end
 end

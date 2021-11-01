@@ -63,8 +63,7 @@ module Wanikani
     end
 
     def start_url(type, days)
-      params = { types: type, hidden: false }
-      params.delete(:hidden) if %w/radical kanji/.include?(type)
+      params = { types: type }
       if days.is_a?(Integer) && days >= 0
         since = Date.today.days_ago(days)
       else

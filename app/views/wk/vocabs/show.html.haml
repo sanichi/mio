@@ -3,7 +3,7 @@
 
 %section
   .header.text-center
-    %h1= @vocab.linked_characters
+    %h1{class: @vocab.hidden ? 'hidden' : ''}= @vocab.linked_characters
   .body
     %table{class: "table table-bordered"}
       %tbody#accent_updates

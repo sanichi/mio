@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_01_132856) do
+ActiveRecord::Schema.define(version: 2021_11_01_135927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -443,6 +443,7 @@ ActiveRecord::Schema.define(version: 2021_11_01_132856) do
     t.integer "wk_id"
     t.text "notes"
     t.datetime "last_noted"
+    t.boolean "hidden", default: false
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end
 

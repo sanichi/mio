@@ -98,6 +98,12 @@ module Wk
       if (level = params[:level].to_i) > 0
         matches = matches.where(level: level)
       end
+      case params[:hidden]
+      when "hidden"
+        matches = matches.where(hidden: true)
+      when "visible"
+        matches = matches.where(hidden: false)
+      end
       paginate(matches, params, path, opt)
     end
 
@@ -166,8 +172,7 @@ module Wk
     end
 
     def self.update(days=nil)
-      updates = 0
-      creates = 0
+      count = Hash.new(0)
       old_wk_ids = Vocab.pluck(:wk_id)
 
       url, since = start_url("vocabulary", days)
@@ -177,7 +182,7 @@ module Wk
 
       while url.present? do
         subjects, url = get_subjects(url)
-        puts "subjects: #{subjects.size}"
+        puts "subjects.. #{subjects.size}"
 
         # updates and creates that don't need all vocab present
         subjects.each do |subject|
@@ -196,6 +201,10 @@ module Wk
           vocab.last_updated = check(last_updated, "#{context} has no valid last update date") { |v| v.is_a?(Date) }
 
           data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
+
+          check(data, "#{context} doesn't have a hidden field") { |v| v.has_key?("hidden_at") }
+          vocab.hidden = !!data["hidden_at"]
+          count[:hidden] += 1 if vocab.hidden
 
           vocab.characters = check(data["characters"], "#{context} doesn't have valid characters") { |v| v.is_a?(String) && v.present? && v.length <= MAX_CHARACTERS }
           context[-1,1] = ", #{vocab.characters})"
@@ -252,17 +261,21 @@ module Wk
 
           if vocab.new_record?
             vocab.save!
-            creates += 1
+            count[:creates] += 1
           else
             old_wk_ids.delete(wk_id)
             changes = vocab.changes
-            updates += 1 if vocab.update_performed?(changes)
+            count[:updates] += 1 if vocab.update_performed?(changes)
           end
+          count[:total] += 1
         end
       end
 
-      puts "updates: #{updates}"
-      puts "creates: #{creates}"
+      puts "total..... #{count[:total]}"
+      puts "hidden.... #{count[:hidden]}"
+      puts "updates... #{count[:updates]}"
+      puts "creates... #{count[:creates]}"
+
       if days.nil?
         puts "DB vocabs no longer in WK #{old_wk_ids.size}: #{old_wk_ids.sort.join(',')}"
       end
@@ -272,6 +285,7 @@ module Wk
       return false if changes.empty?
 
       puts "vocab #{wk_id}:"
+      show_change(changes, "hidden")
       show_change(changes, "level")
       show_change(changes, "meaning")
       show_change(changes, "reading")

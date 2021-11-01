@@ -1,8 +1,8 @@
 :ruby
   lo = Layout.new(
-    lg: [2,2,1,2,1,2],
-    md: [[3,3,2],[3,1,2]],
-    xs: [[4,3,3],[4,3,3]],
+    lg: [2,2,1,2,1,2,2],
+    md: [[3,3,2],[3,1,2,2]],
+    xs: [[4,3,3],[4,3,3,2]],
   ).to_a
   inputs = [
     [:vquery, t("wk.vocab.vocab"), :text,   lo[0], placeholder: t("wk.vocab.vocab")],
@@ -11,6 +11,7 @@
     [:parts,  t("wk.vocab.parts"), :select, lo[3], menu: wk_vocab_parts_menu(params[:parts]), multiple: true, size: 4],
     [:id,     t("wk.id"),          :text,   lo[4], placeholder: t("wk.short.id")],
     [:order,  t("order"),          :select, lo[5], menu: wk_vocab_order_menu(params[:order])],
+    [:hidden, t("hidden"),         :select, lo[6], menu: wk_hidden_menu(params[:hidden])],
   ]
 
 = render "utils/title", key: "wk.vocab.vocabs"
