@@ -39,8 +39,7 @@ module Wk
     end
 
     def self.update(days=nil)
-      updates = 0
-      creates = 0
+      count = Hash.new(0)
 
       url, since = start_url("radical", days)
       puts
@@ -49,7 +48,7 @@ module Wk
 
       while url.present?
         subjects, url = get_subjects(url)
-        puts "subjects: #{subjects.size}"
+        puts "subjects.. #{subjects.size}"
 
         subjects.each do |subject|
           check(subject, "radical subject is not a hash (#{subject.class})") { |v| v.is_a?(Hash) }
@@ -71,6 +70,7 @@ module Wk
 
           check(data, "#{context} doesn't have a hidden field") { |v| v.has_key?("hidden_at") }
           radical.hidden = !!data["hidden_at"]
+          count[:hidden] += 1 if radical.hidden
           meanings = check(data["meanings"], "#{context} doesn't have a meanings array") { |v| v.is_a?(Array) && v.size > 0 }
           meanings.keep_if { |m| m.is_a?(Hash) && m["primary"] == true }
           check(meanings, "#{context} doesn't have any primary meanings") { |v| v.size > 0 }
@@ -92,15 +92,18 @@ module Wk
 
           if radical.new_record?
             radical.save!
-            creates += 1
+            count[:creates] += 1
           else
-            updates += 1 if radical.update_performed?
+            count[:updates] += 1 if radical.update_performed?
           end
+          count[:total] += 1
         end
       end
 
-      puts "updates: #{updates}"
-      puts "creates: #{creates}"
+      puts "total..... #{count[:total]}"
+      puts "hidden.... #{count[:hidden]}"
+      puts "updates... #{count[:updates]}"
+      puts "creates... #{count[:creates]}"
     end
 
     def character_name(linked: false)

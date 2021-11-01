@@ -77,8 +77,7 @@ module Wk
     end
 
     def self.update(days=nil)
-      updates = 0
-      creates = 0
+      count = Hash.new(0)
       new_similarities = {}
       radical_from_id = Radical.all.each_with_object({}) { |r, h| h[r.wk_id] = r }
 
@@ -89,7 +88,7 @@ module Wk
 
       while url.present? do
         subjects, url = get_subjects(url)
-        puts "subjects: #{subjects.size}"
+        puts "subjects.. #{subjects.size}"
 
         # updates and creates that don't need all kanji present
         subjects.each do |subject|
@@ -108,6 +107,10 @@ module Wk
           kanji.last_updated = check(last_updated, "#{context} has no valid last update date") { |v| v.is_a?(Date) }
 
           data = check(subject["data"], "#{context} doesn't have a data hash") { |v| v.is_a?(Hash) }
+
+          check(data, "#{context} doesn't have a hidden field") { |v| v.has_key?("hidden_at") }
+          kanji.hidden = !!data["hidden_at"]
+          count[:hidden] += 1 if kanji.hidden
 
           kanji.character = check(data["characters"], "#{context} doesn't have a character") { |v| v.is_a?(String) && v.length == 1 }
           context[-1,1] = ", #{kanji.character})"
@@ -179,7 +182,7 @@ module Wk
           if kanji.new_record?
             kanji.save!
             kanji.radicals = radicals
-            creates += 1
+            count[:creates] += 1
           else
             changes = kanji.changes
             options = {}
@@ -195,12 +198,13 @@ module Wk
               changes["similar_kanjis"] = [old_similar_ids.join(", "), new_similar_ids.join(", ")]
             end
             if kanji.update_performed?(changes, **options)
-              updates += 1
+              count[:updates] += 1
             else
               # if we don't update the other attributes, don't update similar kanjis either
               same_similar_kanjis = true
             end
           end
+          count[:total] += 1
 
           # these updates will be done later after all kanji are in place
           new_similarities[kanji] = new_similar_ids unless same_similar_kanjis
@@ -216,8 +220,10 @@ module Wk
         kanji.similar_kanjis = similar_kanjis
       end
 
-      puts "updates: #{updates}"
-      puts "creates: #{creates}"
+      puts "total..... #{count[:total]}"
+      puts "hidden.... #{count[:hidden]}"
+      puts "updates... #{count[:updates]}"
+      puts "creates... #{count[:creates]}"
     end
 
     def update_performed?(changes, new_radicals: nil, old_radical_ids: nil, old_similar_ids: nil)
