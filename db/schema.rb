@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_03_143806) do
+ActiveRecord::Schema.define(version: 2021_11_03_151443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2021_11_03_143806) do
 
   create_table "grammars", force: :cascade do |t|
     t.string "title", limit: 128
-    t.string "regexp", limit: 64
+    t.string "jregexp", limit: 64
     t.integer "level", limit: 2, default: 5
     t.integer "examples", default: [], array: true
     t.integer "last_example_checked", default: 0

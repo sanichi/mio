@@ -13,8 +13,7 @@ class Grammar < ApplicationRecord
 
   validates :level, inclusion: { in: LEVELS }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
-  validates :regexp, length: { maximum: MAX_REGEXP }, allow_nil: true
-  validates :regexp, length: { maximum: MAX_REGEXP }, allow_nil: true
+  validates :eregexp, :jregexp, length: { maximum: MAX_REGEXP }, allow_nil: true
   validates :last_example_checked, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
   validate :check_regexps
 
@@ -44,12 +43,12 @@ class Grammar < ApplicationRecord
   end
 
   def update_examples
-    if regexp.present? || eregexp.present?
+    if jregexp.present? || eregexp.present?
       last_example = Wk::Example.maximum(:id).to_i
       if last_example_checked < last_example
         new_examples = Wk::Example.where("id > #{last_example_checked}").to_a
-        if regexp.present?
-          re = Regexp.new(regexp)
+        if jregexp.present?
+          re = Regexp.new(jregexp)
           new_examples = new_examples.filter { |e| e.japanese.match?(re) }
         end
         if eregexp.present?
@@ -65,16 +64,16 @@ class Grammar < ApplicationRecord
   end
 
   def note_html
-    j_extra = regexp.present? ? "#{I18n.t('grammar.regexp')}: `#{regexp}`\n\n" : ""
-    e_extra = regexp.present? ? "#{I18n.t('grammar.eregexp')} `#{eregexp}`\n\n" : ""
-    markdown = (note || "").prepend(e_extra).prepend(j_extra)
+    jextra = jregexp.present? ? "#{I18n.t('grammar.jregexp')}: `#{jregexp}`\n\n" : ""
+    eextra = eregexp.present? ? "#{I18n.t('grammar.eregexp')}: `#{eregexp}`\n\n" : ""
+    markdown = (note || "").prepend(eextra).prepend(jextra)
     to_html(link_vocabs(markdown))
   end
 
   private
 
   def normalize_attributes
-    self.regexp = nil if regexp.blank?
+    self.jregexp = nil if jregexp.blank?
     self.eregexp = nil if eregexp.blank?
     title&.squish!
     if note.blank?
@@ -87,11 +86,11 @@ class Grammar < ApplicationRecord
   end
 
   def check_regexps
-    if regexp.present?
+    if jregexp.present?
       begin
-        Regexp.new(regexp)
+        Regexp.new(jregexp)
       rescue RegexpError
-        errors.add(:regexp, "invalid")
+        errors.add(:jregexp, "invalid")
       end
     end
     if eregexp.present?
@@ -104,7 +103,7 @@ class Grammar < ApplicationRecord
   end
 
   def reset_examples_on_regexp_change
-    if regexp_previously_changed? || eregexp_previously_changed?
+    if jregexp_previously_changed? || eregexp_previously_changed?
       update_column(:examples, []) unless examples.empty?
       update_column(:last_example_checked, 0) unless last_example_checked == 0
     end

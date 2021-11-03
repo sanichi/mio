@@ -4,8 +4,8 @@ en:
     eregexp: E-Regexp
     examples: Examples
     grammar: Grammer
+    jregexp: J-Regexp
     level: Level
     new: New Grammar
     note: Note
-    regexp: J-Regexp
     title: Title

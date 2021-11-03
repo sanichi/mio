@@ -13,7 +13,7 @@ describe Grammar do
     it "success" do
       click_link t("grammar.new")
       fill_in t("grammar.title"), with: data.title
-      fill_in t("grammar.regexp"), with: data.regexp
+      fill_in t("grammar.jregexp"), with: data.jregexp
       fill_in t("grammar.eregexp"), with: data.eregexp
       fill_in t("grammar.note"), with: data.note
       click_button t("save")
@@ -25,7 +25,7 @@ describe Grammar do
 
       expect(g.title).to eq data.title
       expect(g.note).to eq data.note
-      expect(g.regexp).to eq data.regexp
+      expect(g.jregexp).to eq data.jregexp
       expect(g.eregexp).to eq data.eregexp
       expect(g.examples).to be_empty
       expect(g.last_example_checked).to eq 0
@@ -35,7 +35,7 @@ describe Grammar do
   context "failure" do
     it "no title" do
       click_link t("grammar.new")
-      fill_in t("grammar.regexp"), with: data.regexp
+      fill_in t("grammar.jregexp"), with: data.jregexp
       fill_in t("grammar.eregexp"), with: data.eregexp
       fill_in t("grammar.note"), with: data.note
       click_button t("save")
