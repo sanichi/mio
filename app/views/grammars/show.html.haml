@@ -34,7 +34,8 @@
                   %td.text-center= link_to t("edit"), edit_wk_example_path(example), class: "btn btn-primary btn-sm btn-dimmed"
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
-        = link_to t("wk.example.examples"), wk_examples_path, class: "btn btn-success btn-sm"
+        - if can?(:create, Wk::Example)
+          = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-primary btn-sm"
         - if can?(:edit, @grammar)
           = link_to t("edit"), edit_grammar_path(@grammar), class: "btn btn-primary btn-sm"
         - if can?(:delete, @grammar)
