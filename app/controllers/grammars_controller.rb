@@ -30,7 +30,7 @@ class GrammarsController < ApplicationController
 
   def show
     if @grammar
-      @examples = @grammar.update_examples
+      @examples = @grammar.update_examples.reverse
       @next = Grammar.find_by(id: @grammar.id + 1)
       @prev = Grammar.find_by(id: @grammar.id - 1)
     end
