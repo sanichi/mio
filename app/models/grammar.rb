@@ -14,8 +14,9 @@ class Grammar < ApplicationRecord
   validates :level, inclusion: { in: LEVELS }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
   validates :regexp, length: { maximum: MAX_REGEXP }, allow_nil: true
+  validates :regexp, length: { maximum: MAX_REGEXP }, allow_nil: true
   validates :last_example_checked, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
-  validate :check_regexp
+  validate :check_regexps
 
   def self.search(matches, params, path, opt={})
     case params[:order]
@@ -43,13 +44,19 @@ class Grammar < ApplicationRecord
   end
 
   def update_examples
-    if regexp.present?
+    if regexp.present? || eregexp.present?
       last_example = Wk::Example.maximum(:id).to_i
       if last_example_checked < last_example
-        re = Regexp.new(regexp)
-        new_examples = Wk::Example.where("id > #{last_example_checked}").filter_map do |e|
-          e.id if e.japanese.match?(re)
+        new_examples = Wk::Example.where("id > #{last_example_checked}").to_a
+        if regexp.present?
+          re = Regexp.new(regexp)
+          new_examples = new_examples.filter { |e| e.japanese.match?(re) }
         end
+        if eregexp.present?
+          re = Regexp.new(eregexp)
+          new_examples = new_examples.filter { |e| e.english.match?(re) }
+        end
+        new_examples = new_examples.map(&:id)
         update_column(:examples, examples.concat(new_examples)) unless new_examples.empty?
         update_column(:last_example_checked, last_example)
       end
@@ -58,8 +65,9 @@ class Grammar < ApplicationRecord
   end
 
   def note_html
-    extra = regexp.present? ? "Regexp: `#{regexp}`\n\n" : ""
-    markdown = (note || "").prepend(extra)
+    j_extra = regexp.present? ? "#{I18n.t('grammar.regexp')}: `#{regexp}`\n\n" : ""
+    e_extra = regexp.present? ? "#{I18n.t('grammar.eregexp')} `#{eregexp}`\n\n" : ""
+    markdown = (note || "").prepend(e_extra).prepend(j_extra)
     to_html(link_vocabs(markdown))
   end
 
@@ -67,6 +75,7 @@ class Grammar < ApplicationRecord
 
   def normalize_attributes
     self.regexp = nil if regexp.blank?
+    self.eregexp = nil if eregexp.blank?
     title&.squish!
     if note.blank?
       self.note = nil
@@ -77,17 +86,25 @@ class Grammar < ApplicationRecord
     end
   end
 
-  def check_regexp
-    return unless regexp.present?
-    begin
-      Regexp.new(regexp)
-    rescue RegexpError
-      errors.add(:regexp, "invalid")
+  def check_regexps
+    if regexp.present?
+      begin
+        Regexp.new(regexp)
+      rescue RegexpError
+        errors.add(:regexp, "invalid")
+      end
+    end
+    if eregexp.present?
+      begin
+        Regexp.new(eregexp)
+      rescue RegexpError
+        errors.add(:eregexp, "invalid")
+      end
     end
   end
 
   def reset_examples_on_regexp_change
-    if regexp_previously_changed?
+    if regexp_previously_changed? || eregexp_previously_changed?
       update_column(:examples, []) unless examples.empty?
       update_column(:last_example_checked, 0) unless last_example_checked == 0
     end

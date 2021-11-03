@@ -1,10 +1,11 @@
 en:
   grammar:
     edit: Edit Grammar
+    eregexp: E-Regexp
     examples: Examples
     grammar: Grammer
     level: Level
     new: New Grammar
     note: Note
-    regexp: Regexp
+    regexp: J-Regexp
     title: Title

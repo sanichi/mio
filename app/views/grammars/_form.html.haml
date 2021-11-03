@@ -1,8 +1,9 @@
 :ruby
   inputs = [
-    [:title,  t("grammar.title"),  :text],
-    [:regexp, t("grammar.regexp"), :text],
-    [:note,   t("grammar.note"),   :area, rows: 30],
+    [:title,   t("grammar.title"),  :text],
+    [:regexp,  t("grammar.regexp"), :text],
+    [:eregexp, t("grammar.eregexp"), :text],
+    [:note,    t("grammar.note"),   :area, rows: 30],
   ]
 
 = render "utils/crud/form", object: grammar, index: grammars_path, inputs: inputs, title: title
