@@ -21,17 +21,17 @@
           %table{class: "table table-bordered table-sm mt-3"}
             %thead
               %tr
-                %th= t("wk.example.japanese")
-                %th= t("wk.example.english")
-                %th
-                %th
+                %td= t("wk.example.japanese")
+                %td= t("wk.example.english")
+                %td
+                %td
             %tbody
               - @examples.each do |example|
                 %tr{id: "example-#{example.id}"}
                   %td= example.japanese_html
                   %td= example.english
-                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-sm btn-danger btn-dimmed"
-                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "btn btn-primary btn-sm btn-dimmed"
+                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-warning btn-sm"
+                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "btn btn-primary btn-sm"
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
         - if can?(:create, Wk::Example)
