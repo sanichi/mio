@@ -10,6 +10,11 @@ module Wk
 
     def new
       @example = Wk::Example.new
+      @return_page = params[:return_page]
+    end
+
+    def edit
+      @return_page = params[:return_page]
     end
 
     def create

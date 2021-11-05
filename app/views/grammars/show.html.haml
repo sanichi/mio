@@ -31,7 +31,7 @@
                   %td= example.japanese_html
                   %td= example.english
                   %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-sm btn-danger btn-dimmed"
-                  %td.text-center= link_to t("edit"), edit_wk_example_path(example), class: "btn btn-primary btn-sm btn-dimmed"
+                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "btn btn-primary btn-sm btn-dimmed"
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
         - if can?(:create, Wk::Example)

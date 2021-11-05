@@ -3,4 +3,4 @@
     [:japanese, t("wk.example.japanese"), :text, maxlength: Wk::Example::MAX_EXAMPLE],
     [:english,  t("wk.example.english"),  :text, maxlength: Wk::Example::MAX_EXAMPLE],
   ]
-= render "utils/crud/form", object: example, cancel: wk_examples_path, inputs: inputs, title: title
+= render "utils/crud/form", object: example, cancel: return_page || wk_examples_path, inputs: inputs, title: title
