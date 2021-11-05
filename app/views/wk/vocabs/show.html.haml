@@ -49,6 +49,22 @@
         - if @vocab.any_notes?
           %tr
             %td.col-12{colspan: 2}= @vocab.notes_html
+        - unless @examples.empty?
+          %tr
+            %td.col-12{colspan: 2}
+              %h5= t("wk.example.examples")
+              %table{class: "table table-bordered table-sm mt-3"}
+                %thead
+                  %tr
+                    %th= t("wk.example.japanese")
+                    %th= t("wk.example.english")
+                    %th
+                %tbody
+                  - @examples.each do |example|
+                    %tr
+                      %td= example.japanese_html
+                      %td= example.english
+                      %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: wk_vocab_path(@vocab)), class: "btn btn-primary btn-sm btn-dimmed"
   .footer
     - if can?(:manage, Wk::Vocab)
       = link_to t("wk.vocab.edit"), edit_wk_vocab_path(@vocab), class: "btn btn-primary btn-sm"

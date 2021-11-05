@@ -13,6 +13,7 @@ module Wk
 
     def show
       @homos = Reading.where(characters: @vocab.readings.pluck(:characters)).map(&:vocab).uniq.reject{ |v| v == @vocab }
+      @examples = @vocab.examples.includes([:vocabs]).to_a
     end
 
     def update

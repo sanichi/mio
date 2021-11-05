@@ -25,7 +25,7 @@
                 %th= t("wk.example.english")
                 %th
                 %th
-            %tbody{id: "results"}
+            %tbody
               - @examples.each do |example|
                 %tr{id: "example-#{example.id}"}
                   %td= example.japanese_html

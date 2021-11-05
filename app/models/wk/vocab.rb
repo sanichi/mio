@@ -108,7 +108,7 @@ module Wk
     end
 
     def any_notes?
-      notes.present? || examples.any? || groups.any? || pairs.any?
+      notes.present? || groups.any? || pairs.any?
     end
 
     def intransitive?
@@ -132,12 +132,6 @@ module Wk
       Wk::Group::CATEGORIES.each do |category|
         groups.where(category: category).each do |group|
           notes_plus += group.to_markdown(bold: characters)
-        end
-      end
-      unless examples.empty?
-        notes_plus += "Examples:\n\n"
-        examples.each do |example|
-          notes_plus += example.to_markdown(bold: characters)
         end
       end
       to_html(notes_plus)
