@@ -10,17 +10,17 @@ module Wk
 
     def new
       @example = Wk::Example.new
-      @return_page = params[:return_page]
+      @return_page = store_return_page("examples", params[:return_page])
     end
 
     def edit
-      @return_page = params[:return_page]
+      @return_page = store_return_page("examples", params[:return_page])
     end
 
     def create
       @example = Example.new(strong_params)
       if @example.save
-        redirect_to wk_examples_path
+        redirect_to redirect_page
       else
         failure @example
         render :new
@@ -29,7 +29,7 @@ module Wk
 
     def update
       if @example.update(strong_params)
-        redirect_to wk_examples_path
+        redirect_to redirect_page
       else
         failure @example
         render :edit
@@ -38,7 +38,7 @@ module Wk
 
     def destroy
       @example.destroy
-      redirect_to wk_examples_path
+      redirect_to redirect_page
     end
 
     private
@@ -49,6 +49,10 @@ module Wk
 
     def strong_params
       params.require(:wk_example).permit(:english, :japanese)
+    end
+
+    def redirect_page
+      retrieve_return_page("examples") || wk_examples_path
     end
   end
 end

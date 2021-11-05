@@ -38,4 +38,15 @@ class ApplicationController < ActionController::Base
   def remember_last_search(path)
     session["last_#{path}_search"] = request.fullpath
   end
+
+  def store_return_page(resource, return_page)
+    return_page = nil if return_page.blank?
+    session["#{resource}_return_page"] = return_page
+  end
+
+  def retrieve_return_page(resource)
+    return_page = session["#{resource}_return_page"]
+    session["#{resource}_return_page"] = nil
+    return_page
+  end
 end
