@@ -26,8 +26,20 @@
               %th.text-center.d-none.d-sm-table-cell= t("pages.premier.against")
               %th.text-center= t("pages.premier.diff")
               %th.text-center= t("pages.premier.points")
-              %th.shrink.d-none.d-md-table-cell
-              %th.shrink
+              %td.shrink.text-center
+                - if @more_dun
+                  = link_to @more_dun, premier_path(dun: @more_dun)
+                - if @deft_dun
+                  = link_to @deft_dun, premier_path
+                - if @most_dun
+                  = link_to @most_dun, premier_path(dun: @most_dun)
+              %td.shrink.text-center
+                - if @more_due
+                  = link_to @more_due, premier_path(due: @more_due)
+                - if @deft_due
+                  = link_to @deft_due, premier_path
+                - if @most_due
+                  = link_to @most_due, premier_path(due: @most_due)
           %tbody
             - @teams.each do |t|
               %tr

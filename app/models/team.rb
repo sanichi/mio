@@ -174,28 +174,40 @@ class Team < ApplicationRecord
     months.map{ |m| monthResults(m) }.flatten
   end
 
-  def stats(season)
+  def stats(season, dun, due)
     # stats from completed matches plus recent results
-    home = home_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
-    away = away_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
-    home.each { |m| goals m.home_score, m.away_score }
-    away.each { |m| goals m.away_score, m.home_score }
-    self.latest_results = (home.take(5) + away.take(5)).sort_by{ |m| m.date }.reverse.take(5).reverse
+    if dun > 0
+      home = home_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+      away = away_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+      home.each { |m| goals m.home_score, m.away_score }
+      away.each { |m| goals m.away_score, m.home_score }
+      self.latest_results = (home.take(dun) + away.take(dun)).sort_by{ |m| m.date }.reverse.take(dun).reverse
+    else
+      self.latest_results = []
+    end
 
     # upcoming fixtures not yet played
-    home = home_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
-    away = away_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
-    self.upcoming_fixtures = (home.reverse.take(5) + away.reverse.take(5)).sort_by{ |m| m.date }.take(5)
+    if due > 0
+      home = home_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
+      away = away_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
+      self.upcoming_fixtures = (home.reverse.take(due) + away.reverse.take(due)).sort_by{ |m| m.date }.take(due)
+    else
+      self.upcoming_fixtures = []
+    end
 
     self
   end
 
-  def self.stats(season)
+  def self.stats(season, dun, due)
+    # work out the teams in the premier league for the appropriate season
     if season == Match.current_season
-      Team.where(division: 1)
+      teams = Team.where(division: 1).to_a
     else
-      Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }
-    end.map{ |t| t.stats(season) }.sort do |a,b|
+      teams = Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }.to_a
+    end
+
+    # attach completed and forthcoming matches to each team and then rank them all
+    teams.map!{ |t| t.stats(season, dun, due) }.sort! do |a,b|
       if b.points > a.points
         1
       elsif b.points < a.points
