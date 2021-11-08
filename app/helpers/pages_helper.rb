@@ -28,11 +28,32 @@ module PagesHelper
     options_for_select(opts, selected)
   end
 
-  def check_season(candidate)
+  def premier_check_season(candidate)
     if Match.seasons.include?(candidate.to_i)
       candidate.to_i
     else
       Match.current_season
     end
+  end
+
+  def premier_dun_due(dun, due)
+    if dun.present? && dun.match?(/\A(10|\d)\z/)
+      dun = dun.to_i
+      due = 10 - dun
+    elsif due.present? && due.match?(/\A(10|\d)\z/)
+      due = due.to_i
+      dun = 10 - due
+    else
+      dun = 5
+      due = 5
+    end
+    more_dun = most_dun = deft_dun = more_due = most_due = deft_due = nil
+    most_dun = 10      if dun < 10
+    more_dun = dun + 1 if dun < 9
+    deft_dun = 5       if dun < 4
+    most_due = 10      if due < 10
+    more_due = due + 1 if due < 9
+    deft_due = 5       if due < 4
+    [dun, due, more_dun, most_dun, deft_dun, more_due, most_due, deft_due]
   end
 end
