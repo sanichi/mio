@@ -26,20 +26,18 @@
               %th.text-center.d-none.d-sm-table-cell= t("pages.premier.against")
               %th.text-center= t("pages.premier.diff")
               %th.text-center= t("pages.premier.points")
-              %td.shrink.text-center
-                - if @more_dun
-                  = link_to @more_dun, premier_path(season: @season, dun: @more_dun)
-                - if @deft_dun
-                  = link_to @deft_dun, premier_path(season: @season)
-                - if @most_dun
-                  = link_to @most_dun, premier_path(season: @season, dun: @most_dun)
-              %td.shrink.text-center
-                - if @more_due
-                  = link_to @more_due, premier_path(season: @season, due: @more_due)
-                - if @deft_due
-                  = link_to @deft_due, premier_path(season: @season)
-                - if @most_due
-                  = link_to @most_due, premier_path(season: @season, due: @most_due)
+              - if @dun > 0
+                %td.shrink.text-center
+                  - if @due > 0
+                    = link_to t("pages.premier.left"), premier_path(season: @season, dun_due: "dun")
+                  - else
+                    = link_to t("pages.premier.right"), premier_path(season: @season)
+              - if @due > 0
+                %td.shrink.text-center
+                  - if @dun > 0
+                    = link_to t("pages.premier.right"), premier_path(season: @season, dun_due: "due")
+                  - else
+                    = link_to t("pages.premier.left"), premier_path(season: @season)
           %tbody
             - @teams.each do |t|
               %tr
@@ -52,9 +50,11 @@
                 %td.text-center.d-none.d-sm-table-cell= t.against
                 %td.text-center= t.diff
                 %th.text-center= t.points
-                %td.shrink.font-monospace.d-none.d-md-table-cell
-                  - t.latest_results.each do |m|
-                    = render "pages/premier/latest", team: t, match: m
-                %td.shrink.text-monospace
-                  - t.upcoming_fixtures.each do |m|
-                    = render "pages/premier/upcoming", team: t, match: m
+                - if @dun > 0
+                  %td.shrink.font-monospace.d-none.d-md-table-cell
+                    - t.latest_results.each do |m|
+                      = render "pages/premier/latest", team: t, match: m
+                - if @due > 0
+                  %td.shrink.text-monospace
+                    - t.upcoming_fixtures.each do |m|
+                      = render "pages/premier/upcoming", team: t, match: m

@@ -24,10 +24,12 @@ en:
       drawn: D
       for: F
       diff: Δ
+      left: ←
       lost: L
       name: Premier League
       played: P
       points: P
+      right: →
       short: Premier
       won: W
     risle:
