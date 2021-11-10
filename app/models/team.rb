@@ -174,6 +174,16 @@ class Team < ApplicationRecord
     months.map{ |m| monthResults(m) }.flatten
   end
 
+  def max(season)
+    home_tot = home_matches.where(season: season).count
+    away_tot = away_matches.where(season: season).count
+    home_due = home_matches.where(season: season).where(home_score: nil).where(away_score: nil).count
+    away_due = away_matches.where(season: season).where(home_score: nil).where(away_score: nil).count
+    home_dun = home_tot - home_due
+    away_dun = away_tot - away_due
+    [home_dun + away_dun, home_due + away_due]
+  end
+
   def stats(season, dun, due)
     # stats from completed matches plus recent results
     if dun > 0
@@ -196,32 +206,6 @@ class Team < ApplicationRecord
     end
 
     self
-  end
-
-  def self.stats(season, dun, due)
-    # work out the teams in the premier league for the appropriate season
-    if season == Match.current_season
-      teams = Team.where(division: 1).to_a
-    else
-      teams = Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }.to_a
-    end
-
-    # attach completed and forthcoming matches to each team and then rank them all
-    teams.map!{ |t| t.stats(season, dun, due) }.sort! do |a,b|
-      if b.points > a.points
-        1
-      elsif b.points < a.points
-        -1
-      else
-        if b.diff > a.diff
-          1
-        elsif b.diff < a.diff
-          -1
-        else
-          a.short <=> b.short
-        end
-      end
-    end
   end
 
   private

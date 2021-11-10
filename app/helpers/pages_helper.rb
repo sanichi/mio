@@ -28,15 +28,22 @@ module PagesHelper
     options_for_select(opts, selected)
   end
 
-  def premier_check_season(candidate)
-    if Match.seasons.include?(candidate.to_i)
-      candidate.to_i
+  def premier_data(candidate_season, dun_due)
+    # season
+    if Match.seasons.include?(candidate_season.to_i)
+      season = candidate_season.to_i
     else
-      Match.current_season
+      season = Match.current_season
     end
-  end
 
-  def premier_dun_due(dun_due)
+    # teams
+    if season == Match.current_season
+      teams = Team.where(division: 1).to_a
+    else
+      teams = Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }.to_a
+    end
+
+    # work out the requested dun/due
     if dun_due == "dun"
       dun = 10
       due = 0
@@ -47,6 +54,47 @@ module PagesHelper
       dun = 5
       due = 5
     end
-    [dun, due]
+
+    # work out the maximumn possible dun/due
+    max_dun, max_due = teams.each_with_object([0, 0]) do |t, m|
+      mn, me = t.max(season)
+      m[0] = mn if mn > m[0]
+      m[1] = me if me > m[1]
+    end
+
+    # adjust the requested dun/due to take account of the maximums
+    if dun > max_dun && due > max_due
+      dun = max_dun
+      due = max_due
+    elsif dun > max_dun
+      dun = max_dun
+      due = 10 - dun
+    elsif due > max_due
+      due = max_due
+      dun = 10 - due
+    end
+
+    # if either maximum is zero, we will need to signal this to the view
+    one_sided = max_dun == 0 || max_due == 0
+
+    # attach completed (dun) and forthcoming (due) matches to each team and then rank them all
+    teams.map!{ |t| t.stats(season, dun, due) }.sort! do |a,b|
+      if b.points > a.points
+        1
+      elsif b.points < a.points
+        -1
+      else
+        if b.diff > a.diff
+          1
+        elsif b.diff < a.diff
+          -1
+        else
+          a.short <=> b.short
+        end
+      end
+    end
+
+    # return the stuff we just calculated
+    [season, teams, dun, due, one_sided]
   end
 end

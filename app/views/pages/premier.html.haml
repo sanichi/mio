@@ -28,16 +28,18 @@
               %th.text-center= t("pages.premier.points")
               - if @dun > 0
                 %td.shrink.text-center
-                  - if @due > 0
-                    = link_to t("pages.premier.left"), premier_path(season: @season, dun_due: "dun")
-                  - else
-                    = link_to t("pages.premier.right"), premier_path(season: @season)
+                  - unless @one_sided
+                    - if @due > 0
+                      = link_to t("pages.premier.left"), premier_path(season: @season, dun_due: "dun")
+                    - else
+                      = link_to t("pages.premier.right"), premier_path(season: @season)
               - if @due > 0
                 %td.shrink.text-center
-                  - if @dun > 0
-                    = link_to t("pages.premier.right"), premier_path(season: @season, dun_due: "due")
-                  - else
-                    = link_to t("pages.premier.left"), premier_path(season: @season)
+                  - unless @one_sided
+                    - if @dun > 0
+                      = link_to t("pages.premier.right"), premier_path(season: @season, dun_due: "due")
+                    - else
+                      = link_to t("pages.premier.left"), premier_path(season: @season)
           %tbody
             - @teams.each do |t|
               %tr

@@ -17,9 +17,7 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @season = helpers.premier_check_season(params[:season])
-    @dun, @due = helpers.premier_dun_due(params[:dun_due])
-    @teams = Team.stats(@season, @dun, @due)
+    @season, @teams, @dun, @due, @one_sided = helpers.premier_data(params[:season], params[:dun_due])
   end
 
   def prefectures
