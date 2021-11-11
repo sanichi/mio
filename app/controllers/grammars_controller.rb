@@ -48,6 +48,6 @@ class GrammarsController < ApplicationController
   private
 
   def resource_params
-    params.require(:grammar).permit(:eregexp, :jregexp, :note, :title)
+    params.require(:grammar).permit(:eregexp, :jregexp, :note, :ref, :title)
   end
 end

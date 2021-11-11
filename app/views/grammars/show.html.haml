@@ -7,7 +7,9 @@
   %div{class: center(lg: 10, xx: 8)}
     %section
       .header
-        %h5.d-inline= @grammar.title
+        %h5.d-inline
+          = @grammar.ref
+          = @grammar.title
         .float-end
           - if @prev
             = link_to t("symbol.prev"), @prev

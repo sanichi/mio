@@ -12,6 +12,7 @@ describe Grammar do
   context "create" do
     it "success" do
       click_link t("grammar.new")
+      fill_in t("grammar.ref"), with: data.ref
       fill_in t("grammar.title"), with: data.title
       fill_in t("grammar.jregexp"), with: data.jregexp
       fill_in t("grammar.eregexp"), with: data.eregexp
@@ -23,6 +24,7 @@ describe Grammar do
       expect(Grammar.count).to eq 2
       g = Grammar.last
 
+      expect(g.ref).to eq data.ref
       expect(g.title).to eq data.title
       expect(g.note).to eq data.note
       expect(g.jregexp).to eq data.jregexp
@@ -35,6 +37,7 @@ describe Grammar do
   context "failure" do
     it "no title" do
       click_link t("grammar.new")
+      fill_in t("grammar.ref"), with: data.ref
       fill_in t("grammar.jregexp"), with: data.jregexp
       fill_in t("grammar.eregexp"), with: data.eregexp
       fill_in t("grammar.note"), with: data.note

@@ -1,6 +1,7 @@
 - grammars.matches.each do |grammar|
   %tr
+    %td= grammar.ref
     %td= link_to grammar.title, grammar
     %td.text-center= "#{grammar.examples.size}/#{grammar.last_example_checked}"
     %td.text-center= render "level", level: grammar.level
-= render "utils/pagination_links", pager: grammars, columns: 3
+= render "utils/pagination_links", pager: grammars, columns: 4
