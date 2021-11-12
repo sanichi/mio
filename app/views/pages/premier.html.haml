@@ -19,11 +19,11 @@
             %tr
               %th.shrink
               %th.text-center= t("pages.premier.played")
-              %th.text-center.d-none.d-sm-table-cell= t("pages.premier.won")
-              %th.text-center.d-none.d-sm-table-cell= t("pages.premier.drawn")
-              %th.text-center.d-none.d-sm-table-cell= t("pages.premier.lost")
-              %th.text-center.d-none.d-sm-table-cell= t("pages.premier.for")
-              %th.text-center.d-none.d-sm-table-cell= t("pages.premier.against")
+              %th.text-center= t("pages.premier.drawn")
+              %th.text-center= t("pages.premier.lost")
+              %th.text-center= t("pages.premier.won")
+              %th.text-center= t("pages.premier.for")
+              %th.text-center= t("pages.premier.against")
               %th.text-center= t("pages.premier.diff")
               %th.text-center= t("pages.premier.points")
               - if @dun > 0
@@ -45,18 +45,18 @@
               %tr
                 %th.shrink= t.short
                 %td.text-center= t.played
-                %td.text-center.d-none.d-sm-table-cell= t.won
-                %td.text-center.d-none.d-sm-table-cell= t.drawn
-                %td.text-center.d-none.d-sm-table-cell= t.lost
-                %td.text-center.d-none.d-sm-table-cell= t.for
-                %td.text-center.d-none.d-sm-table-cell= t.against
+                %td.text-center= t.won
+                %td.text-center= t.drawn
+                %td.text-center= t.lost
+                %td.text-center= t.for
+                %td.text-center= t.against
                 %td.text-center= t.diff
                 %th.text-center= t.points
                 - if @dun > 0
-                  %td.shrink.font-monospace.d-none.d-md-table-cell
+                  %td.shrink.font-monospace
                     - t.latest_results.each do |m|
                       = render "pages/premier/latest", team: t, match: m
                 - if @due > 0
-                  %td.shrink.text-monospace
+                  %td.shrink.font-monospace
                     - t.upcoming_fixtures.each do |m|
                       = render "pages/premier/upcoming", team: t, match: m
