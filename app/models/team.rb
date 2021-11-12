@@ -185,18 +185,20 @@ class Team < ApplicationRecord
   end
 
   def stats(season, dun, due)
-    # stats from completed matches plus recent results
+    # use completed matches to update teams points, goal difference, etc
+    home = home_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+    away = away_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
+    home.each { |m| goals m.home_score, m.away_score }
+    away.each { |m| goals m.away_score, m.home_score }
+
+    # latest results
     if dun > 0
-      home = home_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
-      away = away_matches.by_date.where(season: season).where.not(home_score: nil).where.not(away_score: nil)
-      home.each { |m| goals m.home_score, m.away_score }
-      away.each { |m| goals m.away_score, m.home_score }
       self.latest_results = (home.take(dun) + away.take(dun)).sort_by{ |m| m.date }.reverse.take(dun).reverse
     else
       self.latest_results = []
     end
 
-    # upcoming fixtures not yet played
+    # latest upcoming fixtures
     if due > 0
       home = home_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
       away = away_matches.by_date.where(season: season).where(home_score: nil).where(away_score: nil)
