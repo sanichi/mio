@@ -11,6 +11,7 @@ import Util exposing (unique)
 import Y15
 import Y16
 import Y20
+import Y21
 
 
 
@@ -64,12 +65,12 @@ type alias Flags =
 
 defaultYear : Int
 defaultYear =
-    2020
+    2021
 
 
 defaultDay : Int
 defaultDay =
-    25
+    1
 
 
 initModel : Model
@@ -77,6 +78,7 @@ initModel =
     { years =
         [ { year = 2015, days = List.range 1 25 }
         , { year = 2016, days = List.range 1 25 }
+        , { year = 2020, days = List.range 1 25 }
         , { year = defaultYear, days = List.range 1 defaultDay }
         ]
     , year = defaultYear
@@ -240,6 +242,9 @@ getAnswer model part data =
 
         2020 ->
             Y20.answer model.day part data
+
+        2021 ->
+            Y21.answer model.day part data
 
         _ ->
             ""
