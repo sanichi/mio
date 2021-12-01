@@ -19145,9 +19145,78 @@ var $author$project$Y20$answer = F3(
 				return 'year 2020, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
 	});
+var $author$project$Y21D01$parse = function (input) {
+	return A2(
+		$elm$core$List$filterMap,
+		$elm$core$String$toInt,
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.cg;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('\\d+'),
+				input)));
+};
+var $author$project$Y21D01$sliders = F2(
+	function (count, list) {
+		sliders:
+		while (true) {
+			if (((list.b && list.b.b) && list.b.b.b) && list.b.b.b.b) {
+				var d1 = list.a;
+				var _v1 = list.b;
+				var d2 = _v1.a;
+				var _v2 = _v1.b;
+				var d3 = _v2.a;
+				var _v3 = _v2.b;
+				var d4 = _v3.a;
+				var rest = _v3.b;
+				var s2 = (d2 + d3) + d4;
+				var s1 = (d1 + d2) + d3;
+				var count_ = (_Utils_cmp(s2, s1) > 0) ? (count + 1) : count;
+				var $temp$count = count_,
+					$temp$list = A2(
+					$elm$core$List$cons,
+					d2,
+					A2(
+						$elm$core$List$cons,
+						d3,
+						A2($elm$core$List$cons, d4, rest)));
+				count = $temp$count;
+				list = $temp$list;
+				continue sliders;
+			} else {
+				return count;
+			}
+		}
+	});
+var $author$project$Y21D01$sweeps = F2(
+	function (count, list) {
+		sweeps:
+		while (true) {
+			if (list.b && list.b.b) {
+				var d1 = list.a;
+				var _v1 = list.b;
+				var d2 = _v1.a;
+				var rest = _v1.b;
+				var count_ = (_Utils_cmp(d2, d1) > 0) ? (count + 1) : count;
+				var $temp$count = count_,
+					$temp$list = A2($elm$core$List$cons, d2, rest);
+				count = $temp$count;
+				list = $temp$list;
+				continue sweeps;
+			} else {
+				return count;
+			}
+		}
+	});
 var $author$project$Y21D01$answer = F2(
 	function (part, input) {
-		return (part === 1) ? 'not started' : 'not started';
+		var depths = $author$project$Y21D01$parse(input);
+		return (part === 1) ? $elm$core$String$fromInt(
+			A2($author$project$Y21D01$sweeps, 0, depths)) : $elm$core$String$fromInt(
+			A2($author$project$Y21D01$sliders, 0, depths));
 	});
 var $author$project$Y21$answer = F3(
 	function (day, part, input) {
