@@ -843,6 +843,9 @@ useRuby year day part =
         "2020-20-2" ->
             True
 
+        "2021-1-1" ->
+            True
+
         _ ->
             False
 

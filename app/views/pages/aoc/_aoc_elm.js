@@ -19283,10 +19283,13 @@ var $author$project$Main$useRuby = F3(
 				$elm$core$String$fromInt,
 				_List_fromArray(
 					[year, day, part])));
-		if (key === '2020-20-2') {
-			return true;
-		} else {
-			return false;
+		switch (key) {
+			case '2020-20-2':
+				return true;
+			case '2021-1-1':
+				return true;
+			default:
+				return false;
 		}
 	});
 var $author$project$Main$update = F2(

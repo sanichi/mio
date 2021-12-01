@@ -1,8 +1,4 @@
 class Aoc::Y2020d20 < Aoc
-  def initialize(input)
-    super
-  end
-
   DIRECTIONS = [:up, :right, :down, :left].freeze
   MONSTER_ASCII = [
     '                  # ',
@@ -296,5 +292,9 @@ class Aoc::Y2020d20 < Aoc
     rescue => e
       return e.message
     end
+  end
+
+  def initialize(input)
+    super
   end
 end
