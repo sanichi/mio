@@ -53,6 +53,9 @@ multiply p =
 navigate1 : Position -> List Command -> Position
 navigate1 p list =
     case list of
+        [] ->
+            p
+
         c :: commands ->
             let
                 position =
@@ -68,13 +71,13 @@ navigate1 p list =
             in
             navigate1 position commands
 
-        [] ->
-            p
-
 
 navigate2 : Position -> List Command -> Position
 navigate2 p list =
     case list of
+        [] ->
+            p
+
         c :: commands ->
             let
                 position =
@@ -89,9 +92,6 @@ navigate2 p list =
                             Position (p.depth + p.aim * c.amount) (p.horizontal + c.amount) p.aim
             in
             navigate2 position commands
-
-        [] ->
-            p
 
 
 parse : String -> List Command

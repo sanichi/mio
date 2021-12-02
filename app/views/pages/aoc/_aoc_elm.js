@@ -19229,7 +19229,9 @@ var $author$project$Y21D02$navigate1 = F2(
 	function (p, list) {
 		navigate1:
 		while (true) {
-			if (list.b) {
+			if (!list.b) {
+				return p;
+			} else {
 				var c = list.a;
 				var commands = list.b;
 				var position = function () {
@@ -19248,8 +19250,6 @@ var $author$project$Y21D02$navigate1 = F2(
 				p = $temp$p;
 				list = $temp$list;
 				continue navigate1;
-			} else {
-				return p;
 			}
 		}
 	});
@@ -19257,7 +19257,9 @@ var $author$project$Y21D02$navigate2 = F2(
 	function (p, list) {
 		navigate2:
 		while (true) {
-			if (list.b) {
+			if (!list.b) {
+				return p;
+			} else {
 				var c = list.a;
 				var commands = list.b;
 				var position = function () {
@@ -19276,8 +19278,6 @@ var $author$project$Y21D02$navigate2 = F2(
 				p = $temp$p;
 				list = $temp$list;
 				continue navigate2;
-			} else {
-				return p;
 			}
 		}
 	});
