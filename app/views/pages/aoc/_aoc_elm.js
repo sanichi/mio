@@ -19290,7 +19290,7 @@ var $author$project$Y21D02$Forward = 1;
 var $author$project$Y21D02$Up = 2;
 var $author$project$Y21D02$parse = function (input) {
 	return A2(
-		$elm$core$List$map,
+		$elm$core$List$filterMap,
 		function (m) {
 			if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
 				var d = m.a.a;
@@ -19310,9 +19310,10 @@ var $author$project$Y21D02$parse = function (input) {
 					$elm$core$Maybe$withDefault,
 					0,
 					$elm$core$String$toInt(a));
-				return A2($author$project$Y21D02$Command, direction, amount);
+				return $elm$core$Maybe$Just(
+					A2($author$project$Y21D02$Command, direction, amount));
 			} else {
-				return A2($author$project$Y21D02$Command, 1, 0);
+				return $elm$core$Maybe$Nothing;
 			}
 		},
 		A2(

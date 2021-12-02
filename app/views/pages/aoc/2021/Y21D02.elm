@@ -99,7 +99,7 @@ parse input =
     input
         |> Regex.find (Util.regex "(down|forward|up) ([1-9])")
         |> List.map .submatches
-        |> List.map
+        |> List.filterMap
             (\m ->
                 case m of
                     [ Just d, Just a ] ->
@@ -118,10 +118,10 @@ parse input =
                             amount =
                                 String.toInt a |> Maybe.withDefault 0
                         in
-                        Command direction amount
+                        Just (Command direction amount)
 
                     _ ->
-                        Command Forward 0
+                        Nothing
             )
 
 
