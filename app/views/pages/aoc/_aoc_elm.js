@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.bZ.aw === region.bw.aw)
+	if (region.b2.aA === region.bB.aA)
 	{
-		return 'on line ' + region.bZ.aw;
+		return 'on line ' + region.b2.aA;
 	}
-	return 'on lines ' + region.bZ.aw + ' through ' + region.bw.aw;
+	return 'on lines ' + region.b2.aA + ' through ' + region.bB.aA;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cp,
-		impl.cn,
+		impl.ck,
+		impl.cu,
+		impl.cs,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		C: func(record.C),
-		bi: record.bi,
-		be: record.be
+		F: func(record.F),
+		bn: record.bn,
+		bj: record.bj
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.C;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.bi;
+		var message = !tag ? value : tag < 3 ? value.a : value.F;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.bn;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.be) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.bj) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cp,
-		impl.cn,
+		impl.ck,
+		impl.cu,
+		impl.cs,
 		function(sendToApp, initialModel) {
-			var view = impl.cq;
+			var view = impl.cv;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cp,
-		impl.cn,
+		impl.ck,
+		impl.cu,
+		impl.cs,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.bg && impl.bg(sendToApp)
-			var view = impl.cq;
+			var divertHrefToApp = impl.bl && impl.bl(sendToApp)
+			var view = impl.cv;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b4);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b9);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.co) && (_VirtualDom_doc.title = title = doc.co);
+				(title !== doc.ct) && (_VirtualDom_doc.title = title = doc.ct);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.ci;
-	var onUrlRequest = impl.cj;
+	var onUrlChange = impl.cn;
+	var onUrlRequest = impl.co;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		bg: function(sendToApp)
+		bl: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bP === next.bP
-							&& curr.bA === next.bA
-							&& curr.bL.a === next.bL.a
+							&& curr.bU === next.bU
+							&& curr.bF === next.bF
+							&& curr.bQ.a === next.bQ.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		cf: function(flags)
+		ck: function(flags)
 		{
-			return A3(impl.cf, flags, _Browser_getUrl(), key);
+			return A3(impl.ck, flags, _Browser_getUrl(), key);
 		},
-		cq: impl.cq,
-		cp: impl.cp,
-		cn: impl.cn
+		cv: impl.cv,
+		cu: impl.cu,
+		cs: impl.cs
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { cc: 'hidden', b6: 'visibilitychange' }
+		? { ch: 'hidden', cb: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { cc: 'mozHidden', b6: 'mozvisibilitychange' }
+		? { ch: 'mozHidden', cb: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { cc: 'msHidden', b6: 'msvisibilitychange' }
+		? { ch: 'msHidden', cb: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { cc: 'webkitHidden', b6: 'webkitvisibilitychange' }
-		: { cc: 'hidden', b6: 'visibilitychange' };
+		? { ch: 'webkitHidden', cb: 'webkitvisibilitychange' }
+		: { ch: 'hidden', cb: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bW: _Browser_getScene(),
-		b2: {
-			I: _Browser_window.pageXOffset,
-			J: _Browser_window.pageYOffset,
-			W: _Browser_doc.documentElement.clientWidth,
-			ac: _Browser_doc.documentElement.clientHeight
+		b$: _Browser_getScene(),
+		b7: {
+			L: _Browser_window.pageXOffset,
+			M: _Browser_window.pageYOffset,
+			Z: _Browser_doc.documentElement.clientWidth,
+			af: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		W: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ac: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		Z: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		af: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bW: {
-				W: node.scrollWidth,
-				ac: node.scrollHeight
+			b$: {
+				Z: node.scrollWidth,
+				af: node.scrollHeight
 			},
-			b2: {
-				I: node.scrollLeft,
-				J: node.scrollTop,
-				W: node.clientWidth,
-				ac: node.clientHeight
+			b7: {
+				L: node.scrollLeft,
+				M: node.scrollTop,
+				Z: node.clientWidth,
+				af: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bW: _Browser_getScene(),
-			b2: {
-				I: x,
-				J: y,
-				W: _Browser_doc.documentElement.clientWidth,
-				ac: _Browser_doc.documentElement.clientHeight
+			b$: _Browser_getScene(),
+			b7: {
+				L: x,
+				M: y,
+				Z: _Browser_doc.documentElement.clientWidth,
+				af: _Browser_doc.documentElement.clientHeight
 			},
-			ca: {
-				I: x + rect.left,
-				J: y + rect.top,
-				W: rect.width,
-				ac: rect.height
+			cf: {
+				L: x + rect.left,
+				M: y + rect.top,
+				Z: rect.width,
+				af: rect.height
 			}
 		};
 	});
@@ -4364,8 +4364,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.ch) { flags += 'm'; }
-	if (options.b5) { flags += 'i'; }
+	if (options.cm) { flags += 'm'; }
+	if (options.ca) { flags += 'i'; }
 
 	try
 	{
@@ -4998,7 +4998,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bz: fragment, bA: host, az: path, bL: port_, bP: protocol, bR: query};
+		return {bE: fragment, bF: host, aD: path, bQ: port_, bU: protocol, bW: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 1;
+var $author$project$Main$defaultDay = 2;
 var $author$project$Main$defaultYear = 2021;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -5329,28 +5329,28 @@ var $elm$core$List$head = function (list) {
 	}
 };
 var $author$project$Main$initModel = {
-	Y: _Utils_Tuple2($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
-	aa: '',
+	aa: _Utils_Tuple2($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
+	ad: '',
 	b: $author$project$Main$defaultDay,
-	as: false,
-	U: _Utils_Tuple2(false, false),
+	aw: false,
+	X: _Utils_Tuple2(false, false),
 	a: $author$project$Main$defaultYear,
-	am: _List_fromArray(
+	ap: _List_fromArray(
 		[
 			{
-			A: A2($elm$core$List$range, 1, 25),
+			B: A2($elm$core$List$range, 1, 25),
 			a: 2015
 		},
 			{
-			A: A2($elm$core$List$range, 1, 25),
+			B: A2($elm$core$List$range, 1, 25),
 			a: 2016
 		},
 			{
-			A: A2($elm$core$List$range, 1, 25),
+			B: A2($elm$core$List$range, 1, 25),
 			a: 2020
 		},
 			{
-			A: A2($elm$core$List$range, 1, $author$project$Main$defaultDay),
+			B: A2($elm$core$List$range, 1, $author$project$Main$defaultDay),
 			a: $author$project$Main$defaultYear
 		}
 		])
@@ -5402,7 +5402,7 @@ var $author$project$Main$newProblem = F2(
 				function (y) {
 					return _Utils_eq(y.a, year);
 				},
-				$author$project$Main$initModel.am));
+				$author$project$Main$initModel.ap));
 		var newYear = function () {
 			if (!year1.$) {
 				var y = year1.a;
@@ -5417,14 +5417,14 @@ var $author$project$Main$newProblem = F2(
 				function (y) {
 					return _Utils_eq(y.a, newYear);
 				},
-				$author$project$Main$initModel.am));
+				$author$project$Main$initModel.ap));
 		var newDay = function () {
 			if (!year2.$) {
 				var y = year2.a;
-				return A2($elm$core$List$member, day, y.A) ? day : A2(
+				return A2($elm$core$List$member, day, y.B) ? day : A2(
 					$elm$core$Maybe$withDefault,
 					$author$project$Main$defaultDay,
-					$elm$core$List$head(y.A));
+					$elm$core$List$head(y.B));
 			} else {
 				return $author$project$Main$defaultDay;
 			}
@@ -5598,13 +5598,13 @@ var $author$project$Y15D02$ribbon = F3(
 	});
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {bC: index, cg: match, bH: number, cm: submatches};
+		return {bH: index, cl: match, bM: number, cr: submatches};
 	});
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{b5: false, ch: false},
+		{ca: false, cm: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -5628,7 +5628,7 @@ var $author$project$Y15D02$sumLine = F3(
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cg;
+						return $.cl;
 					},
 					A2($elm$regex$Regex$find, number, line))));
 		var extra = function () {
@@ -5679,10 +5679,10 @@ var $author$project$Y15D02$answer = F2(
 	});
 var $author$project$Y15D03$errorSanta = function (err) {
 	return {
-		B: $elm$core$Maybe$Just(err),
-		aE: true,
-		I: 0,
-		J: 0
+		D: $elm$core$Maybe$Just(err),
+		aI: true,
+		L: 0,
+		M: 0
 	};
 };
 var $elm$core$Bitwise$and = _Bitwise_and;
@@ -5784,23 +5784,23 @@ var $author$project$Y15D03$updateSanta = F2(
 			case '>':
 				return _Utils_update(
 					santa,
-					{I: santa.I + 1});
+					{L: santa.L + 1});
 			case '<':
 				return _Utils_update(
 					santa,
-					{I: santa.I - 1});
+					{L: santa.L - 1});
 			case '^':
 				return _Utils_update(
 					santa,
-					{J: santa.J + 1});
+					{M: santa.M + 1});
 			case 'v':
 				return _Utils_update(
 					santa,
-					{J: santa.J - 1});
+					{M: santa.M - 1});
 			case '\n':
 				return _Utils_update(
 					santa,
-					{aE: true});
+					{aI: true});
 			default:
 				return $author$project$Y15D03$errorSanta(
 					'illegal instruction [' + ($elm$core$String$fromChar(_char) + ']'));
@@ -5929,12 +5929,12 @@ var $author$project$Y15D03$deliver = F2(
 				return model;
 			} else {
 				var next = $elm$core$String$uncons(instructions);
-				var index = model.aH % $elm$core$Array$length(model.ag);
+				var index = model.aL % $elm$core$Array$length(model.aj);
 				var santa = A2(
 					$elm$core$Maybe$withDefault,
 					$author$project$Y15D03$errorSanta(
 						'illegal index [' + ($elm$core$String$fromInt(index) + ']')),
-					A2($elm$core$Array$get, index, model.ag));
+					A2($elm$core$Array$get, index, model.aj));
 				var _v0 = function () {
 					if (!next.$) {
 						var _v2 = next.a;
@@ -5948,17 +5948,17 @@ var $author$project$Y15D03$deliver = F2(
 				var _char = _v0.a;
 				var remaining = _v0.b;
 				var santa_ = A2($author$project$Y15D03$updateSanta, _char, santa);
-				if (santa_.aE) {
+				if (santa_.aI) {
 					return _Utils_update(
 						model,
-						{B: santa.B});
+						{D: santa.D});
 				} else {
 					var model_ = _Utils_update(
 						model,
 						{
-							ag: A3($elm$core$Array$set, index, santa_, model.ag),
-							aH: model.aH + 1,
-							aL: A3($author$project$Y15D03$visit, santa_.I, santa_.J, model.aL)
+							aj: A3($elm$core$Array$set, index, santa_, model.aj),
+							aL: model.aL + 1,
+							aP: A3($author$project$Y15D03$visit, santa_.L, santa_.M, model.aP)
 						});
 					var $temp$model = model_,
 						$temp$instructions = remaining;
@@ -5970,7 +5970,7 @@ var $author$project$Y15D03$deliver = F2(
 		}
 	});
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
-var $author$project$Y15D03$initSanta = {B: $elm$core$Maybe$Nothing, aE: false, I: 0, J: 0};
+var $author$project$Y15D03$initSanta = {D: $elm$core$Maybe$Nothing, aI: false, L: 0, M: 0};
 var $elm$core$Array$repeat = F2(
 	function (n, e) {
 		return A2(
@@ -5982,10 +5982,10 @@ var $elm$core$Array$repeat = F2(
 	});
 var $author$project$Y15D03$initModel = function (n) {
 	return {
-		B: $elm$core$Maybe$Nothing,
-		ag: A2($elm$core$Array$repeat, n, $author$project$Y15D03$initSanta),
-		aH: 0,
-		aL: A3($author$project$Y15D03$visit, 0, 0, $elm$core$Dict$empty)
+		D: $elm$core$Maybe$Nothing,
+		aj: A2($elm$core$Array$repeat, n, $author$project$Y15D03$initSanta),
+		aL: 0,
+		aP: A3($author$project$Y15D03$visit, 0, 0, $elm$core$Dict$empty)
 	};
 };
 var $author$project$Y15D03$christmas = F2(
@@ -5994,14 +5994,14 @@ var $author$project$Y15D03$christmas = F2(
 			$author$project$Y15D03$deliver,
 			$author$project$Y15D03$initModel(n),
 			input);
-		var _v0 = model.B;
+		var _v0 = model.D;
 		if (!_v0.$) {
 			var err = _v0.a;
 			return err;
 		} else {
 			return $elm$core$String$fromInt(
 				$elm$core$List$length(
-					$elm$core$Dict$keys(model.aL)));
+					$elm$core$Dict$keys(model.aP)));
 		}
 	});
 var $author$project$Y15D03$answer = F2(
@@ -6073,10 +6073,10 @@ var $truqu$elm_md5$MD5$ii = F7(
 	});
 var $truqu$elm_md5$MD5$hex_ = F2(
 	function (xs, acc) {
-		var a = acc.X;
-		var b = acc.aN;
-		var c = acc.aO;
-		var d = acc.aQ;
+		var a = acc._;
+		var b = acc.aR;
+		var c = acc.aS;
+		var d = acc.aU;
 		if ((((((((((((((((xs.b && xs.b.b) && xs.b.b.b) && xs.b.b.b.b) && xs.b.b.b.b.b) && xs.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b) && xs.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b) && (!xs.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b)) {
 			var x0 = xs.a;
 			var _v1 = xs.b;
@@ -6197,7 +6197,7 @@ var $truqu$elm_md5$MD5$hex_ = F2(
 			var c17 = A2($truqu$elm_md5$MD5$addUnsigned, c00, c16);
 			var d17 = A2($truqu$elm_md5$MD5$addUnsigned, d00, d16);
 			var a17 = A2($truqu$elm_md5$MD5$addUnsigned, a00, a16);
-			return {X: a17, aN: b17, aO: c17, aQ: d17};
+			return {_: a17, aR: b17, aS: c17, aU: d17};
 		} else {
 			return acc;
 		}
@@ -6309,7 +6309,7 @@ var $zwilias$elm_utf_tools$String$UTF8$foldl = F3(
 	});
 var $truqu$elm_md5$MD5$State = F4(
 	function (a, b, c, d) {
-		return {X: a, aN: b, aO: c, aQ: d};
+		return {_: a, aR: b, aS: c, aU: d};
 	});
 var $truqu$elm_md5$MD5$initialHashState = A4($truqu$elm_md5$MD5$State, 1732584193, 4023233417, 2562383102, 271733878);
 var $truqu$elm_md5$MD5$hash = function (input) {
@@ -6325,10 +6325,10 @@ var $truqu$elm_md5$MD5$hash = function (input) {
 };
 var $truqu$elm_md5$MD5$bytes = function (string) {
 	var _v0 = $truqu$elm_md5$MD5$hash(string);
-	var a = _v0.X;
-	var b = _v0.aN;
-	var c = _v0.aO;
-	var d = _v0.aQ;
+	var a = _v0._;
+	var b = _v0.aR;
+	var c = _v0.aS;
+	var d = _v0.aU;
 	return _List_fromArray(
 		[a & 255, (a >>> 8) & 255, (a >>> 16) & 255, (a >>> 24) & 255, b & 255, (b >>> 8) & 255, (b >>> 16) & 255, (b >>> 24) & 255, c & 255, (c >>> 8) & 255, (c >>> 16) & 255, (c >>> 24) & 255, d & 255, (d >>> 8) & 255, (d >>> 16) & 255, (d >>> 24) & 255]);
 };
@@ -6440,7 +6440,7 @@ var $author$project$Y15D04$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -6488,7 +6488,7 @@ var $author$project$Y15D05$answer = F2(
 		var strings = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2($elm$regex$Regex$find, $author$project$Y15D05$stringRgx, input));
 		return (part === 1) ? A2($author$project$Y15D05$countNice, $author$project$Y15D05$nice1, strings) : A2($author$project$Y15D05$countNice, $author$project$Y15D05$nice2, strings);
@@ -6498,7 +6498,7 @@ var $author$project$Y15D06$initModel = _Utils_Tuple2(
 	A2($elm$core$Array$repeat, 1000000, 0));
 var $author$project$Y15D06$Toggle = 0;
 var $author$project$Y15D06$badInstruction = {
-	an: 0,
+	aq: 0,
 	m: _Utils_Tuple2(1, 1),
 	x: _Utils_Tuple2(0, 0)
 };
@@ -6545,7 +6545,7 @@ var $author$project$Y15D06$parseInstruction = function (submatches) {
 				var _v9 = _v8.b;
 				var ty = _v9.a.a;
 				return ((fx >= 0) && ((fy >= 0) && ((_Utils_cmp(fx, tx) < 1) && ((_Utils_cmp(fy, ty) < 1) && ((tx < 1000) && (ty < 1000)))))) ? {
-					an: a,
+					aq: a,
 					m: _Utils_Tuple2(fx, fy),
 					x: _Utils_Tuple2(tx, ty)
 				} : $author$project$Y15D06$badInstruction;
@@ -6572,7 +6572,7 @@ var $author$project$Y15D06$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cm;
+					return $.cr;
 				},
 				A2($elm$regex$Regex$find, rgx, input))));
 };
@@ -6595,7 +6595,7 @@ var $author$project$Y15D06$updateCell = F2(
 			0,
 			A2($elm$core$Array$get, k, l1));
 		var v1_ = function () {
-			var _v1 = instruction.an;
+			var _v1 = instruction.aq;
 			switch (_v1) {
 				case 0:
 					return (v1 === 1) ? 0 : 1;
@@ -6610,7 +6610,7 @@ var $author$project$Y15D06$updateCell = F2(
 			0,
 			A2($elm$core$Array$get, k, l2));
 		var v2_ = function () {
-			var _v0 = instruction.an;
+			var _v0 = instruction.aq;
 			switch (_v0) {
 				case 0:
 					return v2 + 2;
@@ -7239,7 +7239,7 @@ var $author$project$Y15D09$extreme = function (model) {
 			A2(
 				$elm$core$Dict$get,
 				A2($author$project$Y15D09$key, c1, c2),
-				model.ar));
+				model.av));
 	};
 	return A2(
 		$elm$core$List$map,
@@ -7252,7 +7252,7 @@ var $author$project$Y15D09$extreme = function (model) {
 			function (perm) {
 				return $author$project$Y15D09$pairs(perm);
 			},
-			$author$project$Util$permutations(model.M)));
+			$author$project$Util$permutations(model.P)));
 };
 var $elm$core$List$maximum = function (list) {
 	if (list.b) {
@@ -7264,13 +7264,13 @@ var $elm$core$List$maximum = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $author$project$Y15D09$initModel = {M: _List_Nil, ar: $elm$core$Dict$empty};
+var $author$project$Y15D09$initModel = {P: _List_Nil, av: $elm$core$Dict$empty};
 var $author$project$Y15D09$parseLine = F2(
 	function (line, model) {
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7296,12 +7296,12 @@ var $author$project$Y15D09$parseLine = F2(
 					$elm$core$Dict$insert,
 					A2($author$project$Y15D09$key, c1, c2),
 					di,
-					model.ar));
-			var cities_ = A2($elm$core$List$member, c1, model.M) ? model.M : A2($elm$core$List$cons, c1, model.M);
+					model.av));
+			var cities_ = A2($elm$core$List$member, c1, model.P) ? model.P : A2($elm$core$List$cons, c1, model.P);
 			var cities = A2($elm$core$List$member, c2, cities_) ? cities_ : A2($elm$core$List$cons, c2, cities_);
 			return _Utils_update(
 				model,
-				{M: cities, ar: distances});
+				{P: cities, av: distances});
 		} else {
 			return model;
 		}
@@ -7334,8 +7334,8 @@ var $author$project$Y15D09$answer = F2(
 	});
 var $author$project$Y15D10$mapper = function (match) {
 	var length = $elm$core$String$fromInt(
-		$elm$core$String$length(match.cg));
-	var _char = A2($elm$core$String$left, 1, match.cg);
+		$elm$core$String$length(match.cl));
+	var _char = A2($elm$core$String$left, 1, match.cl);
 	return _Utils_ap(length, _char);
 };
 var $author$project$Y15D10$conway = F2(
@@ -7366,7 +7366,7 @@ var $author$project$Y15D10$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -7404,7 +7404,7 @@ var $author$project$Y15D11$increment = function (p) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7516,7 +7516,7 @@ var $author$project$Y15D11$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -7543,7 +7543,7 @@ var $author$project$Y15D12$count = function (json) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -7567,9 +7567,9 @@ var $author$project$Y15D13$key = F2(
 	});
 var $author$project$Y15D13$addMe = function (model) {
 	var me = 'Me';
-	var p = A2($elm$core$Set$insert, me, model.D);
-	var h0 = model.O;
-	var a = $elm$core$Set$toList(model.D);
+	var p = A2($elm$core$Set$insert, me, model.G);
+	var h0 = model.R;
+	var a = $elm$core$Set$toList(model.G);
 	var h1 = A3(
 		$elm$core$List$foldl,
 		F2(
@@ -7594,7 +7594,7 @@ var $author$project$Y15D13$addMe = function (model) {
 			}),
 		h1,
 		a);
-	return {O: h2, D: p};
+	return {R: h2, G: p};
 };
 var $author$project$Y15D13$pairValue = F3(
 	function (p1, p2, h) {
@@ -7662,7 +7662,7 @@ var $author$project$Y15D13$happinesses = function (model) {
 	var f = function (_v0) {
 		var p1 = _v0.a;
 		var p2 = _v0.b;
-		return A3($author$project$Y15D13$pairValue, p1, p2, model.O);
+		return A3($author$project$Y15D13$pairValue, p1, p2, model.R);
 	};
 	return A2(
 		$elm$core$List$map,
@@ -7676,10 +7676,10 @@ var $author$project$Y15D13$happinesses = function (model) {
 				return $author$project$Y15D13$pairup(perm);
 			},
 			$author$project$Util$permutations(
-				$elm$core$Set$toList(model.D))));
+				$elm$core$Set$toList(model.G))));
 };
 var $elm$core$Set$empty = $elm$core$Dict$empty;
-var $author$project$Y15D13$initModel = {O: $elm$core$Dict$empty, D: $elm$core$Set$empty};
+var $author$project$Y15D13$initModel = {R: $elm$core$Dict$empty, G: $elm$core$Set$empty};
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
@@ -7688,7 +7688,7 @@ var $author$project$Y15D13$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7707,7 +7707,7 @@ var $author$project$Y15D13$parseLine = F2(
 			var p = A2(
 				$elm$core$Set$insert,
 				p2,
-				A2($elm$core$Set$insert, p1, model.D));
+				A2($elm$core$Set$insert, p1, model.G));
 			var j = A2(
 				$elm$core$Maybe$withDefault,
 				0,
@@ -7717,8 +7717,8 @@ var $author$project$Y15D13$parseLine = F2(
 				$elm$core$Dict$insert,
 				A2($author$project$Y15D13$key, p1, p2),
 				k,
-				model.O);
-			return {O: h, D: p};
+				model.R);
+			return {R: h, G: p};
 		} else {
 			return model;
 		}
@@ -7754,10 +7754,10 @@ var $author$project$Y15D13$answer = F2(
 	});
 var $author$project$Y15D14$distance = F2(
 	function (t, r) {
-		var cyc = r.ai + r.bf;
+		var cyc = r.al + r.bk;
 		var tmp = t % cyc;
-		var rdr = (_Utils_cmp(tmp, r.ai) > 0) ? r.ai : tmp;
-		return ((((t / cyc) | 0) * r.ai) + rdr) * r.bh;
+		var rdr = (_Utils_cmp(tmp, r.al) > 0) ? r.al : tmp;
+		return ((((t / cyc) | 0) * r.al) + rdr) * r.bm;
 	});
 var $author$project$Y15D14$score = F3(
 	function (t, time, model) {
@@ -7773,7 +7773,7 @@ var $author$project$Y15D14$score = F3(
 						return _Utils_update(
 							r,
 							{
-								av: A2($author$project$Y15D14$distance, t_, r)
+								az: A2($author$project$Y15D14$distance, t_, r)
 							});
 					},
 					model);
@@ -7784,7 +7784,7 @@ var $author$project$Y15D14$score = F3(
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.av;
+								return $.az;
 							},
 							model1)));
 				var model2 = A2(
@@ -7793,7 +7793,7 @@ var $author$project$Y15D14$score = F3(
 						return _Utils_update(
 							r,
 							{
-								aC: r.aC + (_Utils_eq(r.av, maxDst) ? 1 : 0)
+								aG: r.aG + (_Utils_eq(r.az, maxDst) ? 1 : 0)
 							});
 					},
 					model1);
@@ -7817,7 +7817,7 @@ var $author$project$Y15D14$bestScore = F2(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.aC;
+							return $.aG;
 						},
 						A3($author$project$Y15D14$score, 0, time, model)))));
 	});
@@ -7838,7 +7838,7 @@ var $author$project$Y15D14$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -7866,7 +7866,7 @@ var $author$project$Y15D14$parseLine = F2(
 				$elm$core$Maybe$withDefault,
 				0,
 				$elm$core$String$toInt(r1));
-			var reindeer = {av: 0, bG: n1, bf: r2, aC: 0, bh: s2, ai: t2};
+			var reindeer = {az: 0, bL: n1, bk: r2, aG: 0, bm: s2, al: t2};
 			return A2($elm$core$List$cons, reindeer, model);
 		} else {
 			return model;
@@ -7991,7 +7991,7 @@ var $author$project$Y15D15$score = F3(
 							A2(
 								$elm$core$List$map,
 								function ($) {
-									return $.bo;
+									return $.bt;
 								},
 								m),
 							cookie)));
@@ -8009,7 +8009,7 @@ var $author$project$Y15D15$score = F3(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.b0;
+							return $.b5;
 						},
 						m),
 					cookie));
@@ -8020,7 +8020,7 @@ var $author$project$Y15D15$score = F3(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.by;
+							return $.bD;
 						},
 						m),
 					cookie));
@@ -8031,7 +8031,7 @@ var $author$project$Y15D15$score = F3(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bv;
+							return $.bA;
 						},
 						m),
 					cookie));
@@ -8042,7 +8042,7 @@ var $author$project$Y15D15$score = F3(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.bp;
+							return $.bu;
 						},
 						m),
 					cookie));
@@ -8095,7 +8095,7 @@ var $author$project$Y15D15$initCookie = F2(
 	});
 var $author$project$Y15D15$Ingredient = F6(
 	function (name, capacity, durability, flavor, texture, calories) {
-		return {bo: calories, bp: capacity, bv: durability, by: flavor, bG: name, b0: texture};
+		return {bt: calories, bu: capacity, bA: durability, bD: flavor, bL: name, b5: texture};
 	});
 var $author$project$Y15D15$parseInt = function (s) {
 	return A2(
@@ -8109,7 +8109,7 @@ var $author$project$Y15D15$parseLine = F2(
 		var matches = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -8231,7 +8231,7 @@ var $author$project$Y15D16$match2 = F3(
 	});
 var $author$project$Y15D16$Sue = F2(
 	function (number, props) {
-		return {bH: number, bO: props};
+		return {bM: number, bT: props};
 	});
 var $author$project$Y15D16$parseInt = function (s) {
 	return A2(
@@ -8249,7 +8249,7 @@ var $author$project$Y15D16$parseLine = F2(
 		var ms = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -8335,7 +8335,7 @@ var $author$project$Y15D16$sue = F2(
 		var sues = A2(
 			$elm$core$List$filter,
 			function (s) {
-				return A3($elm$core$Dict$foldl, hit, true, s.bO);
+				return A3($elm$core$Dict$foldl, hit, true, s.bT);
 			},
 			model);
 		var _v0 = $elm$core$List$length(sues);
@@ -8351,7 +8351,7 @@ var $author$project$Y15D16$sue = F2(
 							A2(
 								$elm$core$List$map,
 								function ($) {
-									return $.bH;
+									return $.bM;
 								},
 								sues))));
 			default:
@@ -8436,7 +8436,7 @@ var $author$project$Y15D17$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cg;
+						return $.cl;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -8460,11 +8460,11 @@ var $author$project$Y15D18$count = function (model) {
 		A2(
 			$elm$core$List$filter,
 			$elm$core$Basics$identity,
-			$elm$core$Array$toList(model.P)));
+			$elm$core$Array$toList(model.S)));
 };
 var $author$project$Y15D18$Model = F4(
 	function (lights, size, maxIndex, stuck) {
-		return {P: lights, n: maxIndex, bY: size, bj: stuck};
+		return {S: lights, n: maxIndex, b1: size, bo: stuck};
 	});
 var $elm$core$Elm$JsArray$push = _JsArray_push;
 var $elm$core$Elm$JsArray$singleton = _JsArray_singleton;
@@ -8558,7 +8558,7 @@ var $author$project$Y15D18$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -8574,7 +8574,7 @@ var $author$project$Y15D18$index = F2(
 	function (model, _v0) {
 		var r = _v0.a;
 		var c = _v0.b;
-		return (r * model.bY) + c;
+		return (r * model.b1) + c;
 	});
 var $author$project$Y15D18$corner = F2(
 	function (model, _v0) {
@@ -8596,7 +8596,7 @@ var $author$project$Y15D18$query = F2(
 			A2(
 				$elm$core$Array$get,
 				A2($author$project$Y15D18$index, model, cell),
-				model.P));
+				model.S));
 	});
 var $author$project$Y15D18$neighbours = F2(
 	function (model, _v0) {
@@ -8631,7 +8631,7 @@ var $author$project$Y15D18$neighbours = F2(
 	});
 var $author$project$Y15D18$newVal = F2(
 	function (model, cell) {
-		if (model.bj && A2($author$project$Y15D18$corner, model, cell)) {
+		if (model.bo && A2($author$project$Y15D18$corner, model, cell)) {
 			return true;
 		} else {
 			var n = A2($author$project$Y15D18$neighbours, model, cell);
@@ -8655,11 +8655,11 @@ var $author$project$Y15D18$sweep = F3(
 				var model_ = _Utils_update(
 					model,
 					{
-						P: A3(
+						S: A3(
 							$elm$core$Array$set,
 							A2($author$project$Y15D18$index, model, cell),
 							v,
-							model.P)
+							model.S)
 					});
 				var nextCell = A2($author$project$Y15D18$next, model_, cell);
 				var $temp$oldModel = oldModel,
@@ -8713,10 +8713,10 @@ var $author$project$Y15D18$stick = function (model) {
 						model,
 						_Utils_Tuple2(0, 0)),
 					true,
-					model.P))));
+					model.S))));
 	return _Utils_update(
 		model,
-		{P: a, bj: true});
+		{S: a, bo: true});
 };
 var $author$project$Y15D18$answer = F2(
 	function (part, input) {
@@ -8739,7 +8739,7 @@ var $author$project$Y15D19$comaRgx = $author$project$Util$regex('Y');
 var $author$project$Y15D19$count = F2(
 	function (rgx, model) {
 		return $elm$core$List$length(
-			A2($elm$regex$Regex$find, rgx, model.Q));
+			A2($elm$regex$Regex$find, rgx, model.T));
 	});
 var $author$project$Y15D19$askalski = function (model) {
 	var comas = A2($author$project$Y15D19$count, $author$project$Y15D19$comaRgx, model);
@@ -8758,10 +8758,10 @@ var $author$project$Y15D19$addToReplacements = F5(
 				var rest = matches.b;
 				var right = A3(
 					$elm$core$String$slice,
-					match.bC + $elm$core$String$length(from),
+					match.bH + $elm$core$String$length(from),
 					-1,
 					molecule);
-				var left = A3($elm$core$String$slice, 0, match.bC, molecule);
+				var left = A3($elm$core$String$slice, 0, match.bH, molecule);
 				var replacement = _Utils_ap(
 					left,
 					_Utils_ap(to, right));
@@ -8783,7 +8783,7 @@ var $author$project$Y15D19$addToReplacements = F5(
 var $author$project$Y15D19$iterateRules = function (model) {
 	iterateRules:
 	while (true) {
-		var _v0 = model.aZ;
+		var _v0 = model.a1;
 		if (!_v0.b) {
 			return model;
 		} else {
@@ -8794,9 +8794,9 @@ var $author$project$Y15D19$iterateRules = function (model) {
 			var matches = A2(
 				$elm$regex$Regex$find,
 				$author$project$Util$regex(from),
-				model.Q);
-			var replacements_ = A5($author$project$Y15D19$addToReplacements, matches, from, to, model.Q, model.aB);
-			var model_ = {Q: model.Q, aB: replacements_, aZ: rules};
+				model.T);
+			var replacements_ = A5($author$project$Y15D19$addToReplacements, matches, from, to, model.T, model.aF);
+			var model_ = {T: model.T, aF: replacements_, a1: rules};
 			var $temp$model = model_;
 			model = $temp$model;
 			continue iterateRules;
@@ -8830,7 +8830,7 @@ var $elm$core$Set$size = function (_v0) {
 var $author$project$Y15D19$molecules = function (model) {
 	var model_ = $author$project$Y15D19$iterateRules(model);
 	return $elm$core$String$fromInt(
-		$elm$core$Set$size(model_.aB));
+		$elm$core$Set$size(model_.aF));
 };
 var $author$project$Y15D19$extractMolecule = function (submatches) {
 	if (submatches.$ === 1) {
@@ -8864,7 +8864,7 @@ var $author$project$Y15D19$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2($elm$regex$Regex$find, $author$project$Y15D19$ruleRgx, input)));
 	var molecule = $author$project$Y15D19$extractMolecule(
@@ -8872,10 +8872,10 @@ var $author$project$Y15D19$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cm;
+					return $.cr;
 				},
 				A2($elm$regex$Regex$find, $author$project$Y15D19$moleRgx, input))));
-	return {Q: molecule, aB: $elm$core$Set$empty, aZ: rules};
+	return {T: molecule, aF: $elm$core$Set$empty, a1: rules};
 };
 var $author$project$Y15D19$answer = F2(
 	function (part, input) {
@@ -8967,7 +8967,7 @@ var $author$project$Y15D20$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -8993,7 +8993,7 @@ var $author$project$Y15D21$highest = F3(
 	});
 var $author$project$Y15D21$Index = F4(
 	function (w, a, r1, r2) {
-		return {X: a, F: r1, G: r2, aM: w};
+		return {_: a, I: r1, J: r2, aQ: w};
 	});
 var $author$project$Y15D21$initIndex = $elm$core$Maybe$Just(
 	A4($author$project$Y15D21$Index, 0, 0, 0, 1));
@@ -9003,7 +9003,7 @@ var $author$project$Y15D21$lowest = F3(
 	});
 var $author$project$Y15D21$Fighter = F5(
 	function (hitp, damage, armor, cost, player) {
-		return {bn: armor, a4: cost, bt: damage, aS: hitp, bK: player};
+		return {bs: armor, a8: cost, by: damage, aW: hitp, bP: player};
 	});
 var $author$project$Y15D21$parse = function (input) {
 	var ns = A2(
@@ -9012,7 +9012,7 @@ var $author$project$Y15D21$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -9120,22 +9120,22 @@ var $author$project$Y15D21$fighterFromIndex = function (i) {
 		$elm$core$Maybe$withDefault,
 		_List_fromArray(
 			[0, 0, 0]),
-		A2($elm$core$Array$get, i.aM, $author$project$Y15D21$weapons));
+		A2($elm$core$Array$get, i.aQ, $author$project$Y15D21$weapons));
 	var ring2 = A2(
 		$elm$core$Maybe$withDefault,
 		_List_fromArray(
 			[0, 0, 0]),
-		A2($elm$core$Array$get, i.G, $author$project$Y15D21$rings));
+		A2($elm$core$Array$get, i.J, $author$project$Y15D21$rings));
 	var ring1 = A2(
 		$elm$core$Maybe$withDefault,
 		_List_fromArray(
 			[0, 0, 0]),
-		A2($elm$core$Array$get, i.F, $author$project$Y15D21$rings));
+		A2($elm$core$Array$get, i.I, $author$project$Y15D21$rings));
 	var armor = A2(
 		$elm$core$Maybe$withDefault,
 		_List_fromArray(
 			[0, 0, 0]),
-		A2($elm$core$Array$get, i.X, $author$project$Y15D21$armors));
+		A2($elm$core$Array$get, i._, $author$project$Y15D21$armors));
 	var totals = A5(
 		$elm$core$List$map4,
 		F4(
@@ -9158,32 +9158,32 @@ var $author$project$Y15D21$fighterFromIndex = function (i) {
 	}
 };
 var $author$project$Y15D21$nextIndex = function (i) {
-	return (i.G < 7) ? $elm$core$Maybe$Just(
+	return (i.J < 7) ? $elm$core$Maybe$Just(
 		_Utils_update(
 			i,
-			{G: i.G + 1})) : ((i.F < 6) ? $elm$core$Maybe$Just(
+			{J: i.J + 1})) : ((i.I < 6) ? $elm$core$Maybe$Just(
 		_Utils_update(
 			i,
-			{F: i.F + 1, G: i.F + 2})) : ((i.X < 5) ? $elm$core$Maybe$Just(
+			{I: i.I + 1, J: i.I + 2})) : ((i._ < 5) ? $elm$core$Maybe$Just(
 		_Utils_update(
 			i,
-			{X: i.X + 1, F: 0, G: 1})) : ((i.aM < 4) ? $elm$core$Maybe$Just(
+			{_: i._ + 1, I: 0, J: 1})) : ((i.aQ < 4) ? $elm$core$Maybe$Just(
 		_Utils_update(
 			i,
-			{X: 0, F: 0, G: 1, aM: i.aM + 1})) : $elm$core$Maybe$Nothing)));
+			{_: 0, I: 0, J: 1, aQ: i.aQ + 1})) : $elm$core$Maybe$Nothing)));
 };
 var $author$project$Y15D21$winner = F2(
 	function (attacker, defender) {
 		winner:
 		while (true) {
-			if (attacker.aS <= 0) {
-				return defender.bK;
+			if (attacker.aW <= 0) {
+				return defender.bP;
 			} else {
-				var damage = attacker.bt - defender.bn;
-				var hitp = defender.aS - ((damage < 1) ? 1 : damage);
+				var damage = attacker.by - defender.bs;
+				var hitp = defender.aW - ((damage < 1) ? 1 : damage);
 				var damaged = _Utils_update(
 					defender,
-					{aS: hitp});
+					{aW: hitp});
 				var $temp$attacker = damaged,
 					$temp$defender = attacker;
 				attacker = $temp$attacker;
@@ -9204,8 +9204,8 @@ var $author$project$Y15D21$search = F4(
 				var nextBest = A3(
 					candidate,
 					A2($author$project$Y15D21$winner, player, boss),
-					player.a4,
-					best) ? player.a4 : best;
+					player.a8,
+					best) ? player.a8 : best;
 				var $temp$boss = boss,
 					$temp$candidate = candidate,
 					$temp$best = nextBest,
@@ -9236,7 +9236,7 @@ var $author$project$Y15D23$get = F2(
 			0,
 			A2($elm$core$Dict$get, reg, model.w));
 	});
-var $author$project$Y15D23$initModel = {g: 0, au: $elm$core$Array$empty, w: $elm$core$Dict$empty};
+var $author$project$Y15D23$initModel = {g: 0, ay: $elm$core$Array$empty, w: $elm$core$Dict$empty};
 var $author$project$Y15D23$Hlf = function (a) {
 	return {$: 2, a: a};
 };
@@ -9264,7 +9264,7 @@ var $author$project$Y15D23$parseLine = F2(
 		var sm = A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3($elm$regex$Regex$findAtMost, 1, rx, line));
 		if (((((sm.b && sm.a.b) && sm.a.b.b) && sm.a.b.b.b) && (!sm.a.b.b.b.b)) && (!sm.b.b)) {
@@ -9302,7 +9302,7 @@ var $author$project$Y15D23$parseLine = F2(
 			return _Utils_update(
 				model,
 				{
-					au: A2($elm$core$Array$push, i, model.au)
+					ay: A2($elm$core$Array$push, i, model.ay)
 				});
 		} else {
 			return model;
@@ -9329,7 +9329,7 @@ var $author$project$Y15D23$update = F3(
 var $author$project$Y15D23$run = function (model) {
 	run:
 	while (true) {
-		var instruction = A2($elm$core$Array$get, model.g, model.au);
+		var instruction = A2($elm$core$Array$get, model.g, model.ay);
 		if (instruction.$ === 1) {
 			return model;
 		} else {
@@ -9502,7 +9502,7 @@ var $author$project$Y15D24$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cg;
+						return $.cl;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -9537,7 +9537,7 @@ var $author$project$Y15D25$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cm;
+							return $.cr;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -9565,28 +9565,28 @@ var $author$project$Y15D25$search = F2(
 		while (true) {
 			var row = _v0.a;
 			var col = _v0.b;
-			if (_Utils_eq(row, model.af) && _Utils_eq(col, model._)) {
+			if (_Utils_eq(row, model.ai) && _Utils_eq(col, model.ac)) {
 				return model;
 			} else {
-				var code_ = A2($elm$core$Basics$modBy, 33554393, model.aq * 252533);
-				var _v1 = (model.af > 1) ? _Utils_Tuple2(model.af - 1, model._ + 1) : _Utils_Tuple2(model._ + 1, 1);
+				var code_ = A2($elm$core$Basics$modBy, 33554393, model.au * 252533);
+				var _v1 = (model.ai > 1) ? _Utils_Tuple2(model.ai - 1, model.ac + 1) : _Utils_Tuple2(model.ac + 1, 1);
 				var row_ = _v1.a;
 				var col_ = _v1.b;
 				var $temp$_v0 = _Utils_Tuple2(row, col),
-					$temp$model = {aq: code_, _: col_, af: row_};
+					$temp$model = {au: code_, ac: col_, ai: row_};
 				_v0 = $temp$_v0;
 				model = $temp$model;
 				continue search;
 			}
 		}
 	});
-var $author$project$Y15D25$start = {aq: 20151125, _: 1, af: 1};
+var $author$project$Y15D25$start = {au: 20151125, ac: 1, ai: 1};
 var $author$project$Y15D25$answer = F2(
 	function (part, input) {
 		if (part === 1) {
 			var target = $author$project$Y15D25$parse(input);
 			var model = A2($author$project$Y15D25$search, target, $author$project$Y15D25$start);
-			return $elm$core$String$fromInt(model.aq);
+			return $elm$core$String$fromInt(model.au);
 		} else {
 			return $author$project$Util$onlyOnePart;
 		}
@@ -9652,16 +9652,16 @@ var $elm$core$Basics$abs = function (n) {
 	return (n < 0) ? (-n) : n;
 };
 var $author$project$Y16D01$blocks = function (model) {
-	return $elm$core$Basics$abs(model.ae.I) + $elm$core$Basics$abs(model.ae.J);
+	return $elm$core$Basics$abs(model.ah.L) + $elm$core$Basics$abs(model.ah.M);
 };
 var $author$project$Y16D01$Model = F2(
 	function (d, p) {
-		return {aQ: d, ae: p};
+		return {aU: d, ah: p};
 	});
 var $author$project$Y16D01$North = 0;
 var $author$project$Y16D01$Position = F2(
 	function (x, y) {
-		return {I: x, J: y};
+		return {L: x, M: y};
 	});
 var $author$project$Y16D01$origin = A2($author$project$Y16D01$Position, 0, 0);
 var $author$project$Y16D01$init = A2($author$project$Y16D01$Model, 0, $author$project$Y16D01$origin);
@@ -9669,7 +9669,7 @@ var $author$project$Y16D01$Left = 0;
 var $author$project$Y16D01$Right = 1;
 var $author$project$Y16D01$Step = F2(
 	function (r, n) {
-		return {i: n, bS: r};
+		return {i: n, bX: r};
 	});
 var $author$project$Y16D01$parse = function (input) {
 	var step = A2(
@@ -9696,7 +9696,7 @@ var $author$project$Y16D01$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2($elm$regex$Regex$find, step, input)));
 };
@@ -9706,9 +9706,9 @@ var $author$project$Y16D01$South = 2;
 var $author$project$Y16D01$West = 3;
 var $author$project$Y16D01$update = F2(
 	function (step, model) {
-		var p = model.ae;
-		var d = model.aQ;
-		var _v0 = step.bS;
+		var p = model.ah;
+		var d = model.aU;
+		var _v0 = step.bX;
 		switch (_v0) {
 			case 1:
 				switch (d) {
@@ -9718,31 +9718,31 @@ var $author$project$Y16D01$update = F2(
 							1,
 							_Utils_update(
 								p,
-								{I: p.I + step.i}));
+								{L: p.L + step.i}));
 					case 1:
 						return A2(
 							$author$project$Y16D01$Model,
 							2,
 							_Utils_update(
 								p,
-								{J: p.J - step.i}));
+								{M: p.M - step.i}));
 					case 2:
 						return A2(
 							$author$project$Y16D01$Model,
 							3,
 							_Utils_update(
 								p,
-								{I: p.I - step.i}));
+								{L: p.L - step.i}));
 					default:
 						return A2(
 							$author$project$Y16D01$Model,
 							0,
 							_Utils_update(
 								p,
-								{J: p.J + step.i}));
+								{M: p.M + step.i}));
 				}
 			case 0:
-				var _v2 = model.aQ;
+				var _v2 = model.aU;
 				switch (_v2) {
 					case 0:
 						return A2(
@@ -9750,31 +9750,31 @@ var $author$project$Y16D01$update = F2(
 							3,
 							_Utils_update(
 								p,
-								{I: p.I - step.i}));
+								{L: p.L - step.i}));
 					case 1:
 						return A2(
 							$author$project$Y16D01$Model,
 							0,
 							_Utils_update(
 								p,
-								{J: p.J + step.i}));
+								{M: p.M + step.i}));
 					case 2:
 						return A2(
 							$author$project$Y16D01$Model,
 							1,
 							_Utils_update(
 								p,
-								{I: p.I + step.i}));
+								{L: p.L + step.i}));
 					default:
 						return A2(
 							$author$project$Y16D01$Model,
 							2,
 							_Utils_update(
 								p,
-								{J: p.J - step.i}));
+								{M: p.M - step.i}));
 				}
 			default:
-				var _v3 = model.aQ;
+				var _v3 = model.aU;
 				switch (_v3) {
 					case 0:
 						return A2(
@@ -9782,28 +9782,28 @@ var $author$project$Y16D01$update = F2(
 							0,
 							_Utils_update(
 								p,
-								{J: p.J + step.i}));
+								{M: p.M + step.i}));
 					case 1:
 						return A2(
 							$author$project$Y16D01$Model,
 							1,
 							_Utils_update(
 								p,
-								{I: p.I + step.i}));
+								{L: p.L + step.i}));
 					case 2:
 						return A2(
 							$author$project$Y16D01$Model,
 							2,
 							_Utils_update(
 								p,
-								{J: p.J - step.i}));
+								{M: p.M - step.i}));
 					default:
 						return A2(
 							$author$project$Y16D01$Model,
 							3,
 							_Utils_update(
 								p,
-								{I: p.I - step.i}));
+								{L: p.L - step.i}));
 				}
 		}
 	});
@@ -9820,10 +9820,10 @@ var $author$project$Y16D01$revisits = F3(
 						step,
 						{i: 1}),
 					model);
-				if (A2($elm$core$List$member, newModel.ae, visits)) {
+				if (A2($elm$core$List$member, newModel.ah, visits)) {
 					return newModel;
 				} else {
-					var newVisits = A2($elm$core$List$cons, newModel.ae, visits);
+					var newVisits = A2($elm$core$List$cons, newModel.ah, visits);
 					if (step.i <= 1) {
 						var $temp$steps = rest,
 							$temp$visits = newVisits,
@@ -10110,7 +10110,7 @@ var $author$project$Y16D02$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cg;
+			return $.cl;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -10183,7 +10183,7 @@ var $author$project$Y16D03$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -10308,7 +10308,7 @@ var $author$project$Y16D04$decrypt = F3(
 		}
 	});
 var $author$project$Y16D04$northPole = function (room) {
-	var name = A3($author$project$Y16D04$decrypt, room.aD, '', room.bG);
+	var name = A3($author$project$Y16D04$decrypt, room.aH, '', room.bL);
 	return A2(
 		$elm$regex$Regex$contains,
 		$author$project$Util$regex('northpole object'),
@@ -10316,7 +10316,7 @@ var $author$project$Y16D04$northPole = function (room) {
 };
 var $author$project$Y16D04$Room = F3(
 	function (name, sector, checksum) {
-		return {bs: checksum, bG: name, aD: sector};
+		return {bx: checksum, bL: name, aH: sector};
 	});
 var $author$project$Y16D04$convertToMaybeRoom = function (matches) {
 	if ((((((matches.b && (!matches.a.$)) && matches.b.b) && (!matches.b.a.$)) && matches.b.b.b) && (!matches.b.b.a.$)) && (!matches.b.b.b.b)) {
@@ -10369,7 +10369,7 @@ var $author$project$Y16D04$potentialRoom = function (room) {
 	return A2(
 		$elm$core$Maybe$andThen,
 		function (r) {
-			return (r.aD > 0) ? $elm$core$Maybe$Just(r) : $elm$core$Maybe$Nothing;
+			return (r.aH > 0) ? $elm$core$Maybe$Just(r) : $elm$core$Maybe$Nothing;
 		},
 		room);
 };
@@ -10383,7 +10383,7 @@ var $author$project$Y16D04$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cm;
+					return $.cr;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -10927,7 +10927,7 @@ var $elm$core$List$take = F2(
 		return A3($elm$core$List$takeFast, 0, n, list);
 	});
 var $author$project$Y16D04$checksum = function (room) {
-	var dict = A2($author$project$Y16D04$stats, room.bG, $elm$core$Dict$empty);
+	var dict = A2($author$project$Y16D04$stats, room.bL, $elm$core$Dict$empty);
 	var list = A2(
 		$elm$core$List$take,
 		5,
@@ -10940,7 +10940,7 @@ var $author$project$Y16D04$checksum = function (room) {
 };
 var $author$project$Y16D04$realRoom = function (room) {
 	return _Utils_eq(
-		room.bs,
+		room.bx,
 		$author$project$Y16D04$checksum(room));
 };
 var $author$project$Y16D04$answer = F2(
@@ -10951,14 +10951,14 @@ var $author$project$Y16D04$answer = F2(
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.aD;
+						return $.aH;
 					},
 					A2($elm$core$List$filter, $author$project$Y16D04$realRoom, rooms)))) : $elm$core$String$fromInt(
 			$elm$core$List$sum(
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.aD;
+						return $.aH;
 					},
 					A2($elm$core$List$filter, $author$project$Y16D04$northPole, rooms))));
 	});
@@ -10970,7 +10970,7 @@ var $author$project$Y16D05$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -11208,7 +11208,7 @@ var $author$project$Y16D06$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cg;
+			return $.cl;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -11224,7 +11224,7 @@ var $author$project$Y16D07$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cg;
+			return $.cl;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -11245,7 +11245,7 @@ var $author$project$Y16D07$fragments = F2(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cm;
+							return $.cr;
 						},
 						A2($elm$regex$Regex$find, matcher, address)))));
 	});
@@ -11372,7 +11372,7 @@ var $author$project$Y16D07$tls = function (address) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -11647,7 +11647,7 @@ var $author$project$Y16D08$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -11671,7 +11671,7 @@ var $author$project$Y16D09$matches = function (string) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A3(
 				$elm$regex$Regex$findAtMost,
@@ -11821,7 +11821,7 @@ var $author$project$Y16D10$parse = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cm;
+			return $.cr;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -11989,8 +11989,8 @@ var $elm$core$Dict$fromList = function (assocs) {
 var $author$project$Y16D12$initState = F2(
 	function (c, instructions) {
 		return {
-			bC: 0,
-			au: instructions,
+			bH: 0,
+			ay: instructions,
 			w: $elm$core$Dict$fromList(
 				_List_fromArray(
 					[
@@ -12139,7 +12139,7 @@ var $author$project$Y16D12$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cm;
+					return $.cr;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -12156,7 +12156,7 @@ var $author$project$Y16D12$process = function (state) {
 		var instruction = A2(
 			$elm$core$Maybe$withDefault,
 			$author$project$Y16D12$Invalid,
-			A2($elm$core$Array$get, state.bC, state.au));
+			A2($elm$core$Array$get, state.bH, state.ay));
 		if (_Utils_eq(instruction, $author$project$Y16D12$Invalid)) {
 			return state;
 		} else {
@@ -12193,23 +12193,23 @@ var $author$project$Y16D12$process = function (state) {
 				}
 			}();
 			var index = function () {
-				var _default = state.bC + 1;
+				var _default = state.bH + 1;
 				switch (instruction.$) {
 					case 5:
 						var reg = instruction.a;
 						var jmp = instruction.b;
-						return ((!A2($author$project$Y16D12$get, reg, state)) || (!jmp)) ? _default : (state.bC + jmp);
+						return ((!A2($author$project$Y16D12$get, reg, state)) || (!jmp)) ? _default : (state.bH + jmp);
 					case 4:
 						var _int = instruction.a;
 						var jmp = instruction.b;
-						return ((!_int) || (!jmp)) ? _default : (state.bC + jmp);
+						return ((!_int) || (!jmp)) ? _default : (state.bH + jmp);
 					default:
 						return _default;
 				}
 			}();
 			var $temp$state = _Utils_update(
 				state,
-				{bC: index, w: registers});
+				{bH: index, w: registers});
 			state = $temp$state;
 			continue process;
 		}
@@ -12230,7 +12230,7 @@ var $author$project$Y16D12$answer = F2(
 	});
 var $author$project$Y16D13$Cell = F3(
 	function (x, y, d) {
-		return {aQ: d, I: x, J: y};
+		return {aU: d, L: x, M: y};
 	});
 var $elm$core$String$dropRight = F2(
 	function (n, string) {
@@ -12259,8 +12259,8 @@ var $author$project$Y16D13$toBinary = function (num) {
 };
 var $author$project$Y16D13$open = F2(
 	function (fav, cell) {
-		var y = cell.J;
-		var x = cell.I;
+		var y = cell.M;
+		var x = cell.L;
 		var num = (((((x * x) + (3 * x)) + ((2 * x) * y)) + y) + (y * y)) + fav;
 		var ones = $elm$core$List$length(
 			A2(
@@ -12274,7 +12274,7 @@ var $author$project$Y16D13$open = F2(
 	});
 var $author$project$Y16D13$same = F2(
 	function (c1, c2) {
-		return _Utils_eq(c1.I, c2.I) && _Utils_eq(c1.J, c2.J);
+		return _Utils_eq(c1.L, c2.L) && _Utils_eq(c1.M, c2.M);
 	});
 var $author$project$Y16D13$getNeighbours = F3(
 	function (fav, visited, cell) {
@@ -12286,7 +12286,7 @@ var $author$project$Y16D13$getNeighbours = F3(
 		};
 		var _new = F2(
 			function (old, move) {
-				return A3($author$project$Y16D13$Cell, old.I + move.a, old.J + move.b, old.aQ + 1);
+				return A3($author$project$Y16D13$Cell, old.L + move.a, old.M + move.b, old.aU + 1);
 			});
 		var moves = _List_fromArray(
 			[
@@ -12296,7 +12296,7 @@ var $author$project$Y16D13$getNeighbours = F3(
 				_Utils_Tuple2(0, -1)
 			]);
 		var inBounds = function (neighbour) {
-			return (neighbour.I >= 0) && (neighbour.J >= 0);
+			return (neighbour.L >= 0) && (neighbour.M >= 0);
 		};
 		return A2(
 			$elm$core$List$filter,
@@ -12312,7 +12312,7 @@ var $author$project$Y16D13$getNeighbours = F3(
 						_new(cell),
 						moves))));
 	});
-var $author$project$Y16D13$start = {aQ: 0, I: 1, J: 1};
+var $author$project$Y16D13$start = {aU: 0, L: 1, M: 1};
 var $author$project$Y16D13$search = F5(
 	function (part, fav, finish, visited, queue) {
 		search:
@@ -12322,7 +12322,7 @@ var $author$project$Y16D13$search = F5(
 			} else {
 				var cell = queue.a;
 				var rest = queue.b;
-				if ((part === 2) && (cell.aQ === 50)) {
+				if ((part === 2) && (cell.aU === 50)) {
 					return $elm$core$List$length(visited);
 				} else {
 					var neighbours = A3($author$project$Y16D13$getNeighbours, fav, visited, cell);
@@ -12334,8 +12334,8 @@ var $author$project$Y16D13$search = F5(
 								$elm$core$List$filter,
 								$author$project$Y16D13$same(finish),
 								neighbours)));
-					if ((part === 1) && (goal.aQ > 0)) {
-						return goal.aQ;
+					if ((part === 1) && (goal.aU > 0)) {
+						return goal.aU;
 					} else {
 						var $temp$part = part,
 							$temp$fav = fav,
@@ -12376,7 +12376,7 @@ var $author$project$Y16D14$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12457,7 +12457,7 @@ var $author$project$Y16D14$search = F5(
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -12510,9 +12510,9 @@ var $author$project$Y16D14$answer = F2(
 	});
 var $author$project$Y16D15$Disc = F3(
 	function (number, positions, position) {
-		return {bH: number, aA: position, bd: positions};
+		return {bM: number, aE: position, bi: positions};
 	});
-var $author$project$Y16D15$invalid = {bH: 0, aA: 0, bd: 1};
+var $author$project$Y16D15$invalid = {bM: 0, aE: 0, bi: 1};
 var $author$project$Y16D15$toDisc = function (numbers) {
 	if (((numbers.b && numbers.b.b) && numbers.b.b.b) && (!numbers.b.b.b.b)) {
 		var a = numbers.a;
@@ -12543,7 +12543,7 @@ var $author$project$Y16D15$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cm;
+							return $.cr;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -12563,7 +12563,7 @@ var $author$project$Y16D15$rotate = F2(
 		return _Utils_update(
 			disc,
 			{
-				aA: A2($elm$core$Basics$modBy, disc.bd, disc.aA + time)
+				aE: A2($elm$core$Basics$modBy, disc.bi, disc.aE + time)
 			});
 	});
 var $author$project$Y16D15$initShift = F3(
@@ -12610,7 +12610,7 @@ var $author$project$Y16D15$open = function (maze) {
 	return A2(
 		$elm$core$List$all,
 		function (d) {
-			return !d.aA;
+			return !d.aE;
 		},
 		maze);
 };
@@ -12660,7 +12660,7 @@ var $author$project$Y16D16$checksum_ = function (data) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cg;
+						return $.cl;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -12714,7 +12714,7 @@ var $author$project$Y16D16$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12740,7 +12740,7 @@ var $author$project$Y16D17$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A3(
 					$elm$regex$Regex$findAtMost,
@@ -12749,11 +12749,11 @@ var $author$project$Y16D17$parse = function (input) {
 					input))));
 };
 var $author$project$Y16D17$found = function (location) {
-	return (location.I === 3) && (location.J === 3);
+	return (location.L === 3) && (location.M === 3);
 };
 var $author$project$Y16D17$Location = F3(
 	function (x, y, path) {
-		return {az: path, I: x, J: y};
+		return {aD: path, L: x, M: y};
 	});
 var $author$project$Y16D17$bCode = $elm$core$Char$toCode('b');
 var $author$project$Y16D17$fCode = $elm$core$Char$toCode('f');
@@ -12767,13 +12767,13 @@ var $author$project$Y16D17$newLocation = F2(
 			var _v1 = function () {
 				switch (index) {
 					case 0:
-						return _Utils_Tuple3(location.I, location.J - 1, 'U');
+						return _Utils_Tuple3(location.L, location.M - 1, 'U');
 					case 1:
-						return _Utils_Tuple3(location.I, location.J + 1, 'D');
+						return _Utils_Tuple3(location.L, location.M + 1, 'D');
 					case 2:
-						return _Utils_Tuple3(location.I - 1, location.J, 'L');
+						return _Utils_Tuple3(location.L - 1, location.M, 'L');
 					default:
-						return _Utils_Tuple3(location.I + 1, location.J, 'R');
+						return _Utils_Tuple3(location.L + 1, location.M, 'R');
 				}
 			}();
 			var x = _v1.a;
@@ -12784,7 +12784,7 @@ var $author$project$Y16D17$newLocation = F2(
 					$author$project$Y16D17$Location,
 					x,
 					y,
-					_Utils_ap(location.az, step)));
+					_Utils_ap(location.aD, step)));
 		}
 	});
 var $author$project$Y16D17$newLocations = F2(
@@ -12806,7 +12806,7 @@ var $author$project$Y16D17$newLocations = F2(
 							$elm$core$String$left,
 							4,
 							$truqu$elm_md5$MD5$hex(
-								_Utils_ap(passcode, location.az)))))));
+								_Utils_ap(passcode, location.aD)))))));
 	});
 var $author$project$Y16D17$search = F4(
 	function (part, len, queue, passcode) {
@@ -12833,13 +12833,13 @@ var $author$project$Y16D17$search = F4(
 				} else {
 					var goal = maybeGoal.a;
 					if (part === 1) {
-						return goal.az;
+						return goal.aD;
 					} else {
 						var notGoals = A2(
 							$elm$core$List$filter,
 							A2($elm$core$Basics$composeL, $elm$core$Basics$not, $author$project$Y16D17$found),
 							locations);
-						var newLen = $elm$core$String$length(goal.az);
+						var newLen = $elm$core$String$length(goal.aD);
 						var $temp$part = part,
 							$temp$len = newLen,
 							$temp$queue = _Utils_ap(rest, notGoals),
@@ -12994,7 +12994,7 @@ var $author$project$Y16D18$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A3(
 							$elm$regex$Regex$findAtMost,
@@ -13045,7 +13045,7 @@ var $author$project$Y16D19$answer = F2(
 				$author$project$Y16D19$parse(input)));
 	});
 var $author$project$Y16D20$size = function (block) {
-	return (block.V - block.ad) + 1;
+	return (block.Y - block.ag) + 1;
 };
 var $author$project$Y16D20$allowed = F2(
 	function (remaining, blocks) {
@@ -13074,10 +13074,10 @@ var $author$project$Y16D20$lowest = F2(
 			} else {
 				var block = blocks.a;
 				var rest = blocks.b;
-				if (_Utils_cmp(num, block.ad) < 0) {
+				if (_Utils_cmp(num, block.ag) < 0) {
 					return num;
 				} else {
-					var $temp$num = block.V + 1,
+					var $temp$num = block.Y + 1,
 						$temp$blocks = rest;
 					num = $temp$num;
 					blocks = $temp$blocks;
@@ -13088,15 +13088,15 @@ var $author$project$Y16D20$lowest = F2(
 	});
 var $author$project$Y16D20$Block = F2(
 	function (lower, upper) {
-		return {ad: lower, V: upper};
+		return {ag: lower, Y: upper};
 	});
 var $author$project$Y16D20$merge = F2(
 	function (b1, b2) {
-		return (_Utils_cmp(b2.V, b1.V) < 1) ? b1 : A2($author$project$Y16D20$Block, b1.ad, b2.V);
+		return (_Utils_cmp(b2.Y, b1.Y) < 1) ? b1 : A2($author$project$Y16D20$Block, b1.ag, b2.Y);
 	});
 var $author$project$Y16D20$mergeable = F2(
 	function (b1, b2) {
-		return _Utils_cmp(b2.ad, b1.V + 1) < 1;
+		return _Utils_cmp(b2.ag, b1.Y + 1) < 1;
 	});
 var $author$project$Y16D20$compact = function (blocks) {
 	compact:
@@ -13146,7 +13146,7 @@ var $author$project$Y16D20$parse = function (input) {
 		A2(
 			$elm$core$List$sortBy,
 			function ($) {
-				return $.ad;
+				return $.ag;
 			},
 			A2(
 				$elm$core$List$filter,
@@ -13168,7 +13168,7 @@ var $author$project$Y16D20$parse = function (input) {
 								A2(
 									$elm$core$List$map,
 									function ($) {
-										return $.cm;
+										return $.cr;
 									},
 									A2(
 										$elm$regex$Regex$find,
@@ -13322,7 +13322,7 @@ var $author$project$Y16D21$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cm;
+						return $.cr;
 					},
 					A2($elm$regex$Regex$find, $author$project$Y16D21$instructionPattern, input)))));
 };
@@ -13892,7 +13892,7 @@ var $author$project$Y16D21$answer = F2(
 	});
 var $author$project$Y16D22$Cluster = F3(
 	function (width, height, nodes) {
-		return {ac: height, ay: nodes, W: width};
+		return {af: height, aC: nodes, Z: width};
 	});
 var $author$project$Y16D22$emptyCluster = A3($author$project$Y16D22$Cluster, 0, 0, $elm$core$Dict$empty);
 var $author$project$Y16D22$toCluster = F2(
@@ -13904,13 +13904,13 @@ var $author$project$Y16D22$toCluster = F2(
 			} else {
 				var node = nodes.a;
 				var remainingNodes = nodes.b;
-				var newWidth = (_Utils_cmp(node.I + 1, cluster.W) > 0) ? (node.I + 1) : cluster.W;
+				var newWidth = (_Utils_cmp(node.L + 1, cluster.Z) > 0) ? (node.L + 1) : cluster.Z;
 				var newNodes = A3(
 					$elm$core$Dict$insert,
-					_Utils_Tuple2(node.I, node.J),
+					_Utils_Tuple2(node.L, node.M),
 					node,
-					cluster.ay);
-				var newHeight = (_Utils_cmp(node.J + 1, cluster.ac) > 0) ? (node.J + 1) : cluster.ac;
+					cluster.aC);
+				var newHeight = (_Utils_cmp(node.M + 1, cluster.af) > 0) ? (node.M + 1) : cluster.af;
 				var newCluster = A3($author$project$Y16D22$Cluster, newWidth, newHeight, newNodes);
 				var $temp$cluster = newCluster,
 					$temp$nodes = remainingNodes;
@@ -13922,7 +13922,7 @@ var $author$project$Y16D22$toCluster = F2(
 	});
 var $author$project$Y16D22$Node = F5(
 	function (x, y, size, used, avail) {
-		return {a1: avail, bY: size, aj: used, I: x, J: y};
+		return {a5: avail, b1: size, am: used, L: x, M: y};
 	});
 var $author$project$Y16D22$invalidNode = A5($author$project$Y16D22$Node, 0, 0, 0, 0, 0);
 var $author$project$Y16D22$toNode = function (numbers) {
@@ -13962,7 +13962,7 @@ var $author$project$Y16D22$parse = function (input) {
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.cm;
+								return $.cr;
 							},
 							A2(
 								$elm$regex$Regex$find,
@@ -13974,7 +13974,7 @@ var $author$project$Y16D22$printNode = F3(
 		if ((!y) && (!x)) {
 			return '0';
 		} else {
-			if ((!y) && _Utils_eq(x, cluster.W - 1)) {
+			if ((!y) && _Utils_eq(x, cluster.Z - 1)) {
 				return 'G';
 			} else {
 				var node = A2(
@@ -13983,8 +13983,8 @@ var $author$project$Y16D22$printNode = F3(
 					A2(
 						$elm$core$Dict$get,
 						_Utils_Tuple2(x, y),
-						cluster.ay));
-				return _Utils_eq(node, $author$project$Y16D22$invalidNode) ? ' ' : ((!node.aj) ? '_' : ((node.bY >= 500) ? '#' : '.'));
+						cluster.aC));
+				return _Utils_eq(node, $author$project$Y16D22$invalidNode) ? ' ' : ((!node.am) ? '_' : ((node.b1 >= 500) ? '#' : '.'));
 			}
 		}
 	});
@@ -13994,7 +13994,7 @@ var $author$project$Y16D22$printRow = F2(
 			A2(
 				$elm$core$List$map,
 				A2($author$project$Y16D22$printNode, cluster, y),
-				A2($elm$core$List$range, 0, (-1) + cluster.W)));
+				A2($elm$core$List$range, 0, (-1) + cluster.Z)));
 	});
 var $author$project$Y16D22$print = function (cluster) {
 	return A2(
@@ -14003,16 +14003,16 @@ var $author$project$Y16D22$print = function (cluster) {
 		A2(
 			$elm$core$List$map,
 			$author$project$Y16D22$printRow(cluster),
-			A2($elm$core$List$range, 0, (-1) + cluster.ac)));
+			A2($elm$core$List$range, 0, (-1) + cluster.af)));
 };
 var $author$project$Y16D22$viable1 = F4(
 	function (x, y, total, cluster) {
 		viable1:
 		while (true) {
-			if (_Utils_cmp(x, cluster.W) > -1) {
+			if (_Utils_cmp(x, cluster.Z) > -1) {
 				return total;
 			} else {
-				if (_Utils_cmp(y, cluster.ac) > -1) {
+				if (_Utils_cmp(y, cluster.af) > -1) {
 					var $temp$x = x + 1,
 						$temp$y = 0,
 						$temp$total = total,
@@ -14032,10 +14032,10 @@ var $author$project$Y16D22$viable2 = F6(
 	function (x1, y1, x2, y2, total, cluster) {
 		viable2:
 		while (true) {
-			if (_Utils_cmp(x2, cluster.W) > -1) {
+			if (_Utils_cmp(x2, cluster.Z) > -1) {
 				return A4($author$project$Y16D22$viable1, x1, y1 + 1, total, cluster);
 			} else {
-				if (_Utils_cmp(y2, cluster.ac) > -1) {
+				if (_Utils_cmp(y2, cluster.af) > -1) {
 					var $temp$x1 = x1,
 						$temp$y1 = y1,
 						$temp$x2 = x2 + 1,
@@ -14056,16 +14056,16 @@ var $author$project$Y16D22$viable2 = F6(
 						A2(
 							$elm$core$Dict$get,
 							_Utils_Tuple2(x2, y2),
-							cluster.ay));
+							cluster.aC));
 					var node1 = A2(
 						$elm$core$Maybe$withDefault,
 						$author$project$Y16D22$invalidNode,
 						A2(
 							$elm$core$Dict$get,
 							_Utils_Tuple2(x1, y1),
-							cluster.ay));
-					var add21 = ((node2.aj > 0) && (_Utils_cmp(node2.aj, node1.a1) < 1)) ? 1 : 0;
-					var add12 = ((node1.aj > 0) && (_Utils_cmp(node1.aj, node2.a1) < 1)) ? 1 : 0;
+							cluster.aC));
+					var add21 = ((node2.am > 0) && (_Utils_cmp(node2.am, node1.a5) < 1)) ? 1 : 0;
+					var add12 = ((node1.am > 0) && (_Utils_cmp(node1.am, node2.a5) < 1)) ? 1 : 0;
 					var newTotal = (total + add12) + add21;
 					var $temp$x1 = x1,
 						$temp$y1 = y1,
@@ -14117,7 +14117,7 @@ var $author$project$Y16D24$neighbours = F3(
 	});
 var $author$project$Y16D24$toEntry = function (node) {
 	return _Utils_Tuple2(
-		_Utils_Tuple2(node.I, node.J),
+		_Utils_Tuple2(node.L, node.M),
 		node);
 };
 var $elm$core$Dict$union = F2(
@@ -14128,7 +14128,7 @@ var $author$project$Y16D24$cost_ = F2(
 	function (target, state) {
 		cost_:
 		while (true) {
-			var _v0 = state.aP;
+			var _v0 = state.aT;
 			if (_v0.$ === 1) {
 				return 0;
 			} else {
@@ -14141,12 +14141,12 @@ var $author$project$Y16D24$cost_ = F2(
 				var updatedNeighboursList = A2(
 					$elm$core$List$map,
 					update,
-					A3($author$project$Y16D24$neighbours, current.I, current.J, state.ay));
+					A3($author$project$Y16D24$neighbours, current.L, current.M, state.aC));
 				var maybeTarget = $elm$core$List$head(
 					A2(
 						$elm$core$List$filter,
 						function (n) {
-							return _Utils_eq(n.aK, target);
+							return _Utils_eq(n.aO, target);
 						},
 						updatedNeighboursList));
 				if (!maybeTarget.$) {
@@ -14155,7 +14155,7 @@ var $author$project$Y16D24$cost_ = F2(
 				} else {
 					var newUpdatedNodes = $elm$core$Dict$fromList(
 						A2($elm$core$List$map, $author$project$Y16D24$toEntry, updatedNeighboursList));
-					var tmpNodes = A2($elm$core$Dict$union, newUpdatedNodes, state.ay);
+					var tmpNodes = A2($elm$core$Dict$union, newUpdatedNodes, state.aC);
 					var newCurrent = $elm$core$List$head(
 						A2(
 							$elm$core$List$map,
@@ -14181,13 +14181,13 @@ var $author$project$Y16D24$cost_ = F2(
 							var node = newCurrent.a;
 							return A2(
 								$elm$core$Dict$remove,
-								_Utils_Tuple2(node.I, node.J),
+								_Utils_Tuple2(node.L, node.M),
 								tmpNodes);
 						}
 					}();
 					var newState = _Utils_update(
 						state,
-						{aP: newCurrent, ay: newNodes});
+						{aT: newCurrent, aC: newNodes});
 					var $temp$target = target,
 						$temp$state = newState;
 					target = $temp$target;
@@ -14208,23 +14208,23 @@ var $author$project$Y16D24$cost = F2(
 				A2(
 					$elm$core$List$filter,
 					function (n) {
-						return _Utils_eq(n.aK, source);
+						return _Utils_eq(n.aO, source);
 					},
-					$elm$core$Dict$values(state.ay)));
+					$elm$core$Dict$values(state.aC)));
 			var newNodes = function () {
 				if (!newCurrent.$) {
 					var node = newCurrent.a;
 					return A2(
 						$elm$core$Dict$remove,
-						_Utils_Tuple2(node.I, node.J),
-						state.ay);
+						_Utils_Tuple2(node.L, node.M),
+						state.aC);
 				} else {
-					return state.ay;
+					return state.aC;
 				}
 			}();
 			var newState = _Utils_update(
 				state,
-				{aP: newCurrent, ay: newNodes});
+				{aT: newCurrent, aC: newNodes});
 			return A2($author$project$Y16D24$cost_, target, newState);
 		}
 	});
@@ -14275,16 +14275,16 @@ var $author$project$Y16D24$getDistances = function (state) {
 		A2(
 			$author$project$Util$combinations,
 			2,
-			A2($elm$core$List$cons, '0', state.bk)));
+			A2($elm$core$List$cons, '0', state.bp)));
 	return A3($author$project$Y16D24$getDistances_, pairs, state, $elm$core$Dict$empty);
 };
 var $author$project$Y16D24$Node = F4(
 	function (x, y, v, distance) {
-		return {s: distance, aK: v, I: x, J: y};
+		return {s: distance, aO: v, L: x, M: y};
 	});
 var $author$project$Y16D24$State = F3(
 	function (current, nodes, targets) {
-		return {aP: current, ay: nodes, bk: targets};
+		return {aT: current, aC: nodes, bp: targets};
 	});
 var $author$project$Y16D24$parse = function (input) {
 	var parseYthRow = F2(
@@ -14300,7 +14300,7 @@ var $author$project$Y16D24$parse = function (input) {
 	var nodeList = A2(
 		$elm$core$List$filter,
 		function (n) {
-			return n.aK !== '#';
+			return n.aO !== '#';
 		},
 		$elm$core$List$concat(
 			A2(
@@ -14312,7 +14312,7 @@ var $author$project$Y16D24$parse = function (input) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -14329,7 +14329,7 @@ var $author$project$Y16D24$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.aK;
+					return $.aO;
 				},
 				nodeList)));
 	var current = $elm$core$Maybe$Nothing;
@@ -14373,7 +14373,7 @@ var $author$project$Y16D24$answer = F2(
 		var paths = A2(
 			$elm$core$List$map,
 			$elm$core$List$cons('0'),
-			$author$project$Util$permutations(state.bk));
+			$author$project$Util$permutations(state.bp));
 		var costs = $author$project$Y16D24$getDistances(state);
 		return (part === 1) ? $elm$core$String$fromInt(
 			A2(
@@ -14421,7 +14421,7 @@ var $author$project$Y16D25$parse = function (input) {
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.cm;
+								return $.cr;
 							},
 							A3(
 								$elm$regex$Regex$findAtMost,
@@ -14499,7 +14499,7 @@ var $author$project$Y20D01$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -14534,7 +14534,7 @@ var $author$project$Y20D01$answer = F2(
 	});
 var $author$project$Y20D02$Password = F4(
 	function (n1, n2, letter, password) {
-		return {aU: letter, aW: n1, aX: n2, aY: password};
+		return {aY: letter, a_: n1, a$: n2, a0: password};
 	});
 var $author$project$Y20D02$parse = function (input) {
 	return A2(
@@ -14566,7 +14566,7 @@ var $author$project$Y20D02$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -14576,14 +14576,14 @@ var $author$project$Y20D02$parse = function (input) {
 var $elm$core$String$indices = _String_indexes;
 var $author$project$Y20D02$valid1 = function (p) {
 	var count = $elm$core$List$length(
-		A2($elm$core$String$indices, p.aU, p.aY));
-	return (_Utils_cmp(p.aW, count) < 1) && (_Utils_cmp(p.aX, count) > -1);
+		A2($elm$core$String$indices, p.aY, p.a0));
+	return (_Utils_cmp(p.a_, count) < 1) && (_Utils_cmp(p.a$, count) > -1);
 };
 var $elm$core$Basics$xor = _Basics_xor;
 var $author$project$Y20D02$valid2 = function (p) {
-	var l2 = A3($elm$core$String$slice, p.aX - 1, p.aX, p.aY);
-	var l1 = A3($elm$core$String$slice, p.aW - 1, p.aW, p.aY);
-	return _Utils_eq(l1, p.aU) !== _Utils_eq(l2, p.aU);
+	var l2 = A3($elm$core$String$slice, p.a$ - 1, p.a$, p.a0);
+	var l1 = A3($elm$core$String$slice, p.a_ - 1, p.a_, p.a0);
+	return _Utils_eq(l1, p.aY) !== _Utils_eq(l2, p.aY);
 };
 var $author$project$Y20D02$answer = F2(
 	function (part, input) {
@@ -14602,16 +14602,16 @@ var $author$project$Y20D03$count_ = F4(
 			var dy = _v0.b;
 			var x = _v1.a;
 			var y = _v1.b;
-			if (_Utils_cmp(y, forrest.ac) > -1) {
+			if (_Utils_cmp(y, forrest.af) > -1) {
 				return t;
 			} else {
 				var dt = function () {
-					var _v2 = A2($elm$core$Array$get, y, forrest.bV);
+					var _v2 = A2($elm$core$Array$get, y, forrest.b_);
 					if (!_v2.$) {
 						var row = _v2.a;
 						var _v3 = A2(
 							$elm$core$Array$get,
-							A2($elm$core$Basics$modBy, forrest.W, x),
+							A2($elm$core$Basics$modBy, forrest.Z, x),
 							row);
 						if (!_v3.$) {
 							var tree = _v3.a;
@@ -14648,7 +14648,7 @@ var $author$project$Y20D03$count = F2(
 	});
 var $author$project$Y20D03$Forrest = F3(
 	function (rows, width, height) {
-		return {ac: height, bV: rows, W: width};
+		return {af: height, b_: rows, Z: width};
 	});
 var $author$project$Y20D03$parseRow = function (row) {
 	return $elm$core$Array$fromList(
@@ -14666,7 +14666,7 @@ var $author$project$Y20D03$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -14758,7 +14758,7 @@ var $author$project$Y20D04$getLength = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cm;
+						return $.cr;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -14841,7 +14841,7 @@ var $author$project$Y20D04$parsePassport = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cm;
+					return $.cr;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -14946,7 +14946,7 @@ var $author$project$Y20D05$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -15048,7 +15048,7 @@ var $author$project$Y20D06$parsePeople = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -15105,7 +15105,7 @@ var $author$project$Y20D07$ancestors_ = F2(
 			return A2(
 				$author$project$Y20D07$ancestors_,
 				rest,
-				A3($author$project$Y20D07$ancestors__, line.a3, line.bc, soFar));
+				A3($author$project$Y20D07$ancestors__, line.a7, line.bh, soFar));
 		} else {
 			return soFar;
 		}
@@ -15197,8 +15197,8 @@ var $author$project$Y20D07$descendants_ = F2(
 				rest,
 				A3(
 					$elm$core$Dict$insert,
-					line.bc,
-					$elm$core$Dict$fromList(line.a3),
+					line.bh,
+					$elm$core$Dict$fromList(line.a7),
 					soFar));
 		} else {
 			return soFar;
@@ -15209,7 +15209,7 @@ var $author$project$Y20D07$descendants = function (lines) {
 };
 var $author$project$Y20D07$Line = F2(
 	function (parent, children) {
-		return {a3: children, bc: parent};
+		return {a7: children, bh: parent};
 	});
 var $author$project$Y20D07$parseChildren = function (list) {
 	return A2(
@@ -15232,7 +15232,7 @@ var $author$project$Y20D07$parseChildren = function (list) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -15240,7 +15240,7 @@ var $author$project$Y20D07$parseChildren = function (list) {
 				list)));
 };
 var $author$project$Y20D07$parseLine = function (match) {
-	var _v0 = match.cm;
+	var _v0 = match.cr;
 	if ((((_v0.b && (!_v0.a.$)) && _v0.b.b) && (!_v0.b.a.$)) && (!_v0.b.b.b)) {
 		var parent = _v0.a.a;
 		var _v1 = _v0.b;
@@ -15277,11 +15277,11 @@ var $author$project$Y20D07$answer = F2(
 	});
 var $author$project$Y20D08$Console = F4(
 	function (i, acc, mem, ops) {
-		return {r: acc, g: i, a6: mem, p: ops};
+		return {r: acc, g: i, bb: mem, p: ops};
 	});
 var $author$project$Y20D08$Result = F2(
 	function (ok, acc) {
-		return {r: acc, a9: ok};
+		return {r: acc, be: ok};
 	});
 var $author$project$Y20D08$execute = function (c) {
 	execute:
@@ -15291,15 +15291,15 @@ var $author$project$Y20D08$execute = function (c) {
 			$elm$core$Array$length(c.p))) {
 			return A2($author$project$Y20D08$Result, true, c.r);
 		} else {
-			if (A2($elm$core$Dict$member, c.g, c.a6)) {
+			if (A2($elm$core$Dict$member, c.g, c.bb)) {
 				return A2($author$project$Y20D08$Result, false, c.r);
 			} else {
-				var mem = A3($elm$core$Dict$insert, c.g, true, c.a6);
+				var mem = A3($elm$core$Dict$insert, c.g, true, c.bb);
 				var _v0 = function () {
 					var _v1 = A2($elm$core$Array$get, c.g, c.p);
 					if (!_v1.$) {
 						var inst = _v1.a;
-						return _Utils_Tuple2(inst.bb, inst.a0);
+						return _Utils_Tuple2(inst.bg, inst.a4);
 					} else {
 						return _Utils_Tuple2('err', 0);
 					}
@@ -15333,7 +15333,7 @@ var $author$project$Y20D08$execute = function (c) {
 };
 var $author$project$Y20D08$Instruction = F2(
 	function (op, arg) {
-		return {a0: arg, bb: op};
+		return {a4: arg, bg: op};
 	});
 var $author$project$Y20D08$parse = function (input) {
 	return A4(
@@ -15367,7 +15367,7 @@ var $author$project$Y20D08$parse = function (input) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cm;
+						return $.cr;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -15387,7 +15387,7 @@ var $author$project$Y20D08$repair = F2(
 					var _v1 = A2($elm$core$Array$get, i, c.p);
 					if (!_v1.$) {
 						var inst = _v1.a;
-						return _Utils_Tuple2(inst.bb, inst.a0);
+						return _Utils_Tuple2(inst.bg, inst.a4);
 					} else {
 						return _Utils_Tuple2('err', 0);
 					}
@@ -15406,7 +15406,7 @@ var $author$project$Y20D08$repair = F2(
 										A2($author$project$Y20D08$Instruction, 'nop', arg),
 										c.p)
 								}));
-						if (_try.a9) {
+						if (_try.be) {
 							return _try.r;
 						} else {
 							var $temp$i = i + 1,
@@ -15426,7 +15426,7 @@ var $author$project$Y20D08$repair = F2(
 										A2($author$project$Y20D08$Instruction, 'jmp', arg),
 										c.p)
 								}));
-						if (_try.a9) {
+						if (_try.be) {
 							return _try.r;
 						} else {
 							var $temp$i = i + 1,
@@ -15581,7 +15581,7 @@ var $author$project$Y20D09$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -15745,7 +15745,7 @@ var $author$project$Y20D10$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -15761,7 +15761,7 @@ var $author$project$Y20D10$answer = F2(
 	});
 var $author$project$Y20D11$Data = F2(
 	function (seats, changes) {
-		return {L: changes, T: seats};
+		return {O: changes, W: seats};
 	});
 var $author$project$Y20D11$Occupied = 2;
 var $elm$core$Array$filter = F2(
@@ -15860,16 +15860,16 @@ var $author$project$Y20D11$update = F6(
 					return (!number) ? _Utils_update(
 						data,
 						{
-							L: data.L + 1,
-							T: A4($author$project$Y20D11$put, r, c, 2, data.T)
+							O: data.O + 1,
+							W: A4($author$project$Y20D11$put, r, c, 2, data.W)
 						}) : data;
 				case 2:
 					var threshold = (part === 1) ? 4 : 5;
 					return (_Utils_cmp(number, threshold) > -1) ? _Utils_update(
 						data,
 						{
-							L: data.L + 1,
-							T: A4($author$project$Y20D11$put, r, c, 1, data.T)
+							O: data.O + 1,
+							W: A4($author$project$Y20D11$put, r, c, 1, data.W)
 						}) : data;
 				default:
 					return data;
@@ -15907,16 +15907,16 @@ var $author$project$Y20D11$shuffle = F5(
 					continue shuffle;
 				}
 			} else {
-				if (!data.L) {
+				if (!data.O) {
 					return data;
 				} else {
 					var $temp$part = part,
 						$temp$r = 0,
 						$temp$c = 0,
-						$temp$seats = data.T,
+						$temp$seats = data.W,
 						$temp$data = _Utils_update(
 						data,
-						{L: 0});
+						{O: 0});
 					part = $temp$part;
 					r = $temp$r;
 					c = $temp$c;
@@ -15936,7 +15936,7 @@ var $author$project$Y20D11$choose = F2(
 				0,
 				0,
 				seats,
-				A2($author$project$Y20D11$Data, seats, 0)).T);
+				A2($author$project$Y20D11$Data, seats, 0)).W);
 	});
 var $author$project$Y20D11$toRow = function (input) {
 	return $elm$core$Array$fromList(
@@ -15962,7 +15962,7 @@ var $author$project$Y20D11$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -15978,17 +15978,17 @@ var $author$project$Y20D11$answer = F2(
 				$author$project$Y20D11$parse(input)));
 	});
 var $author$project$Y20D12$distance = function (ferry) {
-	return $elm$core$Basics$abs(ferry.I) + $elm$core$Basics$abs(ferry.J);
+	return $elm$core$Basics$abs(ferry.L) + $elm$core$Basics$abs(ferry.M);
 };
 var $author$project$Y20D12$East = 2;
 var $author$project$Y20D12$Ferry = F3(
 	function (x, y, d) {
-		return {aQ: d, I: x, J: y};
+		return {aU: d, L: x, M: y};
 	});
 var $author$project$Y20D12$initFerry = A3($author$project$Y20D12$Ferry, 0, 0, 2);
 var $author$project$Y20D12$Waypoint = F2(
 	function (x, y) {
-		return {I: x, J: y};
+		return {L: x, M: y};
 	});
 var $author$project$Y20D12$initWaypoint = A2($author$project$Y20D12$Waypoint, 10, 1);
 var $author$project$Y20D12$initCombo = _Utils_Tuple2($author$project$Y20D12$initFerry, $author$project$Y20D12$initWaypoint);
@@ -16001,7 +16001,7 @@ var $author$project$Y20D12$rotateFerry = F3(
 	function (ferry, a, n) {
 		var direction = function () {
 			if (n === 180) {
-				var _v0 = ferry.aQ;
+				var _v0 = ferry.aU;
 				switch (_v0) {
 					case 0:
 						return 1;
@@ -16014,7 +16014,7 @@ var $author$project$Y20D12$rotateFerry = F3(
 				}
 			} else {
 				if (((a === 5) && (n === 90)) || ((a === 4) && (n === 270))) {
-					var _v1 = ferry.aQ;
+					var _v1 = ferry.aU;
 					switch (_v1) {
 						case 0:
 							return 3;
@@ -16027,7 +16027,7 @@ var $author$project$Y20D12$rotateFerry = F3(
 					}
 				} else {
 					if (((a === 4) && (n === 90)) || ((a === 5) && (n === 270))) {
-						var _v2 = ferry.aQ;
+						var _v2 = ferry.aU;
 						switch (_v2) {
 							case 0:
 								return 2;
@@ -16039,14 +16039,14 @@ var $author$project$Y20D12$rotateFerry = F3(
 								return 0;
 						}
 					} else {
-						return ferry.aQ;
+						return ferry.aU;
 					}
 				}
 			}
 		}();
 		return _Utils_update(
 			ferry,
-			{aQ: direction});
+			{aU: direction});
 	});
 var $author$project$Y20D12$navigate1 = F2(
 	function (ferry, instructions) {
@@ -16062,25 +16062,25 @@ var $author$project$Y20D12$navigate1 = F2(
 							var n = instruction.b;
 							return _Utils_update(
 								ferry,
-								{J: ferry.J + n});
+								{M: ferry.M + n});
 						case 1:
 							var _v3 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								ferry,
-								{J: ferry.J - n});
+								{M: ferry.M - n});
 						case 2:
 							var _v4 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								ferry,
-								{I: ferry.I + n});
+								{L: ferry.L + n});
 						case 3:
 							var _v5 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								ferry,
-								{I: ferry.I - n});
+								{L: ferry.L - n});
 						case 5:
 							var _v6 = instruction.a;
 							var n = instruction.b;
@@ -16092,24 +16092,24 @@ var $author$project$Y20D12$navigate1 = F2(
 						default:
 							var _v8 = instruction.a;
 							var n = instruction.b;
-							var _v9 = ferry.aQ;
+							var _v9 = ferry.aU;
 							switch (_v9) {
 								case 0:
 									return _Utils_update(
 										ferry,
-										{J: ferry.J + n});
+										{M: ferry.M + n});
 								case 1:
 									return _Utils_update(
 										ferry,
-										{J: ferry.J - n});
+										{M: ferry.M - n});
 								case 2:
 									return _Utils_update(
 										ferry,
-										{I: ferry.I + n});
+										{L: ferry.L + n});
 								default:
 									return _Utils_update(
 										ferry,
-										{I: ferry.I - n});
+										{L: ferry.L - n});
 							}
 					}
 				}();
@@ -16125,7 +16125,7 @@ var $author$project$Y20D12$navigate1 = F2(
 	});
 var $author$project$Y20D12$rotateWaypoint = F3(
 	function (w, a, n) {
-		return (n === 180) ? A2($author$project$Y20D12$Waypoint, -w.I, -w.J) : ((((a === 5) && (n === 90)) || ((a === 4) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, -w.J, w.I) : ((((a === 4) && (n === 90)) || ((a === 5) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, w.J, -w.I) : w));
+		return (n === 180) ? A2($author$project$Y20D12$Waypoint, -w.L, -w.M) : ((((a === 5) && (n === 90)) || ((a === 4) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, -w.M, w.L) : ((((a === 4) && (n === 90)) || ((a === 5) && (n === 270))) ? A2($author$project$Y20D12$Waypoint, w.M, -w.L) : w));
 	});
 var $author$project$Y20D12$navigate2 = F2(
 	function (combo, instructions) {
@@ -16143,7 +16143,7 @@ var $author$project$Y20D12$navigate2 = F2(
 						var n = instruction.b;
 						return _Utils_update(
 							f,
-							{I: f.I + (n * w.I), J: f.J + (n * w.J)});
+							{L: f.L + (n * w.L), M: f.M + (n * w.M)});
 					} else {
 						return f;
 					}
@@ -16155,25 +16155,25 @@ var $author$project$Y20D12$navigate2 = F2(
 							var n = instruction.b;
 							return _Utils_update(
 								w,
-								{J: w.J + n});
+								{M: w.M + n});
 						case 1:
 							var _v4 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								w,
-								{J: w.J - n});
+								{M: w.M - n});
 						case 2:
 							var _v5 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								w,
-								{I: w.I + n});
+								{L: w.L + n});
 						case 3:
 							var _v6 = instruction.a;
 							var n = instruction.b;
 							return _Utils_update(
 								w,
-								{I: w.I - n});
+								{L: w.L - n});
 						case 5:
 							var _v7 = instruction.a;
 							var n = instruction.b;
@@ -16240,7 +16240,7 @@ var $author$project$Y20D12$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -16392,10 +16392,10 @@ var $author$project$Y20D13$contest = function (schedule) {
 		$elm$core$List$map,
 		function (b) {
 			return _Utils_Tuple2(
-				A2($elm$core$Basics$modBy, b.at, b.at - b.bI),
-				b.at);
+				A2($elm$core$Basics$modBy, b.ax, b.ax - b.bN),
+				b.ax);
 		},
-		schedule.a2);
+		schedule.a6);
 	var solution = $lynn$elm_arithmetic$Arithmetic$chineseRemainder(pairs);
 	if (!solution.$) {
 		return '526090562196173';
@@ -16404,7 +16404,7 @@ var $author$project$Y20D13$contest = function (schedule) {
 	}
 };
 var $author$project$Y20D13$minimum = function (schedule) {
-	var s = schedule.bZ;
+	var s = schedule.b2;
 	var t = s;
 	var best = $elm$core$List$head(
 		A2(
@@ -16420,9 +16420,9 @@ var $author$project$Y20D13$minimum = function (schedule) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.at;
+						return $.ax;
 					},
-					schedule.a2))));
+					schedule.a6))));
 	if (!best.$) {
 		var _v1 = best.a;
 		var id = _v1.a;
@@ -16434,11 +16434,11 @@ var $author$project$Y20D13$minimum = function (schedule) {
 };
 var $author$project$Y20D13$Bus = F2(
 	function (id, offset) {
-		return {at: id, bI: offset};
+		return {ax: id, bN: offset};
 	});
 var $author$project$Y20D13$Schedule = F2(
 	function (start, buses) {
-		return {a2: buses, bZ: start};
+		return {a6: buses, b2: start};
 	});
 var $author$project$Y20D13$parse = function (input) {
 	var raw = A2(
@@ -16447,7 +16447,7 @@ var $author$project$Y20D13$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -16487,7 +16487,7 @@ var $author$project$Y20D14$answer = F2(
 	});
 var $author$project$Y20D15$Game = F3(
 	function (turn, last, before) {
-		return {ap: before, aT: last, aH: turn};
+		return {at: before, aX: last, aL: turn};
 	});
 var $author$project$Y20D15$init_ = F2(
 	function (numbers, game) {
@@ -16496,8 +16496,8 @@ var $author$project$Y20D15$init_ = F2(
 			if (numbers.b) {
 				var num = numbers.a;
 				var rest = numbers.b;
-				var turn = game.aH + 1;
-				var before = $elm$core$List$isEmpty(rest) ? game.ap : A3($elm$core$Dict$insert, num, turn, game.ap);
+				var turn = game.aL + 1;
+				var before = $elm$core$List$isEmpty(rest) ? game.at : A3($elm$core$Dict$insert, num, turn, game.at);
 				var $temp$numbers = rest,
 					$temp$game = A3($author$project$Y20D15$Game, turn, num, before);
 				numbers = $temp$numbers;
@@ -16524,7 +16524,7 @@ var $author$project$Y20D15$parse = function (input) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.cg;
+					return $.cl;
 				},
 				A2(
 					$elm$regex$Regex$find,
@@ -16535,20 +16535,20 @@ var $author$project$Y20D15$play = F2(
 	function (upto, game) {
 		play:
 		while (true) {
-			if (_Utils_eq(game.aH, upto)) {
-				return game.aT;
+			if (_Utils_eq(game.aL, upto)) {
+				return game.aX;
 			} else {
-				var turn = game.aH + 1;
+				var turn = game.aL + 1;
 				var last = function () {
-					var _v0 = A2($elm$core$Dict$get, game.aT, game.ap);
+					var _v0 = A2($elm$core$Dict$get, game.aX, game.at);
 					if (_v0.$ === 1) {
 						return 0;
 					} else {
 						var previous = _v0.a;
-						return game.aH - previous;
+						return game.aL - previous;
 					}
 				}();
-				var before = A3($elm$core$Dict$insert, game.aT, game.aH, game.ap);
+				var before = A3($elm$core$Dict$insert, game.aX, game.aL, game.at);
 				var $temp$upto = upto,
 					$temp$game = A3($author$project$Y20D15$Game, turn, last, before);
 				upto = $temp$upto;
@@ -16575,7 +16575,7 @@ var $author$project$Y20D16$ok = F2(
 	});
 var $author$project$Y20D16$valid = F2(
 	function (rule, num) {
-		return A2($author$project$Y20D16$ok, num, rule.F) || A2($author$project$Y20D16$ok, num, rule.G);
+		return A2($author$project$Y20D16$ok, num, rule.I) || A2($author$project$Y20D16$ok, num, rule.J);
 	});
 var $author$project$Y20D16$noValidRules = F2(
 	function (rules, num) {
@@ -16646,7 +16646,7 @@ var $author$project$Y20D16$possiblesFromIndexNums = F3(
 				var names = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bG;
+						return $.bL;
 					},
 					A2(
 						$elm$core$List$filter,
@@ -16801,11 +16801,11 @@ var $author$project$Y20D16$getIndexToName = function (data) {
 		$elm$core$List$filter,
 		function (ticket) {
 			return _Utils_eq(
-				A2($author$project$Y20D16$findInvalid, data.aZ, ticket),
+				A2($author$project$Y20D16$findInvalid, data.a1, ticket),
 				_List_Nil);
 		},
-		data.ax);
-	var possibles = A3($author$project$Y20D16$getPossibles, validTickets, data.aZ, $elm$core$Dict$empty);
+		data.aB);
+	var possibles = A3($author$project$Y20D16$getPossibles, validTickets, data.a1, $elm$core$Dict$empty);
 	var len = $elm$core$List$length(validTickets);
 	return A3($author$project$Y20D16$possiblesToNames, len, possibles, $elm$core$Dict$empty);
 };
@@ -16825,15 +16825,15 @@ var $author$project$Y20D16$multiplySelected = F2(
 							return 1;
 						}
 					}),
-				data.a8));
+				data.bd));
 	});
 var $author$project$Y20D16$Data = F3(
 	function (rules, mine, near) {
-		return {a8: mine, ax: near, aZ: rules};
+		return {bd: mine, aB: near, a1: rules};
 	});
 var $author$project$Y20D16$Rule = F3(
 	function (name, r1, r2) {
-		return {bG: name, F: r1, G: r2};
+		return {bL: name, I: r1, J: r2};
 	});
 var $author$project$Y20D16$toInt = function (str) {
 	return A2(
@@ -16848,7 +16848,7 @@ var $author$project$Y20D16$toInts = function (str) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -16876,7 +16876,7 @@ var $author$project$Y20D16$parse_ = F3(
 							var matches = A2(
 								$elm$core$List$map,
 								function ($) {
-									return $.cm;
+									return $.cr;
 								},
 								A2(
 									$elm$regex$Regex$find,
@@ -16905,7 +16905,7 @@ var $author$project$Y20D16$parse_ = F3(
 								var data_ = _Utils_update(
 									data,
 									{
-										aZ: A2($elm$core$List$cons, rule, data.aZ)
+										a1: A2($elm$core$List$cons, rule, data.a1)
 									});
 								var $temp$state = state,
 									$temp$data = data_,
@@ -16937,7 +16937,7 @@ var $author$project$Y20D16$parse_ = F3(
 							var mine = $author$project$Y20D16$toInts(line);
 							var data_ = ($elm$core$List$length(mine) > 0) ? _Utils_update(
 								data,
-								{a8: mine}) : data;
+								{bd: mine}) : data;
 							var $temp$state = state,
 								$temp$data = data_,
 								$temp$lines = rest;
@@ -16951,7 +16951,7 @@ var $author$project$Y20D16$parse_ = F3(
 						var data_ = ($elm$core$List$length(near) > 0) ? _Utils_update(
 							data,
 							{
-								ax: A2($elm$core$List$cons, near, data.ax)
+								aB: A2($elm$core$List$cons, near, data.aB)
 							}) : data;
 						var $temp$state = state,
 							$temp$data = data_,
@@ -16989,8 +16989,8 @@ var $author$project$Y20D16$sumInvalid = function (data) {
 		$elm$core$List$concat(
 			A2(
 				$elm$core$List$map,
-				$author$project$Y20D16$findInvalid(data.aZ),
-				data.ax)));
+				$author$project$Y20D16$findInvalid(data.a1),
+				data.aB)));
 };
 var $author$project$Y20D16$answer = F2(
 	function (part, input) {
@@ -17000,7 +17000,7 @@ var $author$project$Y20D16$answer = F2(
 			A2($author$project$Y20D16$multiplySelected, 'departure', data));
 	});
 var $author$project$Y20D17$count = function (cube) {
-	return $elm$core$Dict$size(cube.K);
+	return $elm$core$Dict$size(cube.N);
 };
 var $author$project$Y20D17$index = function (xyz) {
 	return A2(
@@ -17197,11 +17197,11 @@ var $author$project$Y20D17$cycleCols = F6(
 				var cube_ = A2($elm$core$Dict$member, i, active) ? (((n === 2) || (n === 3)) ? cube : _Utils_update(
 					cube,
 					{
-						K: A2($elm$core$Dict$remove, i, cube.K)
+						N: A2($elm$core$Dict$remove, i, cube.N)
 					})) : ((n === 3) ? _Utils_update(
 					cube,
 					{
-						K: A3($elm$core$Dict$insert, i, true, cube.K)
+						N: A3($elm$core$Dict$insert, i, true, cube.N)
 					}) : cube);
 				var $temp$w = w,
 					$temp$z = z,
@@ -17223,7 +17223,7 @@ var $author$project$Y20D17$cycleCols = F6(
 	});
 var $author$project$Y20D17$xRange = F2(
 	function (n, cube) {
-		return A2($elm$core$List$range, (-n) - 1, cube.W + n);
+		return A2($elm$core$List$range, (-n) - 1, cube.Z + n);
 	});
 var $author$project$Y20D17$cycleRows = F6(
 	function (n, w, z, rows, active, cube) {
@@ -17245,7 +17245,7 @@ var $author$project$Y20D17$cycleRows = F6(
 	});
 var $author$project$Y20D17$yRange = F2(
 	function (n, cube) {
-		return A2($elm$core$List$range, (-n) - 1, cube.ac + n);
+		return A2($elm$core$List$range, (-n) - 1, cube.af + n);
 	});
 var $author$project$Y20D17$cycleZeds = F5(
 	function (n, w, zeds, active, cube) {
@@ -17298,12 +17298,12 @@ var $author$project$Y20D17$cycle = F3(
 				$author$project$Y20D17$cycle,
 				dim,
 				n + 1,
-				A4($author$project$Y20D17$cycleWuus, n, wuus, cube.K, cube));
+				A4($author$project$Y20D17$cycleWuus, n, wuus, cube.N, cube));
 		}
 	});
 var $author$project$Y20D17$Cube = F3(
 	function (active, width, height) {
-		return {K: active, ac: height, W: width};
+		return {N: active, af: height, Z: width};
 	});
 var $author$project$Y20D17$parseCols = F3(
 	function (y, active, cols) {
@@ -17367,7 +17367,7 @@ var $author$project$Y20D17$parse = function (input) {
 	var rows = A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cg;
+			return $.cl;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -17460,7 +17460,7 @@ var $author$project$Y20D18$eval = function (expression) {
 					A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.cg;
+							return $.cl;
 						},
 						A2(
 							$elm$regex$Regex$find,
@@ -17487,7 +17487,7 @@ var $author$project$Y20D18$eval = function (expression) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -17501,10 +17501,10 @@ var $author$project$Y20D18$reduce = F2(
 		while (true) {
 			var replacePluses = function (m) {
 				return $elm$core$String$fromInt(
-					$author$project$Y20D18$eval(m.cg));
+					$author$project$Y20D18$eval(m.cl));
 			};
 			var replaceBrackets = function (m) {
-				var _v0 = m.cm;
+				var _v0 = m.cr;
 				if ((_v0.b && (!_v0.a.$)) && (!_v0.b.b)) {
 					var expr = _v0.a.a;
 					return $elm$core$String$fromInt(
@@ -17546,7 +17546,7 @@ var $author$project$Y20D18$answer = F2(
 	});
 var $author$project$Y20D19$Rule = F3(
 	function (trm, seq, alt) {
-		return {bm: alt, bX: seq, b1: trm};
+		return {br: alt, b0: seq, b6: trm};
 	});
 var $author$project$Y20D19$consume = F3(
 	function (book, rules, message) {
@@ -17555,7 +17555,7 @@ var $author$project$Y20D19$consume = F3(
 			if (rules.b) {
 				var rule = rules.a;
 				var rest = rules.b;
-				var _v1 = rule.b1;
+				var _v1 = rule.b6;
 				if (!_v1.$) {
 					var trm = _v1.a;
 					if (A2($elm$core$String$startsWith, trm, message)) {
@@ -17571,7 +17571,7 @@ var $author$project$Y20D19$consume = F3(
 					}
 				} else {
 					var _v2 = _List_fromArray(
-						[rule.bX, rule.bm]);
+						[rule.b0, rule.br]);
 					_v2$2:
 					while (true) {
 						if ((_v2.b && (!_v2.a.$)) && _v2.b.b) {
@@ -17670,8 +17670,8 @@ var $author$project$Y20D19$count = function (data) {
 			$elm$core$Basics$identity,
 			A2(
 				$elm$core$List$map,
-				$author$project$Y20D19$test(data.Z),
-				data.aV)));
+				$author$project$Y20D19$test(data.ab),
+				data.aZ)));
 };
 var $author$project$Y20D19$edit = function (data) {
 	var r8 = A3(
@@ -17696,14 +17696,14 @@ var $author$project$Y20D19$edit = function (data) {
 		$elm$core$Dict$insert,
 		'11',
 		r11,
-		A3($elm$core$Dict$insert, '8', r8, data.Z));
+		A3($elm$core$Dict$insert, '8', r8, data.ab));
 	return _Utils_update(
 		data,
-		{Z: book});
+		{ab: book});
 };
 var $author$project$Y20D19$Data = F2(
 	function (book, messages) {
-		return {Z: book, aV: messages};
+		return {ab: book, aZ: messages};
 	});
 var $author$project$Y20D19$toSeq = function (list) {
 	return $elm$core$Maybe$Just(
@@ -17718,7 +17718,7 @@ var $author$project$Y20D19$parseRule = F2(
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cm;
+						return $.cr;
 					},
 					A2(
 						$elm$regex$Regex$find,
@@ -17816,11 +17816,11 @@ var $author$project$Y20D19$parseLine = F2(
 					line) ? _Utils_update(
 					data,
 					{
-						Z: A2($author$project$Y20D19$parseRule, line, data.Z)
+						ab: A2($author$project$Y20D19$parseRule, line, data.ab)
 					}) : _Utils_update(
 					data,
 					{
-						aV: A2($elm$core$List$cons, line, data.aV)
+						aZ: A2($elm$core$List$cons, line, data.aZ)
 					});
 				var $temp$data = data_,
 					$temp$lines = rest;
@@ -17859,7 +17859,7 @@ var $author$project$Y20D19$answer = F2(
 	});
 var $author$project$Y20D20$Data = F4(
 	function (images, edges, edgeConnections, imageConnections) {
-		return {b8: edgeConnections, b9: edges, bB: imageConnections, cd: images};
+		return {cd: edgeConnections, ce: edges, bG: imageConnections, ci: images};
 	});
 var $author$project$Y20D20$edgeConnectionsFromEdges_ = F3(
 	function (id, edges, edgeConnections) {
@@ -18015,7 +18015,7 @@ var $author$project$Y20D20$parse_ = F3(
 												A2(
 													$elm$core$List$map,
 													function ($) {
-														return $.cm;
+														return $.cr;
 													},
 													idMatches))))))));
 					var $temp$lines = rest,
@@ -18045,7 +18045,7 @@ var $author$project$Y20D20$parse_ = F3(
 											A2(
 												$elm$core$List$map,
 												function ($) {
-													return $.cm;
+													return $.cr;
 												},
 												rowMatches))))));
 						var id = A2($elm$core$Maybe$withDefault, 0, mid);
@@ -18123,7 +18123,7 @@ var $author$project$Y20D20$product = function (data) {
 						function (_v0, ids) {
 							return $elm$core$Set$size(ids) === 2;
 						}),
-					data.bB))));
+					data.bG))));
 };
 var $author$project$Y20D20$answer = F2(
 	function (part, input) {
@@ -18133,7 +18133,7 @@ var $author$project$Y20D20$answer = F2(
 	});
 var $author$project$Y20D21$Data = F2(
 	function (a2i, foods) {
-		return {a$: a2i, a5: foods};
+		return {a3: a2i, ba: foods};
 	});
 var $elm$core$Set$intersect = F2(
 	function (_v0, _v1) {
@@ -18259,7 +18259,7 @@ var $author$project$Y20D21$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cm;
+				return $.cr;
 			},
 			A2(
 				$elm$core$List$filterMap,
@@ -18291,7 +18291,7 @@ var $elm$core$Set$union = F2(
 	});
 var $author$project$Y20D21$part1 = function (data) {
 	var ingredientsWithAlergens = $elm$core$Set$fromList(
-		$elm$core$Dict$values(data.a$));
+		$elm$core$Dict$values(data.a3));
 	var allIngredients = A3(
 		$elm$core$List$foldl,
 		F2(
@@ -18299,7 +18299,7 @@ var $author$project$Y20D21$part1 = function (data) {
 				return A2($elm$core$Set$union, a, b);
 			}),
 		$elm$core$Set$empty,
-		data.a5);
+		data.ba);
 	var ingredientsWithoutAlergens = $elm$core$Set$toList(
 		A2($elm$core$Set$diff, allIngredients, ingredientsWithAlergens));
 	return $elm$core$String$fromInt(
@@ -18313,7 +18313,7 @@ var $author$project$Y20D21$part1 = function (data) {
 							function (ingredients) {
 								return A2($elm$core$Set$member, ingredient, ingredients);
 							},
-							data.a5));
+							data.ba));
 				},
 				ingredientsWithoutAlergens)));
 };
@@ -18330,7 +18330,7 @@ var $author$project$Y20D21$part2 = function (data) {
 					var alergen = _v0.a;
 					return alergen;
 				},
-				$elm$core$Dict$toList(data.a$))));
+				$elm$core$Dict$toList(data.a3))));
 };
 var $author$project$Y20D21$answer = F2(
 	function (part, input) {
@@ -18339,7 +18339,7 @@ var $author$project$Y20D21$answer = F2(
 	});
 var $author$project$Y20D22$Game = F4(
 	function (player1, player2, winner, history) {
-		return {aR: history, u: player1, v: player2, al: winner};
+		return {aV: history, u: player1, v: player2, ao: winner};
 	});
 var $author$project$Y20D22$check = function (game) {
 	var d2 = A2(
@@ -18351,12 +18351,12 @@ var $author$project$Y20D22$check = function (game) {
 		'|',
 		A2($elm$core$List$map, $elm$core$String$fromInt, game.u));
 	var digest = d1 + ('||' + d2);
-	return A2($elm$core$Set$member, digest, game.aR) ? _Utils_update(
+	return A2($elm$core$Set$member, digest, game.aV) ? _Utils_update(
 		game,
-		{al: 1}) : _Utils_update(
+		{ao: 1}) : _Utils_update(
 		game,
 		{
-			aR: A2($elm$core$Set$insert, digest, game.aR)
+			aV: A2($elm$core$Set$insert, digest, game.aV)
 		});
 };
 var $author$project$Y20D22$combat = F2(
@@ -18364,7 +18364,7 @@ var $author$project$Y20D22$combat = F2(
 		combat:
 		while (true) {
 			var game = $author$project$Y20D22$check(game_);
-			if (!(!game.al)) {
+			if (!(!game.ao)) {
 				return game;
 			} else {
 				var _v0 = _Utils_Tuple2(game.u, game.v);
@@ -18387,7 +18387,7 @@ var $author$project$Y20D22$combat = F2(
 							A2($elm$core$List$take, c1, rest1),
 							A2($elm$core$List$take, c2, rest2),
 							0,
-							$elm$core$Set$empty)).al : ((_Utils_cmp(c1, c2) > 0) ? 1 : 2);
+							$elm$core$Set$empty)).ao : ((_Utils_cmp(c1, c2) > 0) ? 1 : 2);
 					if (winner === 1) {
 						var $temp$recursive = recursive,
 							$temp$game_ = _Utils_update(
@@ -18442,7 +18442,7 @@ var $author$project$Y20D22$combat = F2(
 					}();
 					return _Utils_update(
 						game,
-						{al: winner});
+						{ao: winner});
 				}
 			}
 		}
@@ -18480,7 +18480,7 @@ var $author$project$Y20D22$parse_ = F3(
 											A2(
 												$elm$core$List$map,
 												function ($) {
-													return $.cm;
+													return $.cr;
 												},
 												A2(
 													$elm$regex$Regex$find,
@@ -18545,7 +18545,7 @@ var $author$project$Y20D22$parse = function (input) {
 };
 var $author$project$Y20D22$score = function (game) {
 	var cards = function () {
-		var _v0 = game.al;
+		var _v0 = game.ao;
 		switch (_v0) {
 			case 1:
 				return game.u;
@@ -18617,7 +18617,7 @@ var $author$project$Y20D23$link = F2(
 						cups,
 						{
 							e: A3($elm$core$Dict$insert, c1, c2, cups.e),
-							bY: cups.bY + 1
+							b1: cups.b1 + 1
 						});
 					list = $temp$list;
 					cups = $temp$cups;
@@ -18627,8 +18627,8 @@ var $author$project$Y20D23$link = F2(
 					return _Utils_update(
 						cups,
 						{
-							e: A3($elm$core$Dict$insert, last, cups.aP, cups.e),
-							bY: cups.bY + 1
+							e: A3($elm$core$Dict$insert, last, cups.aT, cups.e),
+							b1: cups.b1 + 1
 						});
 				}
 			} else {
@@ -18649,10 +18649,10 @@ var $author$project$Y20D23$extend = F2(
 						$elm$core$List$filter,
 						function (_v0) {
 							var c2 = _v0.b;
-							return _Utils_eq(c2, cups.aP);
+							return _Utils_eq(c2, cups.aT);
 						},
 						$elm$core$Dict$toList(cups.e)))));
-		var first = cups.bY + 1;
+		var first = cups.b1 + 1;
 		var list = A2($elm$core$List$range, first, size);
 		var next = A3($elm$core$Dict$insert, last, first, cups.e);
 		return A2(
@@ -18687,20 +18687,20 @@ var $author$project$Y20D23$move = F2(
 			if (!n) {
 				return cups;
 			} else {
-				var c1 = A2($author$project$Y20D23$get, cups.aP, cups.e);
+				var c1 = A2($author$project$Y20D23$get, cups.aT, cups.e);
 				var c2 = A2($author$project$Y20D23$get, c1, cups.e);
 				var c3 = A2($author$project$Y20D23$get, c2, cups.e);
 				var current = A2($author$project$Y20D23$get, c3, cups.e);
 				var d1 = A3(
 					$author$project$Y20D23$destination,
-					cups.aP,
-					cups.bY,
+					cups.aT,
+					cups.b1,
 					_List_fromArray(
 						[c1, c2, c3]));
 				var d2 = A2($author$project$Y20D23$get, d1, cups.e);
 				var next = A3(
 					$elm$core$Dict$insert,
-					cups.aP,
+					cups.aT,
 					current,
 					A3(
 						$elm$core$Dict$insert,
@@ -18710,7 +18710,7 @@ var $author$project$Y20D23$move = F2(
 				var $temp$n = n - 1,
 					$temp$cups = _Utils_update(
 					cups,
-					{aP: current, e: next});
+					{aT: current, e: next});
 				n = $temp$n;
 				cups = $temp$cups;
 				continue move;
@@ -18719,7 +18719,7 @@ var $author$project$Y20D23$move = F2(
 	});
 var $author$project$Y20D23$Cups = F3(
 	function (current, size, next) {
-		return {aP: current, e: next, bY: size};
+		return {aT: current, e: next, b1: size};
 	});
 var $author$project$Y20D23$parse = function (input) {
 	var list = A2(
@@ -18784,7 +18784,7 @@ var $author$project$Y20D24$expand__ = F2(
 	});
 var $author$project$Y20D24$Position = F3(
 	function (x, y, z) {
-		return {I: x, J: y, a_: z};
+		return {L: x, M: y, a2: z};
 	});
 var $author$project$Y20D24$toKey = function (p) {
 	return A2(
@@ -18794,7 +18794,7 @@ var $author$project$Y20D24$toKey = function (p) {
 			$elm$core$List$map,
 			$elm$core$String$fromInt,
 			_List_fromArray(
-				[p.I, p.J, p.a_])));
+				[p.L, p.M, p.a2])));
 };
 var $author$project$Y20D24$nearby = function (position) {
 	var coordinates = A2(
@@ -18904,7 +18904,7 @@ var $author$project$Y20D24$parseSteps = function (input) {
 	return A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.cg;
+			return $.cl;
 		},
 		A2(
 			$elm$regex$Regex$find,
@@ -18954,7 +18954,7 @@ var $author$project$Y20D24$follow_ = F2(
 			return A2(
 				$author$project$Y20D24$follow_,
 				steps,
-				A3($author$project$Y20D24$Position, p.I + d.I, p.J + d.J, p.a_ + d.a_));
+				A3($author$project$Y20D24$Position, p.L + d.L, p.M + d.M, p.a2 + d.a2));
 		} else {
 			return p;
 		}
@@ -19001,11 +19001,11 @@ var $author$project$Y20D24$answer = F2(
 	});
 var $author$project$Y20D25$Key = F2(
 	function (_public, loops) {
-		return {bE: loops, bQ: _public};
+		return {bJ: loops, bV: _public};
 	});
 var $author$project$Y20D25$Keys = F2(
 	function (card, door) {
-		return {bq: card, bu: door};
+		return {bv: card, bz: door};
 	});
 var $author$project$Y20D25$transform = F3(
 	function (n, subject, value) {
@@ -19052,7 +19052,7 @@ var $author$project$Y20D25$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -19080,7 +19080,7 @@ var $author$project$Y20D25$parse = function (input) {
 	}
 };
 var $author$project$Y20D25$secret = function (keys) {
-	return A3($author$project$Y20D25$transform, keys.bq.bE, keys.bu.bQ, 1);
+	return A3($author$project$Y20D25$transform, keys.bv.bJ, keys.bz.bV, 1);
 };
 var $author$project$Y20D25$answer = F2(
 	function (part, input) {
@@ -19152,7 +19152,7 @@ var $author$project$Y21D01$parse = function (input) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.cg;
+				return $.cl;
 			},
 			A2(
 				$elm$regex$Regex$find,
@@ -19218,12 +19218,130 @@ var $author$project$Y21D01$answer = F2(
 			A2($author$project$Y21D01$sweeps, 0, depths)) : $elm$core$String$fromInt(
 			A2($author$project$Y21D01$sliders, 0, depths));
 	});
+var $author$project$Y21D02$multiply = function (p) {
+	return $elm$core$String$fromInt(p.C * p.E);
+};
+var $author$project$Y21D02$Position = F3(
+	function (depth, horizontal, aim) {
+		return {ar: aim, C: depth, E: horizontal};
+	});
+var $author$project$Y21D02$navigate1 = F2(
+	function (p, list) {
+		navigate1:
+		while (true) {
+			if (list.b) {
+				var c = list.a;
+				var commands = list.b;
+				var position = function () {
+					var _v1 = c.a9;
+					switch (_v1) {
+						case 0:
+							return A3($author$project$Y21D02$Position, p.C + c.z, p.E, 0);
+						case 2:
+							return A3($author$project$Y21D02$Position, p.C - c.z, p.E, 0);
+						default:
+							return A3($author$project$Y21D02$Position, p.C, p.E + c.z, 0);
+					}
+				}();
+				var $temp$p = position,
+					$temp$list = commands;
+				p = $temp$p;
+				list = $temp$list;
+				continue navigate1;
+			} else {
+				return p;
+			}
+		}
+	});
+var $author$project$Y21D02$navigate2 = F2(
+	function (p, list) {
+		navigate2:
+		while (true) {
+			if (list.b) {
+				var c = list.a;
+				var commands = list.b;
+				var position = function () {
+					var _v1 = c.a9;
+					switch (_v1) {
+						case 0:
+							return A3($author$project$Y21D02$Position, p.C, p.E, p.ar + c.z);
+						case 2:
+							return A3($author$project$Y21D02$Position, p.C, p.E, p.ar - c.z);
+						default:
+							return A3($author$project$Y21D02$Position, p.C + (p.ar * c.z), p.E + c.z, p.ar);
+					}
+				}();
+				var $temp$p = position,
+					$temp$list = commands;
+				p = $temp$p;
+				list = $temp$list;
+				continue navigate2;
+			} else {
+				return p;
+			}
+		}
+	});
+var $author$project$Y21D02$Command = F2(
+	function (direction, amount) {
+		return {z: amount, a9: direction};
+	});
+var $author$project$Y21D02$Down = 0;
+var $author$project$Y21D02$Forward = 1;
+var $author$project$Y21D02$Up = 2;
+var $author$project$Y21D02$parse = function (input) {
+	return A2(
+		$elm$core$List$map,
+		function (m) {
+			if ((((m.b && (!m.a.$)) && m.b.b) && (!m.b.a.$)) && (!m.b.b.b)) {
+				var d = m.a.a;
+				var _v1 = m.b;
+				var a = _v1.a.a;
+				var direction = function () {
+					switch (d) {
+						case 'down':
+							return 0;
+						case 'forward':
+							return 1;
+						default:
+							return 2;
+					}
+				}();
+				var amount = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					$elm$core$String$toInt(a));
+				return A2($author$project$Y21D02$Command, direction, amount);
+			} else {
+				return A2($author$project$Y21D02$Command, 1, 0);
+			}
+		},
+		A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.cr;
+			},
+			A2(
+				$elm$regex$Regex$find,
+				$author$project$Util$regex('(down|forward|up) ([1-9])'),
+				input)));
+};
+var $author$project$Y21D02$start = A3($author$project$Y21D02$Position, 0, 0, 0);
+var $author$project$Y21D02$answer = F2(
+	function (part, input) {
+		var commands = $author$project$Y21D02$parse(input);
+		return (part === 1) ? $author$project$Y21D02$multiply(
+			A2($author$project$Y21D02$navigate1, $author$project$Y21D02$start, commands)) : $author$project$Y21D02$multiply(
+			A2($author$project$Y21D02$navigate2, $author$project$Y21D02$start, commands));
+	});
 var $author$project$Y21$answer = F3(
 	function (day, part, input) {
-		if (day === 1) {
-			return A2($author$project$Y21D01$answer, part, input);
-		} else {
-			return 'year 2021, day ' + ($elm$core$String$fromInt(day) + ': not available');
+		switch (day) {
+			case 1:
+				return A2($author$project$Y21D01$answer, part, input);
+			case 2:
+				return A2($author$project$Y21D02$answer, part, input);
+			default:
+				return 'year 2021, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
 	});
 var $author$project$Main$getAnswer = F3(
@@ -19253,7 +19371,7 @@ var $author$project$Main$getRuby = F2(
 	});
 var $author$project$Main$gotAnswer = F3(
 	function (part, answer, model) {
-		var _v0 = model.Y;
+		var _v0 = model.aa;
 		var answer1 = _v0.a;
 		var answer2 = _v0.b;
 		var answers = (part === 1) ? _Utils_Tuple2(
@@ -19264,8 +19382,8 @@ var $author$project$Main$gotAnswer = F3(
 		return _Utils_update(
 			model,
 			{
-				Y: answers,
-				U: _Utils_Tuple2(false, false)
+				aa: answers,
+				X: _Utils_Tuple2(false, false)
 			});
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -19312,7 +19430,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aa: data}),
+						{ad: data}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
 				var part = msg.a;
@@ -19320,18 +19438,18 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							U: $author$project$Main$thinking(part)
+							X: $author$project$Main$thinking(part)
 						}),
 					A2($author$project$Main$getRuby, model, part)) : _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							U: $author$project$Main$thinking(part)
+							X: $author$project$Main$thinking(part)
 						}),
 					$author$project$Main$doPause(part));
 			case 4:
 				var part = msg.a;
-				var answer = A3($author$project$Main$getAnswer, model, part, model.aa);
+				var answer = A3($author$project$Main$getAnswer, model, part, model.ad);
 				return _Utils_Tuple2(
 					A3($author$project$Main$gotAnswer, part, answer, model),
 					$elm$core$Platform$Cmd$none);
@@ -19346,13 +19464,13 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{as: true}),
+						{aw: true}),
 					$elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{as: false}),
+						{aw: false}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -19611,12 +19729,12 @@ var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$Main$viewAnswer = F2(
 	function (model, part) {
 		var noSolution = A3($author$project$Main$failed, model.a, model.b, part);
-		var busy = (part === 1) ? model.U.a : model.U.b;
-		var answer = (part === 1) ? model.Y.a : model.Y.b;
+		var busy = (part === 1) ? model.X.a : model.X.b;
+		var answer = (part === 1) ? model.aa.a : model.aa.b;
 		var display = function () {
 			if (noSolution) {
 				return $elm$html$Html$text(
-					A3($author$project$Main$getAnswer, model, part, model.aa));
+					A3($author$project$Main$getAnswer, model, part, model.ad));
 			} else {
 				if (busy) {
 					return A2(
@@ -20123,7 +20241,7 @@ var $author$project$Main$view = function (model) {
 			function ($) {
 				return $.a;
 			},
-			model.am));
+			model.ap));
 	var onYearChange = $elm$html$Html$Events$onInput(
 		A2($elm$core$Basics$composeR, $author$project$Main$toInt, $author$project$Main$SelectYear));
 	var onDayChange = $elm$html$Html$Events$onInput(
@@ -20138,14 +20256,14 @@ var $author$project$Main$view = function (model) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.A;
+						return $.B;
 					},
 					A2(
 						$elm$core$List$filter,
 						function (y) {
 							return _Utils_eq(y.a, model.a);
 						},
-						model.am)))));
+						model.ap)))));
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -20271,7 +20389,7 @@ var $author$project$Main$view = function (model) {
 							]))
 					])),
 				A2($elm$html$Html$hr, _List_Nil, _List_Nil),
-				$author$project$Main$viewHelp(model.as),
+				$author$project$Main$viewHelp(model.aw),
 				A2($elm$html$Html$hr, _List_Nil, _List_Nil),
 				A2(
 				$elm$html$Html$div,
@@ -20294,7 +20412,7 @@ var $author$project$Main$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(model.aa)
+										$elm$html$Html$text(model.ad)
 									]))
 							]))
 					]))
@@ -20302,12 +20420,12 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		cf: $author$project$Main$init,
-		cn: function (_v0) {
+		ck: $author$project$Main$init,
+		cs: function (_v0) {
 			return $author$project$Main$subscriptions;
 		},
-		cp: $author$project$Main$update,
-		cq: $author$project$Main$view
+		cu: $author$project$Main$update,
+		cv: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
