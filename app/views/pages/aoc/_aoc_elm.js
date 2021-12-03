@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 2;
+var $author$project$Main$defaultDay = 3;
 var $author$project$Main$defaultYear = 2021;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -19334,6 +19334,83 @@ var $author$project$Y21D02$answer = F2(
 			A2($author$project$Y21D02$navigate1, $author$project$Y21D02$start, commands)) : $author$project$Y21D02$multiply(
 			A2($author$project$Y21D02$navigate2, $author$project$Y21D02$start, commands));
 	});
+var $author$project$Y21D03$add = F2(
+	function (n1, n2) {
+		var diff = $elm$core$List$length(n2) - $elm$core$List$length(n1);
+		var n1_ = (diff > 0) ? A2(
+			$elm$core$List$append,
+			n1,
+			A2($elm$core$List$repeat, diff, 0)) : n1;
+		var n2_ = (diff < 0) ? A2(
+			$elm$core$List$append,
+			n2,
+			A2($elm$core$List$repeat, -diff, 0)) : n2;
+		return A3($elm$core$List$map2, $elm$core$Basics$add, n1_, n2_);
+	});
+var $author$project$Y21D03$common = function (numbers) {
+	var sum = A3($elm$core$List$foldr, $author$project$Y21D03$add, _List_Nil, numbers);
+	var half = ($elm$core$List$length(numbers) / 2) | 0;
+	return A2(
+		$elm$core$List$map,
+		function (n) {
+			return (_Utils_cmp(n, half) > 0) ? 1 : 0;
+		},
+		sum);
+};
+var $lynn$elm_arithmetic$Arithmetic$fromBase = function (base) {
+	return A2(
+		$elm$core$List$foldl,
+		F2(
+			function (x, acc) {
+				return (acc * base) + x;
+			}),
+		0);
+};
+var $author$project$Y21D03$multiply = function (numbers) {
+	var gamma = $author$project$Y21D03$common(numbers);
+	var epsilon = A2(
+		$elm$core$List$map,
+		function (b) {
+			return (b === 1) ? 0 : 1;
+		},
+		gamma);
+	return $elm$core$String$fromInt(
+		$elm$core$List$product(
+			A2(
+				$elm$core$List$map,
+				$lynn$elm_arithmetic$Arithmetic$fromBase(2),
+				_List_fromArray(
+					[gamma, epsilon]))));
+};
+var $author$project$Y21D03$parse = function (input) {
+	return A2(
+		$elm$core$List$map,
+		function (chars) {
+			return A2(
+				$elm$core$List$map,
+				function (_char) {
+					return (_char === '0') ? 0 : 1;
+				},
+				chars);
+		},
+		A2(
+			$elm$core$List$map,
+			$elm$core$String$toList,
+			A2(
+				$elm$core$List$map,
+				function ($) {
+					return $.cl;
+				},
+				A2(
+					$elm$regex$Regex$find,
+					$author$project$Util$regex('[01]+'),
+					input))));
+};
+var $author$project$Y21D03$answer = F2(
+	function (part, input) {
+		var numbers = $author$project$Y21D03$parse(input);
+		return (part === 1) ? $author$project$Y21D03$multiply(numbers) : 'not done yet';
+	});
 var $author$project$Y21$answer = F3(
 	function (day, part, input) {
 		switch (day) {
@@ -19341,6 +19418,8 @@ var $author$project$Y21$answer = F3(
 				return A2($author$project$Y21D01$answer, part, input);
 			case 2:
 				return A2($author$project$Y21D02$answer, part, input);
+			case 3:
+				return A2($author$project$Y21D03$answer, part, input);
 			default:
 				return 'year 2021, day ' + ($elm$core$String$fromInt(day) + ': not available');
 		}
