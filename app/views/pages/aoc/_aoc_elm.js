@@ -19347,16 +19347,71 @@ var $author$project$Y21D03$add = F2(
 			A2($elm$core$List$repeat, -diff, 0)) : n2;
 		return A3($elm$core$List$map2, $elm$core$Basics$add, n1_, n2_);
 	});
-var $author$project$Y21D03$common = function (numbers) {
-	var sum = A3($elm$core$List$foldr, $author$project$Y21D03$add, _List_Nil, numbers);
-	var half = ($elm$core$List$length(numbers) / 2) | 0;
-	return A2(
-		$elm$core$List$map,
-		function (n) {
-			return (_Utils_cmp(n, half) > 0) ? 1 : 0;
-		},
-		sum);
-};
+var $author$project$Y21D03$common = F2(
+	function (most, numbers) {
+		var sum = A3($elm$core$List$foldr, $author$project$Y21D03$add, _List_Nil, numbers);
+		var half = function (t) {
+			return t / 2.0;
+		}(
+			$elm$core$List$length(numbers));
+		return A2(
+			$elm$core$List$map,
+			function (n) {
+				return ((most && (_Utils_cmp(n, half) > -1)) || ((!most) && (_Utils_cmp(n, half) < 0))) ? 1 : 0;
+			},
+			sum);
+	});
+var $elm_community$list_extra$List$Extra$getAt = F2(
+	function (idx, xs) {
+		return (idx < 0) ? $elm$core$Maybe$Nothing : $elm$core$List$head(
+			A2($elm$core$List$drop, idx, xs));
+	});
+var $author$project$Y21D03$getAt = F2(
+	function (index, number) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			A2($elm_community$list_extra$List$Extra$getAt, index, number));
+	});
+var $author$project$Y21D03$filter = F3(
+	function (most, index, numbers) {
+		filter:
+		while (true) {
+			if ($elm$core$List$length(numbers) <= 1) {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					_List_Nil,
+					$elm$core$List$head(numbers));
+			} else {
+				var scan = A2($author$project$Y21D03$common, most, numbers);
+				if (_Utils_cmp(
+					index,
+					$elm$core$List$length(scan)) > -1) {
+					return A2(
+						$elm$core$Maybe$withDefault,
+						_List_Nil,
+						$elm$core$List$head(numbers));
+				} else {
+					var bit = A2($author$project$Y21D03$getAt, index, scan);
+					var matches = A2(
+						$elm$core$List$filter,
+						function (b) {
+							return _Utils_eq(
+								A2($author$project$Y21D03$getAt, index, b),
+								bit);
+						},
+						numbers);
+					var $temp$most = most,
+						$temp$index = index + 1,
+						$temp$numbers = matches;
+					most = $temp$most;
+					index = $temp$index;
+					numbers = $temp$numbers;
+					continue filter;
+				}
+			}
+		}
+	});
 var $lynn$elm_arithmetic$Arithmetic$fromBase = function (base) {
 	return A2(
 		$elm$core$List$foldl,
@@ -19366,21 +19421,20 @@ var $lynn$elm_arithmetic$Arithmetic$fromBase = function (base) {
 			}),
 		0);
 };
-var $author$project$Y21D03$multiply = function (numbers) {
-	var gamma = $author$project$Y21D03$common(numbers);
-	var epsilon = A2(
-		$elm$core$List$map,
-		function (b) {
-			return (b === 1) ? 0 : 1;
-		},
-		gamma);
-	return $elm$core$String$fromInt(
-		$elm$core$List$product(
+var $author$project$Y21D03$multiply = F2(
+	function (n1, n2) {
+		return $elm$core$List$product(
 			A2(
 				$elm$core$List$map,
 				$lynn$elm_arithmetic$Arithmetic$fromBase(2),
 				_List_fromArray(
-					[gamma, epsilon]))));
+					[n1, n2])));
+	});
+var $author$project$Y21D03$lifeSupport = function (numbers) {
+	var oxygen = A3($author$project$Y21D03$filter, true, 0, numbers);
+	var co2 = A3($author$project$Y21D03$filter, false, 0, numbers);
+	return $elm$core$String$fromInt(
+		A2($author$project$Y21D03$multiply, oxygen, co2));
 };
 var $author$project$Y21D03$parse = function (input) {
 	return A2(
@@ -19406,10 +19460,16 @@ var $author$project$Y21D03$parse = function (input) {
 					$author$project$Util$regex('[01]+'),
 					input))));
 };
+var $author$project$Y21D03$powerConsumption = function (numbers) {
+	var gamma = A2($author$project$Y21D03$common, true, numbers);
+	var epsilon = A2($author$project$Y21D03$common, false, numbers);
+	return $elm$core$String$fromInt(
+		A2($author$project$Y21D03$multiply, gamma, epsilon));
+};
 var $author$project$Y21D03$answer = F2(
 	function (part, input) {
 		var numbers = $author$project$Y21D03$parse(input);
-		return (part === 1) ? $author$project$Y21D03$multiply(numbers) : 'not done yet';
+		return (part === 1) ? $author$project$Y21D03$powerConsumption(numbers) : $author$project$Y21D03$lifeSupport(numbers);
 	});
 var $author$project$Y21$answer = F3(
 	function (day, part, input) {

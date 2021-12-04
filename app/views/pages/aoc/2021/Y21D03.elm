@@ -1,6 +1,7 @@
 module Y21D03 exposing (answer)
 
 import Arithmetic
+import List.Extra
 import Regex
 import Util
 
@@ -12,53 +13,85 @@ answer part input =
             parse input
     in
     if part == 1 then
-        multiply numbers
+        powerConsumption numbers
 
     else
-        "not done yet"
+        lifeSupport numbers
 
 
-multiply : List (List Int) -> String
-multiply numbers =
+powerConsumption : List (List Int) -> String
+powerConsumption numbers =
     let
         gamma =
-            common numbers
+            common True numbers
 
         epsilon =
-            gamma
-                |> List.map
-                    (\b ->
-                        if b == 1 then
-                            0
-
-                        else
-                            1
-                    )
+            common False numbers
     in
-    [ gamma, epsilon ]
-        |> List.map (Arithmetic.fromBase 2)
-        |> List.product
-        |> String.fromInt
+    multiply gamma epsilon |> String.fromInt
 
 
-common : List (List Int) -> List Int
-common numbers =
+lifeSupport : List (List Int) -> String
+lifeSupport numbers =
+    let
+        oxygen =
+            filter True 0 numbers
+
+        co2 =
+            filter False 0 numbers
+    in
+    multiply oxygen co2 |> String.fromInt
+
+
+common : Bool -> List (List Int) -> List Int
+common most numbers =
     let
         sum =
             List.foldr add [] numbers
 
         half =
-            List.length numbers // 2
+            numbers
+                |> List.length
+                |> toFloat
+                |> (\t -> t / 2.0)
     in
     List.map
         (\n ->
-            if n > half then
+            if (most && toFloat n >= half) || (not most && toFloat n < half) then
                 1
 
             else
                 0
         )
         sum
+
+
+filter : Bool -> Int -> List (List Int) -> List Int
+filter most index numbers =
+    if List.length numbers <= 1 then
+        numbers
+            |> List.head
+            |> Maybe.withDefault []
+
+    else
+        let
+            scan =
+                common most numbers
+        in
+        if index >= List.length scan then
+            numbers
+                |> List.head
+                |> Maybe.withDefault []
+
+        else
+            let
+                bit =
+                    getAt index scan
+
+                matches =
+                    List.filter (\b -> getAt index b == bit) numbers
+            in
+            filter most (index + 1) matches
 
 
 add : List Int -> List Int -> List Int
@@ -82,6 +115,20 @@ add n1 n2 =
                 n2
     in
     List.map2 (+) n1_ n2_
+
+
+multiply : List Int -> List Int -> Int
+multiply n1 n2 =
+    [ n1, n2 ]
+        |> List.map (Arithmetic.fromBase 2)
+        |> List.product
+
+
+getAt : Int -> List Int -> Int
+getAt index number =
+    number
+        |> List.Extra.getAt index
+        |> Maybe.withDefault 0
 
 
 parse : String -> List (List Int)
