@@ -33,6 +33,7 @@ class Aoc::Y2021d4 < Aoc
 
   class Number
     attr_accessor :number, :marked, :row, :col
+    alias :marked? :marked
 
     def initialize(int, row, col)
       @number = int
@@ -65,12 +66,13 @@ class Aoc::Y2021d4 < Aoc
     end
 
     def mark(n) = numbers.each{|number| number.mark(n)}
-    def sum()   = numbers.reduce(0){|s, n| s + (n.marked ? 0 : n.number)}
+    def sum()   = numbers.reduce(0){|s, n| s + (n.marked? ? 0 : n.number)}
     def full?() = numbers.map(&:marked).all?
   end
 
   class Board
     attr_accessor :rows, :game, :won
+    alias :won? :won
 
     def initialize(game)
       @game = game
@@ -81,7 +83,7 @@ class Aoc::Y2021d4 < Aoc
     def add(string)  = rows.push(Row.new(string, self))
     def mark(n)      = rows.each{|row| row.mark(n)}
     def sum()        = rows.reduce(0){|s,r| s + r.sum}
-    def full_col?(c) = rows.map{|r| r.numbers[c].marked}.all?
+    def full_col?(c) = rows.map{|r| r.numbers[c].marked?}.all?
   end
 
   class Game
@@ -97,7 +99,7 @@ class Aoc::Y2021d4 < Aoc
       catch(:bingo) do
         draw.each do |n|
           boards.each do |b|
-            b.mark(n) unless b.won
+            b.mark(n) unless b.won?
           end
         end
         0
