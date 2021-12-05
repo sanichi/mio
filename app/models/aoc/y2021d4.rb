@@ -1,9 +1,7 @@
 class Aoc::Y2021d4 < Aoc
   def answer(part)
-    game = parse(EXAMPLE)
-    b = game.boards.first
-    b.mark(19)
-    part == 1 ? "not done yet" : "waiting for part 1"
+    game = parse(input)
+    part == 1 ? game.play : "not done yet"
   end
 
   def parse(string)
@@ -31,10 +29,12 @@ class Aoc::Y2021d4 < Aoc
   end
 
   class Number
-    attr_accessor :number, :marked
+    attr_accessor :number, :marked, :row, :col
 
-    def initialize(number)
-      @number = number
+    def initialize(int, row, col)
+      @number = int
+      @row = row
+      @col = col
       @marked = false
     end
 
@@ -43,16 +43,20 @@ class Aoc::Y2021d4 < Aoc
     end
 
     def mark(n)
-      self.marked = true if number == n
+      if number == n
+        self.marked = true
+        throw :bingo, [row.board, n] if row.full? || row.board.full_column?(col)
+      end
     end
   end
 
   class Row
-    attr_accessor :numbers
+    attr_accessor :numbers, :board
 
-    def initialize(string)
-      @numbers = string.scan(/\d+/).map(&:to_i).map{|n| Number.new(n)}
+    def initialize(string, board)
+      @numbers = string.scan(/\d+/).map(&:to_i).each_with_index.map{|n,c| Number.new(n, self, c)}
       raise "row (#{self.to_s}) does not have 5 numbers" unless @numbers.size == 5
+      @board = board
     end
 
     def to_s
@@ -66,6 +70,10 @@ class Aoc::Y2021d4 < Aoc
     def sum
       numbers.reduce(0){|s, n| s + (n.marked ? 0 : n.number)}
     end
+
+    def full?
+      numbers.all?{|n| n.marked}
+    end
   end
 
   class Board
@@ -76,7 +84,7 @@ class Aoc::Y2021d4 < Aoc
     end
 
     def add(string)
-      rows.push Row.new(string)
+      rows.push Row.new(string, self)
     end
 
     def to_s
@@ -93,6 +101,10 @@ class Aoc::Y2021d4 < Aoc
 
     def sum
       rows.reduce(0){|s,r| s + r.sum}
+    end
+
+    def full_column?(c)
+      rows.map{|r| r.numbers[c].marked}.all?
     end
   end
 
@@ -119,8 +131,8 @@ class Aoc::Y2021d4 < Aoc
   class Game
     attr_accessor :draw, :boards
 
-    def initialize(draw)
-      @draw = Draw.new(draw)
+    def initialize(string)
+      @draw = Draw.new(string)
       @boards = []
     end
 
@@ -137,6 +149,19 @@ class Aoc::Y2021d4 < Aoc
       draw.okay!
       raise "game must have at least 1 board" if boards.empty?
       boards.each{|b| b.okay!}
+    end
+
+    def play
+      board, num = catch(:bingo) {
+        draw.numbers.each do |n|
+          boards.each do |b|
+            b.mark(n)
+          end
+        end
+        []
+      }
+      return 0 unless board && num
+      board.sum * num
     end
   end
 
