@@ -4,7 +4,7 @@ class Aoc::Y2021d4 < Aoc
     if part == 1
       game.play
     else
-      "not done yet"
+      game.let_squid_win.play
     end
   end
 
@@ -17,7 +17,7 @@ class Aoc::Y2021d4 < Aoc
       when /\A\d+(,\d+)*\z/
         game = Game.new(line)
       when /\A\d+(\s+\d+)*\z/
-        board = Board.new unless board
+        board = Board.new(game) unless board
         board.add(line)
       when ""
         game.add(board) if game && board
@@ -49,7 +49,10 @@ class Aoc::Y2021d4 < Aoc
     def mark(n)
       if number == n
         self.marked = true
-        throw :bingo, [row.board, n] if row.full? || row.board.full_column?(col)
+        if row.full? || row.board.full_column?(col)
+          row.board.won = true
+          throw :bingo, row.board.sum * n if row.board.game.over?
+        end
       end
     end
   end
@@ -81,10 +84,12 @@ class Aoc::Y2021d4 < Aoc
   end
 
   class Board
-    attr_accessor :rows
+    attr_accessor :rows, :game, :won
 
-    def initialize
+    def initialize(game)
+      @game = game
       @rows = []
+      @won = false
     end
 
     def add(string)
@@ -134,6 +139,7 @@ class Aoc::Y2021d4 < Aoc
     def initialize(string)
       @draw = Draw.new(string)
       @boards = []
+      @normal = true
     end
 
     def add(board)
@@ -152,16 +158,23 @@ class Aoc::Y2021d4 < Aoc
     end
 
     def play
-      board, num = catch(:bingo) {
+      catch(:bingo) do
         draw.numbers.each do |n|
           boards.each do |b|
-            b.mark(n)
+            b.mark(n) unless b.won
           end
         end
-        []
-      }
-      return 0 unless board && num
-      board.sum * num
+        0
+      end
+    end
+
+    def let_squid_win
+      @normal = false
+      self
+    end
+
+    def over?
+      @normal || boards.map(&:won).all?
     end
   end
 
