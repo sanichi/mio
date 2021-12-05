@@ -1,7 +1,11 @@
 class Aoc::Y2021d4 < Aoc
   def answer(part)
     game = parse(input)
-    part == 1 ? game.play : "not done yet"
+    if part == 1
+      game.play
+    else
+      "not done yet"
+    end
   end
 
   def parse(string)
@@ -109,18 +113,14 @@ class Aoc::Y2021d4 < Aoc
   end
 
   class Draw
-    attr_accessor :numbers, :index, :max
+    attr_accessor :numbers
 
     def initialize(string)
       @numbers = string.scan(/\d+/).map(&:to_i)
-      @index = 0
-      @max = @numbers.size
     end
 
     def to_s
-      numbers.each_with_index.map do |n, i|
-        n.to_s + (i == index ? '*' : '')
-      end.join(",")
+      numbers.map(&:to_s).join(",")
     end
 
     def okay!
