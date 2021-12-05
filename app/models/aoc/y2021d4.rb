@@ -103,19 +103,11 @@ class Aoc::Y2021d4 < Aoc
     end
   end
 
-  class Draw
-    attr_accessor :numbers
-
-    def initialize(string)
-      @numbers = string.scan(/\d+/).map(&:to_i)
-    end
-  end
-
   class Game
     attr_accessor :draw, :boards
 
     def initialize(string)
-      @draw = Draw.new(string)
+      @draw = string.scan(/\d+/).map(&:to_i)
       @boards = []
       @normal = true
     end
@@ -126,7 +118,7 @@ class Aoc::Y2021d4 < Aoc
 
     def play
       catch(:bingo) do
-        draw.numbers.each do |n|
+        draw.each do |n|
           boards.each do |b|
             b.mark(n) unless b.won
           end
