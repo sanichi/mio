@@ -44,7 +44,7 @@ class Aoc::Y2021d4 < Aoc
     def mark(n)
       if number == n
         self.marked = true
-        if row.full? || row.board.full_column?(col)
+        if row.full? || row.board.full_col?(col)
           row.board.won = true
           if row.board.game.over?
             throw :bingo, row.board.sum * n
@@ -64,17 +64,9 @@ class Aoc::Y2021d4 < Aoc
       @board = board
     end
 
-    def mark(n)
-      numbers.each{|number| number.mark(n)}
-    end
-
-    def sum
-      numbers.reduce(0){|s, n| s + (n.marked ? 0 : n.number)}
-    end
-
-    def full?
-      numbers.all?{|n| n.marked}
-    end
+    def mark(n) = numbers.each{|number| number.mark(n)}
+    def sum()   = numbers.reduce(0){|s, n| s + (n.marked ? 0 : n.number)}
+    def full?() = numbers.all?{|n| n.marked}
   end
 
   class Board
@@ -86,21 +78,10 @@ class Aoc::Y2021d4 < Aoc
       @won = false
     end
 
-    def add(string)
-      rows.push Row.new(string, self)
-    end
-
-    def mark(n)
-      rows.each{|row| row.mark(n)}
-    end
-
-    def sum
-      rows.reduce(0){|s,r| s + r.sum}
-    end
-
-    def full_column?(c)
-      rows.map{|r| r.numbers[c].marked}.all?
-    end
+    def add(string)  = rows.push(Row.new(string, self))
+    def mark(n)      = rows.each{|row| row.mark(n)}
+    def sum()        = rows.reduce(0){|s,r| s + r.sum}
+    def full_col?(c) = rows.map{|r| r.numbers[c].marked}.all?
   end
 
   class Game
@@ -110,10 +91,6 @@ class Aoc::Y2021d4 < Aoc
       @draw = string.scan(/\d+/).map(&:to_i)
       @boards = []
       @normal = true
-    end
-
-    def add(board)
-      boards.push board
     end
 
     def play
@@ -135,6 +112,8 @@ class Aoc::Y2021d4 < Aoc
     def over?
       @normal || boards.map(&:won).all?
     end
+
+    def add(board) = boards.push(board)
   end
 
   EXAMPLE = <<-EOE
