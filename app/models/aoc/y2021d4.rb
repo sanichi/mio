@@ -66,7 +66,7 @@ class Aoc::Y2021d4 < Aoc
 
     def mark(n) = numbers.each{|number| number.mark(n)}
     def sum()   = numbers.reduce(0){|s, n| s + (n.marked ? 0 : n.number)}
-    def full?() = numbers.all?{|n| n.marked}
+    def full?() = numbers.map(&:marked).all?
   end
 
   class Board
