@@ -28,7 +28,6 @@ class Aoc::Y2021d4 < Aoc
     end
     raise "couldn't parse input" unless game
     game.add(board) if board
-    game.okay!
     game
   end
 
@@ -42,16 +41,14 @@ class Aoc::Y2021d4 < Aoc
       @marked = false
     end
 
-    def to_s
-      number.to_s + (marked ? '*' : '')
-    end
-
     def mark(n)
       if number == n
         self.marked = true
         if row.full? || row.board.full_column?(col)
           row.board.won = true
-          throw :bingo, row.board.sum * n if row.board.game.over?
+          if row.board.game.over?
+            throw :bingo, row.board.sum * n
+          end
         end
       end
     end
@@ -61,13 +58,10 @@ class Aoc::Y2021d4 < Aoc
     attr_accessor :numbers, :board
 
     def initialize(string, board)
-      @numbers = string.scan(/\d+/).map(&:to_i).each_with_index.map{|n,c| Number.new(n, self, c)}
-      raise "row (#{self.to_s}) does not have 5 numbers" unless @numbers.size == 5
+      @numbers = string.scan(/\d+/).map(&:to_i).each_with_index.map do |n,c|
+        Number.new(n, self, c)
+      end
       @board = board
-    end
-
-    def to_s
-      numbers.map(&:to_s).join(" ")
     end
 
     def mark(n)
@@ -96,14 +90,6 @@ class Aoc::Y2021d4 < Aoc
       rows.push Row.new(string, self)
     end
 
-    def to_s
-      rows.map(&:to_s).join("|")
-    end
-
-    def okay!
-      raise "board must have 5 rows" unless rows.size == 5
-    end
-
     def mark(n)
       rows.each{|row| row.mark(n)}
     end
@@ -123,14 +109,6 @@ class Aoc::Y2021d4 < Aoc
     def initialize(string)
       @numbers = string.scan(/\d+/).map(&:to_i)
     end
-
-    def to_s
-      numbers.map(&:to_s).join(",")
-    end
-
-    def okay!
-      raise "draw must have at least 5 numbers" unless @numbers.size >= 5
-    end
   end
 
   class Game
@@ -144,17 +122,6 @@ class Aoc::Y2021d4 < Aoc
 
     def add(board)
       boards.push board
-    end
-
-    def to_s
-      draw.to_s + "||" + boards.map(&:to_s).join("||")
-    end
-
-    def okay!
-      raise "game must have a draw" unless draw.present?
-      draw.okay!
-      raise "game must have at least 1 board" if boards.empty?
-      boards.each{|b| b.okay!}
     end
 
     def play
