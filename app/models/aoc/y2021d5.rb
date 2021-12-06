@@ -15,15 +15,13 @@ class Aoc::Y2021d5 < Aoc
   end
 
   def dangerous(lines, all)
-    h = Hash.new(0)
-    lines.each do |line|
+    lines.each_with_object(Hash.new(0)) do |line, hash|
       if all || line.horizontal? || line.vertical?
         line.each_point do |p|
-          h[p] += 1
+          hash[p] += 1
         end
       end
-    end
-    h.values.filter{|v| v > 1}.size
+    end.values.filter{|v| v > 1}.size
   end
 
   class Line
