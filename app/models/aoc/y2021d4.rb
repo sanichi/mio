@@ -67,7 +67,7 @@ class Aoc::Y2021d4 < Aoc
 
     def mark(n) = numbers.each{|number| number.mark(n)}
     def sum()   = numbers.reduce(0){|s, n| s + (n.marked? ? 0 : n.number)}
-    def full?() = numbers.map(&:marked).all?
+    def full?() = numbers.all?{|n| n.marked?}
   end
 
   class Board
@@ -83,7 +83,7 @@ class Aoc::Y2021d4 < Aoc
     def add(string)  = rows.push(Row.new(string, self))
     def mark(n)      = rows.each{|row| row.mark(n)}
     def sum()        = rows.reduce(0){|s,r| s + r.sum}
-    def full_col?(c) = rows.map{|r| r.numbers[c].marked?}.all?
+    def full_col?(c) = rows.all?{|r| r.numbers[c].marked?}
   end
 
   class Game
@@ -93,6 +93,10 @@ class Aoc::Y2021d4 < Aoc
       @draw = string.scan(/\d+/).map(&:to_i)
       @boards = []
       @normal = true
+    end
+
+    def add(board)
+      boards.push(board)
     end
 
     def play
@@ -106,17 +110,15 @@ class Aoc::Y2021d4 < Aoc
       end
     end
 
+    def over?
+      @normal || boards.all?{|b| b.won?}
+    end
+
     def let_squid_win
       @normal = false
       self
     end
-
-    def over?
-      @normal || boards.map(&:won).all?
-    end
-
-    def add(board) = boards.push(board)
-  end
+ end
 
   EXAMPLE = <<-EOE
     7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
