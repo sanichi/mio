@@ -18,6 +18,8 @@ class Grammar < ApplicationRecord
   validates :ref, length: { maximum: MAX_REGEXP }, format: { with: /\A[A-Z]+[1-9]\d*/ }, uniqueness: true
   validate :check_regexps
 
+  scope :by_ref, -> { order(Arel.sql("SUBSTRING(ref FROM '[A-Z]+'), CAST(SUBSTRING(ref FROM '\\d+') AS INTEGER)")) }
+
   def self.search(matches, params, path, opt={})
     case params[:order]
     when "title"
@@ -25,7 +27,7 @@ class Grammar < ApplicationRecord
     when "level"
       matches = matches.order(level: :desc, title: :asc)
     else
-      matches = matches.order(Arel.sql("SUBSTRING(ref FROM '[A-Z]+'), CAST(SUBSTRING(ref FROM '\\d+') AS INTEGER)"))
+      matches = matches.by_ref
     end
     if LEVELS.include?(params[:level].to_i)
       matches = matches.where(level: params[:level].to_i)
