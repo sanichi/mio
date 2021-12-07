@@ -1,10 +1,6 @@
 class Aoc::Y2021d7 < Aoc
   def answer(part)
-    if part == 1
-      Crabs.new(input).minimum
-    else
-      "not done yet"
-    end
+    Crabs.new(input).send(part == 1 ? :med_minimum : :ave_minimum)
   end
 
   class Crabs
@@ -24,8 +20,11 @@ class Aoc::Y2021d7 < Aoc
       end
     end
 
-    def minimum() = fuel(median)
-    def fuel(m) = crabs.map{|c| (m - c).abs}.sum
+    def average() = (crabs.sum.to_f / crabs.size.to_f).floor
+    def med_minimum() = med_fuel(median)
+    def ave_minimum() = ave_fuel(average)
+    def med_fuel(m) = crabs.map{|c| (m - c).abs}.sum
+    def ave_fuel(m) = crabs.map{|c| d = (m - c).abs; (d + 1) * d / 2}.sum
   end
 
   EXAMPLE = "16,1,2,0,4,2,7,1,2,14"
