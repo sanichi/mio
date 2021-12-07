@@ -31,8 +31,10 @@ class GrammarsController < ApplicationController
   def show
     if @grammar
       @examples = @grammar.update_examples.reverse
-      @next = Grammar.find_by(id: @grammar.id + 1)
-      @prev = Grammar.find_by(id: @grammar.id - 1)
+      ids = Grammar.order(:ref).pluck(:id)
+      ind = ids.index(@grammar.id)
+      @next = Grammar.find_by(id: ids[ind + 1]) || Grammar.find_by(id: ids[0])
+      @prev = Grammar.find_by(id: ids[ind - 1]) || Grammar.find_by(id: ids[-1])
     end
   end
 
