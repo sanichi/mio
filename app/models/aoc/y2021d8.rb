@@ -43,15 +43,15 @@ class Aoc::Y2021d8 < Aoc
       c = acdeg - a - d - e - g
       f = abcdefg - acdeg - b
 
-      h = [
-        [a.to_a.first, "a"],
-        [b.to_a.first, "b"],
-        [c.to_a.first, "c"],
-        [d.to_a.first, "d"],
-        [e.to_a.first, "e"],
-        [f.to_a.first, "f"],
-        [g.to_a.first, "g"],
-      ].to_h
+      h = {
+        a.to_a.first => "a",
+        b.to_a.first => "b",
+        c.to_a.first => "c",
+        d.to_a.first => "d",
+        e.to_a.first => "e",
+        f.to_a.first => "f",
+        g.to_a.first => "g",
+      }
 
       digits.map do |d|
         case d.map{|x| h[x]}.sort.join
