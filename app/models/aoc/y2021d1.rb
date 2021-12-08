@@ -30,20 +30,16 @@ class Aoc::Y2021d1 < Aoc
     input.scan(/\d+/).map(&:to_i)
   end
 
-  def initialize(input)
-    super
-  end
-
-  EXAMPLE = <<-EOE
-199
-200
-208
-210
-200
-207
-240
-269
-260
-263
-EOE
+  EXAMPLE = <<~EOE
+    199
+    200
+    208
+    210
+    200
+    207
+    240
+    269
+    260
+    263
+  EOE
 end

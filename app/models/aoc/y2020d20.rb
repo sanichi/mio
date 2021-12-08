@@ -293,8 +293,4 @@ class Aoc::Y2020d20 < Aoc
       return e.message
     end
   end
-
-  def initialize(input)
-    super
-  end
 end
