@@ -7,9 +7,27 @@ class Grammar < ApplicationRecord
   LEVELS = (1..5).to_a
   MAX_TITLE = 100
   MAX_REGEXP = 50
+  NOTE = <<~EON
+    Rules:
+
+    * 1st rule
+    * 2nd rule
+
+    References:
+
+    * [1st ref](https://www.example.com/|)
+    * [2st ref](https://www.example.com/|)
+
+    Related:
+
+    * [Previous](/grammars/1)
+    * This One
+    * [Next](/grammars/3)
+  EON
 
   before_validation :normalize_attributes
   after_save :reset_examples_on_regexp_change
+  after_create :setup_basic_note
 
   validates :level, inclusion: { in: LEVELS }
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
@@ -111,5 +129,9 @@ class Grammar < ApplicationRecord
       update_column(:examples, []) unless examples.empty?
       update_column(:last_example_checked, 0) unless last_example_checked == 0
     end
+  end
+
+  def setup_basic_note
+    update_column(:note, NOTE) if note.blank?
   end
 end
