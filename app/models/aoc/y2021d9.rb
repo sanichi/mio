@@ -1,11 +1,6 @@
 class Aoc::Y2021d9 < Aoc
   def answer(part)
-    map = Map.new(input)
-    if part == 1
-      map.risk
-    else
-      map.basins
-    end
+    Map.new(input).send(part == 1 ? :risk : :basins)
   end
 
   class Map
