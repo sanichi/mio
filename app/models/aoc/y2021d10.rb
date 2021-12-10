@@ -12,26 +12,9 @@ class Aoc::Y2021d10 < Aoc
   class Chunk
     attr_reader :brackets
 
-    CLOSING = {
-      ")" => "(",
-      "]" => "[",
-      "}" => "{",
-      ">" => "<",
-    }
-
-    CORRUPT = {
-      ")" => 3,
-      "]" => 57,
-      "}" => 1197,
-      ">" => 25137,
-    }
-
-    INCOMPLETE = {
-      "(" => 1,
-      "[" => 2,
-      "{" => 3,
-      "<" => 4,
-    }
+    CLOSING = { ")" => "(", "]" => "[", "}" => "{", ">" => "<" }
+    CORRUPT = { ")" => 3, "]" => 57, "}" => 1197, ">" => 25137 }
+    INCMPLT = { "(" => 1, "[" => 2, "{" => 3, "<" => 4 }
 
     def initialize(string)
       @brackets = string.scan(/[\(\[\{\<\)\]\}\>]/)
@@ -75,7 +58,7 @@ class Aoc::Y2021d10 < Aoc
         end
       end
       stack.reverse.reduce(0) do |s, b|
-        5 * s + INCOMPLETE[b]
+        5 * s + INCMPLT[b]
       end
     end
   end
