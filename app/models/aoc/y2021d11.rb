@@ -80,7 +80,7 @@ class Aoc::Y2021d11 < Aoc
         nr = r + dr
         nc = c + dc
         next unless nr >= 0 && nr < height && nc >= 0 && nc < width
-        yield r + dr, c + dc
+        yield nr, nc
       end
     end
   end
