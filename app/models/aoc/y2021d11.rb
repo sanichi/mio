@@ -53,7 +53,9 @@ class Aoc::Y2021d11 < Aoc
         if rows[r][c] > 9
           flashes += 1
           rows[r][c] = 0
-          neighbours(r,c){|nr,nc| rows[nr][nc] += 1 unless rows[nr][nc] == 0}
+          neighbours(r,c) do |nr,nc|
+            rows[nr][nc] += 1 unless rows[nr][nc] == 0
+          end
         end
       end
       if flashes > 0
