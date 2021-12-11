@@ -2,9 +2,9 @@ class Aoc::Y2021d11 < Aoc
   def answer(part)
     octopuses = Octopuses.new(input)
     if part == 1
-      octopuses.count_flashes_after_steps(100)
+      octopuses.count_flashes_after_100_steps
     else
-      octopuses.count_steps_to_all_flashing
+      octopuses.count_steps_until_all_flashed
     end
   end
 
@@ -28,12 +28,12 @@ class Aoc::Y2021d11 < Aoc
       @flashes = 0
     end
 
-    def count_flashes_after_steps(n)
-      n.times {step}
+    def count_flashes_after_100_steps
+      100.times {step}
       flashes
     end
 
-    def count_steps_to_all_flashing
+    def count_steps_until_all_flashed
       n = 0
       while !simultaneous?
         step
