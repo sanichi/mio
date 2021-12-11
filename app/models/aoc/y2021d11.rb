@@ -11,8 +11,6 @@ class Aoc::Y2021d11 < Aoc
   class Octopuses
     attr_reader :rows, :width, :height, :flashes
 
-    NEIGHBOURS = [[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1],[0,1],[1,1]]
-
     def initialize(string)
       @width = nil
       @rows = string.each_line.map do |line|
@@ -45,29 +43,17 @@ class Aoc::Y2021d11 < Aoc
     private
 
     def step
-      (0..height-1).each do |r|
-        (0..width-1).each do |c|
-          rows[r][c] += 1
-        end
-      end
+      scan{|r,c| rows[r][c] += 1}
       flash
     end
 
     def flash
       flashes = 0
-      (0..height-1).each do |r|
-        (0..width-1).each do |c|
-          if rows[r][c] > 9
-            flashes += 1
-            rows[r][c] = 0
-            NEIGHBOURS.each do |dr,dc|
-              nr = r + dr
-              nc = c + dc
-              if nr >= 0 && nr < height && nc >= 0 && nc < width && rows[nr][nc] != 0
-                rows[nr][nc] += 1
-              end
-            end
-          end
+      scan do |r,c|
+        if rows[r][c] > 9
+          flashes += 1
+          rows[r][c] = 0
+          neighbours(r,c){|nr,nc| rows[nr][nc] += 1 unless rows[nr][nc] == 0}
         end
       end
       if flashes > 0
@@ -77,12 +63,25 @@ class Aoc::Y2021d11 < Aoc
     end
 
     def simultaneous?
+      scan{|r,c| return false if rows[r][c] > 0}
+      true
+    end
+
+    def scan
       (0..height-1).each do |r|
         (0..width-1).each do |c|
-          return false if rows[r][c] > 0
+          yield r, c
         end
       end
-      true
+    end
+
+    def neighbours(r,c)
+      [[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1],[0,1],[1,1]].each do |dr,dc|
+        nr = r + dr
+        nc = c + dc
+        next unless nr >= 0 && nr < height && nc >= 0 && nc < width
+        yield r + dr, c + dc
+      end
     end
   end
 
