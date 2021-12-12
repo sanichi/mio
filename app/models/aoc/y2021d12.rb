@@ -32,7 +32,7 @@ class Aoc::Y2021d12 < Aoc
         found.append(path.dup)
       else
         successors[node].each do |s|
-          if big?(s) || !path.include?(s) || (allow && allow?(s, path))
+          if big?(s) || !path.include?(s) || (allow && s != "start" && uniq?(path))
             recurse(s, path, found, allow)
           end
         end
@@ -44,10 +44,9 @@ class Aoc::Y2021d12 < Aoc
       node.ord < 97
     end
 
-    def allow?(node, path)
-      return false if node == "start"
-      small = path.select{|n| !big?(n)}
-      small.uniq.length == small.length
+    def uniq?(path)
+      smallones = path.select{|n| !big?(n)}
+      smallones.uniq.length == smallones.length
     end
   end
 
