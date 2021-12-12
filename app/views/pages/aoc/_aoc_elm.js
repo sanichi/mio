@@ -19862,6 +19862,8 @@ var $author$project$Main$speed = F3(
 				return 1;
 			case '2020-25-1':
 				return 1;
+			case '2021-12-2':
+				return 1;
 			default:
 				return 0;
 		}
