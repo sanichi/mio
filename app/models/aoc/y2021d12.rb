@@ -11,8 +11,8 @@ class Aoc::Y2021d12 < Aoc
       string.each_line(chomp: true) do |line|
         raise "invalid input" unless line.match(/\A([A-Z]+|[a-z]+)-([A-Z]+|[a-z]+)\z/)
         raise "invalid connection" if $1 == $2
-        @successors[$1].push($2)
-        @successors[$2].push($1)
+        @successors[$1].push($2) unless $2 == "start"
+        @successors[$2].push($1) unless $1 == "start"
       end
       raise "no start" unless @successors.include?("start")
       raise "no end" unless @successors.include?("end")
@@ -32,7 +32,7 @@ class Aoc::Y2021d12 < Aoc
         found.append(path.dup)
       else
         successors[node].each do |s|
-          if big?(s) || !path.include?(s) || (allow && s != "start" && uniq?(path))
+          if big?(s) || !path.include?(s) || (allow && uniq?(path))
             recurse(s, path, found, allow)
           end
         end
@@ -41,7 +41,7 @@ class Aoc::Y2021d12 < Aoc
     end
 
     def big?(node)
-      node.ord < 97
+      node.ord < 97 # "a".ord == 97, "Z".ord == 90
     end
 
     def uniq?(path)
