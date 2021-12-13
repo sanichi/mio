@@ -21,7 +21,7 @@ class Aoc::Y2021d13 < Aoc
           x = $1.to_i
           y = $2.to_i
           @dots[[x,y]] = true
-        elsif line.match(/\Afold along (x|y)=(\d+)/)
+        elsif line.match(/\Afold along (x|y)=(\d+)\z/)
           s = $2.to_i
           if $1 == "x"
             @instructions.push s
