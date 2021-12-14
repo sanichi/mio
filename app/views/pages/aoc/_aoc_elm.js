@@ -20372,6 +20372,8 @@ var $author$project$Main$getNote = F2(
 				return $elm$core$Maybe$Just('Had to avoid Elm for this one because it involves 64-bit integers. A quick Ruby script did the job.');
 			case '2020-20':
 				return $elm$core$Maybe$Just('I couldn‘t figure out part 2 and used Github user Sharparam‘s ruby solution.');
+			case '2021-14':
+				return $elm$core$Maybe$Just('I have to admit to needing help for part 2 (link in code).');
 			default:
 				return $elm$core$Maybe$Nothing;
 		}
