@@ -20378,6 +20378,8 @@ var $author$project$Main$getNote = F2(
 				return $elm$core$Maybe$Just('I couldn‘t figure out part 2 and used Github user Sharparam‘s ruby solution.');
 			case '2021-14':
 				return $elm$core$Maybe$Just('I have to admit to needing help for part 2 (link in code).');
+			case '2021-15':
+				return $elm$core$Maybe$Just('I\'m getting the right answer for part 2 with the example but not my input.');
 			default:
 				return $elm$core$Maybe$Nothing;
 		}

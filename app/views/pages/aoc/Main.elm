@@ -964,6 +964,9 @@ getNote year day =
         "2021-14" ->
             Just "I have to admit to needing help for part 2 (link in code)."
 
+        "2021-15" ->
+            Just "I'm getting the right answer for part 2 with the example but not my input."
+
         _ ->
             Nothing
 
