@@ -1,6 +1,6 @@
 class Aoc::Y2021d16 < Aoc
   def answer(part)
-    parse(EXAMPLE[4]).to_s
+    # parse(EXAMPLE[4])
     "not done yet"
   end
 
@@ -51,21 +51,25 @@ class Aoc::Y2021d16 < Aoc
           len += 1
           if len_type == "0"
             sub_len = remainder[i+=l,l=15].to_i(2)
+            len += 15
             LengthOperator.new(version, type, len, sub_len)
           else
             sub_num = remainder[i+=l,l=11].to_i(2)
+            len += 11
             NumberOperator.new(version, type, len, sub_num)
           end
         end
 
-      len = i + l
+      i += l
       stack.push packet
 
-      remainder = remainder[len..-1]
+      remainder = remainder[i..-1]
     end
 
 
     loop do
+      Rails.logger.info "XXX #{stack.map(&:to_s).join(' ')}"
+
       arguments = []
       while stack.last&.full? do
         arguments.unshift(stack.pop)
@@ -168,7 +172,7 @@ class Aoc::Y2021d16 < Aoc
 
     def to_s
       f = full? ? 't' : 'f'
-      ["L", version, type, len, sub_len, f, "#{args.map(&:to_s).join(',')})"].join(":")
+      ["L", version, type, len, sub_len, f, "(#{args.map(&:to_s).join(',')})"].join(":")
     end
   end
 
