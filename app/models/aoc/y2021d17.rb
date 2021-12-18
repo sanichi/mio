@@ -23,7 +23,7 @@ class Aoc::Y2021d17 < Aoc
       min_vx = (Math.sqrt(1 + 8 * x1).floor - 1) / 2 # solve quadratic to get lowest x-velocity
       max_vx = x2 # any faster (rightwards) and it will shoot past on the first step
       min_vy = y1 # any faster (downwards) and it will shoot past on the first step
-      max_vy = y2 + 2000 # as large as I could go and still have it take only a few seconds
+      max_vy = 2000 # compromise: large enough for right answers, not too large for compute time
       (min_vx..max_vx).each do |vx|
         (min_vy..max_vy).each do |vy|
           yield step(vx,vy,0,0,0)
@@ -40,7 +40,7 @@ class Aoc::Y2021d17 < Aoc
       return nil if vx == 0 && (x < x1 || x > x2)
       return nil if y <= y1 && vy <= 0
 
-      vx += (vx == 0 ? 0 : (vx > 0 ? -1 : 1))
+      vx += vx == 0 ? 0 : (vx > 0 ? -1 : 1)
       vy -= 1
 
       step(vx, vy, x, y, max)
