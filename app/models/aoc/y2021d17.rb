@@ -7,7 +7,7 @@ class Aoc::Y2021d17 < Aoc
     attr_reader :x1, :x2, :y1, :y2
 
     def initialize(string)
-      if string.match(/\Atarget area: x=(\d+)\.\.(\d+), y=(-\d+)\.\.(-\d+)/)
+      if string.match(/target area: x=(\d+)\.\.(\d+), y=(-\d+)\.\.(-\d+)/)
         @x1, @x2, @y1, @y2 = [$1.to_i, $2.to_i, $3.to_i, $4.to_i]
       end
       raise "invalid input" unless x1 && x1 < x2 && y1 < y2
