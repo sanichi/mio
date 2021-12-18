@@ -1,11 +1,6 @@
 class Aoc::Y2021d17 < Aoc
   def answer(part)
-    target = Target.new(input)
-    if part == 1
-      target.highest
-    else
-      "not done yet"
-    end
+    Target.new(input).send(part == 1 ? :highest : :count)
   end
 
   class Target
@@ -19,28 +14,37 @@ class Aoc::Y2021d17 < Aoc
     end
 
     def highest
-      min_vx = (Math.sqrt(1 + 8 * x1).floor - 1) / 2 # solve quadratic to get lowest x-velocity
-      max_vx = x2 # any faster (rightwards) and it will shoot past on the first step
-      min_vy = y2 # any faster (downwards) and it will shoot past on the first step
-      max_vy = y2 + 2000 # as large as I could go and still have it take only a few seconds
-      max = 0
-      (min_vx..max_vx).each do |vx|
-        (min_vy..max_vy).each do |vy|
-          cur = step(vx,vy,0,0,0)
-          max = cur if !cur.nil? && cur > max
-        end
-      end
-      max
+      most = 0
+      scan{|max| most = max if !max.nil? && max > most}
+      most
+    end
+
+    def count
+      total = 0
+      scan{|max| total += 1 unless max.nil?}
+      total
     end
 
     private
+
+    def scan
+      min_vx = (Math.sqrt(1 + 8 * x1).floor - 1) / 2 # solve quadratic to get lowest x-velocity
+      max_vx = x2 # any faster (rightwards) and it will shoot past on the first step
+      min_vy = y1 # any faster (downwards) and it will shoot past on the first step
+      max_vy = y2 + 2000 # as large as I could go and still have it take only a few seconds
+      (min_vx..max_vx).each do |vx|
+        (min_vy..max_vy).each do |vy|
+          yield step(vx,vy,0,0,0)
+        end
+      end
+    end
 
     def step(vx, vy, x, y, max)
       x += vx
       y += vy
       max = y if y > max
 
-      return max  if x >= x1 && x <= x2 && y >= y1 && y <= y2
+      return max if x >= x1 && x <= x2 && y >= y1 && y <= y2
       return nil if vx == 0 && (x < x1 || x2 < x)
       return nil if y < y1 && vy < 0
 
