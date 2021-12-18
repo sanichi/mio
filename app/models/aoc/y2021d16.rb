@@ -40,13 +40,13 @@ class Aoc::Y2021d16 < Aoc
       type = remainder[i+=l,l=3].to_i(2)
       packet =
         if type == 4
-          val = ""
+          value = ""
           loop do
             group = remainder[i+=l,l=5]
-            val += group[1,4]
+            value += group[1,4]
             break if group[0] == "0"
           end
-          Value.new(version, type, i+=l, val.to_i(2))
+          Value.new(version, type, i+=l, value.to_i(2))
         else
           len_type = remainder[i+=l,l=1]
           if len_type == "0"
@@ -74,12 +74,18 @@ class Aoc::Y2021d16 < Aoc
   end
 
   class Packet
-    attr_reader :version, :type, :len
+    attr_reader :version, :type, :len, :args
 
     def initialize(version, type, len)
       @version = version
       @type = type
       @len = len
+      @args = []
+    end
+
+    def add(arg)
+      @args.push arg
+      @len += arg.len
     end
 
     def versions
@@ -114,7 +120,7 @@ class Aoc::Y2021d16 < Aoc
   end
 
   class Value < Packet
-    attr_reader :version, :type, :value
+    attr_reader :value
 
     def initialize(version, type, len, value)
       super(version, type, len)
@@ -122,38 +128,25 @@ class Aoc::Y2021d16 < Aoc
     end
 
     def full?() = true
-    def args() = []
   end
 
   class LengthOperator < Packet
-    attr_reader :version, :type, :len, :sub_len, :args
+    attr_reader :sub_len
 
     def initialize(version, type, len, sub_len)
       super(version, type, len)
       @sub_len = sub_len
-      @args = []
-    end
-
-    def add(arg)
-      @args.push arg
-      @len += arg.len
     end
 
     def full? = sub_len == args.map(&:len).sum
   end
 
   class NumberOperator < Packet
-    attr_reader :version, :type, :len, :sub_num, :args
+    attr_reader :sub_num
 
     def initialize(version, type, len, sub_num)
       super(version, type, len)
       @sub_num = sub_num
-      @args = []
-    end
-
-    def add(arg)
-      @args.push arg
-      @len += arg.len
     end
 
     def full? = sub_num == args.length
