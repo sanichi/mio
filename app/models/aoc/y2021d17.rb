@@ -1,9 +1,10 @@
 class Aoc::Y2021d17 < Aoc
   def answer(part)
-    Target.new(input).send(part == 1 ? :highest : :count)
+    Target.new(input).send(part == 1 ? :best : :hits)
   end
 
   class Target
+    include Enumerable
     attr_reader :x1, :x2, :y1, :y2
 
     def initialize(string)
@@ -13,21 +14,12 @@ class Aoc::Y2021d17 < Aoc
       raise "invalid input" unless x1 && x1 < x2 && y1 < y2
     end
 
-    def highest
-      most = 0
-      scan{|max| most = max if !max.nil? && max > most}
-      most
-    end
-
-    def count
-      total = 0
-      scan{|max| total += 1 unless max.nil?}
-      total
-    end
+    def best() = reduce(0){|sofar, max| max.nil? || sofar >= max ? sofar : max}
+    def hits() = reduce(0){|count, max| max.nil? ? count : count + 1}
 
     private
 
-    def scan
+    def each
       min_vx = (Math.sqrt(1 + 8 * x1).floor - 1) / 2 # solve quadratic to get lowest x-velocity
       max_vx = x2 # any faster (rightwards) and it will shoot past on the first step
       min_vy = y1 # any faster (downwards) and it will shoot past on the first step
@@ -45,8 +37,8 @@ class Aoc::Y2021d17 < Aoc
       max = y if y > max
 
       return max if x >= x1 && x <= x2 && y >= y1 && y <= y2
-      return nil if vx == 0 && (x < x1 || x2 < x)
-      return nil if y < y1 && vy < 0
+      return nil if vx == 0 && (x < x1 || x > x2)
+      return nil if y <= y1 && vy <= 0
 
       vx += (vx == 0 ? 0 : (vx > 0 ? -1 : 1))
       vy -= 1
