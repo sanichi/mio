@@ -1,6 +1,66 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
+    parse(EXAMPLE2).map(&:magnitude)
     "not done yet"
+  end
+
+  def parse(string)
+    num = nil
+    string.scan(/[\[\]\,0-9]/).each_with_object([]) do |c, nums|
+      case c
+      when '['
+        if num
+          num = num.add
+        else
+          nums.push(num = Number.new)
+        end
+      when /[0-9]/
+        num.add(c.to_i)
+      when ']'
+        num = num.parent
+      end
+    end
+  end
+
+  class Number
+    attr_reader :left, :rite, :parent
+
+    def initialize(parent=nil)
+      @parent = parent
+    end
+
+    def add(num=nil)
+      num = Number.new(self) if num.nil?
+      if left.nil?
+        @left = num
+      elsif rite.nil?
+        @rite = num
+      else
+        raise "invalid input"
+      end
+      num
+    end
+
+    def magnitude
+      l = left.is_a?(Number) ? left.magnitude : left
+      r = rite.is_a?(Number) ? rite.magnitude : rite
+      3 * l + 2 * r
+    end
+
+    def to_s
+      "[#{pair_to_s(left)},#{pair_to_s(rite)}]"
+    end
+
+    def pair_to_s(num)
+      case num
+      when Number
+        num.to_s
+      when nil
+        "*"
+      else
+        num
+      end
+    end
   end
 
   EXAMPLE = <<~EOE
@@ -14,5 +74,14 @@ class Aoc::Y2021d18 < Aoc
     [[9,3],[[9,9],[6,[4,9]]]]
     [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
     [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
+  EOE
+
+  EXAMPLE2 = <<~EOE
+    [[1,2],[[3,4],5]]
+    [[[[0,7],4],[[7,8],[6,0]]],[8,1]]
+    [[[[1,1],[2,2]],[3,3]],[4,4]]
+    [[[[3,0],[5,3]],[4,4]],[5,5]]
+    [[[[5,0],[7,4]],[5,5]],[6,6]]
+    [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
   EOE
 end
