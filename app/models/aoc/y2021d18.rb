@@ -1,25 +1,31 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    parse(EXAMPLE2).map(&:magnitude)
-    "not done yet"
+    add(parse("[[[[4,3],4],4],[7,[[8,4],9]]][1,1"))
+    "not yet done"
   end
 
   def parse(string)
     num = nil
-    string.scan(/[\[\]\,0-9]/).each_with_object([]) do |c, nums|
+    string.scan(/[\[\]0-9]/).each_with_object([]) do |c, nums|
       case c
       when '['
         if num
-          num = num.add
+          num = num.insert
         else
           nums.push(num = Number.new)
         end
       when /[0-9]/
-        num.add(c.to_i)
+        num.insert(c.to_i)
       when ']'
         num = num.parent
       end
     end
+  end
+
+  def add(list)
+    num = list.shift
+    num = num.add(list.shift) while !list.empty?
+    num
   end
 
   class Number
@@ -29,7 +35,7 @@ class Aoc::Y2021d18 < Aoc
       @parent = parent
     end
 
-    def add(num=nil)
+    def insert(num=nil)
       num = Number.new(self) if num.nil?
       if left.nil?
         @left = num
@@ -39,6 +45,17 @@ class Aoc::Y2021d18 < Aoc
         raise "invalid input"
       end
       num
+    end
+
+    def add(rite)
+      num = Number.new
+      num.insert self
+      num.insert rite
+      num.reduce
+    end
+
+    def reduce
+      self
     end
 
     def magnitude
