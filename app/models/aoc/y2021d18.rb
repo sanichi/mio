@@ -1,7 +1,7 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    parse("[1,1][2,2][3,3][4,4][5,5]").to_s
-    "not done yet"
+    parse("[1,1][2,2][3,3][4,4][5,5][6,6]").to_s
+    "not finished yet"
   end
 
   def parse(string)
@@ -38,11 +38,13 @@ class Aoc::Y2021d18 < Aoc
 
     def mag() = tree.mag
     def +(n)
-      before = Number.new(tree + n.tree, list + n.list)
-      Rails.logger.info "XXX before #{before.to_s} #{before.to_s(false)}"
-      after = before.reduce
-      Rails.logger.info "XXX after #{after} #{after.to_s(false)}"
-      after
+      Rails.logger.info "self #{to_s} #{to_s(false)}"
+      Rails.logger.info "next #{n.to_s} #{n.to_s(false)}"
+      befo = Number.new(tree + n.tree, list + n.list)
+      Rails.logger.info "befo #{befo.to_s} #{befo.to_s(false)}"
+      aftr = befo.reduce
+      Rails.logger.info "aftr #{aftr.to_s} #{aftr.to_s(false)}"
+      aftr
     end
 
     def reduce
@@ -150,15 +152,16 @@ class Aoc::Y2021d18 < Aoc
 
     def +(tree)
       parent = Tree.new
-      parent.insert(self.raise!)
-      parent.insert(tree.raise!)
+      parent.insert(self.raise!(parent))
+      parent.insert(tree.raise!(parent))
       parent
     end
 
-    def raise!
+    def raise!(parent=nil)
+      @parent = parent if parent
       @level += 1
-      left.raise! if left.is_a?(Tree)
-      rite.raise! if rite.is_a?(Tree)
+      left.raise!() if left.is_a?(Tree)
+      rite.raise!() if rite.is_a?(Tree)
       self
     end
 
@@ -180,7 +183,7 @@ class Aoc::Y2021d18 < Aoc
             child
           end
         end
-      "[#{pair.join(',')}:#{level}]"
+      "[#{pair.join(',')}:#{level}:#{self&.parent ? 'p' : 'x'}]"
     end
   end
 
