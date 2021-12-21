@@ -1,7 +1,6 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    numbers = parse("[1,2][3,4]")
-    add(numbers).to_list_s
+    parse("[1,2][3,4]").to_s
     "not done yet"
   end
 
@@ -26,18 +25,7 @@ class Aoc::Y2021d18 < Aoc
         end
         tree = tree.parent
       end
-    end
-  end
-
-  def add(numbers)
-    number = numbers.shift
-    while !numbers.empty?
-      next_number = numbers.shift
-      tree = number.tree.add(next_number.tree)
-      list = number.list + next_number.list
-      number = Number.new(tree, list)
-    end
-    number
+    end.reduce(&:+)
   end
 
   class Number
@@ -48,46 +36,51 @@ class Aoc::Y2021d18 < Aoc
       @list = list
     end
 
-    def to_tree_s
-      tree.to_s
-    end
+    def +(n) = Number.new(tree + n.tree, list + n.list)
+    def mag() = tree.mag
 
-    def to_list_s
-      list.map{|t| t.to_s(true)}.join
+    def to_s(recursive=true)
+      if recursive
+        tree.to_s
+      else
+        list.map{|t| t.to_s(false)}.join
+      end
     end
   end
 
   class Tree
-    attr_reader :left, :rite, :parent, :level
+    attr_reader :parent, :children, :level
 
     def initialize(parent=nil)
       @parent = parent
+      @children = []
       @level = parent ? parent.level + 1 : 0
     end
 
+    def left() = children[0]
+    def rite() = children[1]
+
     def insert(tree=nil)
       tree = Tree.new(self) if tree.nil?
-      if left.nil?
-        @left = tree
-      elsif rite.nil?
-        @rite = tree
+      if children.length < 2
+        children.push tree
       else
-        raise "invalid input"
+        raise "too many children"
       end
       tree
     end
 
-    def add(rite)
-      tree = Tree.new
-      tree.insert(self.raise)
-      tree.insert(rite.raise)
-      tree.reduce
+    def +(tree)
+      parent = Tree.new
+      parent.insert(self.raise!)
+      parent.insert(tree.raise!)
+      parent.reduce
     end
 
-    def raise
+    def raise!
       @level += 1
-      left.raise if left.is_a?(Tree)
-      rite.raise if rite.is_a?(Tree)
+      left.raise! if left.is_a?(Tree)
+      rite.raise! if rite.is_a?(Tree)
       self
     end
 
@@ -95,40 +88,25 @@ class Aoc::Y2021d18 < Aoc
       self
     end
 
-    def magnitude
-      l = left.is_a?(Tree) ? left.magnitude : left
-      r = rite.is_a?(Tree) ? rite.magnitude : rite
+    def mag
+      l = left.is_a?(Tree) ? left.mag : left
+      r = rite.is_a?(Tree) ? rite.mag : rite
       3 * l + 2 * r
     end
 
-    def to_s(list=false)
-      if list
-        "[#{num_or_none(left)},#{num_or_none(rite)}:#{level}]"
-      else
-        "[#{num_or_tree(left)},#{num_or_tree(rite)}:#{level}]"
-      end
-    end
-
-    def num_or_tree(num)
-      case num
-      when Tree
-        num.to_s
-      when nil
-        "*"
-      else
-        num
-      end
-    end
-
-    def num_or_none(num)
-      case num
-      when Tree
-        "."
-      when nil
-        "*"
-      else
-        num
-      end
+    def to_s(recursive=true)
+      pair =
+        children.map do |child|
+          case child
+          when Tree
+            recursive ? child.to_s : "*"
+          when nil
+            "-"
+          else
+            child
+          end
+        end
+      "[#{pair.join(',')}:#{level}]"
     end
   end
 
