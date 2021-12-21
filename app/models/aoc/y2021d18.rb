@@ -1,57 +1,94 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    add(parse("[[[[4,3],4],4],[7,[[8,4],9]]][1,1"))
-    "not yet done"
+    numbers = parse("[1,2][3,4]")
+    add(numbers).to_list_s
+    "not done yet"
   end
 
   def parse(string)
-    num = nil
-    string.scan(/[\[\]0-9]/).each_with_object([]) do |c, nums|
+    tree = nil
+    list = []
+    string.scan(/[\[\]0-9]/).each_with_object([]) do |c, numbers|
       case c
       when '['
-        if num
-          num = num.insert
+        if tree
+          tree = tree.insert
         else
-          nums.push(num = Number.new)
+          tree = Tree.new
         end
       when /[0-9]/
-        num.insert(c.to_i)
+        tree.insert(c.to_i)
+        list.push(tree) unless list.last == tree
       when ']'
-        num = num.parent
+        if tree.parent.nil?
+          numbers.push(Number.new(tree, list))
+          list = []
+        end
+        tree = tree.parent
       end
     end
   end
 
-  def add(list)
-    num = list.shift
-    num = num.add(list.shift) while !list.empty?
-    num
+  def add(numbers)
+    number = numbers.shift
+    while !numbers.empty?
+      next_number = numbers.shift
+      tree = number.tree.add(next_number.tree)
+      list = number.list + next_number.list
+      number = Number.new(tree, list)
+    end
+    number
   end
 
   class Number
-    attr_reader :left, :rite, :parent
+    attr_reader :tree, :list
+
+    def initialize(tree, list)
+      @tree = tree
+      @list = list
+    end
+
+    def to_tree_s
+      tree.to_s
+    end
+
+    def to_list_s
+      list.map{|t| t.to_s(true)}.join
+    end
+  end
+
+  class Tree
+    attr_reader :left, :rite, :parent, :level
 
     def initialize(parent=nil)
       @parent = parent
+      @level = parent ? parent.level + 1 : 0
     end
 
-    def insert(num=nil)
-      num = Number.new(self) if num.nil?
+    def insert(tree=nil)
+      tree = Tree.new(self) if tree.nil?
       if left.nil?
-        @left = num
+        @left = tree
       elsif rite.nil?
-        @rite = num
+        @rite = tree
       else
         raise "invalid input"
       end
-      num
+      tree
     end
 
     def add(rite)
-      num = Number.new
-      num.insert self
-      num.insert rite
-      num.reduce
+      tree = Tree.new
+      tree.insert(self.raise)
+      tree.insert(rite.raise)
+      tree.reduce
+    end
+
+    def raise
+      @level += 1
+      left.raise if left.is_a?(Tree)
+      rite.raise if rite.is_a?(Tree)
+      self
     end
 
     def reduce
@@ -59,19 +96,34 @@ class Aoc::Y2021d18 < Aoc
     end
 
     def magnitude
-      l = left.is_a?(Number) ? left.magnitude : left
-      r = rite.is_a?(Number) ? rite.magnitude : rite
+      l = left.is_a?(Tree) ? left.magnitude : left
+      r = rite.is_a?(Tree) ? rite.magnitude : rite
       3 * l + 2 * r
     end
 
-    def to_s
-      "[#{pair_to_s(left)},#{pair_to_s(rite)}]"
+    def to_s(list=false)
+      if list
+        "[#{num_or_none(left)},#{num_or_none(rite)}:#{level}]"
+      else
+        "[#{num_or_tree(left)},#{num_or_tree(rite)}:#{level}]"
+      end
     end
 
-    def pair_to_s(num)
+    def num_or_tree(num)
       case num
-      when Number
+      when Tree
         num.to_s
+      when nil
+        "*"
+      else
+        num
+      end
+    end
+
+    def num_or_none(num)
+      case num
+      when Tree
+        "."
       when nil
         "*"
       else
