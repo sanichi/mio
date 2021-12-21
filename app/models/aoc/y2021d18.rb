@@ -1,6 +1,6 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    parse("[1,2][3,4]").to_s
+    parse("[1,1][2,2][3,3][4,4][5,5]").to_s
     "not done yet"
   end
 
@@ -36,8 +36,46 @@ class Aoc::Y2021d18 < Aoc
       @list = list
     end
 
-    def +(n) = Number.new(tree + n.tree, list + n.list)
     def mag() = tree.mag
+    def +(n)
+      before = Number.new(tree + n.tree, list + n.list)
+      Rails.logger.info "XXX before #{before.to_s} #{before.to_s(false)}"
+      after = before.reduce
+      Rails.logger.info "XXX after #{after} #{after.to_s(false)}"
+      after
+    end
+
+    def reduce
+      if explode
+        reduce
+      else
+        if split
+          reduce
+        else
+          self
+        end
+      end
+    end
+
+    def explode
+      i = list.index {|t| t.level == 4}
+      return false unless i
+      t = list[i]
+      list[i-1].add_rite(t.left) if i > 0
+      list[i+1].add_left(t.rite) if i < list.length - 1
+      t.parent.zero(t) if t.parent
+      list.slice!(i)
+      return true
+    end
+
+    def split
+      i = list.index{|t| (!t.left.is_a?(Tree) && t.left > 9) || (!t.rite.is_a?(Tree) && t.rite > 9)}
+      return false unless i
+      t = list[i]
+      trees = t.split
+      @list = (i == 0 ? [] : list[0..i-1]) + trees + list[i+1..list.length]
+      return true
+    end
 
     def to_s(recursive=true)
       if recursive
@@ -60,6 +98,46 @@ class Aoc::Y2021d18 < Aoc
     def left() = children[0]
     def rite() = children[1]
 
+    def add_rite(num)
+      if !rite.is_a?(Tree)
+        @children[1] += num
+      elsif !left.is_a?(Tree)
+        @children[0] += num
+      end
+    end
+
+    def add_left(num)
+      if !left.is_a?(Tree)
+        @children[0] += num
+      elsif !rite.is_a?(Tree)
+        @children[1] += num
+      end
+    end
+
+    def zero(tree)
+      @children[0] = 0 if left == tree
+      @children[1] = 0 if rite == tree
+    end
+
+    def split
+      trees = []
+      tree = Tree.new(self)
+      if !left.is_a?(Tree) && left > 9
+        tree.insert((left.to_f / 2.0).floor)
+        tree.insert((left.to_f / 2.0).ceil)
+        @children[0] = tree
+        trees.push tree
+        trees.push self if !rite.is_a?(Tree)
+      elsif !rite.is_a?(Tree) && rite > 9
+        tree.insert((rite.to_f / 2.0).floor)
+        tree.insert((rite.to_f / 2.0).ceil)
+        @children[1] = tree
+        trees.push(self) if !left.is_a?(Tree)
+        trees.push tree
+      end
+      trees
+    end
+
     def insert(tree=nil)
       tree = Tree.new(self) if tree.nil?
       if children.length < 2
@@ -74,17 +152,13 @@ class Aoc::Y2021d18 < Aoc
       parent = Tree.new
       parent.insert(self.raise!)
       parent.insert(tree.raise!)
-      parent.reduce
+      parent
     end
 
     def raise!
       @level += 1
       left.raise! if left.is_a?(Tree)
       rite.raise! if rite.is_a?(Tree)
-      self
-    end
-
-    def reduce
       self
     end
 
@@ -113,15 +187,16 @@ class Aoc::Y2021d18 < Aoc
   EXAMPLE = <<~EOE
     [[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
     [[[5,[2,8]],4],[5,[[9,9],0]]]
-    [6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
-    [[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
-    [[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
-    [[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
-    [[[[5,4],[7,7]],8],[[8,3],8]]
-    [[9,3],[[9,9],[6,[4,9]]]]
-    [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
-    [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
   EOE
+  #   [6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
+  #   [[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
+  #   [[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
+  #   [[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
+  #   [[[[5,4],[7,7]],8],[[8,3],8]]
+  #   [[9,3],[[9,9],[6,[4,9]]]]
+  #   [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
+  #   [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
+  # EOE
 
   EXAMPLE2 = <<~EOE
     [[1,2],[[3,4],5]]
