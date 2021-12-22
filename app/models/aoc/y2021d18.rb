@@ -1,6 +1,11 @@
 class Aoc::Y2021d18 < Aoc
   def answer(part)
-    parse(input).mag
+    numbers = parse(input)
+    if part == 1
+      numbers.reduce(&:+).mag
+    else
+      "not done yet"
+    end
   end
 
   def parse(string)
@@ -24,7 +29,7 @@ class Aoc::Y2021d18 < Aoc
         end
         tree = tree.parent
       end
-    end.reduce(&:+)
+    end
   end
 
   class Number
