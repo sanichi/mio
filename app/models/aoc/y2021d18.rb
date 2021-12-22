@@ -71,10 +71,6 @@ class Aoc::Y2021d18 < Aoc
       @list = (i == 0 ? [] : list[0..i-1]) + trees + list[i+1..list.length]
       return true
     end
-
-    def to_s
-      "#{tree.to_s} #{list.map{|t| t.to_s(false)}.join}"
-    end
   end
 
   class Tree
@@ -86,12 +82,11 @@ class Aoc::Y2021d18 < Aoc
       @level = parent ? parent.level + 1 : 0
     end
 
-    def left() = children[0]
-    def rite() = children[1]
-
-    def >(n) = false
-    def is_num?(num) = num > -1
-    def is_tree?(num) = !is_num?(num)
+    def >(n)        = false
+    def left()      = children[0]
+    def rite()      = children[1]
+    def is_num?(n)  = n > -1
+    def is_tree?(n) = !(n > -1)
     def has_tree?() = is_tree?(left) || is_tree?(rite)
 
     def add_rite(num)
@@ -171,21 +166,6 @@ class Aoc::Y2021d18 < Aoc
       l = is_tree?(left) ? left.mag : left
       r = is_tree?(rite) ? rite.mag : rite
       3 * l + 2 * r
-    end
-
-    def to_s(recursive=true)
-      pair =
-        children.map do |child|
-          case child
-          when Tree
-            recursive ? child.to_s : "*"
-          when nil
-            "-"
-          else
-            child
-          end
-        end
-      "[#{pair.join(',')}:#{level}:#{self&.parent ? 'p' : 'x'}]"
     end
   end
 
