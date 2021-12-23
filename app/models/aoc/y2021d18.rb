@@ -8,41 +8,42 @@ class Aoc::Y2021d18 < Aoc
     end
   end
 
-  def parse(string)
-    tree = nil
-    list = []
-    string.scan(/[\[\]0-9]/).each_with_object([]) do |c, numbers|
-      case c
-      when '['
-        if tree
-          tree = tree.insert
-        else
-          tree = Tree.new
-        end
-      when /[0-9]/
-        tree.insert(c.to_i)
-        list.push(tree) unless list.last == tree
-      when ']'
-        if tree.parent.nil?
-          numbers.push(Number.new(tree, list))
-          list = []
-        end
-        tree = tree.parent
-      end
-    end
-  end
+  def parse(string) = string.each_line.map{|line| Number.new(line)}
 
   class Number
     attr_reader :tree, :list
 
-    def initialize(tree, list)
-      @tree = tree
-      @list = list
+    def initialize(string)
+      @tree = nil
+      @list = []
+      string.scan(/[\[\]0-9]/).each do |c|
+        case c
+        when '['
+          if tree
+            @tree = tree.insert
+          else
+            @tree = Tree.new
+          end
+        when /[0-9]/
+          tree.insert(c.to_i)
+          list.push(tree) unless list.last == tree
+        when ']'
+          @tree = tree.parent if tree.parent
+        end
+      end
     end
 
-    def +(n)   = Number.new(tree + n.tree, list + n.list).reduce
-    def mag()  = tree.mag
+    def mag    = tree.mag
+    def to_s   = tree.to_s
     def reduce = explode && reduce || split && reduce || self
+
+    def +(othr)
+      l = Number.new(self.to_s)
+      r = Number.new(othr.to_s)
+      Number.new("[#{l.to_s},#{r.to_s}]").reduce
+    end
+
+    private
 
     def explode
       i = list.index {|t| t.level == 4}
@@ -82,18 +83,18 @@ class Aoc::Y2021d18 < Aoc
       @level = parent ? parent.level + 1 : 0
     end
 
-    def >(n)        = false
-    def left()      = children[0]
-    def rite()      = children[1]
-    def is_num?(n)  = n > -1
-    def is_tree?(n) = !(n > -1)
-    def has_tree?() = is_tree?(left) || is_tree?(rite)
+    def >(n)      = false
+    def left      = children[0]
+    def rite      = children[1]
+    def num?(n)   = n > -1
+    def tree?(n)  = !(n > -1)
+    def has_tree? = tree?(left) || tree?(rite)
 
     def add_rite(num)
-      if is_num?(rite)
+      if num?(rite)
         @children[1] += num
         true
-      elsif is_num?(left)
+      elsif num?(left)
         @children[0] += num
         true
       else
@@ -102,10 +103,10 @@ class Aoc::Y2021d18 < Aoc
     end
 
     def add_left(num)
-      if is_num?(left)
+      if num?(left)
         @children[0] += num
         true
-      elsif is_num?(rite)
+      elsif num?(rite)
         @children[1] += num
         true
       else
@@ -126,12 +127,12 @@ class Aoc::Y2021d18 < Aoc
         tree.insert((left.to_f / 2.0).ceil)
         @children[0] = tree
         trees.push tree
-        trees.push self if is_num?(rite)
+        trees.push self if num?(rite)
       elsif rite > 9
         tree.insert((rite.to_f / 2.0).floor)
         tree.insert((rite.to_f / 2.0).ceil)
         @children[1] = tree
-        trees.push(self) if is_num?(left)
+        trees.push(self) if num?(left)
         trees.push tree
       end
       trees
@@ -142,7 +143,7 @@ class Aoc::Y2021d18 < Aoc
       if children.length < 2
         children.push tree
       else
-        raise "too many children"
+        raise "too many children #{self.to_s}"
       end
       tree
     end
@@ -157,15 +158,21 @@ class Aoc::Y2021d18 < Aoc
     def raise!(parent=nil)
       @parent = parent if parent
       @level += 1
-      left.raise! if is_tree?(left)
-      rite.raise! if is_tree?(rite)
+      left.raise! if tree?(left)
+      rite.raise! if tree?(rite)
       self
     end
 
     def mag
-      l = is_tree?(left) ? left.mag : left
-      r = is_tree?(rite) ? rite.mag : rite
+      l = tree?(left) ? left.mag : left
+      r = tree?(rite) ? rite.mag : rite
       3 * l + 2 * r
+    end
+
+    def to_s
+      l = tree?(left) ? left.to_s : left
+      r = tree?(rite) ? rite.to_s : rite
+      "[#{l},#{r}]"
     end
   end
 
