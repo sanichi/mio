@@ -4,7 +4,9 @@ class Aoc::Y2021d18 < Aoc
     if part == 1
       numbers.reduce(&:+).mag
     else
-      "not done yet"
+      numbers.combination(2).reduce(0) do |max,(n,m)|
+        [(n + m).mag, (m + n).mag, max].max
+      end
     end
   end
 
@@ -35,13 +37,8 @@ class Aoc::Y2021d18 < Aoc
 
     def mag    = tree.mag
     def to_s   = tree.to_s
+    def +(n)   = Number.new("[#{to_s},#{n.to_s}]").reduce
     def reduce = explode && reduce || split && reduce || self
-
-    def +(othr)
-      l = Number.new(self.to_s)
-      r = Number.new(othr.to_s)
-      Number.new("[#{l.to_s},#{r.to_s}]").reduce
-    end
 
     private
 
