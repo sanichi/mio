@@ -472,8 +472,11 @@ speedIndicator time =
         3 ->
             "☕️"
 
-        _ ->
+        4 ->
             "☠️"
+
+        _ ->
+            "⛔️"
 
 
 speedColour : Int -> String
@@ -491,8 +494,11 @@ speedColour time =
         3 ->
             "warning"
 
-        _ ->
+        4 ->
             "danger"
+
+        _ ->
+            "dark"
 
 
 speedDescription : Int -> String
@@ -510,8 +516,11 @@ speedDescription time =
         3 ->
             "You should have time to get a coffee"
 
-        _ ->
+        4 ->
             "May take many hours or run out of memory"
+
+        _ ->
+            "Not done yet"
 
 
 viewHelp : Bool -> Html Msg
@@ -523,7 +532,7 @@ viewHelp show =
     if show then
         let
             trows =
-                List.map viewIcon [ 0, 1, 2, 3, 4 ]
+                List.map viewIcon [ 0, 1, 2, 3, 4, 5 ]
         in
         div [ class "row" ]
             [ div [ class "offset-1 col-10 offset-lg-2 col-lg-8" ]
@@ -830,11 +839,26 @@ speed year day part =
         "2021-12-2" ->
             1
 
+        "2021-15-2" ->
+            5
+
         "2021-17-1" ->
             1
 
         "2021-18-2" ->
             1
+
+        "2021-19-1" ->
+            5
+
+        "2021-19-2" ->
+            5
+
+        "2021-20-1" ->
+            5
+
+        "2021-20-2" ->
+            5
 
         _ ->
             0

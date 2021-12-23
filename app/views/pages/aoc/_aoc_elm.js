@@ -19881,7 +19881,7 @@ var $author$project$Main$speed = F3(
 			case '2020-11-2':
 				return 1;
 			case '2020-15-2':
-				return 2;
+				return 5;
 			case '2020-17-2':
 				return 1;
 			case '2020-20-2':
@@ -19896,10 +19896,20 @@ var $author$project$Main$speed = F3(
 				return 1;
 			case '2021-12-2':
 				return 1;
+			case '2021-15-2':
+				return 5;
 			case '2021-17-1':
 				return 1;
 			case '2021-18-2':
 				return 1;
+			case '2021-19-1':
+				return 5;
+			case '2021-19-2':
+				return 5;
+			case '2021-20-1':
+				return 5;
+			case '2021-20-2':
+				return 5;
 			default:
 				return 0;
 		}
@@ -19914,8 +19924,10 @@ var $author$project$Main$speedColour = function (time) {
 			return 'primary';
 		case 3:
 			return 'warning';
-		default:
+		case 4:
 			return 'danger';
+		default:
+			return 'dark';
 	}
 };
 var $author$project$Main$speedIndicator = function (time) {
@@ -19928,8 +19940,10 @@ var $author$project$Main$speedIndicator = function (time) {
 			return '🐌';
 		case 3:
 			return '☕️';
-		default:
+		case 4:
 			return '☠️';
+		default:
+			return '⛔️';
 	}
 };
 var $elm$html$Html$Attributes$src = function (url) {
@@ -20113,8 +20127,10 @@ var $author$project$Main$speedDescription = function (time) {
 			return 'Will take more like a minute';
 		case 3:
 			return 'You should have time to get a coffee';
-		default:
+		case 4:
 			return 'May take many hours or run out of memory';
+		default:
+			return 'Not done yet';
 	}
 };
 var $author$project$Main$viewIcon = function (time) {
@@ -20170,7 +20186,7 @@ var $author$project$Main$viewHelp = function (show) {
 			$elm$core$List$map,
 			$author$project$Main$viewIcon,
 			_List_fromArray(
-				[0, 1, 2, 3, 4]));
+				[0, 1, 2, 3, 4, 5]));
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
