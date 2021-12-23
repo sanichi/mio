@@ -72,27 +72,26 @@ class Aoc::Y2021d18 < Aoc
   end
 
   class Tree
-    attr_reader :parent, :children, :level
+    attr_reader :parent, :left, :rite, :level
 
     def initialize(parent=nil)
       @parent = parent
-      @children = []
+      @left = nil
+      @rite = nil
       @level = parent ? parent.level + 1 : 0
     end
 
     def >(n)      = false
-    def left      = children[0]
-    def rite      = children[1]
     def num?(n)   = n > -1
     def tree?(n)  = !(n > -1)
     def has_tree? = tree?(left) || tree?(rite)
 
     def add_rite(num)
       if num?(rite)
-        @children[1] += num
+        @rite += num
         true
       elsif num?(left)
-        @children[0] += num
+        @left += num
         true
       else
         false
@@ -101,10 +100,10 @@ class Aoc::Y2021d18 < Aoc
 
     def add_left(num)
       if num?(left)
-        @children[0] += num
+        @left += num
         true
       elsif num?(rite)
-        @children[1] += num
+        @rite += num
         true
       else
         false
@@ -112,8 +111,8 @@ class Aoc::Y2021d18 < Aoc
     end
 
     def zero(tree)
-      @children[0] = 0 if left == tree
-      @children[1] = 0 if rite == tree
+      @left = 0 if left == tree
+      @rite = 0 if rite == tree
     end
 
     def split
@@ -122,13 +121,13 @@ class Aoc::Y2021d18 < Aoc
       if left > 9
         tree.insert((left.to_f / 2.0).floor)
         tree.insert((left.to_f / 2.0).ceil)
-        @children[0] = tree
+        @left = tree
         trees.push tree
         trees.push self if num?(rite)
       elsif rite > 9
         tree.insert((rite.to_f / 2.0).floor)
         tree.insert((rite.to_f / 2.0).ceil)
-        @children[1] = tree
+        @rite = tree
         trees.push(self) if num?(left)
         trees.push tree
       end
@@ -137,10 +136,12 @@ class Aoc::Y2021d18 < Aoc
 
     def insert(tree=nil)
       tree = Tree.new(self) if tree.nil?
-      if children.length < 2
-        children.push tree
+      if left.nil?
+        @left = tree
+      elsif rite.nil?
+        @rite = tree
       else
-        raise "too many children #{self.to_s}"
+        raise "tree is full"
       end
       tree
     end
