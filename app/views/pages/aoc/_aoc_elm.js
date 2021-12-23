@@ -5278,7 +5278,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$defaultDay = 18;
+var $author$project$Main$defaultDay = 20;
 var $author$project$Main$defaultYear = 2021;
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $elm$json$Json$Encode$list = F2(
@@ -19605,6 +19605,14 @@ var $author$project$Main$useRuby = F3(
 			case '2021-18-1':
 				return true;
 			case '2021-18-2':
+				return true;
+			case '2021-19-1':
+				return true;
+			case '2021-19-2':
+				return true;
+			case '2021-20-1':
+				return true;
+			case '2021-20-2':
 				return true;
 			default:
 				return false;
