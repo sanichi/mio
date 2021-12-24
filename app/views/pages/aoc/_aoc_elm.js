@@ -19881,7 +19881,7 @@ var $author$project$Main$speed = F3(
 			case '2020-11-2':
 				return 1;
 			case '2020-15-2':
-				return 5;
+				return 2;
 			case '2020-17-2':
 				return 1;
 			case '2020-20-2':
@@ -19905,8 +19905,6 @@ var $author$project$Main$speed = F3(
 			case '2021-19-1':
 				return 5;
 			case '2021-19-2':
-				return 5;
-			case '2021-20-1':
 				return 5;
 			case '2021-20-2':
 				return 5;
