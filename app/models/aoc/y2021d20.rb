@@ -1,11 +1,6 @@
 class Aoc::Y2021d20 < Aoc
   def answer(part)
-    image = Image.parse(input)
-    if part == 1
-      image.enhance.enhance.count
-    else
-      "not done yet"
-    end
+    Image.parse(input).enhance(part == 1 ? 2 : 50).count
   end
 
   class Image
@@ -21,6 +16,9 @@ class Aoc::Y2021d20 < Aoc
       @rlen = rlen
       @clen = clen
     end
+
+    def enhance(n) = n <= 0 ? self : clean.enhance(n-1)
+    def count = image.values.filter{|d| d == "1"}.count
 
     def self.parse(string)
       default = "0"
@@ -44,7 +42,9 @@ class Aoc::Y2021d20 < Aoc
       self.new(image, default, r0, rlen, c0, clen)
     end
 
-    def enhance
+    private
+
+    def clean
       _default = default == "0" ? @@lookup.first : @@lookup.last
       _image = Hash.new(_default)
       _r0 = r0 - 1
@@ -53,23 +53,13 @@ class Aoc::Y2021d20 < Aoc
       _clen = clen + 2
       (_r0.._rlen-1).each do |r|
         (_c0.._clen-1).each do |c|
-          index = NEIGHBOURS.map{|dc,dr| image[[c+dc,r+dr]]}.join("").to_i(2)
+          index = NEIGHBOURS.map{|dc,dr| image[[c+dc,r+dr]]}.join.to_i(2)
           _image[[c,r]] = @@lookup[index]
         end
       end
       Image.new(_image, _default, _r0, _rlen, _c0, _clen)
     end
-
-    def count = image.values.filter{|d| d == "1"}.count
-
-    def info(tag)
-      Rails.logger.info tag
-      (r0..rlen-1).each do |r|
-        Rails.logger.info (c0..clen-1).map{|c| image[[c,r]] == "1" ? "#" : "."}.join
-      end
-    end
   end
-
 
   EXAMPLE = <<~EOE
     ..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###.######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#..#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#......#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.....####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#.......##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#
