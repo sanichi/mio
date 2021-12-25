@@ -1,7 +1,5 @@
 class Aoc::Y2021d14 < Aoc
-  def answer(part)
-    Template.new(input).steps(part == 1 ? 10 : 40)
-  end
+  def answer(part) = Template.new(input).steps(part == 1 ? 10 : 40)
 
   # credit to Abigail: https://github.com/Abigail/AdventOfCode2021/blob/master/Day_14/solution.pl
   class Template

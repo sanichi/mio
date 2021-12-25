@@ -1,12 +1,5 @@
 class Aoc::Y2021d16 < Aoc
-  def answer(part)
-    packet = parse(input)
-    if part == 1
-      packet.versions
-    else
-      packet.compute
-    end
-  end
+  def answer(part) = parse(input).send(part == 1 ? :versions : :compute)
 
   def parse(string)
     remainder = string.scan(/[0-9A-F]/).map do |d|

@@ -1,7 +1,5 @@
 class Aoc::Y2021d9 < Aoc
-  def answer(part)
-    Map.new(input).send(part == 1 ? :risk : :basins)
-  end
+  def answer(part) = Map.new(input).send(part == 1 ? :risk : :basins)
 
   class Map
     attr_reader :data, :height, :width

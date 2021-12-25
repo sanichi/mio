@@ -1,5 +1,6 @@
 class Aoc::Y2021d1 < Aoc
   def answer(part)
+    depths = input.scan(/\d+/).map(&:to_i)
     part == 1 ? sweeps(depths) : sliders(depths)
   end
 
@@ -24,10 +25,6 @@ class Aoc::Y2021d1 < Aoc
       s1 = s2
     end
     count
-  end
-
-  def depths
-    input.scan(/\d+/).map(&:to_i)
   end
 
   EXAMPLE = <<~EOE

@@ -1,7 +1,5 @@
 class Aoc::Y2021d20 < Aoc
-  def answer(part)
-    Image.parse(input).enhance(part == 1 ? 2 : 50).count
-  end
+  def answer(part) = Image.parse(input).enhance(part == 1 ? 2 : 50).count
 
   class Image
     attr_reader :image, :default, :r0, :rlen, :c0, :clen

@@ -1,7 +1,5 @@
 class Aoc::Y2021d6 < Aoc
-  def answer(part)
-    Fish.new(input).days(part == 1 ? 80 : 256).count
-  end
+  def answer(part) = Fish.new(input).days(part == 1 ? 80 : 256).count
 
   class Fish
     attr_reader :fish

@@ -1,7 +1,5 @@
 class Aoc::Y2021d17 < Aoc
-  def answer(part)
-    Target.new(input).send(part == 1 ? :best : :hits)
-  end
+  def answer(part) = Target.new(input).send(part == 1 ? :best : :hits)
 
   class Target
     include Enumerable

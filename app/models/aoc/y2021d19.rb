@@ -1,7 +1,5 @@
 class Aoc::Y2021d19 < Aoc
-  def answer(part)
-    "not done yet"
-  end
+  def answer(part) = "not done yet"
 
   EXAMPLE = <<~EOE
     --- scanner 0 ---

@@ -1,7 +1,5 @@
 class Aoc::Y2021d7 < Aoc
-  def answer(part)
-    Crabs.new(input).send(part == 1 ? :mdn_minimum : :avg_minimum)
-  end
+  def answer(part) = Crabs.new(input).send(part == 1 ? :mdn_minimum : :avg_minimum)
 
   class Crabs
     attr_reader :crabs

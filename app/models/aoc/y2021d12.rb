@@ -1,7 +1,5 @@
 class Aoc::Y2021d12 < Aoc
-  def answer(part)
-    Graph.new(input).paths(part == 1 ? false : true)
-  end
+  def answer(part) = Graph.new(input).paths(part == 1 ? false : true)
 
   class Graph
     attr_reader :successors

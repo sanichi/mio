@@ -1,12 +1,5 @@
 class Aoc::Y2021d11 < Aoc
-  def answer(part)
-    octopuses = Octopuses.new(input)
-    if part == 1
-      octopuses.flashes_after_steps(100)
-    else
-      octopuses.steps_until_all_flashing
-    end
-  end
+  def answer(part) = Octopuses.new(input).send(part == 1 ? :flashes_after_100_steps : :steps_until_all_flashing)
 
   class Octopuses
     attr_reader :rows, :width, :height, :flashes
@@ -26,8 +19,8 @@ class Aoc::Y2021d11 < Aoc
       @flashes = 0
     end
 
-    def flashes_after_steps(n)
-      n.times {step}
+    def flashes_after_100_steps
+      100.times {step}
       flashes
     end
 

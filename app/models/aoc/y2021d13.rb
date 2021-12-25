@@ -1,12 +1,5 @@
 class Aoc::Y2021d13 < Aoc
-  def answer(part)
-    paper = Paper.new(input)
-    if part == 1
-      paper.fold_first
-    else
-      paper.fold_all
-    end
-  end
+  def answer(part) = Paper.new(input).send(part == 1 ? :fold_first : :fold_all)
 
   class Paper
     attr_reader :dots, :instructions, :width, :height
