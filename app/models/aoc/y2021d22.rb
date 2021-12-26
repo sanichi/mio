@@ -23,7 +23,7 @@ class Aoc::Y2021d22 < Aoc
   end
 
   class Cuboid
-    attr_reader :on, :ip, :x1, :x2, :y1, :y2, :z1, :z2
+    attr_reader :on, :x1, :x2, :y1, :y2, :z1, :z2, :ip
 
     def initialize(string)
       if string.match(/\A(on|off) x=(-?\d+)\.\.(-?\d+),y=(-?\d+)\.\.(-?\d+),z=(-?\d+)\.\.(-?\d+)\z/)
