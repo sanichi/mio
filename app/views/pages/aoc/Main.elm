@@ -70,7 +70,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    21
+    22
 
 
 initModel : Model
@@ -863,6 +863,12 @@ speed year day part =
         "2021-21-2" ->
             3
 
+        "2021-22-1" ->
+            1
+
+        "2021-22-2" ->
+            5
+
         _ ->
             0
 
@@ -988,6 +994,12 @@ useRuby year day part =
             True
 
         "2021-21-2" ->
+            True
+
+        "2021-22-1" ->
+            True
+
+        "2021-22-2" ->
             True
 
         _ ->
