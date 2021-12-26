@@ -38,6 +38,8 @@ class Aoc::Y2021d22 < Aoc
         @z2 = $7.to_i
         raise "invalid z-range" unless z2 >= z1
         @ip = x1 >= -50 && x1 <= 50 && y1 >= -50 && y2 <= 50 && z1 >= -50 && z2 <= 50
+      else
+        raise "invalid input"
       end
     end
 
