@@ -8,10 +8,11 @@ class Aoc::Y2021d25 < Aoc
   end
 
   class Cucumbers
-    attr_reader :locs, :rows, :cols
+    attr_reader :locs, :rows, :cols, :tmps
 
     def initialize(string)
       @locs = {}
+      @tmps = {}
       @cols = nil
       @rows = nil
       string.each_line.each_with_index do |line, r|
@@ -37,50 +38,43 @@ class Aoc::Y2021d25 < Aoc
 
     def step
       moves = 0
-      east = {}
-      each_cell do |r,c|
-        if locs[[r,c]] == ">"
-          n = c + 1
-          n = 0 if n == cols
-          if locs[[r,n]] == "."
-            east[[r,n]] = ">"
-            east[[r,c]] = "."
-            moves += 1
-          else
-            east[[r,c]] = ">"
-          end
+      each_loc do |r,c|
+        if eql(r,c,">") && (e = east(c)) && eql(r,e,".")
+          set(r,e,">")
+          set(r,c,".")
+          moves += 1
         else
-          east[[r,c]] = locs[[r,c]] unless east[[r,c]]
+          copy(r,c)
         end
       end
-      @locs = east
-      south = {}
-      each_cell do |r,c|
-        if locs[[r,c]] == "v"
-          n = r + 1
-          n = 0 if n == rows
-          if locs[[n,c]] == "."
-            south[[n,c]] = "v"
-            south[[r,c]] = "."
-            moves += 1
-          else
-            south[[r,c]] = "v"
-          end
+      swap
+      each_loc do |r,c|
+        if eql(r,c,"v") && (s = south(r)) && eql(s,c,".")
+          set(s,c,"v")
+          set(r,c,".")
+          moves += 1
         else
-          south[[r,c]] = locs[[r,c]] unless south[[r,c]]
+          copy(r,c)
         end
       end
-      @locs = south
+      swap
       moves
     end
 
-    def each_cell
+    def each_loc
       (0..rows-1).each do |r|
         (0..cols-1).each do |c|
           yield [r,c]
         end
       end
     end
+
+    def eql(r,c,d) = locs[[r,c]] == d
+    def set(r,c,d) = tmps[[r,c]] = d
+    def copy(r,c)  = tmps[[r,c]] ||= locs[[r,c]]
+    def east(c)    = c == cols - 1 ? 0 : c + 1
+    def south(r)   = r == rows - 1 ? 0 : r + 1
+    def swap       = (@locs = tmps) && (@tmps = {})
   end
 
   EXAMPLE = <<~EOE
