@@ -19940,10 +19940,6 @@ var $author$project$Main$speed = F3(
 				return 5;
 			case '2021-23-2':
 				return 5;
-			case '2021-24-1':
-				return 5;
-			case '2021-24-2':
-				return 5;
 			case '2021-25-1':
 				return 2;
 			default:
