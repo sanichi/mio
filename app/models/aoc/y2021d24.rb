@@ -83,7 +83,7 @@ class Aoc::Y2021d24 < Aoc
         Rails.logger.info "YYY #{j+1} #{self}"
         v[:w] = inputs.shift
         v[:x] = (v[:z].modulo(26) + a != v[:w]) ? 1 : 0
-        v[:z] = v[:z].truncate(q)
+        v[:z] = v[:z] / q
         if v[:x] == 1
           v[:y] = b + v[:w]
           v[:z] = v[:z] * 26
