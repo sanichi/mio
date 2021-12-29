@@ -8,22 +8,22 @@ class Aoc::Y2021d25 < Aoc
   end
 
   class Cucumbers
-    attr_reader :locs, :rows, :cols, :tmps
+    attr_reader :data, :temp, :rows, :cols
 
     def initialize(string)
-      @locs = {}
-      @tmps = {}
+      @data = {}
+      @temp = {}
       @cols = nil
       @rows = nil
       string.each_line.each_with_index do |line, r|
         @rows = r + 1
-        data = line.scan(/[>v.]/)
+        chars = line.scan(/[>v.]/)
         if cols.nil?
-          @cols = data.length
+          @cols = chars.length
         else
-          raise "wrong number of colums" unless cols == data.length
+          raise "wrong number of colums" unless cols == chars.length
         end
-        data.each_with_index{|d,c| locs[[r,c]] = d}
+        chars.each_with_index{|d,c| data[[r,c]] = d}
       end
       raise "invalid input" unless !rows.nil? && rows > 0 && !cols.nil? && cols > 0
     end
@@ -37,31 +37,31 @@ class Aoc::Y2021d25 < Aoc
     private
 
     def step
-      moves = 0
-      each_loc do |r,c|
-        if eql(r,c,">") && (e = east(c)) && eql(r,e,".")
+      count = 0
+      each_row_col do |r,c|
+        if eql?(r,c,">") && (e = east(c)) && eql?(r,e,".")
           set(r,e,">")
           set(r,c,".")
-          moves += 1
+          count += 1
         else
           copy(r,c)
         end
       end
       swap
-      each_loc do |r,c|
-        if eql(r,c,"v") && (s = south(r)) && eql(s,c,".")
+      each_row_col do |r,c|
+        if eql?(r,c,"v") && (s = south(r)) && eql?(s,c,".")
           set(s,c,"v")
           set(r,c,".")
-          moves += 1
+          count += 1
         else
           copy(r,c)
         end
       end
       swap
-      moves
+      count
     end
 
-    def each_loc
+    def each_row_col
       (0..rows-1).each do |r|
         (0..cols-1).each do |c|
           yield [r,c]
@@ -69,12 +69,16 @@ class Aoc::Y2021d25 < Aoc
       end
     end
 
-    def eql(r,c,d) = locs[[r,c]] == d
-    def set(r,c,d) = tmps[[r,c]] = d
-    def copy(r,c)  = tmps[[r,c]] ||= locs[[r,c]]
-    def east(c)    = c == cols - 1 ? 0 : c + 1
-    def south(r)   = r == rows - 1 ? 0 : r + 1
-    def swap       = (@locs = tmps) && (@tmps = {})
+    def eql?(r,c,d) = data[[r,c]] == d
+    def set(r,c,d)  = temp[[r,c]] = d
+    def copy(r,c)   = temp[[r,c]] ||= data[[r,c]]
+    def east(c)     = c == cols - 1 ? 0 : c + 1
+    def south(r)    = r == rows - 1 ? 0 : r + 1
+
+    def swap
+      @data = temp
+      @temp = {}
+    end
   end
 
   EXAMPLE = <<~EOE
