@@ -1,5 +1,113 @@
 class Aoc::Y2021d19 < Aoc
-  def answer(part) = "not done yet"
+  def answer(part)
+    scans = parse(EXAMPLE)
+    if part == 1
+      scans.first.points.first.rotate(ROTATE.first)
+      "not done yet"
+    else
+      ROTATE.map{|r| Point.new(*r)}.uniq.length
+      "not done yet"
+    end
+  end
+
+  ROTATE = [
+    [ 1,  2,  3],
+    [ 1,  3, -2],
+    [ 1, -2, -3],
+    [ 1, -3,  2],
+    [-1,  2, -3],
+    [-1,  3,  2],
+    [-1, -2,  3],
+    [-1, -3, -2],
+    [ 2,  3,  1],
+    [ 2,  1, -3],
+    [ 2, -3, -1],
+    [ 2, -1,  3],
+    [-2,  1,  3],
+    [-2,  3, -1],
+    [-2, -1, -3],
+    [-2, -3,  1],
+    [ 3,  1,  2],
+    [ 3, -2,  1],
+    [ 3, -1, -2],
+    [ 3,  2, -1],
+    [-3,  2,  1],
+    [-3,  1, -2],
+    [-3, -2, -1],
+    [-3, -1,  2],
+  ]
+
+  def parse(string)
+    scans = []
+    scan = nil
+    string.each_line(chomp: true) do |line|
+      case line
+      when /\A--- scanner (\d+) ---\z/
+        raise "invalid header" if scan
+        scan = Scan.new
+      when /\A(-?\d+),(-?\d+),(-?\d+)\z/
+        raise "invalid point" unless scan
+        scan.add($1, $2, $3)
+      when ""
+        raise "invalid spacer" unless scan
+        scans.push scan
+        scan = nil
+      else
+        raise "invalid input"
+      end
+    end
+    scans.push scan if scan
+    scans
+  end
+
+  class Scan
+    attr_reader :points
+
+    def initialize
+      @points = []
+    end
+
+    def add(x, y, z) = points.push(Point.new(x, y, z))
+    def rotate(r) = points.reduce(Scan.new){|s, p| s.add(p.rotate(r))}
+  end
+
+  class Point
+    attr_reader :x, :y, :z
+
+    def initialize(x, y, z)
+      @x = x.to_i
+      @y = y.to_i
+      @z = z.to_i
+    end
+
+    def rotate(r)
+      cmp = Array.new(3)
+      r.each_with_index do |to, i|
+        case to
+        when 1
+          cmp[i] = x
+        when -1
+          cmp[i] = -x
+        when 2
+          cmp[i] = y
+        when -2
+          cmp[i] = -y
+        when 3
+          cmp[i] = z
+        when -3
+          cmp[i] = -z
+        else
+          raise "invalid rotate"
+        end
+      end
+      Point.new(*cmp)
+    end
+
+    def ==(o)   = [x,y,z] == [o.x,o.y,o.z]
+    def eql?(o) = self == o
+    def hash    = [x,y,z].hash
+    def to_s    = "(#{x},#{y},#{z})"
+  end
 
   EXAMPLE = <<~EOE
     --- scanner 0 ---

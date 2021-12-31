@@ -70,7 +70,7 @@ defaultYear =
 
 defaultDay : Int
 defaultDay =
-    25
+    19
 
 
 initModel : Model
