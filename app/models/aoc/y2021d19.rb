@@ -7,7 +7,13 @@ class Aoc::Y2021d19 < Aoc
       end
       "nd"
     else
-      Rails.logger.info "XXX #{intersect(scans, 0, 1)}"
+      t,r = intersect(scans, 0, 1)
+      if t && r
+        Rails.logger.info "TR #{t} #{r}"
+        xx = scans[1].rotate_translate(r,t)
+        Rails.logger.info "XX #{xx}"
+        Rails.logger.info "S1 #{scans[0]}"
+      end
       "not done yet"
     end
   end
@@ -66,19 +72,15 @@ class Aoc::Y2021d19 < Aoc
     scn1 = scans[i]
     scn2 = scans[j]
     dif1 = scn1.diffs
-    set1 = dif1.set
-    rot = nil
-    rdif2 = nil
     ROTATE.each do |r|
       rscn2 = scn2.rotate(r)
       rdif2 = rscn2.diffs
-      cap = set1.intersection(rdif2.set)
-      if cap.size >= 66
-        rot = r
-        break
+      t = dif1.intersection(rdif2)
+      if t
+        return [t,r]
       end
     end
-    rot.nil? ? nil : rdif2.points.size
+    return
   end
 
   class Scan
@@ -95,13 +97,21 @@ class Aoc::Y2021d19 < Aoc
     def add(x, y, z) = points.push(Point.new(x, y, z))
     def rotate(r)    = points.each_with_object(Scan.new){|p, s| s.add(*(p.rotate(r).to_a))}
     def to_s         = points.map(&:to_s).join(",")
+
+    def rotate_translate(r, t)
+      points.each_with_object(Scan.new) do |p, s|
+        rotated = p.rotate(r).to_a
+        translated = [rotated[0] + t[0], rotated[1] + t[1], rotated[2] + t[2]]
+        s.add(*translated)
+      end
+    end
   end
 
   class Diffs
     attr_reader :diffs
 
     def initialize
-      @diffs = Hash.new{|h,k| h[k] = []}
+      @diffs = Hash.new{|h,k| h[k] = Array.new}
     end
 
     def add(p, q)
@@ -109,18 +119,38 @@ class Aoc::Y2021d19 < Aoc
       dy = q.y - p.y
       dz = q.z - p.z
       if dx > 0 || (dx == 0 && dy > 0) || (dx == 0 && dy == 0 && dz >= 0)
-        diffs[[dx,dy,dz]].push(p)
+        diffs[[dx,dy,dz]].push([p,q])
       else
-        diffs[[-dx,-dy,-dz]].push(q)
+        diffs[[-dx,-dy,-dz]].push([q,p])
       end
     end
 
-    def set
-      diffs.keys.to_set
+    def intersection(d)
+      count = Hash.new(0)
+      diffs.keys.each do |k|
+        if d.diffs.has_key?(k)
+          if diffs[k].size == 1 && d.diffs[k].size == 1
+            p1,q1 = diffs[k].first
+            p2,q2 = d.diffs[k].first
+            count[[p1.x-p2.x,p1.y-p2.y,p1.z-p2.z]] += 1
+            count[[q1.x-q2.x,q1.y-q2.y,q1.z-q2.z]] += 1
+          end
+        end
+      end
+      max_shift = nil
+      max_count = 0
+      count.each_pair do |k,c|
+        if c > max_count
+          max_count = c
+          max_shift = k
+        end
+      end
+      return nil if max_count < 66
+      max_shift
     end
 
     def points
-      diffs.values.flatten.uniq
+      diffs.values.flatten
     end
 
     def to_s
@@ -313,8 +343,8 @@ class Aoc::Y2021d19 < Aoc
     0,0,3
 
     --- scanner 1 ---
-    1,0,0
-    0,0,2
-    0,-3,0
+    12,0,0
+    11,0,2
+    11,-3,0
   EOS
 end
