@@ -2,18 +2,12 @@ class Aoc::Y2021d19 < Aoc
   def answer(part)
     scans = parse(EXAMPLE)
     if part == 1
-      diff = scans.first.diffs
-      set = diff.set
-      scans.each_with_index do |scan, i|
-        ROTATE.each do |r|
-          rdiff = scan.rotate(r).diffs
-          cap = set.intersection(rdiff.set)
-          Rails.logger.info "XXX #{i} #{r} #{cap.size}" if cap.size > 0
-        end
+      (0..scans.length-1).to_a.combination(2) do |i,j|
+        Rails.logger.info "XXX #{i} #{j} #{intersect(scans, i, j)}"
       end
-      "here"
+      "nd"
     else
-      Rails.logger.info "XXX #{scans.first.diffs}"
+      Rails.logger.info "XXX #{intersect(scans, 0, 1)}"
       "not done yet"
     end
   end
@@ -65,7 +59,26 @@ class Aoc::Y2021d19 < Aoc
       end
     end
     scans.push scan if scan
-    scans.reverse
+    scans
+  end
+
+  def intersect(scans, i, j)
+    scn1 = scans[i]
+    scn2 = scans[j]
+    dif1 = scn1.diffs
+    set1 = dif1.set
+    rot = nil
+    rdif2 = nil
+    ROTATE.each do |r|
+      rscn2 = scn2.rotate(r)
+      rdif2 = rscn2.diffs
+      cap = set1.intersection(rdif2.set)
+      if cap.size >= 66
+        rot = r
+        break
+      end
+    end
+    rot.nil? ? nil : rdif2.points.size
   end
 
   class Scan
@@ -103,7 +116,11 @@ class Aoc::Y2021d19 < Aoc
     end
 
     def set
-      @set ||= diffs.keys.to_set
+      diffs.keys.to_set
+    end
+
+    def points
+      diffs.values.flatten.uniq
     end
 
     def to_s
