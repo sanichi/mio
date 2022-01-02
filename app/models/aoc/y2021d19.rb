@@ -1,46 +1,14 @@
 class Aoc::Y2021d19 < Aoc
   def answer(part)
-    scans = parse(EXAMPLE)
+    scans, transforms = parse(input)
     if part == 1
-      trs = transforms(scans)
-
-      s0,s1,s2,s3,s4 = scans
-
-      m42 = s4.merge(s2.transform(trs[[4,2]]))
-
-      m142 = s1.merge(m42.transform(trs[[1,4]]))
-
-      m13 = s1.merge(s3.transform(trs[[1,3]]))
-
-      m1342 = m13.merge(m142)
-
-      m01342 = s0.merge(m1342.transform(trs[[0,1]]))
-
-      m01342.size
-    else
-      trs = transforms(scans)
-
-      s0,s1,s2,s3,s4 = scans
-
-      trs[[0,3]] = trs[[1,3]] + trs[[0,1]]
-      trs[[0,4]] = trs[[1,4]] + trs[[0,1]]
-      trs[[0,2]] = trs[[4,2]] + trs[[0,4]]
-      trs.each_pair do |k,v|
-        Rails.logger.info "TRS #{k} => #{v.map(&:to_s).join('|')}"
+      scan0 = scans[0]
+      (1..scans.length-1).each do |i|
+        scan0 = scan0.merge(scans[i].transform(transforms[0][i]))
       end
-
-
-
-      m01   = s1.transform(trs[[0,1]])
-      # m02 = s2.transform(trs[[4,2]]).transform(trs[[1,4]]).transform(trs[[0,1]])
-      m02 = s2.transform(trs[[0,2]])
-      # m03   = s3.transform(trs[[1,3]]).transform(trs[[0,1]])
-      m03   = s3.transform(trs[[0,3]])
-      # m04   = s4.transform(trs[[1,4]]).transform(trs[[0,1]])
-      m04   = s4.transform(trs[[0,4]])
-
-      s0.merge(m01).merge(m02).merge(m03).merge(m04).size
-
+      scan0.size
+    else
+      "not done yet"
     end
   end
 
@@ -91,18 +59,35 @@ class Aoc::Y2021d19 < Aoc
       end
     end
     scans.push scan if scan
-    scans
-  end
 
-  def transforms(scans)
-    trs = Hash.new
+    trs = Hash.new{|h,k| h[k] = {}}
     (0..scans.length-1).to_a.combination(2).each do |i,j|
       t = intersect(scans, i, j)
-      trs[[i,j]] = [t] if t
+      trs[i][j] = [t] if t
       t = intersect(scans, j, i)
-      trs[[j,i]] = [t] if t
+      trs[j][i] = [t] if t
     end
-    trs
+
+    loop do
+      added = 0
+      (1..scans.length-1).each do |i|
+        if trs[0][i]
+          trs[i].keys.each do |j|
+            unless j == 0 || trs[0][j]
+              trs[0][j] = trs[i][j] + trs[0][i]
+              added += 1
+            end
+          end
+        end
+      end
+      missing = 0
+      (1..scans.length-1).each do |i|
+        missing += 1 unless trs[0][i]
+      end
+      break if added == 0 || missing == 0
+    end
+
+    [scans, trs]
   end
 
   def intersect(scans, i, j)
@@ -209,7 +194,7 @@ class Aoc::Y2021d19 < Aoc
     end
 
     def to_s
-      "(#{rotation[0]},#{rotation[1]},#{rotation[2]}), (#{translation[0]},#{translation[1]},#{translation[2]})"
+      "(#{rotation[0]},#{rotation[1]},#{rotation[2]})*(#{translation[0]},#{translation[1]},#{translation[2]})"
     end
   end
 
