@@ -2,10 +2,18 @@ class Aoc::Y2021d19 < Aoc
   def answer(part)
     scans = parse(EXAMPLE)
     if part == 1
-      scans.first.points.first.rotate(ROTATE.first)
-      "not done yet"
+      diff = scans.first.diffs
+      set = diff.set
+      scans.each_with_index do |scan, i|
+        ROTATE.each do |r|
+          rdiff = scan.rotate(r).diffs
+          cap = set.intersection(rdiff.set)
+          Rails.logger.info "XXX #{i} #{r} #{cap.size}" if cap.size > 0
+        end
+      end
+      "here"
     else
-      ROTATE.map{|r| Point.new(*r)}.uniq.length
+      Rails.logger.info "XXX #{scans.first.diffs}"
       "not done yet"
     end
   end
@@ -57,7 +65,7 @@ class Aoc::Y2021d19 < Aoc
       end
     end
     scans.push scan if scan
-    scans
+    scans.reverse
   end
 
   class Scan
@@ -67,8 +75,40 @@ class Aoc::Y2021d19 < Aoc
       @points = []
     end
 
+    def diffs
+      points.combination(2).each_with_object(Diffs.new){|(p,q),d| d.add(p,q)}
+    end
+
     def add(x, y, z) = points.push(Point.new(x, y, z))
-    def rotate(r) = points.reduce(Scan.new){|s, p| s.add(p.rotate(r))}
+    def rotate(r)    = points.each_with_object(Scan.new){|p, s| s.add(*(p.rotate(r).to_a))}
+    def to_s         = points.map(&:to_s).join(",")
+  end
+
+  class Diffs
+    attr_reader :diffs
+
+    def initialize
+      @diffs = Hash.new{|h,k| h[k] = []}
+    end
+
+    def add(p, q)
+      dx = q.x - p.x
+      dy = q.y - p.y
+      dz = q.z - p.z
+      if dx > 0 || (dx == 0 && dy > 0) || (dx == 0 && dy == 0 && dz >= 0)
+        diffs[[dx,dy,dz]].push(p)
+      else
+        diffs[[-dx,-dy,-dz]].push(q)
+      end
+    end
+
+    def set
+      @set ||= diffs.keys.to_set
+    end
+
+    def to_s
+      diffs.keys.map{|d| "#{d} => #{diffs[d].join(', ')}"}.join("|")
+    end
   end
 
   class Point
@@ -107,6 +147,7 @@ class Aoc::Y2021d19 < Aoc
     def eql?(o) = self == o
     def hash    = [x,y,z].hash
     def to_s    = "(#{x},#{y},#{z})"
+    def to_a    = [x,y,z]
   end
 
   EXAMPLE = <<~EOE
@@ -247,4 +288,16 @@ class Aoc::Y2021d19 < Aoc
     -652,-548,-490
     30,-46,-14
   EOE
+
+  SIMPLE = <<~EOS
+    --- scanner 0 ---
+    1,0,0
+    0,2,0
+    0,0,3
+
+    --- scanner 1 ---
+    1,0,0
+    0,0,2
+    0,-3,0
+  EOS
 end
