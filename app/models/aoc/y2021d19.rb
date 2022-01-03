@@ -63,9 +63,9 @@ class Aoc::Y2021d19 < Aoc
     trs = Hash.new{|h,k| h[k] = {}}
     (0..scans.length-1).to_a.combination(2).each do |i,j|
       t = intersect(scans, i, j)
-      trs[i][j] = [t] if t
+      trs[i][j] = t if t
       t = intersect(scans, j, i)
-      trs[j][i] = [t] if t
+      trs[j][i] = t if t
     end
 
     loop do
@@ -74,7 +74,7 @@ class Aoc::Y2021d19 < Aoc
         if trs[0][i]
           trs[i].keys.each do |j|
             unless j == 0 || trs[0][j]
-              trs[0][j] = trs[i][j] + trs[0][i]
+              trs[0][j] = trs[i][j] * trs[0][i]
               added += 1
             end
           end
@@ -119,9 +119,9 @@ class Aoc::Y2021d19 < Aoc
     def to_s         = points.map(&:to_s).join(",")
     def size         = points.size
 
-    def transform(ts)
+    def transform(t)
       points.each_with_object(Scan.new) do |p, s|
-        transformed = p.transform(ts)
+        transformed = p.transform(t)
         s.add(transformed.x,transformed.y,transformed.z)
       end
     end
@@ -193,6 +193,12 @@ class Aoc::Y2021d19 < Aoc
       @translation = t
     end
 
+    def *(o)
+      r = Point.new(*rotation).rotate(o.rotation).to_a
+      t = (Point.new(*translation).rotate(o.rotation) + Point.new(*o.translation)).to_a
+      Transform.new(r,t)
+    end
+
     def to_s
       "(#{rotation[0]},#{rotation[1]},#{rotation[2]})*(#{translation[0]},#{translation[1]},#{translation[2]})"
     end
@@ -230,22 +236,13 @@ class Aoc::Y2021d19 < Aoc
       Point.new(*cmp)
     end
 
-    def translate(t)
-      Point.new(x + t[0], y + t[1], z + t[2])
-    end
-
-    def transform(transformations)
-      point = self
-      transformations.each do |t|
-        point = point.rotate(t.rotation)
-        point = point.translate(t.translation)
-      end
-      point
-    end
+    def translate(t) = Point.new(x + t[0], y + t[1], z + t[2])
+    def transform(t) = rotate(t.rotation).translate(t.translation)
 
     def ==(o)   = [x,y,z] == [o.x,o.y,o.z]
     def eql?(o) = self == o
     def hash    = [x,y,z].hash
+    def +(o)    = Point.new(x + o.x, y + o.y, z + o.z)
     def to_s    = "(#{x},#{y},#{z})"
     def to_a    = [x,y,z]
   end
