@@ -1070,10 +1070,7 @@ getNote year day =
             Just "I couldn‘t figure out part 2 and used Github user Sharparam‘s ruby solution."
 
         "2021-14" ->
-            Just "I have to admit to needing help for part 2 (link in code)."
-
-        "2021-15" ->
-            Just "I'm getting the right answer for part 2 with the example but not my input."
+            Just "I have to admit needing help for part 2 (link in code)."
 
         _ ->
             Nothing
