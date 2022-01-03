@@ -19917,7 +19917,7 @@ var $author$project$Main$speed = F3(
 			case '2021-12-2':
 				return 1;
 			case '2021-15-2':
-				return 5;
+				return 1;
 			case '2021-17-1':
 				return 1;
 			case '2021-17-2':

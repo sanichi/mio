@@ -28,39 +28,72 @@ class Aoc::Y2021d15 < Aoc
       raise "not a square" unless height > 0 && height == width
     end
 
-    # Dijkstra‘s algorithm but with simplifications:
-    # 1. nodes and edges form a grid,
-    # 2. cost of travelling to node is same for any edge.
-    # This means the optimal path will only go to the
-    # right or downwards, never to the left or upwards and
-    # the implementation is simpler than the general case.
+    def cost(loc) = risk[loc[0]][loc[1]]
+
+    def neighbours(loc)
+      [[1,0],[0,1],[-1,0],[0,-1]].each do |dr,dc|
+        r = loc[0] + dr
+        c = loc[1] + dc
+        yield [r,c] if r >=0 && r < height && c >= 0 && c < width
+      end
+    end
+
     def dijkstra
-      cost = Array.new(height){Array.new(width, 0)}
-      (1..height-1).each{|r| cost[r][0] = cost[r-1][0] + risk[r][0]}
-      (1..width-1).each{|c| cost[0][c] = cost[0][c-1] + risk[0][c]}
-      (1..height-1).each do |r|
-        (1..width-1).each do |c|
-          cost[r][c] = risk[r][c] + [cost[r-1][c], cost[r][c-1]].min
+      que = Queue.new([0,0])
+      target = [height-1,width-1]
+      while !que.empty?
+        node, score = que.min
+        break score if node == target
+        neighbours(node) do |near|
+          que.add(near, score + cost(near))
         end
       end
-      cost[width-1][height-1]
     end
 
     def times5
-      new_risk = Array.new(height * 5){Array.new(width * 5, 0)}
+      risk5 = Array.new(height * 5){Array.new(width * 5, 0)}
       (0..4).each do |i|
         (0..4).each do |j|
           (0..height-1).each do |r|
             (0..width-1).each do |c|
-              new_risk[r+i*height][c+j*width] = (i + j + risk[r][c] - 1).remainder(9) + 1
+              risk5[r+i*height][c+j*width] = (i + j + risk[r][c] - 1).remainder(9) + 1
             end
           end
         end
       end
-      @risk = new_risk
+      @risk = risk5
       @width = width * 5
       @height = height * 5
       self
+    end
+  end
+
+  class Queue
+    def initialize(source)
+      @queue = Hash.new
+      @visited = Hash.new
+      add(source, 0)
+    end
+
+    def empty? = @queue.empty?
+
+    def add(loc, cost)
+      unless @visited[loc] || (@queue.has_key?(loc) && @queue[loc] <= cost)
+        @queue[loc] = cost
+      end
+    end
+
+    def min
+      min = loc = nil
+      @queue.each_pair do |key, cost|
+        if min.nil? || min > cost
+          min = cost
+          loc = key
+        end
+      end
+      @queue.delete(loc)
+      @visited[loc] = true
+      [loc, min]
     end
   end
 
