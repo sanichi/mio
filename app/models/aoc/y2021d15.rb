@@ -51,7 +51,9 @@ class Aoc::Y2021d15 < Aoc
     end
 
     def times5
-      risk5 = Array.new(height * 5){Array.new(width * 5, 0)}
+      width5 = width * 5
+      height5 = height * 5
+      risk5 = Array.new(height5){Array.new(width5, 0)}
       (0..4).each do |i|
         (0..4).each do |j|
           (0..height-1).each do |r|
@@ -61,17 +63,17 @@ class Aoc::Y2021d15 < Aoc
           end
         end
       end
+      @width = width5
+      @height = height5
       @risk = risk5
-      @width = width * 5
-      @height = height * 5
       self
     end
   end
 
   class Queue
     def initialize(source)
-      @queue = Hash.new
-      @visited = Hash.new
+      @queue = {}
+      @visited = {}
       add(source, 0)
     end
 
@@ -91,8 +93,7 @@ class Aoc::Y2021d15 < Aoc
           loc = key
         end
       end
-      @queue.delete(loc)
-      @visited[loc] = true
+      @visited[loc] = @queue.delete(loc)
       [loc, min]
     end
   end
