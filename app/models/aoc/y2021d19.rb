@@ -8,7 +8,19 @@ class Aoc::Y2021d19 < Aoc
       end
       scan0.size
     else
-      "not done yet"
+      max = 0
+      (1..scans.length-1).each do |i|
+        t = transforms[0][i].translation
+        man = t[0].abs + t[1].abs + t[2].abs
+        max = man if man > max
+      end
+      (1..scans.length-1).to_a.combination(2).each do |i,j|
+        t1 = transforms[0][i].translation
+        t2 = transforms[0][j].translation
+        man = (t1[0]-t2[0]).abs + (t1[1]-t2[1]).abs + (t1[2]-t2[2]).abs
+        max = man if man > max
+      end
+     max
     end
   end
 
