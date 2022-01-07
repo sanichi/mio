@@ -1,113 +1,90 @@
 class Aoc::Y2021d22 < Aoc
-  def answer(part)
-    reactor = Reactor.new(input)
-    if part == 1
-      reactor.merge(true)
-    else
-      reactor.merge(false)
-    end
-  end
+  def answer(part) = Reactor.new(input).volume(part == 1)
 
   class Reactor
     attr_reader :cuboids
 
     def initialize(string)
-      @cuboids = string.each_line(chomp: true).map{|line| Cuboid.new(line)}
+      @cuboids = string.each_line(chomp: true).map{|line| Cuboid.parse(line)}
     end
 
-    def merge(ip)
-      merged = []
+    def volume(init_proc)
+      disjoint = []
       cuboids.each do |c|
-        next if ip && !c.ip?
+        next if init_proc && !c.init_proc?
+        rem = []
+        add = []
         included = false
-        to_delete = []
-        to_add = []
-        (0..merged.length-1).each do |i|
-          if !c.disjoint?(merged[i])
-            if c.includes?(merged[i])
-              to_delete.push(merged[i])
-            elsif c.included?(merged[i])
+        disjoint.each do |d|
+          if !c.disjoint?(d)
+            if c.includes?(d)
+              rem.push(d)
+            elsif c.included?(d)
               if c.on?
                 included = true
                 break
               else
-                to_delete.push(merged[i])
-                to_add += c.split(merged[i])
+                rem.push(d)
+                add += c.split(d)
               end
             else
-              to_delete.push(merged[i])
-              to_add += c.split(merged[i])
+              rem.push(d)
+              add += c.split(d)
             end
           end
         end
-        to_delete.each{|m| merged.delete(m)}
-        merged += to_add
-        merged.push c if !included && c.on?
+        disjoint -= rem
+        disjoint += add
+        disjoint.push(c) if !included && c.on?
       end
-      @cuboids = merged
-      volume
+      disjoint.map(&:volume).sum
     end
-
-    def volume = cuboids.map(&:volume).sum
   end
 
   class Cuboid
     attr_reader :x1, :x2, :y1, :y2, :z1, :z2
 
-    def initialize(string)
+    def self.parse(string)
       if string.match(/\A(on|off) x=(-?\d+)\.\.(-?\d+),y=(-?\d+)\.\.(-?\d+),z=(-?\d+)\.\.(-?\d+)\z/)
-        @on = $1 == "on"
-        @x1 = $2.to_i
-        @x2 = $3.to_i
-        raise "invalid x-range" unless x2 >= x1
-        @y1 = $4.to_i
-        @y2 = $5.to_i
-        raise "invalid y-range" unless y2 >= y1
-        @z1 = $6.to_i
-        @z2 = $7.to_i
-        raise "invalid z-range" unless z2 >= z1
-        @ip = x1 >= -50 && x1 <= 50 && y1 >= -50 && y2 <= 50 && z1 >= -50 && z2 <= 50
+        new($2.to_i, $3.to_i, $4.to_i, $5.to_i, $6.to_i, $7.to_i, $1 == "on")
       elsif
         raise "invalid input"
       end
     end
 
+    def initialize(x1, x2, y1, y2, z1, z2, on=true)
+      @x1 = x1
+      @x2 = x2
+      raise "invalid x-range" unless x2 >= x1
+      @y1 = y1
+      @y2 = y2
+      raise "invalid y-range" unless y2 >= y1
+      @z1 = z1
+      @z2 = z2
+      raise "invalid z-range" unless z2 >= z1
+      @init_proc = x1 >= -50 && x1 <= 50 && y1 >= -50 && y2 <= 50 && z1 >= -50 && z2 <= 50
+      @on = on
+    end
+
+    def on?          = @on
+    def init_proc?   = @init_proc
+    def volume       = (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1)
     def disjoint?(o) = x2 < o.x1 || x1 > o.x2 || y2 < o.y1 || y1 > o.y2 || z2 < o.z1 || z1 > o.z2
     def includes?(o) = x2 >= o.x2 && x1 <= o.x1 && y2 >= o.y2 && y1 <= o.y1 && z2 >= o.z2 && z1 <= o.z1
     def included?(o) = x2 <= o.x2 && x1 >= o.x1 && y2 <= o.y2 && y1 >= o.y1 && z2 <= o.z2 && z1 >= o.z1
-    def volume       = (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1)
-    def on?          = @on
-    def ip?          = @ip
-    def to_s         = "#{x1}..#{x2}, #{y1}..#{y2}, #{z1}..#{z2}"
-
-    def step(cubes)
-      if ip?
-        (x1..x2).each do |x|
-          (y1..y2).each do |y|
-            (z1..z2).each do |z|
-              if on?
-                cubes[[x,y,z]] = true
-              else
-                cubes.delete([x,y,z])
-              end
-            end
-          end
-        end
-      end
-    end
 
     def split(o)
       cuboids = []
-      cuboids.push Cuboid.new("on x=#{o.x1}..#{o.x2},y=#{o.y1}..#{o.y2},z=#{z2+1}..#{o.z2}") if z2 >= o.z1 && z2 < o.z2
-      cuboids.push Cuboid.new("on x=#{o.x1}..#{o.x2},y=#{o.y1}..#{o.y2},z=#{o.z1}..#{z1-1}") if z1 <= o.z2 && z1 > o.z1
+      cuboids.push Cuboid.new(o.x1, o.x2, o.y1, o.y2, z2+1, o.z2) if z2 >= o.z1 && z2 < o.z2
+      cuboids.push Cuboid.new(o.x1, o.x2, o.y1, o.y2, o.z1, z1-1) if z1 <= o.z2 && z1 > o.z1
       k1 = z1 > o.z1 ? z1 : o.z1
       k2 = z2 < o.z2 ? z2 : o.z2
-      cuboids.push Cuboid.new("on x=#{o.x1}..#{o.x2},y=#{y2+1}..#{o.y2},z=#{k1}..#{k2}") if y2 >= o.y1 && y2 < o.y2
-      cuboids.push Cuboid.new("on x=#{o.x1}..#{o.x2},y=#{o.y1}..#{y1-1},z=#{k1}..#{k2}") if y1 <= o.y2 && y1 > o.y1
+      cuboids.push Cuboid.new(o.x1, o.x2, y2+1, o.y2, k1, k2) if y2 >= o.y1 && y2 < o.y2
+      cuboids.push Cuboid.new(o.x1, o.x2, o.y1, y1-1, k1, k2) if y1 <= o.y2 && y1 > o.y1
       j1 = y1 > o.y1 ? y1 : o.y1
       j2 = y2 < o.y2 ? y2 : o.y2
-      cuboids.push Cuboid.new("on x=#{x2+1}..#{o.x2},y=#{j1}..#{j2},z=#{k1}..#{k2}") if x2 >= o.x1 && x2 < o.x2
-      cuboids.push Cuboid.new("on x=#{o.x1}..#{x1-1},y=#{j1}..#{j2},z=#{k1}..#{k2}") if x1 <= o.x2 && x1 > o.x1
+      cuboids.push Cuboid.new(x2+1, o.x2, j1, j2, k1, k2) if x2 >= o.x1 && x2 < o.x2
+      cuboids.push Cuboid.new(o.x1, x1-1, j1, j2, k1, k2) if x1 <= o.x2 && x1 > o.x1
       cuboids
     end
   end
@@ -198,10 +175,5 @@ class Aoc::Y2021d22 < Aoc
     off x=-70369..-16548,y=22648..78696,z=-1892..86821
     on x=-53470..21291,y=-120233..-33476,z=-44150..38147
     off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
-  EOE
-
-  EXAMPLE3 = <<~EOE
-    on x=0..9,y=0..9,z=0..9
-    on x=-9..0,y=-9..0,z=-9..0
   EOE
 end
