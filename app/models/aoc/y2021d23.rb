@@ -36,3 +36,9 @@ class Aoc::Y2021d23 < Aoc
       #########
   EOE
 end
+
+# Part 1 I solved by inspection, I guessed the optimal solution without a computer and it worked!
+# For Part 2 I used Dijkstra + heapq to find the shortest distance through a huge graph, probably
+# what many did. I kept the intermediate states as strings for easy debugging. For transitions
+# we only need to worry about moves out of the home rooms, then after each move anything that
+# can go home does so, without an intermediate graph node. Fun one!
