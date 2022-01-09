@@ -1,31 +1,49 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
-    burrow = Burrow.new(input)
-    Rails.logger.info "XXX #{burrow.room}"
+    b1 = Burrow.parse(input)
+    b2 = Burrow.new(b1.to_s)
+    b1.to_s + " " + b2.to_s
     "not done yet"
   end
 
   class Burrow
-    attr_reader :room, :hall, :cost, :visited
+    attr_reader :hall, :room, :size
+
     def initialize(string)
-      @room = Array.new(4){[]}
-      @hall = Array.new(11)
-      @cost = 0
-      @visited = false
+      if string.match(/\A(\d+)\|([A-D.]{11})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
+        @size = $1.to_i
+        @hall = $2.split("").map{|x| x == "." ? nil : x}
+        @room = []
+        @room.push($3.split(""))
+        @room.push($4.split(""))
+        @room.push($5.split(""))
+        @room.push($6.split(""))
+        (0..3).each{|i| raise "room #{i} too big" if room[i].length > size}
+        raise "invalid amphipods" unless (hall.compact + room.flatten).sort.join == "AABBCCDD"
+      else
+        raise "invalid constructor string"
+      end
+    end
+
+    def self.parse(string)
+      room = Array.new(4){[]}
       string.each_line(chomp:true).each_with_index do |line, i|
         if i == 2 || i == 3
           if line.match(/#+([ABCD])#([ABCD])#([ABCD])#([ABCD])#+/)
-            @room[0].push $1.downcase.to_sym
-            @room[1].push $2.downcase.to_sym
-            @room[2].push $3.downcase.to_sym
-            @room[3].push $4.downcase.to_sym
+            room[0].unshift $1
+            room[1].unshift $2
+            room[2].unshift $3
+            room[3].unshift $4
           else
             raise "invalid line #{line}"
           end
         end
       end
-      raise "invalid input" unless @room.flatten.sort.join == "aabbccdd"
+      raise "room size parse" unless room.all?{|r| r.size == 2}
+      Burrow.new("2|...........|#{room[0].join}|#{room[1].join}|#{room[2].join}|#{room[3].join}")
     end
+
+    def to_s = "#{size}|#{hall.map{|a| a.nil? ? '.' : a}.join}|#{room.map{|r| r.join}.join('|')}"
   end
 
   EXAMPLE = <<~EOE
