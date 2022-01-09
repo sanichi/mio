@@ -1,13 +1,17 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
-    b1 = Burrow.parse(input)
-    b2 = Burrow.new(b1.to_s)
-    b1.to_s + " " + b2.to_s
-    "not done yet"
+    b1 = Burrow.parse(EXAMPLE)
+    b2 = Burrow.parse(TARGET)
+    b3 = Burrow.parse(TARGET)
+    q = MyQueue.new
+    q.push(b1.to_s, 10)
+    q.push(b2.to_s, 100)
+    q.push(b3.to_s, 1000)
+    q.pop
   end
 
   class Burrow
-    attr_reader :hall, :room, :size
+    attr_reader :size, :hall, :room
 
     def initialize(string)
       if string.match(/\A(\d+)\|([A-D.]{11})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
@@ -53,6 +57,14 @@ class Aoc::Y2021d23 < Aoc
       #A#D#C#A#
       #########
   EOE
+
+  TARGET = <<~EOT
+    #############
+    #...........#
+    ###A#B#C#D###
+      #A#B#C#D#
+      #########
+  EOT
 end
 
 # Part 1 I solved by inspection, I guessed the optimal solution without a computer and it worked!
@@ -60,3 +72,48 @@ end
 # what many did. I kept the intermediate states as strings for easy debugging. For transitions
 # we only need to worry about moves out of the home rooms, then after each move anything that
 # can go home does so, without an intermediate graph node. Fun one!
+
+class MyQueue
+  attr_reader :que
+
+  def initialize
+    @que = []
+  end
+
+  def push(v,c)
+    reheap(v,c)
+  end
+
+  def size = @que.size
+  def pop  = @que.pop
+
+  private
+
+  def reheap(v, c)
+    if size == 0
+      que.push([v,c])
+    else
+      que.insert(binary_index([v, c]), [v, c])
+    end
+  end
+
+  def binary_index(target)
+    upper = que.size - 1
+    lower = 0
+
+    while(upper >= lower) do
+      idx  = lower + (upper - lower) / 2
+
+      case target.last <=> que[idx].last
+      when 1
+        lower = idx + 1
+      when -1
+        upper = idx - 1
+      else
+        return idx
+      end
+    end
+
+    lower
+  end
+end
