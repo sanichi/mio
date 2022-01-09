@@ -8,6 +8,7 @@ class Aoc::Y2021d23 < Aoc
     q.push(b2.to_s, 100)
     q.push(b3.to_s, 1000)
     q.pop
+    "not done yet"
   end
 
   class Burrow
