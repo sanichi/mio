@@ -1,21 +1,25 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
     b1 = Burrow.parse(EXAMPLE)
-    b2 = Burrow.parse(TARGET)
-    b3 = Burrow.parse(TARGET)
-    q = MyQueue.new
-    q.push(b1.to_s, 10)
-    q.push(b2.to_s, 100)
-    q.push(b3.to_s, 1000)
-    q.pop
+    # b2 = Burrow.parse(TARGET)
+    # b3 = Burrow.parse(TARGET)
+    # q = MyQueue.new
+    # q.push(b1.to_s, 10)
+    # q.push(b2.to_s, 100)
+    # q.push(b3.to_s, 1000)
+    # q.pop
+    b1.room_moves(2)
     "not done yet"
   end
 
   class Burrow
     attr_reader :size, :hall, :room
 
+    COST = {"A" => 1, "B" => 10, "C" => 100, "D" => 1000}
+    HLEN = 11
+
     def initialize(string)
-      if string.match(/\A(\d+)\|([A-D.]{11})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
+      if string.match(/\A(\d+)\|([A-D.]{#{HLEN}})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
         @size = $1.to_i
         @hall = $2.split("").map{|x| x == "." ? nil : x}
         @room = []
@@ -49,6 +53,58 @@ class Aoc::Y2021d23 < Aoc
     end
 
     def to_s = "#{size}|#{hall.map{|a| a.nil? ? '.' : a}.join}|#{room.map{|r| r.join}.join('|')}"
+
+    def room_moves(i)
+      raise "invalid room index" unless i >= 0 && i < 4
+      return [] if room[i].empty?
+      home, start =
+        case i
+        when 0 then ["A", 2]
+        when 1 then ["B", 4]
+        when 2 then ["C", 6]
+        when 3 then ["D", 8]
+        end
+      return [] if room[i].all?{|a| a == home}
+      left = []
+      (0..start-1).to_a.reverse.each do |h|
+        if hall[h].nil?
+          left.push(h)
+        else
+          break
+        end
+      end
+      right = []
+      ((start+1)..HLEN-1).each do |h|
+        if hall[h].nil?
+          right.push(h)
+        else
+          break
+        end
+      end
+      return [] if left.empty? && right.empty?
+      neighbours = []
+      new_room = room[i].dup
+      amph = new_room.pop
+      up_cost = COST[amph] * (size - room[i].length + 1)
+      prefix = size.to_s
+      postfix = room.each_with_index.map{|r,j| j == i ? new_room.join : r.join}.join("|")
+      left.reverse.each do |l|
+        new_hall = hall.dup
+        new_hall[l] = amph
+        burrow = prefix + "|" + new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + postfix
+        cost = up_cost + (start - l).abs * COST[amph]
+        neighbours.push [burrow, cost]
+      end
+      right.each do |r|
+        new_hall = hall.dup
+        new_hall[r] = amph
+        burrow = prefix + "|" + new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + postfix
+        cost = up_cost + (start - r).abs * COST[amph]
+        neighbours.push [burrow, cost]
+      end
+      neighbours.each{|n| Rails.logger.info "XXX #{n}"}
+      neighbours.length
+    end
   end
 
   EXAMPLE = <<~EOE
