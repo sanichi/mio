@@ -8,8 +8,10 @@ class Aoc::Y2021d23 < Aoc
     # q.push(b2.to_s, 100)
     # q.push(b3.to_s, 1000)
     # q.pop
-    b1.room_moves(2)
-    "not done yet"
+    n1 = b1.room_moves(1)
+    b2 = Burrow.new(n1[4].first)
+    n2 = b2.room_moves(1)
+    n2.length
   end
 
   class Burrow
@@ -19,9 +21,9 @@ class Aoc::Y2021d23 < Aoc
     HLEN = 11
 
     def initialize(string)
-      if string.match(/\A(\d+)\|([A-D.]{#{HLEN}})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
-        @size = $1.to_i
-        @hall = $2.split("").map{|x| x == "." ? nil : x}
+      if string.match(/\A([A-D.]{#{HLEN}})\|(\d+)\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
+        @hall = $1.split("").map{|x| x == "." ? nil : x}
+        @size = $2.to_i
         @room = []
         @room.push($3.split(""))
         @room.push($4.split(""))
@@ -49,10 +51,10 @@ class Aoc::Y2021d23 < Aoc
         end
       end
       raise "room size parse" unless room.all?{|r| r.size == 2}
-      Burrow.new("2|...........|#{room[0].join}|#{room[1].join}|#{room[2].join}|#{room[3].join}")
+      Burrow.new("...........|2|#{room[0].join}|#{room[1].join}|#{room[2].join}|#{room[3].join}")
     end
 
-    def to_s = "#{size}|#{hall.map{|a| a.nil? ? '.' : a}.join}|#{room.map{|r| r.join}.join('|')}"
+    def to_s = "#{hall.map{|a| a.nil? ? '.' : a}.join}|#{size}|#{room.map{|r| r.join}.join('|')}"
 
     def room_moves(i)
       raise "invalid room index" unless i >= 0 && i < 4
@@ -86,24 +88,23 @@ class Aoc::Y2021d23 < Aoc
       new_room = room[i].dup
       amph = new_room.pop
       up_cost = COST[amph] * (size - room[i].length + 1)
-      prefix = size.to_s
-      postfix = room.each_with_index.map{|r,j| j == i ? new_room.join : r.join}.join("|")
+      size_and_rooms = size.to_s + "|" + room.each_with_index.map{|r,j| j == i ? new_room.join : r.join}.join("|")
       left.reverse.each do |l|
         new_hall = hall.dup
         new_hall[l] = amph
-        burrow = prefix + "|" + new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + postfix
+        burrow = new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + size_and_rooms
         cost = up_cost + (start - l).abs * COST[amph]
         neighbours.push [burrow, cost]
       end
       right.each do |r|
         new_hall = hall.dup
         new_hall[r] = amph
-        burrow = prefix + "|" + new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + postfix
+        burrow = new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + size_and_rooms
         cost = up_cost + (start - r).abs * COST[amph]
         neighbours.push [burrow, cost]
       end
       neighbours.each{|n| Rails.logger.info "XXX #{n}"}
-      neighbours.length
+      neighbours
     end
   end
 
