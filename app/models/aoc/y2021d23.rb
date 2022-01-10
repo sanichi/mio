@@ -8,9 +8,9 @@ class Aoc::Y2021d23 < Aoc
     # q.push(b2.to_s, 100)
     # q.push(b3.to_s, 1000)
     # q.pop
-    n1 = b1.room_moves(1)
-    b2 = Burrow.new(n1[4].first)
-    n2 = b2.room_moves(1)
+    n1 = b1.room_out(2)
+    b2 = Burrow.new(n1[0].first)
+    n2 = b2.room_out(1)
     n2.length
   end
 
@@ -56,7 +56,7 @@ class Aoc::Y2021d23 < Aoc
 
     def to_s = "#{hall.map{|a| a.nil? ? '.' : a}.join}|#{size}|#{room.map{|r| r.join}.join('|')}"
 
-    def room_moves(i)
+    def room_out(i)
       raise "invalid room index" unless i >= 0 && i < 4
       return [] if room[i].empty?
       home, start =
@@ -70,7 +70,7 @@ class Aoc::Y2021d23 < Aoc
       left = []
       (0..start-1).to_a.reverse.each do |h|
         if hall[h].nil?
-          left.push(h)
+          left.push(h) unless [2,4,6,8].include?(h)
         else
           break
         end
@@ -78,7 +78,7 @@ class Aoc::Y2021d23 < Aoc
       right = []
       ((start+1)..HLEN-1).each do |h|
         if hall[h].nil?
-          right.push(h)
+          right.push(h) unless [2,4,6,8].include?(h)
         else
           break
         end
@@ -94,17 +94,68 @@ class Aoc::Y2021d23 < Aoc
         new_hall[l] = amph
         burrow = new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + size_and_rooms
         cost = up_cost + (start - l).abs * COST[amph]
-        neighbours.push [burrow, cost]
+        neighbours.push Burrow.fast_forward(burrow, cost)
       end
       right.each do |r|
         new_hall = hall.dup
         new_hall[r] = amph
         burrow = new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + size_and_rooms
         cost = up_cost + (start - r).abs * COST[amph]
-        neighbours.push [burrow, cost]
+        neighbours.push Burrow.fast_forward(burrow, cost)
       end
       neighbours.each{|n| Rails.logger.info "XXX #{n}"}
       neighbours
+    end
+
+    def room_in(i)
+      raise "invalid room index" unless i >= 0 && i < 4
+      amph, start =
+        case i
+        when 0 then ["A", 2]
+        when 1 then ["B", 4]
+        when 2 then ["C", 6]
+        when 3 then ["D", 8]
+        end
+      return [] unless room[i].empty? || (room[i].length < size && room[i].all?{|a| a == amph})
+      found = nil
+      if found.nil?
+        (0..start-1).to_a.reverse.each do |h|
+          if !hall[h].nil?
+            found = h if hall[h] == amph
+            break
+          end
+        end
+      end
+      if found.nil?
+        ((start+1)..HLEN-1).each do |h|
+          if !hall[h].nil?
+            found = h if hall[h] == amph
+            break
+          end
+        end
+      end
+      return unless found
+      new_room = room[i] + [amph]
+      size_and_rooms = size.to_s + "|" + room.each_with_index.map{|r,j| j == i ? new_room.join : r.join}.join("|")
+      new_hall = hall.dup
+      new_hall[found] = nil
+      burrow = new_hall.map{|h| h.nil? ? '.' : h}.join + "|" + size_and_rooms
+      cost = COST[amph] * (size - room[i].length + (start - found).abs)
+      [burrow, cost]
+    end
+
+    def self.fast_forward(string, cost)
+      burrow = self.new(string)
+      new_string = extra = nil
+      (0..3).each do |i|
+        new_string, extra = burrow.room_in(i)
+        break if new_string
+      end
+      if new_string
+        fast_forward(new_string, cost + extra)
+      else
+        [string, cost]
+      end
     end
   end
 
