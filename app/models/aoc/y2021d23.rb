@@ -8,15 +8,15 @@ class Aoc::Y2021d23 < Aoc
     target = "...........|2|AA|BB|CC|DD"
     q = MyQueue.new
     q.unshift(burrow.to_s, 0, 0)
-    string, estimate = q.shift
+    string, estimate, cost = q.shift
     count = 0
     while string
       break if string == target || count > 10000
       Burrow.new(string).successors(estimate).each{|s,c| q.unshift(s, c, 0)}
-      string, estimate = q.shift
+      string, estimate, cost = q.shift
       count += 1
     end
-    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{estimate}"
+    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{estimate} #{cost}"
     q.size
   end
 
