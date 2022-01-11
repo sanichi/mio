@@ -1,6 +1,6 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
-    b = Burrow.parse(EXAMPLE)
+    b = Burrow.parse(EXAMPLE2)
     dijkstra(b)
   end
 
@@ -25,6 +25,8 @@ class Aoc::Y2021d23 < Aoc
 
     COST = {"A" => 1, "B" => 10, "C" => 100, "D" => 1000}
     HLEN = 11
+    HOME = ["A", "B", "C", "D"]
+    START = {"A" => 2, "B" => 4, "C" => 6, "D" => 8}
 
     def initialize(string)
       if string.match(/\A([A-D.]{#{HLEN}})\|(\d+)\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\|([A-D]{0,4})\z/)
@@ -171,6 +173,26 @@ class Aoc::Y2021d23 < Aoc
       else
         [string, cost]
       end
+    end
+
+    def heuristic
+      arrived = Hash.new
+      HOME.each_with_index.each do |a,i|
+        arrived[a] = room[i].all?{|x| x == HOME[i]} ? room[i].length : room[i].index{|x| x != a}
+      end
+      estimate = 0
+      (0..3).each do |i|
+        ignore = true
+        room[i].each_with_index do |a, j|
+          if a != HOME[i] || !ignore
+            estimate += (size - j + (START[HOME[i]] - START[a]).abs + size - arrived[a]) * COST[a]
+            estimate += 2 * COST[a] if a == HOME[i]
+            arrived[a] += 1
+          end
+          ignore = false if a != HOME[i]
+        end
+      end
+      estimate
     end
   end
 
