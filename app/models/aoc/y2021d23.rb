@@ -1,7 +1,7 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
     b = Burrow.parse(EXAMPLE2)
-    dijkstra(b)
+    "failed to solve this"
   end
 
   def dijkstra(burrow)
