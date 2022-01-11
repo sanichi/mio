@@ -7,16 +7,16 @@ class Aoc::Y2021d23 < Aoc
   def dijkstra(burrow)
     target = "...........|2|AA|BB|CC|DD"
     q = MyQueue.new
-    q.unshift(burrow.to_s, 0)
-    string, cost = q.shift
+    q.unshift(burrow.to_s, 0, 0)
+    string, estimate = q.shift
     count = 0
     while string
       break if string == target || count > 10000
-      Burrow.new(string).successors(cost).each{|s,c| q.unshift(s, c)}
-      string, cost = q.shift
+      Burrow.new(string).successors(estimate).each{|s,c| q.unshift(s, c, 0)}
+      string, estimate = q.shift
       count += 1
     end
-    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{cost}"
+    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{estimate}"
     q.size
   end
 
@@ -237,9 +237,9 @@ class MyQueue
 
   def size  = @que.size
 
-  def unshift(v,c)
+  def unshift(v, e, c)
     return if @visited[v]
-    reheap(v,c)
+    reheap(v, e, c)
   end
 
   def shift
@@ -249,22 +249,22 @@ class MyQueue
 
   private
 
-  def reheap(v, c)
+  def reheap(v, e, c)
     if size == 0
-      que.unshift([v,c])
+      que.unshift([v,e,c])
     else
-      que.insert(binary_index([v, c]), [v, c])
+      que.insert(binary_index(e), [v,e,c])
     end
   end
 
-  def binary_index(target)
+  def binary_index(cost)
     upper = que.size - 1
     lower = 0
 
     while(upper >= lower) do
       idx  = lower + (upper - lower) / 2
 
-      case target.last <=> que[idx].last
+      case cost <=> que[idx][1]
       when 1
         lower = idx + 1
       when -1
