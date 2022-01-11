@@ -1,17 +1,23 @@
 class Aoc::Y2021d23 < Aoc
   def answer(part)
-    b1 = Burrow.parse(EXAMPLE)
-    # b2 = Burrow.parse(TARGET)
-    # b3 = Burrow.parse(TARGET)
-    # q = MyQueue.new
-    # q.push(b1.to_s, 10)
-    # q.push(b2.to_s, 100)
-    # q.push(b3.to_s, 1000)
-    # q.pop
-    n1 = b1.room_out(2)
-    b2 = Burrow.new(n1[0].first)
-    n2 = b2.room_out(1)
-    n2.length
+    b = Burrow.parse(EXAMPLE)
+    dijkstra(b)
+  end
+
+  def dijkstra(burrow)
+    target = "...........|2|AA|BB|CC|DD"
+    q = MyQueue.new
+    q.push(burrow.to_s, 0)
+    string, cost = q.shift
+    count = 0
+    while string
+      break if string == target || count > 10000
+      Burrow.new(string).successors(cost).each{|s,c| q.push(s, c)}
+      string, cost = q.shift
+      count += 1
+    end
+    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{cost}"
+    q.size
   end
 
   class Burrow
@@ -55,6 +61,10 @@ class Aoc::Y2021d23 < Aoc
     end
 
     def to_s = "#{hall.map{|a| a.nil? ? '.' : a}.join}|#{size}|#{room.map{|r| r.join}.join('|')}"
+
+    def successors(prev)
+      (0..3).map{|i| room_out(i)}.reduce(&:+).map{|s,cost| [s, cost + prev]}
+    end
 
     def room_out(i)
       raise "invalid room index" unless i >= 0 && i < 4
@@ -103,8 +113,13 @@ class Aoc::Y2021d23 < Aoc
         cost = up_cost + (start - r).abs * COST[amph]
         neighbours.push Burrow.fast_forward(burrow, cost)
       end
-      neighbours.each{|n| Rails.logger.info "XXX #{n}"}
-      neighbours
+      # neighbours.each{|n| Rails.logger.info "XXX #{n}"}
+      dedup = {}
+      neighbours.each do |string, cost|
+        dedup[string] = cost unless dedup.has_key?(string) && dedup[string] < cost
+      end
+      # dedup.to_a.each{|n| Rails.logger.info "DDD #{n}"}
+      dedup.to_a
     end
 
     def room_in(i)
@@ -167,6 +182,14 @@ class Aoc::Y2021d23 < Aoc
       #########
   EOE
 
+  EXAMPLE2 = <<~EOE
+    #############
+    #...........#
+    ###B#A#C#D###
+      #A#B#C#D#
+      #########
+  EOE
+
   TARGET = <<~EOT
     #############
     #...........#
@@ -193,8 +216,9 @@ class MyQueue
     reheap(v,c)
   end
 
-  def size = @que.size
-  def pop  = @que.pop
+  def size  = @que.size
+  def pop   = @que.pop
+  def shift = @que.shift
 
   private
 
