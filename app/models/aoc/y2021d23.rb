@@ -7,12 +7,12 @@ class Aoc::Y2021d23 < Aoc
   def dijkstra(burrow)
     target = "...........|2|AA|BB|CC|DD"
     q = MyQueue.new
-    q.push(burrow.to_s, 0)
+    q.unshift(burrow.to_s, 0)
     string, cost = q.shift
     count = 0
     while string
       break if string == target || count > 10000
-      Burrow.new(string).successors(cost).each{|s,c| q.push(s, c)}
+      Burrow.new(string).successors(cost).each{|s,c| q.unshift(s, c)}
       string, cost = q.shift
       count += 1
     end
@@ -210,21 +210,26 @@ class MyQueue
 
   def initialize
     @que = []
-  end
-
-  def push(v,c)
-    reheap(v,c)
+    @visited = {}
   end
 
   def size  = @que.size
-  def pop   = @que.pop
-  def shift = @que.shift
+
+  def unshift(v,c)
+    return if @visited[v]
+    reheap(v,c)
+  end
+
+  def shift
+    @visited[@que[0][0]] = @que[0][1]
+    @que.shift
+  end
 
   private
 
   def reheap(v, c)
     if size == 0
-      que.push([v,c])
+      que.unshift([v,c])
     else
       que.insert(binary_index([v, c]), [v, c])
     end
