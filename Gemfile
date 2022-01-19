@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.1.4.1'
+gem 'rails', '7.0.1'
 gem 'haml-rails', '~> 2.0'
 gem 'jquery-rails', '~> 4.3'
 gem 'sassc-rails', '~> 2.1'
@@ -17,6 +17,7 @@ gem 'mechanize', '~> 2.7'
 gem 'mojinizer', '~> 0.2'
 gem 'oga', '~> 3.0'
 gem 'ruby-progressbar', '~> 1.10'
+gem 'sprockets-rails', '~> 3.4'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
@@ -25,7 +26,7 @@ group :development, :test do
   gem 'launchy', '~> 2.5'
   gem 'factory_bot_rails', '~> 6.0'
   gem 'faker', '~> 2.10'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 3.142'
   gem 'rexml' # selenium needs this explicitly since ruby 3.0 (used to be a bundled gem)
 end
 
@@ -39,5 +40,5 @@ group :development do
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen', '~> 3.2'
   gem 'awesome_print', '~> 1.9'
-  gem 'bullet', '~> 6.1'
+  gem 'bullet', '~> 7.0'
 end
