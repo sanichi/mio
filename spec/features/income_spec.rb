@@ -22,7 +22,7 @@ describe Income do
         select period, from: t("income.period.period")
         fill_in t("amount"), with: data.amount
         fill_in t("income.joint"), with: data.joint
-        fill_in t("income.start"), with: data.start.to_s(:db)
+        fill_in t("income.start"), with: data.start.to_formatted_s(:db)
         click_button t("save")
 
         expect(page).to have_title t("income.incomes")
