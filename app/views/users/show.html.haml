@@ -14,6 +14,11 @@
             %tr
               %th= t("name")
               %td= @user.name
+            %tr
+              %th= t("otp.otp")
+              %td
+                = otp_required(@user)
+                = otp_active(@user)
       .footer
         = link_to t("user.users"), users_path, class: "btn btn-success btn-sm"
         - if can?(:manage, User)

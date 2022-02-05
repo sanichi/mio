@@ -18,6 +18,8 @@ gem 'mojinizer', '~> 0.2'
 gem 'oga', '~> 3.0'
 gem 'ruby-progressbar', '~> 1.10'
 gem 'sprockets-rails', '~> 3.4'
+gem 'rotp', '~> 6.2'
+gem 'rqrcode', '~> 2.1'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'

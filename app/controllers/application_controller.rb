@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   def remember_last_non_autenticated_path
     return if request.method != "GET" || request.format != "text/html" || request.xhr?
-    return if !current_user.guest? || controller_name == "sessions"
+    return if !current_user.guest? || controller_name == "sessions" || controller_name == "otp_secrets"
     session[:last_path] = request.path
   end
 

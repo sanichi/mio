@@ -7,9 +7,12 @@ class User < ApplicationRecord
   MAX_PASSWORD = 32
   MAX_ROLE = 20
   MAX_LN = 25
+  OTP_ISSUER = "mio.sanichi.me"
+  OTP_TEST_SECRET = "YAJY2UMNXQE4JFTWH4AFZGBE7YOQX3XY"
 
   before_validation :update_password_if_present
   after_validation :copy_password_error
+  after_update :reset_otp
 
   validates :email, format: { with: /\A[^\s@]+@[^\s@]+\z/ }, length: { maximum: MAX_EMAIL }, uniqueness: true
   validates :encrypted_password, presence: true, length: { is: MAX_PASSWORD }
@@ -23,21 +26,10 @@ class User < ApplicationRecord
     end
   end
 
-  def name
-    "#{first_name} #{last_name}"
-  end
-
-  def initials
-    "#{first_name[0]}#{last_name[0]}"
-  end
-
-  def guest?
-    role == "guest"
-  end
-
-  def self.guest
-    new(role: "guest")
-  end
+  def name       = "#{first_name} #{last_name}"
+  def initials   = "#{first_name[0]}#{last_name[0]}"
+  def guest?     = role == "guest"
+  def self.guest = new(role: "guest")
 
   private
 
@@ -47,5 +39,11 @@ class User < ApplicationRecord
 
   def copy_password_error
     errors.add(:password, errors[:encrypted_password].first) if errors[:encrypted_password].any?
+  end
+
+  def reset_otp
+    if !otp_required
+      update_columns(otp_secret: nil, last_otp_at: nil)
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_11_114257) do
+ActiveRecord::Schema.define(version: 2022_02_05_121356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -334,6 +334,9 @@ ActiveRecord::Schema.define(version: 2021_11_11_114257) do
     t.datetime "updated_at", null: false
     t.string "first_name", limit: 25
     t.string "last_name", limit: 25
+    t.boolean "otp_required", default: false
+    t.string "otp_secret", limit: 32
+    t.integer "last_otp_at"
   end
 
   create_table "wk_audios", force: :cascade do |t|

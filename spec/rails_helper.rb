@@ -76,6 +76,10 @@ def login(role="admin")
   click_button t("session.sign_in")
 end
 
+def otp_attempt
+  ROTP::TOTP.new(User::OTP_TEST_SECRET, issuer: User::OTP_ISSUER).now
+end
+
 def t(key, **opts)
   I18n.t(key, **opts)
 end
