@@ -35,6 +35,10 @@ group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
 end
 
+group :production do
+  gem 'terser', '~> 1.1'
+end
+
 group :development do
   gem 'puma', '~> 5.0'
   gem 'capistrano-rails', '~> 1.4', require: false
