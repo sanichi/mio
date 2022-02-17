@@ -20,6 +20,7 @@ gem 'ruby-progressbar', '~> 1.10'
 gem 'sprockets-rails', '~> 3.4'
 gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 2.1'
+gem 'terser', '~> 1.1'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
