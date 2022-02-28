@@ -2,7 +2,7 @@
 use strict;
 
 # Setup.
-my $ssh_usr = 'sanichi@thessaloniki.sanichi.me';
+my $ssh_usr = 'sanichi@nihon.sanichi.me';
 my $tss_app = '/var/www/me.mio/current';
 my $tss_db  = 'mio_production';
 my $tmp_sql = '/tmp/mio.sql';
