@@ -29,7 +29,7 @@ namespace :elm do
     opt = args[:debug].present? ? "" : "--optimize"
     if system("elm make #{main}.elm #{opt} --output #{js}")
       File.open(min, "w") do |file|
-        file.write(Uglifier.compile(File.read(js)))
+        file.write(Terser.compile(File.read(js)))
       end
       puts "minified to #{min}"
     end

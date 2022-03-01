@@ -5,7 +5,7 @@ gem 'haml-rails', '~> 2.0'
 gem 'jquery-rails', '~> 4.3'
 gem 'sassc-rails', '~> 2.1'
 gem 'bootstrap', '~> 5.0'
-gem 'uglifier', '~> 4.2'
+gem 'terser', '~> 1.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'cancancan', '~> 3.0'
 gem 'redcarpet', '~> 3.5'
@@ -33,10 +33,6 @@ end
 
 group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
-end
-
-group :production do
-  gem 'terser', '~> 1.1'
 end
 
 group :development do
