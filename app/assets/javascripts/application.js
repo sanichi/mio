@@ -12,13 +12,13 @@
 //
 //= require jquery3
 //= require jquery-ui/widgets/autocomplete
-//= require jquery_ujs
+//= require rails-ujs
 //= require popper
 //= require bootstrap
 
-$(function() {
+$(function () {
   // Auto-submit on change.
-  $('form .auto-submit').change(function() {
+  $('form .auto-submit').change(function () {
     $(this).parents('form').submit();
   });
 });
