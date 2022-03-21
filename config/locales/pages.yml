@@ -2,7 +2,6 @@ en:
   pages:
     board: Board
     env: Env
-    magic: Magic Numbers
     pam: Pam
     play: Elm Play
     aoc:

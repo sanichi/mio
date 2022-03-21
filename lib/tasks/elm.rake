@@ -56,13 +56,6 @@ namespace :elm do
     end
   end
 
-  desc "make and minify the Elm JS file for Magic Numbers"
-  task :magic, [:debug] do |task, args|
-    Dir.chdir("app/views/pages/magic") do
-      compile_and_minify "magic", args
-    end
-  end
-
   desc "make and minify the Elm JS file for Board"
   task :board, [:debug] do |task, args|
     Dir.chdir("app/views/pages/board") do
