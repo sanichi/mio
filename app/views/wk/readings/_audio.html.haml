@@ -1,7 +1,7 @@
 - klass = "btn-#{reading.pattern_colour} audio_button reading_#{reading.id}"
 - display_id = reading.audios.pluck(:id).sample
 - reading.audios.each do |audio|
-  - style = audio.id == display_id ? nil : "display: none"
-  %button.btn.btn-sm{class: klass, style: style, "data-audio" => audio.id, "data-reading" => reading.id, type: "button"}= reading.accent_display
+  - style = audio.id == display_id ? "" : " d-none"
+  %button.btn.btn-sm{class: "#{klass}#{style}", "data-audio" => audio.id, "data-reading" => reading.id, type: "button"}= reading.accent_display
   %audio{id: "audio_#{audio.id}"}
     %source{src: audio.url, type: "audio/mpeg"}
