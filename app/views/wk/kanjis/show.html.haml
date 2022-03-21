@@ -9,7 +9,7 @@
         = render inline: @kanji.kvg_xml
   .body
     - if @kanji.kvg_frames.present?
-      .text-center.mb-3{style: "overflow-x: auto"}
+      .text-center.mb-3.overflow-auto
         = render inline: @kanji.kvg_frames
     - if path = @kanji.image_path
       %img.mb-3{src: path, width: "100%"}
