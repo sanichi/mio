@@ -18,9 +18,7 @@ Rails.application.routes.draw do
   end
   resources :lessons
   resources :logins, only: [:index]
-  resources :masses, except: [:show] do
-    get :graph, on: :collection
-  end
+  resources :masses, except: [:show]
   resources :matches, only: [:index]
   resources :misas
   resources :notes do
