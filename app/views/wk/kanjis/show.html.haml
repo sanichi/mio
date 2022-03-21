@@ -28,7 +28,7 @@
               = link_to radical.character_name, radical
         %tr.d-flex
           %td.col-3= t("wk.kanji.similar")
-          %td.col-9{style: "font-size: 2em"}
+          %td.col-9.double-size
             - @kanji.similar_kanjis.each do |kanji|
               = link_to kanji.character, kanji
         %tr.d-flex
