@@ -21,11 +21,7 @@ Rails.application.routes.draw do
   resources :masses, except: [:show]
   resources :matches, only: [:index]
   resources :misas
-  resources :notes do
-    get :random, on: :collection
-    get :nedit, on: :member
-    patch :nupdate, on: :member
-  end
+  resources :notes
   resources :partnerships
   resources :people do
     get :checks, on: :collection

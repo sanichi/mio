@@ -11,11 +11,7 @@
         %article= @note.stuff_html
       .footer
         = link_to t("note.notes"), last_search(notes_path), class: "btn btn-success btn-sm"
-        = link_to t("random"), random_notes_path, class: "btn btn-primary btn-sm"
         - if can?(:edit, Note)
           = link_to t("edit"), edit_note_path(@note), class: "btn btn-primary btn-sm"
-          - if @note.shiftable?
-            = link_to t("note.shift"), nedit_note_path(@note), class: "btn btn-primary btn-sm"
         - if can?(:delete, Note)
           = link_to t("delete"), @note, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
-    
