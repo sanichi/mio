@@ -1,8 +1,0 @@
-:ruby
-  inputs = [
-    [:description, t("description"),      :text,   maxlength: Expense::MAX_DESC, autofocus: true],
-    [:category,    t("expense.category"), :select, menu: expense_category_menu(expense)],
-    [:period,      t("expense.period"),   :select, menu: expense_period_menu(expense)],
-    [:amount,      t("amount"),           :text,   rows: 10],
-  ]
-= render "utils/crud/form", object: expense, index: expenses_path, inputs: inputs, title: title

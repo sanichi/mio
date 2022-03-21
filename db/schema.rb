@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_121356) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_03_21_150814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,19 +18,10 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.bigint "from_id"
     t.bigint "to_id"
     t.string "direction", limit: 10
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["from_id"], name: "index_borders_on_from_id"
-    t.index ["to_id"], name: "index_borders_on_to_id"
-  end
-
-  create_table "buckets", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 50
-    t.text "notes"
-    t.integer "mark", limit: 2, default: 0
-    t.integer "sandra", limit: 2, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["from_id"], name: "index_borders_on_from_id"
+    t.index ["to_id"], name: "index_borders_on_to_id"
   end
 
   create_table "comments", id: :serial, force: :cascade do |t|
@@ -40,18 +30,9 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.text "text"
     t.integer "commentable_id"
     t.string "commentable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
-  end
-
-  create_table "expenses", id: :serial, force: :cascade do |t|
-    t.decimal "amount", precision: 10, scale: 2
-    t.string "category", limit: 10
-    t.string "description", limit: 60
-    t.string "period", limit: 10
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "favourites", id: :serial, force: :cascade do |t|
@@ -59,8 +40,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "name", limit: 50
     t.string "link", limit: 200
     t.integer "year"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "mark", limit: 2, default: 0
     t.integer "sandra", limit: 2, default: 0
     t.text "note"
@@ -73,8 +54,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "number", limit: 2
     t.string "name", limit: 10
     t.string "category", limit: 7
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "notes"
   end
 
@@ -85,22 +66,10 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "examples", default: [], array: true
     t.integer "last_example_checked", default: 0
     t.text "note"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "eregexp", limit: 64
-    t.string "ref", limit: 10
-  end
-
-  create_table "incomes", id: :serial, force: :cascade do |t|
-    t.decimal "amount", precision: 10, scale: 2
-    t.string "category", limit: 10
-    t.string "description", limit: 60
-    t.string "period", limit: 10
-    t.date "start"
-    t.date "finish"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "joint", limit: 2, default: 100
+    t.string "eregexp", limit: 64
+    t.string "ref", limit: 10
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -111,8 +80,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.text "note"
     t.string "section", limit: 50
     t.string "series", limit: 50
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "book", limit: 200
     t.string "eco", limit: 20
   end
@@ -121,15 +90,15 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "email", limit: 75
     t.string "ip", limit: 39
     t.boolean "success"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
   end
 
   create_table "masses", id: :serial, force: :cascade do |t|
     t.date "date"
     t.decimal "start", precision: 4, scale: 1
     t.decimal "finish", precision: 4, scale: 1
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "matches", force: :cascade do |t|
@@ -139,8 +108,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "away_score", limit: 2
     t.integer "season", limit: 2
     t.date "date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["away_team_id"], name: "index_matches_on_away_team_id"
     t.index ["home_team_id"], name: "index_matches_on_home_team_id"
   end
@@ -150,8 +119,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "minutes", limit: 6
     t.text "note"
     t.string "title", limit: 150
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "lines", limit: 2, default: 0
     t.date "published"
     t.string "url", limit: 256
@@ -163,8 +132,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
   create_table "notes", force: :cascade do |t|
     t.text "stuff"
     t.string "title", limit: 150
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "series", limit: 50
     t.integer "number", limit: 2
   end
@@ -174,8 +143,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "husband_id"
     t.integer "wedding", limit: 2
     t.integer "wife_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "marriage", default: true
     t.boolean "wedding_guess", default: false
     t.boolean "divorce_guess", default: false
@@ -189,8 +158,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.boolean "male"
     t.string "last_name", limit: 50
     t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "known_as", limit: 20
     t.integer "father_id"
     t.integer "mother_id"
@@ -208,10 +177,10 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
   end
 
   create_table "pictures", id: :serial, force: :cascade do |t|
-    t.datetime "image_updated_at"
+    t.datetime "image_updated_at", precision: nil
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "portrait", default: false
     t.string "title"
     t.integer "realm", limit: 2, default: 0
@@ -226,8 +195,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "category", limit: 10
     t.integer "pop", limit: 2
     t.bigint "parent_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "vbox", limit: 20
     t.boolean "capital", default: false
     t.text "notes"
@@ -241,8 +210,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "level", limit: 2
     t.text "note"
     t.integer "subcategory", limit: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "audio", limit: 20
   end
 
@@ -255,8 +224,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "solution", limit: 2
     t.text "note"
     t.integer "problem_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "audio", limit: 20
     t.string "image", limit: 20
     t.index ["problem_id"], name: "index_questions_on_problem_id"
@@ -267,16 +236,16 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.decimal "percent", precision: 4, scale: 1
     t.integer "returnable_id"
     t.string "returnable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["returnable_type", "returnable_id"], name: "index_returns_on_returnable_type_and_returnable_id"
   end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -286,8 +255,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "name", limit: 100
     t.integer "level", limit: 2, default: 5
     t.text "note"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "length", limit: 2
     t.integer "ordinal", limit: 2
   end
@@ -296,8 +265,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "name", limit: 30
     t.string "slug", limit: 30
     t.string "short", limit: 15
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "division", limit: 2, default: 1
   end
 
@@ -310,9 +279,9 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.integer "good", limit: 2, default: 0
     t.integer "excellent", limit: 2, default: 0
     t.integer "level", limit: 2, default: 0
-    t.datetime "due"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "due", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "last", limit: 10
     t.index ["testable_type", "testable_id"], name: "index_tests_on_testable_type_and_testable_id"
   end
@@ -320,8 +289,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
   create_table "tutorials", force: :cascade do |t|
     t.date "date"
     t.string "summary", limit: 100
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "notes"
     t.boolean "draft", default: true
   end
@@ -330,8 +299,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.string "email", limit: 75
     t.string "encrypted_password", limit: 32
     t.string "role", limit: 20
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "first_name", limit: 25
     t.string "last_name", limit: 25
     t.boolean "otp_required", default: false
@@ -348,8 +317,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
   create_table "wk_examples", force: :cascade do |t|
     t.string "japanese", limit: 200
     t.string "english", limit: 200
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "wk_examples_vocabs", force: :cascade do |t|
@@ -362,8 +331,8 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
   create_table "wk_groups", force: :cascade do |t|
     t.string "category", limit: 20
     t.string "vocab_list", limit: 200
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "wk_groups_vocabs", force: :cascade do |t|
@@ -447,7 +416,7 @@ ActiveRecord::Schema.define(version: 2022_02_05_121356) do
     t.text "reading_mnemonic"
     t.integer "wk_id"
     t.text "notes"
-    t.datetime "last_noted"
+    t.datetime "last_noted", precision: nil
     t.boolean "hidden", default: false
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end

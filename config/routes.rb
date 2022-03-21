@@ -10,16 +10,11 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
-  resources :buckets
-  resources :expenses, except: [:show]
   resources :favourites
   resources :flats
   resources :grammars do
     patch :quick_level_update, on: :member
     delete :remove_example, on: :member
-  end
-  resources :incomes, except: [:show] do
-    get :graph, on: :collection
   end
   resources :lessons
   resources :logins, only: [:index]

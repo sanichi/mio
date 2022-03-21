@@ -1,8 +1,0 @@
-:ruby
-  inputs = [
-    [:name,   t("name"),          :text,   maxlength: Bucket::MAX_NAME],
-    [:mark,   t("bucket.mark"),   :select, menu: bucket_level_menu(bucket.mark)],
-    [:sandra, t("bucket.sandra"), :select, menu: bucket_level_menu(bucket.sandra)],
-    [:notes,  t("notes"),         :area,   rows: 10],
-  ]
-= render "utils/crud/form", object: bucket, index: buckets_path, inputs: inputs, title: title
