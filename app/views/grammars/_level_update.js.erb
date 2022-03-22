@@ -24,7 +24,8 @@ $(function() {
         url: '/grammars/' + id + '/quick_level_update',
         type: 'patch',
         data: { delta: delta },
-        dataType: 'script'
+        dataType: 'html',
+        success: function(data) { $("#level").html(data) }
       });
     }
   });

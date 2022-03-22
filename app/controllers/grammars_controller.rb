@@ -40,6 +40,7 @@ class GrammarsController < ApplicationController
 
   def quick_level_update
     @grammar.update_level!(params[:delta].to_i)
+    render :quick_level_update, layout: false
   end
 
   def remove_example
