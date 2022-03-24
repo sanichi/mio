@@ -6,9 +6,9 @@ $(function() {
       if (ui.item) {
         $.ajax({
           url: '/people/<%= id %>/relative.json?other=' + ui.item.id,
-          dataType: 'text'
-        }).done(function(text) {
-          $('#relative').text(text);
+          dataType: 'html'
+        }).done(function(data) {
+          $('#relative').text(data);
         });
       } else {
         $('#relative').text('');
