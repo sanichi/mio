@@ -1,6 +1,0 @@
-var buttons = $("button.reading_<%= @reading.id %>");
-buttons.text("<%= @reading.accent_display %>");
-<% @reading.pattern_colours.each do |color| %>
-  buttons.removeClass("btn-<%= color %>");
-<% end %>
-buttons.addClass("btn-<%= @reading.pattern_colour %>");

@@ -61,13 +61,13 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # For bullet gem.
-  config.after_initialize do
-    Bullet.enable        = true
-    Bullet.bullet_logger = true
-    Bullet.alert         = false
-    Bullet.console       = false
-    Bullet.growl         = false
-    Bullet.rails_logger  = false
-    Bullet.add_footer    = false
-  end
+  # config.after_initialize do
+  #   Bullet.enable        = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.alert         = false
+  #   Bullet.console       = false
+  #   Bullet.growl         = false
+  #   Bullet.rails_logger  = false
+  #   Bullet.add_footer    = false
+  # end
 end

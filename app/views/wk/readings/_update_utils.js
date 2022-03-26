@@ -1,5 +1,5 @@
-$(function() {
-  $('#accent_updates').on('keypress', 'button.audio_button', function(e) {
+$(function () {
+  $('#accent_updates').on('keypress', 'button.audio_button', function (e) {
     var reading_id = $(e.target).data('reading');
     var code = e.keyCode;
     var accent = '';
@@ -23,7 +23,15 @@ $(function() {
       $.ajax({
         url: '/wk/readings/' + reading_id + '/quick_accent_update',
         type: 'patch',
-        data: { accent: accent }
+        data: { accent: accent },
+        dataType: 'json'
+      }).done(function (json) {
+        var buttons = $('button.reading_' + reading_id);
+        buttons.text(json.accent_display);
+        $.each(json.pattern_colours, function (i, colour) {
+          buttons.removeClass('btn-' + colour);
+        });
+        buttons.addClass('btn-' + json.pattern_colour);
       });
     }
   });

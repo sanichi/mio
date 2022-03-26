@@ -20,6 +20,7 @@ gem 'ruby-progressbar', '~> 1.10'
 gem 'sprockets-rails', '~> 3.4'
 gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 2.1'
+gem 'jbuilder', '~> 2.7'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
@@ -41,5 +42,5 @@ group :development do
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen', '~> 3.2'
   gem 'awesome_print', '~> 1.9'
-  gem 'bullet', '~> 7.0'
+  # gem 'bullet', '~> 7.0'
 end
