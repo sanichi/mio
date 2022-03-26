@@ -41,7 +41,7 @@ describe Picture do
         p = Picture.first
 
         title = [person1, person2, person3].sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ")
-        expect(page).to have_title title
+        expect(page).to have_title title.truncate(Picture::MAX_TITLE)
 
         expect(p.image).to eq data.image
         expect(p.description).to eq data.description

@@ -1,7 +1,7 @@
 module Wk
   class VocabsController < ApplicationController
     authorize_resource
-    before_action :find_vocab, only: [:edit, :show, :update, :quick_accent_update]
+    before_action :find_vocab, only: [:edit, :show, :update]
 
     def index
       remember_last_search(wk_vocabs_path)
@@ -24,10 +24,6 @@ module Wk
         failure @vocab
         render :edit
       end
-    end
-
-    def quick_accent_update
-      @vocab.update_accent(params[:accent])
     end
 
     private

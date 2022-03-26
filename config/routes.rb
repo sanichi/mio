@@ -55,8 +55,6 @@ Rails.application.routes.draw do
       patch :quick_accent_update, on: :member
     end
     resources :verb_pairs, only: [:index]
-    resources :vocabs, only: [:edit, :index, :show, :update] do
-      patch :quick_accent_update, on: :member
-    end
+    resources :vocabs, only: [:edit, :index, :show, :update]
   end
 end
