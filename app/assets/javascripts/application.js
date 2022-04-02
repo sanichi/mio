@@ -19,6 +19,6 @@
 $(function () {
   // Auto-submit on change.
   $('form .auto-submit').change(function () {
-    $(this).parents('form').submit();
+    Rails.fire($(this).parents('form')[0], 'submit');
   });
 });
