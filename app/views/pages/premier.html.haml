@@ -1,6 +1,6 @@
 :ruby
   lo = Layout.new(md: [2], xs: [4]).to_a.first
-  inputs = [[:season, t("match.season"), :select, lo, menu: season_menu(@season)]]
+  inputs = [[:season, t("match.season"), :select, lo, menu: season_menu(@data.season)]]
 
 - content_for :javascript do
   = render partial: "pages/premier/tooltips", formats: :js
@@ -26,22 +26,22 @@
               %th.text-center= t("pages.premier.against")
               %th.text-center= t("pages.premier.diff")
               %th.text-center= t("pages.premier.points")
-              - if @dun > 0
+              - if @data.dun > 0
                 %td.shrink.text-center
-                  - unless @one_sided
-                    - if @due > 0
-                      = link_to t("pages.premier.left"), premier_path(season: @season, dun_due: "dun")
+                  - unless @data.one_sided
+                    - if @data.due > 0
+                      = link_to t("pages.premier.left"), premier_path(season: @data.season, dun_due: "dun") if @data.more_dun
                     - else
-                      = link_to t("pages.premier.right"), premier_path(season: @season)
-              - if @due > 0
+                      = link_to t("pages.premier.right"), premier_path(season: @data.season)
+              - if @data.due > 0
                 %td.shrink.text-center
-                  - unless @one_sided
-                    - if @dun > 0
-                      = link_to t("pages.premier.right"), premier_path(season: @season, dun_due: "due")
+                  - unless @data.one_sided
+                    - if @data.dun > 0
+                      = link_to t("pages.premier.right"), premier_path(season: @data.season, dun_due: "due") if @data.more_due
                     - else
-                      = link_to t("pages.premier.left"), premier_path(season: @season)
+                      = link_to t("pages.premier.left"), premier_path(season: @data.season)
           %tbody
-            - @teams.each do |t|
+            - @data.teams.each do |t|
               %tr
                 %th.shrink= t.short
                 %td.text-center= t.played
@@ -52,11 +52,11 @@
                 %td.text-center= t.against
                 %td.text-center= t.diff
                 %th.text-center= t.points
-                - if @dun > 0
+                - if @data.dun > 0
                   %td.shrink.font-monospace
                     - t.latest_results.each do |m|
                       = render "pages/premier/latest", team: t, match: m
-                - if @due > 0
+                - if @data.due > 0
                   %td.shrink.font-monospace
                     - t.upcoming_fixtures.each do |m|
                       = render "pages/premier/upcoming", team: t, match: m

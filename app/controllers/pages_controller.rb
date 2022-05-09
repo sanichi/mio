@@ -17,7 +17,7 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @season, @teams, @dun, @due, @one_sided = helpers.premier_data(params[:season], params[:dun_due])
+    @data = helpers.premier_data(params[:season], params[:dun_due])
   end
 
   def prefectures

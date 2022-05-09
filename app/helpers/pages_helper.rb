@@ -77,6 +77,10 @@ module PagesHelper
     # if either maximum is zero, we will need to signal this to the view
     one_sided = max_dun == 0 || max_due == 0
 
+    # if there are no more due or no more done, signal that
+    more_dun = dun < max_dun
+    more_due = due < max_due
+
     # attach completed (dun) and forthcoming (due) matches to each team and then rank them all
     teams.map!{ |t| t.stats(season, dun, due) }.sort! do |a,b|
       if b.points > a.points
@@ -95,6 +99,14 @@ module PagesHelper
     end
 
     # return the stuff we just calculated
-    [season, teams, dun, due, one_sided]
+    OpenStruct.new(
+      season:    season,
+      teams:     teams,
+      dun:       dun,
+      due:       due,
+      one_sided: one_sided,
+      more_dun:  more_dun,
+      more_due:  more_due,
+    )
   end
 end
