@@ -385,6 +385,7 @@ DEPENDENCIES
   sassc-rails (~> 2.1)
   selenium-webdriver (~> 4.0)
   sprockets-rails (~> 3.4)
+  strscan (~> 3.0.1)
   terser (~> 1.1)
 
 BUNDLED WITH

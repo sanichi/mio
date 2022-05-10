@@ -21,6 +21,7 @@ gem 'sprockets-rails', '~> 3.4'
 gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 2.1'
 gem 'jbuilder', '~> 2.7'
+gem 'strscan', '~> 3.0.1'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
