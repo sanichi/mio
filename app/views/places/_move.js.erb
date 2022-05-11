@@ -7,6 +7,9 @@ $(function() {
       url: '/places/<%= place.id %>/shift',
       type: 'patch',
       data: { direction: direction, type: type, delta: delta },
+      dataType: 'html'
+    }).done(function(data) {
+        $('#map').html(data);
     });
   });
 });

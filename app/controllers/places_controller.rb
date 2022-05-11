@@ -46,6 +46,7 @@ class PlacesController < ApplicationController
   def shift
     @place.move(params[:type], params[:direction], params[:delta])
     @elements = Place.map_elements.to_a
+    render :shift, layout: false
   end
 
   private
