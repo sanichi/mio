@@ -5,8 +5,9 @@ class Grammar < ApplicationRecord
   include Vocabable
 
   LEVELS = (1..5).to_a
-  MAX_TITLE = 100
-  MAX_REGEXP = 50
+  MAX_TITLE = 128
+  MAX_REF = 10
+  MAX_REGEXP = 64
   NOTE = <<~EON
     Rules:
 
@@ -33,7 +34,7 @@ class Grammar < ApplicationRecord
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
   validates :eregexp, :jregexp, length: { maximum: MAX_REGEXP }, allow_nil: true
   validates :last_example_checked, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
-  validates :ref, length: { maximum: MAX_REGEXP }, format: { with: /\A[A-Z]+[1-9]\d*/ }, uniqueness: true
+  validates :ref, length: { maximum: MAX_REF }, format: { with: /\A[A-Z]+[1-9]\d*/ }, uniqueness: true
   validate :check_regexps
 
   scope :by_ref, -> { order(Arel.sql("SUBSTRING(ref FROM '[A-Z]+'), CAST(SUBSTRING(ref FROM '\\d+') AS INTEGER)")) }
