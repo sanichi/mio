@@ -45,6 +45,8 @@ class Grammar < ApplicationRecord
       matches = matches.order(:title)
     when "level"
       matches = matches.order(level: :desc, title: :asc)
+    when "updated"
+      matches = matches.order(updated_at: :desc)
     else
       matches = matches.by_ref
     end
