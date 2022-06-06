@@ -91,7 +91,7 @@ describe Favourite do
       click_link t("edit")
       click_link t("delete")
 
-      expect(page).to have_title t("favourite.favourites")
+      expect(page).to have_title t("favourite.title")
       expect(Favourite.count).to eq 0
     end
   end

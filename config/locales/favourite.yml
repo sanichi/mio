@@ -2,15 +2,17 @@ en:
   favourite:
     any_category: Any Type
     category: Type
+    description: Sandra and Mark Orr‘s favourite books, films, TV programmes, plays and podcasts.
     edit: Edit Favourite
     favourite: Favourite
-    favourites: Our Favourites
+    keywords: favourites, film, book, TV, play, podcast, sandra, mark
     link: Link
     mark: Mark
+    new: New Favourite
     note: Note
     not_applicable: N/A
     sandra: Sandra
-    new: New Favourite
+    title: Our Favourites
     person: Fan
     abbr:
       mark: M

@@ -73,4 +73,8 @@ module ApplicationHelper
   def last_search(path)
     session["last_#{path}_search"] || path
   end
+
+  def my_meta_tags(key)
+    set_meta_tags title: t("#{key}.title"), keywords: t("#{key}.keywords"), description: t("#{key}.description")
+  end
 end

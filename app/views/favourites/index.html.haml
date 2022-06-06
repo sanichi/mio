@@ -10,12 +10,11 @@
     [:year,     t("year"),               :text,   lo[2], size: 7],
     [:order,    t("order"),              :select, lo[3], menu: favourite_order_menu(params[:order])],
   ]
-
-= render "utils/title", key: "favourite.favourites"
+  my_meta_tags "favourite"
 
 %section.mt-3
   .header.text-center
-    %h3= t("favourite.favourites")
+    %h3= t("favourite.title")
   .body
     = render "utils/search/form", index: favourites_path, inputs: inputs
     %table.table.table-bordered.table-sm.mt-3

@@ -1,7 +1,7 @@
 :ruby
   lo = Layout.new(md: [2], xs: [4]).to_a.first
   inputs = [[:season, t("match.season"), :select, lo, menu: season_menu(@data.season)]]
-  set_meta_tags title: t("pages.premier.title"), keywords: t("pages.premier.keywords"), description: t("pages.premier.description")
+  my_meta_tags "pages.premier"
 
 - content_for :javascript do
   = render partial: "pages/premier/tooltips", formats: :js
