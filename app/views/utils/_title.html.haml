@@ -1,6 +1,6 @@
 - defined?(text) || text = t(key)
 - defined?(header) || header = false
 
-- content_for :title, text
+- set_meta_tags title: text
 - if header
   %h1.text-center.mb-3= text

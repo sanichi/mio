@@ -23,13 +23,15 @@ en:
       drawn: D
       for: F
       diff: Δ
+      keywords: football, english, premier, league, table, bbc, results, fixtures, enhanced
+      description: Enhanced version of BBC Premier League table including upcoming fixtures as well as recent results and extra information on hovering/clicking a result/fixture.
       left: ←
       lost: L
-      name: Premier League
       played: P
       points: P
       right: →
       short: Premier
+      title: Premier League
       won: W
     risle:
       map: Rennie's Isle Map
