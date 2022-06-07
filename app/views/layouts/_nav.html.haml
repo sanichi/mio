@@ -40,12 +40,12 @@
 
         - if [Flat].map{ |c| can?(:read, c) }.any? || [:pam, :risle, :deeds].map{ |a| can?(a, :page) }.any?
           %li.dropdown
-            = link_to t("pages.risle.name"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
+            = link_to t("pages.risle.group"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
-              %li= link_to t("map"),        risle_path if can?(:risle, :page)
-              %li= link_to t("pages.pam"),  pam_path   if can?(:pam, :page)
-              %li= link_to t("flat.flats"), flats_path if can?(:read, Flat)
-              %li= link_to t("flat.deeds"), deeds_path if can?(:deeds, :page)
+              %li= link_to t("map"),           risle_path if can?(:risle, :page)
+              %li= link_to t("pages.risle.pam"), pam_path if can?(:pam, :page)
+              %li= link_to t("flat.flats"),    flats_path if can?(:read, Flat)
+              %li= link_to t("flat.deeds"),    deeds_path if can?(:deeds, :page)
 
         -  if [:aoc, :board, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Lesson, Login, Match, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
           %li.dropdown

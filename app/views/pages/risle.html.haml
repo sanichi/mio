@@ -1,4 +1,4 @@
-= render "utils/title", key: "pages.risle.map"
+- my_meta_tags "pages.risle.map"
 
 - if can?(:park, Flat) || params[:p]
   - content_for :javascript do

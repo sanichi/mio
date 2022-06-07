@@ -2,11 +2,11 @@
   lo = Layout.new(xl: [2], md: [4], xs: [6]).to_a
   inputs = [[:q, t("search"), :text, lo[0], placeholder: nil]]
 
-= render "utils/title", key: "pages.pam"
+= render "utils/title", key: "pages.risle.pam"
 
 %section
   .header.text-center
-    %h3= t("pages.pam")
+    %h3= t("pages.risle.pam")
   .body
     = render "utils/search/form", index: pam_path, inputs: inputs, remote: false
   - if @answer
