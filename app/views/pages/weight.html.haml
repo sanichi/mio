@@ -8,16 +8,16 @@
     [:start, t("mass.start"),     :select, lo[0], auto: false, menu: mass_months_menu],
     [:units, t("mass.unit.unit"), :select, lo[1], auto: false, menu: mass_unit_menu],
   ]
+  my_meta_tags "mass"
 
 - content_for :javascript do
   = render partial: "weight_elm_min", formats: :js
   = render partial: "weight", formats: :js
 
-= render "utils/title", key: "mass.mass"
 
 %section
   .header.text-center
-    %h3= t("mass.mass")
+    %h3= t("mass.title")
   .body
     = render "utils/search/form", index: weight_path, inputs: inputs, remote: false
     #elm-app

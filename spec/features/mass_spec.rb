@@ -16,7 +16,7 @@ describe Mass do
       fill_in t("mass.finish"), with: data.finish
       click_button t("save")
 
-      expect(page).to have_title t("mass.mass")
+      expect(page).to have_title t("mass.title")
 
       expect(Mass.count).to eq 1
       m = Mass.first
@@ -68,7 +68,7 @@ describe Mass do
         fill_in t("mass.finish"), with: data.finish
         click_button t("save")
 
-        expect(page).to have_title t("mass.mass")
+        expect(page).to have_title t("mass.title")
         expect(Mass.count).to eq 1
 
         click_link t("mass.new")
@@ -97,7 +97,7 @@ describe Mass do
       fill_in t("mass.finish"), with: ""
       click_button t("save")
 
-      expect(page).to have_title t("mass.mass")
+      expect(page).to have_title t("mass.title")
 
       expect(Mass.count).to eq 1
       m = Mass.first
@@ -116,7 +116,7 @@ describe Mass do
       click_link t("edit")
       click_link t("delete")
 
-      expect(page).to have_title t("mass.mass")
+      expect(page).to have_title t("mass.title")
       expect(Mass.count).to eq 0
     end
   end
