@@ -9,14 +9,13 @@
     [:kanji, t("place.kanji"),    :select, lo[2], menu: place_kanji_menu(params[:kanji])],
     [:order, t("order"),          :select, lo[3], menu: place_order_menu(params[:order])],
   ]
-
-= render "utils/title", key: "place.places"
+  my_meta_tags "place"
 
 .row
   %div{class: center(md: 10, lg: 8, xl: 6)}
     %section
       .header.text-center
-        %h3= t("place.places")
+        %h3= t("place.title")
       .body
         = render "utils/search/form", index: places_path, inputs: inputs
         %table{class: "table table-bordered table-sm mt-3"}
@@ -29,6 +28,6 @@
           %tbody{id: "results"}
             = render "results", places: @places
       .footer
-        = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success btn-sm"
+        = link_to t("pages.prefectures.title"),  prefectures_path, class: "btn btn-success btn-sm"
         - if can?(:create, Place)
           = link_to t("place.new"), new_place_path, class: "btn btn-primary btn-sm"

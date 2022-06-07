@@ -3,20 +3,22 @@ en:
     capital: Capital
     category: Type
     child: Child
+    description: Regions, prefectures, cities and places of interest in Japan.
     edit: Edit Place
     ename: English
     jname: Japanese
     kanji: Kanji
+    keywords: japan, regions, prefectures, cities, population, places of interest
     level: Level
     mark_position: Mark Position
     move: Move
     new: New Place
     notes: Notes
     parent: Parent
-    places: Places
     pop: Population
     reading: Reading
     text_position: Text Position
+    title: Places
     vbox: ViewBox
     wiki: Wiki Link
     categories:

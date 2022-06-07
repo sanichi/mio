@@ -26,5 +26,5 @@
         %div#map= render "map", vb: @place.vb, elements: @elements
       .footer
         = link_to @place.jname, @place, class: "btn btn-secondary btn-sm"
-        = link_to t("place.places"), last_search(places_path), class: "btn btn-success btn-sm"
-        = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success btn-sm"
+        = link_to t("place.title"), last_search(places_path), class: "btn btn-success btn-sm"
+        = link_to t("pages.prefectures.title"),  prefectures_path, class: "btn btn-success btn-sm"

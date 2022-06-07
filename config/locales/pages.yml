@@ -15,9 +15,9 @@ en:
       year: Year
       year_day: Year/Day
     prefectures:
-      desc: Interactive map with information about major Japanese regions
-      name: Map
-      title: Prefectures of Japan
+      description: Interactive map with information about Japanese regions, prefectures, cities and places of interest.
+      keywords: Japan, map, regions, prefectures, cities, places of interest
+      title: Map
     premier:
       against: A
       drawn: D

@@ -64,8 +64,8 @@
               %tr
                 %td{colspan: 2}= @place.notes_html
       .footer
-        = link_to t("place.places"), last_search(places_path), class: "btn btn-success btn-sm"
-        = link_to t("pages.prefectures.name"),  prefectures_path, class: "btn btn-success btn-sm"
+        = link_to t("place.title"), last_search(places_path), class: "btn btn-success btn-sm"
+        = link_to t("pages.prefectures.title"),  prefectures_path, class: "btn btn-success btn-sm"
         - if can?(:edit, Place)
           = link_to t("edit"), edit_place_path(@place), class: "btn btn-primary btn-sm"
           - if @place.mark_y || @place.text_y

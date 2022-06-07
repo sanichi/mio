@@ -9,7 +9,7 @@ describe Place do
 
   before(:each) do
     login
-    click_link t("place.places")
+    click_link t("place.title")
   end
 
   context "create" do
@@ -134,7 +134,7 @@ describe Place do
       click_link t("edit")
       click_link t("delete")
 
-      expect(page).to have_title t("place.places")
+      expect(page).to have_title t("place.title")
       expect(Place.count).to eq 3
     end
   end
