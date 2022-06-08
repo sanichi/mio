@@ -56,7 +56,7 @@
               %li= link_to t("tutorial.tutorials"),  tutorials_path if can?(:read, Tutorial)
               %li= link_to t("pages.board"),         board_path     if can?(:board, :page)
               %li= link_to t("pages.aoc.short"),     aoc_path       if can?(:aoc, :page)
-              %li= link_to t("pages.play"),          play_path      if can?(:play, :page)
+              %li= link_to t("pages.play.title"),    play_path      if can?(:play, :page)
               %li= link_to t("team.teams"),          teams_path     if can?(:read, Team)
               %li= link_to t("match.matches"),       matches_path   if can?(:read, Match)
               %li= link_to t("pages.premier.short"), premier_path   if can?(:premier, :page)

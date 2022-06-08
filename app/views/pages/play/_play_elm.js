@@ -5401,9 +5401,38 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$section = _VirtualDom_node('section');
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$link = function (title) {
+	var file = function () {
+		if (title === 'D‘ni') {
+			return 'Dni.elm';
+		} else {
+			return title + '.elm';
+		}
+	}();
+	return A2(
+		$elm$html$Html$a,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$href('https://bitbucket.org/sanichi/mio/src/main/app/views/pages/play/' + file),
+				$elm$html$Html$Attributes$class('float-end'),
+				$elm$html$Html$Attributes$target('external')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text('code')
+			]));
+};
+var $elm$html$Html$section = _VirtualDom_node('section');
 var $author$project$Main$panel = F2(
 	function (title, body) {
 		return A2(
@@ -5422,7 +5451,8 @@ var $author$project$Main$panel = F2(
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(title)
+							$elm$html$Html$text(title),
+							$author$project$Main$link(title)
 						])),
 					A2(
 					$elm$html$Html$div,

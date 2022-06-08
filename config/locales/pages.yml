@@ -2,17 +2,22 @@ en:
   pages:
     board: Board
     env: Env
-    play: Elm Play
     aoc:
       answers: Answers
       code: Elm code
       day: Day
+      description: Answers to Advent of Code problems mostly in Elm and Ruby.
       input: Input
       short: AOC
       thinking: Please wait, I'm thinking ...
+      keywords: advent, code, aoc, problems, solutions, answers, elm, ruby
       title: Advent of Code
       year: Year
       year_day: Year/Day
+    play:
+      description: Demonstrations of accomplishing simple tasks using Elm.
+      keywords: elm, demonstraion, play
+      title: Elm Play
     prefectures:
       description: Interactive map with information about Japanese regions, prefectures, cities and places of interest.
       keywords: Japan, map, regions, prefectures, cities, places of interest

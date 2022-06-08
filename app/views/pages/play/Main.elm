@@ -75,9 +75,23 @@ view model =
 panel : String -> Html Msg -> Html Msg
 panel title body =
     section [ class "card mt-3" ]
-        [ div [ class "header" ] [ text title ]
+        [ div [ class "header" ] [ text title, link title ]
         , div [ class "body" ] [ body ]
         ]
+
+
+link : String -> Html Msg
+link title =
+    let
+        file =
+            case title of
+                "D‘ni" ->
+                    "Dni.elm"
+
+                _ ->
+                    title ++ ".elm"
+    in
+    a [ "https://bitbucket.org/sanichi/mio/src/main/app/views/pages/play/" ++ file |> href, class "float-end", target "external" ] [ text "code" ]
 
 
 
