@@ -32,6 +32,9 @@ class Team < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{name})
       matches = matches.where(sql)
     end
+    if (division = params[:division].to_i) >= MIN_DIVISION
+      matches = matches.where(division: division)
+    end
     paginate(matches, params, path, opt)
   end
 

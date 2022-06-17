@@ -68,7 +68,7 @@ namespace :match do
   desc "scrape monthly or seasonal data for all the premier league teams"
   task :all, [:scope, :print] => :environment do |task, args|
     scope = args[:scope] == "s" ? "seasonal" : "monthly"
-    @print = args[:print] == 'p'
+    @print = args[:print] == "p"
     report "starting #{scope} scrape"
     Team.where(division: 1).all.each { |team| scrape(team, scope) }
   end

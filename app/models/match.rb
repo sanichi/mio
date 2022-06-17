@@ -9,7 +9,7 @@ class Match < ApplicationRecord
   validates :home_team_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: [:season, :away_team_id] }
   validates :away_team_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: [:season, :home_team_id] }
   validates :home_score, :away_score, numericality: { integer_only: true, greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :season, numericality: { integer_only: true, greater_than_or_equal_to: 2020 }
+  validates :season, numericality: { integer_only: true, greater_than_or_equal_to: FIRST_SEASON }
   validates :date, presence: true, uniqueness: { scope: :home_team_id }
   validate :team_cant_play_itself
 
@@ -44,7 +44,7 @@ class Match < ApplicationRecord
 
   def self.current_season
     today = Date.today
-    if today.month <= 6
+    if today.month <= 5
       today.year - 1
     else
       today.year

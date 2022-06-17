@@ -1,5 +1,7 @@
 - defined?(multiple) || multiple = false
 - defined?(auto)     || auto = true
+- defined?(prompt)   || prompt = nil
+
 - auto_submit = auto && !multiple ? "auto-submit" : ""
 
-= select_tag param, menu, class: "form-select #{auto_submit}", multiple: multiple
+= select_tag param, menu, class: "form-select #{auto_submit}", multiple: multiple, prompt: prompt

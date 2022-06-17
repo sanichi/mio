@@ -1,6 +1,9 @@
 :ruby
-  lo = Layout.new(xs: [4], md: [2]).to_a.first
-  inputs = [[:q, t("search"), :text, lo, autofocus: true]]
+  lo = Layout.new(xs: [4,4], md: [3,3]).to_a
+  inputs = [
+    [:q,        t("search"),          :text, lo[0], autofocus: true],
+    [:division, t("team.division"), :select, lo[1], menu: team_division_search_menu, prompt: t("team.division")],
+  ]
 
 = render "utils/title", key: "team.teams"
 
