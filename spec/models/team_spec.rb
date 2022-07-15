@@ -6,7 +6,16 @@ describe Team do
     let!(:team) { create(:team, slug: "manchester-city") }
 
     it "month" do
-      results = team.monthResults
+      today = Date.today
+      results =
+        case today.month
+        when 6
+          team.monthResults("#{today.year}-05")
+        when 7
+          team.monthResults("#{today.year}-08")
+        else
+          team.monthResults
+        end
       expect(results).to be_a(Array)
       results.each do |r|
         expect(r[:home_team]).to be_present
