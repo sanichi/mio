@@ -45,10 +45,10 @@ class Grammar < ApplicationRecord
       matches = matches.order(:title)
     when "level"
       matches = matches.order(level: :desc, title: :asc)
-    when "updated"
-      matches = matches.order(updated_at: :desc)
-    else
+    when "ref"
       matches = matches.by_ref
+    else
+      matches = matches.order(updated_at: :desc)
     end
     if LEVELS.include?(params[:level].to_i)
       matches = matches.where(level: params[:level].to_i)

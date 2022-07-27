@@ -1,6 +1,6 @@
 module GrammarHelper
   def grammar_order_menu(selected)
-    opts = %w/ref title level updated/.map { |o| [t("grammar.#{o}"), o] }
+    opts = %w/updated ref title level/.map { |o| [t("grammar.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
