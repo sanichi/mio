@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_21_150814) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_29_173627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_150814) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.text "notes"
+  end
+
+  create_table "grammar_groups", force: :cascade do |t|
+    t.string "title", limit: 256
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "grammars", force: :cascade do |t|

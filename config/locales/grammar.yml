@@ -11,3 +11,8 @@ en:
     ref: Ref
     title: Title
     updated: Last updated
+    group:
+      edit: Edit Grammar Group
+      group: Grammar Group
+      groups: Grammar Groups
+      new: New Grammar Group

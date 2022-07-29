@@ -1,0 +1,6 @@
+:ruby
+  inputs = [
+    [:title, t("grammar.title"), :text],
+  ]
+
+= render "utils/crud/form", object: group, index: grammar_groups_path, inputs: inputs, title: title

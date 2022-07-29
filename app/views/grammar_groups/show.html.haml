@@ -1,0 +1,14 @@
+= render "utils/title", text: @group.title
+
+.row
+  %div{class: center(lg: 10, xx: 8)}
+    %section
+      .header
+        %h5.d-inline= @group.title
+      .body
+      .footer
+        = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-success btn-sm"
+        - if can?(:edit, @group)
+          = link_to t("edit"), edit_grammar_group_path(@group), class: "btn btn-primary btn-sm"
+        - if can?(:delete, @group)
+          = link_to t("delete"), @group, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }

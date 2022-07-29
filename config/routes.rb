@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     patch :quick_level_update, on: :member
     delete :remove_example, on: :member
   end
+  resources :grammar_groups
   resources :lessons
   resources :logins, only: [:index]
   resources :masses, except: [:show]
