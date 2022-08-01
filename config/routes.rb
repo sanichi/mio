@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   resources :grammars do
     patch :quick_level_update, on: :member
     delete :remove_example, on: :member
+    patch :add_group, on: :member
+    patch :remove_group, on: :member
   end
   resources :grammar_groups
   resources :lessons

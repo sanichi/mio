@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_29_173627) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_30_124951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_29_173627) do
     t.string "title", limit: 256
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "grammar_groups_grammars", id: false, force: :cascade do |t|
+    t.bigint "grammar_id"
+    t.bigint "grammar_group_id"
+    t.index ["grammar_group_id"], name: "index_grammar_groups_grammars_on_grammar_group_id"
+    t.index ["grammar_id"], name: "index_grammar_groups_grammars_on_grammar_id"
   end
 
   create_table "grammars", force: :cascade do |t|

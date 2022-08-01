@@ -6,6 +6,9 @@
       .header
         %h5.d-inline= @group.title
       .body
+        %ul
+          - @group.grammars.by_ref.each do |grammar|
+            %li= link_to grammar.title, grammar
       .footer
         = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-success btn-sm"
         - if can?(:edit, @group)

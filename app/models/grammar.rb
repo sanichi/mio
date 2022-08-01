@@ -18,13 +18,9 @@ class Grammar < ApplicationRecord
 
     * [1st ref](https://www.example.com/|)
     * [2st ref](https://www.example.com/|)
-
-    Related:
-
-    * [Previous](/grammars/1)
-    * This One
-    * [Next](/grammars/3)
   EON
+
+  has_and_belongs_to_many :groups, class_name: "GrammarGroup"
 
   before_validation :normalize_attributes
   after_save :reset_examples_on_regexp_change
@@ -88,9 +84,10 @@ class Grammar < ApplicationRecord
   end
 
   def note_html
+    body = note.present? ? note.strip : ""
     jextra = jregexp.present? ? "#{I18n.t('grammar.jregexp')}: `#{jregexp}`\n\n" : ""
     eextra = eregexp.present? ? "#{I18n.t('grammar.eregexp')}: `#{eregexp}`\n\n" : ""
-    markdown = (note || "").prepend(eextra).prepend(jextra)
+    markdown = body.prepend(eextra).prepend(jextra).concat(related)
     to_html(link_vocabs(markdown))
   end
 
@@ -136,5 +133,23 @@ class Grammar < ApplicationRecord
 
   def setup_basic_note
     update_column(:note, NOTE) if note.blank?
+  end
+
+  def related
+    ggs = groups.by_title
+    return "" if ggs.empty?
+    lines = ["\n"]
+    ggs.each do |gg|
+      lines.push "\n"
+      lines.push "[#{gg.title}](/grammar_groups/#{gg.id}):\n\n"
+      gg.grammars.by_ref.each do |g|
+        if id == g.id
+          lines.push "* #{g.title}\n"
+        else
+          lines.push "* [#{g.title}](/grammars/#{g.id})\n"
+        end
+      end
+    end
+    lines.join("")
   end
 end

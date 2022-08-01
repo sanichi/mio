@@ -42,3 +42,20 @@
           = link_to t("edit"), edit_grammar_path(@grammar), class: "btn btn-primary btn-sm"
         - if can?(:delete, @grammar)
           = link_to t("delete"), @grammar, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+      - lo = Layout.new(xl: [2,10], md: [3,9], sm: [4,8], xs: [5,7]).to_a
+      - unless @others.empty?
+        .footer
+          = form_tag add_group_grammar_path(@grammar), method: :patch, class: "row g-3" do
+            %div{class: lo[0]}
+              = button_tag t("grammar.group.add"), type: "submit", class: "btn btn-success"
+            %div{class: lo[1]}
+              = label_tag :group_id, "group", class: "visually-hidden"
+              = select_tag :group_id, grammar_group_menu(@others), class: "form-select"
+      - unless @groups.empty?
+        .footer
+          = form_tag remove_group_grammar_path(@grammar), method: :patch, class: "row g-3" do
+            %div{class: lo[0]}
+              = button_tag t("grammar.group.remove"), type: "submit", class: "btn btn-success"
+            %div{class: lo[1]}
+              = label_tag :group_id, "group", class: "visually-hidden"
+              = select_tag :group_id, grammar_group_menu(@groups), class: "form-select"

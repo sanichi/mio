@@ -12,7 +12,9 @@ en:
     title: Title
     updated: Last updated
     group:
+      add: Add Group
       edit: Edit Grammar Group
       group: Grammar Group
       groups: Grammar Groups
       new: New Grammar Group
+      remove: Remove Group

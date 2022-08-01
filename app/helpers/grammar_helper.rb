@@ -9,4 +9,9 @@ module GrammarHelper
     opts.unshift [t("all"), 0]
     options_for_select(opts, selected)
   end
+
+  def grammar_group_menu(groups)
+    opts = groups.map { |g| [g.title, g.id] }
+    options_for_select(opts)
+  end
 end

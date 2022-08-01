@@ -4,6 +4,8 @@ class GrammarGroup < ApplicationRecord
 
   MAX_TITLE = 200
 
+  has_and_belongs_to_many :grammars
+
   before_validation :normalize_attributes
 
   validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
