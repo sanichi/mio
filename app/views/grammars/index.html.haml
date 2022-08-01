@@ -30,4 +30,5 @@
             = render "results", grammars: @grammars
   - if can?(:create, Grammar)
     .footer
-      = link_to t("grammar.new"), new_grammar_path, class: "btn btn-primary btn-sm"
+      = link_to t("grammar.new"), new_grammar_path, class: "btn btn-sm btn-primary"
+      = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-sm btn-success"
