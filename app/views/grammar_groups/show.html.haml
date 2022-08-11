@@ -11,6 +11,7 @@
             %li= link_to grammar.title, grammar
       .footer
         = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-success btn-sm"
+        = link_to t("grammar.grammar"), grammars_path, class: "btn btn-sm btn-success"
         - if can?(:edit, @group)
           = link_to t("edit"), edit_grammar_group_path(@group), class: "btn btn-primary btn-sm"
         - if can?(:delete, @group)
