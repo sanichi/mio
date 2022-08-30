@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "sign_out" => "sessions#destroy"
   resource :otp_secret, only: [:new, :create]
 
-  %w[aoc board env deeds magic pam play prefectures premier risle ruby weight].each do |page|
+  %w[aoc board env deeds magic pam play prefectures premier risle ruby weight wordle].each do |page|
     get page => "pages##{page}"
   end
 

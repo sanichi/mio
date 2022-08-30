@@ -56,3 +56,16 @@ en:
         blv: bays parked on by the least number of vehicles
         mub: most parked on bays
         lub: least parked on bays
+    wordle:
+      absent: Absent
+      description: Help for solving 5-letter Wordle problems
+      gone: Eliminated
+      keywords: wordle, 5-letter, help
+      left: Remaining
+      letter1: Letter 1
+      letter2: Letter 2
+      letter3: Letter 3
+      letter4: Letter 4
+      letter5: Letter 5
+      present: Present
+      title: Wordle

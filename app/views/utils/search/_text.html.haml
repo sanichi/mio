@@ -1,6 +1,11 @@
 - defined?(placeholder) || placeholder = label
 - defined?(autofocus)   || autofocus = nil
 - defined?(size)        || size = 10
+- defined?(maxlength)   || maxlength = nil
+- defined?(center)      || center = false
 - defined?(value)       || value = params[param]
 
-= text_field_tag param, value, class: "form-control", placeholder: placeholder, size: size, autofocus: autofocus
+- klass = "form-control"
+- klass += " text-center" if center
+
+= text_field_tag param, value, class: klass, placeholder: placeholder, size: size, maxlength: maxlength, autofocus: autofocus

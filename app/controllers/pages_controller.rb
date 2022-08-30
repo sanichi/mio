@@ -24,6 +24,10 @@ class PagesController < ApplicationController
     @elements = Place.map_elements.to_a
   end
 
+  def wordle
+    @wordle = Wordle.new(params)
+  end
+
   def ruby
     year = params[:year].to_i
     day  = params[:day].to_i

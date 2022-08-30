@@ -61,6 +61,7 @@
               %li= link_to t("team.teams"),          teams_path     if can?(:read, Team)
               %li= link_to t("match.matches"),       matches_path   if can?(:read, Match)
               %li= link_to t("pages.premier.short"), premier_path   if can?(:premier, :page)
+              %li= link_to t("pages.wordle.title"),  wordle_path    if can?(:wordle, :page)
               %li= link_to t("user.users"),          users_path     if can?(:read, User)
               %li= link_to t("login.logins"),        logins_path    if can?(:read, Login)
               %li= link_to t("pages.env"),           env_path       if can?(:env, :page)
