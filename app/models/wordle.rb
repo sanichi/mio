@@ -32,27 +32,40 @@ class Wordle
 
   def initialize(params)
     @list = LIST.dup
+    mask = []
 
-    (1..5).each do |position|
-      if (letters = clean(params["letter#{position}"])).length == 1
+    (0..4).each do |i|
+      if (letters = clean(params["letter#{i + 1}"])).length == 1
         @list.select! do |word|
-          word[position - 1] == letters[0]
+          word[i] == letters[0]
         end
+      else
+        mask.push(i)
       end
     end
 
-    if (absent = clean(params[:absent])).length > 0
-      absent.each do |letter|
-        @list.select! do |word|
-          !word.include?(letter)
+    unless mask.empty?
+      if (absent = clean(params[:absent])).length > 0
+        absent.each do |letter|
+          @list.select! do |word|
+            if mask.length == 5
+              !word.include?(letter)
+            else
+              !mask.map{|i| word[i]}.join.include?(letter)
+            end
+          end
         end
       end
-    end
 
-    if (present = clean(params[:present])).length > 0
-      present.each do |letter|
-        @list.select! do |word|
-          word.include?(letter)
+      if (present = clean(params[:present])).length > 0
+        present.each do |letter|
+          @list.select! do |word|
+            if mask.length == 5
+              word.include?(letter)
+            else
+              mask.map{|i| word[i]}.join.include?(letter)
+            end
+          end
         end
       end
     end
