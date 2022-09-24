@@ -33,19 +33,30 @@ class Wordle
   def initialize(params)
     @list = LIST.dup
     mask = []
+    absent = clean(params[:absent])
+    present = clean(params[:present])
 
     (0..4).each do |i|
-      if (letters = clean(params["letter#{i + 1}"])).length == 1
+      p = params["letter#{i + 1}"]
+
+      if (negative = clean(p, true)).length > 0
         @list.select! do |word|
-          word[i] == letters[0]
+          !negative.include?(word[i])
         end
+        present = (present + negative).uniq
       else
-        mask.push(i)
+        if (positive = clean(p)).length == 1
+          @list.select! do |word|
+            word[i] == positive[0]
+          end
+        else
+          mask.push(i)
+        end
       end
     end
 
     unless mask.empty?
-      if (absent = clean(params[:absent])).length > 0
+      if absent.length > 0
         absent.each do |letter|
           @list.select! do |word|
             if mask.length == 5
@@ -57,7 +68,7 @@ class Wordle
         end
       end
 
-      if (present = clean(params[:present])).length > 0
+      if present.length > 0
         present.each do |letter|
           @list.select! do |word|
             if mask.length == 5
@@ -76,5 +87,9 @@ class Wordle
 
   private
 
-  def clean(p) = p.to_s.downcase.split("").select{|l| l.match?(/[a-z]/)}.uniq
+  def clean(p, negative=false)
+    chars = p.to_s.downcase.split("")
+    return [] if negative && chars.shift != "!"
+    chars.select{|l| l.match?(/[a-z]/)}.uniq
+  end
 end
