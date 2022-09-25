@@ -32,7 +32,7 @@ class Wordle
 
   def initialize(params)
     @list = LIST.dup
-    mask = []
+    mask = (0..4).to_a
     absent = clean(params[:absent])
     present = clean(params[:present])
 
@@ -44,14 +44,11 @@ class Wordle
           !negative.include?(word[i])
         end
         present = (present + negative).uniq
-      else
-        if (positive = clean(p)).length == 1
-          @list.select! do |word|
-            word[i] == positive[0]
-          end
-        else
-          mask.push(i)
+      elsif (positive = clean(p)).length == 1
+        @list.select! do |word|
+          word[i] == positive[0]
         end
+        mask.delete(i)
       end
     end
 
