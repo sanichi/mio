@@ -7,6 +7,7 @@ module Wk
     MAX_MEANING = 128
     MAX_READING = 128
     IMAGES = Rails.root + "public" + "images"
+    PDFS = Rails.root + "public" + "pdf"
 
     has_and_belongs_to_many :radicals
     has_and_belongs_to_many :similar_kanjis, class_name: "Kanji", association_foreign_key: "similar_id"
@@ -70,6 +71,13 @@ module Wk
         return "/images/#{file}" if path.file?
       end
       nil
+    end
+
+    def pdf_path
+      file = "#{character}.pdf"
+      path = PDFS + file
+      return unless path.file?
+      "/pdf/#{file}"
     end
 
     def self.images

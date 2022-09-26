@@ -17,7 +17,10 @@
       %tbody
         %tr.d-flex
           %td.col-3= t("wk.meaning")
-          %td.col-9= @kanji.meaning
+          %td.col-9
+            = @kanji.meaning
+            - if path = @kanji.pdf_path
+              = link_to "PDF", path
         %tr.d-flex
           %td.col-3= t("wk.reading")
           %td.col-9= @kanji.reading
