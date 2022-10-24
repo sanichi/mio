@@ -5,6 +5,7 @@ module Wk
 
     MAX_EXAMPLE = 200
     PATTERN = /\{([^}|]+)(?:\|([^}|]+))?\}/
+    PPATTERN = /「([^」|]+)(?:\|([^」|]+))?」/
 
     has_and_belongs_to_many :vocabs
     has_one :test, as: :testable, dependent: :destroy
@@ -55,6 +56,14 @@ module Wk
           else
             match
           end
+        end
+      end.gsub(PPATTERN) do |match|
+        display = $1
+        jname = $2 || display
+        if place = Place.find_by(jname: jname)
+          %(<a href="/places/#{place.id}" #{target}>#{display}</a>)
+        else
+          match
         end
       end.html_safe
     end
