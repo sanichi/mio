@@ -22,6 +22,12 @@ module Vocabable
     (?:\|([^«<>»|]+))?
     [»>]
   /x
+  PPATTERN = /
+    [「]
+    ([^「」|]+)
+    (?:\|([^「」|]+))?
+    [」]
+  /x
 
   included do
     def link_vocabs(text)
@@ -42,6 +48,14 @@ module Vocabable
           note.to_markdown(display: display)
         elsif kanji = Wk::Kanji.find_by(character: character)
           kanji.to_markdown(display: display)
+        else
+          match
+        end
+      end.gsub(PPATTERN) do |match|
+        display = $1
+        jname = $2 || display
+        if place = Place.find_by(jname: jname)
+          place.to_markdown(display: display)
         else
           match
         end

@@ -143,6 +143,11 @@ class Place < ApplicationRecord
     parent.present? && sjname == parent.sjname
   end
 
+  def to_markdown(display: nil)
+    display = jname unless display
+    "[#{display}](/places/#{id})"
+  end
+
   private
 
   def normalize_attributes
