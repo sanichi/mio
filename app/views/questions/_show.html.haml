@@ -15,7 +15,7 @@
       = link_to_if last, t("question.icons.last"), { controller: "questions", action: "show", id: last, qids: qids_param }, remote: true
       = link_to_if nixt, t("question.icons.next"), { controller: "questions", action: "show", id: nixt, qids: qids_param }, remote: true
       = "#{number} of #{count}"
-      #solution.badge.badge-info{"data-solution" => question.solution}= "?"
+      %span#solution.badge.bg-success{"data-solution" => question.solution}= "?"
       - if can?(:edit, @problem)
         = link_to t("problem.icons.edit"), edit_question_path(@question), class: "badge badge-info"
   - if question.image.present?
