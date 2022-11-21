@@ -87,6 +87,7 @@ class Wordle
           hash[letter] += 1
         end
       end
+      hash.delete_if{|l,c| c == 1}
       @letters = hash.sort_by(&:last).reverse
     end
     @gone = TOTAL - @left
