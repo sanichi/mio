@@ -1,5 +1,5 @@
 class Wordle
-  attr_reader :gone, :left, :list
+  attr_reader :gone, :left, :list, :letters
 
   LIST = %w/
     aback abase abate abbey abbot abhor abide abled abode abort about above abuse abyss acorn acrid actor acute adage adapt adept admin admit adobe adopt adore adorn adult affix afire afoot afoul after again agape agate agent agile aging aglow agony agora agree ahead aider aisle alarm album alert algae alibi alien align alike alive allay alley allot allow alloy aloft alone along aloof aloud alpha altar alter amass amaze amber amble amend amiss amity among ample amply amuse angel anger angle angry angst anime ankle annex annoy annul anode antic anvil aorta apart aphid aping apnea apple apply apron aptly arbor ardor arena argue arise armor aroma arose array arrow arson artsy ascot ashen aside askew assay asset atoll atone attic audio audit augur aunty avail avert avian avoid await awake award aware awash awful awoke axial axiom axion azure
@@ -79,6 +79,16 @@ class Wordle
     end
 
     @left = @list.length
+    @letters = []
+    if @left < TOTAL
+      hash = Hash.new(0)
+      @list.each do |word|
+        word.each_char do |letter|
+          hash[letter] += 1
+        end
+      end
+      @letters = hash.sort_by(&:last).reverse
+    end
     @gone = TOTAL - @left
   end
 

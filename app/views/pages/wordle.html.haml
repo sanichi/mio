@@ -30,5 +30,8 @@
         = t("pages.wordle.left")
       = @wordle.left
     - if @wordle.left > 0 && @wordle.left < Wordle::TOTAL
-      %p.ms-3.me-3{class: @wordle.left <= 10 ? "text-center" : ""}
+      - center = @wordle.left <= 10
+      %p.ms-3.me-3{class: center ? "text-center" : ""}
         = @wordle.list.map(&:upcase).join(", ")
+      %p.ms-3.me-3{class: center ? "text-center" : ""}
+        = @wordle.letters.map{|l,c| "#{l.upcase}: #{c}"}.join(", ")
