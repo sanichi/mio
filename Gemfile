@@ -24,12 +24,12 @@ gem 'jbuilder', '~> 2.7'
 gem 'meta-tags', '~> 2.12'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 5.0'
+  gem 'rspec-rails', '< 7'
   gem 'capybara', '~> 3.28'
   gem 'byebug', platforms: :mri
   gem 'launchy', '~> 2.5'
   gem 'factory_bot_rails', '~> 6.0'
-  gem 'faker', '~> 2.10'
+  gem 'faker', '< 4'
   gem 'selenium-webdriver', '~> 4.0'
 end
 
@@ -38,7 +38,7 @@ group :test do
 end
 
 group :development do
-  gem 'puma', '~> 5.0'
+  gem 'puma', '< 7'
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen', '~> 3.2'
