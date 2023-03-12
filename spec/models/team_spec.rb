@@ -18,6 +18,7 @@ describe Team do
         end
       expect(results).to be_a(Array)
       results.each do |r|
+        expect(r).to be_a(Hash)
         expect(r[:home_team]).to be_present
         expect(r[:away_team]).to be_present
         expect(r[:date]).to be_a(Date)
@@ -31,6 +32,7 @@ describe Team do
       expect(results).to be_a(Array)
       expect(results).to_not be_empty
       results.each do |r|
+        expect(r).to be_a(Hash)
         expect(r[:home_team]).to be_present
         expect(r[:away_team]).to be_present
         expect(r[:date]).to be_a(Date)
