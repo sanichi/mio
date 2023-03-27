@@ -7,12 +7,14 @@
 #
 # Then from mio, run:
 #
-# bin/rake kvg:update
+# bin/rake kvg:update       # only updates blank ones
+# bin/rake kvg:update\[y\]  # updates all
+
 #
 class KvgZu
   WIDTH = 109
   HEIGHT = 109
-  SVG_HEAD = "<svg width=\"_WIDTH_px\" height=\"#{HEIGHT}px\" viewBox=\"0 0 _WIDTH_px #{HEIGHT}px\" xmlns=\"http://www.w3.org/2000/svg\" version\"1.1\">"
+  SVG_HEAD = "<svg width=\"_WIDTH_px\" height=\"#{HEIGHT}px\" viewBox=\"0 0 _WIDTH_ #{HEIGHT}\" xmlns=\"http://www.w3.org/2000/svg\" version\"1.1\">"
   PATH_STYLE = 'fill:none;stroke:black;stroke-width:3'
   GRAY_STYLE = 'fill:none;stroke:#999;stroke-width:3'
   LINE_STYLE = 'stroke:#ddd;stroke-width:2'
