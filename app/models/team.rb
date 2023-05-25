@@ -50,7 +50,7 @@ class Team < ApplicationRecord
       if body =~ /<script>Morph\.toInit\.payloads\.push\(function\(\) \{ Morph\.setPayload\('\/data\/bbc-morph-football-scores-match-list-data([^<]+)/
         script = $1
       else
-        raise "can't find script"
+        raise "can't find script for #{month}"
       end
 
       # try to extract the JSON from this
@@ -60,18 +60,18 @@ class Team < ApplicationRecord
         if body =~ /No fixtures found for this date/
           return []
         else
-          raise "can't get JSON"
+          raise "can't get JSON for #{month}"
         end
       end
 
-      # parse and return the JSON
+      # parse the JSON
       data = JSON.parse(json, symbolize_names: true)
 
       # get the array of tournaments
       case data
       in body: { matchData: Array => tournaments }
       else
-        raise "can't get tournaments"
+        raise "can't get tournaments for #{month}"
       end
 
       # extract events from the premier league tournamants
@@ -83,7 +83,14 @@ class Team < ApplicationRecord
           nil
         end
       end.compact.reduce([], :concat)
-      raise "can't get events" unless events.size > 0
+      unless events.size > 0
+        if month =~ /-0[67]\z/
+          # allow June and July to return no results
+          return []
+        else
+          raise "can't get events for #{month}"
+        end
+      end
 
       # turn these events into hashes of just the data we want (team names and scores)
       events.map do |event|
@@ -112,7 +119,7 @@ class Team < ApplicationRecord
             away_score: away_score,
           }
         else
-          raise "can't match event"
+          raise "can't match event for #{month}"
         end
       end
     rescue => e
