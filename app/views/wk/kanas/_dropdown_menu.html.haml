@@ -1,0 +1,3 @@
+= form_tag wk_kanas_path, method: :get, class: "form-inline dropdown-item nav-link" do
+  = label_tag :hkquery, t("wk.kana.kana"), class: "visually-hidden"
+  = text_field_tag :hkquery, params[:hkquery], class: "form-control", placeholder: t("wk.kana.kana"), size: 8

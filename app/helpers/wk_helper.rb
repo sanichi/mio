@@ -28,6 +28,12 @@ module WkHelper
     options_for_select(opts, selected)
   end
 
+  def wk_kana_order_menu(selected)
+    opts = %w/level last_updated/.map { |i| [t("wk.#{i}"), i] }
+    opts.insert 1, [t("wk.vocab.characters"), "characters"]
+    options_for_select(opts, selected)
+  end
+
   def wk_vocab_parts_menu(selected)
     opts = t("wk.parts").map { |k, v| [v, k] }
     options_for_select(opts, selected)

@@ -1,0 +1,15 @@
+-# custom version of utils/crud/_form
+.row
+  %div{class: center(xl: 10)}
+    = form_for kana, html: { class: "crud" } do |form|
+      %section
+        .header.text-center
+          %h3.d-inline= kana.characters
+        .body
+          -# custom version of utils/crud/_area
+          = form.label :notes, t("notes"), class: "form-label"
+          = form.text_area :notes, rows: 20, class: "form-control"
+        .footer
+          -# custom version of utils/crud/_buttons
+          = form.submit t("save"), class: "btn btn-primary btn-sm"
+          = link_to t("cancel"), kana, class: "btn btn-secondary btn-sm"

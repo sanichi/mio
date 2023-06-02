@@ -36,7 +36,19 @@ class ApplicationController < ActionController::Base
   end
 
   def remember_last_search(path)
-    session["last_#{path}_search"] = request.fullpath
+    fullpath = request.fullpath
+    extra = "last_search=true"
+    unless fullpath.include?(extra)
+      fullpath += fullpath.include?("?") ? "&" : "?"
+      fullpath += extra
+    end
+    session["last_#{path}_search"] = fullpath
+  end
+
+  def shortcut_search(results)
+    if results.count == 1 && params[:last_search].blank?
+      redirect_to results.matches.first
+    end
   end
 
   def store_return_page(resource, return_page)

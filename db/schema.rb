@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_30_124951) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_29_123426) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -353,6 +353,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_30_124951) do
     t.bigint "vocab_id", null: false
     t.index ["group_id"], name: "index_wk_groups_vocabs_on_group_id"
     t.index ["vocab_id"], name: "index_wk_groups_vocabs_on_vocab_id"
+  end
+
+  create_table "wk_kanas", force: :cascade do |t|
+    t.string "characters", limit: 24
+    t.boolean "hidden", default: false
+    t.date "last_updated"
+    t.integer "level", limit: 2
+    t.string "meaning", limit: 256
+    t.text "meaning_mnemonic"
+    t.text "notes"
+    t.integer "wk_id", default: 0
+    t.string "parts", limit: 80
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "wk_kanjis", force: :cascade do |t|

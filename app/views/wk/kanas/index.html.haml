@@ -1,0 +1,35 @@
+:ruby
+  lo = Layout.new(
+    lg: [2,2,1,2,1,2,2],
+    md: [[3,3,2],[3,1,2,2]],
+    xs: [[4,3,3],[4,3,3,2]],
+  ).to_a
+  inputs = [
+    [:hkquery, t("wk.kana.kana"),   :text,   lo[0], placeholder: t("wk.kana.kana")],
+    [:notes,   t("wk.vocab.notes"), :text,   lo[1], placeholder: t("wk.vocab.notes")],
+    [:level,   t("wk.level"),       :select, lo[2], menu: wk_level_menu(params[:level])],
+    [:parts,   t("wk.vocab.parts"), :select, lo[3], menu: wk_vocab_parts_menu(params[:parts]), multiple: true, size: 4],
+    [:id,      t("wk.id"),          :text,   lo[4], placeholder: t("wk.short.id")],
+    [:order,   t("order"),          :select, lo[5], menu: wk_kana_order_menu(params[:order])],
+    [:hidden,  t("hidden"),         :select, lo[6], menu: wk_hidden_menu(params[:hidden])],
+  ]
+
+= render "utils/title", key: "wk.kana.kanas"
+-# = render "wk/readings/utils"
+
+%section
+  .header.text-center
+    %h3= t("wk.kana.kanas")
+  .body
+    = render "utils/search/form", index: wk_kanas_path, inputs: inputs, remote: false
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        = render "table_header"
+      %tbody
+        = render "table_rows", kanas: @kanas.matches
+        = render "utils/pagination_links", pager: @kanas, columns: 4
+  .footer
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.kana.kanas"), wk_kanas_path, class: "btn btn-success btn-sm"

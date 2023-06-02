@@ -48,6 +48,10 @@ en:
       meaning: Meaning Mnemonic
       mnemonic: Mnemonic
       reading: Reading Mnemonic
+    kana:
+      edit: Edit Notes
+      kana: Kana
+      kanas: Kanas
     kanji:
       kanji: Kanji
       kanjis: Kanjis

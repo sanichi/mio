@@ -9,6 +9,7 @@ module Wk
   #   bin/rails r Wk::Radical.update
   #   bin/rails r Wk::Kanji.update
   #   bin/rails r Wk::Vocab.update
+  #   bin/rails r Wk::Kana.update
   #   bin/rails r Wk::Reading.update
   #   bin/rails r Wk::VerbPair.update
   # individual vocabs can be investigated using their WK ID
@@ -20,6 +21,7 @@ module Wk
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
     Wk::Vocab.update(days)
+    Wk::Kana.update(days)
     Wk::Reading.update(days)
   end
 end

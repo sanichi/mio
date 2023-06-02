@@ -69,6 +69,7 @@
       = link_to t("wk.vocab.edit"), edit_wk_vocab_path(@vocab), class: "btn btn-primary btn-sm"
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
     = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success btn-sm"
+    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "btn btn-success btn-sm"
     = link_to t("wk.example.examples"), wk_examples_path(query: @vocab.characters), class: "btn btn-success btn-sm"
     = link_to t("wk.group.groups"), wk_groups_path(query: @vocab.characters), class: "btn btn-success btn-sm"
