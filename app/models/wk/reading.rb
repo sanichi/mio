@@ -24,7 +24,7 @@ module Wk
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }
 
     belongs_to :vocab
-    has_many :audios, dependent: :destroy
+    has_many :audios, as: :audible, dependent: :destroy
 
     default_scope { order(primary: :desc) }
 
@@ -147,11 +147,12 @@ module Wk
           end
           db_readings.each do | characters, reading |
             wk_audios[characters].each do |file|
-              db_audio = Audio.find_by(reading_id: reading.id, file: file)
+              db_audio = Audio.find_by(audible_id: reading.id, audible_type: "Wk::Reading", file: file)
               if db_audio
                 stats["matched audios"] += 1
               else
-                reading.audios << Audio.create!(reading_id: reading.id, file: file)
+                reading.audios << Audio.create!(audible_id: reading.id, audible_type: "Wk::Reading", file: file)
+                # reading.audios.create!(file: file)
                 stats["new audios"] += 1
               end
             end

@@ -3,7 +3,7 @@ module Wk
     MAX_FILE = 64
     DEFAULT_BASE = "https://files.wanikani.com/"
 
-    belongs_to :reading
+    belongs_to :audible, polymorphic: true
 
     validates :file, presence: true, length: { maximum: MAX_FILE }, uniqueness: true
 

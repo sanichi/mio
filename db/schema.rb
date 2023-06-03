@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_29_123426) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_03_152835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -324,6 +324,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_123426) do
   create_table "wk_audios", force: :cascade do |t|
     t.string "file", limit: 64
     t.integer "reading_id"
+    t.integer "audible_id"
+    t.string "audible_type"
     t.index ["reading_id"], name: "index_wk_audios_on_reading_id"
   end
 
