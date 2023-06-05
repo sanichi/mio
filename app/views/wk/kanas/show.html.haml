@@ -1,3 +1,4 @@
+= render "utils"
 = render "utils/title", text: @kana.characters
 
 %section
@@ -9,6 +10,9 @@
         %tr
           %td= t("wk.meaning")
           %td= @kana.meaning
+        %tr
+          %td= t("wk.kana.pronunciation")
+          %td= render "audio", kana: @kana
         %tr
           %td= t("wk.vocab.parts")
           %td= @kana.parts_of_speech

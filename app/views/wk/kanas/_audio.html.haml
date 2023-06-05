@@ -1,0 +1,7 @@
+- klass = "btn-#{kana.pattern_colour} audio_button kana_#{kana.id}"
+- display_id = kana.audios.pluck(:id).sample
+- kana.audios.each do |audio|
+  - style = audio.id == display_id ? "" : " d-none"
+  %button.btn.btn-sm{class: "#{klass}#{style}", "data-audio" => audio.id, "data-kana" => kana.id, type: "button"}= kana.accent_display
+  %audio{id: "audio_#{audio.id}"}
+    %source{src: audio.url, type: "audio/mpeg"}

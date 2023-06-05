@@ -18,6 +18,11 @@ module Wk
       end
     end
 
+    def quick_accent_update
+      @kana = Wk::Kana.find(params[:id])
+      @kana.update_accent(params[:accent])
+    end
+
     private
 
     def find_vocab
