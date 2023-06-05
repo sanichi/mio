@@ -96,6 +96,10 @@ module Wanikani
     end
   end
 
+  def show_other_change(name, change, width: 20)
+    puts "  %s%s %s" % [name, "." * (width - name.length), change]
+  end
+
   def permission_granted?(count=1)
     return true if @@continue
     print "  update [Ynqc]? "

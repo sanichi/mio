@@ -270,7 +270,7 @@ module Wk
       puts "updates... #{count[:updates]}"
       puts "creates... #{count[:creates]}"
 
-      if days.nil?
+      if days.nil? && old_wk_ids.size > 0
         puts "DB vocabs no longer in WK #{old_wk_ids.size}: #{old_wk_ids.sort.join(',')}"
       end
     end

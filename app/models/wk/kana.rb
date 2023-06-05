@@ -19,6 +19,8 @@ module Wk
     scope :by_level,        -> { order(:level, Arel.sql('characters COLLATE "C"')) }
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
+    has_many :audios, as: :audible, dependent: :destroy
+
     def self.search(params, path, opt={})
       matches =
         case params[:order]
@@ -144,13 +146,30 @@ module Wk
           parts = parts.join(",")
           kana.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= Wk::Vocab::MAX_PARTS }
 
+          check(data["pronunciation_audios"], "#{context} doesn't have any pronunciation audios") { |v| v.is_a?(Array) }
+          wk_files = []
+          data["pronunciation_audios"].each_with_index do |audio, i|
+            check(audio, "#{context} audio item #{i} is not a hash") { |v| v.is_a?(Hash) }
+            next unless audio["content_type"] == "audio/mpeg"
+            check(audio["url"], "#{context} audio hash #{i} has no string url") { |v| v.is_a?(String) }
+            check(audio["url"], "#{context} audio url #{i} doesn't start with default base") { |v| v.starts_with?(Wk::Audio::DEFAULT_BASE) }
+            file = audio["url"]
+            file[Wk::Audio::DEFAULT_BASE] = ""
+            check(file, "#{context} audio file #{i} (#{file}) doesn't have the right size") { |v| v.length > 0 && v.length <= Wk::Audio::MAX_FILE }
+            wk_files.push(file) unless wk_files.include?(file)
+          end
+
           if kana.new_record?
             kana.save!
+            wk_files.each {|file| kana.audios.create!(file: file)}
             count[:creates] += 1
           else
             old_wk_ids.delete(wk_id)
             changes = kana.changes
-            count[:updates] += 1 if kana.update_performed?(changes)
+            db_files = kana.audios.map(&:file)
+            new_files = wk_files - db_files
+            old_files = db_files - wk_files
+            count[:updates] += 1 if kana.update_performed?(changes, new_files, old_files)
           end
           count[:total] += 1
         end
@@ -161,13 +180,13 @@ module Wk
       puts "updates... #{count[:updates]}"
       puts "creates... #{count[:creates]}"
 
-      if days.nil?
-        puts "DB vocabs no longer in WK #{old_wk_ids.size}: #{old_wk_ids.sort.join(',')}"
+      if days.nil? && old_wk_ids.size > 0
+        puts "DB kana no longer in WK #{old_wk_ids.size}: #{old_wk_ids.sort.join(',')}"
       end
     end
 
-    def update_performed?(changes)
-      return false if changes.empty?
+    def update_performed?(changes, new_files, old_files)
+      return false if changes.empty? && new_files.empty? && old_files.empty?
 
       puts "kana #{wk_id}:"
       show_change(changes, "hidden")
@@ -176,11 +195,16 @@ module Wk
       show_change(changes, "meaning")
       show_change(changes, "meaning_mnemonic", max: 50)
       show_change(changes, "parts")
+      show_other_change("new audios", new_files.join(", ")) unless new_files.empty?
+      show_other_change("old audios", old_files.join(", ")) unless old_files.empty?
 
       ask = changes.size == 1 && changes.has_key?("last_updated") ? false : true
       return false if ask && !permission_granted?
 
-      save!
+      save! unless changes.empty?
+      audios.each{|audio| audios.delete(audio) if old_files.include?(audio.file)} unless old_files.empty?
+      new_files.each{|file| audios.create!(file: file)} unless new_files.empty?
+
       return true
     end
 
