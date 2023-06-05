@@ -24,6 +24,7 @@ module Wk
       "interjection"      => "int",
       "independent noun"  => "inu",
       "intransitive verb" => "ivb",
+      "こそあど Word"      => "ksa",
       "な adjective"      => "nad",
       "の adjective"      => "noa",
       "numeral"           => "num",
