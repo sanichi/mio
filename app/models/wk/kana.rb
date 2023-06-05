@@ -189,6 +189,7 @@ module Wk
       return false if changes.empty? && new_files.empty? && old_files.empty?
 
       puts "kana #{wk_id}:"
+      show_change(changes, "characters")
       show_change(changes, "hidden")
       show_change(changes, "last_updated")
       show_change(changes, "level")
