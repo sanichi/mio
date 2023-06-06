@@ -5,15 +5,16 @@ module Wk
     include Linkable
     include Pageable
     include Remarkable
+    include Vocabable
     include Wanikani
 
     before_validation :clean_up, :set_accent_pattern
 
-    validates :characters, presence: true, length: { maximum: Wk::Vocab::MAX_CHARACTERS }, uniqueness: true
+    validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
-    validates :meaning, presence: true, length: { maximum: Wk::Vocab::MAX_MEANING }
+    validates :meaning, presence: true, length: { maximum: MAX_MEANING }
     validates :meaning_mnemonic, presence: true
-    validates :parts, presence: true, length: { maximum: Wk::Vocab::MAX_PARTS }
+    validates :parts, presence: true, length: { maximum: MAX_PARTS }
     validates :wk_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: true
 
     scope :by_characters,   -> { order(Arel.sql('characters COLLATE "C"')) }
@@ -39,7 +40,7 @@ module Wk
         matches = matches.where(sql)
       end
       if params[:parts].is_a?(Array)
-        parts = params[:parts].select{ |p| Wk::Vocab::PARTS.has_value?(p) }
+        parts = params[:parts].select{ |p| PARTS.has_value?(p) }
         if sql = cross_constraint(parts.join(" "), %w{parts})
           matches = matches.where(sql)
         end
@@ -67,21 +68,13 @@ module Wk
       to_html(notes_plus)
     end
 
-    def intransitive?
-      parts.match?(/ivb/)
-    end
-
-    def transitive?
-      parts.match?(/tvb/)
+    def to_markdown(display: nil)
+      display = characters unless display
+      "[#{display}](/wk/kanas/#{characters})"
     end
 
     def parts_of_speech
       parts.split(",").map{ |p| I18n.t("wk.parts.#{p}").downcase }.join(", ")
-    end
-
-    def to_markdown(display: nil)
-      display = characters unless display
-      "[#{display}](/wk/kanas/#{characters})"
     end
 
     def self.update(days=nil)
@@ -140,17 +133,17 @@ module Wk
           end
           check(primary, "#{context} doesn't have a primary meaning") { |v| v.size > 0 }
           meaning = primary.concat(secondary).join(", ")
-          kana.meaning = check(meaning.downcase, "#{context} meaning is too long (#{meaning.length})") { |v| v.length <= Wk::Vocab::MAX_MEANING }
+          kana.meaning = check(meaning.downcase, "#{context} meaning is too long (#{meaning.length})") { |v| v.length <= MAX_MEANING }
 
           kana.meaning_mnemonic = check(data["meaning_mnemonic"], "#{context} doesn't have a meaning mnemonic") { |v| v.is_a?(String) && v.present? }
 
           check(data["parts_of_speech"], "#{context} doesn't have any parts of speech") { |v| v.is_a?(Array) && v.size > 0 }
           parts = []
           data["parts_of_speech"].each do |part|
-            parts.push(check(Wk::Vocab::PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
+            parts.push(check(PARTS[part], "#{context} has invalid part of speech (#{part.is_a?(String) ? part : part.class})") { |v| !v.nil? })
           end
           parts = parts.join(",")
-          kana.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= Wk::Vocab::MAX_PARTS }
+          kana.parts = check(parts, "#{context} parts of speech is too long (#{parts.length})") { |v| v.length <= MAX_PARTS }
 
           check(data["pronunciation_audios"], "#{context} doesn't have any pronunciation audios") { |v| v.is_a?(Array) }
           wk_files = []

@@ -4,38 +4,11 @@ module Wk
     include Linkable
     include Pageable
     include Remarkable
+    include Vocabable
     include Wanikani
 
     IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
-    MAX_CHARACTERS = 24
-    MAX_MEANING = 256
-    MAX_PARTS = 80
     MAX_READING = 48
-    PARTS = {
-      "adjective"         => "adj",
-      "adverb"            => "adv",
-      "counter"           => "cnt",
-      "conjunction"       => "con",
-      "expression"        => "exp",
-      "godan verb"        => "gov",
-      "い adjective"      => "iad",
-      "ichidan verb"      => "icv",
-      "in compounds"      => "inc",
-      "interjection"      => "int",
-      "independent noun"  => "inu",
-      "intransitive verb" => "ivb",
-      "こそあど Word"      => "ksa",
-      "な adjective"      => "nad",
-      "の adjective"      => "noa",
-      "numeral"           => "num",
-      "noun"              => "nun",
-      "proper noun"       => "pno",
-      "prefix"            => "pre",
-      "pronoun"           => "pro",
-      "する verb"          => "srv",
-      "suffix"            => "suf",
-      "transitive verb"   => "tvb",
-    }
 
     has_many :readings, dependent: :destroy
     has_and_belongs_to_many :examples

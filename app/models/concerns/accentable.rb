@@ -11,7 +11,6 @@ module Accentable
   # when accent_position is nil, it means we haven't even tried to find out yet
   UNKNOWN = -1
 
-  MAX_CHARACTERS = 24
   MAX_ACCENT_PATTERN = ODAKA
   MIN_ACCENT_PATTERN = HEIBAN
   MIN_ACCENT_POSITION = UNKNOWN

@@ -1,6 +1,7 @@
 module Wk
   class Reading < ActiveRecord::Base
     include Accentable
+    include Vocabable
     include Wanikani
 
     before_validation :set_accent_pattern
