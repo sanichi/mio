@@ -28,6 +28,12 @@ module Vocabable
     (?:\|([^「」|]+))?
     [」]
   /x
+  HKPATTERN = /
+    \≤
+    ([^≤≥|]+)
+    (?:\|([^≤≥|]+))?
+    \≥
+  /x
 
   included do
     def link_vocabs(text)
@@ -56,6 +62,14 @@ module Vocabable
         jname = $2 || display
         if place = Place.find_by(jname: jname)
           place.to_markdown(display: display)
+        else
+          match
+        end
+      end.gsub(HKPATTERN) do |match|
+        display = $1
+        characters = $2 || display
+        if kana = Wk::Kana.find_by(characters: characters)
+          kana.to_markdown(display: display)
         else
           match
         end
