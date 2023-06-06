@@ -1,8 +1,8 @@
 class Note < ApplicationRecord
   include Constrainable
+  include Linkable
   include Pageable
   include Remarkable
-  include Vocabable
 
   MAX_SERIES = 50
   MAX_TITLE = 150

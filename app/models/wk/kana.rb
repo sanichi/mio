@@ -2,9 +2,9 @@ module Wk
   class Kana < ApplicationRecord
     include Accentable
     include Constrainable
+    include Linkable
     include Pageable
     include Remarkable
-    include Vocabable
     include Wanikani
 
     before_validation :clean_up, :set_accent_pattern

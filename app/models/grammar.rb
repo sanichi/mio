@@ -1,8 +1,8 @@
 class Grammar < ApplicationRecord
   include Constrainable
+  include Linkable
   include Pageable
   include Remarkable
-  include Vocabable
 
   LEVELS = (1..5).to_a
   MAX_TITLE = 128

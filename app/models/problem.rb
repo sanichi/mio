@@ -1,7 +1,7 @@
 class Problem < ApplicationRecord
+  include Linkable
   include Pageable
   include Remarkable
-  include Vocabable
 
   MAX_AUDIO = 20
   MAX_LEVEL = I18n.t("problem.levels").size - 1

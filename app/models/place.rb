@@ -1,8 +1,8 @@
 class Place < ApplicationRecord
   include Constrainable
+  include Linkable
   include Pageable
   include Remarkable
-  include Vocabable
 
   MAX_NAME = 30
   MAX_VBOX = 17

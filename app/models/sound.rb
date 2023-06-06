@@ -1,8 +1,8 @@
 class Sound < ApplicationRecord
   include Constrainable
+  include Linkable
   include Pageable
   include Remarkable
-  include Vocabable
 
   BASE = "audio/boutwell"
   CATEGORIES = %w/grammar kanji patterns reading vocab/

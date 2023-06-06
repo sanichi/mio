@@ -1,4 +1,4 @@
-module Vocabable
+module Linkable
   extend ActiveSupport::Concern
 
   PATTERN = /

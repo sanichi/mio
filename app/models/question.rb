@@ -1,7 +1,7 @@
 class Question < ApplicationRecord
   include Constrainable
+  include Linkable
   include Remarkable
-  include Vocabable
 
   MAX_ANSWER = 100
   MAX_AUDIO = 20

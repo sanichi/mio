@@ -1,9 +1,9 @@
 module Wk
   class Vocab < ActiveRecord::Base
     include Constrainable
+    include Linkable
     include Pageable
     include Remarkable
-    include Vocabable
     include Wanikani
 
     IE = "いえきけぎげしせじぜちてぢでにねひへびべぴぺみめりれ"
