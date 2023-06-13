@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   resources :tests, only: [:index, :update] do
     get :review, on: :collection
   end
+  resources :transactions, only: [:index]
   resources :tutorials
   resources :users
   namespace :wk do

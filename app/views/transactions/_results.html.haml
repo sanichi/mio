@@ -1,0 +1,9 @@
+- transactions.matches.each do |transaction|
+  %tr
+    %td.text-center= transaction.date
+    %td.text-center= transaction.category
+    %td= transaction.description
+    %td= transaction.amount
+    %td= transaction.balance
+    %td= t("transaction.accounts.#{transaction.account}")
+= render "utils/pagination_links", pager: transactions, columns: 6

@@ -1,0 +1,19 @@
+en:
+  transaction:
+    account: Account
+    amount: Amount
+    balance: Balance
+    category: Type
+    date: Date
+    description: Description
+    transactions: Transactions
+    accounts:
+      mrbs: Mark‘s RBS
+      jrbs: Joint RBS
+    orders:
+      date_asc: Date ↓
+      date_desc: Date ↑
+      amount_asc: Amount ↓
+      amount_desc: Amount ↑
+      balance_asc: Balance ↓
+      balance_desc: Balance ↑
