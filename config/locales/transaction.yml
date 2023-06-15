@@ -7,6 +7,7 @@ en:
     date: Date
     description: Description
     transactions: Transactions
+    upload: Upload
     accounts:
       mrbs: Mark‘s RBS
       jrbs: Joint RBS

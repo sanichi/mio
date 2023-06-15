@@ -13,6 +13,8 @@
     [:order,       t("order"),                   :select, lo[5], menu: transaction_order_menu(params[:order])],
   ]
 
+= render "utils/title", key: "transaction.transactions"
+
 %section.mt-3
   .header.text-center
     %h3= t("transaction.transactions")
@@ -29,3 +31,8 @@
           %th= t("transaction.account")
       %tbody#results
         = render "results", transactions: @transactions
+    = form_with url: upload_transactions_path, multipart: true do |form|
+      %hr.mt-5
+      %p.text-center
+        = form.file_field :file
+        = form.submit t("transaction.upload")

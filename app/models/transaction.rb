@@ -1,3 +1,5 @@
+require 'csv'
+
 class Transaction < ApplicationRecord
   include Constrainable
   include Pageable
@@ -16,6 +18,7 @@ class Transaction < ApplicationRecord
   validates :category, format: { with: /\A[A-Z][\/A-Z][A-Z]\z/ }
   validates :date, presence: true
   validates :description, presence: true, length: { maximum: MAX_DESCRIPTION }
+  validates :upload_id, numericality: { integer_only: true, greater_than: 0 }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -49,6 +52,57 @@ class Transaction < ApplicationRecord
     if sql = numerical_constraint(params[:balance], :balance)
       matches = matches.where(sql)
     end
+    if (upload_id = params[:upload_id].to_i) > 0
+      matches = matches.where(upload_id: upload_id)
+    end
     paginate(matches, params, path, opt)
+  end
+
+  def self.last_upload_id() = maximum(:upload_id).to_i
+
+  def self.upload(path, upload_id)
+    rows = 0
+    created = 0
+    duplicates = 0
+    CSV.foreach(path) do |row|
+      rows += 1
+      next if row.empty?
+      raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
+      next if row[0] == "Date"
+
+      date = begin
+        Date.parse(row[0])
+      rescue
+        raise "invalid date #{row[0]} on row #{rows}"
+      end
+      category = row[1].squish
+      description = row[2].squish
+      amount = begin
+        row[3].to_f
+      rescue
+        raise "invalid amount (#{row[3]}) on row #{rows}"
+      end
+      balance = begin
+        row[4].to_f
+      rescue
+        raise "invalid balance (#{row[4]}) on row #{rows}"
+      end
+      account = ACCOUNTS[row[6].squish]
+      raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
+
+      transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
+
+      if transaction
+        transaction.update_column(:upload_id, upload_id)
+        duplicates += 1
+      else
+        create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)
+        created += 1
+      end
+    end
+
+    raise "no records found" unless created > 0 || duplicates > 0
+
+    "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
   end
 end

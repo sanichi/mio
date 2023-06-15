@@ -88,9 +88,13 @@ def expect_error(page, text)
   expect(page).to have_css("div.alert-danger", text: text)
 end
 
+def expect_notice(page, text)
+  expect(page).to have_css("div.alert-success", text: text)
+end
+
 def test_file_path(name)
   path = Rails.root + "spec" + "files" + name
-  raise "non-existant sample file (#{name})" unless File.exists?(path)
+  raise "non-existant sample file (#{name})" unless File.exist?(path)
   path
 end
 
