@@ -1,0 +1,10 @@
+:ruby
+  inputs = [
+    [:name,        t("classifier.name"),        :text,  maxlength: Classifier::MAX_NAME],
+    [:category,    t("classifier.category"),    :text,  maxlength: Classifier::MAX_CATEGORY],
+    [:max_amount,  t("classifier.max_amount"),  :text],
+    [:min_amount,  t("classifier.min_amount"),  :text],
+    [:color,       t("classifier.color"),       :text,  maxlength: Classifier::MAX_COLOR],
+    [:description, t("classifier.description"), :area,  rows: 15],
+  ]
+= render "utils/crud/form", object: classifier, index: classifiers_path, inputs: inputs, title: title

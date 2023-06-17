@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_15_092819) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_17_142444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_092819) do
     t.datetime "updated_at", null: false
     t.index ["from_id"], name: "index_borders_on_from_id"
     t.index ["to_id"], name: "index_borders_on_to_id"
+  end
+
+  create_table "classifiers", force: :cascade do |t|
+    t.string "category", limit: 100
+    t.string "color", limit: 6
+    t.text "description"
+    t.decimal "max_amount", precision: 8, scale: 2
+    t.decimal "min_amount", precision: 8, scale: 2
+    t.string "name", limit: 30
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "comments", id: :serial, force: :cascade do |t|

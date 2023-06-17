@@ -1,0 +1,31 @@
+:ruby
+  lo = Layout.new(
+    lg: [3],
+    md: [4],
+    xs: [6]
+  ).to_a
+  inputs = [
+    [:query, t("query"), :text, lo[0], size: 20, placeholder: t("query")],
+  ]
+
+= render "utils/title", key: "classifier.classifiers"
+
+%section.mt-3
+  .header.text-center
+    %h3= t("classifier.classifiers")
+  .body
+    = render "utils/search/form", index: classifiers_path, inputs: inputs
+    %table.table.table-bordered.table-sm.mt-3
+      %thead
+        %tr
+          %th= t("classifier.name")
+          %th= t("classifier.category")
+          %th= t("classifier.description")
+          %th= t("classifier.max_amount")
+          %th= t("classifier.min_amount")
+          %th= t("classifier.color")
+      %tbody#results
+        = render "results", classifiers: @classifiers
+  - if can?(:create, Classifier)
+    .footer
+      = link_to t("classifier.new"), new_classifier_path, class: "btn btn-primary btn-sm"

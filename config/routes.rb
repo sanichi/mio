@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   resources :blogs
+  resources :classifiers
   resources :favourites
   resources :flats
   resources :grammars do

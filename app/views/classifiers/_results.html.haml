@@ -1,0 +1,9 @@
+- classifiers.matches.each do |classifier|
+  %tr
+    %td= link_to classifier.name, classifier
+    %td= classifier.category.truncate(25)
+    %td= classifier.description.truncate(25)
+    %td= classifier.max_amount
+    %td= classifier.min_amount
+    %td= classifier.color
+= render "utils/pagination_links", pager: classifiers, columns: 6

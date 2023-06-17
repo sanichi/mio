@@ -1,0 +1,11 @@
+en:
+  classifier:
+    category: Type
+    classifiers: Classifiers
+    color: Colour
+    description: Description
+    edit: Edit Classifier
+    max_amount: Max Amount
+    min_amount: Min Amount
+    name: Name
+    new: New Classifier
