@@ -28,5 +28,6 @@
                 %pre= @classifier.description
       .footer
         = link_to t("classifier.classifiers"), classifiers_path, class: "btn btn-success btn-sm"
+        = link_to t("transaction.transactions"), transactions_path, class: "btn btn-success btn-sm"
         - if can?(:manage, Classifier)
           = link_to t("edit"), edit_classifier_path(@classifier), class: "btn btn-primary btn-sm"

@@ -1,9 +1,11 @@
-- transactions.matches.each do |transaction|
+- transactions.matches.each do |t|
+  - style = "background-color:#{css_background(t)}; color:#{css_foreground(t)}"
   %tr
-    %td.text-center= transaction.date
-    %td.text-center= transaction.category
-    %td= transaction.description
-    %td= transaction.amount
-    %td= transaction.balance
-    %td= t("transaction.accounts.#{transaction.account}")
-= render "utils/pagination_links", pager: transactions, columns: 6
+    %td.text-center= t.date
+    %td.text-center{style: style}= t.category
+    %td{style: style}= t.description
+    %td{style: style}= t.amount
+    %td= t.balance
+    %td= t("transaction.accounts.#{t.account}")
+    %td.text-center= link_to("c", t.classifier) if t.classifier
+= render "utils/pagination_links", pager: transactions, columns: 7

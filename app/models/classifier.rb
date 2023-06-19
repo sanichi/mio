@@ -21,6 +21,10 @@ class Classifier < ApplicationRecord
   def cre() = @cre ||= Regexp.new(category.to_s)
   def dre() = @dre ||= Regexp.new(description.to_s.split("\n").join("|"), "i")
 
+  def dark?
+    color.scan(/../).map{|h| h.to_i(16)}.keep_if{|d| d < 128}.size > 1
+  end
+
   def self.search(params, path, opt={})
     matches = order(name: :asc)
     if sql = cross_constraint(params[:query], %w{name description category})

@@ -15,4 +15,31 @@ module TransactionsHelper
     opts = t("transaction.orders").map{|k,v| [v, k.to_s]}
     options_for_select(opts, selected)
   end
+
+  def transaction_classifier_menu(selected)
+    opts = Classifier.pluck(:name, :id)
+    opts.unshift [t("transaction.unclassified"), -1]
+    opts.unshift [t("any"), ""]
+    options_for_select(opts, selected)
+  end
+
+  def css_background(transaction)
+    if transaction.classifier
+      "#" + transaction.classifier.color
+    else
+      "white"
+    end
+  end
+
+  def css_foreground(transaction)
+    if transaction.classifier
+      if transaction.classifier.dark?
+        "white"
+      else
+        "black"
+      end
+    else
+      "black"
+    end
+  end
 end

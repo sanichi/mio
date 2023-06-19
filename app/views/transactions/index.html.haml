@@ -1,16 +1,17 @@
 :ruby
   lo = Layout.new(
-    lg: [[2,2,2],[2,2,2]],
-    md: [[3,3,3],[3,3,3]],
-    xs: [[4,4,4],[4,4,4]],
+    lg: [[2,2,2],[2,2,2], [2]],
+    md: [[3,3,3],[3,3,3], [3]],
+    xs: [[4,4,4],[4,4,4], [4]],
   ).to_a
   inputs = [
-    [:description, t("transaction.description"), :text,   lo[0], size: 20, placeholder: t("transaction.description")],
-    [:amount,      t("transaction.amount"),      :text,   lo[1], size: 20, placeholder: t("transaction.amount")],
-    [:balance,     t("transaction.balance"),     :text,   lo[2], size: 20, placeholder: t("transaction.balance")],
-    [:account,     t("transaction.account"),     :select, lo[3], menu: transaction_account_menu(params[:account])],
-    [:category,    t("favourite.category"),      :select, lo[4], menu: transaction_category_menu(params[:category])],
-    [:order,       t("order"),                   :select, lo[5], menu: transaction_order_menu(params[:order])],
+    [:description,   t("transaction.description"), :text,   lo[0], size: 20, placeholder: t("transaction.description")],
+    [:amount,        t("transaction.amount"),      :text,   lo[1], size: 20, placeholder: t("transaction.amount")],
+    [:balance,       t("transaction.balance"),     :text,   lo[2], size: 20, placeholder: t("transaction.balance")],
+    [:account,       t("transaction.account"),     :select, lo[3], menu: transaction_account_menu(params[:account])],
+    [:category,      t("favourite.category"),      :select, lo[4], menu: transaction_category_menu(params[:category])],
+    [:order,         t("order"),                   :select, lo[5], menu: transaction_order_menu(params[:order])],
+    [:classifier_id, t("classifier.classifiers"),  :select, lo[6], menu: transaction_classifier_menu(params[:classifier_id])],
   ]
 
 = render "utils/title", key: "transaction.transactions"
@@ -29,6 +30,7 @@
           %th= t("transaction.amount")
           %th= t("transaction.balance")
           %th= t("transaction.account")
+          %th= "C"
       %tbody#results
         = render "results", transactions: @transactions
     = form_with url: upload_transactions_path, multipart: true do |form|
@@ -36,3 +38,5 @@
       %p.text-center
         = form.file_field :file
         = form.submit t("transaction.upload")
+  .footer
+    = link_to t("classifier.classifiers"), classifiers_path, class: "btn btn-sm btn-success"

@@ -26,6 +26,7 @@
           %th= t("classifier.color")
       %tbody#results
         = render "results", classifiers: @classifiers
-  - if can?(:create, Classifier)
-    .footer
+  .footer
+    = link_to t("transaction.transactions"), transactions_path, class: "btn btn-sm btn-success"
+    - if can?(:create, Classifier)
       = link_to t("classifier.new"), new_classifier_path, class: "btn btn-primary btn-sm"

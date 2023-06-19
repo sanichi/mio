@@ -68,6 +68,10 @@ class Transaction < ApplicationRecord
     if (upload_id = params[:upload_id].to_i) > 0
       matches = matches.where(upload_id: upload_id)
     end
+    if (classifier_id = params[:classifier_id].to_i) != 0
+      classifier_id = nil if classifier_id < 0
+      matches = matches.where(classifier_id: classifier_id)
+    end
     paginate(matches, params, path, opt)
   end
 
