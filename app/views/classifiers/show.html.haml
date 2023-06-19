@@ -19,8 +19,7 @@
               %td= @classifier.min_amount
             %tr
               %th= t("classifier.color")
-              %td= @classifier.color
-
+              %td{style: classifier_style(@classifier)}= @classifier.color
             %tr
               %th.text-center{colspan: 2}= t("classifier.description")
             %tr

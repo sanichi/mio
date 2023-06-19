@@ -1,5 +1,5 @@
 - transactions.matches.each do |t|
-  - style = "background-color:#{css_background(t)}; color:#{css_foreground(t)}"
+  - style = classifier_style(t.classifier)
   %tr
     %td.text-center= t.date
     %td.text-center{style: style}= t.category

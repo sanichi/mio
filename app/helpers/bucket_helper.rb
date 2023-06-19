@@ -1,4 +1,4 @@
-module BucketsHelper
+module BucketHelper
   def bucket_fan_search_menu(fan)
     fans =
     [

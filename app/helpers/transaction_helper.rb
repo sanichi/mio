@@ -1,4 +1,4 @@
-module TransactionsHelper
+module TransactionHelper
   def transaction_account_menu(selected)
     opts = Transaction::ACCOUNTS.values.map{|a| [t("transaction.accounts.#{a}"), a]}
     opts.unshift [t("any"), ""]
@@ -21,25 +21,5 @@ module TransactionsHelper
     opts.unshift [t("transaction.unclassified"), -1]
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
-  end
-
-  def css_background(transaction)
-    if transaction.classifier
-      "#" + transaction.classifier.color
-    else
-      "white"
-    end
-  end
-
-  def css_foreground(transaction)
-    if transaction.classifier
-      if transaction.classifier.dark?
-        "white"
-      else
-        "black"
-      end
-    else
-      "black"
-    end
   end
 end
