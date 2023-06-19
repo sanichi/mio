@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe Classifier do
   def dummy(category: "C", color: "ff00ff", description: "D", max_amount: "20", min_amount: "0", name: "N")
+    @counter ||= 1
+    if name == "N"
+      name = "N#{@counter}"
+      @counter += 1
+    end
     Classifier.create!(category: category, color: color, description: description, max_amount: max_amount, min_amount: min_amount, name: name)
   end
 
@@ -73,9 +78,33 @@ describe Classifier do
       it "name" do
         expect{dummy(name: nil)}.to raise_error(/Name can't be blank/)
         expect{dummy(name: "N" * (Classifier::MAX_NAME + 1))}.to raise_error(/Name is too long/)
-        expect{dummy()}.not_to raise_error
-        expect{dummy()}.to raise_error(/Name has already been taken/)
+        expect{dummy(name: "X")}.not_to raise_error
+        expect{dummy(name: "X")}.to raise_error(/Name has already been taken/)
       end
+    end
+  end
+
+  context "transactions" do
+    let(:coffee) { create(:transaction, amount: -10.0, category: "POS", description: "ARTISAN") }
+
+    it "success" do
+      expect(coffee).to be_match(dummy(category: "POS|S/O", max_amount: "0", min_amount: "-20", description: "ARTISAN\nJOHN LEWIS"))
+    end
+
+    it "category" do
+      expect(coffee).to_not be_match(dummy(category: "D/D|S/O", max_amount: "0", min_amount: "-20", description: "ARTISAN|CALUMS"))
+    end
+
+    it "max_amount" do
+      expect(coffee).to_not be_match(dummy(category: "TRN|POS", max_amount: "-15", min_amount: "-20", description: "ARTISAN\nINSTA"))
+    end
+
+    it "min_amount" do
+      expect(coffee).to_not be_match(dummy(category: "D/D|POS", max_amount: "0", min_amount: "-5", description: "ARTISAN|JOHN LEWIS"))
+    end
+
+    it "description" do
+      expect(coffee).to_not be_match(dummy(category: "POS", max_amount: "0", min_amount: "-20", description: "QUIPI|COSTA"))
     end
   end
 end

@@ -13,12 +13,23 @@ class Transaction < ApplicationRecord
     "831909-101456" => "jrbs",
   }
 
+  belongs_to :classifier, optional: true, inverse_of: :transactions
+
   validates :account, inclusion: { in: ACCOUNTS.values }
   validates :amount, :balance, numericality: { greater_than_or_equal_to: -MAX_AMOUNT, less_than_or_equal_to: MAX_AMOUNT }
   validates :category, format: { with: /\A[A-Z][\/A-Z][A-Z]\z/ }
   validates :date, presence: true
   validates :description, presence: true, length: { maximum: MAX_DESCRIPTION }
   validates :upload_id, numericality: { integer_only: true, greater_than: 0 }
+
+  def match?(c)
+    return false unless c.is_a?(Classifier)
+    return false unless category.match?(c.cre)
+    return false if amount > c.max_amount
+    return false if amount < c.min_amount
+    return false unless description.match?(c.dre)
+    return true
+  end
 
   def self.search(params, path, opt={})
     matches = case params[:order]
