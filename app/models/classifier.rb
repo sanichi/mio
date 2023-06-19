@@ -6,7 +6,7 @@ class Classifier < ApplicationRecord
   MAX_COLOR = 6
   MAX_NAME = 30
 
-  before_validation :normalize_attributes, :check_regexes
+  before_validation :normalize_attributes, :check_regexes, :check_amounts
 
   validates :category, presence: true, length: { maximum: MAX_CATEGORY }
   validates :color, presence: true, length: { maximum: MAX_COLOR }, format: { with: /\A[0-9a-f]{6}\z/ }
@@ -33,6 +33,8 @@ class Classifier < ApplicationRecord
     color&.downcase!
     description&.strip!
     description&.gsub!(/\s*\n\s*/, "\n")
+    self.max_amount = 0.0 unless max_amount.present?
+    self.min_amount = 0.0 unless min_amount.present?
     name&.squish!
   end
 
@@ -46,6 +48,14 @@ class Classifier < ApplicationRecord
       dre
     rescue
       errors.add(:description, "invalid regexp")
+    end
+
+    def check_amounts
+      if max_amount < min_amount
+        errors.add(:max_amount, "less than Min amount")
+      elsif max_amount == 0.0 && min_amount == 0.0
+        errors.add(:max_amount, "and Min amount both zero")
+      end
     end
   end
 end

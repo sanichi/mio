@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Classifier do
-  def dummy(category: "C", color: "ff00ff", description: "D", max_amount: "0", min_amount: "0", name: "N")
+  def dummy(category: "C", color: "ff00ff", description: "D", max_amount: "20", min_amount: "0", name: "N")
     Classifier.create!(category: category, color: color, description: description, max_amount: max_amount, min_amount: min_amount, name: name)
   end
 
@@ -11,7 +11,7 @@ describe Classifier do
         category: " POS| D/D | S/ O ",
         color: " FF 00 FF",
         description: "\n MARKS & SPARKS \n \n\n  TESCOS \n\t\nMORRISONS\t ",
-        max_amount: "0",
+        max_amount: "",
         min_amount: "-75",
         name: " Test   One\t ",
       )
@@ -53,15 +53,21 @@ describe Classifier do
       end
 
       it "max_amount" do
-        expect{dummy(max_amount: nil)}.to raise_error(/Max amount is not a number/)
+        expect{dummy(max_amount: "nan")}.to raise_error(/Max amount is not a number/)
         expect{dummy(max_amount: 1 + Transaction::MAX_AMOUNT)}.to raise_error(/Max amount must be less than or equal to 1000000.0/)
         expect{dummy(max_amount: -1 - Transaction::MAX_AMOUNT)}.to raise_error(/Max amount must be greater than or equal to -1000000.0/)
       end
 
       it "min_amount" do
-        expect{dummy(min_amount: nil)}.to raise_error(/Min amount is not a number/)
+        expect{dummy(min_amount: "nan")}.to raise_error(/Min amount is not a number/)
         expect{dummy(min_amount: 1 + Transaction::MAX_AMOUNT)}.to raise_error(/Min amount must be less than or equal to 1000000.0/)
         expect{dummy(min_amount: -1 - Transaction::MAX_AMOUNT)}.to raise_error(/Min amount must be greater than or equal to -1000000.0/)
+      end
+
+      it "amounts" do
+        expect{dummy(max_amount: 0, min_amount: 10)}.to raise_error(/Max amount less than Min amount/)
+        expect{dummy(max_amount: 0, min_amount: 0)}.to raise_error(/Max amount and Min amount both zero/)
+        expect{dummy(max_amount: 10, min_amount: 10)}.not_to raise_error
       end
 
       it "name" do
