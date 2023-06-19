@@ -22,6 +22,8 @@ class Transaction < ApplicationRecord
   validates :description, presence: true, length: { maximum: MAX_DESCRIPTION }
   validates :upload_id, numericality: { integer_only: true, greater_than: 0 }
 
+  after_save :classify
+
   def match?(c)
     return false unless c.is_a?(Classifier)
     return false unless category.match?(c.cre)
@@ -115,5 +117,16 @@ class Transaction < ApplicationRecord
     raise "no records found" unless created > 0 || duplicates > 0
 
     "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
+  end
+
+  private
+
+  def classify
+    Classifier.all.each do |c|
+      if match?(c)
+        update_column(:classifier_id, c.id)
+        break
+      end
+    end
   end
 end

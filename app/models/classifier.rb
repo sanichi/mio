@@ -10,6 +10,8 @@ class Classifier < ApplicationRecord
 
   before_validation :normalize_attributes, :check_regexes, :check_amounts
 
+  after_save :reclassify
+
   validates :category, presence: true, length: { maximum: MAX_CATEGORY }
   validates :color, presence: true, length: { maximum: MAX_COLOR }, format: { with: /\A[0-9a-f]{6}\z/ }
   validates :max_amount, :min_amount, numericality: { greater_than_or_equal_to: -Transaction::MAX_AMOUNT, less_than_or_equal_to: Transaction::MAX_AMOUNT }
@@ -50,6 +52,17 @@ class Classifier < ApplicationRecord
       errors.add(:max_amount, "less than Min amount")
     elsif max_amount == 0.0 && min_amount == 0.0
       errors.add(:max_amount, "and Min amount both zero")
+    end
+  end
+
+  def reclassify
+    @cre = @dre = nil
+    Transaction.where(classifier_id: [nil, id]).each do |t|
+      if t.match?(self)
+        t.update_column(:classifier_id, id) unless t.classifier_id == id
+      else
+        t.update_column(:classifier_id, nil) unless t.classifier_id.nil?
+      end
     end
   end
 end
