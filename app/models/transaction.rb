@@ -4,6 +4,8 @@ class Transaction < ApplicationRecord
   include Constrainable
   include Pageable
 
+  class_attribute :classifiers
+
   MAX_ACCOUNT = 4
   MAX_AMOUNT = 1000000.0
   MAX_CATEGORY = 3
@@ -12,6 +14,8 @@ class Transaction < ApplicationRecord
     "831909-234510" => "mrbs",
     "831909-101456" => "jrbs",
   }
+
+  after_save :classify
 
   belongs_to :classifier, optional: true, inverse_of: :transactions
 
@@ -77,67 +81,69 @@ class Transaction < ApplicationRecord
 
   def self.upload(path, upload_id)
     rows = 0
-    created = []
+    created = 0
     duplicates = 0
+    self.classifiers = Classifier.all
 
     transaction do
-      CSV.foreach(path) do |row|
-        rows += 1
-        next if row.empty?
-        raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
-        next if row[0] == "Date"
+      begin
+        CSV.foreach(path) do |row|
+          rows += 1
+          next if row.empty?
+          raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
+          next if row[0] == "Date"
 
-        date = begin
-          Date.parse(row[0])
-        rescue
-          raise "invalid date #{row[0]} on row #{rows}"
-        end
-        category = row[1].squish
-        description = row[2].squish
-        amount = begin
-          row[3].to_f
-        rescue
-          raise "invalid amount (#{row[3]}) on row #{rows}"
-        end
-        balance = begin
-          row[4].to_f
-        rescue
-          raise "invalid balance (#{row[4]}) on row #{rows}"
-        end
-        account = ACCOUNTS[row[6].squish]
-        raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
+          date = begin
+            Date.parse(row[0])
+          rescue
+            raise "invalid date #{row[0]} on row #{rows}"
+          end
+          category = row[1].squish
+          description = row[2].squish
+          amount = begin
+            row[3].to_f
+          rescue
+            raise "invalid amount (#{row[3]}) on row #{rows}"
+          end
+          balance = begin
+            row[4].to_f
+          rescue
+            raise "invalid balance (#{row[4]}) on row #{rows}"
+          end
+          account = ACCOUNTS[row[6].squish]
+          raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
 
-        transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
+          transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
 
-        if transaction
-          transaction.update_column(:upload_id, upload_id)
-          duplicates += 1
-        else
-          created.push create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)
+          if transaction
+            transaction.update_column(:upload_id, upload_id)
+            duplicates += 1
+          else
+            create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)
+            created += 1
+          end
         end
-      end
-
-      unless created.empty?
-        classifiers = Classifier.all
-        created.each{|t| t.classify(classifiers)}
+      rescue => e
+        raise e
+      ensure
+        self.classifiers = nil
       end
     end
 
-    raise "no records found" if created.empty? && duplicates == 0
+    raise "no records found" unless created > 0 || duplicates > 0
 
-    "rows: #{rows}, created: #{created.size}, duplicates: #{duplicates}"
+    "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
   end
 
-  def classify(classifiers=nil)
-    classifiers ||= Classifier.all
-    classifier = nil
+  private
+
+  def classify
+    classifiers = self.class.classifiers || Classifier.all
     classifiers.each do |c|
       if match?(c)
         update_column(:classifier_id, c.id)
-        classifier = c
         break
       end
     end
-    classifier
   end
 end
