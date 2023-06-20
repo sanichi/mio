@@ -22,8 +22,6 @@ class Transaction < ApplicationRecord
   validates :description, presence: true, length: { maximum: MAX_DESCRIPTION }
   validates :upload_id, numericality: { integer_only: true, greater_than: 0 }
 
-  after_save :classify
-
   def match?(c)
     return false unless c.is_a?(Classifier)
     return false unless category.match?(c.cre)
@@ -79,58 +77,67 @@ class Transaction < ApplicationRecord
 
   def self.upload(path, upload_id)
     rows = 0
-    created = 0
+    created = []
     duplicates = 0
-    CSV.foreach(path) do |row|
-      rows += 1
-      next if row.empty?
-      raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
-      next if row[0] == "Date"
 
-      date = begin
-        Date.parse(row[0])
-      rescue
-        raise "invalid date #{row[0]} on row #{rows}"
-      end
-      category = row[1].squish
-      description = row[2].squish
-      amount = begin
-        row[3].to_f
-      rescue
-        raise "invalid amount (#{row[3]}) on row #{rows}"
-      end
-      balance = begin
-        row[4].to_f
-      rescue
-        raise "invalid balance (#{row[4]}) on row #{rows}"
-      end
-      account = ACCOUNTS[row[6].squish]
-      raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
+    transaction do
+      CSV.foreach(path) do |row|
+        rows += 1
+        next if row.empty?
+        raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
+        next if row[0] == "Date"
 
-      transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
+        date = begin
+          Date.parse(row[0])
+        rescue
+          raise "invalid date #{row[0]} on row #{rows}"
+        end
+        category = row[1].squish
+        description = row[2].squish
+        amount = begin
+          row[3].to_f
+        rescue
+          raise "invalid amount (#{row[3]}) on row #{rows}"
+        end
+        balance = begin
+          row[4].to_f
+        rescue
+          raise "invalid balance (#{row[4]}) on row #{rows}"
+        end
+        account = ACCOUNTS[row[6].squish]
+        raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
 
-      if transaction
-        transaction.update_column(:upload_id, upload_id)
-        duplicates += 1
-      else
-        create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)
-        created += 1
+        transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
+
+        if transaction
+          transaction.update_column(:upload_id, upload_id)
+          duplicates += 1
+        else
+          created.push create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)
+        end
+      end
+
+      unless created.empty?
+        classifiers = Classifier.all
+        created.each{|t| t.classify(classifiers)}
       end
     end
 
-    raise "no records found" unless created > 0 || duplicates > 0
+    raise "no records found" if created.empty? && duplicates == 0
 
-    "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
+    "rows: #{rows}, created: #{created.size}, duplicates: #{duplicates}"
   end
 
-  private
-
-  def classify
-    Classifier.all.each do |c|
+  def classify(classifiers=nil)
+    classifiers ||= Classifier.all
+    classifier = nil
+    classifiers.each do |c|
       if match?(c)
         update_column(:classifier_id, c.id)
+        classifier = c
         break
       end
     end
+    classifier
   end
 end

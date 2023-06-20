@@ -82,27 +82,44 @@ describe Transaction do
     it "empty file" do
       load_data page, ""
       expect_error(page, "no records found")
+      expect(Transaction.count).to eq 0
+    end
+
+    it "rubbish file" do
+      load_data page, <<~EOF
+        Why always me
+        どうしていつも私なの？
+      EOF
+      expect_error(page, "wrong number of columns (1) on row 1")
+      expect(Transaction.count).to eq 0
     end
 
     it "invalid account" do
       load_data page, <<~EOF
+        "12/06/2023 ","POS","ARTISAN",-5.7,"100.61","House account","831909-101456"
         "12/06/2023","POS","DESC","-1","9","","831909-102456"
       EOF
-      expect_error(page, "invalid account (831909-102456) on row 1")
+      expect_error(page, "invalid account (831909-102456) on row 2")
+      expect(Transaction.count).to eq 0
     end
 
     it "invalid category" do
       load_data page, <<~EOF
-        "12/06/2023","POSX","blah blah","-1","9","","831909-101456"
+        "30/05/2023","DPC","To A/C 00234510",-25,"813.04","House account","831909-234510"
+        "12/06/2023","POSX","COSTA","-1.50","235.21","","831909-101456"
       EOF
       expect_error(page, "Category is invalid")
+      expect(Transaction.count).to eq 0
     end
 
     it "invalid desription" do
       load_data page, <<~EOF
-      "12/06/2023","POS"," ","-1","9","","831909-101456"
+      "12/06/2023 ","POS","ARTISAN",-5.7,"100.61","House account","831909-101456"
+      "30/05/2023","DPC","To A/C 00234510",-25,"813.04","House account","831909-234510"
+      "12/06/2023","POS"," ","4.50","18.76","","831909-101456"
       EOF
       expect_error(page, "Description can't be blank")
+      expect(Transaction.count).to eq 0
     end
   end
 end

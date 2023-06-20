@@ -7,11 +7,11 @@ describe Transaction do
     let!(:pension)   { create(:classifier, min_amount: 250, max_amount: 350, category: "BAC|DPC", description: "USS\nHL")}
 
     it "create transactions and destroy classifier" do
-      expect(create(:transaction, amount: "-2.50", category: "POS", description: "ARTISAN").classifier).to eq coffee
-      expect(create(:transaction, amount: "-3.30", category: "D/D", description: "COSTA").classifier).to eq coffee
-      expect(create(:transaction, amount: "-50.93", category: "POS", description: "ASDA").classifier).to eq groceries
-      expect(create(:transaction, amount: "284.32", category: "BAC", description: "USS").classifier).to eq pension
-      expect(create(:transaction, amount: "705.01", category: "BAC", description: "PENSION").classifier).to be_nil
+      expect(create(:transaction, amount: "-2.50", category: "POS", description: "ARTISAN").classify).to eq coffee
+      expect(create(:transaction, amount: "-3.30", category: "D/D", description: "COSTA").classify).to eq coffee
+      expect(create(:transaction, amount: "-50.93", category: "POS", description: "ASDA").classify).to eq groceries
+      expect(create(:transaction, amount: "284.32", category: "BAC", description: "USS").classify).to eq pension
+      expect(create(:transaction, amount: "705.01", category: "BAC", description: "PENSION").classify).to be_nil
 
       expect(Transaction.where(classifier: coffee).count).to eq 2
       expect(Transaction.where(classifier: groceries).count).to eq 1
@@ -26,11 +26,11 @@ describe Transaction do
     end
 
     it "create transactions and alter classifier" do
-      expect(create(:transaction, amount: "-2.50", category: "POS", description: "ARTISAN").classifier).to eq coffee
-      expect(create(:transaction, amount: "-3.30", category: "D/D", description: "COSTA").classifier).to eq coffee
-      expect(create(:transaction, amount: "-9.90", category: "POS", description: "COSTA").classifier).to eq nil
-      expect(create(:transaction, amount: "-4.80", category: "POS", description: "STARBUCKS").classifier).to eq nil
-      expect(create(:transaction, amount: "-1.30", category: "S/O", description: "STARBUCKS").classifier).to eq nil
+      expect(create(:transaction, amount: "-2.50", category: "POS", description: "ARTISAN").classify).to eq coffee
+      expect(create(:transaction, amount: "-3.30", category: "D/D", description: "COSTA").classify).to eq coffee
+      expect(create(:transaction, amount: "-9.90", category: "POS", description: "COSTA").classify).to eq nil
+      expect(create(:transaction, amount: "-4.80", category: "POS", description: "STARBUCKS").classify).to eq nil
+      expect(create(:transaction, amount: "-1.30", category: "S/O", description: "STARBUCKS").classify).to eq nil
 
       expect(Transaction.where(classifier: coffee).count).to eq 2
       expect(Transaction.where(classifier: nil).count).to eq 3
@@ -67,9 +67,9 @@ describe Transaction do
     end
 
     it "create transactions and create classifier" do
-      expect(create(:transaction, amount: "-4.50", category: "POS", description: "ARTISAN").classifier).to eq coffee
-      expect(create(:transaction, amount: "100.0", category: "DPC", description: "To A/C 00101456").classifier).to eq nil
-      expect(create(:transaction, amount: "-100.0", category: "DPC", description: "From A/C 00123450").classifier).to eq nil
+      expect(create(:transaction, amount: "-4.50", category: "POS", description: "ARTISAN").classify).to eq coffee
+      expect(create(:transaction, amount: "100.0", category: "DPC", description: "To A/C 00101456").classify).to eq nil
+      expect(create(:transaction, amount: "-100.0", category: "DPC", description: "From A/C 00123450").classify).to eq nil
 
       expect(Transaction.where(classifier: coffee).count).to eq 1
       expect(Transaction.where(classifier: nil).count).to eq 2
