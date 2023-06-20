@@ -116,7 +116,6 @@ class Transaction < ApplicationRecord
           transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
 
           if transaction
-            transaction.update_column(:upload_id, upload_id)
             duplicates += 1
           else
             create!(date: date, category: category, description: description, amount: amount, balance: balance, account: account, upload_id: upload_id)

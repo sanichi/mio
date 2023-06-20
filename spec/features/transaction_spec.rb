@@ -44,9 +44,9 @@ describe Transaction do
       load_file page, "mrbs.csv"
 
       expect_notice(page, "rows: 48, created: 0, duplicates: 45")
-      expect(Transaction.where(upload_id: 1).count).to eq 0
+      expect(Transaction.where(upload_id: 1).count).to eq 45
       expect(Transaction.where(upload_id: 2).count).to eq 72
-      expect(Transaction.where(upload_id: 3).count).to eq 45
+      expect(Transaction.where(upload_id: 3).count).to eq 0
       expect(Transaction.where(account: "jrbs").count).to eq 72
       expect(Transaction.where(account: "mrbs").count).to eq 45
       expect(Transaction.count).to eq 117
