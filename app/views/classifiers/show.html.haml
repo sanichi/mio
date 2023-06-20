@@ -9,6 +9,10 @@
         %table{class: "table table-bordered"}
           %tbody
             %tr
+              %th= t("transaction.transactions")
+              - count = Transaction.where(classifier_id: @classifier.id).count
+              %td= link_to_if(count > 0, count, transactions_path(classifier_id: @classifier.id))
+            %tr
               %th= t("classifier.category")
               %td= @classifier.category
             %tr
