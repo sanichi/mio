@@ -64,11 +64,8 @@ class Transaction < ApplicationRecord
     if sql = numerical_constraint(params[:amount], :amount)
       matches = matches.where(sql)
     end
-    if sql = numerical_constraint(params[:balance], :balance)
+    if sql = numerical_constraint(params[:upload_id], :upload_id)
       matches = matches.where(sql)
-    end
-    if (upload_id = params[:upload_id].to_i) > 0
-      matches = matches.where(upload_id: upload_id)
     end
     if (classifier_id = params[:classifier_id].to_i) != 0
       classifier_id = nil if classifier_id < 0

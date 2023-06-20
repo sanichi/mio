@@ -7,7 +7,7 @@
   inputs = [
     [:description,   t("transaction.description"), :text,   lo[0], size: 20, placeholder: t("transaction.description")],
     [:amount,        t("transaction.amount"),      :text,   lo[1], size: 20, placeholder: t("transaction.amount")],
-    [:balance,       t("transaction.balance"),     :text,   lo[2], size: 20, placeholder: t("transaction.balance")],
+    [:upload_id,     t("transaction.upload"),      :text,   lo[2], size: 20, placeholder: t("transaction.upload")],
     [:account,       t("transaction.account"),     :select, lo[3], menu: transaction_account_menu(params[:account])],
     [:category,      t("favourite.category"),      :select, lo[4], menu: transaction_category_menu(params[:category])],
     [:classifier_id, t("classifier.classifiers"),  :select, lo[5], menu: transaction_classifier_menu(params[:classifier_id])],
