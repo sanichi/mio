@@ -23,7 +23,7 @@ describe Classifier do
       expect(page).to have_title data.name
 
       expect(Classifier.count).to eq 2
-      c = Classifier.last
+      c = Classifier.find(Classifier.maximum(:id))
 
       expect(c.name).to eq data.name
       expect(c.category).to eq data.category

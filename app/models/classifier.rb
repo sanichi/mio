@@ -18,6 +18,8 @@ class Classifier < ApplicationRecord
   validates :description, presence: true
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
 
+  default_scope { order(name: :asc) }
+
   def cre() = @cre ||= Regexp.new(category.to_s)
   def dre() = @dre ||= Regexp.new(description.to_s.split("\n").join("|"), "i")
 
@@ -26,7 +28,7 @@ class Classifier < ApplicationRecord
   end
 
   def self.search(params, path, opt={})
-    matches = order(name: :asc)
+    matches = all
     if sql = cross_constraint(params[:query], %w{name description category})
       matches = matches.where(sql)
     end

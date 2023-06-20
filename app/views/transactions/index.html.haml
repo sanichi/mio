@@ -10,8 +10,8 @@
     [:balance,       t("transaction.balance"),     :text,   lo[2], size: 20, placeholder: t("transaction.balance")],
     [:account,       t("transaction.account"),     :select, lo[3], menu: transaction_account_menu(params[:account])],
     [:category,      t("favourite.category"),      :select, lo[4], menu: transaction_category_menu(params[:category])],
-    [:order,         t("order"),                   :select, lo[5], menu: transaction_order_menu(params[:order])],
-    [:classifier_id, t("classifier.classifiers"),  :select, lo[6], menu: transaction_classifier_menu(params[:classifier_id])],
+    [:classifier_id, t("classifier.classifiers"),  :select, lo[5], menu: transaction_classifier_menu(params[:classifier_id])],
+    [:order,         t("order"),                   :select, lo[6], menu: transaction_order_menu(params[:order])],
   ]
 
 = render "utils/title", key: "transaction.transactions"
