@@ -50,7 +50,7 @@ class Transaction < ApplicationRecord
     when "date_desc"
       order(date: :desc)
     else
-      order(date: :asc)
+      order(date: :desc)
     end
     if params[:account].present?
       matches = matches.where(account: params[:account])

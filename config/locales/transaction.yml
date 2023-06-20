@@ -13,9 +13,9 @@ en:
       mrbs: Mark‘s RBS
       jrbs: Joint RBS
     orders:
-      date_asc: Date ↓
       date_desc: Date ↑
-      amount_asc: Amount ↓
+      date_asc: Date ↓
       amount_desc: Amount ↑
-      balance_asc: Balance ↓
+      amount_asc: Amount ↓
       balance_desc: Balance ↑
+      balance_asc: Balance ↓
