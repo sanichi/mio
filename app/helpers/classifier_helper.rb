@@ -5,6 +5,6 @@ module ClassifierHelper
       bg = "#" + classifier.color
       fg = "white" if classifier.dark?
     end
-    "background-color:#{bg}; color:#{fg}"
+    ["background-color:#{bg};color:#{fg}", "color:#{bg}"]
   end
 end

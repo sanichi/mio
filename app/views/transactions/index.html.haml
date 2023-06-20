@@ -30,7 +30,7 @@
           %th= t("transaction.amount")
           %th= t("transaction.balance")
           %th= t("transaction.account")
-          %th= "C"
+          %th
       %tbody#results
         = render "results", transactions: @transactions
     = form_with url: upload_transactions_path, multipart: true do |form|
