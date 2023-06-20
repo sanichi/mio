@@ -10,8 +10,8 @@ en:
     unclassified: Unclassified
     upload: Upload
     accounts:
-      mrbs: Mark‘s RBS
       jrbs: Joint RBS
+      mrbs: Mark‘s RBS
     orders:
       date_desc: Date ↑
       date_asc: Date ↓
