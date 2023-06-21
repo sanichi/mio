@@ -1,1 +1,9 @@
 $("#results").html("<%= j render('results', transactions: @transactions) %>");
+
+<% if @corrections[:date] %>
+$("#date").val("<%= @corrections[:date]%>");
+<% end %>
+
+<% if @corrections[:days] %>
+$("#days").val("<%= @corrections[:days]%>");
+<% end %>

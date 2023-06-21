@@ -1,8 +1,8 @@
 :ruby
   lo = Layout.new(
-    lg: [[2,2,2],[2,2,2], [2]],
-    md: [[3,3,3],[3,3,3], [3]],
-    xs: [[4,4,4],[4,4,4], [4]],
+    lg: [[2,2,2],[2,2,2], [2,2,2]],
+    md: [[3,3,3],[3,3,3], [3,3,3]],
+    xs: [[4,4,4],[4,4,4], [4,4,4]],
   ).to_a
   inputs = [
     [:description,   t("transaction.description"), :text,   lo[0], size: 20, placeholder: t("transaction.description")],
@@ -11,7 +11,9 @@
     [:account,       t("transaction.account"),     :select, lo[3], menu: transaction_account_menu(params[:account])],
     [:category,      t("favourite.category"),      :select, lo[4], menu: transaction_category_menu(params[:category])],
     [:classifier_id, t("classifier.classifiers"),  :select, lo[5], menu: transaction_classifier_menu(params[:classifier_id])],
-    [:order,         t("order"),                   :select, lo[6], menu: transaction_order_menu(params[:order])],
+    [:date,          t("transaction.date"),        :text,   lo[6], size: 20, placeholder: t("transaction.date"), value: @corrections[:date] || params[:date]],
+    [:days,          t("transaction.days"),        :text,   lo[7], size: 20, placeholder: t("transaction.days"), value: @corrections[:days] || params[:days]],
+    [:order,         t("order"),                   :select, lo[8], menu: transaction_order_menu(params[:order])],
   ]
 
 = render "utils/title", key: "transaction.transactions"

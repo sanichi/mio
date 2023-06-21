@@ -5,6 +5,7 @@ en:
     balance: Balance
     category: Type
     date: Date
+    days: Days
     description: Description
     transactions: Transactions
     unclassified: Unclassified

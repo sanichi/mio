@@ -37,6 +37,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.search(params, path, opt={})
+    corrections = {}
     matches = case params[:order]
     when "amount_asc"
       order(amount: :asc)
@@ -68,11 +69,23 @@ class Transaction < ApplicationRecord
     if sql = numerical_constraint(params[:upload_id], :upload_id)
       matches = matches.where(sql)
     end
+    if date = Chronic.parse(params[:date])&.to_date
+      if (days = params[:days].to_i) > 1
+        made = date + days - 1
+        matches = matches.where("date >= '#{date.to_s}' AND date <= '#{made.to_s}'")
+      else
+        matches = matches.where(date: date)
+        corrections[:days] = "1"
+      end
+      corrections[:date] = date.to_s
+    else
+      corrections[:date] = ""
+    end
     if (classifier_id = params[:classifier_id].to_i) != 0
       classifier_id = nil if classifier_id < 0
       matches = matches.where(classifier_id: classifier_id)
     end
-    paginate(matches, params, path, opt)
+    [paginate(matches, params, path, opt), corrections]
   end
 
   def self.last_upload_id() = maximum(:upload_id).to_i

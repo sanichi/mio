@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
   authorize_resource
 
   def index
-    @transactions = Transaction.search(params, transactions_path, per_page: 20, remote: true)
+    @transactions, @corrections = Transaction.search(params, transactions_path, per_page: 20, remote: true)
   end
 
   def upload
