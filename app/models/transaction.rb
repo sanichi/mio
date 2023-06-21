@@ -121,7 +121,7 @@ class Transaction < ApplicationRecord
 
     raise "no records found" unless created > 0 || duplicates > 0
 
-    "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
+    "rows: #{rows}, created: #{created}, duplicates: #{duplicates}, upload: #{upload_id}"
   end
 
   def self.check_account(text, rows, current)

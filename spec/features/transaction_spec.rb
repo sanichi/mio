@@ -31,19 +31,19 @@ describe Transaction do
 
       load_file page, "mrbs.csv"
 
-      expect_notice(page, "rows: 48, created: 45, duplicates: 0")
+      expect_notice(page, "rows: 48, created: 45, duplicates: 0, upload: 1")
       expect(Transaction.where(upload_id: 1).count).to eq 45
       expect(Transaction.count).to eq 45
 
       load_file page, "jrbs.csv"
 
-      expect_notice(page, "rows: 75, created: 72, duplicates: 0")
+      expect_notice(page, "rows: 75, created: 72, duplicates: 0, upload: 2")
       expect(Transaction.where(upload_id: 2).count).to eq 72
       expect(Transaction.count).to eq 117
 
       load_file page, "mrbs.csv"
 
-      expect_notice(page, "rows: 48, created: 0, duplicates: 45")
+      expect_notice(page, "rows: 48, created: 0, duplicates: 45, upload: 3")
       expect(Transaction.where(upload_id: 1).count).to eq 45
       expect(Transaction.where(upload_id: 2).count).to eq 72
       expect(Transaction.where(upload_id: 3).count).to eq 0
@@ -53,7 +53,7 @@ describe Transaction do
 
       load_file page, "mcc.csv"
 
-      expect_notice(page, "rows: 76, created: 70, duplicates: 0")
+      expect_notice(page, "rows: 76, created: 70, duplicates: 0, upload: 3")
       expect(Transaction.where(upload_id: 1).count).to eq 45
       expect(Transaction.where(upload_id: 2).count).to eq 72
       expect(Transaction.where(upload_id: 3).count).to eq 70
@@ -69,7 +69,7 @@ describe Transaction do
         " 12/06/2023 "," POS "," blah blah\t",-26.7,"-7.61","House account","831909-101456"
       EOF
 
-      expect_notice(page, "rows: 2, created: 1, duplicates: 0")
+      expect_notice(page, "rows: 2, created: 1, duplicates: 0, upload: 1")
       expect(Transaction.where(upload_id: 1).count).to eq 1
       expect(Transaction.count).to eq 1
 
@@ -95,7 +95,7 @@ describe Transaction do
 
       EOF
 
-      expect_notice(page, "rows: 8, created: 3, duplicates: 0")
+      expect_notice(page, "rows: 8, created: 3, duplicates: 0, upload: 1")
       expect(Transaction.where(upload_id: 1).count).to eq 3
       expect(Transaction.count).to eq 3
 
