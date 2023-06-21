@@ -89,7 +89,7 @@ class Transaction < ApplicationRecord
         CSV.foreach(path) do |row|
           rows += 1
           next if row.empty?
-          raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
+          raise "wrong number of columns (#{row.size}) on row #{rows}" if row.size < 7 || row.size > 8
           next if row[0].squish == "Date"
 
           account = check_account(row[6], rows, account)
@@ -100,6 +100,8 @@ class Transaction < ApplicationRecord
           when "mcc"
             date, category, description, amount, balance, skip = rbs_cc(row, rows)
           end
+
+          next if skip
 
           transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
 
@@ -152,9 +154,34 @@ class Transaction < ApplicationRecord
   end
 
   def self.rbs_cc(row, rows)
-    [nil, nil, nil, nil, nil, true]
+    if row[1].blank? && row[2].match?(/Balance/i) && row[4].present?
+      return [nil, nil, nil, nil, nil, true]
+    end
+    date = begin
+      Date.parse(row[0])
+    rescue
+      raise "invalid date #{row[0]} on row #{rows}"
+    end
+    category = case row[1].squish
+    when "Payment"
+      "PAY"
+    when "Purchase"
+      "PUR"
+    when "Fee"
+      "FEE"
+    else
+      raise "unrecognised category (#{row[1]}) on row #{rows}"
+    end
+    description = row[2].sub(/\A'/, "").squish
+    amount = begin
+      row[3].to_f
+    rescue
+      raise "invalid amount (#{row[3]}) on row #{rows}"
+    end
+    raise "unexpected balance (#{row[4]}) on row #{rows}" if row[4].present?
+    balance = 0.0
+    [date, category, description, amount, balance, false]
   end
-
 
   private
 

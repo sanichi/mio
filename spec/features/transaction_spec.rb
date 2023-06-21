@@ -50,6 +50,17 @@ describe Transaction do
       expect(Transaction.where(account: "jrbs").count).to eq 72
       expect(Transaction.where(account: "mrbs").count).to eq 45
       expect(Transaction.count).to eq 117
+
+      load_file page, "mcc.csv"
+
+      expect_notice(page, "rows: 76, created: 70, duplicates: 0")
+      expect(Transaction.where(upload_id: 1).count).to eq 45
+      expect(Transaction.where(upload_id: 2).count).to eq 72
+      expect(Transaction.where(upload_id: 3).count).to eq 70
+      expect(Transaction.where(account: "mcc").count).to eq 70
+      expect(Transaction.where(account: "jrbs").count).to eq 72
+      expect(Transaction.where(account: "mrbs").count).to eq 45
+      expect(Transaction.count).to eq 187
     end
 
     it "upload data" do
@@ -128,6 +139,24 @@ describe Transaction do
         "12/06/2023","POS","COSTA","-1.50","235.21","","831909-101456"
       EOF
       expect_error(page, "changed account (mrbs => jrbs) on row 2")
+      expect(Transaction.count).to eq 0
+    end
+
+    it "unexpected balance" do
+      load_data page, <<~EOF
+        13 Mar 2023,Purchase,"'AMZNMktplace amazon.co.uk GBR",7.19,,"'M ORR","'543484******5254",
+        14 Mar 2023,Purchase,"'WWWHEBRIDEANSMOKEHOUSE ISLE OF NORTH",24.15,10,"'M ORR","'543484******5254",
+      EOF
+      expect_error(page, "unexpected balance (10) on row 2")
+      expect(Transaction.count).to eq 0
+    end
+
+    it "unrecognised category" do
+      load_data page, <<~EOF
+        20 Mar 2023,Purchase,"'APPLE.COM/BILL APPLE.COM/BILIRL",10.99,,"'M ORR","'543484******5254",
+        20 Mar 2023,Rubbish,"'AMZNMktplace amazon.co.uk GBR",3.96,,"'M ORR","'543484******5254",
+      EOF
+      expect_error(page, "unrecognised category (Rubbish) on row 2")
       expect(Transaction.count).to eq 0
     end
   end
