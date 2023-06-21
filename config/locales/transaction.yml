@@ -11,6 +11,7 @@ en:
     upload: Upload
     accounts:
       jrbs: Joint RBS
+      mcc: Mark‘s CC
       mrbs: Mark‘s RBS
     orders:
       date_desc: Date ↑

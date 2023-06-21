@@ -11,8 +11,9 @@ class Transaction < ApplicationRecord
   MAX_CATEGORY = 3
   MAX_DESCRIPTION = 100
   ACCOUNTS = {
-    "831909-234510" => "mrbs",
-    "831909-101456" => "jrbs",
+    "831909-234510"    => "mrbs",
+    "831909-101456"    => "jrbs",
+    "543484******5254" => "mcc",
   }
 
   after_save :classify
@@ -80,6 +81,7 @@ class Transaction < ApplicationRecord
     rows = 0
     created = 0
     duplicates = 0
+    account = nil
     self.classifiers = Classifier.all
 
     transaction do
@@ -88,27 +90,16 @@ class Transaction < ApplicationRecord
           rows += 1
           next if row.empty?
           raise "wrong number of columns (#{row.size}) on row #{rows}" unless row.size == 7
-          next if row[0] == "Date"
+          next if row[0].squish == "Date"
 
-          date = begin
-            Date.parse(row[0])
-          rescue
-            raise "invalid date #{row[0]} on row #{rows}"
+          account = check_account(row[6], rows, account)
+
+          case account
+          when "mrbs", "jrbs"
+            date, category, description, amount, balance, skip = rbs_ac(row, rows)
+          when "mcc"
+            date, category, description, amount, balance, skip = rbs_cc(row, rows)
           end
-          category = row[1].squish
-          description = row[2].squish
-          amount = begin
-            row[3].to_f
-          rescue
-            raise "invalid amount (#{row[3]}) on row #{rows}"
-          end
-          balance = begin
-            row[4].to_f
-          rescue
-            raise "invalid balance (#{row[4]}) on row #{rows}"
-          end
-          account = ACCOUNTS[row[6].squish]
-          raise "invalid account (#{row[6]}) on row #{rows}" unless account.present?
 
           transaction = find_by(date: date, category: category, description: description, amount: amount, balance: balance, account: account)
 
@@ -130,6 +121,40 @@ class Transaction < ApplicationRecord
 
     "rows: #{rows}, created: #{created}, duplicates: #{duplicates}"
   end
+
+  def self.check_account(text, rows, current)
+    text.squish!.sub!(/\A'/, "")
+    account = ACCOUNTS[text]
+    raise "invalid account (#{text}) on row #{rows}" unless account
+    raise "changed account (#{current} => #{account}) on row #{rows}" if current && current != account
+    account
+  end
+
+  def self.rbs_ac(row, rows)
+    date = begin
+      Date.parse(row[0])
+    rescue
+      raise "invalid date #{row[0]} on row #{rows}"
+    end
+    category = row[1].squish
+    description = row[2].squish
+    amount = begin
+      row[3].to_f
+    rescue
+      raise "invalid amount (#{row[3]}) on row #{rows}"
+    end
+    balance = begin
+      row[4].to_f
+    rescue
+      raise "invalid balance (#{row[4]}) on row #{rows}"
+    end
+    [date, category, description, amount, balance, false]
+  end
+
+  def self.rbs_cc(row, rows)
+    [nil, nil, nil, nil, nil, true]
+  end
+
 
   private
 
