@@ -63,7 +63,7 @@ describe Transaction do
       expect(Transaction.count).to eq 187
     end
 
-    it "upload data" do
+    it "upload RBS account data" do
       load_data page, <<~EOF
         Date,Type,Description,Value,Balance,Account Name,Account Number
         " 12/06/2023 "," POS "," blah blah\t",-26.7,"-7.61","House account","831909-101456"
@@ -80,6 +80,47 @@ describe Transaction do
       expect(t.amount).to eq -26.7
       expect(t.balance).to eq -7.61
       expect(t.account).to eq "jrbs"
+      expect(t.upload_id).to eq 1
+    end
+
+    it "upload RBS credit card data" do
+      load_data page, <<~EOF
+
+      Date, Type, Description, Value, Balance, Account Name, Account Number
+
+      20 Mar 2023,Purchase,"'AMZNMKTPLACE ",8.99,,"'M ORR","'543484******5254",
+      05 Apr 2023,Payment," ' DIRECT DEBIT PAYMENT ",-1088.91,,"'M ORR","'543484******5254",
+      04 Apr 2023,Fee,"'NON-STERLING TRANSACTION FEE",.54,,"'M ORR","'543484******5254",
+      19 Jun 2023,,"'Balance as at 19 Jun 2023",,400.28,"'M ORR","'543484******5254"
+
+      EOF
+
+      expect_notice(page, "rows: 8, created: 3, duplicates: 0")
+      expect(Transaction.where(upload_id: 1).count).to eq 3
+      expect(Transaction.count).to eq 3
+
+      t = Transaction.find_by(date: "2023-03-20")
+      expect(t.category).to eq "PUR"
+      expect(t.description).to eq "AMZNMKTPLACE"
+      expect(t.amount).to eq -8.99
+      expect(t.balance).to eq 0.0
+      expect(t.account).to eq "mcc"
+      expect(t.upload_id).to eq 1
+
+      t = Transaction.find_by(date: "2023-04-05")
+      expect(t.category).to eq "PAY"
+      expect(t.description).to eq "DIRECT DEBIT PAYMENT"
+      expect(t.amount).to eq 1088.91
+      expect(t.balance).to eq 0.0
+      expect(t.account).to eq "mcc"
+      expect(t.upload_id).to eq 1
+
+      t = Transaction.find_by(date: "2023-04-04")
+      expect(t.category).to eq "FEE"
+      expect(t.description).to eq "NON-STERLING TRANSACTION FEE"
+      expect(t.amount).to eq -0.54
+      expect(t.balance).to eq 0.0
+      expect(t.account).to eq "mcc"
       expect(t.upload_id).to eq 1
     end
   end

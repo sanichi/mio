@@ -125,7 +125,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.check_account(text, rows, current)
-    text.squish!.sub!(/\A'/, "")
+    text.squish!.sub!(/\A\s*'/, "")
     account = ACCOUNTS[text]
     raise "invalid account (#{text}) on row #{rows}" unless account
     raise "changed account (#{current} => #{account}) on row #{rows}" if current && current != account
@@ -172,12 +172,13 @@ class Transaction < ApplicationRecord
     else
       raise "unrecognised category (#{row[1]}) on row #{rows}"
     end
-    description = row[2].sub(/\A'/, "").squish
+    description = row[2].sub(/\A\s*'/, "").squish
     amount = begin
       row[3].to_f
     rescue
       raise "invalid amount (#{row[3]}) on row #{rows}"
     end
+    amount *= -1
     raise "unexpected balance (#{row[4]}) on row #{rows}" if row[4].present?
     balance = 0.0
     [date, category, description, amount, balance, false]
