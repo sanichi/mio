@@ -22,4 +22,6 @@ module TransactionHelper
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end
+
+  def transaction_date(date) = date.strftime("%y\u2011%m\u2011%d")
 end

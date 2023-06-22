@@ -1,7 +1,7 @@
 - transactions.matches.each do |t|
   - style, color = classifier_style(t.classifier)
   %tr
-    %td.text-center= t.date
+    %td.text-center= transaction_date(t.date)
     %td.text-center{style: style}= t.category
     %td{style: style}= t.description
     %td{style: style}= t.amount
