@@ -43,6 +43,8 @@ module Linkable
         characters = $2 || display
         if vocab = Wk::Vocab.find_by(characters: characters)
           vocab.to_markdown(display: display)
+        elsif kana = Wk::Kana.find_by(characters: characters)
+          kana.to_markdown(display: display)
         else
           match
         end
