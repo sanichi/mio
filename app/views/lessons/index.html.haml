@@ -20,4 +20,4 @@
         = render "results", lessons: @lessons
   - if can?(:create, Lesson)
     .footer
-      = link_to t("lesson.new"), new_lesson_path, class: "btn btn-primary btn-sm"
+      = link_to t("lesson.new"), new_lesson_path, class: "blue-btn"

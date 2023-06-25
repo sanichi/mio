@@ -22,5 +22,5 @@
           = @sound.note_html
       .footer
         - if can?(:edit, @sound)
-          = link_to t("sound.edit"), edit_sound_path(@sound), class: "btn btn-primary btn-sm"
-        = link_to t("sound.sounds"), sounds_path, class: "btn btn-success btn-sm"
+          = link_to t("sound.edit"), edit_sound_path(@sound), class: "blue-btn"
+        = link_to t("sound.sounds"), sounds_path, class: "green-btn"

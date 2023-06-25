@@ -13,13 +13,13 @@
     .float-end
       - if @prev || @next
         - if @prev
-          = link_to @prev, class: "btn btn-success btn-sm" do
+          = link_to @prev, class: "green-btn" do
             = t("tutorial.prev")
             = @prev.number
         - if @prev && @next
           = "&nbsp;".html_safe
         - if @next
-          = link_to @next, class: "btn btn-success btn-sm" do
+          = link_to @next, class: "green-btn" do
             = @next.number
             = t("tutorial.next")
         = "&nbsp;".html_safe
@@ -31,8 +31,8 @@
       - else
         = html
   .footer
-    = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "btn btn-success btn-sm"
+    = link_to t("tutorial.tutorials"), last_search(tutorials_path), class: "green-btn"
     - if can?(:edit, Tutorial)
-      = link_to t("edit"), edit_tutorial_path(@tutorial), class: "btn btn-primary btn-sm"
+      = link_to t("edit"), edit_tutorial_path(@tutorial), class: "blue-btn"
     - if can?(:delete, Tutorial)
-      = link_to t("delete"), @tutorial, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+      = link_to t("delete"), @tutorial, class: "red-btn", method: :delete, data: { confirm: t("sure") }

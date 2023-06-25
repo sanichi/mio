@@ -29,7 +29,7 @@
       %tbody
         = render "results", kanjis: @kanjis
   .footer
-    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "btn btn-success btn-sm"
-    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
+    = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"

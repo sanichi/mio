@@ -29,9 +29,9 @@
         = render "table_rows", vocabs: @vocabs.matches
         = render "utils/pagination_links", pager: @vocabs, columns: 4
   .footer
-    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "btn btn-success btn-sm"
-    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "green-btn"
+    = link_to t("wk.vocab.vocabs"), wk_vocabs_path, class: "green-btn"
+    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"
+    = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "green-btn"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"

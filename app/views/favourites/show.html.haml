@@ -24,6 +24,6 @@
             %tr
               %td{colspan: 4}= @favourite.note_html
       .footer
-        = link_to t("favourite.title"), last_search(favourites_path), class: "btn btn-success btn-sm"
+        = link_to t("favourite.title"), last_search(favourites_path), class: "green-btn"
         - if can?(:manage, Favourite)
-          = link_to t("edit"), edit_favourite_path(@favourite), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_favourite_path(@favourite), class: "blue-btn"

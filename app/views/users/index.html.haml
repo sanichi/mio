@@ -20,4 +20,4 @@
                 %td= t("user.roles.#{user.role}")
       - if can?(:create, User)
         .footer
-          = link_to t("user.new"), new_user_path, class: "btn btn-primary btn-sm"
+          = link_to t("user.new"), new_user_path, class: "blue-btn"

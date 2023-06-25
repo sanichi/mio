@@ -10,8 +10,8 @@
       .body
         %article= @note.stuff_html
       .footer
-        = link_to t("note.notes"), last_search(notes_path), class: "btn btn-success btn-sm"
+        = link_to t("note.notes"), last_search(notes_path), class: "green-btn"
         - if can?(:edit, Note)
-          = link_to t("edit"), edit_note_path(@note), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_note_path(@note), class: "blue-btn"
         - if can?(:delete, Note)
-          = link_to t("delete"), @note, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+          = link_to t("delete"), @note, class: "red-btn", method: :delete, data: { confirm: t("sure") }

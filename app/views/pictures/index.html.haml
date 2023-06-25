@@ -22,9 +22,9 @@
       = render "results", pictures: @pictures
   .footer
     - if can?(:create, Picture)
-      = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "btn btn-primary btn-sm"
-    = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
-    = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
+      = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "blue-btn"
+    = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "green-btn"
+    = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "green-btn"
     = render "utils/help_button", extra: "btn-sm"
 
 - content_for :help_title do

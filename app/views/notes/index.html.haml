@@ -29,4 +29,4 @@
             = render "results", notes: @notes
       .footer
         - if can?(:create, Note)
-          = link_to t("note.new"), new_note_path, class: "btn btn-primary btn-sm"
+          = link_to t("note.new"), new_note_path, class: "blue-btn"

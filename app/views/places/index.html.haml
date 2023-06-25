@@ -28,6 +28,6 @@
           %tbody{id: "results"}
             = render "results", places: @places
       .footer
-        = link_to t("pages.prefectures.title"),  prefectures_path, class: "btn btn-success btn-sm"
+        = link_to t("pages.prefectures.title"),  prefectures_path, class: "green-btn"
         - if can?(:create, Place)
-          = link_to t("place.new"), new_place_path, class: "btn btn-primary btn-sm"
+          = link_to t("place.new"), new_place_path, class: "blue-btn"

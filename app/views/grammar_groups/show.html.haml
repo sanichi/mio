@@ -10,9 +10,9 @@
           - @group.grammars.by_ref.each do |grammar|
             %li= link_to grammar.title, grammar
       .footer
-        = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-success btn-sm"
-        = link_to t("grammar.grammar"), grammars_path, class: "btn btn-sm btn-success"
+        = link_to t("grammar.group.groups"), grammar_groups_path, class: "green-btn"
+        = link_to t("grammar.grammar"), grammars_path, class: "green-btn"
         - if can?(:edit, @group)
-          = link_to t("edit"), edit_grammar_group_path(@group), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_grammar_group_path(@group), class: "blue-btn"
         - if can?(:delete, @group)
-          = link_to t("delete"), @group, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+          = link_to t("delete"), @group, class: "red-btn", method: :delete, data: { confirm: t("sure") }

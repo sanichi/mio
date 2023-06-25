@@ -22,6 +22,6 @@
               %td= @team.division
 
       .footer
-        = link_to t("team.teams"), last_search(teams_path), class: "btn btn-success btn-sm"
+        = link_to t("team.teams"), last_search(teams_path), class: "green-btn"
         - if can?(:edit, Team)
-          = link_to t("edit"), edit_team_path(@team), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_team_path(@team), class: "blue-btn"

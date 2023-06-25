@@ -25,5 +25,5 @@
             = render "results", groups: @grammar_groups
   - if can?(:create, GrammarGroup)
     .footer
-      = link_to t("grammar.group.new"), new_grammar_group_path, class: "btn btn-sm btn-primary"
-      = link_to t("grammar.grammar"), grammars_path, class: "btn btn-sm btn-success"
+      = link_to t("grammar.group.new"), new_grammar_group_path, class: "blue-btn"
+      = link_to t("grammar.grammar"), grammars_path, class: "green-btn"

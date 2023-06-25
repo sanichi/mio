@@ -22,6 +22,6 @@
     = render "utils/search/form", index: weight_path, inputs: inputs, remote: false
     #elm-app
   .footer
-    = link_to t("list"), masses_path, class: "btn btn-primary btn-sm"
+    = link_to t("list"), masses_path, class: "blue-btn"
     - if can?(:create, Mass)
-      = link_to t("mass.new"), new_mass_path, class: "btn btn-primary btn-sm"
+      = link_to t("mass.new"), new_mass_path, class: "blue-btn"

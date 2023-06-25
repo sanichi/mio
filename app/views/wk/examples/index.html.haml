@@ -20,7 +20,7 @@
       %tbody{id: "results"}
         = render "results", examples: @examples
   .footer
-    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"
     - if can?(:create, Wk::Example)
-      = link_to t("wk.example.new"), new_wk_example_path, class: "btn btn-primary btn-sm"
+      = link_to t("wk.example.new"), new_wk_example_path, class: "blue-btn"

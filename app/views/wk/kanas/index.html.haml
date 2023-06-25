@@ -29,7 +29,7 @@
         = render "table_rows", kanas: @kanas.matches
         = render "utils/pagination_links", pager: @kanas, columns: 5
   .footer
-    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.kana.kanas"), wk_kanas_path, class: "btn btn-success btn-sm"
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
+    = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "green-btn"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.kana.kanas"), wk_kanas_path, class: "green-btn"

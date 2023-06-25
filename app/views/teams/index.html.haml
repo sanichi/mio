@@ -24,4 +24,4 @@
             = render "results", teams: @teams
       - if can?(:create, Team)
         .footer
-          = link_to t("team.new"), new_team_path, class: "btn btn-primary btn-sm"
+          = link_to t("team.new"), new_team_path, class: "blue-btn"

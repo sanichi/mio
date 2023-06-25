@@ -3,17 +3,17 @@
     - if u == unit.key
       .btn.btn-secondary.btn-sm= t("mass.unit.short.#{u}")
     - else
-      = link_to t("mass.unit.short.#{u}"), graph_masses_path(unit: u, start: mgd.start), remote: true, class: "btn btn-success btn-sm"
+      = link_to t("mass.unit.short.#{u}"), graph_masses_path(unit: u, start: mgd.start), remote: true, class: "green-btn"
   - mgd.start_options.each do |text, option|
     - if option == mgd.start
       .btn.btn-secondary.btn-sm= text
     - else
-      = link_to text, graph_masses_path(unit: unit.key, start: option), class: "btn btn-success btn-sm"
-  = link_to t("list"), masses_path(unit: unit.key), class: "btn btn-primary btn-sm"
+      = link_to text, graph_masses_path(unit: unit.key, start: option), class: "green-btn"
+  = link_to t("list"), masses_path(unit: unit.key), class: "blue-btn"
 - else
   - Mass::UNITS.keys.each do |u|
     - if u == unit.key
       .btn.btn-secondary.btn-sm= t("mass.unit.short.#{u}")
     - else
-      = link_to t("mass.unit.short.#{u}"), masses.page_path(unit: u, format: "js"), remote: true, class: "btn btn-success btn-sm"
-  = link_to t("graph"), weight_path(unit: unit.key), class: "btn btn-primary btn-sm"
+      = link_to t("mass.unit.short.#{u}"), masses.page_path(unit: u, format: "js"), remote: true, class: "green-btn"
+  = link_to t("graph"), weight_path(unit: unit.key), class: "blue-btn"

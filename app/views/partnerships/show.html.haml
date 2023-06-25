@@ -29,6 +29,6 @@
               %td= t("person.realms")[@partnership.realm]
       - if can?(:manage, Partnership)
         .footer
-          = link_to t("edit"), edit_partnership_path(@partnership), class: "btn btn-primary btn-sm"
-          = link_to t("person.people"), last_search(people_path), class: "btn btn-success btn-sm"
-          = link_to t("partnership.partnerships"), last_search(partnerships_path), class: "btn btn-success btn-sm"
+          = link_to t("edit"), edit_partnership_path(@partnership), class: "blue-btn"
+          = link_to t("person.people"), last_search(people_path), class: "green-btn"
+          = link_to t("partnership.partnerships"), last_search(partnerships_path), class: "green-btn"

@@ -30,6 +30,6 @@
               %tr
                 %td{colspan: 2}=@flat.notes_html
       .footer
-        = link_to t("flat.flats"), last_search(flats_path), class: "btn btn-success btn-sm"
+        = link_to t("flat.flats"), last_search(flats_path), class: "green-btn"
         - if can?(:manage, Flat)
-          = link_to t("edit"), edit_flat_path(@flat), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_flat_path(@flat), class: "blue-btn"

@@ -27,4 +27,4 @@
             = render "results", problems: @problems
       - if can?(:create, Problem)
         .footer
-          = link_to t("problem.new"), new_problem_path, class: "btn btn-primary btn-sm"
+          = link_to t("problem.new"), new_problem_path, class: "blue-btn"

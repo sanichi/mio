@@ -20,6 +20,6 @@
                 = otp_required(@user)
                 = otp_active(@user)
       .footer
-        = link_to t("user.users"), users_path, class: "btn btn-success btn-sm"
+        = link_to t("user.users"), users_path, class: "green-btn"
         - if can?(:manage, User)
-          = link_to t("edit"), edit_user_path(@user), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_user_path(@user), class: "blue-btn"

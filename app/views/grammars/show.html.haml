@@ -32,17 +32,17 @@
                 %tr{id: "example-#{example.id}"}
                   %td= example.japanese_html
                   %td= example.english
-                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "btn btn-warning btn-sm"
-                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "btn btn-primary btn-sm"
+                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "yellow-btn"
+                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "blue-btn"
       .footer
-        = link_to t("grammar.grammar"), grammars_path, class: "btn btn-success btn-sm"
-        = link_to t("grammar.group.groups"), grammar_groups_path, class: "btn btn-success btn-sm"
+        = link_to t("grammar.grammar"), grammars_path, class: "green-btn"
+        = link_to t("grammar.group.groups"), grammar_groups_path, class: "green-btn"
         - if can?(:create, Wk::Example)
-          = link_to t("wk.example.new"), new_wk_example_path(return_page: grammar_path(@grammar)), class: "btn btn-primary btn-sm"
+          = link_to t("wk.example.new"), new_wk_example_path(return_page: grammar_path(@grammar)), class: "blue-btn"
         - if can?(:edit, @grammar)
-          = link_to t("edit"), edit_grammar_path(@grammar), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_grammar_path(@grammar), class: "blue-btn"
         - if can?(:delete, @grammar)
-          = link_to t("delete"), @grammar, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+          = link_to t("delete"), @grammar, class: "red-btn", method: :delete, data: { confirm: t("sure") }
       - lo = Layout.new(xl: [10,2], md: [9,3], sm: [8,4], xs: [7,5]).to_a
       - unless @others.empty?
         .footer
@@ -51,7 +51,7 @@
               = label_tag :group_id, "group", class: "visually-hidden"
               = select_tag :group_id, grammar_group_menu(@others), class: "form-select"
             %div.text-end{class: lo[1]}
-              = button_tag t("grammar.group.add"), type: "submit", class: "btn btn-sm btn-success"
+              = button_tag t("grammar.group.add"), type: "submit", class: "green-btn"
       - unless @groups.empty?
         .footer
           = form_tag remove_group_grammar_path(@grammar), method: :patch, class: "row g-3" do
@@ -59,4 +59,4 @@
               = label_tag :group_id, "group", class: "visually-hidden"
               = select_tag :group_id, grammar_group_menu(@groups), class: "form-select"
             %div.text-end{class: lo[1]}
-              = button_tag t("grammar.group.remove"), type: "submit", class: "btn btn-sm btn-success"
+              = button_tag t("grammar.group.remove"), type: "submit", class: "green-btn"

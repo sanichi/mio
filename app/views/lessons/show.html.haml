@@ -33,8 +33,8 @@
         - else
           = html
   .footer
-    = link_to t("lesson.lessons"), last_search(lessons_path), class: "btn btn-success btn-sm"
+    = link_to t("lesson.lessons"), last_search(lessons_path), class: "green-btn"
     - if can?(:edit, Lesson)
-      = link_to t("edit"), edit_lesson_path(@lesson), class: "btn btn-primary btn-sm"
+      = link_to t("edit"), edit_lesson_path(@lesson), class: "blue-btn"
     - if can?(:delete, Lesson)
-      = link_to t("delete"), @lesson, class: "btn btn-danger btn-sm", method: :delete, data: { confirm: t("sure") }
+      = link_to t("delete"), @lesson, class: "red-btn", method: :delete, data: { confirm: t("sure") }

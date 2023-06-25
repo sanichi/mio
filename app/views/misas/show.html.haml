@@ -19,6 +19,6 @@
         .body
           %article= @misa.note_html
       .footer
-        = link_to t("misa.misas"), last_search(misas_path), class: "btn btn-success btn-sm"
+        = link_to t("misa.misas"), last_search(misas_path), class: "green-btn"
         - if can?(:edit, Misa)
-          = link_to t("edit"), edit_misa_path(@misa), class: "btn btn-primary btn-sm"
+          = link_to t("edit"), edit_misa_path(@misa), class: "blue-btn"

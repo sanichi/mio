@@ -5,11 +5,11 @@
 .btn-toolbar.justify-content-center
   - if prv || nxt
     .btn-group.me-1
-      = link_to t("symbol.prev"), prv || "#", class: "btn btn-success#{prv ? '' : ' disabled'} btn-sm"
-      = link_to t("symbol.next"), nxt || "#", class: "btn btn-success#{nxt ? '' : ' disabled'} btn-sm"
+      = link_to t("symbol.prev"), prv || "#", class: "green-btn#{prv ? '' : ' disabled'}"
+      = link_to t("symbol.next"), nxt || "#", class: "green-btn#{nxt ? '' : ' disabled'}"
   .btn-group.me-1
-    = link_to t("picture.pictures"), last_search(pictures_path), class: "btn btn-success btn-sm"
-    = link_to t("person.people"), last_search(people_path), class: "btn btn-success btn-sm"
+    = link_to t("picture.pictures"), last_search(pictures_path), class: "green-btn"
+    = link_to t("person.people"), last_search(people_path), class: "green-btn"
   .btn-group.me-1
     - if can?(:manage, picture)
-      = link_to t("edit"), edit_picture_path(picture), class: "btn btn-primary btn-sm"
+      = link_to t("edit"), edit_picture_path(picture), class: "blue-btn"

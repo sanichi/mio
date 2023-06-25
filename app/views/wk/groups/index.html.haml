@@ -26,7 +26,7 @@
       %tbody{id: "results"}
         = render "results", groups: @groups
   .footer
-    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "btn btn-success btn-sm"
-    = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "btn btn-success btn-sm"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "green-btn"
     - if can?(:create, Wk::Group)
-      = link_to t("wk.group.new"), new_wk_group_path, class: "btn btn-primary btn-sm"
+      = link_to t("wk.group.new"), new_wk_group_path, class: "blue-btn"

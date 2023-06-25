@@ -202,18 +202,27 @@ svg#dni
 svg#risle
   @extend .border, .border-dark, .rounded
 
-// Making button heights even smaller
-// $btn-padding-y-sm:            $input-btn-padding-y-sm !default;
-// $btn-padding-x-sm:            $input-btn-padding-x-sm !default;
-// $btn-font-size-sm:            $input-btn-font-size-sm !default;
-// $input-btn-padding-y-sm:      .25rem !default;
-// $input-btn-padding-x-sm:      .5rem !default;
-// $input-btn-font-size-sm:      $font-size-sm !default;
-// $font-size-sm:                $font-size-base * .875 !default;
-// $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
-// $line-height-base:            1.5 !default;
-// $input-btn-line-height:       $line-height-base !default;
-// $btn-line-height:             $input-btn-line-height !default;
+// Buttons
+
+.green-btn
+  @extend .mb-1, .btn, .btn-sm, .btn-success,
+
+.blue-btn
+  @extend .mb-1, .btn, .btn-sm, .btn-primary
+
+.gray-btn
+  @extend .mb-1, .btn, .btn-sm, .btn-secondary
+
+.yellow-btn
+  @extend .mb-1, .btn, .btn-sm, .btn-warning
+
+.red-btn
+  @extend .mb-1, .btn, .btn-sm, .btn-danger
+
+
+
+
+
 
 button.btn-tiny
   padding-top: 0.1rem

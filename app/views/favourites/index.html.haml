@@ -37,4 +37,4 @@
         = render "results", favourites: @favourites
   - if can?(:create, Favourite)
     .footer
-      = link_to t("favourite.new"), new_favourite_path, class: "btn btn-primary btn-sm"
+      = link_to t("favourite.new"), new_favourite_path, class: "blue-btn"

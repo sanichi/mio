@@ -33,10 +33,10 @@
             = render "results", people: @people
       .footer#buttons
         - if can?(:create, Person)
-          = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "btn btn-primary btn-sm"
+          = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "blue-btn"
         = render "utils/help_button", extra: "btn-sm"
-        = link_to t("picture.pictures"), pictures_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
-        = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "btn btn-success btn-sm"
+        = link_to t("picture.pictures"), pictures_path(realm: params[:realm].to_i), class: "green-btn"
+        = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "green-btn"
 
 - content_for :help_title do
   = t("person.help.search")
