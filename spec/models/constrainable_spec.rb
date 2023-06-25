@@ -18,6 +18,7 @@ describe Constrainable do
       expect(Favourite.numerical_constraint("0.0 1.0", :fee)).to eq "fee >= 0 AND fee <= 1"
       expect(Favourite.numerical_constraint("0.5 1.2", :fee, digits: 1)).to eq "fee >= 0.5 AND fee <= 1.2"
       expect(Favourite.numerical_constraint("0.5 1.2", :fee, digits: 2)).to eq "fee >= 0.50 AND fee <= 1.20"
+      expect(Favourite.numerical_constraint("-1.2 -0.3", :fee, digits: 1)).to eq "fee >= -1.2 AND fee <= -0.3"
     end
 
     it "inequalities" do
@@ -25,6 +26,7 @@ describe Constrainable do
       expect(Favourite.numerical_constraint(">= 2", :srri, digits: 1)).to eq "srri >= 2.0"
       expect(Favourite.numerical_constraint("< 1.061", :fee, digits: 2)).to eq "fee < 1.06"
       expect(Favourite.numerical_constraint(" <=  0.45 ", :fee, digits: 3)).to eq "fee <= 0.450"
+      expect(Favourite.numerical_constraint(">-7", :fee, digits: 0)).to eq "fee > -7"
     end
 
     it "equalities" do
@@ -34,6 +36,7 @@ describe Constrainable do
       expect(Favourite.numerical_constraint("  0.45 ", :fee, digits: 3)).to eq "fee = 0.450"
       expect(Favourite.numerical_constraint("=3", :fee)).to eq "fee = 3"
       expect(Favourite.numerical_constraint(" = 7.2 ", :fee, digits: 3)).to eq "fee = 7.200"
+      expect(Favourite.numerical_constraint(" =  -34.567 ", :fee, digits: 2)).to eq "fee = -34.57"
     end
   end
 

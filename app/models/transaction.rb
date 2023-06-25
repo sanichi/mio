@@ -63,7 +63,7 @@ class Transaction < ApplicationRecord
     if sql = cross_constraint(params[:description], %w{description})
       matches = matches.where(sql)
     end
-    if sql = numerical_constraint(params[:amount], :amount)
+    if sql = numerical_constraint(params[:amount], :amount, digits: 2)
       matches = matches.where(sql)
     end
     if sql = numerical_constraint(params[:upload_id], :upload_id)
