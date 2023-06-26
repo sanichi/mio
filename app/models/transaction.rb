@@ -36,6 +36,8 @@ class Transaction < ApplicationRecord
     return true
   end
 
+  def toggle_approved() = update_column(:approved, !approved)
+
   def self.search(params, path, opt={})
     corrections = {}
     matches = case params[:order]
@@ -82,8 +84,14 @@ class Transaction < ApplicationRecord
       corrections[:date] = ""
     end
     if (classifier_id = params[:classifier_id].to_i) != 0
-      classifier_id = nil if classifier_id < 0
-      matches = matches.where(classifier_id: classifier_id)
+      case classifier_id
+      when -1
+        matches = matches.where(classifier_id: nil, approved: false)
+      when -2
+        matches = matches.where(approved: true)
+      else
+        matches = matches.where(classifier_id: classifier_id)
+      end
     end
     [paginate(matches, params, path, opt), corrections]
   end

@@ -7,5 +7,9 @@
     %td{style: style}= t.amount
     %td= t.balance
     %td= t("transaction.accounts.#{t.account}")
-    %td.text-center= link_to(t("symbol.separator"), t.classifier, style: color) if t.classifier
+    %td.text-center
+      - if t.classifier
+        = link_to(t("symbol.separator"), t.classifier, style: color)
+      - else
+        %button.btn.btn-sm.approval-button{"data-transaction" => t.id, type: "button"}= t("transaction.symbol.#{t.approved ? 'approved' : 'unapproved'}")
 = render "utils/pagination_links", pager: transactions, columns: 7

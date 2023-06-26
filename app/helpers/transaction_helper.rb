@@ -18,6 +18,7 @@ module TransactionHelper
 
   def transaction_classifier_menu(selected)
     opts = Classifier.pluck(:name, :id)
+    opts.unshift [t("transaction.approved"), -2]
     opts.unshift [t("transaction.unclassified"), -1]
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)

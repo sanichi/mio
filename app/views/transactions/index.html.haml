@@ -17,6 +17,8 @@
   ]
 
 = render "utils/title", key: "transaction.transactions"
+= content_for :javascript do
+  = render partial: "update_utils", formats: :js
 
 %section.mt-3
   .header.text-center

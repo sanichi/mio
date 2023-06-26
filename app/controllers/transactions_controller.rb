@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   authorize_resource
+  load_resource only: :quick_approval_update
 
   def index
     @transactions, @corrections = Transaction.search(params, transactions_path, per_page: 20, remote: true)
@@ -17,5 +18,10 @@ class TransactionsController < ApplicationController
     ensure
       redirect_to transactions_path(upload_id: upload_id)
     end
+  end
+
+  def quick_approval_update
+    @transaction.toggle_approved
+    render :quick_approval_update, layout: false
   end
 end

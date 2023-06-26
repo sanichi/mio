@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   end
   resources :transactions, only: [:index] do
     post :upload, on: :collection
+    patch :quick_approval_update, on: :member
   end
   resources :tutorials
   resources :users

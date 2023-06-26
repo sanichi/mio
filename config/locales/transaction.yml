@@ -2,12 +2,14 @@ en:
   transaction:
     account: Account
     amount: Amount
+    approved: Approved
     balance: Balance
     category: Type
     date: Date
     days: Days
     description: Description
     transactions: Transactions
+    unapproved: Unpproved
     unclassified: Unclassified
     upload: Upload
     accounts:
@@ -21,3 +23,6 @@ en:
       amount_asc: Amount ↓
       balance_desc: Balance ↑
       balance_asc: Balance ↓
+    symbol:
+      approved: ✔︎
+      unapproved: ✘
