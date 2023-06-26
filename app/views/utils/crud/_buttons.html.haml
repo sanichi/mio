@@ -1,7 +1,7 @@
 = form.submit t("save"), class: "blue-btn"
 - if cancel
-  = link_to t("cancel"), cancel, class: "btn btn-secondary btn-sm"
+  = link_to t("cancel"), cancel, class: "gray-btn"
 - else
-  = link_to t("cancel"), object.new_record?? index : object, class: "btn btn-secondary btn-sm"
+  = link_to t("cancel"), object.new_record?? index : object, class: "gray-btn"
 - if !object.new_record? && can?(:destroy, object)
   = link_to t("delete"), object, class: "red-btn", method: :delete, data: { confirm: t("sure") }

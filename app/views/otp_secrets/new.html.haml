@@ -17,4 +17,4 @@
             .mb-3.text-center= image_tag @qr_code
           .mb-3= render "utils/crud/text", form: f, label: t("otp.otp"), param: :otp_attempt
         .footer
-          .text-center= f.submit t("otp.submit"), class: "btn btn-primary"
+          .text-center= f.submit t("otp.submit"), class: "blue-btn"

@@ -25,6 +25,6 @@
       .body.border-top
         %div#map= render "map", vb: @place.vb, elements: @elements
       .footer
-        = link_to @place.jname, @place, class: "btn btn-secondary btn-sm"
+        = link_to @place.jname, @place, class: "gray-btn"
         = link_to t("place.title"), last_search(places_path), class: "green-btn"
         = link_to t("pages.prefectures.title"),  prefectures_path, class: "green-btn"

@@ -11,7 +11,7 @@
       = render "utils/search/#{type}", { param: param, label: label }.merge(options || {})
   - if button
     %div{class: col(button)}
-      = button_tag t("search"), type: "submit", class: "btn btn-success"
+      = button_tag t("search"), type: "submit", class: "green-btn"
   - else
     -# to ensure forms with more than one text input submit when the enter key is pressed
     = button_tag "x", type: "submit", class: "visually-hidden btn-sm"

@@ -13,8 +13,8 @@
 .row.justify-content-center.mt-3
   .col-auto
     = render "utils/help_button"
-    = link_to t("person.people"), people_path(realm: @person.realm), class: "btn btn-success"
-    = link_to t("picture.pictures"), pictures_path(realm: @person.realm), class: "btn btn-success"
+    = link_to t("person.people"), people_path(realm: @person.realm), class: "green-btn"
+    = link_to t("picture.pictures"), pictures_path(realm: @person.realm), class: "green-btn"
 
 - content_for :help_title do
   = t("person.help.tree")
