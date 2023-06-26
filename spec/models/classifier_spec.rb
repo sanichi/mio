@@ -4,26 +4,26 @@ describe Classifier do
   context "success" do
     it "normalisation" do
       c = Classifier.create!(
-        category: " POS| D/D | S/ O ",
+        category: " POS| D/D | s/o ",
         color: " FF 00 FF",
         description: "\n MARKS & SPARKS \n \n\n  TESCOS \n\t\nMORRISONS\t ",
         max_amount: "",
         min_amount: "-75",
         name: " Test   One\t ",
       )
-      expect(c.category).to eq "POS|D/D|S/O"
+      expect(c.category).to eq "D/D|POS|S/O"
       expect(c.color).to eq "ff00ff"
-      expect(c.description).to eq "MARKS & SPARKS\nTESCOS\nMORRISONS"
+      expect(c.description).to eq "MARKS & SPARKS\nMORRISONS\nTESCOS"
       expect(c.max_amount).to eq 0.0
       expect(c.min_amount).to eq -75.0
       expect(c.name).to eq "Test One"
 
-      expect(c.cre).to match "POS"
       expect(c.cre).to match "D/D"
+      expect(c.cre).to match "POS"
       expect(c.cre).to match "S/O"
       expect(c.dre).to match "MARKS & SPARKS"
-      expect(c.dre).to match "TESCOS"
       expect(c.dre).to match "MORRISONS"
+      expect(c.dre).to match "TESCOS"
     end
   end
 

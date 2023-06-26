@@ -38,11 +38,14 @@ class Classifier < ApplicationRecord
   private
 
   def normalize_attributes
-    category&.gsub!(/\s/, "")
+    if category.present?
+      self.category = category.split("|").keep_if{|c| c.present?}.map(&:strip).map(&:upcase).sort.join("|")
+    end
     color&.gsub!(/\s/, "")
     color&.downcase!
-    description&.strip!
-    description&.gsub!(/\s*\n\s*/, "\n")
+    if description.present?
+      self.description = description.split(/\s*\n\s*/).keep_if{|c| c.present?}.map(&:strip).sort.join("\n")
+    end
     self.max_amount = 0.0 unless max_amount.present?
     self.min_amount = 0.0 unless min_amount.present?
     name&.squish!
