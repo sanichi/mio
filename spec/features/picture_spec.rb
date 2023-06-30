@@ -40,8 +40,8 @@ describe Picture do
         expect(PersonPicture.count).to eq 5
         p = Picture.first
 
-        title = [person1, person2, person3].sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ")
-        expect(page).to have_title title.truncate(Picture::MAX_TITLE)
+        title = [person1, person2, person3].sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ").truncate(Picture::MAX_TITLE)
+        expect(page).to have_title title
 
         expect(p.image).to eq data.image
         expect(p.description).to eq data.description
