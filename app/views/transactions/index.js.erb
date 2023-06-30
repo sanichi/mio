@@ -7,3 +7,7 @@ $("#date").val("<%= @corrections[:date]%>");
 <% if @corrections[:days] %>
 $("#days").val("<%= @corrections[:days]%>");
 <% end %>
+
+<% if @corrections[:upload_id] %>
+$("#upload_id").val("<%= @corrections[:upload_id]%>");
+<% end %>

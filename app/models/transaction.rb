@@ -68,7 +68,14 @@ class Transaction < ApplicationRecord
     if sql = numerical_constraint(params[:amount], :amount, digits: 2)
       matches = matches.where(sql)
     end
-    if sql = numerical_constraint(params[:upload_id], :upload_id)
+    if params[:upload_id].to_s.match(/\A\s*(-?[1-9]\d*|0)\s*\z/)
+      upload_id = $1.to_i
+      if upload_id <= 0
+        upload_id += Transaction.maximum(:upload_id)
+        corrections[:upload_id] = upload_id.to_s
+      end
+      matches = matches.where(upload_id: upload_id)
+    elsif sql = numerical_constraint(params[:upload_id], :upload_id)
       matches = matches.where(sql)
     end
     if date = Chronic.parse(params[:date])&.to_date
