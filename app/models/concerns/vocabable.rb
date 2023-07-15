@@ -20,6 +20,7 @@ module Vocabable
     "の adjective"      => "noa",
     "numeral"           => "num",
     "noun"              => "nun",
+    "オノマトペ"          => "ono",
     "proper noun"       => "pno",
     "prefix"            => "pre",
     "pronoun"           => "pro",
