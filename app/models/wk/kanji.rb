@@ -28,16 +28,13 @@ module Wk
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
     def self.search(params, path, opt={})
-      matches =
-        case params[:order]
-        when "character"    then by_character
-        when "last_updated" then by_last_updated
-        when "meaning"      then by_meaning
-        when "reading"      then by_reading
-        else                     by_level
+      matches = radical_search(params[:kquery])
+      if !matches
+        if sql = cross_constraint(params[:kquery], %w{character meaning reading})
+          matches = where(sql)
+        else
+          matches = all
         end
-      if sql = cross_constraint(params[:kquery], %w{character meaning reading})
-        matches = matches.where(sql)
       end
       if sql = numerical_constraint(params[:id], :wk_id)
         matches = matches.where(sql)
@@ -48,7 +45,32 @@ module Wk
       if params[:image] == "kayo"
         matches = matches.where(character: images)
       end
+      matches =
+        case params[:order]
+        when "character"    then matches.by_character
+        when "last_updated" then matches.by_last_updated
+        when "meaning"      then matches.by_meaning
+        when "reading"      then matches.by_reading
+        else                     matches.by_level
+        end
       paginate(matches, params, path, opt)
+    end
+
+    def self.radical_search(kquery)
+      names = kquery.to_s.split(" ")
+      return nil unless names.map{|n| n.match?(/\A[A-Z][A-Za-z]+\z/)}.all? && names.length > 0
+      relation = joins(:radicals)
+      ids = nil
+      names.each do |n|
+        nids = relation.where("wk_radicals.name ILIKE '%#{n}%'").pluck(:id)
+        if ids.nil?
+          ids = nids
+        else
+          ids = ids.intersection(nids)
+        end
+        last if ids.empty?
+      end
+      where(id: ids)
     end
 
     def linked_character
