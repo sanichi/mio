@@ -60,7 +60,7 @@ module Wk
       names = kquery.to_s.split(" ")
       return nil if names.empty?
       return nil unless names.map{|n| n.match?(/\A[A-Za-z]+\z/)}.all?
-      return nil unless names.first.match?(/\A[A-Z][A-Za-z]+\z/)}
+      return nil unless names.first.match?(/\A[A-Z][A-Za-z]+\z/)
       relation = joins(:radicals)
       ids = nil
       names.each do |n|
