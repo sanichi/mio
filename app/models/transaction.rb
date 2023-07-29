@@ -11,8 +11,10 @@ class Transaction < ApplicationRecord
   MAX_CATEGORY = 3
   MAX_DESCRIPTION = 100
   ACCOUNTS = {
-    "831909-234510"    => "mrbs",
     "831909-101456"    => "jrbs",
+    "831909-00101456"  => "jrbs",
+    "831909-234510"    => "mrbs",
+    "831909-00234510"  => "mrbs",
     "543484******5254" => "mcc",
   }
 
