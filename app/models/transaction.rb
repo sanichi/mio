@@ -22,7 +22,7 @@ class Transaction < ApplicationRecord
 
   belongs_to :classifier, optional: true, inverse_of: :transactions
 
-  validates :account, inclusion: { in: ACCOUNTS.values }
+  validates :account, inclusion: { in: ACCOUNTS.values.uniq }
   validates :amount, :balance, numericality: { greater_than_or_equal_to: -MAX_AMOUNT, less_than_or_equal_to: MAX_AMOUNT }
   validates :category, format: { with: /\A[A-Z][\/A-Z][A-Z]\z/ }
   validates :date, presence: true
@@ -111,7 +111,6 @@ class Transaction < ApplicationRecord
     rows = 0
     created = 0
     duplicates = 0
-    account = nil
     self.classifiers = Classifier.all
 
     transaction do
@@ -122,7 +121,7 @@ class Transaction < ApplicationRecord
           raise "wrong number of columns (#{row.size}) on row #{rows}" if row.size < 7 || row.size > 8
           next if row[0].squish == "Date"
 
-          account = check_account(row[6], rows, account)
+          account = check_account(row[6], rows)
 
           case account
           when "mrbs", "jrbs"
@@ -154,11 +153,10 @@ class Transaction < ApplicationRecord
     "rows: #{rows}, created: #{created}, duplicates: #{duplicates}, upload: #{upload_id}"
   end
 
-  def self.check_account(text, rows, current)
+  def self.check_account(text, rows)
     text.squish!.sub!(/\A\s*'/, "")
     account = ACCOUNTS[text]
     raise "invalid account (#{text}) on row #{rows}" unless account
-    raise "changed account (#{current} => #{account}) on row #{rows}" if current && current != account
     account
   end
 

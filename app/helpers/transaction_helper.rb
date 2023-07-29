@@ -1,6 +1,6 @@
 module TransactionHelper
   def transaction_account_menu(selected)
-    opts = Transaction::ACCOUNTS.values.map{|a| [t("transaction.accounts.#{a}"), a]}
+    opts = Transaction::ACCOUNTS.values.uniq.map{|a| [t("transaction.accounts.#{a}"), a]}
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end
