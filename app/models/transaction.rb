@@ -167,7 +167,7 @@ class Transaction < ApplicationRecord
       raise "invalid date #{row[0]} on row #{rows}"
     end
     category = row[1].squish
-    description = row[2].squish
+    description = row[2].sub(/\A\s*'/, "").squish
     amount = begin
       row[3].to_f
     rescue
@@ -208,8 +208,7 @@ class Transaction < ApplicationRecord
     end
     amount *= -1
     raise "unexpected balance (#{row[4]}) on row #{rows}" if row[4].present?
-    balance = 0.0
-    [date, category, description, amount, balance, false]
+    [date, category, description, amount, 0.0, false]
   end
 
   private
