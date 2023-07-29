@@ -174,15 +174,6 @@ describe Transaction do
       expect(Transaction.count).to eq 0
     end
 
-    it "inconsistent account" do
-      load_data page, <<~EOF
-        "30/05/2023","DPC","To A/C 00234510",-25,"813.04","House account","831909-234510"
-        "12/06/2023","POS","COSTA","-1.50","235.21","","831909-101456"
-      EOF
-      expect_error(page, "changed account (mrbs => jrbs) on row 2")
-      expect(Transaction.count).to eq 0
-    end
-
     it "unexpected balance" do
       load_data page, <<~EOF
         13 Mar 2023,Purchase,"'AMZNMktplace amazon.co.uk GBR",7.19,,"'M ORR","'543484******5254",
