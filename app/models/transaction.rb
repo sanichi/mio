@@ -84,6 +84,7 @@ class Transaction < ApplicationRecord
       if (days = params[:days].to_i) > 1
         made = date + days - 1
         matches = matches.where("date >= '#{date.to_s}' AND date <= '#{made.to_s}'")
+        corrections[:days] = days.to_s
       else
         matches = matches.where(date: date)
         corrections[:days] = "1"
@@ -91,6 +92,7 @@ class Transaction < ApplicationRecord
       corrections[:date] = date.to_s
     else
       corrections[:date] = ""
+      corrections[:days] = ""
     end
     if (classifier_id = params[:classifier_id].to_i) != 0
       case classifier_id
