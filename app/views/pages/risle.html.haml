@@ -1,6 +1,6 @@
 - my_meta_tags "pages.risle.map"
 
-- if can?(:park, Flat) || can?(:risle, :page) || params[:p]
+- if can?(:park, Flat) || current_user.isle? || params[:p]
   - content_for :javascript do
     = render partial: "risle", formats: :js
 
