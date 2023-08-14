@@ -18,6 +18,10 @@ class Ability
       can :read, Tutorial, draft: false
     end
 
+    if user.isle?
+      can [:pam, :risle, :deeds], :page
+    end
+
     can :read, [Favourite, Place]
     can [:read, :graph], Mass
     can [:aoc, :play, :premier, :prefectures, :risle, :ruby, :weight, :wordle], :page

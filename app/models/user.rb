@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :password
 
-  ROLES = ["admin", "family", "chess", "none"]
+  ROLES = ["admin", "family", "chess", "isle", "none"]
   MAX_EMAIL = 75
   MAX_FN = 25
   MAX_PASSWORD = 32
