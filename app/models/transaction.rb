@@ -58,7 +58,7 @@ class Transaction < ApplicationRecord
     else
       order(date: :desc)
     end
-    if params[:account].present?
+    if ACCOUNTS.values.include?(params[:account])
       matches = matches.where(account: params[:account])
     end
     if params[:category].present?
@@ -105,6 +105,57 @@ class Transaction < ApplicationRecord
       end
     end
     [paginate(matches, params, path, opt), corrections]
+  end
+
+  def self.averages(params)
+    c = Classifier.find_by(id: params[:classifier_id].to_i) or return
+    transactions = c.transactions
+    account = params[:account]
+    if ACCOUNTS.values.include?(account)
+      transactions = transactions.where(account: account)
+    else
+      account = nil
+    end
+
+    # calculate total amounts for each month at least 1 transaction was made
+    totals = Hash.new(0.0)
+    transactions.each do |t|
+      index = "#{t.date.year}-#{t.date.month}"
+      totals[index] += t.amount
+    end
+
+    # prepare to work with 3 individual months: this month and the previous two
+    dates = []
+    dates.unshift Date.today
+    dates.unshift dates.first.beginning_of_month - 1
+    dates.unshift dates.first.beginning_of_month - 1
+
+    # estimate the average monthly spend
+    average = 0
+    start_date = minimum(:date)
+    end_date = Date.today
+    unless totals.size == 0 || start_date.nil?
+      months = (end_date - start_date).to_f / 30.0
+      average = (totals.values.sum / months).round
+    end
+
+    # the data starts with the monthly average ("Ave")
+    # then ends with the month names ("Aug", "Sep", etc) and totals
+    data = []
+    data.push ["Ave", average]
+    dates.each do |date|
+      index = "#{date.year}-#{date.month}"
+      month = date.strftime("%b")
+      data.push [month, totals[index].round]
+    end
+
+    # return the classifier name, account name (maybe nil as it's optional),
+    # and the average/monthly data we just computed
+    {
+      name: c.name,
+      acct: account,
+      data: data,
+    }
   end
 
   def self.last_upload_id() = maximum(:upload_id).to_i

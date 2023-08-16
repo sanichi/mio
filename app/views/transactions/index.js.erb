@@ -1,5 +1,7 @@
 $("#results").html("<%= j render('results', transactions: @transactions) %>");
 
+$("#averages").html("<%= j render('averages', averages: @averages) %>");
+
 <% if @corrections[:date] %>
 $("#date").val("<%= @corrections[:date]%>");
 <% end %>

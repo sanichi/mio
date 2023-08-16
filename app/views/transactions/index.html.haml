@@ -25,6 +25,8 @@
     %h3= t("transaction.transactions")
   .body
     = render "utils/search/form", index: transactions_path, inputs: inputs
+    %div#averages
+      = render "averages", averages: @averages
     %table.table.table-bordered.table-sm.mt-3
       %thead
         %tr

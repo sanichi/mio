@@ -1,0 +1,6 @@
+- if averages
+  %p.text-center.mt-3
+    - account = averages[:acct] ? t("transaction.accounts.#{averages[:acct]}") : t("any")
+    = "#{averages[:name]} (#{account}),".html_safe
+    - averages[:data].each_with_index do |a, i|
+      = "#{a[0]}: <b>#{a[1]}</b>#{i + 1 < averages.length ? ', ' : ''}".html_safe

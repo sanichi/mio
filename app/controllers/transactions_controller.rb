@@ -4,6 +4,7 @@ class TransactionsController < ApplicationController
 
   def index
     @transactions, @corrections = Transaction.search(params, transactions_path, per_page: 20, remote: true)
+    @averages = Transaction.averages(params)
   end
 
   def upload
