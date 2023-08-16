@@ -124,23 +124,23 @@ class Transaction < ApplicationRecord
       totals[index] += t.amount
     end
 
-    # prepare to work with 3 individual months: this month and the previous two
+    # estimate the average monthly spend
+    average = 0
+    start_date = minimum(:date)
+    end_date = maximum(:date)
+    unless totals.size == 0 || start_date.nil? || end_date.nil? || end_date <= start_date
+      months = (end_date - start_date).to_f / 30.0
+      average = (totals.values.sum / months).round
+    end
+
+    # prepare to work with some recent months via dates that are in those months
     dates = []
     dates.unshift Date.today
     dates.unshift dates.first.beginning_of_month - 1
     dates.unshift dates.first.beginning_of_month - 1
 
-    # estimate the average monthly spend
-    average = 0
-    start_date = minimum(:date)
-    end_date = Date.today
-    unless totals.size == 0 || start_date.nil?
-      months = (end_date - start_date).to_f / 30.0
-      average = (totals.values.sum / months).round
-    end
-
-    # the data starts with the monthly average ("Ave")
-    # then ends with the month names ("Aug", "Sep", etc) and totals
+    # the data starts with the monthly average ("Ave") followed
+    # by recent month names ("Aug", "Sep", etc) and totals
     data = []
     data.push ["Ave", average]
     dates.each do |date|
