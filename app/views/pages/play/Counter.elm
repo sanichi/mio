@@ -27,11 +27,19 @@ decrement counter =
 
 view : Model -> Html Msg
 view counter =
+    let
+        resetButton =
+            if counter == 0 then
+                [ class "btn btn-secondary btn-sm ms-1" ]
+
+            else
+                [ class "btn btn-warning btn-sm ms-1", onClick CounterReset ]
+    in
     div []
         [ button [ class "btn btn-success btn-sm" ] [ text (String.fromInt counter) ]
         , div [ class "float-end" ]
-            [ button [ class "btn btn-primary btn-sm ms-1", onClick CounterIncrement ] [ text "+" ]
-            , button [ class "btn btn-warning btn-sm ms-1", onClick CounterReset ] [ text "0" ]
-            , button [ class "btn btn-danger btn-sm ms-1", onClick CounterDecrement ] [ text "-" ]
+            [ button [ class "btn btn-primary btn-sm ms-1", onClick CounterIncrement ] [ text "+1" ]
+            , button resetButton [ text "0" ]
+            , button [ class "btn btn-danger btn-sm ms-1", onClick CounterDecrement ] [ text "-1" ]
             ]
         ]

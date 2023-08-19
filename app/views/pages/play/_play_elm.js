@@ -2704,7 +2704,7 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		x: func(record.x),
+		y: func(record.y),
 		W: record.W,
 		U: record.U
 	}
@@ -2974,7 +2974,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.x;
+		var message = !tag ? value : tag < 3 ? value.a : value.y;
 		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.W;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
@@ -5232,7 +5232,7 @@ var $author$project$Main$decode = function (value) {
 var $author$project$Counter$init = 0;
 var $author$project$Dni$Model = F2(
 	function (counter, increment) {
-		return {v: counter, C: increment};
+		return {v: counter, w: increment};
 	});
 var $author$project$Dni$init = A2($author$project$Dni$Model, 0, 1);
 var $author$project$Eras$init = function (year) {
@@ -5240,7 +5240,7 @@ var $author$project$Eras$init = function (year) {
 };
 var $author$project$Magic$Model = F2(
 	function (index, magic) {
-		return {w: index, R: magic};
+		return {x: index, R: magic};
 	});
 var $elm$core$Array$fromListHelp = F3(
 	function (list, nodeList, nodeListSize) {
@@ -5289,7 +5289,7 @@ var $author$project$Main$initModel = function (flags) {
 	return {
 		v: $author$project$Counter$init,
 		q: $author$project$Dni$init,
-		A: $author$project$Eras$init(setup.Q),
+		B: $author$project$Eras$init(setup.Q),
 		R: $author$project$Magic$init,
 		P: $author$project$Randoms$init
 	};
@@ -5310,7 +5310,7 @@ var $author$project$Randoms$respond = $author$project$Ports$random_response($aut
 var $author$project$Main$subscriptions = $author$project$Randoms$respond;
 var $author$project$Dni$cycle = function (m) {
 	var update = function () {
-		var _v0 = m.C;
+		var _v0 = m.w;
 		switch (_v0) {
 			case 1:
 				return 5;
@@ -5330,14 +5330,14 @@ var $author$project$Dni$cycle = function (m) {
 	}();
 	return _Utils_update(
 		m,
-		{C: update});
+		{w: update});
 };
 var $author$project$Counter$decrement = function (counter) {
 	return counter - 1;
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Dni$decrement = function (m) {
-	var update = (_Utils_cmp(m.v, m.C) > -1) ? (m.v - m.C) : 0;
+	var update = (_Utils_cmp(m.v, m.w) > -1) ? (m.v - m.w) : 0;
 	return _Utils_update(
 		m,
 		{v: update});
@@ -5364,12 +5364,12 @@ var $author$project$Eras$decrement = F2(
 		return (_Utils_cmp(year - delta, $author$project$Eras$minimum) < 0) ? $author$project$Eras$minimum : (year - delta);
 	});
 var $author$project$Magic$low = function (m) {
-	return !m.w;
+	return !m.x;
 };
 var $author$project$Magic$decrement = function (model) {
 	return $author$project$Magic$low(model) ? model : _Utils_update(
 		model,
-		{w: model.w - 1});
+		{x: model.x - 1});
 };
 var $author$project$Counter$increment = function (counter) {
 	return counter + 1;
@@ -5377,7 +5377,7 @@ var $author$project$Counter$increment = function (counter) {
 var $author$project$Dni$increment = function (m) {
 	return _Utils_update(
 		m,
-		{v: m.v + m.C});
+		{v: m.v + m.w});
 };
 var $author$project$Eras$increment = F2(
 	function (delta, year) {
@@ -5389,13 +5389,13 @@ var $elm$core$Array$length = function (_v0) {
 };
 var $author$project$Magic$high = function (m) {
 	return _Utils_eq(
-		m.w + 1,
+		m.x + 1,
 		$elm$core$Array$length(m.R));
 };
 var $author$project$Magic$increment = function (model) {
 	return $author$project$Magic$high(model) ? model : _Utils_update(
 		model,
-		{w: model.w + 1});
+		{x: model.x + 1});
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5457,7 +5457,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							A: A2($author$project$Eras$increment, delta, model.A)
+							B: A2($author$project$Eras$increment, delta, model.B)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 7:
@@ -5466,7 +5466,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							A: A2($author$project$Eras$decrement, delta, model.A)
+							B: A2($author$project$Eras$decrement, delta, model.B)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 8:
@@ -5594,6 +5594,14 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $author$project$Counter$view = function (counter) {
+	var resetButton = (!counter) ? _List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ms-1')
+		]) : _List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('btn btn-warning btn-sm ms-1'),
+			$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
+		]);
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5627,15 +5635,11 @@ var $author$project$Counter$view = function (counter) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('+')
+								$elm$html$Html$text('+1')
 							])),
 						A2(
 						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('btn btn-warning btn-sm ms-1'),
-								$elm$html$Html$Events$onClick($author$project$Messages$CounterReset)
-							]),
+						resetButton,
 						_List_fromArray(
 							[
 								$elm$html$Html$text('0')
@@ -5649,7 +5653,7 @@ var $author$project$Counter$view = function (counter) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('-')
+								$elm$html$Html$text('-1')
 							]))
 					]))
 			]));
@@ -6154,19 +6158,19 @@ var $author$project$Dni$view = function (m) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('+')
+										$elm$html$Html$text(
+										'+' + $elm$core$String$fromInt(m.w))
 									])),
 								A2(
 								$elm$html$Html$button,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('btn btn-secondary btn-sm ms-1'),
+										$elm$html$Html$Attributes$class('btn btn-warning btn-sm ms-1'),
 										$elm$html$Html$Events$onClick($author$project$Messages$DniCycle)
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(
-										$elm$core$String$fromInt(m.C))
+										$elm$html$Html$text('×')
 									])),
 								A2(
 								$elm$html$Html$button,
@@ -6177,7 +6181,8 @@ var $author$project$Dni$view = function (m) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('-')
+										$elm$html$Html$text(
+										'-' + $elm$core$String$fromInt(m.w))
 									]))
 							]))
 					]))
@@ -6222,6 +6227,39 @@ var $author$project$Eras$toEraDisplay = function (year) {
 	return $elm$core$String$fromInt(year) + (' • ' + A2($author$project$Eras$toEra, $author$project$Eras$eras, year));
 };
 var $author$project$Eras$view = function (year) {
+	var style = function (color) {
+		return $elm$html$Html$Attributes$class('btn btn-' + (color + ' btn-sm ms-1'));
+	};
+	var inc10 = _List_fromArray(
+		[
+			style('primary'),
+			$elm$html$Html$Events$onClick(
+			$author$project$Messages$ErasIncrement(10))
+		]);
+	var inc01 = _List_fromArray(
+		[
+			style('primary'),
+			$elm$html$Html$Events$onClick(
+			$author$project$Messages$ErasIncrement(1))
+		]);
+	var dec10 = (_Utils_cmp(year, $author$project$Eras$minimum + 10) < 0) ? _List_fromArray(
+		[
+			style('secondary')
+		]) : _List_fromArray(
+		[
+			style('danger'),
+			$elm$html$Html$Events$onClick(
+			$author$project$Messages$ErasDecrement(10))
+		]);
+	var dec01 = _Utils_eq(year, $author$project$Eras$minimum) ? _List_fromArray(
+		[
+			style('secondary')
+		]) : _List_fromArray(
+		[
+			style('danger'),
+			$elm$html$Html$Events$onClick(
+			$author$project$Messages$ErasDecrement(1))
+		]);
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -6248,51 +6286,31 @@ var $author$project$Eras$view = function (year) {
 					[
 						A2(
 						$elm$html$Html$button,
+						inc10,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ms-1'),
-								$elm$html$Html$Events$onClick(
-								$author$project$Messages$ErasIncrement(10))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('++')
+								$elm$html$Html$text('+10')
 							])),
 						A2(
 						$elm$html$Html$button,
+						inc01,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-primary btn-sm ms-1'),
-								$elm$html$Html$Events$onClick(
-								$author$project$Messages$ErasIncrement(1))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('+')
+								$elm$html$Html$text('+1')
 							])),
 						A2(
 						$elm$html$Html$button,
+						dec01,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ms-1'),
-								$elm$html$Html$Events$onClick(
-								$author$project$Messages$ErasDecrement(1))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('-')
+								$elm$html$Html$text('-1')
 							])),
 						A2(
 						$elm$html$Html$button,
+						dec10,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('btn btn-danger btn-sm ms-1'),
-								$elm$html$Html$Events$onClick(
-								$author$project$Messages$ErasDecrement(10))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('--')
+								$elm$html$Html$text('-10')
 							]))
 					]))
 			]));
@@ -6353,7 +6371,7 @@ var $author$project$Magic$view = function (model) {
 	var magic = A2(
 		$elm$core$Maybe$withDefault,
 		'0',
-		A2($elm$core$Array$get, model.w, model.R));
+		A2($elm$core$Array$get, model.x, model.R));
 	var pair = magic + (' • ' + $elm$core$String$reverse(magic));
 	var downButton = $author$project$Magic$low(model) ? _List_fromArray(
 		[
@@ -6447,7 +6465,7 @@ var $author$project$Main$view = function (model) {
 				A2(
 				$author$project$Main$panel,
 				'Eras',
-				$author$project$Eras$view(model.A)),
+				$author$project$Eras$view(model.B)),
 				A2(
 				$author$project$Main$panel,
 				'Magic',

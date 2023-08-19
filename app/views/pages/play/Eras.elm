@@ -31,13 +31,37 @@ decrement delta year =
 
 view : Model -> Html Msg
 view year =
+    let
+        style color =
+            class <| "btn btn-" ++ color ++ " btn-sm ms-1"
+
+        inc10 =
+            [ style "primary", onClick <| ErasIncrement 10 ]
+
+        inc01 =
+            [ style "primary", onClick <| ErasIncrement 1 ]
+
+        dec01 =
+            if year == minimum then
+                [ style "secondary" ]
+
+            else
+                [ style "danger", onClick <| ErasDecrement 1 ]
+
+        dec10 =
+            if year < minimum + 10 then
+                [ style "secondary" ]
+
+            else
+                [ style "danger", onClick <| ErasDecrement 10 ]
+    in
     div []
         [ button [ class "btn btn-success btn-sm" ] [ text (toEraDisplay year) ]
         , div [ class "float-end" ]
-            [ button [ class "btn btn-primary btn-sm ms-1", onClick <| ErasIncrement 10 ] [ text "++" ]
-            , button [ class "btn btn-primary btn-sm ms-1", onClick <| ErasIncrement 1 ] [ text "+" ]
-            , button [ class "btn btn-danger btn-sm ms-1", onClick <| ErasDecrement 1 ] [ text "-" ]
-            , button [ class "btn btn-danger btn-sm ms-1", onClick <| ErasDecrement 10 ] [ text "--" ]
+            [ button inc10 [ text "+10" ]
+            , button inc01 [ text "+1" ]
+            , button dec01 [ text "-1" ]
+            , button dec10 [ text "-10" ]
             ]
         ]
 
