@@ -61,7 +61,7 @@ view model =
                 |> Maybe.withDefault "0"
 
         pair =
-            magic ++ " ↔︎ " ++ String.reverse magic
+            magic ++ " • " ++ String.reverse magic
     in
     div []
         [ button [ class "btn btn-success btn-sm" ] [ text pair ]

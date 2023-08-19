@@ -8,6 +8,8 @@ type Msg
     | DniIncrement
     | DniDecrement
     | DniCycle
+    | ErasIncrement Int
+    | ErasDecrement Int
     | MagicIncrement
     | MagicDecrement
     | RandomRequest

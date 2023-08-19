@@ -5,8 +5,10 @@ module Main exposing (main)
 import Browser
 import Counter
 import Dni
+import Eras
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Json.Decode as D exposing (Decoder)
 import Json.Encode exposing (Value)
 import Magic
 import Messages exposing (Msg(..))
@@ -20,7 +22,7 @@ import Randoms
 main : Program Value Model Msg
 main =
     Browser.element
-        { init = \_ -> ( initModel, initTasks )
+        { init = \flags -> ( initModel flags, initTasks )
         , view = view
         , update = update
         , subscriptions = \_ -> subscriptions
@@ -37,22 +39,24 @@ subscriptions =
     Randoms.respond
 
 
-
--- model
-
-
 type alias Model =
     { dni : Dni.Model
     , counter : Counter.Model
+    , eras : Eras.Model
     , magic : Magic.Model
     , randoms : Randoms.Model
     }
 
 
-initModel : Model
-initModel =
+initModel : Value -> Model
+initModel flags =
+    let
+        setup =
+            decode flags
+    in
     { dni = Dni.init
     , counter = Counter.init
+    , eras = Eras.init setup.current_year
     , magic = Magic.init
     , randoms = Randoms.init
     }
@@ -66,8 +70,9 @@ view : Model -> Html Msg
 view model =
     div []
         [ panel "D‘ni" (Dni.view model.dni)
-        , panel "Randoms" (Randoms.view model.randoms)
+        , panel "Eras" (Eras.view model.eras)
         , panel "Magic" (Magic.view model.magic)
+        , panel "Randoms" (Randoms.view model.randoms)
         , panel "Counter" (Counter.view model.counter)
         ]
 
@@ -119,6 +124,12 @@ update msg model =
         DniCycle ->
             ( { model | dni = Dni.cycle model.dni }, Cmd.none )
 
+        ErasIncrement delta ->
+            ( { model | eras = Eras.increment delta model.eras }, Cmd.none )
+
+        ErasDecrement delta ->
+            ( { model | eras = Eras.decrement delta model.eras }, Cmd.none )
+
         MagicIncrement ->
             ( { model | magic = Magic.increment model.magic }, Cmd.none )
 
@@ -130,3 +141,37 @@ update msg model =
 
         RandomResponse num ->
             ( { model | randoms = Randoms.reset num }, Cmd.none )
+
+
+
+-- decode initialisation flags
+
+
+type alias Setup =
+    { current_year : Int }
+
+
+decode : Value -> Setup
+decode value =
+    D.decodeValue flags_decoder value |> Result.withDefault default
+
+
+default : Setup
+default =
+    Setup 2023
+
+
+flags_decoder : Decoder Setup
+flags_decoder =
+    D.map Setup
+        (D.field "current_year" D.int |> withDefault default.current_year)
+
+
+
+-- from elm-community/json-extra
+
+
+withDefault : a -> Decoder a -> Decoder a
+withDefault fallback decoder =
+    D.maybe decoder
+        |> D.map (Maybe.withDefault fallback)
