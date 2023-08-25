@@ -75,6 +75,10 @@ module Wk
     private
 
     def clean_up
+      if english.blank? && japanese&.match(/\A\s*([\p{Any}]+[^\p{ASCII}])\s*([\p{ASCII}]+)\z/)
+        self.japanese = $1
+        self.english = $2
+      end
       english&.squish!
       japanese&.gsub!(/\s|　/, "")
     end

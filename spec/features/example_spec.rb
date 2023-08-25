@@ -25,6 +25,21 @@ describe Wk::Example do
       expect(e.english).to eq data.english
     end
 
+    it "special" do
+      click_link t("wk.example.new")
+      fill_in t("wk.example.japanese"), with: " \s #{data.japanese}\t 　#{data.english}\t "
+      fill_in t("wk.example.english"), with: ""
+      click_button t("save")
+
+      expect(page).to have_title t("wk.example.examples")
+
+      expect(Wk::Example.count).to eq 2
+      e = Wk::Example.last
+
+      expect(e.japanese).to eq data.japanese
+      expect(e.english).to eq data.english
+    end
+
     it "failure" do
       click_link t("wk.example.new")
       fill_in t("wk.example.japanese"), with: data.japanese
