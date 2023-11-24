@@ -28,7 +28,7 @@ group :development, :test do
   gem 'capybara', '~> 3.28'
   gem 'byebug', platforms: :mri
   gem 'launchy', '~> 2.5'
-  gem 'factory_bot_rails', '< 6.3' # temporary
+  gem 'factory_bot_rails', '~> 6.0'
   gem 'faker', '< 4'
   gem 'selenium-webdriver', '~> 4.0'
 end
