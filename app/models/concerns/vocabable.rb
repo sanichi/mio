@@ -27,5 +27,6 @@ module Vocabable
     "する verb"          => "srv",
     "suffix"            => "suf",
     "transitive verb"   => "tvb",
+    "verbal noun"       => "vbn",
   }
 end
