@@ -1,0 +1,14 @@
+en:
+  star:
+    distance: Distance
+    edit: Edit Star
+    name: Name
+    new: New Star
+    note: Note
+    stars: Stars
+    order:
+      created: Created
+      distance: Distance
+      name: Name
+    unit:
+      distance: ly

@@ -1,0 +1,28 @@
+:ruby
+  lo = Layout.new(
+    xl: [2,2],
+    md: [3,3],
+    xs: [4,4],
+  ).to_a
+  inputs = [
+    [:q,     t("query"), :text,   lo[0], size: 16, placeholder: t("search"), autofocus: true],
+    [:order, t("order"), :select, lo[1], menu: star_search_order_menu(params[:order])],
+  ]
+
+= render "utils/title", key: "star.stars"
+
+%section
+  .header.text-center
+    %h3= t("star.stars")
+  .body
+    = render "utils/search/form", index: stars_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("star.name")
+          %th= t("star.distance")
+      %tbody{id: "results"}
+        = render "results", stars: @stars
+  - if can?(:create, Star)
+    .footer
+      = link_to t("star.new"), new_star_path, class: "blue-btn"

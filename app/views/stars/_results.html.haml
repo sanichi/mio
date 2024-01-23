@@ -1,0 +1,5 @@
+- stars.matches.each do |star|
+  %tr
+    %td= link_to star.name, star
+    %td= star.distance
+= render "utils/pagination_links", pager: stars, columns: 2

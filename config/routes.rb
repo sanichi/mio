@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   resources :sounds, only: [:index, :show, :edit, :update] do
     patch :quick_level_update, on: :member
   end
+  resources :stars
   resources :teams
   resources :tests, only: [:index, :update] do
     get :review, on: :collection
