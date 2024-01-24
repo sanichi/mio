@@ -2,4 +2,6 @@
   %tr
     %td= link_to star.name, star
     %td= star.distance
-= render "utils/pagination_links", pager: stars, columns: 2
+    %td.text-center= star_right_ascension(star.alpha)
+    %td.text-center= star_declination(star.delta)
+= render "utils/pagination_links", pager: stars, columns: 4

@@ -21,6 +21,8 @@
         %tr
           %th= t("star.name")
           %th= t("star.distance")
+          %th.text-center= t("star.symbol.alpha")
+          %th.text-center= t("star.symbol.delta")
       %tbody{id: "results"}
         = render "results", stars: @stars
   - if can?(:create, Star)

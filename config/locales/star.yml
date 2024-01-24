@@ -1,5 +1,7 @@
 en:
   star:
+    alpha: Right Ascension
+    delta: Declination
     distance: Distance
     edit: Edit Star
     name: Name
@@ -12,3 +14,6 @@ en:
       name: Name
     unit:
       distance: ly
+    symbol:
+      alpha: ⍺
+      delta: δ

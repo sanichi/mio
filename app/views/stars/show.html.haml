@@ -6,6 +6,10 @@
       .header
         %h5.d-inline= @star.name
       .body
+        %ul
+          %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
+          %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
+          %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
         = @star.note_html
       .footer
         = link_to t("star.stars"), stars_path, class: "green-btn"

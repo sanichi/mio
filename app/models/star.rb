@@ -4,9 +4,13 @@ class Star < ApplicationRecord
   include Remarkable
 
   MAX_NAME = 40
+  ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
+  DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
 
   before_validation :normalize_attributes
 
+  validates :alpha, format: { with: ALPHA }
+  validates :delta, format: { with: DELTA }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
 
@@ -25,18 +29,13 @@ class Star < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def note_html
-    data = [
-      [I18n.t('star.distance'), distance, I18n.t('star.unit.distance')],
-    ].map do |d|
-      "* #{d[0]}: #{d[1]} #{d[2]}"
-    end.join("\n")
-    to_html(data + "\n\n" + note)
-  end
+  def note_html = to_html(note)
 
   private
 
   def normalize_attributes
+    alpha&.gsub!(/\D+/, "")
+    delta&.gsub!(/[^-0-9]+/, "")
     name&.squish!
     self.note = "" if note.nil?
     note.lstrip!
