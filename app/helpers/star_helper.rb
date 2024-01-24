@@ -14,7 +14,7 @@ module StarHelper
 
   def star_declination(delta)
     if delta&.match(Star::DELTA)
-      "#{$1}#{$2}° #{$2}′ #{$3}″"
+      "#{$1}#{$2}° #{$3}′ #{$4}″"
     else
       delta
     end
