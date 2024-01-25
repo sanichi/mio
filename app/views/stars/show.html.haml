@@ -13,6 +13,8 @@
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
           %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
         = @star.note_html
+        - if link = @star.iau_image_link
+          %img{src: link, alt: @star.constellation, class: "styled mx-auto d-block mt-3 mb-3", width: "80%"}
       .footer
         = link_to t("star.stars"), stars_path, class: "green-btn"
         - if can?(:edit, Star)

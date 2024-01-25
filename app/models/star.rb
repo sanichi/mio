@@ -41,6 +41,14 @@ class Star < ApplicationRecord
 
   def note_html = to_html(note)
 
+  # https://www.iau.org/public/themes/constellations/
+  def iau_image_link
+    return nil unless constellation.present?
+    path = "images/iau_%s.gif" % constellation.downcase.gsub(" ", "_")
+    return nil unless (Rails.root + "public" + path).exist?
+    return "/#{path}"
+  end
+
   private
 
   def normalize_attributes
