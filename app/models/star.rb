@@ -30,6 +30,9 @@ class Star < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{name constellation note})
       matches = matches.where(sql)
     end
+    if sql = numerical_constraint(params[:distance], :distance)
+      matches = matches.where(sql)
+    end
     if sql = numerical_constraint(params[:magnitude], :magnitude, digits: 2)
       matches = matches.where(sql)
     end
