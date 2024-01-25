@@ -1,7 +1,7 @@
 :ruby
   inputs = [
     [:name,          t("star.name"),          :text,  maxlength: Star::MAX_NAME],
-    [:constellation, t("star.constellation"), :text,  maxlength: Star::MAX_NAME],
+    [:constellation, t("star.constellation"), :list,  data: star_constellation_list],
     [:distance,      t("star.distance"),      :text],
     [:magnitude,     t("star.magnitude"),     :text],
     [:alpha,         t("star.alpha"),         :text],
