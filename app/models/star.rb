@@ -6,6 +6,12 @@ class Star < ApplicationRecord
   MAX_NAME = 40
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
   DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
+  PATTERN = /
+    \{
+    ([^}|]+)
+    (?:\|([^}|]+))?
+    \}
+  /x
 
   before_validation :normalize_attributes
 
@@ -39,7 +45,15 @@ class Star < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def note_html = to_html(note)
+  def note_html = to_html(link_stars(note))
+
+  def to_markdown(display, link)
+    if link
+      "[#{display}](/stars/#{id})"
+    else
+      "**#{display}**"
+    end
+  end
 
   # https://www.iau.org/public/themes/constellations/
   def iau_image_link
@@ -60,5 +74,19 @@ class Star < ApplicationRecord
     note.lstrip!
     note.rstrip!
     note.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
+  end
+
+  def link_stars(text)
+    return text unless text.present?
+    text.gsub(PATTERN) do |match|
+      display = $1
+      name = $2 || display
+      star = Star.find_by(name: name)
+      if star
+        star.to_markdown(display, star != self)
+      else
+        match
+      end
+    end
   end
 end
