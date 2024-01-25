@@ -29,7 +29,7 @@ class Star < ApplicationRecord
     if sql = cross_constraint(params[:q], %w{title note})
       matches = matches.where(sql)
     end
-    if sql = numerical_constraint(params[:magnitude], :magnitude)
+    if sql = numerical_constraint(params[:magnitude], :magnitude, digits: 2)
       matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)
