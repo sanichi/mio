@@ -1,7 +1,8 @@
 - stars.matches.each do |star|
   %tr
     %td= link_to star.name, star
-    %td= star.distance
+    %td.text-center= star.distance
+    %td.text-center= star.magnitude
     %td.text-center= star_right_ascension(star.alpha)
     %td.text-center= star_declination(star.delta)
-= render "utils/pagination_links", pager: stars, columns: 4
+= render "utils/pagination_links", pager: stars, columns: 5

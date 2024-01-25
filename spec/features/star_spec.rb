@@ -14,6 +14,7 @@ describe Star do
       click_link t("star.new")
       fill_in t("star.name"), with: data.name
       fill_in t("star.distance"), with: data.distance
+      fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
       fill_in t("star.note"), with: data.note
@@ -27,6 +28,7 @@ describe Star do
 
       expect(s.name).to eq data.name
       expect(s.distance).to eq data.distance
+      expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta
       expect(s.note).to eq data.note
@@ -36,6 +38,7 @@ describe Star do
       it "missing distance" do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
+        fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
@@ -50,6 +53,7 @@ describe Star do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
         fill_in t("star.distance"), with: data.distance
+        fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: "240000"
         fill_in t("star.delta"), with: data.delta
@@ -69,6 +73,7 @@ describe Star do
 
       expect(page).to have_title t("star.edit")
       fill_in t("star.name"), with: data.name
+      fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
       click_button t("save")
@@ -79,6 +84,7 @@ describe Star do
       s = Star.last
 
       expect(s.name).to eq data.name
+      expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta
     end

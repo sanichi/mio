@@ -8,6 +8,7 @@
       .body
         %ul
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
+          %li= "#{t('star.magnitude')}: #{@star.magnitude}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
           %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
         = @star.note_html

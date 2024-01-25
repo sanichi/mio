@@ -4,6 +4,7 @@ en:
     delta: Declination
     distance: Distance
     edit: Edit Star
+    magnitude: Magnitude
     name: Name
     new: New Star
     note: Note
@@ -11,6 +12,7 @@ en:
     order:
       created: Created
       distance: Distance
+      magnitude: Magnitude
       name: Name
     unit:
       distance: ly

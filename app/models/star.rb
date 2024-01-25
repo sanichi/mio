@@ -13,6 +13,7 @@ class Star < ApplicationRecord
   validates :delta, format: { with: DELTA }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
+  validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -20,10 +21,15 @@ class Star < ApplicationRecord
       order(:id)
     when "distance"
       order(:distance)
+    when "magnitude"
+      order(:magnitude)
     else
       order(:name)
     end
     if sql = cross_constraint(params[:q], %w{title note})
+      matches = matches.where(sql)
+    end
+    if sql = numerical_constraint(params[:magnitude], :magnitude)
       matches = matches.where(sql)
     end
     paginate(matches, params, path, opt)

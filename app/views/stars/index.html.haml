@@ -1,12 +1,13 @@
 :ruby
   lo = Layout.new(
-    xl: [2,2],
-    md: [3,3],
-    xs: [4,4],
+    xl: [2,2,2],
+    md: [3,3,3],
+    xs: [4,4,4],
   ).to_a
   inputs = [
-    [:q,     t("query"), :text,   lo[0], size: 16, placeholder: t("search"), autofocus: true],
+    [:q,     t("query"), :text,   lo[0], placeholder: t("search"), autofocus: true],
     [:order, t("order"), :select, lo[1], menu: star_search_order_menu(params[:order])],
+    [:magnitude, t("star.magnitude"), :text, lo[1], placeholder: t("star.magnitude")],
   ]
 
 = render "utils/title", key: "star.stars"
@@ -20,7 +21,8 @@
       %thead
         %tr
           %th= t("star.name")
-          %th= t("star.distance")
+          %th.text-center= t("star.distance")
+          %th.text-center= t("star.magnitude")
           %th.text-center= t("star.symbol.alpha")
           %th.text-center= t("star.symbol.delta")
       %tbody{id: "results"}
