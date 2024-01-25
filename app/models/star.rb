@@ -12,6 +12,7 @@ class Star < ApplicationRecord
   validates :alpha, format: { with: ALPHA }
   validates :delta, format: { with: DELTA }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
+  validates :constellation, presence: true, length: { maximum: MAX_NAME }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
 
@@ -26,7 +27,7 @@ class Star < ApplicationRecord
     else
       order(:name)
     end
-    if sql = cross_constraint(params[:q], %w{title note})
+    if sql = cross_constraint(params[:q], %w{name constellation note})
       matches = matches.where(sql)
     end
     if sql = numerical_constraint(params[:magnitude], :magnitude, digits: 2)
@@ -43,6 +44,7 @@ class Star < ApplicationRecord
     alpha&.gsub!(/\D+/, "")
     delta&.gsub!(/[^-0-9]+/, "")
     name&.squish!
+    constellation&.squish!
     self.note = "" if note.nil?
     note.lstrip!
     note.rstrip!

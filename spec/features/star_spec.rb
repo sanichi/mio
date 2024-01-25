@@ -13,6 +13,7 @@ describe Star do
     it "success" do
       click_link t("star.new")
       fill_in t("star.name"), with: data.name
+      fill_in t("star.constellation"), with: data.constellation
       fill_in t("star.distance"), with: data.distance
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
@@ -27,6 +28,7 @@ describe Star do
       expect(page).to have_title data.name
 
       expect(s.name).to eq data.name
+      expect(s.constellation).to eq data.constellation
       expect(s.distance).to eq data.distance
       expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
@@ -62,6 +64,23 @@ describe Star do
         expect(page).to have_title t("star.new")
         expect(Star.count).to eq 1
         expect_error(page, "Alpha is invalid")
+      end
+
+      it "duplicate name" do
+        click_link t("star.new")
+        fill_in t("star.name"), with: star.name
+        fill_in t("star.constellation"), with: data.constellation
+        fill_in t("star.distance"), with: data.distance
+        fill_in t("star.magnitude"), with: data.magnitude
+        fill_in t("star.alpha"), with: data.alpha
+        fill_in t("star.delta"), with: data.delta
+        fill_in t("star.note"), with: data.note
+
+        click_button t("save")
+
+        expect(page).to have_title t("star.new")
+        expect(Star.count).to eq 1
+        expect_error(page, "Name has already been taken")
       end
     end
   end

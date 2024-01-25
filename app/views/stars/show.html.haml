@@ -7,6 +7,7 @@
         %h5.d-inline= @star.name
       .body
         %ul
+          %li= "#{t('star.constellation')}: #{@star.constellation}"
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
           %li= "#{t('star.magnitude')}: #{@star.magnitude}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
