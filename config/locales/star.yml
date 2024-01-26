@@ -1,6 +1,7 @@
 en:
   star:
     alpha: Right Ascension
+    constellation: Constellation
     delta: Declination
     distance: Distance
     edit: Edit Star

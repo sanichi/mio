@@ -7,6 +7,9 @@
         %h5.d-inline= @star.name
       .body
         %ul
+          %li
+            = "#{t('star.constellation')}:"
+            = link_to @star.constellation.name, @star.constellation
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
           %li= "#{t('star.magnitude')}: #{@star.magnitude}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
@@ -14,5 +17,6 @@
         = @star.note_html
       .footer
         = link_to t("star.stars"), stars_path, class: "green-btn"
+        = link_to t("constellation.constellations"), constellations_path, class: "green-btn"
         - if can?(:edit, Star)
           = link_to t("edit"), edit_star_path(@star), class: "blue-btn"

@@ -1,10 +1,11 @@
 :ruby
   inputs = [
-    [:name,          t("star.name"),          :text,  maxlength: Star::MAX_NAME],
-    [:distance,      t("star.distance"),      :text],
-    [:magnitude,     t("star.magnitude"),     :text],
-    [:alpha,         t("star.alpha"),         :text],
-    [:delta,         t("star.delta"),         :text],
-    [:note,          t("star.note"),          :area,  rows: 20],
+    [:name,             t("star.name"),          :text,  maxlength: Star::MAX_NAME],
+    [:constellation_id, t("star.constellation"), :select,  menu: star_constellation_menu(star)],
+    [:distance,         t("star.distance"),      :text],
+    [:magnitude,        t("star.magnitude"),     :text],
+    [:alpha,            t("star.alpha"),         :text],
+    [:delta,            t("star.delta"),         :text],
+    [:note,             t("star.note"),          :area,  rows: 20],
   ]
 = render "utils/crud/form", object: star, index: stars_path, inputs: inputs, title: title

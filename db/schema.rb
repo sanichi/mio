@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_26_093524) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_26_100120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -302,6 +302,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_093524) do
     t.string "alpha", limit: 6
     t.string "delta", limit: 7
     t.decimal "magnitude", precision: 4, scale: 2
+    t.bigint "constellation_id"
+    t.index ["constellation_id"], name: "index_stars_on_constellation_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -509,4 +511,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_093524) do
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
   add_foreign_key "places", "places", column: "parent_id"
+  add_foreign_key "stars", "constellations"
 end

@@ -6,6 +6,7 @@ describe Star do
 
   before(:each) do
     login
+    data.constellation.save!
     click_link t("star.stars")
   end
 
@@ -13,6 +14,7 @@ describe Star do
     it "success" do
       click_link t("star.new")
       fill_in t("star.name"), with: data.name
+      select data.constellation.name, from: t("star.constellation")
       fill_in t("star.distance"), with: data.distance
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
@@ -38,6 +40,7 @@ describe Star do
       it "missing distance" do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
+        select data.constellation.name, from: t("star.constellation")
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: data.alpha
@@ -52,6 +55,7 @@ describe Star do
       it "invalid delta" do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
+        select data.constellation.name, from: t("star.constellation")
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.note"), with: data.note
@@ -67,6 +71,7 @@ describe Star do
       it "duplicate name" do
         click_link t("star.new")
         fill_in t("star.name"), with: star.name
+        select data.constellation.name, from: t("star.constellation")
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.alpha"), with: data.alpha
@@ -89,6 +94,7 @@ describe Star do
 
       expect(page).to have_title t("star.edit")
       fill_in t("star.name"), with: data.name
+      select data.constellation.name, from: t("star.constellation")
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
@@ -100,6 +106,7 @@ describe Star do
       s = Star.last
 
       expect(s.name).to eq data.name
+      expect(s.constellation).to eq data.constellation
       expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta

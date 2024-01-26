@@ -3,6 +3,8 @@ class Constellation < ApplicationRecord
   include Pageable
   include Remarkable
 
+  has_many :stars, dependent: :restrict_with_exception
+
   MAX_NAME = 30
   MAX_IAU = 3
 

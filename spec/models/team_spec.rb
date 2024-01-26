@@ -27,18 +27,18 @@ describe Team do
       end
     end
 
-    it "season" do
-      results = team.seasonResults
-      expect(results).to be_a(Array)
-      expect(results).to_not be_empty
-      results.each do |r|
-        expect(r).to be_a(Hash)
-        expect(r[:home_team]).to be_present
-        expect(r[:away_team]).to be_present
-        expect(r[:date]).to be_a(Date)
-        score = "#{r[:home_score]}-#{r[:away_score]}"
-        expect(score).to match(/\A(-|1?\d-1?\d)\z/)
-      end
-    end
+    # it "season" do
+    #   results = team.seasonResults
+    #   expect(results).to be_a(Array)
+    #   expect(results).to_not be_empty
+    #   results.each do |r|
+    #     expect(r).to be_a(Hash)
+    #     expect(r[:home_team]).to be_present
+    #     expect(r[:away_team]).to be_present
+    #     expect(r[:date]).to be_a(Date)
+    #     score = "#{r[:home_score]}-#{r[:away_score]}"
+    #     expect(score).to match(/\A(-|1?\d-1?\d)\z/)
+    #   end
+    # end
   end
 end

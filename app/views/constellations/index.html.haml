@@ -25,4 +25,5 @@
         = render "results", constellations: @constellations
   - if can?(:create, Constellation)
     .footer
+      = link_to t("star.stars"), stars_path, class: "green-btn"
       = link_to t("constellation.new"), new_constellation_path, class: "blue-btn"

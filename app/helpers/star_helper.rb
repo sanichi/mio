@@ -4,6 +4,18 @@ module StarHelper
     options_for_select(opts, selected)
   end
 
+  def star_constellation_menu(star)
+    opts = Constellation.order(:name).pluck(:name, :id)
+    opts.unshift [t("select"), ""] if star.new_record?
+    options_for_select(opts, star.constellation)
+  end
+
+  def star_constellation_search_menu
+    opts = Constellation.order(:name).pluck(:name, :id)
+    opts.unshift [t("any"), ""]
+    options_for_select(opts, params[:constellation_id])
+  end
+
   def star_right_ascension(alpha)
     if alpha&.match(Star::ALPHA)
       "#{$1}<sup>h</sup> #{$2}<sup>m</sup> #{$3}<sup>s</sup>".html_safe

@@ -3,6 +3,8 @@ class Star < ApplicationRecord
   include Pageable
   include Remarkable
 
+  belongs_to :constellation
+
   MAX_NAME = 40
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
   DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
@@ -32,6 +34,7 @@ class Star < ApplicationRecord
     else
       order(:name)
     end
+    matches = matches.includes(:constellation)
     if sql = cross_constraint(params[:q], %w{name note})
       matches = matches.where(sql)
     end
@@ -40,6 +43,9 @@ class Star < ApplicationRecord
     end
     if sql = numerical_constraint(params[:magnitude], :magnitude, digits: 2)
       matches = matches.where(sql)
+    end
+    if (cid = params[:constellation_id].to_i) > 0
+      matches = matches.where(constellation_id: cid)
     end
     paginate(matches, params, path, opt)
   end

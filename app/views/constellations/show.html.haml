@@ -13,5 +13,6 @@
           %img{src: link, alt: @constellation.name, class: "styled mx-auto d-block mt-3 mb-3", width: "80%"}
       .footer
         = link_to t("constellation.constellations"), constellations_path, class: "green-btn"
+        = link_to t("star.stars"), stars_path, class: "green-btn"
         - if can?(:edit, Constellation)
           = link_to t("edit"), edit_constellation_path(@constellation), class: "blue-btn"
