@@ -7,7 +7,7 @@ module StarHelper
   def star_constellation_menu(star)
     opts = Constellation.order(:name).pluck(:name, :id)
     opts.unshift [t("select"), ""] if star.new_record?
-    options_for_select(opts, star.constellation)
+    options_for_select(opts, star.constellation_id)
   end
 
   def star_constellation_search_menu
