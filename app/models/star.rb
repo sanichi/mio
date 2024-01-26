@@ -4,7 +4,7 @@ class Star < ApplicationRecord
   include Remarkable
   include StarLink
 
-  belongs_to :constellation
+  belongs_to :constellation, counter_cache: true
 
   MAX_NAME = 40
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/

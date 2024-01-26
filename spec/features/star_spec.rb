@@ -29,6 +29,8 @@ describe Star do
       expect(page).to have_title data.name
 
       expect(s.name).to eq data.name
+      expect(s.constellation).to eq data.constellation
+      expect(s.constellation.stars_count).to eq 1
       expect(s.distance).to eq data.distance
       expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
@@ -89,6 +91,9 @@ describe Star do
 
   context "edit" do
     it "success" do
+      oldc = star.constellation
+      expect(oldc.stars_count).to eq 1
+
       visit star_path(star)
       click_link t("edit")
 
@@ -107,9 +112,13 @@ describe Star do
 
       expect(s.name).to eq data.name
       expect(s.constellation).to eq data.constellation
+      expect(s.constellation.stars_count).to eq 1
       expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta
+
+      oldc.reload
+      expect(oldc.stars_count).to eq 0
     end
   end
 
@@ -117,12 +126,18 @@ describe Star do
     it "success" do
       expect(Star.count).to eq 1
 
+      oldc = star.constellation
+      expect(oldc.stars_count).to eq 1
+
       visit star_path(star)
       click_link t("edit")
       click_link t("delete")
 
       expect(page).to have_title t("star.stars")
       expect(Star.count).to eq 0
+
+      oldc.reload
+      expect(oldc.stars_count).to eq 0
     end
   end
 end
