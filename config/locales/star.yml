@@ -6,17 +6,14 @@ en:
     distance: Distance
     edit: Edit Star
     magnitude: Magnitude
+    mass: Mass
     name: Name
     new: New Star
     note: Note
     stars: Stars
-    order:
-      created: Created
-      distance: Distance
-      magnitude: Magnitude
-      name: Name
     unit:
       distance: ly
+      mass: M☉
     symbol:
       alpha: ⍺
       delta: δ

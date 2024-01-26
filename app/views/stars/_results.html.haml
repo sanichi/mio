@@ -4,6 +4,7 @@
     %td= link_to star.constellation.name, star.constellation
     %td.text-center= star.distance
     %td.text-center= star.magnitude
+    %td.text-center= star_mass(star.mass)
     %td.text-center= star_right_ascension(star.alpha)
     %td.text-center= star_declination(star.delta)
-= render "utils/pagination_links", pager: stars, columns: 6
+= render "utils/pagination_links", pager: stars, columns: 7

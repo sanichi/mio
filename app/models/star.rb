@@ -9,12 +9,6 @@ class Star < ApplicationRecord
   MAX_NAME = 40
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
   DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
-  PATTERN = /
-    \{
-    ([^}|]+)
-    (?:\|([^}|]+))?
-    \}
-  /x
 
   before_validation :normalize_attributes
 
@@ -23,15 +17,16 @@ class Star < ApplicationRecord
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
+  validates :mass, numericality: { greater_than: 0.01, less_than: 10000.0 }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
-    when "created"
-      order(:id)
     when "distance"
       order(:distance)
     when "magnitude"
       order(:magnitude)
+    when "mass"
+      order(mass: :desc)
     else
       order(:name)
     end

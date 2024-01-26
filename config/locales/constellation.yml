@@ -6,7 +6,3 @@ en:
     name: Name
     new: New Constellation
     note: Note
-    order:
-      created: Created
-      iau: IAU
-      name: Name

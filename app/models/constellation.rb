@@ -16,8 +16,8 @@ class Constellation < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = case params[:order]
-    when "created"
-      order(:id)
+    when "stars"
+      order(stars_count: :desc)
     when "iau"
       order(:iau)
     else
