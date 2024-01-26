@@ -41,6 +41,6 @@ class StarsController < ApplicationController
   end
 
   def strong_params
-    params.require(:star).permit(:name, :distance, :note, :alpha, :delta, :magnitude, :constellation)
+    params.require(:star).permit(:name, :distance, :note, :alpha, :delta, :magnitude)
   end
 end

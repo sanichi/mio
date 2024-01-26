@@ -19,8 +19,4 @@ module StarHelper
       delta
     end
   end
-
-  def star_constellation_list
-    Star.pluck(:constellation).uniq.compact.sort
-  end
 end

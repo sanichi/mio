@@ -18,7 +18,6 @@ class Star < ApplicationRecord
   validates :alpha, format: { with: ALPHA }
   validates :delta, format: { with: DELTA }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
-  validates :constellation, presence: true, length: { maximum: MAX_NAME }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
 
@@ -33,7 +32,7 @@ class Star < ApplicationRecord
     else
       order(:name)
     end
-    if sql = cross_constraint(params[:q], %w{name constellation note})
+    if sql = cross_constraint(params[:q], %w{name note})
       matches = matches.where(sql)
     end
     if sql = numerical_constraint(params[:distance], :distance)
@@ -45,7 +44,7 @@ class Star < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def note_html = to_html(link_stars(note))
+  def note_html = to_html(note)
 
   def to_markdown(display, link)
     if link
@@ -55,38 +54,15 @@ class Star < ApplicationRecord
     end
   end
 
-  # https://www.iau.org/public/themes/constellations/
-  def iau_image_link
-    return nil unless constellation.present?
-    path = "images/iau_%s.gif" % constellation.downcase.gsub(" ", "_")
-    return nil unless (Rails.root + "public" + path).exist?
-    return "/#{path}"
-  end
-
   private
 
   def normalize_attributes
     alpha&.gsub!(/\D+/, "")
     delta&.gsub!(/[^-0-9]+/, "")
     name&.squish!
-    constellation&.squish!
     self.note = "" if note.nil?
     note.lstrip!
     note.rstrip!
     note.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
-  end
-
-  def link_stars(text)
-    return text unless text.present?
-    text.gsub(PATTERN) do |match|
-      display = $1
-      name = $2 || display
-      star = Star.find_by(name: name)
-      if star
-        star.to_markdown(display, star != self)
-      else
-        match
-      end
-    end
   end
 end
