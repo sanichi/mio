@@ -1,0 +1,5 @@
+- constellations.matches.each do |constellation|
+  %tr
+    %td= link_to constellation.name, constellation
+    %td= constellation.iau
+= render "utils/pagination_links", pager: constellations, columns: 2

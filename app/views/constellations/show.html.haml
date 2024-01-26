@@ -1,0 +1,17 @@
+= render "utils/title", text: @constellation.name
+
+.row
+  %div{class: center(lg: 10, xx: 8)}
+    %section
+      .header
+        %h5.d-inline= @constellation.name
+      .body
+        %ul
+          %li= "#{t('constellation.iau')}: #{@constellation.iau}"
+        = @constellation.note_html
+        - if link = @constellation.iau_image_link
+          %img{src: link, alt: @constellation.name, class: "styled mx-auto d-block mt-3 mb-3", width: "80%"}
+      .footer
+        = link_to t("constellation.constellations"), constellations_path, class: "green-btn"
+        - if can?(:edit, Constellation)
+          = link_to t("edit"), edit_constellation_path(@constellation), class: "blue-btn"

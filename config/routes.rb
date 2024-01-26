@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :blogs
   resources :classifiers
+  resources :constellations
   resources :favourites
   resources :flats
   resources :grammars do
