@@ -2,6 +2,7 @@ class Constellation < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include StarLink
 
   has_many :stars, dependent: :restrict_with_exception
 
@@ -28,7 +29,15 @@ class Constellation < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def note_html = to_html(note)
+  def note_html = to_html(link_stars(note))
+
+  def to_markdown(display, context)
+    if context == self
+      "**#{display}**"
+    else
+      "[#{display}](/constellations/#{id})"
+    end
+  end
 
   # https://www.iau.org/public/themes/constellations/
   def iau_image_link

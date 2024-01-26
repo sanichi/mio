@@ -2,6 +2,7 @@ class Star < ApplicationRecord
   include Constrainable
   include Pageable
   include Remarkable
+  include StarLink
 
   belongs_to :constellation
 
@@ -50,13 +51,13 @@ class Star < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def note_html = to_html(note)
+  def note_html = to_html(link_stars(note))
 
-  def to_markdown(display, link)
-    if link
-      "[#{display}](/stars/#{id})"
-    else
+  def to_markdown(display, context)
+    if context == self
       "**#{display}**"
+    else
+      "[#{display}](/stars/#{id})"
     end
   end
 
