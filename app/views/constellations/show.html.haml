@@ -7,7 +7,13 @@
         %h5.d-inline= @constellation.name
       .body
         %ul
-          %li= "#{t('constellation.iau')}: #{@constellation.iau}"
+          %li
+            = "#{t('constellation.iau')}: <b>#{@constellation.iau}</b>".html_safe
+          %li
+            = "#{t('star.stars')}:"
+            %ul
+              - @constellation.stars.order(:name).each do |star|
+                %li= link_to star.name, star
         = @constellation.note_html
         - if link = @constellation.iau_image_link
           %img{src: link, alt: @constellation.name, class: "styled mx-auto d-block mt-3 mb-3", width: "80%"}
