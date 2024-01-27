@@ -44,9 +44,8 @@ module StarHelper
   end
 
   def star_constellation(star)
-    name = star.constellation&.name.to_s
-    return name unless star.bayer.present?
-    "#{star_bayer(star.bayer)} #{name}".html_safe
+    return star.constellation&.name.to_s unless star.bayer.present?
+    "#{star_bayer(star.bayer)} #{star.constellation&.iau}".html_safe
   end
 
   def star_bayer(bayer)
