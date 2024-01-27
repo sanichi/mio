@@ -19,7 +19,7 @@ module StarLink
         elsif constellation = Constellation.find_by(name: name)
           constellation.to_markdown(display, self)
         else
-          match
+          display
         end
       end
     end
