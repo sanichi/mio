@@ -96,6 +96,25 @@ describe Star do
         expect(Star.count).to eq 1
         expect_error(page, "Name has already been taken")
       end
+
+      it "duplicate bayer" do
+        click_link t("star.new")
+        fill_in t("star.name"), with: data.name
+        select star.constellation.name, from: t("star.constellation")
+        fill_in t("star.bayer"), with: star.bayer
+        fill_in t("star.distance"), with: data.distance
+        fill_in t("star.magnitude"), with: data.magnitude
+        fill_in t("star.mass"), with: data.mass
+        fill_in t("star.alpha"), with: data.alpha
+        fill_in t("star.delta"), with: data.delta
+        fill_in t("star.note"), with: data.note
+
+        click_button t("save")
+
+        expect(page).to have_title t("star.new")
+        expect(Star.count).to eq 1
+        expect_error(page, "Bayer has already been taken")
+      end
     end
   end
 

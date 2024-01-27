@@ -16,7 +16,7 @@ class Star < ApplicationRecord
 
   validates :alpha, format: { with: ALPHA }
   validates :delta, format: { with: DELTA }
-  validates :bayer, format: { with: BAYER }
+  validates :bayer, format: { with: BAYER }, uniqueness: { context: :constellation_id }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
