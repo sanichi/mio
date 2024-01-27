@@ -2,6 +2,7 @@
   inputs = [
     [:name,             t("star.name"),          :text,  maxlength: Star::MAX_NAME],
     [:constellation_id, t("star.constellation"), :select,  menu: star_constellation_menu(star)],
+    [:bayer,            t("star.bayer"),         :text],
     [:distance,         t("star.distance"),      :text],
     [:magnitude,        t("star.magnitude"),     :text],
     [:mass,             t("star.mass"),          :text],

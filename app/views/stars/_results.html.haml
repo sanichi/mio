@@ -1,7 +1,7 @@
 - stars.matches.each do |star|
   %tr
     %td= link_to star.name, star
-    %td= link_to star.constellation.name, star.constellation
+    %td= link_to star_constellation(star), star.constellation
     %td.text-center= star.distance
     %td.text-center= star.magnitude
     %td.text-center= star_mass(star.mass)

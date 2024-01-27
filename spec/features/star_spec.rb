@@ -15,6 +15,7 @@ describe Star do
       click_link t("star.new")
       fill_in t("star.name"), with: data.name
       select data.constellation.name, from: t("star.constellation")
+      fill_in t("star.bayer"), with: data.bayer
       fill_in t("star.distance"), with: data.distance
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.mass"), with: data.mass
@@ -32,6 +33,7 @@ describe Star do
       expect(s.name).to eq data.name
       expect(s.constellation).to eq data.constellation
       expect(s.constellation.stars_count).to eq 1
+      expect(s.bayer).to eq data.bayer
       expect(s.distance).to eq data.distance
       expect(s.magnitude).to eq data.magnitude
       expect(s.mass).to eq data.mass
@@ -45,6 +47,7 @@ describe Star do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
         select data.constellation.name, from: t("star.constellation")
+        fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.note"), with: data.note
@@ -61,6 +64,7 @@ describe Star do
         click_link t("star.new")
         fill_in t("star.name"), with: data.name
         select data.constellation.name, from: t("star.constellation")
+        fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
@@ -78,6 +82,7 @@ describe Star do
         click_link t("star.new")
         fill_in t("star.name"), with: star.name
         select data.constellation.name, from: t("star.constellation")
+        fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
@@ -105,6 +110,7 @@ describe Star do
       expect(page).to have_title t("star.edit")
       fill_in t("star.name"), with: data.name
       select data.constellation.name, from: t("star.constellation")
+      fill_in t("star.bayer"), with: data.bayer
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
@@ -118,6 +124,7 @@ describe Star do
       expect(s.name).to eq data.name
       expect(s.constellation).to eq data.constellation
       expect(s.constellation.stars_count).to eq 1
+      expect(s.bayer).to eq data.bayer
       expect(s.magnitude).to eq data.magnitude
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta

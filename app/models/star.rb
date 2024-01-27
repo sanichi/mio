@@ -9,11 +9,14 @@ class Star < ApplicationRecord
   MAX_NAME = 40
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
   DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
+  BAYER = /\A([α-ωa-zA-z])([1-9]|10)?\z/
+  GREEK = {alpha: "α", beta: "β", gamma: "γ", delta: "δ", epsilon: "ε", zeta: "ζ", eta: "η", theta: "θ", iota: "ι", kappa: "κ", lambda: "λ", mu: "μ", nu: "ν", xi: "ξ", omicron: "ο", pi: "π", rho: "ρ", sigma: "σ", tau: "τ", upsilon: "υ", phi: "φ", chi: "χ", psi: "ψ", omega: "ω"}
 
   before_validation :normalize_attributes
 
   validates :alpha, format: { with: ALPHA }
   validates :delta, format: { with: DELTA }
+  validates :bayer, format: { with: BAYER }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
@@ -62,6 +65,12 @@ class Star < ApplicationRecord
     alpha&.gsub!(/\D+/, "")
     delta&.gsub!(/[^-0-9]+/, "")
     name&.squish!
+    self.bayer = "" if bayer.nil?
+    bayer.lstrip!
+    bayer.rstrip!
+    if bayer.match(/\A([a-z][a-z]+)/i) && (letter = GREEK[$1.downcase.to_sym])
+      bayer.sub!(/\A[a-z][a-z]+/i, letter)
+    end
     self.note = "" if note.nil?
     note.lstrip!
     note.rstrip!

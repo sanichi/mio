@@ -1,6 +1,7 @@
 en:
   star:
     alpha: Right Ascension
+    bayer: Bayer
     constellation: Constellation
     delta: Declination
     distance: Distance
