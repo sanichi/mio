@@ -1,6 +1,6 @@
 module StarHelper
   def star_search_order_menu(selected)
-    opts = %w/name distance magnitude mass/.map { |o| [t("star.#{o}"), o] }
+    opts = %w/name distance magnitude mass components/.map { |o| [t("star.#{o}"), o] }
     options_for_select(opts, selected)
   end
 

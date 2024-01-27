@@ -16,6 +16,7 @@ describe Star do
       fill_in t("star.name"), with: data.name
       select data.constellation.name, from: t("star.constellation")
       fill_in t("star.bayer"), with: data.bayer
+      fill_in t("star.components"), with: data.components
       fill_in t("star.distance"), with: data.distance
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.mass"), with: data.mass
@@ -34,6 +35,7 @@ describe Star do
       expect(s.constellation).to eq data.constellation
       expect(s.constellation.stars_count).to eq 1
       expect(s.bayer).to eq data.bayer
+      expect(s.components).to eq data.components
       expect(s.distance).to eq data.distance
       expect(s.magnitude).to eq data.magnitude
       expect(s.mass).to eq data.mass
@@ -48,6 +50,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         select data.constellation.name, from: t("star.constellation")
         fill_in t("star.bayer"), with: data.bayer
+        fill_in t("star.components"), with: data.components
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.note"), with: data.note
@@ -65,6 +68,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         select data.constellation.name, from: t("star.constellation")
         fill_in t("star.bayer"), with: data.bayer
+        fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
@@ -83,6 +87,7 @@ describe Star do
         fill_in t("star.name"), with: star.name
         select data.constellation.name, from: t("star.constellation")
         fill_in t("star.bayer"), with: data.bayer
+        fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
@@ -102,6 +107,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         select star.constellation.name, from: t("star.constellation")
         fill_in t("star.bayer"), with: star.bayer
+        fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass

@@ -10,6 +10,7 @@
           %li
             = "#{t('star.constellation')}:"
             = link_to star_constellation(@star), @star.constellation
+          %li= "#{t('star.components')}: #{@star.components}"
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
           %li= "#{t('star.magnitude')}: #{@star.magnitude}"
           %li= "#{t('star.mass')}: #{star_mass(@star.mass)} #{t('star.unit.mass')}"

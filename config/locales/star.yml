@@ -2,6 +2,7 @@ en:
   star:
     alpha: Right Ascension
     bayer: Bayer
+    components: Components
     constellation: Constellation
     delta: Declination
     distance: Distance
@@ -12,9 +13,11 @@ en:
     new: New Star
     note: Note
     stars: Stars
-    unit:
-      distance: ly
-      mass: M☉
+    abbrev:
+      components: '#'
     symbol:
       alpha: ⍺
       delta: δ
+    unit:
+      distance: ly
+      mass: M☉
