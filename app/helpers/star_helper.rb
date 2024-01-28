@@ -63,4 +63,8 @@ module StarHelper
     return "" unless bayer&.match(Star::BAYER)
     "#{$1}#{$2 ? "<sup>#{$2}</sup>" : ""}".html_safe
   end
+
+  def star_wikipedia(wikipedia)
+    "https://en.wikipedia.org/wiki/#{wikipedia}"
+  end
 end

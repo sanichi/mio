@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_28_094201) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_28_141217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_094201) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "stars_count", default: 0
+    t.string "wikipedia", limit: 30
   end
 
   create_table "favourites", id: :serial, force: :cascade do |t|
@@ -308,6 +309,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_094201) do
     t.string "bayer", limit: 3
     t.integer "components", limit: 2, default: 1
     t.decimal "radius", precision: 6, scale: 2
+    t.string "wikipedia", limit: 40
     t.index ["constellation_id"], name: "index_stars_on_constellation_id"
   end
 

@@ -14,6 +14,7 @@ describe Constellation do
       click_link t("constellation.new")
       fill_in t("constellation.name"), with: data.name
       fill_in t("constellation.iau"), with: data.iau
+      fill_in t("constellation.wikipedia"), with: data.wikipedia
       fill_in t("constellation.note"), with: data.note
 
       click_button t("save")
@@ -25,6 +26,7 @@ describe Constellation do
 
       expect(c.name).to eq data.name
       expect(c.iau).to eq data.iau
+      expect(c.wikipedia).to eq data.wikipedia
       expect(c.note).to eq data.note
     end
 
@@ -32,6 +34,7 @@ describe Constellation do
       it "missing iau" do
         click_link t("constellation.new")
         fill_in t("constellation.name"), with: data.name
+        fill_in t("constellation.wikipedia"), with: data.wikipedia
         fill_in t("constellation.note"), with: data.note
         click_button t("save")
 
@@ -44,6 +47,7 @@ describe Constellation do
         click_link t("constellation.new")
         fill_in t("constellation.name"), with: constellation.name
         fill_in t("constellation.iau"), with: data.iau
+        fill_in t("constellation.wikipedia"), with: data.wikipedia
         fill_in t("constellation.note"), with: data.note
 
         click_button t("save")

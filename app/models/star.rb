@@ -18,6 +18,7 @@ class Star < ApplicationRecord
   validates :delta, format: { with: DELTA }
   validates :bayer, format: { with: BAYER }, uniqueness: { scope: :constellation_id }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
+  validates :wikipedia, presence: true, length: { maximum: MAX_NAME }, format: { with: /\A\S+\z/}, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :components, numericality: { integer_only: true, greater_than: 0, less_than: 10 }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
@@ -76,6 +77,12 @@ class Star < ApplicationRecord
     bayer.rstrip!
     if bayer.match(/\A([a-z][a-z]+)/i) && (letter = GREEK[$1.downcase.to_sym])
       bayer.sub!(/\A[a-z][a-z]+/i, letter)
+    end
+    if wikipedia.blank?
+      self.wikipedia = nil
+    else
+      wikipedia.squish!
+      wikipedia.gsub!(" ", "_")
     end
     self.note = "" if note.nil?
     note.lstrip!

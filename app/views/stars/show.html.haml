@@ -17,6 +17,8 @@
           %li= "#{t('star.radius')}: #{star_radius(@star.radius)} #{t('star.unit.radius')}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
           %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
+          - if @star.wikipedia.present?
+            %li= link_to t("star.wikipedia"), star_wikipedia(@star.wikipedia), target: "_wikipedia"
         = @star.note_html
       .footer
         = link_to t("star.stars"), stars_path, class: "green-btn"

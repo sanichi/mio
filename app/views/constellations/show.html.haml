@@ -17,6 +17,8 @@
                   %li
                     = star_bayer(star.bayer)
                     = link_to star.name, star
+          - if @constellation.wikipedia.present?
+            %li= link_to t("constellation.wikipedia"), constellation_wikipedia(@constellation.wikipedia), target: "_wikipedia"
         = @constellation.note_html
         - if link = @constellation.iau_image_link
           %img{src: link, alt: @constellation.name, class: "styled mx-auto d-block mt-3 mb-3", width: "80%"}

@@ -13,6 +13,7 @@ class Constellation < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
   validates :iau, presence: true, format: { with: /\A[A-Z][A-Za-z][a-z]\z/ }, uniqueness: { case_sensitive: false }
+  validates :wikipedia, presence: true, length: { maximum: MAX_NAME }, format: { with: /\A\S+\z/}, uniqueness: { case_sensitive: false }, allow_nil: true
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -52,6 +53,12 @@ class Constellation < ApplicationRecord
     name&.squish!
     iau&.squish!
     self.note = "" if note.nil?
+    if wikipedia.blank?
+      self.wikipedia = nil
+    else
+      wikipedia.squish!
+      wikipedia.gsub!(" ", "_")
+    end
     note.lstrip!
     note.rstrip!
     note.gsub!(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")

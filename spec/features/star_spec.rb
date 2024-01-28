@@ -23,6 +23,7 @@ describe Star do
       fill_in t("star.radius"), with: data.radius
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
+      fill_in t("star.wikipedia"), with: data.wikipedia
       fill_in t("star.note"), with: data.note
 
       click_button t("save")
@@ -43,6 +44,7 @@ describe Star do
       expect(s.radius).to eq data.radius
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta
+      expect(s.wikipedia).to eq data.wikipedia
       expect(s.note).to eq data.note
     end
 
@@ -56,9 +58,10 @@ describe Star do
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
-        fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
+        fill_in t("star.note"), with: data.note
+        fill_in t("star.wikipedia"), with: data.wikipedia
         click_button t("save")
 
         expect(page).to have_title t("star.new")
@@ -76,9 +79,10 @@ describe Star do
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
-        fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: "240000"
         fill_in t("star.delta"), with: data.delta
+        fill_in t("star.wikipedia"), with: data.wikipedia
+        fill_in t("star.note"), with: data.note
         click_button t("save")
 
         expect(page).to have_title t("star.new")
@@ -98,6 +102,7 @@ describe Star do
         fill_in t("star.radius"), with: data.radius
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
+        fill_in t("star.wikipedia"), with: data.wikipedia
         fill_in t("star.note"), with: data.note
 
         click_button t("save")
@@ -119,6 +124,7 @@ describe Star do
         fill_in t("star.radius"), with: data.radius
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
+        fill_in t("star.wikipedia"), with: data.wikipedia
         fill_in t("star.note"), with: data.note
 
         click_button t("save")

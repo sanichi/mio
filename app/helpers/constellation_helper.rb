@@ -4,4 +4,8 @@ module ConstellationHelper
     opts.push [t("star.stars"), "stars"]
     options_for_select(opts, selected)
   end
+
+  def constellation_wikipedia(wikipedia)
+    "https://en.wikipedia.org/wiki/#{wikipedia}"
+  end
 end

@@ -41,6 +41,6 @@ class ConstellationsController < ApplicationController
   end
 
   def strong_params
-    params.require(:constellation).permit(:name, :iau, :note)
+    params.require(:constellation).permit(:name, :iau, :wikipedia, :note)
   end
 end
