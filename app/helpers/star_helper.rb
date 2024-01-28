@@ -34,7 +34,10 @@ module StarHelper
 
   def star_decimal(d)
     return "" if d.nil?
-    if d >= 9.99
+    if d >= 10000.0
+      x = Math.log(d,10).floor
+      ("%.1f ⨉ 10<sup>%d</sup>" % [d / 10**x, x]).html_safe
+    elsif d >= 9.99
       d.round.to_s
     elsif d >= 0.99
       "%.1f" % d
