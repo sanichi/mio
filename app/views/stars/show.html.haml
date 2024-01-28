@@ -14,6 +14,7 @@
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
           %li= "#{t('star.magnitude')}: #{@star.magnitude}"
           %li= "#{t('star.mass')}: #{star_mass(@star.mass)} #{t('star.unit.mass')}"
+          %li= "#{t('star.radius')}: #{star_radius(@star.radius)} #{t('star.unit.radius')}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
           %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
         = @star.note_html

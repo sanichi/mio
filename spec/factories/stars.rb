@@ -10,5 +10,6 @@ FactoryBot.define do
     delta         { "%s%02d%02d%02d" % [['', '-'].sample, rand(90), rand(60), rand(60)] }
     magnitude     { (7 * rand - 1).round(2) }
     mass          { (1000 * rand - 0.5).round(2) }
+    radius        { (1000 * rand - 0.5).round(2) }
   end
 end

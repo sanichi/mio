@@ -22,6 +22,7 @@ class Star < ApplicationRecord
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
   validates :mass, numericality: { greater_than: 0.01, less_than: 10000.0 }
+  validates :radius, numericality: { greater_than: 0.01, less_than: 10000.0 }
 
   def self.search(params, path, opt={})
     matches = case params[:order]
@@ -33,6 +34,8 @@ class Star < ApplicationRecord
       order(:magnitude)
     when "mass"
       order(mass: :desc)
+    when "radius"
+      order(radius: :desc)
     else
       order(:name)
     end

@@ -12,6 +12,7 @@ en:
     name: Name
     new: New Star
     note: Note
+    radius: Radius
     stars: Stars
     abbrev:
       alpha: RA
@@ -20,6 +21,8 @@ en:
       delta: Dec
       distance: Dist
       magnitude: Mag
+      radius: Rad
     unit:
       distance: ly
       mass: M☉
+      radius: R☉

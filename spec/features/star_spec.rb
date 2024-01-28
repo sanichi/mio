@@ -20,6 +20,7 @@ describe Star do
       fill_in t("star.distance"), with: data.distance
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.mass"), with: data.mass
+      fill_in t("star.radius"), with: data.radius
       fill_in t("star.alpha"), with: data.alpha
       fill_in t("star.delta"), with: data.delta
       fill_in t("star.note"), with: data.note
@@ -39,6 +40,7 @@ describe Star do
       expect(s.distance).to eq data.distance
       expect(s.magnitude).to eq data.magnitude
       expect(s.mass).to eq data.mass
+      expect(s.radius).to eq data.radius
       expect(s.alpha).to eq data.alpha
       expect(s.delta).to eq data.delta
       expect(s.note).to eq data.note
@@ -53,6 +55,7 @@ describe Star do
         fill_in t("star.components"), with: data.components
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
+        fill_in t("star.radius"), with: data.radius
         fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
@@ -72,6 +75,7 @@ describe Star do
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
+        fill_in t("star.radius"), with: data.radius
         fill_in t("star.note"), with: data.note
         fill_in t("star.alpha"), with: "240000"
         fill_in t("star.delta"), with: data.delta
@@ -91,6 +95,7 @@ describe Star do
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
+        fill_in t("star.radius"), with: data.radius
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
         fill_in t("star.note"), with: data.note
@@ -111,6 +116,7 @@ describe Star do
         fill_in t("star.distance"), with: data.distance
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
+        fill_in t("star.radius"), with: data.radius
         fill_in t("star.alpha"), with: data.alpha
         fill_in t("star.delta"), with: data.delta
         fill_in t("star.note"), with: data.note
