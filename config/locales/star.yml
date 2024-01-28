@@ -14,10 +14,12 @@ en:
     note: Note
     stars: Stars
     abbrev:
-      components: '#'
-    symbol:
-      alpha: ⍺
-      delta: δ
+      alpha: RA
+      components: Comp
+      constellation: Cons
+      delta: Dec
+      distance: Dist
+      magnitude: Mag
     unit:
       distance: ly
       mass: M☉

@@ -25,11 +25,11 @@
           %th= t("star.name")
           %th= t("star.constellation")
           %th.text-center= t("star.abbrev.components")
-          %th.text-center= t("star.distance")
-          %th.text-center= t("star.magnitude")
+          %th.text-center= t("star.abbrev.distance")
+          %th.text-center= t("star.abbrev.magnitude")
           %th.text-center= t("star.mass")
-          %th.text-center= t("star.symbol.alpha")
-          %th.text-center= t("star.symbol.delta")
+          %th.text-center= t("star.abbrev.alpha")
+          %th.text-center= t("star.abbrev.delta")
       %tbody{id: "results"}
         = render "results", stars: @stars
   - if can?(:create, Star)
