@@ -4,8 +4,8 @@
     %td= link_to star_constellation(star), star.constellation
     %td.text-center= star.components
     %td.text-center= star.distance
-    %td.text-center= star.luminosity
-    %td.text-center= star.magnitude
+    %td.text-center= star_decimal(star.luminosity)
+    %td.text-center= star_decimal(star.magnitude)
     %td.text-center= star_decimal(star.mass)
     %td.text-center= star_decimal(star.radius)
     %td.text-center= star_right_ascension(star.alpha)
