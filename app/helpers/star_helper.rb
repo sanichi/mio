@@ -1,6 +1,6 @@
 module StarHelper
   def star_search_order_menu(selected)
-    opts = %w/name distance magnitude mass radius components/.map { |o| [t("star.#{o}"), o] }
+    opts = %w/name components distance luminosity magnitude mass radius/.map { |o| [t("star.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
@@ -32,25 +32,14 @@ module StarHelper
     end
   end
 
-  def star_mass(mass)
-    return "" if mass.nil?
-    if mass >= 9.99
-      mass.round.to_s
-    elsif mass >= 0.99
-      "%.1f" % mass
+  def star_decimal(d)
+    return "" if d.nil?
+    if d >= 9.99
+      d.round.to_s
+    elsif d >= 0.99
+      "%.1f" % d
     else
-      "%.2f" % mass
-    end
-  end
-
-  def star_radius(radius)
-    return "" if radius.nil?
-    if radius >= 9.99
-      radius.round.to_s
-    elsif radius >= 0.99
-      "%.1f" % radius
-    else
-      "%.2f" % radius
+      "%.2f" % d
     end
   end
 

@@ -7,6 +7,7 @@ en:
     delta: Declination
     distance: Distance
     edit: Edit Star
+    luminosity: Luminosity
     magnitude: Magnitude
     mass: Mass
     name: Name
@@ -21,9 +22,11 @@ en:
       constellation: Cons
       delta: Dec
       distance: Dist
+      luminosity: Lum
       magnitude: Mag
       radius: Rad
     unit:
       distance: ly
+      luminosity: L☉
       mass: M☉
       radius: R☉

@@ -12,9 +12,10 @@
             = link_to star_constellation(@star), @star.constellation
           %li= "#{t('star.components')}: #{@star.components}"
           %li= "#{t('star.distance')}: #{@star.distance} #{t('star.unit.distance')}"
+          %li= "#{t('star.luminosity')}: #{star_decimal(@star.luminosity)} #{t('star.unit.luminosity')}"
           %li= "#{t('star.magnitude')}: #{@star.magnitude}"
-          %li= "#{t('star.mass')}: #{star_mass(@star.mass)} #{t('star.unit.mass')}"
-          %li= "#{t('star.radius')}: #{star_radius(@star.radius)} #{t('star.unit.radius')}"
+          %li= "#{t('star.mass')}: #{star_decimal(@star.mass)} #{t('star.unit.mass')}"
+          %li= "#{t('star.radius')}: #{star_decimal(@star.radius)} #{t('star.unit.radius')}"
           %li= "#{t('star.alpha')}: #{star_right_ascension(@star.alpha)}"
           %li= "#{t('star.delta')}: #{star_declination(@star.delta)}"
           - if @star.wikipedia.present?

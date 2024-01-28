@@ -4,9 +4,10 @@
     %td= link_to star_constellation(star), star.constellation
     %td.text-center= star.components
     %td.text-center= star.distance
+    %td.text-center= star.luminosity
     %td.text-center= star.magnitude
-    %td.text-center= star_mass(star.mass)
-    %td.text-center= star_radius(star.radius)
+    %td.text-center= star_decimal(star.mass)
+    %td.text-center= star_decimal(star.radius)
     %td.text-center= star_right_ascension(star.alpha)
     %td.text-center= star_declination(star.delta)
-= render "utils/pagination_links", pager: stars, columns: 9
+= render "utils/pagination_links", pager: stars, columns: 10

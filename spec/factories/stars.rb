@@ -6,6 +6,7 @@ FactoryBot.define do
     constellation
     delta         { "%s%02d%02d%02d" % [['', '-'].sample, rand(90), rand(60), rand(60)] }
     distance      { rand(1000) + 1 }
+    luminosity    { (1000000 * rand - 0.5).round(2) }
     magnitude     { (7 * rand - 1).round(2) }
     mass          { (1000 * rand - 0.5).round(2) }
     name          { Faker::Name.first_name }

@@ -18,6 +18,7 @@ describe Star do
       fill_in t("star.bayer"), with: data.bayer
       fill_in t("star.components"), with: data.components
       fill_in t("star.distance"), with: data.distance
+      fill_in t("star.luminosity"), with: data.luminosity
       fill_in t("star.magnitude"), with: data.magnitude
       fill_in t("star.mass"), with: data.mass
       fill_in t("star.radius"), with: data.radius
@@ -39,6 +40,7 @@ describe Star do
       expect(s.bayer).to eq data.bayer
       expect(s.components).to eq data.components
       expect(s.distance).to eq data.distance
+      expect(s.luminosity).to eq data.luminosity
       expect(s.magnitude).to eq data.magnitude
       expect(s.mass).to eq data.mass
       expect(s.radius).to eq data.radius
@@ -55,6 +57,7 @@ describe Star do
         select data.constellation.name, from: t("star.constellation")
         fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.components"), with: data.components
+        fill_in t("star.luminosity"), with: data.luminosity
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
@@ -76,6 +79,7 @@ describe Star do
         fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
+        fill_in t("star.luminosity"), with: data.luminosity
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
@@ -97,6 +101,7 @@ describe Star do
         fill_in t("star.bayer"), with: data.bayer
         fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
+        fill_in t("star.luminosity"), with: data.luminosity
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
@@ -119,6 +124,7 @@ describe Star do
         fill_in t("star.bayer"), with: star.bayer
         fill_in t("star.components"), with: data.components
         fill_in t("star.distance"), with: data.distance
+        fill_in t("star.luminosity"), with: data.luminosity
         fill_in t("star.magnitude"), with: data.magnitude
         fill_in t("star.mass"), with: data.mass
         fill_in t("star.radius"), with: data.radius
