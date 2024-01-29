@@ -11,7 +11,7 @@
             = "#{t('constellation.iau')}: <b>#{@constellation.iau}</b>".html_safe
           - if @constellation.stars_count > 0
             %li
-              = "#{t('star.stars')}:"
+              = link_to t("star.stars"), stars_path(constellation_id: @constellation.id)
               %ul
                 - @constellation.stars.order(:bayer).each do |star|
                   %li
