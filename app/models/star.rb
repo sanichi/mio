@@ -28,6 +28,8 @@ class Star < ApplicationRecord
 
   def self.search(params, path, opt={})
     matches = case params[:order]
+    when "bayer"
+      order(:bayer)
     when "components"
       order(components: :desc)
     when "distance"

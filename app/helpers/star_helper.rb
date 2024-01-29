@@ -1,6 +1,6 @@
 module StarHelper
   def star_search_order_menu(selected)
-    opts = %w/name components distance luminosity magnitude mass radius/.map { |o| [t("star.#{o}"), o] }
+    opts = %w/name bayer components distance luminosity magnitude mass radius/.map { |o| [t("star.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
