@@ -2,6 +2,8 @@
   inputs = [
     [:name,             t("star.name"),          :text,  maxlength: Star::MAX_NAME],
     [:constellation_id, t("star.constellation"), :select,  menu: star_constellation_menu(star)],
+    [:alpha,            t("star.alpha"),         :text],
+    [:delta,            t("star.delta"),         :text],
     [:bayer,            t("star.bayer"),         :text],
     [:components,       t("star.components"),    :text],
     [:distance,         t("star.distance"),      :text],
@@ -9,8 +11,7 @@
     [:magnitude,        t("star.magnitude"),     :text],
     [:mass,             t("star.mass"),          :text],
     [:radius,           t("star.radius"),        :text],
-    [:alpha,            t("star.alpha"),         :text],
-    [:delta,            t("star.delta"),         :text],
+    [:temperature,      t("star.temperature"),   :text],
     [:wikipedia,        t("star.wikipedia"),     :text,  maxlength: Star::MAX_NAME],
     [:note,             t("star.note"),          :area,  rows: 20],
   ]

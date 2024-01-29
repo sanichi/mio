@@ -12,6 +12,7 @@ FactoryBot.define do
     name          { Faker::Name.first_name }
     note          { Faker::Lorem.paragraphs(number: 2) }
     radius        { (1000 * rand - 0.5).round(2) }
+    temperature   { rand(100000) + 300 }
     wikipedia     { [nil, CGI.escape(Faker::Name.first_name.gsub(" ", "_"))].sample }
   end
 end

@@ -1,6 +1,6 @@
 module StarHelper
   def star_search_order_menu(selected)
-    opts = %w/name bayer components distance luminosity magnitude mass radius/.map { |o| [t("star.#{o}"), o] }
+    opts = %w/name bayer components distance luminosity magnitude mass radius temperature/.map { |o| [t("star.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
@@ -35,14 +35,22 @@ module StarHelper
   def star_decimal(d)
     return "" if d.nil?
     if d >= 10000.0
-      x = Math.log(d,10).floor
-      ("%.1f ⨉ 10<sup>%d</sup>" % [d / 10**x, x]).html_safe
+      "%.1e" % d
     elsif d >= 9.99
       d.round.to_s
     elsif d >= 0.99
       "%.1f" % d
     else
       "%.2f" % d
+    end
+  end
+
+  def star_integer(i)
+    return "" if i.nil?
+    if i >= 10000
+      "%.1e" % i
+    else
+      i.to_s
     end
   end
 

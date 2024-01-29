@@ -15,6 +15,7 @@ en:
     note: Note
     radius: Radius
     stars: Stars
+    temperature: Temperature
     wikipedia: Wikipedia
     abbrev:
       alpha: RA
@@ -25,8 +26,10 @@ en:
       luminosity: Lum
       magnitude: Mag
       radius: Rad
+      temperature: Temp
     unit:
       distance: ly
       luminosity: L☉
       mass: M☉
       radius: R☉
+      temperature: K
