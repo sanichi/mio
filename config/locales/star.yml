@@ -14,6 +14,7 @@ en:
     new: New Star
     note: Note
     radius: Radius
+    spectrum: Spectral Type
     stars: Stars
     temperature: Temperature
     wikipedia: Wikipedia
@@ -26,6 +27,7 @@ en:
       luminosity: Lum
       magnitude: Mag
       radius: Rad
+      spectrum: Type
       temperature: Temp
     unit:
       distance: ly

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_29_131303) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_31_163840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -312,6 +312,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_131303) do
     t.string "wikipedia", limit: 40
     t.decimal "luminosity", precision: 10, scale: 2
     t.integer "temperature"
+    t.string "spectrum", limit: 16
     t.index ["constellation_id"], name: "index_stars_on_constellation_id"
   end
 

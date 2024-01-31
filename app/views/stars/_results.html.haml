@@ -8,7 +8,8 @@
     %td.text-center= star_decimal(star.magnitude)
     %td.text-center= star_decimal(star.mass)
     %td.text-center= star_decimal(star.radius)
+    %td.text-center= star.spectrum
     %td.text-center= star_integer(star.temperature)
     %td.text-center= star_right_ascension(star.alpha)
     %td.text-center= star_declination(star.delta)
-= render "utils/pagination_links", pager: stars, columns: 11
+= render "utils/pagination_links", pager: stars, columns: 12

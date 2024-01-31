@@ -7,6 +7,7 @@ class Star < ApplicationRecord
   belongs_to :constellation, counter_cache: true
 
   MAX_NAME = 40
+  MAX_SPECTRUM = 16
   ALPHA = /\A([01][0-9]|2[0-3])([0-5][0-9])([0-5][0-9])\z/
   DELTA = /\A(-)?([0-8][0-9])([0-5][0-9])([0-5][0-9])\z/
   BAYER = /\A([α-ωa-zA-z])([1-9]|10)?\z/
@@ -18,6 +19,7 @@ class Star < ApplicationRecord
   validates :delta, format: { with: DELTA }
   validates :bayer, format: { with: BAYER }, uniqueness: { scope: :constellation_id }
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
+  validates :spectrum, presence: true, length: { maximum: MAX_SPECTRUM }
   validates :wikipedia, presence: true, length: { maximum: MAX_NAME }, format: { with: /\A\S+\z/}, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :components, numericality: { integer_only: true, greater_than: 0, less_than: 10 }
   validates :distance, numericality: { integer_only: true, greater_than: 0 }
@@ -80,6 +82,7 @@ class Star < ApplicationRecord
     alpha&.gsub!(/\D+/, "")
     delta&.gsub!(/[^-0-9]+/, "")
     name&.squish!
+    spectrum&.squish!
     self.bayer = "" if bayer.nil?
     bayer.lstrip!
     bayer.rstrip!

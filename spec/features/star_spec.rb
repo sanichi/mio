@@ -25,6 +25,7 @@ describe Star do
       fill_in t("star.name"), with: data.name
       fill_in t("star.note"), with: data.note
       fill_in t("star.radius"), with: data.radius
+      fill_in t("star.spectrum"), with: data.spectrum
       fill_in t("star.temperature"), with: data.temperature
       fill_in t("star.wikipedia"), with: data.wikipedia
 
@@ -48,6 +49,7 @@ describe Star do
       expect(s.name).to eq data.name
       expect(s.note).to eq data.note
       expect(s.radius).to eq data.radius
+      expect(s.spectrum).to eq data.spectrum
       expect(s.wikipedia).to eq data.wikipedia
     end
 
@@ -65,6 +67,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         fill_in t("star.note"), with: data.note
         fill_in t("star.radius"), with: data.radius
+        fill_in t("star.spectrum"), with: data.spectrum
         fill_in t("star.temperature"), with: data.temperature
         fill_in t("star.wikipedia"), with: data.wikipedia
         click_button t("save")
@@ -88,6 +91,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         fill_in t("star.note"), with: data.note
         fill_in t("star.radius"), with: data.radius
+        fill_in t("star.spectrum"), with: data.spectrum
         fill_in t("star.temperature"), with: data.temperature
         fill_in t("star.wikipedia"), with: data.wikipedia
         click_button t("save")
@@ -111,6 +115,7 @@ describe Star do
         fill_in t("star.name"), with: star.name
         fill_in t("star.note"), with: data.note
         fill_in t("star.radius"), with: data.radius
+        fill_in t("star.spectrum"), with: data.spectrum
         fill_in t("star.temperature"), with: data.temperature
         fill_in t("star.wikipedia"), with: data.wikipedia
 
@@ -135,6 +140,7 @@ describe Star do
         fill_in t("star.name"), with: data.name
         fill_in t("star.note"), with: data.note
         fill_in t("star.radius"), with: data.radius
+        fill_in t("star.spectrum"), with: data.spectrum
         fill_in t("star.temperature"), with: data.temperature
         fill_in t("star.wikipedia"), with: data.wikipedia
 
