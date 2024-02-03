@@ -32,8 +32,8 @@
           %th.text-center= t("star.abbrev.radius")
           %th.text-center= t("star.abbrev.spectrum")
           %th.text-center= t("star.abbrev.temperature")
-          %th.text-center= t("star.abbrev.alpha")
-          %th.text-center= t("star.abbrev.delta")
+          -# %th.text-center= t("star.abbrev.alpha")
+          -# %th.text-center= t("star.abbrev.delta")
       %tbody{id: "results"}
         = render "results", stars: @stars
   - if can?(:create, Star)
