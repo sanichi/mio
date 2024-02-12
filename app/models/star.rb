@@ -47,6 +47,8 @@ class Star < ApplicationRecord
       order(radius: :desc)
     when "temperature"
       order(temperature: :desc)
+    when "created"
+      order(id: :desc)
     else
       order(:name)
     end

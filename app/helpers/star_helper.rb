@@ -1,6 +1,7 @@
 module StarHelper
   def star_search_order_menu(selected)
     opts = %w/name bayer components distance luminosity magnitude mass radius temperature/.map { |o| [t("star.#{o}"), o] }
+    opts.push [t("created"), "created"]
     options_for_select(opts, selected)
   end
 
