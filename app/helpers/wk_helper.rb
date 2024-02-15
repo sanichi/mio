@@ -22,7 +22,7 @@ module WkHelper
   end
 
   def wk_vocab_order_menu(selected)
-    opts = %w/level reading last_updated/.map { |i| [t("wk.#{i}"), i] }
+    opts = %w/reading level last_updated/.map { |i| [t("wk.#{i}"), i] }
     opts.insert 1, [t("wk.vocab.characters"), "characters"]
     opts.push [t("wk.vocab.last_noted"), "last_noted"]
     options_for_select(opts, selected)

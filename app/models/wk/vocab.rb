@@ -34,11 +34,11 @@ module Wk
     def self.search(params, path, opt={})
       matches =
         case params[:order]
-        when "reading"      then by_reading
+        when "level"        then by_level
         when "characters"   then by_characters
         when "last_noted"   then by_last_noted
         when "last_updated" then by_last_updated
-        else                     by_level
+        else                     by_reading
         end
       if sql = cross_constraint(params[:vquery], %w{characters meaning reading})
         matches = matches.where(sql)
