@@ -2,7 +2,7 @@
   inputs = [
     [:name,      t("constellation.name"),      :text,  maxlength: Constellation::MAX_NAME],
     [:iau,       t("constellation.iau"),       :text,  maxlength: Constellation::MAX_IAU],
-    [:wikipedia, t("constellation.wikipedia"), :text,  maxlength: Constellation::MAX_NAME],
+    [:wikipedia, t("constellation.wikipedia"), :text],
     [:note,      t("constellation.note"),      :area,  rows: 20],
   ]
 = render "utils/crud/form", object: constellation, index: constellations_path, inputs: inputs, title: title
