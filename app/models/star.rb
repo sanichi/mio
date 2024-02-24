@@ -27,7 +27,7 @@ class Star < ApplicationRecord
   validates :magnitude, numericality: { greater_than: -2.0, less_than: 7.0 }
   validates :mass, numericality: { greater_than_or_equal: 0.01, less_than: 10000.0 }
   validates :radius, numericality: { greater_than_or_equal: 0.01, less_than: 10000.0 }
-  validates :rank, numericality: { integer_only: true, greater_than: 0, less_than_or_equal: 100 }, allow_nil: true
+  validates :rank, numericality: { integer_only: true, greater_than: 0, less_than_or_equal: 100 }, uniqueness: true, allow_nil: true
   validates :temperature, numericality: { integer_only: true, greater_than: 0 }
 
   def self.search(params, path, opt={})
