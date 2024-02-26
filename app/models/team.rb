@@ -12,7 +12,7 @@ class Team < ApplicationRecord
   MAX_SHORT = 15
   MAX_DIVISION = 4
   MIN_DIVISION = 1
-  DEDUCTIONS = { 2023 => { "everton" => 10 } }
+  DEDUCTIONS = { 2023 => { "everton" => 6 } }
 
   has_many :home_matches, class_name: "Match", dependent: :destroy, foreign_key: "home_team_id"
   has_many :away_matches, class_name: "Match", dependent: :destroy, foreign_key: "away_team_id"
