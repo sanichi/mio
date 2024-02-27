@@ -2,7 +2,7 @@ module Wk
   class Tweak
     EXTRA_SIMILAR_KANJIS = {
       1059 => 1868, # 減, 滅
-      4136 => 4137, # 胸, 脳
+      1044 => 1045, # 胸, 脳
     }
 
     def self.update
