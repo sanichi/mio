@@ -12,7 +12,7 @@ class Constellation < ApplicationRecord
   before_validation :normalize_attributes
 
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: { case_sensitive: false }
-  validates :iau, presence: true, format: { with: /\A[A-Z][A-Za-z][a-z]\z/ }, uniqueness: { case_sensitive: false }
+  validates :iau, presence: true, format: { with: /\A[A-Z][A-Za-z][A-Za-z]\z/ }, uniqueness: { case_sensitive: false }
   validates :wikipedia, presence: true, length: { maximum: MAX_NAME }, format: { with: /\A\S+\z/}, uniqueness: { case_sensitive: false }, allow_nil: true
 
   def self.search(params, path, opt={})
