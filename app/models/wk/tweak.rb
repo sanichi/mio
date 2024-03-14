@@ -3,6 +3,7 @@ module Wk
     EXTRA_SIMILAR_KANJIS = {
       1059 => 1868, # 減, 滅
       1044 => 1045, # 胸, 脳
+      1206 => 2263, # 優, 憂
     }
 
     def self.update
