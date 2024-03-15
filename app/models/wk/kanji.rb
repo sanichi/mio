@@ -56,6 +56,24 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
+    def self.similar(params, path, opt={})
+      owner =
+        case params[:owner]
+        when "wk"
+          "= 't'"
+        when "either"
+          "IN ('t', 'f')"
+        else
+          "= 'f'"
+        end
+      sql = "SELECT DISTINCT kanji_id FROM wk_kanjis_kanjis WHERE wk #{owner}"
+      matches = where("id IN (#{sql})").includes(:similar_kanjis).order(:reading)
+      if sql = cross_constraint(params[:query], %w{character meaning reading})
+        matches = matches.where(sql)
+      end
+      paginate(matches, params, path, opt)
+    end
+
     def self.radical_search(kquery)
       names = kquery.to_s.split(" ")
       return nil if names.empty?

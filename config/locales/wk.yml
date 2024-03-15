@@ -58,7 +58,13 @@ en:
       kanjis: Kanjis
       kvg: KanjiVG
       image: Kayo
-      similar: Similar Kanjis
+      similar:
+        details: Details
+        either: Either
+        me: Me only
+        owner: Owner
+        similar: Similar Kanjis
+        wk: WK only
     parts:
       adj: Adjective
       adv: Adverb

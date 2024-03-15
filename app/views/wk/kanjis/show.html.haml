@@ -30,7 +30,7 @@
             - @kanji.radicals.each do |radical|
               = link_to radical.character_name, radical
         %tr.d-flex
-          %td.col-3= t("wk.kanji.similar")
+          %td.col-3= t("wk.kanji.similar.similar")
           %td.col-9.double-size
             - @kanji.similar_kanjis.each do |kanji|
               = link_to kanji.character, kanji

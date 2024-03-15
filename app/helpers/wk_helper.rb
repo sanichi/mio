@@ -21,6 +21,11 @@ module WkHelper
     options_for_select(opts, selected)
   end
 
+  def wk_similar_owner_menu(selected)
+    opts = %w/me wk either/.map { |o| [t("wk.kanji.similar.#{o}"), o]}
+    options_for_select(opts, selected)
+  end
+
   def wk_vocab_order_menu(selected)
     opts = %w/reading level last_updated/.map { |i| [t("wk.#{i}"), i] }
     opts.insert 1, [t("wk.vocab.characters"), "characters"]

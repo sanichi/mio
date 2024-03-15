@@ -13,5 +13,9 @@ module Wk
       @vocabs = Wk::Vocab.by_reading.where("characters LIKE '%#{@kanji.character}%'")
       @daily = Note.find_by(title: @kanji.character, series: t("wk.daily.text"))
     end
+
+    def similar
+      @kanjis = Wk::Kanji.similar(params, similar_wk_kanjis_path, per_page: 8, remote: true)
+    end
   end
 end

@@ -62,7 +62,9 @@ Rails.application.routes.draw do
     resources :kanas, only: [:edit, :index, :show, :update] do
       patch :quick_accent_update, on: :member
     end
-    resources :kanjis, only: [:index, :show]
+    resources :kanjis, only: [:index, :show] do
+      get :similar, on: :collection
+    end
     resources :radicals, only: [:index, :show]
     resources :readings, only: [] do
       patch :quick_accent_update, on: :member

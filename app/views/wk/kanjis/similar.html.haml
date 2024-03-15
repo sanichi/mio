@@ -1,0 +1,31 @@
+:ruby
+  lo = Layout.new(
+    md: [3, 3],
+    sm: [4, 4],
+    xs: [5, 5],
+  ).to_a
+  inputs = [
+    [:query, t("query"),                  :text,   lo[0], placeholder: t("query")],
+    [:owner, t("wk.kanji.similar.owner"), :select, lo[1], menu: wk_similar_owner_menu(params[:owner])],
+  ]
+
+= render "utils/title", key: "wk.kanji.similar.similar"
+
+%section
+  .header.text-center
+    %h3= t("wk.kanji.similar.similar")
+  .body
+    = render "utils/search/form", index: similar_wk_kanjis_path, inputs: inputs
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th.text-center= t("wk.kanji.kanji")
+          %th.text-center= t("wk.kanji.similar.details")
+          %th.text-center= t("wk.kanji.similar.similar")
+      %tbody#results
+        = render "similar_results", kanjis: @kanjis
+  .footer
+    = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
+    = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"
