@@ -12,13 +12,11 @@ module Wk
   #   bin/rails r Wk::Kana.update
   #   bin/rails r Wk::Reading.update
   #   bin/rails r Wk::VerbPair.update
-  #   bin/rails r Wk::Tweak.update
   # individual vocabs can be investigated using their WK ID
   #   bin/rails r 'Wk::Vocab.subject(1234)'
   # on production, once problems resolved
   #   RAILS_ENV=production bin/rails r Wk.update
   #   RAILS_ENV=production bin/rails r Wk::VerbPair.update
-  #   RAILS_ENV=production bin/rails r Wk::Tweak.update
   def self.update(days=nil)
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
