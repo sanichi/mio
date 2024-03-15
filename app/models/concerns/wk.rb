@@ -19,8 +19,6 @@ module Wk
   #   RAILS_ENV=production bin/rails r Wk.update
   #   RAILS_ENV=production bin/rails r Wk::VerbPair.update
   #   RAILS_ENV=production bin/rails r Wk::Tweak.update
-  # from development after updating Wk::Tweak
-  #   bin/cap production wk:tweak
   def self.update(days=nil)
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
