@@ -77,7 +77,7 @@ module Wk
 
     def self.add_or_remove_similar(params)
       # See if the query matches a special pattern which means to add/delete a similarity.
-      return unless params[:query].match(/\A([-+ー＋])([^\p{ASCII}])([^\p{ASCII}])\z/)
+      return unless params[:query]&.match(/\A([-+ー＋])([^\p{ASCII}])([^\p{ASCII}])\z/)
       return "error: kanji #{$2} not found" unless k1 = find_by(character: $2)
       return "error: kanji #{$3} not found" unless k2 = find_by(character: $3)
       params[:query] = "(#{$2}|#{$3})"
