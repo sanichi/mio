@@ -57,6 +57,7 @@ module Wk
     end
 
     def self.similar(params, path, opt={})
+      message = add_or_remove_similar(params)
       owner =
         case params[:owner]
         when "wk"
@@ -71,7 +72,42 @@ module Wk
       if sql = cross_constraint(params[:query], %w{character meaning reading})
         matches = matches.where(sql)
       end
-      paginate(matches, params, path, opt)
+      [paginate(matches, params, path, opt), message]
+    end
+
+    def self.add_or_remove_similar(params)
+      # See if the query matches a special pattern which means to add/delete a similarity.
+      return unless params[:query].match(/\A([-+ー＋])([^\p{ASCII}])([^\p{ASCII}])\z/)
+      return "error: kanji #{$2} not found" unless k1 = find_by(character: $2)
+      return "error: kanji #{$3} not found" unless k2 = find_by(character: $3)
+      params[:query] = "(#{$2}|#{$3})"
+
+      # Are we adding or deleting?
+      if $1 == "+" || $1 == "＋"
+        if k1.similar_kanjis.include?(k2) && k2.similar_kanjis.include?(k1)
+          # If we already have it, then return with a message.
+          return "error: #{k1.character} and #{k2.character} are already marked as similar"
+        else
+          # Create both links.
+          ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k1.id}, #{k2.id}, 'f')") unless k1.similar_kanjis.include?(k2)
+          ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k2.id}, #{k1.id}, 'f')") unless k2.similar_kanjis.include?(k1)
+          return "marked #{k1.character} and #{k2.character} as similar"
+        end
+      else
+        if !k1.similar_kanjis.include?(k2) && !k2.similar_kanjis.include?(k1)
+          # If we don't already have it, then return with a message.
+          return "error: #{k1.character} and #{k2.character} are not marked as similar"
+        else
+          # Delete both links if they are custom (wk attribute false).
+          r1 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k1.id} AND similar_id = #{k2.id} AND wk = 'f'") if k1.similar_kanjis.include?(k2)
+          r2 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k2.id} AND similar_id = #{k1.id} AND wk = 'f'") if k2.similar_kanjis.include?(k1)
+          if r1&.cmd_tuples == 0 || r2&.cmd_tuples == 0
+            return "error: cannot remove WK similarities"
+          else
+            return "#{k1.character} and #{k2.character} are no longer marked as similar"
+          end
+        end
+      end
     end
 
     def self.radical_search(kquery)
