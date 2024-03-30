@@ -81,13 +81,11 @@ module Wk
       paginate(matches, params, path, opt)
     end
 
-    def any_notes?
-      notes.present? || groups.any? || pairs.any?
-    end
-
-    def intransitive?
-      parts.match?(/ivb/)
-    end
+    def any_notes?()    = notes.present? || groups.any? || pairs.any? || suru_pair.present?
+    def intransitive?() = parts.match?(/ivb/)
+    def suru_verb?()    = parts.match?(/srv/)
+    def transitive?()   = parts.match?(/tvb/)
+    def verbal_noun?()  = parts.match?(/vbn/)
 
     def linked_characters
       characters.split('').map do |c|
@@ -103,6 +101,7 @@ module Wk
       pairs.each do |pair|
         notes_plus += pair.to_markdown(bold: characters)
       end
+      notes_plus += suru_pair if suru_pair.present?
       Wk::Group::CATEGORIES.each do |category|
         groups.where(category: category).each do |group|
           notes_plus += group.to_markdown(bold: characters)
@@ -126,6 +125,18 @@ module Wk
         end
     end
 
+    def suru_pair
+      return @suru_pair unless @suru_pair.nil?
+      if verbal_noun? && !characters.match?(/する\z/) && srv = Wk::Vocab.find_by(characters: "#{characters}する")
+        @suru_pair = "<b>#{characters}</b> → <a href=\"/wk/vocabs/#{srv.id}\">#{srv.characters}</a>\n\n"
+      elsif suru_verb? && characters.match(/する\z/) && vbn = Wk::Vocab.find_by(characters: $`)
+        @suru_pair = "<a href=\"/wk/vocabs/#{vbn.id}\">#{vbn.characters}</a> → <b>#{characters}</b>\n\n"
+      else
+        @suru_pair = ""
+      end
+      return @suru_pair
+    end
+
     def to_markdown(display: nil, bold: nil)
       display = characters unless display
       if bold && bold == characters
@@ -133,10 +144,6 @@ module Wk
       else
         "[#{display}](/wk/vocabs/#{characters})"
       end
-    end
-
-    def transitive?
-      parts.match?(/tvb/)
     end
 
     def self.update(days=nil)
