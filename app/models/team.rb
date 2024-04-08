@@ -14,7 +14,7 @@ class Team < ApplicationRecord
   MIN_DIVISION = 1
   DEDUCTIONS = {
     2023 => {
-      "everton" => 6,
+      "everton" => 8,
       "nottingham-forest" => 4,
     }
   }
