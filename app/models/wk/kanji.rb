@@ -76,38 +76,52 @@ module Wk
     end
 
     def self.add_or_remove_similar(params)
-      # See if the query matches a special pattern which means to add/delete a similarity.
-      return unless params[:query]&.match(/\A([-+ー＋])([^\p{ASCII}])([^\p{ASCII}])\z/)
-      return "error: kanji #{$2} not found" unless k1 = find_by(character: $2)
-      return "error: kanji #{$3} not found" unless k2 = find_by(character: $3)
-      params[:query] = "(#{$2}|#{$3})"
+      # See if the query matches a special pattern which means to add or delete some similarities.
+      return unless params[:query]&.match(/\A([-+ー＋])([^\p{ASCII}]+)\z/)
 
-      # Are we adding or deleting?
-      if $1 == "+" || $1 == "＋"
-        if k1.similar_kanjis.include?(k2) && k2.similar_kanjis.include?(k1)
-          # If we already have it, then return with a message.
-          return "error: #{k1.character} and #{k2.character} are already marked as similar"
-        else
-          # Create both links.
-          ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k1.id}, #{k2.id}, 'f')") unless k1.similar_kanjis.include?(k2)
-          ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k2.id}, #{k1.id}, 'f')") unless k2.similar_kanjis.include?(k1)
-          return "marked #{k1.character} and #{k2.character} as similar"
-        end
-      else
-        if !k1.similar_kanjis.include?(k2) && !k2.similar_kanjis.include?(k1)
-          # If we don't already have it, then return with a message.
-          return "error: #{k1.character} and #{k2.character} are not marked as similar"
-        else
-          # Delete both links if they are custom (wk attribute false).
-          r1 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k1.id} AND similar_id = #{k2.id} AND wk = 'f'") if k1.similar_kanjis.include?(k2)
-          r2 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k2.id} AND similar_id = #{k1.id} AND wk = 'f'") if k2.similar_kanjis.include?(k1)
-          if r1&.cmd_tuples == 0 || r2&.cmd_tuples == 0
-            return "error: cannot remove WK similarities"
+      # Analyse what we just matched.
+      adding = $1 == "+" || $1 == "＋"
+      messages = []
+      kanjis = $2.split("").map do |c|
+        messages.push "#{c} not found" unless k = find_by(character: c)
+        k
+      end
+      return messages.join(", ") unless messages.empty?
+      return "need at least 2 kanjis" unless kanjis.size > 1
+      params[:query] = "(#{kanjis.map(&:character).join('|')})"
+
+      # Take each pair from the list.
+      kanjis.combination(2).each do |k1,k2|
+        pair = "#{k1.character}-#{k2.character}"
+        if adding
+          if k1.similar_kanjis.include?(k2) && k2.similar_kanjis.include?(k1)
+            # We already have it.
+            messages.push "#{pair} already exists"
           else
-            return "#{k1.character} and #{k2.character} are no longer marked as similar"
+            # Needs creating.
+            ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k1.id}, #{k2.id}, 'f')") unless k1.similar_kanjis.include?(k2)
+            ActiveRecord::Base.connection.execute("INSERT INTO wk_kanjis_kanjis VALUES (#{k2.id}, #{k1.id}, 'f')") unless k2.similar_kanjis.include?(k1)
+            messages.push "#{pair} created"
+          end
+        else
+          if !k1.similar_kanjis.include?(k2) && !k2.similar_kanjis.include?(k1)
+            # We don't already have it.
+            messages.push "#{pair} not found"
+          else
+            # Delete both links if they are custom (wk attribute false).
+            r1 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k1.id} AND similar_id = #{k2.id} AND wk = 'f'") if k1.similar_kanjis.include?(k2)
+            r2 = ActiveRecord::Base.connection.execute("DELETE FROM wk_kanjis_kanjis WHERE kanji_id = #{k2.id} AND similar_id = #{k1.id} AND wk = 'f'") if k2.similar_kanjis.include?(k1)
+            if r1&.cmd_tuples == 0 || r2&.cmd_tuples == 0
+              messages.push "#{pair} undeleteable"
+            else
+              messages.push "#{pair} deleted"
+            end
           end
         end
       end
+
+      # Return the joined up messages.
+      messages.join(", ")
     end
 
     def self.radical_search(kquery)
