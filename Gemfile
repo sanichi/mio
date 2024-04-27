@@ -22,6 +22,7 @@ gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 2.1'
 gem 'jbuilder', '~> 2.7'
 gem 'meta-tags', '~> 2.12'
+gem 'csv', '< 4'
 
 group :development, :test do
   gem 'rspec-rails', '< 7'

@@ -1,5 +1,3 @@
-require 'csv'
-
 class Transaction < ApplicationRecord
   include Constrainable
   include Pageable
