@@ -617,7 +617,7 @@ codeLinks model =
             String.fromInt model.day
 
         prefix =
-            "https://bitbucket.org/sanichi/mio/src/main/app/"
+            "https://github.com/sanichi/mio/tree/main/app/"
     in
     [ 1, 2 ]
         |> List.map (useRuby model.year model.day)

@@ -20345,7 +20345,7 @@ var $author$project$Util$unique = function (list) {
 };
 var $author$project$Main$codeLinks = function (model) {
 	var year = $elm$core$String$fromInt(model.a);
-	var prefix = 'https://bitbucket.org/sanichi/mio/src/main/app/';
+	var prefix = 'https://github.com/sanichi/mio/tree/main/app/';
 	var day = $elm$core$String$fromInt(model.b);
 	return A2(
 		$elm$core$List$map,

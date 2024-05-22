@@ -5531,7 +5531,7 @@ var $author$project$Main$link = function (title) {
 		$elm$html$Html$a,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$href('https://bitbucket.org/sanichi/mio/src/main/app/views/pages/play/' + file),
+				$elm$html$Html$Attributes$href('https://github.com/sanichi/mio/tree/main/app/views/pages/play/' + file),
 				$elm$html$Html$Attributes$class('float-end'),
 				$elm$html$Html$Attributes$target('external')
 			]),

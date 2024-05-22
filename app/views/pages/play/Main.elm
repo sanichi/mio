@@ -96,7 +96,7 @@ link title =
                 _ ->
                     title ++ ".elm"
     in
-    a [ "https://bitbucket.org/sanichi/mio/src/main/app/views/pages/play/" ++ file |> href, class "float-end", target "external" ] [ text "code" ]
+    a [ "https://github.com/sanichi/mio/tree/main/app/views/pages/play/" ++ file |> href, class "float-end", target "external" ] [ text "code" ]
 
 
 
