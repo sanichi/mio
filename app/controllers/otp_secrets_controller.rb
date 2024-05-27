@@ -5,8 +5,8 @@ class OtpSecretsController < ApplicationController
         session[:otp_secret] = Rails.env.test? ? User::OTP_TEST_SECRET : ROTP::Base32.random
         totp = ROTP::TOTP.new(session[:otp_secret], issuer: User::OTP_ISSUER)
         @qr_code = qr_code(totp, user.email)
-        @secret = totp.provisioning_uri(user.email)
-        @secret = $1 if @secret.match(/secret=(\w+)/)
+        @su_code = totp.provisioning_uri(user.email)
+        @su_code = $1 if @su_code.match(/secret=(\w+)/)
       end
     else
       redirect_to new_session

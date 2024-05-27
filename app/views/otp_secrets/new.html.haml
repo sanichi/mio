@@ -15,7 +15,7 @@
               to provide an authentication code from the app in
               addition to your username and passord.
             .mb-3.text-center= image_tag @qr_code
-            %p.small.fw-bold.text-center= @secret
+            %p.small.fw-bold.text-center#su_code= @su_code
           .mb-3= render "utils/crud/text", form: f, label: t("otp.otp"), param: :otp_attempt
         .footer
           .text-center= f.submit t("otp.submit"), class: "blue-btn"
