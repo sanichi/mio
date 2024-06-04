@@ -29,8 +29,7 @@ test:
   database: mio_test
 ```
 * Run `bin/rails db:create`.
-* Sync the development database with the production database if you can.
-* If you can't sync then at least create one admin user with `bin/rails c`:
+* Create at least one admin user with `bin/rails c`:
 ```
 User.create!(email: "...", password: "...", first_name: "...", last_name: "...", role: "admin")
 ```
