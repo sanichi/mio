@@ -48,7 +48,7 @@ module Wk
         display = $1
         characters = $2 || display
         if bold && bold == characters
-          %(<bold>#{display}</bold>)
+          %(<b>#{display}</b>)
         else
           vocab = current[characters]
           if vocab

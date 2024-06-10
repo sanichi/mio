@@ -61,7 +61,7 @@
                 %tbody
                   - @examples.each do |example|
                     %tr
-                      %td= example.japanese_html
+                      %td= example.japanese_html(bold: @vocab.characters)
                       %td= example.english
                       %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: wk_vocab_path(@vocab)), class: "blue-btn"
   .footer
