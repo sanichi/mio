@@ -1,23 +1,22 @@
 # This was useful for understanding rake a bit more than I used to:
 # https://stackoverflow.com/questions/825748/how-to-pass-command-line-arguments-to-a-rake-task
 namespace :obs do
-  # example: bin/rails obs:kanji\[鋭,T\]
-  desc "create or overwrite a kanji note for obsidian"
-  task :kanji, [:char, :nuke] => :environment do |task, args|
-    check_env!
-    args.with_defaults(:char => "ABSENT", :nuke => "true")
-    char = args[:char]
+  desc "create or update kanji notes for obsidian"
+  task :kanji, [:chrs, :nuke] => :environment do |task, args|
+    check!
+    args.with_defaults(:chrs => "", :nuke => "true")
     nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
-    report("please supply a Kanji character", true) if char == "ABSENT"
-    report("please supply a single character", true) unless char.length == 1
-    kanji = Wk::Kanji.find_by(character: char) or report("cannot find kanji character #{char}", true)
-    report "char #{char}"
-    report "nuke #{nuke}"
+    chrs = args[:chrs].scan(/[\p{Han}]/)
+    report("please supply some kanji, e.g. bin/rails obs:kanji\\[新鋭,T\\]", true) unless chrs.size > 0
+    kanji = chrs.map do |chr|
+      Wk::Kanji.find_by(character: chr) or report("cannot find kanji #{chr}", true)
+    end
+    report "kanji: #{kanji.map(&:character).join(',')}"
+    report "nuke:  #{nuke}"
   end
 
-  def check_env!
-    return if Rails.env.development?
-    report("this task is not for the #{Rails.env} environment", true)
+  def check!
+    report("this task is not for the #{Rails.env} environment", true) unless Rails.env.development?
   end
 
   def report(msg, error=false)
