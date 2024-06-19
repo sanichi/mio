@@ -15,8 +15,15 @@ namespace :obs do
     report "nuke:  #{nuke}"
   end
 
+  BASE = "/Users/mjo/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Japanese"
+  KDIR = "#{BASE}/Kanji"
+  RDIR = "#{BASE}/Radicals"
+
   def check!
     report("this task is not for the #{Rails.env} environment", true) unless Rails.env.development?
+    report("base directory does not exist", true) unless File.directory?(BASE)
+    report("kanji directory does not exist", true) unless File.directory?(KDIR)
+    report("radicals directory does not exist", true) unless File.directory?(RDIR)
   end
 
   def report(msg, error=false)
