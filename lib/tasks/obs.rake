@@ -22,14 +22,12 @@ namespace :obs do
   VERSION = 0.1
   MIO = "https://mio.sanichi.me/wk"
   BASE = "/Users/mjo/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Japanese"
-  KDIR = "#{BASE}/Kanji"
-  RDIR = "#{BASE}/Radicals"
-  SDIR = "#{BASE}/Sounds"
+  DIR = %i/kanji radicals sounds/.each_with_object({}) { |d, h| h[d] = "#{BASE}/#{d.to_s.capitalize}"}
 
-  # Kanji utilities.
-  def kfile(k) = "#{k.character} #{k.meaning}.md"
-  def kdata(k, sounds)
-    <<~DATA
+  # Create or update a kanji note.
+  def kmake(k, sounds, nuke)
+    path = "#{DIR[:kanji]}/#{k.character} #{k.meaning}.md"
+    data = <<~DATA
       ---
       version: #{VERSION}
       ---
@@ -38,29 +36,21 @@ namespace :obs do
 
       [mio](#{MIO}/kanjis/#{k.id})
     DATA
-  end
-  def kmake(k, sounds, nuke)
-    data = kdata(k, sounds)
-    path = "#{KDIR}/#{kfile(k)}"
     gmake("kanji #{k.character}", path, data, nuke)
   end
 
-  # Sounds (readings) utilities.
-  def sfile(s) = "#{s}.md"
-  def sdata(s)
-    <<~DATA
+  # Create or update a sound note.
+  def smake(s, nuke)
+    path = "#{DIR[:sounds]}/#{s}.md"
+    data = <<~DATA
       ---
       version: #{VERSION}
       ---
     DATA
-  end
-  def smake(s, nuke)
-    data = sdata(s)
-    path = "#{SDIR}/#{sfile(s)}"
     gmake("sound #{s}", path, data, nuke)
   end
 
-  # General file making utility.
+  # General note creating/updating utility.
   def gmake(mono, path, data, nuke)
     if File.exist?(path)
       if data == File.read(path)
@@ -82,8 +72,7 @@ namespace :obs do
   def check!
     report("this task is not for the #{Rails.env} environment", true) unless Rails.env.development?
     report("base directory does not exist", true) unless File.directory?(BASE)
-    report("kanji directory does not exist", true) unless File.directory?(KDIR)
-    report("radicals directory does not exist", true) unless File.directory?(RDIR)
+    DIR.each { |dir, path| report("#{dir} directory does not exist", true) unless File.directory?(path) }
   end
 
   def report(msg, error=false)
