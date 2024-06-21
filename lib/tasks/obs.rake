@@ -1,6 +1,6 @@
 # Tasks.
 namespace :obs do
-  desc "create or update kanji notes for obsidian"
+  desc "create or update obsidian notes given one or more kanji characters"
   task :kanji, [:chrs, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:chrs => "", :nuke => "false")
@@ -9,15 +9,21 @@ namespace :obs do
     report("please supply some kanji, e.g. bin/rails obs:kanji\\[新鋭,T\\]", true) unless chrs.size > 0
     chrs.each do |chr|
       if kanji = Wk::Kanji.find_by(character: chr)
-        snds = kanji.reading.split(',').map(&:squish).select{ |s| s.match?(/\A[\p{Katakana}\p{Hiragana}]+\z/) }
-        rads = kanji.radicals.to_a
-        kmake(kanji, snds, rads, nuke)
-        snds.each{ |snd| smake(snd, nuke) }
-        rads.each{ |rad| rmake(rad, nuke) }
+        kmake(kanji, nuke)
       else
         report "can't find kanji #{chr}"
       end
     end
+  end
+
+  desc "create or update obsidian notes given a kanji level number"
+  task :level, [:level, :nuke] => :environment do |task, args|
+    check!
+    args.with_defaults(:level => "", :nuke => "false")
+    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+    level = args[:level].to_i
+    report("please supply a level between 1 and 60, e.g. bin/rails obs:level\\[8,y\\]", true) unless level > 0 && level <= 60
+    Wk::Kanji.where(level: level).each { |kanji| kmake(kanji, nuke) }
   end
 
   # Shared.
@@ -27,7 +33,9 @@ namespace :obs do
   DIR = %i/kanji radicals sounds/.each_with_object({}) { |d, h| h[d] = "#{BASE}/#{d.to_s.capitalize}"}
 
   # Create or update a kanji note.
-  def kmake(k, sounds, radicals, nuke)
+  def kmake(k, nuke)
+    rads = k.radicals.to_a
+    snds = k.reading.split(',').map(&:squish).select{ |s| s.match?(/\A[\p{Katakana}\p{Hiragana}]+\z/) }
     path = "#{DIR[:kanji]}/#{k.obs_name}.md"
     data = <<~DATA
       ---
@@ -35,13 +43,15 @@ namespace :obs do
       level: #{k.level}
       ---
 
-      radicals: #{radicals.map{ |r| "[[#{r.obs_name}]]" }.join(", ")}
+      radicals: #{rads.map{ |r| "[[#{r.obs_name}]]" }.join(", ")}
 
-      sounds: #{sounds.map{ |s| "[[#{s}]]" }.join(", ")}
+      sounds: #{snds.map{ |s| "[[#{s}]]" }.join(", ")}
 
       [mio](#{MIO}/kanjis/#{k.id})
     DATA
     gmake("kanji #{k.character}", path, data, nuke)
+    rads.each{ |rad| rmake(rad, nuke) }
+    snds.each{ |snd| smake(snd, nuke) }
   end
 
   # Create or update a radical note.
