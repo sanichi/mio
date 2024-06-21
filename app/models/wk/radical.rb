@@ -119,6 +119,8 @@ module Wk
       end
     end
 
+    def obs_name = character.blank? ? name : name + " " + character
+
     def update_performed?
       return false unless changed?
 
