@@ -1,6 +1,7 @@
 module Wk
   class Radical < ActiveRecord::Base
     include Constrainable
+    include Obsidian
     include Pageable
     include Wanikani
 
@@ -119,7 +120,10 @@ module Wk
       end
     end
 
-    def obs_name = character.blank? ? name : name + " " + character
+    def obs_name(url: false)
+      nam = character.blank? ? name : name + " " + character
+      url ? "Radicals/" + CGI.escape(nam) : nam
+    end
 
     def update_performed?
       return false unless changed?
