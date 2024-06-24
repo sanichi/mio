@@ -4,7 +4,7 @@ namespace :obs do
   task :kanji, [:chrs, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:chrs => "", :nuke => "false")
-    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+    nuke = get_nuke(args)
     chrs = args[:chrs].scan(/[\p{Han}]/)
     report("please supply some kanji, e.g. bin/rails obs:kanji\\[新鋭,T\\]", true) unless chrs.size > 0
     chrs.each do |chr|
@@ -20,7 +20,7 @@ namespace :obs do
   task :vocab, [:chrs, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:chrs => "", :nuke => "false")
-    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+    nuke = get_nuke(args)
     chrs = args[:chrs]
     report("please supply a word, e.g. bin/rails obs:vobab\\[言葉,T\\]", true) if chrs.blank?
     if vocab = Wk::Vocab.find_by(characters: chrs)
@@ -34,9 +34,8 @@ namespace :obs do
   task :klevel, [:level, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:level => "", :nuke => "false")
-    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
-    level = args[:level].to_i
-    check_level!(level, "bin/rails obs:klevel\\[8,y\\]")
+    nuke = get_nuke(args)
+    level = get_level!(args, "bin/rails obs:klevel\\[8,y\\]")
     Wk::Kanji.where(level: level).each { |kanji| kmake(kanji, nuke) }
   end
 
@@ -44,9 +43,8 @@ namespace :obs do
   task :vlevel, [:level, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:level => "", :nuke => "false")
-    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
-    level = args[:level].to_i
-    check_level!(level, "bin/rails obs:vlevel\\[9\\]")
+    nuke = get_nuke(args)
+    level = get_level!(args, "bin/rails obs:vlevel\\[9\\]")
     Wk::Vocab.where(level: level).each { |vocab| vmake(vocab, nuke) }
   end
 
@@ -149,8 +147,14 @@ namespace :obs do
     DIR.each { |dir, path| report("#{dir} directory does not exist", true) unless File.directory?(path) }
   end
 
-  def check_level!(level, example)
+  def get_nuke(args)
+    args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+  end
+
+  def get_level!(args, example)
+    level = args[:level].to_i
     report("please supply a level between 1 and 60, e.g. #{example}", true) unless level > 0 && level <= 60
+    level
   end
 
   def report(msg, error=false)
