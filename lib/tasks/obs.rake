@@ -1,5 +1,19 @@
 # Tasks.
 namespace :obs do
+  desc "create or update obsidian notes given a vocabulary word"
+  task :vocab, [:chrs, :nuke] => :environment do |task, args|
+    check!
+    args.with_defaults(:chrs => "", :nuke => "false")
+    nuke = get_nuke(args)
+    chrs = args[:chrs]
+    report("please supply a word, e.g. bin/rails obs:vobab\\[言葉,T\\]", true) if chrs.blank?
+    if vocab = Wk::Vocab.find_by(characters: chrs)
+      vmake(vocab, nuke)
+    else
+      report "can't find vocab #{chrs}"
+    end
+  end
+
   desc "create or update obsidian notes given one or more kanji characters"
   task :kanji, [:chrs, :nuke] => :environment do |task, args|
     check!
@@ -16,18 +30,13 @@ namespace :obs do
     end
   end
 
-  desc "create or update obsidian notes given a vocabulary word"
-  task :vocab, [:chrs, :nuke] => :environment do |task, args|
+  desc "create or update obsidian notes given a vocab level number"
+  task :vlevel, [:level, :nuke] => :environment do |task, args|
     check!
-    args.with_defaults(:chrs => "", :nuke => "false")
+    args.with_defaults(:level => "", :nuke => "false")
     nuke = get_nuke(args)
-    chrs = args[:chrs]
-    report("please supply a word, e.g. bin/rails obs:vobab\\[言葉,T\\]", true) if chrs.blank?
-    if vocab = Wk::Vocab.find_by(characters: chrs)
-      vmake(vocab, nuke)
-    else
-      report "can't find vocab #{chrs}"
-    end
+    level = get_level!(args, "bin/rails obs:vlevel\\[9\\]")
+    Wk::Vocab.where(level: level).each { |vocab| vmake(vocab, nuke) }
   end
 
   desc "create or update obsidian notes given a kanji level number"
@@ -37,15 +46,6 @@ namespace :obs do
     nuke = get_nuke(args)
     level = get_level!(args, "bin/rails obs:klevel\\[8,y\\]")
     Wk::Kanji.where(level: level).each { |kanji| kmake(kanji, nuke) }
-  end
-
-  desc "create or update obsidian notes given a vocab level number"
-  task :vlevel, [:level, :nuke] => :environment do |task, args|
-    check!
-    args.with_defaults(:level => "", :nuke => "false")
-    nuke = get_nuke(args)
-    level = get_level!(args, "bin/rails obs:vlevel\\[9\\]")
-    Wk::Vocab.where(level: level).each { |vocab| vmake(vocab, nuke) }
   end
 
   # Shared.
