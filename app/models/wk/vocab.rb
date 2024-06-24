@@ -146,6 +146,8 @@ module Wk
       end
     end
 
+    def obs_name(url: false) = url ? "Vocabulary/" + CGI.escape(characters) : characters
+
     def self.update(days=nil)
       count = Hash.new(0)
       old_wk_ids = Vocab.pluck(:wk_id)

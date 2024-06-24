@@ -16,21 +16,66 @@ namespace :obs do
     end
   end
 
+  desc "create or update obsidian notes given a vocabulary word"
+  task :vocab, [:chrs, :nuke] => :environment do |task, args|
+    check!
+    args.with_defaults(:chrs => "", :nuke => "false")
+    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+    chrs = args[:chrs]
+    report("please supply a word, e.g. bin/rails obs:vobab\\[言葉,T\\]", true) if chrs.blank?
+    if vocab = Wk::Vocab.find_by(characters: chrs)
+      vmake(vocab, nuke)
+    else
+      report "can't find vocab #{chrs}"
+    end
+  end
+
   desc "create or update obsidian notes given a kanji level number"
-  task :level, [:level, :nuke] => :environment do |task, args|
+  task :klevel, [:level, :nuke] => :environment do |task, args|
     check!
     args.with_defaults(:level => "", :nuke => "false")
     nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
     level = args[:level].to_i
-    report("please supply a level between 1 and 60, e.g. bin/rails obs:level\\[8,y\\]", true) unless level > 0 && level <= 60
+    check_level!(level, "bin/rails obs:klevel\\[8,y\\]")
     Wk::Kanji.where(level: level).each { |kanji| kmake(kanji, nuke) }
+  end
+
+  desc "create or update obsidian notes given a vocab level number"
+  task :vlevel, [:level, :nuke] => :environment do |task, args|
+    check!
+    args.with_defaults(:level => "", :nuke => "false")
+    nuke = args[:nuke].match?(/\At(rue)?|y(es)?\z/i)
+    level = args[:level].to_i
+    check_level!(level, "bin/rails obs:vlevel\\[9\\]")
+    Wk::Vocab.where(level: level).each { |vocab| vmake(vocab, nuke) }
   end
 
   # Shared.
   VERSION = 0.1
   MIO = "https://mio.sanichi.me/wk"
   BASE = "/Users/mjo/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Japanese"
-  DIR = %i/kanji radicals sounds/.each_with_object({}) { |d, h| h[d] = "#{BASE}/#{d.to_s.capitalize}"}
+  DIR = %i/vocabulary kanji radicals sounds/.each_with_object({}) { |d, h| h[d] = "#{BASE}/#{d.to_s.capitalize}"}
+  
+  # Create or update a vocab note.
+  def vmake(v, nuke)
+    reds = v.readings
+    kjis = v.characters.split('').map{ |c| Wk::Kanji.find_by(character: c) }.compact
+    path = "#{DIR[:vocabulary]}/#{v.obs_name}.md"
+    data = <<~DATA
+      ---
+      version: #{VERSION}
+      level: #{v.level}
+      ---
+
+      readings: #{reds.map(&:characters).join(", ")}
+
+      kanji: #{kjis.map{ |k| "[[#{k.obs_name}]]" }.join(", ")}
+
+      [mio](#{MIO}/vocabs/#{v.id})
+    DATA
+    gmake("vocab #{v.characters}", path, data, nuke)
+    kjis.each{ |kji| kmake(kji, nuke) }
+  end
 
   # Create or update a kanji note.
   def kmake(k, nuke)
@@ -102,6 +147,10 @@ namespace :obs do
     report("this task is not for the #{Rails.env} environment", true) unless Rails.env.development?
     report("base directory does not exist", true) unless File.directory?(BASE)
     DIR.each { |dir, path| report("#{dir} directory does not exist", true) unless File.directory?(path) }
+  end
+
+  def check_level!(level, example)
+    report("please supply a level between 1 and 60, e.g. #{example}", true) unless level > 0 && level <= 60
   end
 
   def report(msg, error=false)
