@@ -2,6 +2,7 @@ module Wk
   class Vocab < ActiveRecord::Base
     include Constrainable
     include Linkable
+    include Obsidian
     include Pageable
     include Remarkable
     include Vocabable
