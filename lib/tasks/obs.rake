@@ -10,8 +10,9 @@ namespace :obs do
     if vocab = Wk::Vocab.find_by(characters: chrs)
       vmake(vocab, nuke)
     else
-      report "can't find vocab #{chrs}"
+      report "can't find vocab #{chrs}", true
     end
+    summarize
   end
 
   desc "create or update obsidian notes given one or more kanji characters"
@@ -28,6 +29,7 @@ namespace :obs do
         report "can't find kanji #{chr}"
       end
     end
+    summarize
   end
 
   desc "create or update obsidian notes given a vocab level number"
@@ -37,6 +39,7 @@ namespace :obs do
     nuke = get_nuke(args)
     level = get_level!(args, "bin/rails obs:vlevel\\[9\\]")
     Wk::Vocab.where(level: level).each { |vocab| vmake(vocab, nuke) }
+    summarize
   end
 
   desc "create or update obsidian notes given a kanji level number"
@@ -46,19 +49,25 @@ namespace :obs do
     nuke = get_nuke(args)
     level = get_level!(args, "bin/rails obs:klevel\\[8,y\\]")
     Wk::Kanji.where(level: level).each { |kanji| kmake(kanji, nuke) }
+    summarize
   end
 
   # Shared.
   VERSION = 0.1
   MIO = "https://mio.sanichi.me/wk"
   BASE = "/Users/mjo/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Japanese"
-  DIR = %i/vocabulary kanji radicals sounds/.each_with_object({}) { |d, h| h[d] = "#{BASE}/#{d.to_s.capitalize}"}
+  DIRS = { v: "Vocabulary", k: "Kanji", r: "Radicals", s: "Sounds" }.transform_values{ |d| "#{BASE}/#{d}" }
+  SING = { v: "vocab",      k: "kanji", r: "radical" , s: "sound"  }
+  PLRL = { v: "vocabs",     k: "kanji", r: "radicals", s: "sounds" }
+  CREATED, UPDATED, NO_CHANGE, LEAVING = %w/created updated nochnge leaving/
+  ACTIONS = [CREATED, UPDATED, NO_CHANGE, LEAVING]
+  STATS = Hash.new{ |h1, k1| h1[k1] = Hash.new{ |h2, k2| h2[k2] = 0 } }
   
   # Create or update a vocab note.
   def vmake(v, nuke)
     reds = v.readings
     kjis = v.characters.split('').map{ |c| Wk::Kanji.find_by(character: c) }.compact
-    path = "#{DIR[:vocabulary]}/#{v.obs_name}.md"
+    path = "#{DIRS[:v]}/#{v.obs_name}.md"
     data = <<~DATA
       ---
       version: #{VERSION}
@@ -71,7 +80,7 @@ namespace :obs do
 
       [mio](#{MIO}/vocabs/#{v.id})
     DATA
-    gmake("vocab #{v.characters}", path, data, nuke)
+    gmake(v.characters, :v, path, data, nuke)
     kjis.each{ |kji| kmake(kji, nuke) }
   end
 
@@ -79,7 +88,7 @@ namespace :obs do
   def kmake(k, nuke)
     rads = k.radicals.to_a
     snds = k.reading.split(',').map(&:squish).select{ |s| s.match?(/\A[\p{Katakana}\p{Hiragana}]+\z/) }
-    path = "#{DIR[:kanji]}/#{k.obs_name}.md"
+    path = "#{DIRS[:k]}/#{k.obs_name}.md"
     data = <<~DATA
       ---
       version: #{VERSION}
@@ -92,14 +101,14 @@ namespace :obs do
 
       [mio](#{MIO}/kanjis/#{k.id})
     DATA
-    gmake("kanji #{k.character}", path, data, nuke)
+    gmake(k.character, :k, path, data, nuke)
     rads.each{ |rad| rmake(rad, nuke) }
     snds.each{ |snd| smake(snd, nuke) }
   end
 
   # Create or update a radical note.
   def rmake(r, nuke)
-    path = "#{DIR[:radicals]}/#{r.obs_name}.md"
+    path = "#{DIRS[:r]}/#{r.obs_name}.md"
     data = <<~DATA
       ---
       version: #{VERSION}
@@ -108,43 +117,59 @@ namespace :obs do
 
       [mio](#{MIO}/radicals/#{r.id})
     DATA
-    gmake("radical #{r.name}", path, data, nuke)
+    gmake(r.name, :r, path, data, nuke)
   end
 
   # Create or update a sound note.
   def smake(s, nuke)
-    path = "#{DIR[:sounds]}/#{s}.md"
+    path = "#{DIRS[:s]}/#{s}.md"
     data = <<~DATA
       ---
       version: #{VERSION}
       ---
     DATA
-    gmake("sound #{s}", path, data, nuke)
+    gmake(s, :s, path, data, nuke)
   end
 
   # General note creating/updating utility.
-  def gmake(mono, path, data, nuke)
+  def gmake(mono, type, path, data, nuke)
+    koto = "#{SING[type]} #{mono}"
     if File.exist?(path)
       if data == File.read(path)
-        report "nochnge #{mono}"
+        STATS[type][NO_CHANGE] += 1
+        report "#{NO_CHANGE} #{koto}"
       else
         if nuke
           File.open(path, "w"){ |f| f.write(data) }
-          report "updated #{mono}"
+          STATS[type][UPDATED] += 1
+          report "#{UPDATED} #{koto}"
         else
-          report "leaving sound #{mono}"
+          STATS[type][LEAVING] += 1
+          report "#{LEAVING} #{koto}"
         end
       end
     else
       File.open(path, "w"){ |f| f.write(data) }
-      report "created #{mono}"
+      STATS[type][CREATED] += 1
+      report "#{CREATED} #{koto}"
+    end
+  end
+
+  def summarize
+    puts "         %7s %7s %7s %7s" % ACTIONS
+    PLRL.each do |t, name|
+      printf "%-8s ", name
+      ACTIONS.each do |a|
+        printf "  %-3d   ", STATS[t][a]
+      end
+      printf "\n"
     end
   end
 
   def check!
     report("this task is not for the #{Rails.env} environment", true) unless Rails.env.development?
     report("base directory does not exist", true) unless File.directory?(BASE)
-    DIR.each { |dir, path| report("#{dir} directory does not exist", true) unless File.directory?(path) }
+    DIRS.each { |dir, path| report("#{dir} directory does not exist", true) unless File.directory?(path) }
   end
 
   def get_nuke(args)
