@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_161218) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_09_121118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -354,6 +354,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_161218) do
     t.integer "upload_id"
     t.bigint "classifier_id"
     t.boolean "approved", default: false
+    t.integer "ban", default: 0
     t.index ["classifier_id"], name: "index_transactions_on_classifier_id"
   end
 
