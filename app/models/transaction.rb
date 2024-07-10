@@ -41,20 +41,10 @@ class Transaction < ApplicationRecord
   def self.search(params, path, opt={})
     corrections = {}
     matches = case params[:order]
-    when "amount_asc"
-      order(amount: :asc)
-    when "amount_desc"
-      order(amount: :desc)
-    when "balance_asc"
-      order(balance: :asc)
-    when "balance_desc"
-      order(balance: :desc)
     when "date_asc"
-      order(date: :asc)
-    when "date_desc"
-      order(date: :desc)
+      order(date: :asc, id: :asc)
     else
-      order(date: :desc)
+      order(date: :desc, id: :desc)
     end
     if ACCOUNTS.values.include?(params[:account])
       matches = matches.where(account: params[:account])

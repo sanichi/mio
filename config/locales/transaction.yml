@@ -19,10 +19,6 @@ en:
     orders:
       date_desc: Date ↑
       date_asc: Date ↓
-      amount_desc: Amount ↑
-      amount_asc: Amount ↓
-      balance_desc: Balance ↑
-      balance_asc: Balance ↓
     symbol:
       approved: ✔︎
       unapproved: ✘
