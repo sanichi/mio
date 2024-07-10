@@ -8,7 +8,6 @@ class Transaction < ApplicationRecord
   MAX_AMOUNT = 1000000.0
   MAX_CATEGORY = 3
   MAX_DESCRIPTION = 100
-  NOBAN_LIMIT = 16
   ACCOUNTS = {
     "831909-101456"    => "jrbs",
     "831909-00101456"  => "jrbs",
@@ -200,8 +199,6 @@ class Transaction < ApplicationRecord
       end
     end
 
-    %w/mrbs jrbs/.each {|account| set_bans(account)}
-
     raise "no records found" unless created > 0 || duplicates > 0
 
     "rows: #{rows}, created: #{created}, duplicates: #{duplicates}, upload: #{upload_id}"
@@ -263,49 +260,6 @@ class Transaction < ApplicationRecord
     amount *= -1
     raise "unexpected balance (#{row[4]}) on row #{rows}" if row[4].present?
     [date, category, description, amount, 0.0, false]
-  end
-
-  def pennies
-    @pennies ||= (balance * 100.0).round
-  end
-
-  def previous_pennies
-    @previous_pennies ||= ((balance - amount) * 100.0).round
-  end
-
-  def self.set_bans(account)
-    return unless account.match?(/\A[mj]rbs\z/)
-    ind = nil
-    ban = where(account: account).maximum(:ban)
-    nob = where(account: account).where(ban: 0).order(date: :asc).to_a
-    while nob.size > 0
-      ind ||= find_start_transaction_index(nob)
-      trn = nob.delete_at(ind)
-      ban = ban + 1
-      trn.update_column(:ban, ban)
-      ind = find_next_transaction_index(nob, trn)
-    end
-  end
-
-  def self.find_start_transaction_index(nob)
-    h = Hash.new
-    nob.each_with_index do |t, i|
-      h[t.pennies] = true
-      break if i > NOBAN_LIMIT
-    end
-    nob.each_with_index do |t, i|
-      return i if !h[t.previous_pennies]
-      break if i > NOBAN_LIMIT
-    end
-    0
-  end
-
-  def self.find_next_transaction_index(nob, trn)
-    nob.each_with_index do |t, i|
-      return i if trn.pennies == t.previous_pennies
-      break if i > NOBAN_LIMIT
-    end
-    nil
   end
 
   private
