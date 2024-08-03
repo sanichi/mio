@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Transaction do
   def load_file(page, name)
     attach_file("file", test_file_path(name))
-    click_button t("transaction.upload")
+    click_button t("transaction.analyse")
     expect(page).to have_title t("transaction.transactions")
   end
 
@@ -13,7 +13,7 @@ describe Transaction do
       file.write(text)
       file.close
       attach_file("file", file.path)
-      click_button t("transaction.upload")
+      click_button t("transaction.analyse")
       expect(page).to have_title t("transaction.transactions")
     ensure
       file.unlink

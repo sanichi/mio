@@ -2,6 +2,7 @@ en:
   transaction:
     account: Account
     amount: Amount
+    analyse: Analyse
     approved: Approved
     balance: Balance
     category: Type
