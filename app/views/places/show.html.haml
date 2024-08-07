@@ -10,6 +10,16 @@
         %h3= @place.jname
       .body
         = render "map", vb: @place.vb, elements: @elements
+      - if @prev || @next
+        .body.border-top
+          %p.text-center
+            - if @prev
+              = link_to @prev.ename, @prev
+              = "|"
+            = @place.ename
+            - if @next
+              = "|"
+              = link_to @next.ename, @next
       .body.border-top
         %table.table.table-bordered.table-sm
           %tbody

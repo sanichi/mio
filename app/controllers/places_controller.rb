@@ -9,6 +9,11 @@ class PlacesController < ApplicationController
 
   def show
     @elements = Place.map_elements.to_a
+    if @place.category == "attraction"
+      attractions = Place.where(category: "attraction").by_ename.to_a
+      @prev = attractions.select{|a| a.ename < @place.ename}.last
+      @next = attractions.select{|a| a.ename > @place.ename}.first
+    end
   end
 
   def new
