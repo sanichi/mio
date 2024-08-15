@@ -109,6 +109,10 @@ namespace :rapid do
   task :fixtures, [:print] => :environment do |task, args|
     @print = args[:print] == "p"
 
+    # get some stuff we'll need
+    season = Match.current_season
+    today = Date.today
+
     # get the data
     path = "fixtures-results"
     data = rapid_response(path)
@@ -132,8 +136,11 @@ namespace :rapid do
         pfx = "#{pfx} (id #{mid})"
 
         # get the date
-        date = m["date"]
-        raise "#{pfx} does not have a valid date" unless date.is_a?(String) && date.match?(/\A20\d\d-\d\d-\d\d\z/)
+        begin
+          date = Date.parse(m["date"].to_s)
+        rescue Date::Error => e
+          raise "#{pfx} does not have a valid date"
+        end
 
         # check the competition
         competition = m["competition"]
@@ -153,6 +160,8 @@ namespace :rapid do
           cache[rid] = home_team 
         end
         raise "#{pfx} home team name mismatch (#{home_team.name} <=> #{home["name"]})" unless home_team.name == home["name"]
+        home_score = home["score"]
+        raise "#{pfx} does not have a valid home score" unless home_score.is_a?(Integer) && home_score >= 0
 
         # get the away team and the corresponding one from the database
         away = m["away-team"]
@@ -167,9 +176,43 @@ namespace :rapid do
           cache[rid] = away_team 
         end
         raise "#{pfx} away team name mismatch (#{away_team.name} <=> #{away["name"]})" unless away_team.name == away["name"]
-      end
+        away_score = away["score"]
+        raise "#{pfx} does not have a valid away score" unless away_score.is_a?(Integer) && away_score >= 0
 
-      rapid_report("okay")
+        # sanity check
+        raise "#{pfx} home and away teams are identical" if home_team.id == away_team.id
+
+        # if the match is in the future, we can't know the score
+        if today < date
+          home_score = nil
+          away_score = nil
+        end
+
+        # create or update the match object
+        match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)
+        if match
+          updates = 0
+          if match.date != date
+            rapid_report("updated #{home_team.short} - #{away_team.short} date (#{match.date.to_s} => #{date.to_s})")
+            match.update_column(:date, date)
+            updates += 1
+          end
+          if match.home_score != home_score || match.away_score != away_score
+            rapid_report("updated #{home_team.short} - #{away_team.short} score (#{match.home_score || "?"}-#{match.away_score || "?"} => #{home_score || "?"}-#{away_score || "?"})")
+            match.update_column(:home_score, home_score) if match.home_score != home_score
+            match.update_column(:away_score, away_score) if match.away_score != away_score
+            updates += 1
+          end
+          match.touch if updates > 0
+        else
+          begin
+            match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: season, date: date, home_score: home_score, away_score: away_score)
+            rapid_report "created #{match.summary}"
+          rescue => e
+            raise "#{pfx} couldn't create match (#{e.message})"
+          end
+        end
+      end
     rescue => e
       rapid_report("#{path}: #{e.message}", true)
       rapid_report(data) if data
