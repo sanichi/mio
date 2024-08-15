@@ -1,5 +1,11 @@
+# Refs:
+#   https://www.footballwebpages.co.uk/api
+#   https://rapidapi.com/football-web-pages1-football-web-pages-default/api/football-web-pages1
+
+# competition id for the premier league
 RAPID_COMP = 1
 
+# print feedback to the console or in the logs
 def rapid_report(str, error=false)
   str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
   msg = "%s%s%s" % [@print ? "" : "RAPID ", error ? "ERROR " : "", str]
@@ -10,8 +16,9 @@ def rapid_report(str, error=false)
   end
 end
 
+# request api data
 def rapid_response(path, team: nil)
-  # request the data and do some basic checks on the response
+  # setup the request and execute it
   host = Rails.application.credentials.rapidapi[:host]
   url = "https://#{host}/#{path}.json?comp=#{RAPID_COMP}"
   url+= "&team=#{team}" if team.present?
@@ -37,7 +44,7 @@ def rapid_response(path, team: nil)
     rapid_report(json)
   end
 
-  # return whatever we got (potentially nil)
+  # return whatever we got (might be nil if problem)
   data
 end
 
