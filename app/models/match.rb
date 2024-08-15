@@ -16,15 +16,11 @@ class Match < ApplicationRecord
   scope :by_date, -> { order(date: :desc) }
 
   def score
-    if home_score.present? && away_score.present?
-      "#{home_score}-#{away_score}"
-    else
-      "-"
-    end
+    "#{home_score || '?'}-#{away_score || '?'}"
   end
 
   def summary
-    "#{home_team.short}-#{away_team.short} #{score} #{date}"
+    "#{home_team.short} - #{away_team.short} #{score} #{date}"
   end
 
   def self.search(params, path, opt={})

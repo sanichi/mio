@@ -10,13 +10,15 @@ def rapid_report(str, error=false)
   end
 end
 
-def rapid_response(path)
+def rapid_response(path, team: nil)
   # request the data and do some basic checks on the response
   host = Rails.application.credentials.rapidapi[:host]
-  url = URI("https://#{host}/#{path}.json?comp=#{RAPID_COMP}")
-  http = Net::HTTP.new(url.host, url.port)
+  url = "https://#{host}/#{path}.json?comp=#{RAPID_COMP}"
+  url+= "&team=#{team}" if team.present?
+  uri = URI(url)
+  http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
-  request = Net::HTTP::Get.new(url)
+  request = Net::HTTP::Get.new(uri)
   request["x-rapidapi-key"] = Rails.application.credentials.rapidapi[:key]
   request["x-rapidapi-host"] = host
   r = http.request(request)
@@ -40,9 +42,10 @@ def rapid_response(path)
 end
 
 namespace :rapid do
-  # meant to be run by hand at the beginning of the season
-  # it will make sure the right teams are in the premier league
-  # no output means everything is already OK
+  # Meant to be run by hand at the beginning of the season.
+  # It will make sure the right teams are in the premier league.
+  # No output means everything is already OK.
+  # Example: $ RAILS_ENV=production bin/rails rapid:teams
   desc "check premier league teams"
   task :teams => :environment do |task|
     @print = true
@@ -105,7 +108,11 @@ namespace :rapid do
     end
   end
 
-  desc "review all premier fixtures and results"
+  # Meant to normally be run from cron on a regular (e.g. every night) basis.
+  # Creates or updates db matches from api data.
+  # Example: 0 22 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails rapid:fixtures >> log/cron.log 2>&1
+  # Example: $ RAILS_ENV=production bin/rails rapid:teams\[p\]
+  desc "review and update all fixtures and results"
   task :fixtures, [:print] => :environment do |task, args|
     @print = args[:print] == "p"
 
@@ -216,6 +223,103 @@ namespace :rapid do
     rescue => e
       rapid_report("#{path}: #{e.message}", true)
       rapid_report(data) if data
+    end
+  end
+
+  # Meant to be run by hand as a debugging aid.
+  # Compares the data for a particular fixture coming from the rapidapi and currently in the db.
+  # Example: $ RAILS_ENV=production bin/rails rapid:match\[Man\ City,Man\ United\]
+  desc "review one particular fixture"
+  task :match, [:home, :away] => :environment do |task, args|
+    @print = true
+
+    # get some stuff we'll need
+    season = Match.current_season
+    home = args[:home] || "Man City"
+    away = args[:away] || "Man United"
+
+    # identify the teams and get the data
+    begin
+      # identify the home team
+      home_team = Team.find_by(name: home) || Team.find_by(short: home) || Team.find_by(slug: home)
+      raise "can't identify home team from '#{home}'" unless home_team
+      raise "#{home_team.short} is not in the premier league" unless home_team.division == 1
+
+      # identify the away team
+      away_team = Team.find_by(name: away) || Team.find_by(short: away) || Team.find_by(slug: away)
+      raise "can't identify away team from '#{away}'" unless away_team
+      raise "#{away_team.short} is not in the premier league" unless away_team.division == 1
+
+      # try to find the match
+      match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)
+      if match
+        rapid_report("db data: #{match.summary}")
+      else
+        rapid_report("no db match found for #{home_team.short} - #{away_team.short} in #{season}")
+      end
+
+      # get the rapid api data
+      raise "#{home_team.short} has no rapid id" unless home_team.rid.is_a?(Integer)
+      raise "#{away_team.short} has no rapid id" unless away_team.rid.is_a?(Integer)
+      data = rapid_response("fixtures-results", team: home_team.rid)
+
+      # check the api data
+      raise "bad response" unless data
+      raise "data is not a hash" unless data.is_a?(Hash)
+      fixtures = data["fixtures-results"]
+      raise "fixtures is not a hash" unless fixtures.is_a?(Hash)
+      matches = fixtures["matches"]
+      raise "matches is not an array" unless matches.is_a?(Array)
+
+      # search through these matches
+      found = false
+      matches.each_with_index do |m, i|
+        pfx = "match #{i}"
+        raise "#{pfx} is not a hash" unless m.is_a?(Hash)
+        mid = m["id"]
+        raise "#{pfx} does not have a valid id" unless mid.is_a?(Integer) && mid >= 0
+        pfx = "#{pfx} (id #{mid})"
+
+        # check the competition
+        competition = m["competition"]
+        raise "#{pfx} competition is not a hash" unless competition.is_a?(Hash)
+        # raise "#{pfx} competition id is invalid" unless competition["id"] == RAPID_COMP
+
+        # there seems to be a bug in the api that allows not premier league matches
+        next unless competition["id"] == RAPID_COMP
+
+        # get the date
+        begin
+          date = Date.parse(m["date"].to_s)
+        rescue Date::Error => e
+          raise "#{pfx} does not have a valid date"
+        end
+
+        # get the home team and the corresponding one from the database
+        home = m["home-team"]
+        raise "#{pfx} home-team is not a hash" unless home.is_a?(Hash)
+        rid = home["id"]
+        raise "#{pfx} does not have a valid home team id" unless rid.is_a?(Integer) && rid >= 0
+        next unless rid == home_team.rid
+
+        # get the away team and the corresponding one from the database
+        away = m["away-team"]
+        raise "#{pfx} away-team is not a hash" unless away.is_a?(Hash)
+        rid = away["id"]
+        raise "#{pfx} does not have a valid away team id" unless rid.is_a?(Integer) && rid >= 0
+        next unless rid == away_team.rid
+
+        # we found it
+        found = true
+        rapid_report("api data:")
+        rapid_report(m)
+        break
+      end
+
+      # if we didn't find it
+      rapid_report("api data: not found") unless found
+    rescue => e
+      rapid_report(e.message)
     end
   end
 end
