@@ -242,20 +242,34 @@ namespace :rapid do
 
     # get some stuff we'll need
     season = Match.current_season
-    home = args[:home] || "Man City"
-    away = args[:away] || "Man United"
+    home = args[:home]
+    away = args[:away]
 
     # identify the teams and get the data
     begin
       # identify the home team
-      home_team = Team.find_by(name: home) || Team.find_by(short: home) || Team.find_by(slug: home)
-      raise "can't identify home team from '#{home}'" unless home_team
-      raise "#{home_team.short} is not in the premier league" unless home_team.division == 1
+      raise "please supply a home team hint (e.g. bin/rails rapid:match\\[man\\ city,man\\ uni\\]" unless home.present?
+      home_teams = Team.find_top_team(home)
+      case home_teams.length
+      when 0
+        raise "no home team match for '#{home}'"
+      when 1
+        home_team = home_teams.first
+      else
+        raise "ambiguous home team match for '#{home}': #{home_teams.map(&:name).join(' | ')}"
+      end
 
       # identify the away team
-      away_team = Team.find_by(name: away) || Team.find_by(short: away) || Team.find_by(slug: away)
-      raise "can't identify away team from '#{away}'" unless away_team
-      raise "#{away_team.short} is not in the premier league" unless away_team.division == 1
+      raise "please supply a away team hint (e.g. bin/rails rapid:match\\[arse,chel\\]" unless away.present?
+      away_teams = Team.find_top_team(away)
+      case away_teams.length
+      when 0
+        raise "no away team match for '#{away}'"
+      when 1
+        away_team = away_teams.first
+      else
+        raise "ambiguous away team match for '#{away}': #{away_teams.map(&:name).join(' | ')}"
+      end
 
       # try to find the match
       match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)

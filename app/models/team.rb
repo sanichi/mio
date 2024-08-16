@@ -44,6 +44,14 @@ class Team < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.find_top_team(q)
+    matches = by_name.where(division: 1)
+    if sql = cross_constraint(q, %w{name short})
+      matches = matches.where(sql)
+    end
+    matches.to_a
+  end
+
   def monthResults(month="")
     uri = get_uri(month)
     sleep(0.2) # potentially this method run many times sequentially so be nice
