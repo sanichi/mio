@@ -48,6 +48,17 @@ def rapid_response(path, team: nil)
   data
 end
 
+# get matches from the fixtures-results response
+def rapid_matches(data)
+  raise "bad response" unless data
+  raise "data is not a hash" unless data.is_a?(Hash)
+  fixtures = data["fixtures-results"]
+  raise "fixtures is not a hash" unless fixtures.is_a?(Hash)
+  matches = fixtures["matches"]
+  raise "matches is not an array" unless matches.is_a?(Array)
+  matches
+end
+
 namespace :rapid do
   # Meant to be run by hand at the beginning of the season.
   # It will make sure the right teams are in the premier league.
@@ -133,12 +144,7 @@ namespace :rapid do
 
     # check and process the structure
     begin
-      raise "bad response" unless data
-      raise "data is not a hash" unless data.is_a?(Hash)
-      fixtures = data["fixtures-results"]
-      raise "fixtures is not a hash" unless fixtures.is_a?(Hash)
-      matches = fixtures["matches"]
-      raise "matches is not an array" unless matches.is_a?(Array)
+      matches = rapid_matches(data)
 
       # sync these matches with the database
       cache = {}
@@ -300,13 +306,8 @@ namespace :rapid do
       raise "#{away_team.short} has no rapid id" unless away_team.rid.is_a?(Integer)
       data = rapid_response("fixtures-results", team: home_team.rid)
 
-      # check the api data
-      raise "bad response" unless data
-      raise "data is not a hash" unless data.is_a?(Hash)
-      fixtures = data["fixtures-results"]
-      raise "fixtures is not a hash" unless fixtures.is_a?(Hash)
-      matches = fixtures["matches"]
-      raise "matches is not an array" unless matches.is_a?(Array)
+      # get and check match data
+      matches = rapid_matches(data)
 
       # search through these matches
       found = false
