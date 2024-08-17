@@ -196,8 +196,24 @@ namespace :rapid do
         # sanity check
         raise "#{pfx} home and away teams are identical" if home_team.id == away_team.id
 
-        # if the match is in the future, we can't know the score
+        # get the status
+        status = m["status"]
+        raise "#{pfx} status is not a hash" unless status.is_a?(Hash)
+        short_status = status["short"]
+        raise "#{pfx} status has no short value" unless short_status.is_a?(String)
+
+        # how do we know if the match has started?
+        # keep in mind we can't use
+        #   started = true if today > date 
+        # in case the match is delayed and not yet rescheduled
         if today < date
+          started = false
+        else
+          started = home_score > 0 || away_score > 0 || short_status == "FT"
+        end
+
+        # we can't yet know the score if the match has not started
+        unless started
           home_score = nil
           away_score = nil
         end
