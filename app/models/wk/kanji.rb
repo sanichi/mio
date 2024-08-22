@@ -11,7 +11,7 @@ module Wk
     PDFS = Rails.root + "public" + "pdf"
 
     has_and_belongs_to_many :radicals
-    has_and_belongs_to_many :similar_kanjis, class_name: "Kanji", association_foreign_key: "similar_id"
+    has_and_belongs_to_many :similar_kanjis, class_name: "Wk::Kanji", association_foreign_key: "similar_id"
 
     validates :character, length: { is: 1 }, uniqueness: true
     validates :level, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_LEVEL }
