@@ -7,12 +7,6 @@ class Ability
       return
     end
 
-    if user.family?
-      can [:read, :tree, :checks, :match, :relative], Person
-      can :read, [Picture, Partnership]
-      can :deeds, :page
-    end
-
     if user.chess?
       can :read, Lesson
       can :read, Tutorial, draft: false
@@ -25,5 +19,7 @@ class Ability
     can :read, [Favourite, Place]
     can [:read, :graph], Mass
     can [:aoc, :play, :premier, :prefectures, :risle, :ruby, :weight, :wordle], :page
+    can [:read, :tree, :checks, :match, :relative], Person
+    can :read, [Picture, Partnership]
   end
 end
