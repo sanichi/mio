@@ -70,6 +70,9 @@
                   = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 25
                 = "&nbsp;&nbsp;".html_safe
                 %span#relative
-            - if @person.notes.present?
+            - if @person.sensitive.present? && current_user.admin?
+              %tr
+                %td.note{colspan: 2}= @person.combined_html
+            - elsif @person.notes.present?
               %tr
                 %td.note{colspan: 2}= @person.notes_html

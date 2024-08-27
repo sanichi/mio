@@ -62,6 +62,17 @@ class Person < ApplicationRecord
     to_html(notes)
   end
 
+  def combined_html
+    if sensitive.present?
+      combined = notes.to_s
+      combined+= "\n\n" if combined.present?
+      combined+= sensitive
+      to_html(combined)
+    else
+      notes_html
+    end
+  end
+
   def self.search(params, path, opt={})
     sql = nil
     matches =
@@ -73,6 +84,11 @@ class Person < ApplicationRecord
     end
     matches = matches.where(sql) if sql = cross_constraint(params[:name], %w(last_name first_names known_as married_name))
     matches = matches.where(sql) if sql = cross_constraint(params[:notes], %w{notes})
+    if params[:sensitive]&.match?(/\A\w\z/)
+      matches = matches.where.not(sensitive: nil)
+    else                      
+      matches = matches.where(sql) if sql = cross_constraint(params[:sensitive], %w{sensitive})
+    end                       
     matches = matches.where(sql) if sql = numerical_constraint(params[:born], :born)
     matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
@@ -165,6 +181,7 @@ class Person < ApplicationRecord
     self.married_name = nil if married_name.blank?
     self.known_as = first_names&.split(" ")&.first if known_as.blank? && first_names.present?
     self.notes = nil if notes.blank?
+    self.sensitive = nil if sensitive.blank?
   end
 
   def years_must_make_sense

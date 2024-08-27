@@ -26,6 +26,7 @@ en:
     person: Person
     realm: Realm
     relationship_to: Relationship To
+    sensitive: Sensitive
     siblings: Siblings
     tree: Tree
     checks:

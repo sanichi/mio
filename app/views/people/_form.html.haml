@@ -16,5 +16,6 @@
     [:mother_id,    t("person.mother"),       :combo,  menu: person_mother_menu(person)],
     [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
     [:notes,        t("notes"),               :area,   rows: 10],
+    [:sensitive,    t("person.sensitive"),    :area,   rows: 10],
   ]
 = render "utils/crud/form", object: person, index: people_path, inputs: inputs, title: title
