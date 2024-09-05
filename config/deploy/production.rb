@@ -1,6 +1,6 @@
-server 'dubai.markorr.net', user: 'sanichi', roles: %w{web app db}
+server 'nihon.sanichi.me', user: 'sanichi', roles: %w{web app db}
 
-set :deploy_to, '/var/www/mio'
+set :deploy_to, '/var/www/me.mio'
 set :rails_env, 'production'
 
 set :rbenv_type, :user

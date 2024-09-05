@@ -7,7 +7,7 @@ class User < ApplicationRecord
   MAX_PASSWORD = 32
   MAX_ROLE = 20
   MAX_LN = 25
-  OTP_ISSUER = "mio.markorr.net"
+  OTP_ISSUER = "mio.sanichi.me"
   OTP_TEST_SECRET = "YAJY2UMNXQE4JFTWH4AFZGBE7YOQX3XY"
 
   before_validation :update_password_if_present
