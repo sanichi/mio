@@ -99,14 +99,7 @@ module PagesHelper
     end
 
     # return the stuff we just calculated
-    OpenStruct.new(
-      season:    season,
-      teams:     teams,
-      dun:       dun,
-      due:       due,
-      one_sided: one_sided,
-      more_dun:  more_dun,
-      more_due:  more_due,
-    )
+    Struct.new("Premier", :season, :teams, :dun, :due, :one_sided, :more_dun, :more_due)
+    Struct::Premier.new(season, teams, dun, due, one_sided, more_dun, more_due);
   end
 end
