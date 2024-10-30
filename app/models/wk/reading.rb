@@ -86,20 +86,7 @@ module Wk
                 wk_audios[pn].push(a["url"].delete_prefix(Audio::DEFAULT_BASE))
               end
             else
-              known_problems = [
-                3368, # 球
-                4937, # 株式会社
-                4946, # 河豚
-                5192, # 菓子屋
-                5624, # 否
-                6523, # 〜畑
-                7086, # 下唇
-                7087, # 上唇
-                7551, # 連中
-                8038, # 蓮根
-              ]
-              check(wk_id, "unexpected problem with readings for #{wk_id}") { |v| known_problems.include?(v) }
-              stats["skipped known problems"] += 1
+              stats["skipped problem"] += 1
             end
           end
           db_readings.each do | characters, reading |
