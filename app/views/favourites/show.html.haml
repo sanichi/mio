@@ -18,9 +18,9 @@
               %th= @favourite.year
             %tr
               %td= t("favourite.sandra")
-              %th= @favourite.sandra
+              %th= @favourite.sandra if @favourite.sandra > 0
               %td= t("favourite.mark")
-              %th= @favourite.mark
+              %th= @favourite.mark if @favourite.mark > 0
             %tr
               %td{colspan: 4}= @favourite.note_html
       .footer
