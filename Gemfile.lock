@@ -136,7 +136,6 @@ GEM
       activemodel (>= 3)
       activesupport (>= 3)
     diff-lcs (1.5.1)
-    domain_name (0.6.20240107)
     drb (2.2.1)
     erubi (1.13.0)
     execjs (2.10.0)
@@ -160,8 +159,10 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
-    http-cookie (1.0.7)
-      domain_name (~> 0.5)
+    httparty (0.22.0)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -194,34 +195,16 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    mechanize (2.12.2)
-      addressable (~> 2.8)
-      base64
-      domain_name (~> 0.5, >= 0.5.20190701)
-      http-cookie (~> 1.0, >= 1.0.3)
-      mime-types (~> 3.3)
-      net-http-digest_auth (~> 1.4, >= 1.4.1)
-      net-http-persistent (>= 2.5.2, < 5.0.dev)
-      nkf
-      nokogiri (~> 1.11, >= 1.11.2)
-      rubyntlm (~> 0.6, >= 0.6.3)
-      webrick (~> 1.7)
-      webrobots (~> 0.1.2)
     meta-tags (2.22.1)
       actionpack (>= 6.0.0, < 8.1)
-    mime-types (3.6.0)
-      logger
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.1105)
     mini_mime (1.1.5)
     minitest (5.25.2)
     moji (1.6)
     mojinizer (0.2.2)
       moji (~> 1.6)
     multi_json (1.15.0)
-    net-http-digest_auth (1.4.1)
-    net-http-persistent (4.0.4)
-      connection_pool (~> 2.2)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     net-imap (0.5.1)
       date
       net-protocol
@@ -237,7 +220,6 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
-    nkf (0.2.0)
     nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
@@ -327,8 +309,6 @@ GEM
       ansi
       ast
     ruby-progressbar (1.13.0)
-    rubyntlm (0.6.5)
-      base64
     rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -339,7 +319,7 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.3.2)
-    selenium-webdriver (4.26.0)
+    selenium-webdriver (4.27.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -369,8 +349,6 @@ GEM
       concurrent-ruby (~> 1.0)
     uri (1.0.2)
     useragent (0.16.10)
-    webrick (1.9.0)
-    webrobots (0.1.2)
     websocket (1.2.11)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -400,12 +378,12 @@ DEPENDENCIES
   factory_bot_rails (~> 6.0)
   faker (< 4)
   haml-rails (~> 2.0)
+  httparty (~> 0.22)
   jbuilder (~> 2.7)
   jquery-rails (~> 4.3)
   jquery-ui-rails (< 8)
   launchy (< 4)
   listen (~> 3.2)
-  mechanize (~> 2.7)
   meta-tags (~> 2.12)
   mojinizer (~> 0.2)
   oga (~> 3.0)
