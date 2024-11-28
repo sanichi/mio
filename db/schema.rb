@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_27_114612) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_28_122349) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "borders", force: :cascade do |t|
     t.bigint "from_id"
@@ -387,6 +387,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_114612) do
     t.string "audible_type"
   end
 
+  create_table "wk_combos", force: :cascade do |t|
+    t.bigint "vocab_id"
+    t.string "ja", limit: 128
+    t.string "en", limit: 128
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vocab_id"], name: "index_wk_combos_on_vocab_id"
+  end
+
   create_table "wk_examples", force: :cascade do |t|
     t.string "japanese", limit: 200
     t.string "english", limit: 200
@@ -508,6 +517,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_114612) do
     t.text "notes"
     t.datetime "last_noted", precision: nil
     t.boolean "hidden", default: false
+    t.integer "combos_count", default: 0, null: false
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
   end
 

@@ -12,6 +12,7 @@ module Wk
     MAX_READING = 48
 
     has_many :readings, dependent: :destroy
+    has_many :combos, dependent: :destroy
     has_and_belongs_to_many :examples
     has_and_belongs_to_many :groups
 
@@ -291,7 +292,7 @@ module Wk
           ja = sentence.css("p.wk-text[lang='ja']")&.first&.text
           en = sentence.css("p.wk-text:not([lang='ja'])")&.first&.text
 
-          if ja && en
+          if ja.present? && en.present?
             combos.push [ja, en]
             count[:max_ja] = ja.length if ja.length > count[:max_ja]
             count[:max_en] = en.length if en.length > count[:max_en]
