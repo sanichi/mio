@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Wk::Reading do
-  let(:reading) { create(:reading, characters: "いちにち", primary: true) }
+  let(:reading) { create(:wk_reading, characters: "いちにち", primary: true) }
 
   context "save" do
     it "no accent" do

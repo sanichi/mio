@@ -260,68 +260,6 @@ module Wk
       end
     end
 
-    def self.combinations(max=nil)
-      max = max.to_i
-      hp_opt = { headers: { "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" } }
-      wk_url = "https://www.wanikani.com/vocabulary"
-      delta = 0.25
-      count = Hash.new(0)
-      error = nil
-      vocabs = Vocab.all.to_a
-      puts "#{vocabs.class} #{vocabs.length}"
-
-      puts
-      puts "vocabs combinations"
-      puts "-------------------"
-      puts
-
-      processed = "#{count[:processed]}/#{vocabs.length}"
-      print "processed..... #{processed}"
-
-      vocabs.each do |vocab|
-        response = HTTParty.get("#{wk_url}/#{CGI.escape(vocab.characters)}", hp_opt)
-        unless response.code == 200
-          error = "responce code #{response.code} for #{vocab.characters}"
-          break
-        end
-
-        document = Nokogiri::HTML(response.body)
-        sentenses = document.css("div.context-sentences")
-        combos = []
-        sentenses.each do |sentence| 
-          ja = sentence.css("p.wk-text[lang='ja']")&.first&.text
-          en = sentence.css("p.wk-text:not([lang='ja'])")&.first&.text
-
-          if ja.present? && en.present?
-            combos.push [ja, en]
-            count[:max_ja] = ja.length if ja.length > count[:max_ja]
-            count[:max_en] = en.length if en.length > count[:max_en]
-          end
-        end
-
-        if combos.empty?
-          count[:none] += 1
-        else
-          count[:some] += 1
-        end
-
-        print "\b" * processed.length
-        count[:processed] += 1
-        processed = "#{count[:processed]}/#{vocabs.length}"
-        print processed
-
-        break if max > 0 && count[:processed] >= max
-        sleep(delta)
-      end
-
-      puts
-      puts "some combos... #{count[:some]}"
-      puts "no combos..... #{count[:none]}"
-      puts "max ja........ #{count[:max_ja]}"
-      puts "max en........ #{count[:max_en]}"
-      puts "error......... #{error}" if error
-    end
-
     def update_performed?(changes)
       return false if changes.empty?
 
@@ -443,6 +381,114 @@ module Wk
       rescue => e
         puts e.message
       end
+    end
+
+    # bin/rails r 'Wk::Vocab.combinations'     # for real (takes a long time)
+    # bin/rails r 'Wk::Vocab.combinations(10)' # for testing
+    def self.combinations(max=nil)
+      max = max.to_i
+      hp_opt = { headers: { "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" } }
+      wk_url = "https://www.wanikani.com/vocabulary"
+      delta = 0.25
+      count = Hash.new(0)
+      error = nil
+      vocabs = Vocab.order(:wk_id).all.to_a
+      puts "#{vocabs.class} #{vocabs.length}"
+
+      puts
+      puts "vocabs combinations"
+      puts "-------------------"
+      puts
+
+      processed = "#{count[:processed]}/#{vocabs.length}"
+      print "processed..... #{processed}"
+
+      vocabs.each do |vocab|
+        response = HTTParty.get("#{wk_url}/#{CGI.escape(vocab.characters)}", hp_opt)
+        unless response.code == 200
+          error = "responce code #{response.code} for #{vocab.characters}"
+          break
+        end
+
+        document = Nokogiri::HTML(response.body)
+        sentenses = document.css("div.context-sentences")
+        data = []
+        sentenses.each do |sentence| 
+          ja = sentence.css("p.wk-text[lang='ja']")&.first&.text
+          en = sentence.css("p.wk-text:not([lang='ja'])")&.first&.text
+
+          if ja.present? && en.present?
+            data.push [ja, en]
+            count[:max_ja] = ja.length if ja.length > count[:max_ja]
+            count[:max_en] = en.length if en.length > count[:max_en]
+          end
+        end
+
+        if data.empty?
+          count[:none] += 1
+        else
+          count[:some] += 1
+        end
+
+        vocab.merge(data, count)
+
+        print "\b" * processed.length
+        count[:processed] += 1
+        processed = "#{count[:processed]}/#{vocabs.length}"
+        print processed
+
+        break if max > 0 && count[:processed] >= max
+        sleep(delta)
+      end
+
+      puts
+      puts "some combos... #{count[:some]}"
+      puts "no combos..... #{count[:none]}"
+      puts "max ja........ #{count[:max_ja]}"
+      puts "max en........ #{count[:max_en]}"
+      puts "additions..... #{count[:additions]}"
+      puts "deletions..... #{count[:deletions]}"
+      puts "unchanged..... #{count[:unchanged]}"
+      puts "error......... #{error}" if error
+    end
+
+    def merge(data, count)
+      # In the special case of no data, just leave what's there (don't delete)
+      if data.empty?
+        count[:unchanged] += combos_count
+        return
+      end
+
+      # If no existing combos then create some with the data.
+      if combos_count == 0
+        data.each { |ja, en| combos.create(ja: ja, en: en) }
+        count[:additions] += combos_count
+        return
+      end
+
+      # Delete old combos not in the data.
+      combos.each do |combo|
+        if data.exclude?([combo.ja, combo.en])
+          combo.destroy
+          count[:deletions] += 1
+        end
+      end
+
+      # Count the remaining ones.
+      count[:unchanged] += combos_count
+
+      # Create new combos that don't already exist.
+      old = combo_data
+      data.each do |datum|
+        if old.exclude?(datum)
+          combos.create(ja: datum.first, en: datum.last)
+          count[:additions] += 1
+        end
+      end
+    end
+
+    def combo_data
+      combos.pluck(:ja, :en)
     end
 
     private
