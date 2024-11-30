@@ -32,6 +32,12 @@
         %tr
           %td= t("wk.hint.reading")
           %td= @vocab.reading_mnemonic.html_safe
+        - if @vocab.combos_count > 0
+          %tr
+            %td= t("wk.combos")
+            %td
+              - @vocab.combos.each do |combo|
+                %p= "<b>#{combo.ja}</b> #{combo.en}".html_safe
         %tr
           %td= t("wk.links")
           %td
