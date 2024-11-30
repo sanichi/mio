@@ -385,14 +385,15 @@ module Wk
 
     # bin/rails r 'Wk::Vocab.combinations(0)' # for real (takes a long time)
     # bin/rails r 'Wk::Vocab.combinations(5)' # for testing
-    def self.combinations(max=nil)
+    def self.combinations(max=0, start=0)
       max = max.to_i
+      start = start.to_i
       hp_opt = { headers: { "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" } }
       wk_url = "https://www.wanikani.com/vocabulary"
       delta = 0.25
       count = Hash.new(0)
       error = nil
-      vocabs = Vocab.order(:wk_id).all.to_a
+      vocabs = Vocab.where("wk_id > #{start}").order(:wk_id).all.to_a
       puts "#{vocabs.class} #{vocabs.length}"
 
       puts
