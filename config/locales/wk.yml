@@ -124,6 +124,7 @@ en:
     short:
       character: Char
       characters: Chars
+      combos: Cmb
       id: ID
       last_updated: Last
 jp:
