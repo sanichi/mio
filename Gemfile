@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '8.0.0'
+gem 'rails', '8.0.1'
 gem 'haml-rails', '~> 2.0'
 gem 'jquery-rails', '~> 4.3'
 gem 'sassc-rails', '~> 2.1'
@@ -33,6 +33,12 @@ group :development, :test do
   gem 'faker', '< 4'
   gem 'selenium-webdriver', '~> 4.0'
 end
+
+# Temporary fix to silence warnings about gem no longer being standard library
+gem "ostruct", "~> 0.6.1"
+
+# Temporary fix because of glibc version on Alma Linux 8
+gem "nokogiri", force_ruby_platform: true
 
 group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
