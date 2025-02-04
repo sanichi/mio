@@ -4,11 +4,11 @@
   = render partial: "people/tree_elm_min", formats: :js
   = render partial: "tree", formats: :js, locals: { person: @person }
 
-#elm
-
-.row.justify-content-center.mt-3
+.row.justify-content-center.mt-3.mb-3
   .col-auto
     = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30
+
+#elm
 
 .row.justify-content-center.mt-3
   .col-auto
