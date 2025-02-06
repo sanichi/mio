@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Classifier do
+describe Classifier, js: true do
   let(:data)        { build(:classifier) }
   let!(:classifier) { create(:classifier) }
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("classifier.classifiers")
   end
 
@@ -73,7 +74,9 @@ describe Classifier do
 
       click_link classifier.name
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("classifier.classifiers")
       expect(Classifier.count).to eq 0

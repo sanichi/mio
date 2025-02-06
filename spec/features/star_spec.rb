@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-describe Star do
+describe Star, js: true do
   let(:data) { build(:star) }
   let!(:star) { create(:star) }
 
   before(:each) do
     login
     data.constellation.save!
+    click_link t("other")
     click_link t("star.stars")
   end
 
@@ -203,7 +204,9 @@ describe Star do
 
       visit star_path(star)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("star.stars")
       expect(Star.count).to eq 0

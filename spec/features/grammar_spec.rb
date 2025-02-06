@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Grammar do
+describe Grammar, js: true do
   let(:data)     { build(:grammar) }
   let!(:grammar) { create(:grammar) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("grammar.grammar")
   end
 
@@ -72,7 +73,9 @@ describe Grammar do
 
       click_link grammar.title
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("grammar.grammar")
       expect(Grammar.count).to eq 0

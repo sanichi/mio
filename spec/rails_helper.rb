@@ -67,6 +67,9 @@ Capybara.configure do |config|
   config.exact = true # exact matches
 end
 
+# Temporary solution to selenium deprecation messages.
+Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage)
+
 def login(role="admin")
   user = create(:user, role: role)
   visit sign_in_path

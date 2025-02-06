@@ -15,7 +15,7 @@ class TestsController < ApplicationController
   def update
     @test = Test.find(params[:id])
     if params[:test][:last] == "skip"
-      @test.update_column(:last, "skip") # doesn't changed updated_at
+      @test.update_column(:last, "skip") # doesn't change updated_at
     else
       unless @test.update(strong_params)
         @error = @test.errors.full_messages.join(", ")

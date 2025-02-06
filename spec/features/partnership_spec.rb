@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Partnership do
+describe Partnership, js: true do
   let(:data)     { build(:partnership) }
   let!(:husband) { create(:person, male: true, born: data.wedding - 30, realm: data.realm) }
   let!(:wife)    { create(:person, male: false, born: data.wedding - 25, realm: data.realm) }
@@ -127,7 +127,9 @@ describe Partnership do
 
       visit partnership_path(partnership)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("partnership.partnerships")
       expect(Partnership.count).to eq 0

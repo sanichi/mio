@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Mass do
+describe Mass, js: true do
   before(:each) do
     login
     visit masses_path
@@ -114,7 +114,9 @@ describe Mass do
     it "success" do
       visit masses_path
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("mass.title")
       expect(Mass.count).to eq 0

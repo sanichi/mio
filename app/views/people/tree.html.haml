@@ -1,7 +1,6 @@
 = render "utils/title", key: "person.family_tree"
 
 - content_for :javascript do
-  = render partial: "people/tree_elm_min", formats: :js
   = render partial: "tree", formats: :js, locals: { person: @person }
 
 .row.justify-content-center.mt-3.mb-3

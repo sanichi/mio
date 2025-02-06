@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Favourite do
+describe Favourite, js: true do
   let(:data)       { build(:favourite) }
   let!(:favourite) { create(:favourite) }
 
@@ -89,7 +89,9 @@ describe Favourite do
 
       click_link favourite.name
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("favourite.title")
       expect(Favourite.count).to eq 0

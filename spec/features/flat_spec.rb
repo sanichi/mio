@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-describe Flat do
+describe Flat, js: true do
   let(:data)      { build(:flat) }
   let!(:flat)     { create(:flat) }
   let(:flat2)     { create(:flat) }
 
   before(:each) do
     login
+    click_link t("pages.risle.group")
     click_link t("flat.flats")
   end
 
@@ -118,7 +119,9 @@ describe Flat do
 
       click_link flat.address
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("flat.flats")
       expect(Flat.count).to eq 0

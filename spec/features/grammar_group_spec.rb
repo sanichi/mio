@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe GrammarGroup do
+describe GrammarGroup, js: true do
   let(:data)   { build(:grammar_group) }
   let!(:group) { create(:grammar_group) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("grammar.group.groups")
   end
 
@@ -56,7 +57,9 @@ describe GrammarGroup do
 
       click_link group.title
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("grammar.group.groups")
       expect(GrammarGroup.count).to eq 0

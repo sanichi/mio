@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Constellation do
+describe Constellation, js: true do
   let(:data) { build(:constellation) }
   let!(:constellation) { create(:constellation) }
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("constellation.constellations")
   end
 
@@ -83,7 +84,9 @@ describe Constellation do
 
       visit constellation_path(constellation)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("constellation.constellations")
       expect(Constellation.count).to eq 0

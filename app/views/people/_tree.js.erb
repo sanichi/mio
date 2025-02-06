@@ -1,3 +1,5 @@
+import { Elm } from "elm_tree";
+
 var last_id = <%= person.id %>;
 var focus = <%= person.tree_hash(true).to_json.html_safe %>;
 function is_pos_int(n) {
@@ -12,6 +14,7 @@ function get_focus(app, id) {
     app.ports.gotFocus.send(focus);
   });
 }
+
 $(function() {
   var app = Elm.Main.init({
     node: $('#elm').get(0),

@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Team do
+describe Team, js: true do
   let(:data) { build(:team) }
   let!(:team) { create(:team) }
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("team.teams")
   end
 
@@ -67,7 +68,9 @@ describe Team do
 
       visit team_path(team)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("team.teams")
       expect(Team.count).to eq 0

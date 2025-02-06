@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Lesson do
+describe Lesson, js: true do
   let(:data)    { build(:lesson) }
   let!(:lesson) { create(:lesson) }
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("lesson.lessons")
   end
 
@@ -78,7 +79,9 @@ describe Lesson do
 
       visit lesson_path(lesson)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("lesson.lessons")
       expect(Lesson.count).to eq 0

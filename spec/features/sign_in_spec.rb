@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Authentication" do
+describe "Authentication", js: true do
   let(:user) { create(:user) }
 
   context "sign in" do

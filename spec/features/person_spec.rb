@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Person do
+describe Person, js: true do
   let(:data)    { build(:person) }
   let!(:father) { create(:person, male: true, born: data.born - 26, realm: data.realm) }
   let!(:mother) { create(:person, male: false, born: data.born - 24, realm: data.realm) }
@@ -199,7 +199,9 @@ describe Person do
 
       visit person_path(person)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("person.people")
       expect(Person.count).to eq count

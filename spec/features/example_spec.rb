@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Wk::Example do
+describe Wk::Example, js: true do
   let(:data)     { build(:wk_example) }
   let!(:example) { create(:wk_example) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("wk.example.examples")
   end
 
@@ -73,7 +74,9 @@ describe Wk::Example do
       expect(Wk::Example.count).to eq 1
 
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("wk.example.examples")
       expect(Wk::Example.count).to eq 0

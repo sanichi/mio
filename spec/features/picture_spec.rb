@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Picture do
+describe Picture, js: true do
   let(:data)     { build(:picture) }
   let!(:person1) { create(:person, realm: data.realm) }
   let!(:person2) { create(:person, realm: data.realm) }
@@ -132,7 +132,9 @@ describe Picture do
     it "success" do
       visit picture_path(picture)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("picture.pictures")
       expect(Picture.count).to eq 0

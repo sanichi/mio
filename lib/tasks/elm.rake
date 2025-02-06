@@ -1,35 +1,53 @@
-class ErbContext
-  def initialize(hash)
-    hash.each_pair do |key, val|
-      instance_variable_set("@" + key.to_s, val)
-    end
-  end
-
-  def get_binding
-    binding
-  end
-end
-
 namespace :elm do
-  def generate(names, hash={})
-    context = ErbContext.new(hash).get_binding
-    names.each do |name|
-      source = "#{name}.elm.erb"
-      target = "#{name}.elm"
-      File.open(target, "w") do |file|
-        file.write(ERB.new(File.read(source)).result(context))
-      end
-      puts "generated #{target}"
+  # based on https://github.com/ChristophP/elm-esm/blob/master/src/index.js
+  def esmify(text)
+    commented = ""
+    if text.match(/_Platform_export\((\{.*\})\);\}\(this\)/m)
+      elmExports = $1
+    else
+      puts "couldn't find elmExports"
+      return text
     end
+    filter = false
+    text.each_line do |line|
+      unless filter
+        case line
+        when /\A\(function\(scope\)/
+          filter = 1
+        when /\A['"]use strict['"];/
+          filter = 1
+        when /\Afunction _Platform_export/
+          filter = "}\n"
+        when /\Afunction _Platform_mergeExports/
+          filter = "}\n"
+        when /\A_Platform_export\(\{/
+          filter = 2
+        end
+      end
+      commented += (filter ? "// -- " : "") + line
+      if filter
+        case filter
+        when 1
+          filter = false
+        when 2
+          filter = true
+        else
+          filter = false if line == filter
+        end
+      end
+    end
+
+    commented += "\nexport const Elm = #{elmExports};\n"
+    commented
   end
 
   def compile_and_minify(name, args, main="Main")
     js = "_#{name}_elm.js"
-    min = "../_#{name}_elm_min.js"
+    min = "../../../javascript/elm_#{name}.min.js"
     opt = args[:debug].present? ? "" : "--optimize"
     if system("elm make #{main}.elm #{opt} --output #{js}")
       File.open(min, "w") do |file|
-        file.write(Terser.compile(File.read(js)))
+        file.write(Terser.compile(esmify(File.read(js))))
       end
       puts "minified to #{min}"
     end

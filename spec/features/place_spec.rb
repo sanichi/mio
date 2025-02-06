@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Place do
+describe Place, js: true do
   let(:data)        { build(:place) }
   let!(:place)      { create(:place) }
   let!(:city)       { create(:place, category: "city", capital: false) }
@@ -9,6 +9,7 @@ describe Place do
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("place.title")
   end
 
@@ -132,7 +133,9 @@ describe Place do
 
       visit place_path(place)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("place.title")
       expect(Place.count).to eq 3

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Transaction do
+describe Transaction, js: true do
   def load_file(page, name)
     attach_file("file", test_file_path(name))
     click_button t("transaction.analyse")
@@ -22,6 +22,7 @@ describe Transaction do
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("transaction.transactions")
   end
 

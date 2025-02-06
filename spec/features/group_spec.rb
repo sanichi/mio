@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Wk::Group do
+describe Wk::Group, js: true do
   let!(:family)      { create(:wk_vocab, characters: "家庭") }
   let!(:assumption)  { create(:wk_vocab, characters: "仮定") }
   let!(:process)     { create(:wk_vocab, characters: "過程") }
@@ -11,6 +11,7 @@ describe Wk::Group do
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("wk.group.groups")
   end
 
@@ -82,7 +83,9 @@ describe Wk::Group do
       expect(Wk::Group.count).to eq 1
 
       visit edit_wk_group_path(group)
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("wk.group.groups")
       expect(Wk::Group.count).to eq 0

@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Problem do
+describe Problem, js: true do
   let(:data)     { build(:problem) }
   let!(:problem) { create(:problem) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("problem.problems")
   end
 
@@ -66,7 +67,9 @@ describe Problem do
 
       visit problem_path(problem)
       click_link t("problem.icons.edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("problem.problems")
       expect(Problem.count).to eq 0

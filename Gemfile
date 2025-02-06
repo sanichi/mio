@@ -17,12 +17,13 @@ gem 'httparty', '~> 0.22'
 gem 'mojinizer', '~> 0.2'
 gem 'oga', '~> 3.0'
 gem 'ruby-progressbar', '~> 1.10'
-gem 'sprockets-rails', '~> 3.4'
 gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 2.1'
 gem 'jbuilder', '~> 2.7'
 gem 'meta-tags', '~> 2.12'
 gem 'csv', '< 4'
+gem 'sprockets-rails', '~> 3.4'
+gem "importmap-rails", "~> 2.1"
 
 group :development, :test do
   gem 'rspec-rails', '< 8'

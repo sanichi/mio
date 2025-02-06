@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Note do
+describe Note, js: true do
   let(:data)  { build(:note) }
   let!(:note) { create(:note) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("note.notes")
   end
 
@@ -66,7 +67,9 @@ describe Note do
 
       visit note_path(note)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("note.notes")
       expect(Note.count).to eq 0

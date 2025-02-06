@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Tutorial do
+describe Tutorial, js: true do
   let(:data) { build(:tutorial) }
   let!(:tutorial) { create(:tutorial) }
 
   before(:each) do
     login
+    click_link t("other")
     click_link t("tutorial.tutorials")
   end
 
@@ -67,7 +68,9 @@ describe Tutorial do
 
       visit tutorial_path(tutorial)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("tutorial.tutorials")
       expect(Tutorial.count).to eq 0

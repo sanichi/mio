@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe User do
+describe User, js: true do
   let(:atrs) { attributes_for(:user) }
   let(:data) { build(:user) }
   let(:user) { create(:user) }
@@ -10,6 +10,7 @@ describe User do
   context "admin" do
     before(:each) do
       login
+      click_link t("other")
       click_link t("user.users")
     end
 
@@ -168,7 +169,9 @@ describe User do
       it "success" do
         visit user_path(user)
         click_link t("edit")
-        click_link t("delete")
+        accept_confirm do
+          click_link t("delete")
+        end
 
         expect(page).to have_title t("user.users")
         expect(User.count).to eq 1

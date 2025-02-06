@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Misa do
+describe Misa, js: true do
   let(:data)  { build(:misa) }
   let!(:misa) { create(:misa) }
 
   before(:each) do
     login
+    click_link t("wk.japanese", locale: "jp")
     click_link t("misa.misas")
   end
 
@@ -91,7 +92,9 @@ describe Misa do
 
       visit misa_path(misa)
       click_link t("edit")
-      click_link t("delete")
+      accept_confirm do
+        click_link t("delete")
+      end
 
       expect(page).to have_title t("misa.misas")
       expect(Misa.count).to eq 0
