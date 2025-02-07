@@ -21,7 +21,6 @@ Rails.application.routes.draw do
     patch :remove_group, on: :member
   end
   resources :grammar_groups
-  resources :lessons
   resources :logins, only: [:index]
   resources :masses, except: [:show]
   resources :matches, only: [:index]

@@ -1,7 +1,0 @@
-- lessons.matches.each do |lesson|
-  %tr
-    %td= lesson.series
-    %td= lesson.section
-    %td= link_to lesson.chapter, lesson
-    %td.text-center= render "complete_button", complete: lesson.complete
-= render "utils/pagination_links", pager: lessons, columns: 4

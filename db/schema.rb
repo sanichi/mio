@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_28_122349) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_07_100108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -104,20 +104,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_28_122349) do
     t.datetime "updated_at", null: false
     t.string "eregexp", limit: 64
     t.string "ref", limit: 10
-  end
-
-  create_table "lessons", force: :cascade do |t|
-    t.string "chapter", limit: 60
-    t.integer "chapter_no", limit: 2
-    t.integer "complete", limit: 2, default: 0
-    t.string "link", limit: 200
-    t.text "note"
-    t.string "section", limit: 50
-    t.string "series", limit: 50
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "book", limit: 200
-    t.string "eco", limit: 20
   end
 
   create_table "logins", id: :serial, force: :cascade do |t|

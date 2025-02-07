@@ -8,7 +8,6 @@ class Ability
     end
 
     if user.chess?
-      can :read, Lesson
       can :read, Tutorial, draft: false
     end
 
