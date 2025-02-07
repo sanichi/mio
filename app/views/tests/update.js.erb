@@ -1,6 +1,0 @@
-<% if @error %>
-  alert('<%= j @error %>');
-<% else %>
-  update_numbers(<%= @test.id %>, '<%= test_btn_style(@test.last) %>');
-  next_test();
-<% end %>

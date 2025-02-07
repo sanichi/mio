@@ -8,9 +8,6 @@ module Wk
     PPATTERN = /「([^」|]+)(?:\|([^」|]+))?」/
 
     has_and_belongs_to_many :vocabs
-    has_one :test, as: :testable, dependent: :destroy
-
-    after_create { create_test! }
 
     before_validation :clean_up
     after_save :update_vocabs

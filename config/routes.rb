@@ -46,9 +46,6 @@ Rails.application.routes.draw do
   end
   resources :stars
   resources :teams
-  resources :tests, only: [:index, :update] do
-    get :review, on: :collection
-  end
   resources :transactions, only: [:index] do
     post :upload, on: :collection
     patch :quick_approval_update, on: :member

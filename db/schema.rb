@@ -10,19 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_07_100108) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_07_112412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
-  create_table "borders", force: :cascade do |t|
-    t.bigint "from_id"
-    t.bigint "to_id"
-    t.string "direction", limit: 10
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["from_id"], name: "index_borders_on_from_id"
-    t.index ["to_id"], name: "index_borders_on_to_id"
-  end
 
   create_table "classifiers", force: :cascade do |t|
     t.string "category", limit: 100
@@ -314,22 +304,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_100108) do
     t.integer "rid"
   end
 
-  create_table "tests", force: :cascade do |t|
-    t.bigint "testable_id"
-    t.string "testable_type"
-    t.integer "attempts", limit: 2, default: 0
-    t.integer "poor", limit: 2, default: 0
-    t.integer "fair", limit: 2, default: 0
-    t.integer "good", limit: 2, default: 0
-    t.integer "excellent", limit: 2, default: 0
-    t.integer "level", limit: 2, default: 0
-    t.datetime "due", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "last", limit: 10
-    t.index ["testable_type", "testable_id"], name: "index_tests_on_testable_type_and_testable_id"
-  end
-
   create_table "transactions", force: :cascade do |t|
     t.date "date"
     t.string "category", limit: 3
@@ -516,8 +490,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_100108) do
     t.index ["reading_id"], name: "index_yomis_on_reading_id"
   end
 
-  add_foreign_key "borders", "places", column: "from_id"
-  add_foreign_key "borders", "places", column: "to_id"
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
   add_foreign_key "places", "places", column: "parent_id"

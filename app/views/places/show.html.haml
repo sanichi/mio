@@ -63,13 +63,6 @@
                 %td
                   = link_to p.jname, p
                   = p.millions
-            - if @place.category == "prefecture"
-              - @place.borders.by_direction.each do |b|
-                %tr
-                  %th= t("border.directions.#{b.direction}", locale: "jp")
-                  %td
-                    = link_to b.to.jname, b.to
-                    = b.to.millions
             - if @place.notes.present?
               %tr
                 %td{colspan: 2}= @place.notes_html

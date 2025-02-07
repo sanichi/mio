@@ -8,7 +8,7 @@
         - if can?(:read, Favourite)
           %li= link_to t("home"), favourites_path
 
-        - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place, Problem, Test].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
+        - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place, Problem].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
           %li.dropdown
             = link_to t("wk.japanese", locale: "jp"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
@@ -27,7 +27,6 @@
               %li= link_to t("place.title"),              places_path            if can?(:read, Place)
               %li= link_to t("sound.sounds"),             sounds_path            if can?(:read, Sound)
               %li= link_to t("pages.prefectures.title"),  prefectures_path       if can?(:prefectures, :page)
-              %li= link_to t("test.tests"),               tests_path             if can?(:read, Test)
               %li= link_to t("wk.verb_pair.verb_pairs"),  wk_verb_pairs_path     if can?(:read, Wk::VerbPair)
               %li= link_to t("problem.problems"),         problems_path          if can?(:read, Problem)
 
@@ -55,16 +54,16 @@
             = link_to t("other"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
               %li= link_to t("mass.title"),                   weight_path         if can?(:weight, :page)
-              %li= link_to t("pages.board"),                  board_path          if can?(:board, :page)
-              %li= link_to t("pages.aoc.short"),              aoc_path            if can?(:aoc, :page)
-              %li= link_to t("pages.play.title"),             play_path           if can?(:play, :page)
-              %li= link_to t("team.teams"),                   teams_path          if can?(:read, Team)
-              %li= link_to t("match.matches"),                matches_path        if can?(:read, Match)
+              %li= link_to t("transaction.transactions"),     transactions_path   if can?(:read, Transaction)
+              %li= link_to t("classifier.classifiers"),       classifiers_path    if can?(:read, Classifier)
               %li= link_to t("pages.premier.short"),          premier_path        if can?(:premier, :page)
               %li= link_to t("constellation.constellations"), constellations_path if can?(:read, Constellation)
               %li= link_to t("star.stars"),                   stars_path          if can?(:read, Star)
-              %li= link_to t("transaction.transactions"),     transactions_path   if can?(:read, Transaction)
-              %li= link_to t("classifier.classifiers"),       classifiers_path    if can?(:read, Classifier)
+              %li= link_to t("team.teams"),                   teams_path          if can?(:read, Team)
+              %li= link_to t("match.matches"),                matches_path        if can?(:read, Match)
+              %li= link_to t("pages.board"),                  board_path          if can?(:board, :page)
+              %li= link_to t("pages.aoc.short"),              aoc_path            if can?(:aoc, :page)
+              %li= link_to t("pages.play.title"),             play_path           if can?(:play, :page)
               %li= link_to t("tutorial.tutorials"),           tutorials_path      if can?(:read, Tutorial)
               %li= link_to t("user.users"),                   users_path          if can?(:read, User)
               %li= link_to t("login.logins"),                 logins_path         if can?(:read, Login)
