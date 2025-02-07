@@ -57,8 +57,4 @@ class PagesController < ApplicationController
     @dates = Mass.dates
     @unit = Mass::UNITS[params[:unit].try(:to_sym)] || Mass::DEFAULT_UNIT
   end
-
-  def wordle
-    @wordle = Wordle.new(params)
-  end
 end
