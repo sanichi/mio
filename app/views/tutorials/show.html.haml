@@ -4,7 +4,6 @@
 
 - unless boards.empty?
   = content_for :javascript do
-    = render partial: "pages/board_elm_min", formats: :js
     = render partial: "utils/board/boards", formats: :js, locals: { fens: boards }
 
 %section
