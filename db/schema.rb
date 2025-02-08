@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_08_140317) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_08_142332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -233,17 +233,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_140317) do
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
-  end
-
-  create_table "sounds", force: :cascade do |t|
-    t.string "category", limit: 8
-    t.string "name", limit: 100
-    t.integer "level", limit: 2, default: 5
-    t.text "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "length", limit: 2
-    t.integer "ordinal", limit: 2
   end
 
   create_table "stars", force: :cascade do |t|

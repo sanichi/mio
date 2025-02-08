@@ -24,10 +24,9 @@
               %li= link_to t("grammar.group.groups"),     grammar_groups_path    if can?(:read, GrammarGroup)
               %li= link_to t("wk.group.groups"),          wk_groups_path         if can?(:read, Wk::Group)
               %li= link_to t("wk.kanji.similar.similar"), similar_wk_kanjis_path if can?(:read, Wk::Kanji)
-              %li= link_to t("place.title"),              places_path            if can?(:read, Place)
-              %li= link_to t("sound.sounds"),             sounds_path            if can?(:read, Sound)
-              %li= link_to t("pages.prefectures.title"),  prefectures_path       if can?(:prefectures, :page)
               %li= link_to t("wk.verb_pair.verb_pairs"),  wk_verb_pairs_path     if can?(:read, Wk::VerbPair)
+              %li= link_to t("place.title"),              places_path            if can?(:read, Place)
+              %li= link_to t("pages.prefectures.title"),  prefectures_path       if can?(:prefectures, :page)
 
         - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
           %li.dropdown
