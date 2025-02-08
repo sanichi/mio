@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_07_112412) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_08_140317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -214,32 +214,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_112412) do
     t.string "mark_position", limit: 10
     t.string "text_position", limit: 10
     t.index ["parent_id"], name: "index_places_on_parent_id"
-  end
-
-  create_table "problems", force: :cascade do |t|
-    t.integer "category", limit: 2
-    t.integer "level", limit: 2
-    t.text "note"
-    t.integer "subcategory", limit: 2
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "audio", limit: 20
-  end
-
-  create_table "questions", force: :cascade do |t|
-    t.string "question", limit: 255
-    t.string "answer1", limit: 100
-    t.string "answer2", limit: 100
-    t.string "answer3", limit: 100
-    t.string "answer4", limit: 100
-    t.integer "solution", limit: 2
-    t.text "note"
-    t.integer "problem_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "audio", limit: 20
-    t.string "image", limit: 20
-    t.index ["problem_id"], name: "index_questions_on_problem_id"
   end
 
   create_table "returns", id: :serial, force: :cascade do |t|

@@ -1,9 +1,0 @@
-:ruby
-  inputs = [
-    [:level,       t("problem.level"),       :select, menu: problem_level_menu(problem.level, new_record: problem.new_record?)],
-    [:category,    t("problem.category"),    :select, menu: problem_category_menu(problem.category, new_record: problem.new_record?)],
-    [:subcategory, t("problem.subcategory"), :select, menu: problem_subcategory_menu(problem.subcategory, new_record: problem.new_record?)],
-    [:audio,       t("problem.audio"),       :text,   maxlength: Problem::MAX_AUDIO],
-    [:note,        t("problem.note"),        :area,   rows: 15],
-  ]
-= render "utils/crud/form", object: problem, index: problems_path, inputs: inputs, title: title

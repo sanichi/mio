@@ -8,7 +8,7 @@
         - if can?(:read, Favourite)
           %li= link_to t("home"), favourites_path
 
-        - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place, Problem].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
+        - if [Wk::Radical, Wk::Kanji, Wk::VerbPair, Wk::Example, Wk::Group, Note, Misa, Place].map{ |c| can?(:read, c) }.any? || [:prefectures].map{ |p| can?(p, :page) }.any?
           %li.dropdown
             = link_to t("wk.japanese", locale: "jp"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
@@ -28,7 +28,6 @@
               %li= link_to t("sound.sounds"),             sounds_path            if can?(:read, Sound)
               %li= link_to t("pages.prefectures.title"),  prefectures_path       if can?(:prefectures, :page)
               %li= link_to t("wk.verb_pair.verb_pairs"),  wk_verb_pairs_path     if can?(:read, Wk::VerbPair)
-              %li= link_to t("problem.problems"),         problems_path          if can?(:read, Problem)
 
         - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
           %li.dropdown

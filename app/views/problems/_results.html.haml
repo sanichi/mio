@@ -1,7 +1,0 @@
-- pq = problems.extra
-
-- problems.matches.each do |problem|
-  %tr
-    %td= link_to problem.description, controller: "problems", action: "show", id: problem.id, pqids: pq&.serialize
-    %td.text-center= pq&.qids(problem.id)&.size || problem.questions.size
-= render "utils/pagination_links", pager: problems, columns: 2

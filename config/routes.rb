@@ -38,8 +38,6 @@ Rails.application.routes.draw do
     get :move, on: :member
     patch :shift, on: :member
   end
-  resources :problems
-  resources :questions
   resources :sessions, only: [:create]
   resources :sounds, only: [:index, :show, :edit, :update] do
     patch :quick_level_update, on: :member
