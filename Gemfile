@@ -24,6 +24,7 @@ gem 'meta-tags', '~> 2.12'
 gem 'csv', '< 4'
 gem 'sprockets-rails', '~> 3.4'
 gem "importmap-rails", "~> 2.1"
+gem "stimulus-rails", "~> 1.3"
 
 group :development, :test do
   gem 'rspec-rails', '< 8'

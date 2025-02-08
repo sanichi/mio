@@ -2,6 +2,7 @@
 - defined?(auto)     || auto = true
 - defined?(prompt)   || prompt = nil
 
-- auto_submit = auto && !multiple ? "auto-submit" : ""
+- data_controller = auto && !multiple ? "auto-submit"    : nil
+- data_action     = auto && !multiple ? "auto-submit#go" : nil
 
-= select_tag param, menu, class: "form-select #{auto_submit}", multiple: multiple, prompt: prompt
+= select_tag param, menu, class: "form-select", multiple: multiple, prompt: prompt, "data-controller" => data_controller, "data-action" => data_action
