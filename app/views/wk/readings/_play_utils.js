@@ -1,4 +1,4 @@
-$(function () {
+document.addEventListener("turbo:load", () => {
   $('#accent_updates').on('click', 'button.audio_button', function (e) {
     // play the audio
     var button = $(e.target);
