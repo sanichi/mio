@@ -11,5 +11,5 @@
             %tr
               - row.each do |picture|
                 %td{width: wd}
-                  = link_to picture do
+                  = link_to picture, "data-turbo" => "false" do
                     = image_tag picture.path, width: wd, height: wd, title: picture.title, alt: picture.title

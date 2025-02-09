@@ -4,7 +4,7 @@ class ClassifiersController < ApplicationController
 
   def index
     remember_last_search(classifiers_path)
-    @classifiers = Classifier.search(params, classifiers_path, per_page: 10, remote: true)
+    @classifiers = Classifier.search(params, classifiers_path, per_page: 10)
   end
 
   def new

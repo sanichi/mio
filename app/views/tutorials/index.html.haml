@@ -7,16 +7,17 @@
 %section
   .header.text-center
     %h3= t("tutorial.tutorials")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: tutorials_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr.d-flex
-          %th.col-1.text-center= t("tutorial.number")
-          %th.col-2.text-center= t("date")
-          %th.col-9= t("tutorial.summary")
-      %tbody{id: "results"}
-        = render "results", tutorials: @tutorials
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr.d-flex
+            %th.col-1.text-center= t("tutorial.number")
+            %th.col-2.text-center= t("date")
+            %th.col-9= t("tutorial.summary")
+        %tbody
+          = render "results", tutorials: @tutorials
   - if can?(:create, Tutorial)
     .footer
       = link_to t("tutorial.new"), new_tutorial_path, class: "blue-btn"

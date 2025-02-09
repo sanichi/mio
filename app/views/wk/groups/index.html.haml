@@ -15,16 +15,17 @@
 %section
   .header.text-center
     %h3= t("wk.group.groups")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: wk_groups_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("wk.group.category")
-          %th= t("wk.vocab.vocabs")
-          %th
-      %tbody{id: "results"}
-        = render "results", groups: @groups
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("wk.group.category")
+            %th= t("wk.vocab.vocabs")
+            %th
+        %tbody
+          = render "results", groups: @groups
   .footer
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.example.examples"), last_search(wk_examples_path), class: "green-btn"

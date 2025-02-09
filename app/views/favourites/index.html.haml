@@ -15,26 +15,27 @@
 %section.mt-3
   .header.text-center
     %h3= t("favourite.title")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: favourites_path, inputs: inputs
-    %table.table.table-bordered.table-sm.mt-3
-      %thead
-        %tr
-          %th= t("name")
-          %th.d-none.d-lg-table-cell= t("favourite.note")
-          %th.text-center= t("favourite.category")
-          %th.text-center= t("year")
-          %th.text-center
-            %span.d-none.d-md-inline= t("favourite.sandra")
-            %span.d-md-none= t("favourite.abbr.sandra")
-          %th.text-center
-            %span.d-none.d-md-inline= t("favourite.mark")
-            %span.d-md-none= t("favourite.abbr.mark")
-          %th.text-center
-            %span.d-none.d-md-inline= t("total")
-            %span.d-md-none= t("favourite.abbr.total")
-      %tbody#results
-        = render "results", favourites: @favourites
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table.table.table-bordered.table-sm.mt-3
+        %thead
+          %tr
+            %th= t("name")
+            %th.d-none.d-lg-table-cell= t("favourite.note")
+            %th.text-center= t("favourite.category")
+            %th.text-center= t("year")
+            %th.text-center
+              %span.d-none.d-md-inline= t("favourite.sandra")
+              %span.d-md-none= t("favourite.abbr.sandra")
+            %th.text-center
+              %span.d-none.d-md-inline= t("favourite.mark")
+              %span.d-md-none= t("favourite.abbr.mark")
+            %th.text-center
+              %span.d-none.d-md-inline= t("total")
+              %span.d-md-none= t("favourite.abbr.total")
+        %tbody
+          = render "results", favourites: @favourites
   - if can?(:create, Favourite)
     .footer
       = link_to t("favourite.new"), new_favourite_path, class: "blue-btn"

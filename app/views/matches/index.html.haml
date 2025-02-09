@@ -13,7 +13,8 @@
     %section
       .header.text-center
         %h3= t("match.matches")
-      .body
+      .body{"data-turbo" => "true"}
         = render "utils/search/form", index: matches_path, inputs: inputs
-        %table{class: "table table-bordered table-sm mt-3"}
-          %tbody{id: "results"}= render "results", matches: @matches
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do # round table
+          %table{class: "table table-bordered table-sm mt-3"}
+            %tbody= render "results", matches: @matches

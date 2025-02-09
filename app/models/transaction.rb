@@ -62,7 +62,7 @@ class Transaction < ApplicationRecord
       upload_id = $1.to_i
       if upload_id <= 0
         upload_id += Transaction.maximum(:upload_id)
-        corrections[:upload_id] = upload_id.to_s
+        corrections[:ulid] = upload_id.to_s
       end
       matches = matches.where(upload_id: upload_id)
     elsif sql = numerical_constraint(params[:upload_id], :upload_id)

@@ -18,17 +18,18 @@
 %section
   .header.text-center
     %h3= t("wk.radical.radicals")
-  .body
-    = render "utils/search/form", index: wk_radicals_path, inputs: inputs, remote: false
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr.d-flex
-          %th.col-2.text-center= t("wk.radical.name")
-          %th.col-1.text-center= t("wk.short.character")
-          %th.col-8.text-center= t("wk.hint.mnemonic")
-          %th.col-1.text-center= t("wk.level")
-      %tbody
-        = render "results", radicals: @radicals
+  .body{"data-turbo" => "true"}
+    = render "utils/search/form", index: wk_radicals_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr.d-flex
+            %th.col-2.text-center= t("wk.radical.name")
+            %th.col-1.text-center= t("wk.short.character")
+            %th.col-8.text-center= t("wk.hint.mnemonic")
+            %th.col-1.text-center= t("wk.level")
+        %tbody
+          = render "results", radicals: @radicals
   .footer
     = link_to t("wk.radical.radicals"), wk_radicals_path, class: "green-btn"
     = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "green-btn"

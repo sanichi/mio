@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   load_resource only: :quick_approval_update
 
   def index
-    @transactions, @corrections = Transaction.search(params, transactions_path, per_page: 20, remote: true)
+    @transactions, @corrections = Transaction.search(params, transactions_path, per_page: 20)
     @averages = Transaction.averages(params)
   end
 

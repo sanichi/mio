@@ -1,6 +1,6 @@
 - classifiers.matches.each do |classifier|
   %tr
-    %td= link_to classifier.name, classifier
+    %td= link_to classifier.name, classifier, "data-turbo" => "false"
     %td= classifier.category.truncate(25)
     %td= classifier.description.truncate(25)
     %td= classifier.max_amount

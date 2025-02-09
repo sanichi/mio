@@ -10,6 +10,12 @@ class Login < ApplicationRecord
     matches = matches.where("to_char(created_at, 'YYYY-MM-DD HH24:MI') ILIKE ?", "%#{params[:date]}%") if params[:date].present?
     matches = matches.where("email ILIKE ?", "%#{params[:email]}%") if params[:email].present?
     matches = matches.where("ip ILIKE ?", "%#{params[:ip]}%") if params[:ip].present?
+    case params[:success]
+    when "true"
+      matches = matches.where(success: true)
+    when "false"
+      matches = matches.where(success: false)
+    end
     paginate(matches, params, path, opt)
   end
 

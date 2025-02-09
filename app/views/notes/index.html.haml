@@ -1,6 +1,5 @@
 :ruby
   lo = Layout.new(
-    md: [2,2,2],
     sm: [3,3,3],
     xs: [4,4,4],
   ).to_a
@@ -13,20 +12,21 @@
 = render "utils/title", key: "note.notes"
 
 .row
-  %div{class: center(xx: 6, xl: 8, lg: 10)}
+  %div{class: center(xx: 8, lg: 10)}
     %section
       .header.text-center
         %h3= t("note.notes")
-      .body
+      .body{"data-turbo" => "true"}
         = render "utils/search/form", index: notes_path, inputs: inputs
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th= t("note.title")
-              %th= t("note.series")
-              %th.text-center= t("note.updated")
-          %tbody{id: "results"}
-            = render "results", notes: @notes
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("note.title")
+                %th= t("note.series")
+                %th.text-center= t("note.updated")
+            %tbody
+              = render "results", notes: @notes
       .footer
         - if can?(:create, Note)
           = link_to t("note.new"), new_note_path, class: "blue-btn"

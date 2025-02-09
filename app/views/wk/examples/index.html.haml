@@ -9,16 +9,17 @@
 %section
   .header.text-center
     %h3= t("wk.example.examples")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: wk_examples_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("wk.example.japanese")
-          %th= t("wk.example.english")
-          %th
-      %tbody{id: "results"}
-        = render "results", examples: @examples
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("wk.example.japanese")
+            %th= t("wk.example.english")
+            %th
+        %tbody
+          = render "results", examples: @examples
   .footer
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"

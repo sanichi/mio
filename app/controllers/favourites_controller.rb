@@ -4,7 +4,7 @@ class FavouritesController < ApplicationController
 
   def index
     remember_last_search(favourites_path)
-    @favourites = Favourite.search(params, favourites_path, per_page: 20, remote: true)
+    @favourites = Favourite.search(params, favourites_path)
   end
 
   def new

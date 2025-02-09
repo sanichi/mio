@@ -2,5 +2,5 @@
   %tr
     %td= partnership.husband.name(reversed: true)
     %td= partnership.wife.name(reversed: true)
-    %td= link_to partnership.wedding, partnership
+    %td= link_to partnership.wedding, partnership, "data-turbo" => "false"
 = render "utils/pagination_links", pager: partnerships, columns: 3

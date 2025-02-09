@@ -15,19 +15,20 @@
 %section
   .header.text-center
     %h3= t("grammar.grammar")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: grammars_path, inputs: inputs
     .row
       %div{class: center(md: 10, lg: 8, xl: 6)}
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th= t("grammar.ref")
-              %th= t("grammar.title")
-              %th.text-center= t("grammar.examples")
-              %th.text-center= t("grammar.level")
-          %tbody{id: "results"}
-            = render "results", grammars: @grammars
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("grammar.ref")
+                %th= t("grammar.title")
+                %th.text-center= t("grammar.examples")
+                %th.text-center= t("grammar.level")
+            %tbody
+              = render "results", grammars: @grammars
   - if can?(:create, Grammar)
     .footer
       = link_to t("grammar.new"), new_grammar_path, class: "blue-btn"

@@ -5,5 +5,5 @@
     %td.text-center= unit.to_s(mass.finish)
     - if can?(:create, Mass)
       %td.text-center
-        = link_to t("edit"), edit_mass_path(mass), class: "blue-btn"
+        = link_to t("edit"), edit_mass_path(mass), class: "blue-btn", "data-turbo" => "false"
 = render "utils/pagination_links", pager: masses, columns: 3 + (can?(:create, Mass) ? 1 : 0)

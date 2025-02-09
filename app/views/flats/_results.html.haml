@@ -1,6 +1,6 @@
 - flats.matches.each do |flat|
   %tr
-    %td.text-center= link_to flat.address, flat
+    %td.text-center= link_to flat.address, flat, "data-turbo" => "false"
     %td.text-center= flat.block
     %td.text-center= flat.bay
     %td.text-center= flat.category

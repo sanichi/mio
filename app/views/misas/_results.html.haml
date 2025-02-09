@@ -1,7 +1,7 @@
 - misas.matches.each do |misa|
   %tr
     %td
-      = link_to misa.title, misa
+      = link_to misa.title, misa, "data-turbo" => "false"
       - if misa.japanese
         = t("misa.abbrev.japanese")
     %td= misa.series

@@ -2,21 +2,27 @@
 
 .row
   %div{class: center(sm: 10, md: 8, lg: 6)}
-    %section
-      .header.text-center
-        %h3= t("mass.data")
-      .body
-        %table{class: "table table-bordered table-sm"}
-          %thead
-            %tr
-              %th.text-center= t("mass.date")
-              %th.text-center= t("mass.start")
-              %th.text-center= t("mass.finish")
-              - if can?(:create, Mass)
-                %th
-          %tbody{id: "results"}
-            = render "results", masses: @masses, unit: @unit
-      .footer
-        %span{id: "control_buttons"}= render "control_buttons", masses: @masses, unit: @unit
-        - if can?(:create, Mass)
-          = link_to t("mass.new"), new_mass_path, class: "blue-btn"
+    %section{"data-turbo" => "true"}
+      = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+        .header.text-center
+          %h3= t("mass.data")
+        .body
+          %table{class: "table table-bordered table-sm"}
+            %thead
+              %tr
+                %th.text-center= t("mass.date")
+                %th.text-center= t("mass.start")
+                %th.text-center= t("mass.finish")
+                - if can?(:create, Mass)
+                  %th
+            %tbody
+              = render "results", masses: @masses, unit: @unit
+        .footer
+          - Mass::UNITS.keys.each do |u|
+            - if u == @unit.key
+              .btn.btn-secondary.btn-sm.mb-1= t("mass.unit.short.#{u}")
+            - else
+              = link_to t("mass.unit.short.#{u}"), @masses.page_path(unit: u), class: "green-btn", "data-turbo-frame" => "results"
+          = link_to t("graph"), weight_path(unit: @unit.key), class: "blue-btn", "data-turbo" => "false"
+          - if can?(:create, Mass)
+            = link_to t("mass.new"), new_mass_path, class: "blue-btn", "data-turbo" => "false"

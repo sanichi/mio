@@ -3,10 +3,10 @@ module ApplicationHelper
     locale = pager.locale
     links = Array.new
     sep = t("pagination.separator", locale: locale)
-    links.push(link_to t("pagination.frst", locale: locale), pager.frst_page, remote: pager.remote, id: "pagn_frst") if pager.after_start?
-    links.push(link_to t("pagination.next", locale: locale), pager.next_page, remote: pager.remote, id: "pagn_next") if pager.before_end?
-    links.push(link_to t("pagination.prev", locale: locale), pager.prev_page, remote: pager.remote, id: "pagn_prev") if pager.after_start?
-    links.push(link_to t("pagination.last", locale: locale), pager.last_page, remote: pager.remote, id: "pagn_last") if pager.before_end?
+    links.push(link_to t("pagination.frst", locale: locale), pager.frst_page, id: "pagn_frst") if pager.after_start?
+    links.push(link_to t("pagination.next", locale: locale), pager.next_page, id: "pagn_next") if pager.before_end?
+    links.push(link_to t("pagination.prev", locale: locale), pager.prev_page, id: "pagn_prev") if pager.after_start?
+    links.push(link_to t("pagination.last", locale: locale), pager.last_page, id: "pagn_last") if pager.before_end?
     raw "#{pager.min_and_max} #{t('pagination.of', locale: locale)} #{pager.count} #{links.size > 0 ? sep : ''} #{links.join(' ' + sep + ' ')}"
   end
 

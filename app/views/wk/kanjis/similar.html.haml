@@ -14,17 +14,23 @@
 %section
   .header.text-center
     %h3= t("wk.kanji.similar.similar")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: similar_wk_kanjis_path, inputs: inputs
     %p.mt-3.text-center#message= @message
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th.text-center= t("wk.kanji.kanji")
-          %th.text-center= t("wk.kanji.similar.details")
-          %th.text-center= t("wk.kanji.similar.similar")
-      %tbody#results
-        = render "similar_results", kanjis: @kanjis
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %div.d-none{
+        "data-controller" => "similar",
+        "data-similar-message-value" => @message,
+        "data-similar-query-value" => params[:query],
+      }
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th.text-center= t("wk.kanji.kanji")
+            %th.text-center= t("wk.kanji.similar.details")
+            %th.text-center= t("wk.kanji.similar.similar")
+        %tbody
+          = render "similar_results", kanjis: @kanjis
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"

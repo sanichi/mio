@@ -16,17 +16,18 @@
     %section
       .header.text-center
         %h3= t("place.title")
-      .body
+      .body{"data-turbo" => "true"}
         = render "utils/search/form", index: places_path, inputs: inputs
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th= t("place.jname", locale: "jp")
-              %th= t("place.parent", locale: "jp")
-              %th.text-center= t("place.pop", locale: "jp")
-              %th= t("place.ename", locale: "jp")
-          %tbody{id: "results"}
-            = render "results", places: @places
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("place.jname", locale: "jp")
+                %th= t("place.parent", locale: "jp")
+                %th.text-center= t("place.pop", locale: "jp")
+                %th= t("place.ename", locale: "jp")
+            %tbody
+              = render "results", places: @places
       .footer
         = link_to t("pages.prefectures.title"),  prefectures_path, class: "green-btn"
         - if can?(:create, Place)

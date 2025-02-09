@@ -20,14 +20,15 @@
 %section
   .header.text-center
     %h3= t("wk.kana.kanas")
-  .body
-    = render "utils/search/form", index: wk_kanas_path, inputs: inputs, remote: false
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        = render "table_header"
-      %tbody#accent_updates
-        = render "table_rows", kanas: @kanas.matches
-        = render "utils/pagination_links", pager: @kanas, columns: 5
+  .body{"data-turbo" => "true"}
+    = render "utils/search/form", index: wk_kanas_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          = render "table_header"
+        %tbody#accent_updates
+          = render "table_rows", kanas: @kanas.matches
+          = render "utils/pagination_links", pager: @kanas, columns: 5
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), last_search(wk_kanjis_path), class: "green-btn"

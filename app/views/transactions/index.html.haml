@@ -23,22 +23,29 @@
 %section.mt-3
   .header.text-center
     %h3= t("transaction.transactions")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: transactions_path, inputs: inputs
-    %div#averages
-      = render "averages", averages: @averages
-    %table.table.table-bordered.table-sm.mt-3
-      %thead
-        %tr
-          %th.text-center= t("transaction.date")
-          %th.text-center= t("transaction.category")
-          %th= t("transaction.description")
-          %th= t("transaction.amount")
-          %th= t("transaction.balance")
-          %th= t("transaction.account")
-          %th
-      %tbody#results
-        = render "results", transactions: @transactions
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %div
+        = render "averages", averages: @averages
+      %div.d-none{
+        "data-controller" => "correction",
+        "data-correction-date-value" => @corrections[:date],
+        "data-correction-days-value" => @corrections[:days],
+        "data-correction-ulid-value" => @corrections[:ulid],
+      }
+      %table.table.table-bordered.table-sm.mt-3
+        %thead
+          %tr
+            %th.text-center= t("transaction.date")
+            %th.text-center= t("transaction.category")
+            %th= t("transaction.description")
+            %th= t("transaction.amount")
+            %th= t("transaction.balance")
+            %th= t("transaction.account")
+            %th
+        %tbody
+          = render "results", transactions: @transactions
   .footer
     = link_to t("classifier.classifiers"), classifiers_path, class: "green-btn"
 

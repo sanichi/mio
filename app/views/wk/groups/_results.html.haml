@@ -4,6 +4,6 @@
     %td
       - group.vocabs.each_with_index do |vocab, i|
         = succeed(i + 1 == group.vocabs.count ? "" : ",") do
-          = link_to vocab.characters, vocab
-    %td.text-center= link_to t("edit"), edit_wk_group_path(group), class: "blue-btn"
+          = link_to vocab.characters, vocab, "data-turbo" => "false"
+    %td.text-center= link_to t("edit"), edit_wk_group_path(group), class: "blue-btn", "data-turbo" => "false"
 = render "utils/pagination_links", pager: groups, columns: 3

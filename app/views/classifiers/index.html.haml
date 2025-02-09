@@ -13,19 +13,20 @@
 %section.mt-3
   .header.text-center
     %h3= t("classifier.classifiers")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: classifiers_path, inputs: inputs
-    %table.table.table-bordered.table-sm.mt-3
-      %thead
-        %tr
-          %th= t("classifier.name")
-          %th= t("classifier.category")
-          %th= t("classifier.description")
-          %th= t("classifier.max_amount")
-          %th= t("classifier.min_amount")
-          %th= t("classifier.color")
-      %tbody#results
-        = render "results", classifiers: @classifiers
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table.table.table-bordered.table-sm.mt-3
+        %thead
+          %tr
+            %th= t("classifier.name")
+            %th= t("classifier.category")
+            %th= t("classifier.description")
+            %th= t("classifier.max_amount")
+            %th= t("classifier.min_amount")
+            %th= t("classifier.color")
+        %tbody
+          = render "results", classifiers: @classifiers
   .footer
     = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
     - if can?(:create, Classifier)

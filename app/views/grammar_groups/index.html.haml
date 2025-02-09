@@ -13,16 +13,17 @@
 %section
   .header.text-center
     %h3= t("grammar.group.groups")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: grammar_groups_path, inputs: inputs
     .row
       %div{class: center(md: 10, lg: 8, xl: 6)}
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th= t("grammar.title")
-          %tbody{id: "results"}
-            = render "results", groups: @grammar_groups
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("grammar.title")
+            %tbody
+              = render "results", groups: @grammar_groups
   - if can?(:create, GrammarGroup)
     .footer
       = link_to t("grammar.group.new"), new_grammar_group_path, class: "blue-btn"

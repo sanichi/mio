@@ -15,20 +15,21 @@
 %section
   .header.text-center
     %h3= t("misa.misas")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: misas_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("misa.title")
-          %th= t("misa.series")
-          %th.text-center= t("misa.abbrev.number")
-          %th.text-center= t("misa.abbrev.lines")
-          %th.text-center= t("misa.abbrev.minutes")
-          %th.text-center= t("misa.abbrev.published")
-          %th.text-center= t("misa.abbrev.url")
-      %tbody{id: "results"}
-        = render "results", misas: @misas
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do # round table
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("misa.title")
+            %th= t("misa.series")
+            %th.text-center= t("misa.abbrev.number")
+            %th.text-center= t("misa.abbrev.lines")
+            %th.text-center= t("misa.abbrev.minutes")
+            %th.text-center= t("misa.abbrev.published")
+            %th.text-center= t("misa.abbrev.url")
+        %tbody
+          = render "results", misas: @misas
   - if can?(:create, Misa)
     .footer
       = link_to t("misa.new"), new_misa_path, class: "blue-btn"

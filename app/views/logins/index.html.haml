@@ -1,9 +1,10 @@
 :ruby
-  lo = Layout.new(xs: [3,3,3]).to_a
+  lo = Layout.new(xs: [3,3,3,3]).to_a
   inputs = [
-    [:date,  t("date"),     :text, lo[0]],
-    [:email, t("email"),    :text, lo[1]],
-    [:ip,    t("login.ip"), :text, lo[2]],
+    [:date,    t("date"),     :text,   lo[0]],
+    [:email,   t("email"),    :text,   lo[1]],
+    [:ip,      t("login.ip"), :text,   lo[2]],
+    [:success, t("login.ip"), :select, lo[3], menu: login_success_menu(params[:success])],
   ]
 
 = render "utils/title", key: "login.logins"
@@ -13,8 +14,9 @@
     %section
       .header.text-center
         %h3= t("login.logins")
-      .body
+      .body{"data-turbo" => "true"}
         = render "utils/search/form", index: logins_path, inputs: inputs
-        %table{class: "table table-bordered table-sm mt-3"}
-          %tbody{id: "results"}
-            = render "results", logins: @logins
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %tbody
+              = render "results", logins: @logins

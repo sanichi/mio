@@ -17,26 +17,27 @@
 %section
   .header.text-center
     %h3= t("star.stars")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: stars_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("star.name")
-          %th.text-center= t("star.abbrev.constellation")
-          %th.text-center= t("star.abbrev.distance")
-          %th.text-center= t("star.abbrev.magnitude")
-          %th.text-center= t("star.rank")
-          %th.text-center= t("star.abbrev.luminosity")
-          %th.text-center= t("star.mass")
-          %th.text-center= t("star.abbrev.radius")
-          %th.text-center= t("star.abbrev.spectrum")
-          %th.text-center= t("star.abbrev.temperature")
-          %th.text-center= t("star.abbrev.components")
-          -# %th.text-center= t("star.abbrev.alpha")
-          -# %th.text-center= t("star.abbrev.delta")
-      %tbody{id: "results"}
-        = render "results", stars: @stars
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("star.name")
+            %th.text-center= t("star.abbrev.constellation")
+            %th.text-center= t("star.abbrev.distance")
+            %th.text-center= t("star.abbrev.magnitude")
+            %th.text-center= t("star.rank")
+            %th.text-center= t("star.abbrev.luminosity")
+            %th.text-center= t("star.mass")
+            %th.text-center= t("star.abbrev.radius")
+            %th.text-center= t("star.abbrev.spectrum")
+            %th.text-center= t("star.abbrev.temperature")
+            %th.text-center= t("star.abbrev.components")
+            -# %th.text-center= t("star.abbrev.alpha")
+            -# %th.text-center= t("star.abbrev.delta")
+        %tbody
+          = render "results", stars: @stars
   - if can?(:create, Star)
     .footer
       = link_to t("constellation.constellations"), constellations_path, class: "green-btn"

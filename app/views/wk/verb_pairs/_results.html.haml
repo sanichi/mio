@@ -1,7 +1,7 @@
 - pairs.matches.each do |pair|
   - [pair.transitive, pair.intransitive].each_with_index do |v, i|
     %tr.d-flex
-      %td.col-1= link_to v.characters, v
+      %td.col-1= link_to v.characters, v, "data-turbo" => "false"
       %td.col-1= v.reading
       %td.col-1.text-center= render "wk/readings/audio", reading: v.readings.first
       %td.col-7= v.meaning

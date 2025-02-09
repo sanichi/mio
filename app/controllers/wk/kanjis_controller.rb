@@ -15,7 +15,7 @@ module Wk
     end
 
     def similar
-      @kanjis, @message = Wk::Kanji.similar(params, similar_wk_kanjis_path, per_page: 8, remote: true)
+      @kanjis, @message = Wk::Kanji.similar(params, similar_wk_kanjis_path, per_page: 8)
     end
   end
 end

@@ -16,16 +16,17 @@
     %section
       .header.text-center
         %h3= t("partnership.partnerships")
-      .body
-        = render "utils/search/form", index: partnerships_path, inputs: inputs, remote: false
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th= t("partnership.husband")
-              %th= t("partnership.wife")
-              %th= t("partnership.wedding")
-          %tbody{id: "results"}
-            = render "results", partnerships: @partnerships
+      .body{"data-turbo" => "true"}
+        = render "utils/search/form", index: partnerships_path, inputs: inputs
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th= t("partnership.husband")
+                %th= t("partnership.wife")
+                %th= t("partnership.wedding")
+            %tbody
+              = render "results", partnerships: @partnerships
       .footer
         - if can?(:create, Partnership)
           = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "blue-btn"

@@ -2,7 +2,10 @@ import "jquery"
 import "autocomplete"
 import "popper"
 import "bootstrap"
+import "@hotwired/turbo-rails"
 import "controllers"
-import Rails from "@rails/ujs"
 
+Turbo.session.drive = false;
+
+import Rails from "@rails/ujs"
 Rails.start();

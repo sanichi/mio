@@ -21,18 +21,19 @@
     %section
       .header.text-center
         %h3= t("flat.flats")
-      .body
+      .body{"data-turbo" => "true"}
         = render "utils/search/form", index: flats_path, inputs: inputs
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th.text-center= t("flat.address")
-              %th.text-center= t("flat.block")
-              %th.text-center= t("flat.bay")
-              %th.text-center= t("flat.category")
-              %th.text-center= t("flat.name")
-          %tbody{id: "results"}
-            = render "results", flats: @flats
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th.text-center= t("flat.address")
+                %th.text-center= t("flat.block")
+                %th.text-center= t("flat.bay")
+                %th.text-center= t("flat.category")
+                %th.text-center= t("flat.name")
+            %tbody
+              = render "results", flats: @flats
       - if can?(:create, Flat)
         .footer
           = link_to t("flat.new"), new_flat_path, class: "blue-btn"

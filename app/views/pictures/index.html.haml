@@ -16,10 +16,11 @@
 %section
   .header.text-center
     %h3= t("picture.pictures")
-  .body
-    = render "utils/search/form", index: pictures_path, inputs: inputs, remote: false
-    #results.mt-3
-      = render "results", pictures: @pictures
+  .body{"data-turbo" => "true"}
+    = render "utils/search/form", index: pictures_path, inputs: inputs
+    .mt-3
+      = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+        = render "results", pictures: @pictures
   .footer
     - if can?(:create, Picture)
       = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "blue-btn"

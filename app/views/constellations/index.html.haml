@@ -14,16 +14,17 @@
 %section
   .header.text-center
     %h3= t("constellation.constellations")
-  .body
+  .body{"data-turbo" => "true"}
     = render "utils/search/form", index: constellations_path, inputs: inputs
-    %table{class: "table table-bordered table-sm mt-3"}
-      %thead
-        %tr
-          %th= t("constellation.name")
-          %th= t("constellation.iau")
-          %th= t("star.stars")
-      %tbody{id: "results"}
-        = render "results", constellations: @constellations
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("constellation.name")
+            %th= t("constellation.iau")
+            %th= t("star.stars")
+        %tbody
+          = render "results", constellations: @constellations
   - if can?(:create, Constellation)
     .footer
       = link_to t("star.stars"), stars_path, class: "green-btn"

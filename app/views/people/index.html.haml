@@ -21,17 +21,18 @@
     %section
       .header.text-center
         %h3= t("person.people")
-      .body
-        = render "utils/search/form", index: people_path, inputs: inputs, remote: false
-        %table{class: "table table-bordered table-sm mt-3"}
-          %thead
-            %tr
-              %th.col-9= t("name")
-              %th.col-1.text-center= t("person.m_f")
-              %th.col-1.text-center= t("person.born")
-              %th.col-1.text-center= t("person.died")
-          %tbody{id: "results"}
-            = render "results", people: @people
+      .body{"data-turbo" => "true"}
+        = render "utils/search/form", index: people_path, inputs: inputs
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-sm mt-3"}
+            %thead
+              %tr
+                %th.col-9= t("name")
+                %th.col-1.text-center= t("person.m_f")
+                %th.col-1.text-center= t("person.born")
+                %th.col-1.text-center= t("person.died")
+            %tbody
+              = render "results", people: @people
       .footer#buttons
         - if can?(:create, Person)
           = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "blue-btn"

@@ -4,7 +4,7 @@ class FlatsController < ApplicationController
 
   def index
     remember_last_search(flats_path)
-    @flats = Flat.search(params, flats_path, remote: true)
+    @flats = Flat.search(params, flats_path)
   end
 
   def new

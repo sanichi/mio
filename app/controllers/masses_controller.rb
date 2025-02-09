@@ -1,12 +1,11 @@
 class MassesController < ApplicationController
   authorize_resource
   before_action :find_mass, only: [:edit, :update, :destroy]
-  before_action :get_unit, only: [:index, :graph]
-  before_action :get_start, only: :graph
+  before_action :get_unit, only: [:index]
 
   def index
     response.headers["Access-Control-Allow-Origin"] = "*" # allow cross origin requests
-    @masses = Mass.search(params, masses_path, remote: true)
+    @masses = Mass.search(params, masses_path)
     respond_to do |format|
       format.html
       format.js
@@ -14,9 +13,9 @@ class MassesController < ApplicationController
     end
   end
 
-  def graph
-    @mgd = MassGraphData.new(@unit, @start)
-  end
+  # def graph
+    # @mgd = MassGraphData.new(@unit, @start)
+  # end
 
   def new
     @mass = Mass.new
@@ -55,10 +54,6 @@ class MassesController < ApplicationController
 
   def get_unit
     @unit = Mass::UNITS[params[:unit].try(:to_sym)] || Mass::DEFAULT_UNIT
-  end
-
-  def get_start
-    @start = params[:start] || Mass::DEFAULT_START
   end
 
   def strong_params
