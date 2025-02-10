@@ -1,6 +1,6 @@
 - vocabs.each do |vocab|
   %tr.d-flex
-    %td.col-1= link_to vocab.characters, vocab
+    %td.col-1= link_to vocab.characters, vocab, "data-turbo" => "false"
     %td.col-2= vocab.reading
     %td.col-1.text-center= render "wk/readings/audio", reading: vocab.readings.first
     %td.col-3= vocab.meaning.truncate(40)
