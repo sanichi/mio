@@ -4,13 +4,14 @@ export default class extends Controller {
   static targets = [ "button" ]
 
   static values = {
-    rid: Number,
+    owner: String, // reading or kana
+    oid: Number, // owner ID
     count: Number,
     index: Number,
   }
 
   say() {
-    this.element.querySelector("#audio_" + this.ridValue + "_" + this.indexValue).play();
+    this.element.querySelector("#audio_" + this.oidValue + "_" + this.indexValue).play();
 
     // Cycle round the other audios.
     this.indexValue += 1;
@@ -34,8 +35,8 @@ export default class extends Controller {
     }
     if (accent.length == 1 || accent.length == 2) {
       const button = this.buttonTarget;
-      const rid = this.ridValue;
-      const url = "/wk/readings/" + rid + "/quick_accent_update";
+      const oid = this.oidValue;
+      const url = "/wk/" + this.ownerValue + "s/" + oid + "/quick_accent_update";
       const options = {
         method: "PATCH",
         headers: {

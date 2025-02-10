@@ -1,4 +1,3 @@
-= render "utils"
 = render "utils/title", text: @kana.characters
 
 %section
@@ -6,13 +5,13 @@
     %h1{class: @kana.hidden ? 'hidden' : ''}= @kana.characters
   .body
     %table{class: "table table-bordered"}
-      %tbody#accent_updates
+      %tbody
         %tr
           %td= t("wk.meaning")
           %td= @kana.meaning
         %tr
           %td= t("wk.kana.pronunciation")
-          %td= render "audio", kana: @kana
+          %td= render "wk/audios/audio", owner: @kana
         %tr
           %td= t("wk.vocab.parts")
           %td= @kana.parts_of_speech

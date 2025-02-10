@@ -3,7 +3,7 @@
     %tr.d-flex
       %td.col-1= link_to v.characters, v, "data-turbo" => "false"
       %td.col-1= v.reading
-      %td.col-1.text-center= render "wk/audios/audio", reading: v.readings.first
+      %td.col-1.text-center= render "wk/audios/audio", owner: v.readings.first
       %td.col-7= v.meaning
       - if i == 0
         %td.col-2.text-center= t("wk.verb_pair.categories.#{pair.category}", locale: "jp")

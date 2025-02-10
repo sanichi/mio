@@ -5,7 +5,7 @@
     %h1{class: @vocab.hidden ? 'hidden' : ''}= @vocab.linked_characters
   .body
     %table{class: "table table-bordered"}
-      %tbody#accent_updates
+      %tbody
         %tr
           %td= t("wk.meaning")
           %td= @vocab.meaning
@@ -14,13 +14,13 @@
             %td= t("wk.reading")
             %td
               = reading.characters
-              = render "wk/audios/audio", reading: reading
+              = render "wk/audios/audio", owner: reading
         - @homos.each do |homo|
           %tr
             %td= t("wk.vocab.homo")
             %td
               = link_to homo.characters, homo
-              = render "wk/audios/audio", reading: homo.readings.first
+              = render "wk/audios/audio", owner: homo.readings.first
               = homo.meaning
         %tr
           %td= t("wk.vocab.parts")

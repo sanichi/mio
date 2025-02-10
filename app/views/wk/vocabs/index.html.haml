@@ -25,7 +25,7 @@
       %table{class: "table table-bordered table-sm mt-3"}
         %thead
           = render "table_header"
-        %tbody#accent_updates
+        %tbody
           = render "table_rows", vocabs: @vocabs.matches
           = render "utils/pagination_links", pager: @vocabs, columns: 4
   .footer

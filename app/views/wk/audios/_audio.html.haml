@@ -1,21 +1,20 @@
-- count = reading.audios.count
+- count = owner.audios.count
 - if count > 0
-  - rid = reading.id
-  - index = rand(count)
-  - klass = "btn-#{reading.pattern_colour}"
+  - oid = owner.id
   %span{
     "data-controller" => "audio",
-    "data-audio-rid-value" => rid,
+    "data-audio-owner-value" => owner.class == Wk::Reading ? "reading" : "kana",
+    "data-audio-oid-value" => oid,
     "data-audio-count-value" => count,
-    "data-audio-index-value" => index,
+    "data-audio-index-value" => rand(count),
     "data-action" => "click->audio#say",
   }
     %button.btn.btn-sm{
-      class: "#{klass}",
       type: "button",
+      class: "btn-#{owner.pattern_colour}",
       "data-audio-target" => "button",
       "data-action" => "keydown->audio#update",
-    }= reading.accent_display
-    - reading.audios.each_with_index do |audio, idx|
-      %audio{id: "audio_#{rid}_#{idx}"}
+    }= owner.accent_display
+    - owner.audios.each_with_index do |audio, idx|
+      %audio{id: "audio_#{oid}_#{idx}"}
         %source{src: audio.url, type: "audio/mpeg"}

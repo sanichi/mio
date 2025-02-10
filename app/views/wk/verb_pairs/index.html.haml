@@ -19,5 +19,5 @@
     = render "utils/search/form", index: wk_verb_pairs_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
-        %tbody#accent_updates
+        %tbody
           = render "results", pairs: @verb_pairs

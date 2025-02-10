@@ -2,7 +2,7 @@
   %tr.d-flex
     %td.col-1= link_to vocab.characters, vocab, "data-turbo" => "false"
     %td.col-2= vocab.reading
-    %td.col-1.text-center= render "wk/audios/audio", reading: vocab.readings.first
+    %td.col-1.text-center= render "wk/audios/audio", owner: vocab.readings.first
     %td.col-3= vocab.meaning.truncate(40)
     %td.col-3= vocab.parts_of_speech.truncate(30)
     %td.col-1.text-center= vocab.combos_count

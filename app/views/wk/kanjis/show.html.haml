@@ -60,7 +60,7 @@
       %table{class: "table table-bordered table-sm mt-3"}
         %thead
           = render "wk/vocabs/table_header"
-        %tbody#accent_updates
+        %tbody
           = render "wk/vocabs/table_rows", vocabs: @vocabs
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
