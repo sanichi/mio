@@ -11,5 +11,10 @@
       - if t.classifier
         = link_to t("symbol.separator"), t.classifier, style: color, "data-turbo" => "false"
       - else
-        %button.btn.btn-sm.approval-button{"data-transaction" => t.id, type: "button"}= t("transaction.symbol.#{t.approved ? 'approved' : 'unapproved'}")
+        %button.btn.btn-sm.approval-button{
+          type: "button",
+          "data-controller" => "approval",
+          "data-approval-tid-value" => t.id,
+          "data-action" => "approval#toggle",
+        }= t("transaction.symbol.#{t.approved ? 'approved' : 'unapproved'}")
 = render "utils/pagination_links", pager: transactions, columns: 7
