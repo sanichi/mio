@@ -14,13 +14,13 @@
             %td= t("wk.reading")
             %td
               = reading.characters
-              = render "wk/readings/audio", reading: reading
+              = render "wk/audios/audio", reading: reading
         - @homos.each do |homo|
           %tr
             %td= t("wk.vocab.homo")
             %td
               = link_to homo.characters, homo
-              = render "wk/readings/audio", reading: homo.readings.first
+              = render "wk/audios/audio", reading: homo.readings.first
               = homo.meaning
         %tr
           %td= t("wk.vocab.parts")
