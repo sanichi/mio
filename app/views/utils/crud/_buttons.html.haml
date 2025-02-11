@@ -4,4 +4,5 @@
 - else
   = link_to t("cancel"), object.new_record?? index : object, class: "gray-btn"
 - if !object.new_record? && can?(:destroy, object)
-  = link_to t("delete"), object, class: "red-btn", method: :delete, data: { confirm: t("sure") }
+  %span{"data-turbo" => "true"}
+    = link_to t("delete"), object, class: "red-btn", data: { turbo_method: :delete, turbo_confirm: t("sure") }
