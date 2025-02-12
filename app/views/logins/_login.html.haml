@@ -1,0 +1,5 @@
+%tr.d-flex
+  %td.col-4.text-center= login.created_at.strftime("%Y-%m-%d %H:%M")
+  %td.col-4= login.email
+  %td.col-3= login.ip
+  %td.col-1.text-center.col-md-1= login.success ? t("symbol.tick") : t("symbol.cross")

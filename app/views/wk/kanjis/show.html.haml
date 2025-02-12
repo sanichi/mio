@@ -59,9 +59,9 @@
           %td.col-9= @kanji.last_updated
       %table{class: "table table-bordered table-sm mt-3"}
         %thead
-          = render "wk/vocabs/table_header"
+          = render partial: "wk/vocabs/table_header"
         %tbody
-          = render "wk/vocabs/table_rows", vocabs: @vocabs
+          = render partial: "wk/vocabs/vocab", collection: @vocabs
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"

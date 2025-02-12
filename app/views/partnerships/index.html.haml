@@ -26,7 +26,8 @@
                 %th= t("partnership.wife")
                 %th= t("partnership.wedding")
             %tbody
-              = render "results", partnerships: @partnerships
+              = render partial: "partnership", collection: @partnerships.matches
+              = render "utils/pagination_links", pager: @partnerships, columns: 3
       .footer
         - if can?(:create, Partnership)
           = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "blue-btn"

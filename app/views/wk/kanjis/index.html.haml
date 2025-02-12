@@ -28,7 +28,8 @@
             %th.col-5.text-center= t("wk.reading")
             %th.col-1.text-center= t("wk.level")
         %tbody
-          = render "results", kanjis: @kanjis
+          = render partial: "kanji", collection: @kanjis.matches
+          = render "utils/pagination_links", pager: @kanjis, columns: 4
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"

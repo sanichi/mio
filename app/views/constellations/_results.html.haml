@@ -1,6 +1,0 @@
-- constellations.matches.each do |c|
-  %tr
-    %td= link_to c.name, c, "data-turbo" => "false"
-    %td= c.iau
-    %td= link_to c.stars_count, stars_path(constellation_id: c.id), "data-turbo" => "false"
-= render "utils/pagination_links", pager: constellations, columns: 3

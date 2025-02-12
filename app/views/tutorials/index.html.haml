@@ -17,7 +17,8 @@
             %th.col-2.text-center= t("date")
             %th.col-9= t("tutorial.summary")
         %tbody
-          = render "results", tutorials: @tutorials
+          = render partial: "tutorial", collection: @tutorials.matches
+          = render "utils/pagination_links", pager: @tutorials, columns: 3
   - if can?(:create, Tutorial)
     .footer
       = link_to t("tutorial.new"), new_tutorial_path, class: "blue-btn"

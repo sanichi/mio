@@ -1,0 +1,7 @@
+%tr
+  %td= t("wk.group.categories.#{group.category}")
+  %td
+    - group.vocabs.each_with_index do |vocab, i|
+      = succeed(i + 1 == group.vocabs.count ? "" : ",") do
+        = link_to vocab.characters, vocab, "data-turbo" => "false"
+  %td.text-center= link_to t("edit"), edit_wk_group_path(group), class: "blue-btn", "data-turbo" => "false"

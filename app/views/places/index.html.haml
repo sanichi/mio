@@ -27,7 +27,8 @@
                 %th.text-center= t("place.pop", locale: "jp")
                 %th= t("place.ename", locale: "jp")
             %tbody
-              = render "results", places: @places
+              = render partial: "place", collection: @places.matches
+              = render "utils/pagination_links", pager: @places, columns: 4
       .footer
         = link_to t("pages.prefectures.title"),  prefectures_path, class: "green-btn"
         - if can?(:create, Place)

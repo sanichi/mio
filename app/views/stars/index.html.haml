@@ -37,7 +37,8 @@
             -# %th.text-center= t("star.abbrev.alpha")
             -# %th.text-center= t("star.abbrev.delta")
         %tbody
-          = render "results", stars: @stars
+          = render partial: "star", collection: @stars.matches
+          = render "utils/pagination_links", pager: @stars, columns: 11
   - if can?(:create, Star)
     .footer
       = link_to t("constellation.constellations"), constellations_path, class: "green-btn"

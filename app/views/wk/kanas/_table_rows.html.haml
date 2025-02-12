@@ -1,7 +1,0 @@
-- kanas.each do |kana|
-  %tr.d-flex
-    %td.col-2= link_to kana.characters, kana, "data-turbo" => "false"
-    %td.col-1.text-center= render "wk/audios/audio", owner: kana
-    %td.col-5= kana.meaning.truncate(40)
-    %td.col-3= kana.parts_of_speech.truncate(30)
-    %td.col-1.text-center= kana.level

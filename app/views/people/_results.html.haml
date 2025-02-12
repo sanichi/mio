@@ -1,7 +1,0 @@
-- people.matches.each do |person|
-  %tr
-    %td= link_to person.name(reversed: !%w/first known/.include?(params[:order]), full: true, with_married_name: true), person, "data-turbo" => "false"
-    %td.text-center= t("person.symbol.#{ person.male ? '' : 'fe' }male")
-    %td.text-center= person.born_plus
-    %td.text-center= person.died_plus
-= render "utils/pagination_links", pager: people, columns: 4

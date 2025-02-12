@@ -1,9 +1,0 @@
-- classifiers.matches.each do |classifier|
-  %tr
-    %td= link_to classifier.name, classifier, "data-turbo" => "false"
-    %td= classifier.category.truncate(25)
-    %td= classifier.description.truncate(25)
-    %td= classifier.max_amount
-    %td= classifier.min_amount
-    %td{style: classifier_style(classifier).first}= classifier.color
-= render "utils/pagination_links", pager: classifiers, columns: 6

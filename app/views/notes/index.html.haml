@@ -26,7 +26,8 @@
                 %th= t("note.series")
                 %th.text-center= t("note.updated")
             %tbody
-              = render "results", notes: @notes
+              = render partial: "note", collection: @notes.matches
+              = render "utils/pagination_links", pager: @notes, columns: 3
       .footer
         - if can?(:create, Note)
           = link_to t("note.new"), new_note_path, class: "blue-btn"

@@ -24,7 +24,8 @@
             %th= t("constellation.iau")
             %th= t("star.stars")
         %tbody
-          = render "results", constellations: @constellations
+          = render partial: "constellation", collection: @constellations.matches
+          = render "utils/pagination_links", pager: @constellations, columns: 3
   - if can?(:create, Constellation)
     .footer
       = link_to t("star.stars"), stars_path, class: "green-btn"

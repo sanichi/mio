@@ -19,7 +19,8 @@
             %th= t("wk.example.english")
             %th
         %tbody
-          = render "results", examples: @examples
+          = render partial: "example", collection: @examples.matches
+          = render "utils/pagination_links", pager: @examples, columns: 3
   .footer
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"

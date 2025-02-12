@@ -20,4 +20,5 @@
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
         %tbody
-          = render "results", pairs: @verb_pairs
+          = render partial: "pair", collection: @verb_pairs.matches
+          = render "utils/pagination_links", pager: @verb_pairs, columns: 7

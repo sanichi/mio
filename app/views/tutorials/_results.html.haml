@@ -1,6 +1,0 @@
-- tutorials.matches.each do |tutorial|
-  %tr.d-flex
-    %td.col-1.text-center= link_to tutorial.number, tutorial, "data-turbo" => "false"
-    %td.col-2.text-center= tutorial.date
-    %td.col-9= tutorial.summary
-= render "utils/pagination_links", pager: tutorials, columns: 3

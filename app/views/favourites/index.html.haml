@@ -35,7 +35,8 @@
               %span.d-none.d-md-inline= t("total")
               %span.d-md-none= t("favourite.abbr.total")
         %tbody
-          = render "results", favourites: @favourites
+          = render partial: "favourite", collection: @favourites.matches
+          = render "utils/pagination_links", pager: @favourites, columns: 7
   - if can?(:create, Favourite)
     .footer
       = link_to t("favourite.new"), new_favourite_path, class: "blue-btn"

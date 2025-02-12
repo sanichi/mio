@@ -26,7 +26,7 @@
         %thead
           = render "table_header"
         %tbody
-          = render "table_rows", vocabs: @vocabs.matches
+          = render partial: "vocab", collection: @vocabs.matches
           = render "utils/pagination_links", pager: @vocabs, columns: 4
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"

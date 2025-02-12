@@ -1,0 +1,7 @@
+%tr
+  %td.text-center= mass.date
+  %td.text-center= unit.to_s(mass.start)
+  %td.text-center= unit.to_s(mass.finish)
+  - if can?(:create, Mass)
+    %td.text-center
+      = link_to t("edit"), edit_mass_path(mass), class: "blue-btn", "data-turbo" => "false"

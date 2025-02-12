@@ -43,7 +43,8 @@
             %th= t("transaction.account")
             %th
         %tbody
-          = render "results", transactions: @transactions
+          = render partial: "t", collection: @transactions.matches
+          = render "utils/pagination_links", pager: @transactions, columns: 7
   .footer
     = link_to t("classifier.classifiers"), classifiers_path, class: "green-btn"
 

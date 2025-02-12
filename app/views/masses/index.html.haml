@@ -16,7 +16,8 @@
                 - if can?(:create, Mass)
                   %th
             %tbody
-              = render "results", masses: @masses, unit: @unit
+              = render partial: "mass", collection: @masses.matches, locals: { unit: @unit }
+              = render "utils/pagination_links", pager: @masses, columns: 3 + (can?(:create, Mass) ? 1 : 0)
         .footer
           - Mass::UNITS.keys.each do |u|
             - if u == @unit.key

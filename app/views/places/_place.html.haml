@@ -1,0 +1,5 @@
+%tr
+  %td= render "name", place: place, link: true, capital: true
+  %td= link_to place.parent.jname, place.parent, "data-turbo" => "false" if place.parent
+  %td.text-center= place.millions
+  %td= render "wiki", place: place

@@ -1,6 +1,0 @@
-- examples.matches.each do |example|
-  %tr
-    %td{"data-turbo" => "false"}= example.japanese_html
-    %td= example.english
-    %td.text-center= link_to t("edit"), edit_wk_example_path(example), class: "blue-btn", "data-turbo" => "false"
-= render "utils/pagination_links", pager: examples, columns: 3

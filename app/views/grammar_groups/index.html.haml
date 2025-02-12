@@ -23,7 +23,8 @@
               %tr
                 %th= t("grammar.title")
             %tbody
-              = render "results", groups: @grammar_groups
+              = render partial: "group", collection: @grammar_groups.matches
+              = render "utils/pagination_links", pager: @grammar_groups, columns: 1
   - if can?(:create, GrammarGroup)
     .footer
       = link_to t("grammar.group.new"), new_grammar_group_path, class: "blue-btn"

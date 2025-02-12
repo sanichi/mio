@@ -1,0 +1,14 @@
+%tr
+  %td= link_to star.name, star, "data-turbo" => "false"
+  %td.text-center= link_to star_constellation(star), star.constellation
+  %td.text-center= star.distance
+  %td.text-center= star_decimal(star.magnitude)
+  %td.text-center= star.rank
+  %td.text-center= star_decimal(star.luminosity)
+  %td.text-center= star_decimal(star.mass)
+  %td.text-center= star_decimal(star.radius)
+  %td.text-center= star.spectrum
+  %td.text-center= star_integer(star.temperature)
+  %td.text-center= star.components
+  -# %td.text-center= star_right_ascension(star.alpha)
+  -# %td.text-center= star_declination(star.delta)

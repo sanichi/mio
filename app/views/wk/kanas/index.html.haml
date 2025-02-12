@@ -24,9 +24,14 @@
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
         %thead
-          = render "table_header"
+          %tr.d-flex
+            %th.col-2= t("wk.short.characters")
+            %th.col-1.text-center= t("wk.vocab.audio")
+            %th.col-5= t("wk.meaning")
+            %th.col-3= t("wk.vocab.parts")
+            %th.col-1.text-center= t("wk.level")
         %tbody
-          = render "table_rows", kanas: @kanas.matches
+          = render partial: "kana", collection: @kanas.matches
           = render "utils/pagination_links", pager: @kanas, columns: 5
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"

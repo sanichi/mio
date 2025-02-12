@@ -33,7 +33,8 @@
                 %th.text-center= t("flat.category")
                 %th.text-center= t("flat.name")
             %tbody
-              = render "results", flats: @flats
+              = render partial: "flat", collection: @flats.matches
+              = render "utils/pagination_links", pager: @flats, columns: 5
       - if can?(:create, Flat)
         .footer
           = link_to t("flat.new"), new_flat_path, class: "blue-btn"

@@ -1,7 +1,0 @@
-- kanjis.matches.each do |kanji|
-  %tr.d-flex
-    %td.col-1.text-center= link_to kanji.character, kanji, "data-turbo" => "false"
-    %td.col-5= kanji.meaning
-    %td.col-5= kanji.reading
-    %td.col-1.text-center= kanji.level
-= render "utils/pagination_links", pager: kanjis, columns: 4

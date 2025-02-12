@@ -17,4 +17,6 @@
         = render "utils/search/form", index: matches_path, inputs: inputs
         = turbo_frame_tag :results, "data-turbo-action" => "advance" do # round table
           %table{class: "table table-bordered table-sm mt-3"}
-            %tbody= render "results", matches: @matches
+            %tbody
+              = render partial: "match", collection: @matches.matches
+              = render "utils/pagination_links", pager: @matches, columns: 7

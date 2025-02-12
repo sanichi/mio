@@ -32,7 +32,8 @@
                 %th.col-1.text-center= t("person.born")
                 %th.col-1.text-center= t("person.died")
             %tbody
-              = render "results", people: @people
+              = render partial: "person", collection: @people.matches
+              = render "utils/pagination_links", pager: @people, columns: 4
       .footer#buttons
         - if can?(:create, Person)
           = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "blue-btn"

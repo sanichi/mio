@@ -28,7 +28,8 @@
                 %th.text-center= t("grammar.examples")
                 %th.text-center= t("grammar.level")
             %tbody
-              = render "results", grammars: @grammars
+              = render partial: "grammar", collection: @grammars.matches
+              = render "utils/pagination_links", pager: @grammars, columns: 4
   - if can?(:create, Grammar)
     .footer
       = link_to t("grammar.new"), new_grammar_path, class: "blue-btn"

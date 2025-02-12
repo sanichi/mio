@@ -22,7 +22,8 @@
                 %th.col-4= t("team.short")
                 %th.col-1.text-center= t("team.abbrev.division")
             %tbody
-              = render "results", teams: @teams
+              = render partial: "team", collection: @teams.matches
+              = render "utils/pagination_links", pager: @teams, columns: 3
       - if can?(:create, Team)
         .footer
           = link_to t("team.new"), new_team_path, class: "blue-btn"

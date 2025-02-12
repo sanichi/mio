@@ -26,7 +26,8 @@
             %th= t("classifier.min_amount")
             %th= t("classifier.color")
         %tbody
-          = render "results", classifiers: @classifiers
+          = render partial: "classifier", collection: @classifiers.matches
+          = render "utils/pagination_links", pager: @classifiers, columns: 6
   .footer
     = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
     - if can?(:create, Classifier)
