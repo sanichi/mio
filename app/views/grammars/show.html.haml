@@ -28,12 +28,7 @@
                 %td
                 %td
             %tbody
-              - @examples.each do |example|
-                %tr{id: "example-#{example.id}"}
-                  %td= example.japanese_html
-                  %td= example.english
-                  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), remote: true, method: :delete, class: "yellow-btn"
-                  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar_path(@grammar)), class: "blue-btn"
+              = render partial: "example", collection: @examples, locals: { grammar: @grammar }
       .footer
         = link_to t("grammar.grammar"), grammars_path, class: "green-btn"
         = link_to t("grammar.group.groups"), grammar_groups_path, class: "green-btn"

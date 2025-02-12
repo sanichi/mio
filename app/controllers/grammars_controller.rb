@@ -46,8 +46,8 @@ class GrammarsController < ApplicationController
   end
 
   def remove_example
-    @example_id = params[:example_id].to_i
-    @grammar.update_column(:examples, @grammar.examples.delete_if{ |e| e == @example_id })
+    @example = Wk::Example.find(params[:example_id])
+    @grammar.update_column(:examples, @grammar.examples.delete_if{ |e| e == @example.id })
   end
 
   def add_group
