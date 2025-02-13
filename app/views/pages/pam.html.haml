@@ -8,7 +8,8 @@
   .header.text-center
     %h3= t("pages.risle.pam")
   .body
-    = render "utils/search/form", index: pam_path, inputs: inputs, remote: false
-  - if @answer
-    .footer.text-center
-      %h3= @answer
+    = render "utils/search/form", index: pam_path, inputs: inputs
+  = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+    - if @answer
+      .footer.text-center
+        %h3= @answer
