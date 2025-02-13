@@ -24,37 +24,38 @@
   .footer
     - if can?(:create, Picture)
       = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "blue-btn"
+    = link_to t("help"), "#", class: "green-btn",
+      "data-controller"      => "reveal",
+      "data-reveal-id-value" => "help",
+      "data-action"          => "reveal#toggle:prevent"
     = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "green-btn"
     = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "green-btn"
-    = render "utils/help_button", extra: "btn-sm"
-
-- content_for :help_title do
-  How to Search and View Pictures
-- content_for :help do
-  %ul
-    %li
-      = succeed(":") do
-        %strong= t("name")
-      You can search for pictures using one or more terms to match the first, last or "known as"
-      names of the people associated with each picture. Terms are case insensitive, don't have to
-      be full names and order is not important. For example, a fairly specific search might be:
-      %em "john smith"
-      which would only find pictures linked to people who had names matching both those terms.
-      In contrast, a less specific search example is:
-      %em "jo sm"
-      which would match pictures associated with John Smith but also Joe Smyth, Jo Dinsmore, and so on.
-    %li
-      = succeed(":") do
-        %strong= t("description")
-      Some pictures have descriptions and you can search for matching terms in those descriptions
-      such as place names, years or the names of people in the picture other than the main person
-      linked to it (see above). Enter one or more case-insensitive terms (not necessarily full words)
-      to match on. Only pictures with descriptions matching all terms will be in the results.
-      An example of a search term that works well with image descriptions is:
-      = succeed(".") do
-        %em "wedding"
-    %li
-      = succeed(":") do
-        %strong= t("view")
-      To view the full size version of any picture (along side it's description and a list of
-      people associated with it) just click on it.
+  .footer#help
+    %h5= t("person.help.tree")
+    %ul
+      %li
+        = succeed(":") do
+          %strong= t("name")
+        You can search for pictures using one or more terms to match the first, last or "known as"
+        names of the people associated with each picture. Terms are case insensitive, don't have to
+        be full names and order is not important. For example, a fairly specific search might be:
+        %em "john smith"
+        which would only find pictures linked to people who had names matching both those terms.
+        In contrast, a less specific search example is:
+        %em "jo sm"
+        which would match pictures associated with John Smith but also Joe Smyth, Jo Dinsmore, and so on.
+      %li
+        = succeed(":") do
+          %strong= t("description")
+        Some pictures have descriptions and you can search for matching terms in those descriptions
+        such as place names, years or the names of people in the picture other than the main person
+        linked to it (see above). Enter one or more case-insensitive terms (not necessarily full words)
+        to match on. Only pictures with descriptions matching all terms will be in the results.
+        An example of a search term that works well with image descriptions is:
+        = succeed(".") do
+          %em "wedding"
+      %li
+        = succeed(":") do
+          %strong= t("view")
+        To view the full size version of any picture (along side it's description and a list of
+        people associated with it) just click on it.

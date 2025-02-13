@@ -31,38 +31,39 @@
       .footer
         - if can?(:create, Partnership)
           = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "blue-btn"
-        = render "utils/help_button", extra: "btn-sm"
+        = link_to t("help"), "#", class: "green-btn",
+          "data-controller"      => "reveal",
+          "data-reveal-id-value" => "help",
+          "data-action"          => "reveal#toggle:prevent"
         = link_to t("person.people"), people_path, class: "green-btn"
         = link_to t("picture.pictures"), pictures_path, class: "green-btn"
         = link_to t("person.tree"), tree_people_path, class: "green-btn"
-
-- content_for :help_title do
-  = "How to Search for Partnerships"
-- content_for :help do
-  %ul
-    %li
-      = succeed(":") do
-        %strong= t("person.male")
-      Enter one or more terms to match the first, last or "known as" names of the male partner.
-      Terms are case insensitive, don't have to be full names and order is not important.
-      For example, a fairly specific search might be:
-      %em "john smith"
-      which would only find males that had names matching both those terms.
-      In contrast, a less specific search example is:
-      %em "jo sm"
-      which would match John Smith but also Joe Smyth, Jon Dinsmore, and so on.
-    %li
-      = succeed(":") do
-        %strong= t("person.female")
-      Similar to
-      %em= t("person.male")
-      above but will constrain the female half of the partnership
-      and also search the pre-marriage surname.
-      For example, "coyle orr" will match women who were originally
-      called "Coyle" then later called "Orr" (or the other way around).
-    %li
-      = succeed(":") do
-        %strong= t("partnership.wedding")
-      Enter a year (e.g. "1927"), a range (e.g. "1925-1935") or a limit (e.g. ">1900" or "<=1960") to
-      constrain the start year of the partnership. For marriarges (the majority of the partnerships
-      in this database) this is the wedding year.
+      .footer#help
+        %h5= t("person.help.partnership")
+        %ul
+          %li
+            = succeed(":") do
+              %strong= t("person.male")
+            Enter one or more terms to match the first, last or "known as" names of the male partner.
+            Terms are case insensitive, don't have to be full names and order is not important.
+            For example, a fairly specific search might be:
+            %em "john smith"
+            which would only find males that had names matching both those terms.
+            In contrast, a less specific search example is:
+            %em "jo sm"
+            which would match John Smith but also Joe Smyth, Jon Dinsmore, and so on.
+          %li
+            = succeed(":") do
+              %strong= t("person.female")
+            Similar to
+            %em= t("person.male")
+            above but will constrain the female half of the partnership
+            and also search the pre-marriage surname.
+            For example, "coyle orr" will match women who were originally
+            called "Coyle" then later called "Orr" (or the other way around).
+          %li
+            = succeed(":") do
+              %strong= t("partnership.wedding")
+            Enter a year (e.g. "1927"), a range (e.g. "1925-1935") or a limit (e.g. ">1900" or "<=1960") to
+            constrain the start year of the partnership. For marriarges (the majority of the partnerships
+            in this database) this is the wedding year.

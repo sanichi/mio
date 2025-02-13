@@ -11,17 +11,20 @@
 
 .row.justify-content-center.mt-3
   .col-auto
-    = render "utils/help_button"
+    = link_to t("help"), "#", class: "green-btn",
+      "data-controller"      => "reveal",
+      "data-reveal-id-value" => "help",
+      "data-action"          => "reveal#toggle:prevent"
     = link_to t("person.people"), people_path(realm: @person.realm), class: "green-btn"
     = link_to t("picture.pictures"), pictures_path(realm: @person.realm), class: "green-btn"
 
-- content_for :help_title do
-  = t("person.help.tree")
-- content_for :help do
-  %ul
-    %li This family tree fragment focuses on <b>one person at a time</b> (highlighted, near the centre).
-    %li <b>Parents</b> are above, <b>partners</b> to the right, <b>older siblings</b> to the left, <b>younger siblings</b> on the far right and <b>children</b> (with the currently selected partner) below.
-    %li To <b>change focus</b> click on the name or picture of any person other than the focus.
-    %li Or, you can <b>search</b> for people to focus on by typing into the box below and selecting from the suggested matches.
-    %li To cycle through <b>partners</b> of the focus (when there's more than 1) click the number/total box (e.g. "1 of 3", "2 of 3").
-    %li Clicking on the focus <b>exits the tree</b> and takes you to their details page where there may be biographical information and more photos.
+#help.row.justify-content-center.mt-3
+  .col-auto
+    %h5= t("person.help.tree")
+    %ul
+      %li This family tree fragment focuses on <b>one person at a time</b> (highlighted, near the centre).
+      %li <b>Parents</b> are above, <b>partners</b> to the right, <b>older siblings</b> to the left, <b>younger siblings</b> on the far right and <b>children</b> (with the currently selected partner) below.
+      %li To <b>change focus</b> click on the name or picture of any person other than the focus.
+      %li Or, you can <b>search</b> for people to focus on by typing into the box above and selecting from the suggested matches.
+      %li To cycle through <b>partners</b> of the focus (when there's more than 1) click the number/total box (e.g. "1 of 3", "2 of 3").
+      %li Clicking on the focus <b>exits the tree</b> and takes you to their details page where there may be biographical information and more photos.
