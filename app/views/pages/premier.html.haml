@@ -11,51 +11,52 @@
     %section
       .header.text-center
         %h3= t("pages.premier.title")
-      .body
-        = render "utils/search/form", index: premier_path, inputs: inputs, remote: false
-        %table{class: "table table-bordered table-striped table-sm mt-3"}
-          %thead
-            %tr
-              %th.shrink
-              %th.text-center= t("pages.premier.played")
-              %th.text-center= t("pages.premier.won")
-              %th.text-center= t("pages.premier.drawn")
-              %th.text-center= t("pages.premier.lost")
-              %th.text-center= t("pages.premier.for")
-              %th.text-center= t("pages.premier.against")
-              %th.text-center= t("pages.premier.diff")
-              %th.text-center= t("pages.premier.points")
-              - if @data.dun > 0
-                %td.shrink.text-center
-                  - unless @data.one_sided
-                    - if @data.due > 0
-                      = link_to t("pages.premier.left"), premier_path(season: @data.season, dun_due: "dun") if @data.more_dun
-                    - else
-                      = link_to t("pages.premier.right"), premier_path(season: @data.season)
-              - if @data.due > 0
-                %td.shrink.text-center
-                  - unless @data.one_sided
-                    - if @data.dun > 0
-                      = link_to t("pages.premier.right"), premier_path(season: @data.season, dun_due: "due") if @data.more_due
-                    - else
-                      = link_to t("pages.premier.left"), premier_path(season: @data.season)
-          %tbody
-            - @data.teams.each do |t|
+      .body{"data-turbo" => "true"}
+        = render "utils/search/form", index: premier_path, inputs: inputs
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table{class: "table table-bordered table-striped table-sm mt-3"}
+            %thead
               %tr
-                %th.shrink= t.short
-                %td.text-center= t.played
-                %td.text-center= t.won
-                %td.text-center= t.drawn
-                %td.text-center= t.lost
-                %td.text-center= t.for
-                %td.text-center= t.against
-                %td.text-center= t.diff
-                %th.text-center= t.points
+                %th.shrink
+                %th.text-center= t("pages.premier.played")
+                %th.text-center= t("pages.premier.won")
+                %th.text-center= t("pages.premier.drawn")
+                %th.text-center= t("pages.premier.lost")
+                %th.text-center= t("pages.premier.for")
+                %th.text-center= t("pages.premier.against")
+                %th.text-center= t("pages.premier.diff")
+                %th.text-center= t("pages.premier.points")
                 - if @data.dun > 0
-                  %td.shrink.font-monospace
-                    - t.latest_results.each do |m|
-                      = render "pages/premier/latest", team: t, match: m
+                  %td.shrink.text-center
+                    - unless @data.one_sided
+                      - if @data.due > 0
+                        = link_to t("pages.premier.left"), premier_path(season: @data.season, dun_due: "dun") if @data.more_dun
+                      - else
+                        = link_to t("pages.premier.right"), premier_path(season: @data.season)
                 - if @data.due > 0
-                  %td.shrink.font-monospace
-                    - t.upcoming_fixtures.each do |m|
-                      = render "pages/premier/upcoming", team: t, match: m
+                  %td.shrink.text-center
+                    - unless @data.one_sided
+                      - if @data.dun > 0
+                        = link_to t("pages.premier.right"), premier_path(season: @data.season, dun_due: "due") if @data.more_due
+                      - else
+                        = link_to t("pages.premier.left"), premier_path(season: @data.season)
+            %tbody
+              - @data.teams.each do |t|
+                %tr
+                  %th.shrink= t.short
+                  %td.text-center= t.played
+                  %td.text-center= t.won
+                  %td.text-center= t.drawn
+                  %td.text-center= t.lost
+                  %td.text-center= t.for
+                  %td.text-center= t.against
+                  %td.text-center= t.diff
+                  %th.text-center= t.points
+                  - if @data.dun > 0
+                    %td.shrink.font-monospace
+                      - t.latest_results.each do |m|
+                        = render "pages/premier/latest", team: t, match: m
+                  - if @data.due > 0
+                    %td.shrink.font-monospace
+                      - t.upcoming_fixtures.each do |m|
+                        = render "pages/premier/upcoming", team: t, match: m
