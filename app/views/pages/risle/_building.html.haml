@@ -22,6 +22,8 @@
     %text{x: tx, y: "#{ty + 16}", transform: "translate(#{dt},0) rotate(#{-r},#{tx},#{ty})"}= bnum
   - flats.each do |fnum, x, y|
     - next if fnum == 0
-    %g{id: "flat-#{bnum}-#{fnum}", class: "flat", transform: "translate(#{x},#{y})"}
+    %g{id: "flat-#{bnum}-#{fnum}", class: "flat", transform: "translate(#{x},#{y})",
+      "data-action" => "mouseenter->risle#mouseEnter mouseleave->risle#mouseLeave",
+    }
       %circle{r: 14}
       %text{transform: "rotate(#{-r}) translate(0,7.5)"}= fnum

@@ -1,10 +1,13 @@
 - my_meta_tags "pages.risle.map"
 
-- if can?(:park, Flat) || current_user.isle? || params[:p]
-  - content_for :javascript do
-    = render partial: "risle", formats: :js
-
-%svg#risle{version: "1.1", viewBox: "0 0 2000 1000"}
+%svg#risle{
+  version: "1.1",
+  viewBox: "0 0 2000 1000",
+  "data-controller" => "risle",
+  "data-risle-ftob-value" => flat_ftob_map(@flats),
+  "data-risle-btof-value" => flat_btof_map(@flats),
+  "data-risle-okay-value" => can?(:park, Flat) || current_user.isle? || params[:p],
+}
   %title Rennies Isle Map
   %desc Interactive map of Rennies Isle including blocks, flats, streets and parking bays.
   %rect{width: "100%", height: "100%", class: "background"}

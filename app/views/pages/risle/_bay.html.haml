@@ -1,6 +1,8 @@
 - tx = bw/2
 - ty = bh/2
 
-%g{id: "bay-#{id}", class: "bay", transform: "translate(#{bw * i},0)", "data-bay" => id}
+%g{id: "bay-#{id}", class: "bay", transform: "translate(#{bw * i},0)",
+  "data-action" => "mouseenter->risle#mouseEnter mouseleave->risle#mouseLeave",
+}
   %rect{width: bw, height: bh}
   %text{x: tx, y: ty + 5, transform: "rotate(#{-r},#{tx},#{ty})"}= id

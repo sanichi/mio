@@ -39,4 +39,12 @@ module FlatHelper
     opt = %w/address block bay category name/.map { |o| [I18n.t("flat.#{o}"), o] }
     options_for_select(opt, order)
   end
+
+  def flat_btof_map(flats)
+    "{#{flats.map { |flat| %Q("bay-#{flat.bay}": "flat-#{flat.building}-#{flat.number}") }.join(',')}}"
+  end
+
+  def flat_ftob_map(flats)
+    "{#{flats.map { |flat| %Q("flat-#{flat.building}-#{flat.number}": "bay-#{flat.bay}") }.join(',')}}"
+  end
 end
