@@ -1,25 +1,26 @@
 :ruby
-  lo = Layout.new(
-    xs: [3,3],
-    md: [2,2],
-    xl: [1,1],
-  ).to_a
-  inputs = [
-    [:start, t("mass.start"),     :select, lo[0], auto: false, menu: mass_months_menu],
-    [:units, t("mass.unit.unit"), :select, lo[1], auto: false, menu: mass_unit_menu],
-  ]
+  lo = Layout.new(xs: [3,3], md: [2,2], xl: [1,1]).to_a
   my_meta_tags "mass"
-
-- content_for :javascript do
-  = render partial: "weight", formats: :js
-
 
 %section
   .header.text-center
     %h3= t("mass.title")
-  .body
-    = render "utils/search/form", index: weight_path, inputs: inputs, remote: false
-    #elm-app
+  .body{"data-controller" => "elm--weight",
+    "data-elm--weight-start-value" => Mass::DEFAULT_START,
+    "data-elm--weight-units-value" => @unit.key.to_s,
+    "data-elm--weight-kilos-value" => "[#{@kilos.map(&:to_s).join(',')}]",
+    "data-elm--weight-dates-value" => "[\"#{@dates.map(&:to_s).join('","')}\"]",
+    "data-elm--weight-debug-value" => "false",
+    "data-action" => "keydown@window->elm--weight#moveCross",
+  }
+    .row
+      %div{class: col(lo[0])}
+        = label_tag :start, t("mass.start"), class: "visually-hidden"
+        = select_tag :start, mass_months_menu, class: "form-select", "data-action" => "elm--weight#changeStart"
+      %div{class: col(lo[1])}
+        = label_tag :units, t("mass.unit.unit"), class: "visually-hidden"
+        = select_tag :units, mass_unit_menu, class: "form-select", "data-action" => "elm--weight#changeUnits"
+    %div{"data-elm--weight-target" => "elm"}
   .footer
     = link_to t("list"), masses_path, class: "blue-btn"
     - if can?(:create, Mass)

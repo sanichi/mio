@@ -1,8 +1,5 @@
 - my_meta_tags "pages.play"
 
-- content_for :javascript do
-  = render partial: "play", formats: :js
-
 .row
   %div{class: center(lg: 8, md: 10, sm: 12)}
-    #elm
+    %div{"data-controller" => "elm--play"}

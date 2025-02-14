@@ -1,10 +1,7 @@
 - my_meta_tags "pages.aoc"
 
-- content_for :javascript do
-  = render partial: "aoc", formats: :js, locals: { year: params[:year], day: params[:day] }
-
 %section
   .header.text-center
     %h3= t("pages.aoc.title")
   .body
-    #elm-app
+    %div{"data-controller" => "elm--aoc"}
