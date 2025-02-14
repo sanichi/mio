@@ -4,26 +4,21 @@ export default class extends Controller {
   static values = {
     ftob: Object,
     btof: Object,
-    okay: Boolean,
   }
 
   mouseEnter(e) {
-    if (this.okayValue) {
-      if (e.target.id.startsWith("bay")) {
-        this.highlight(e.target, undefined, true);
-      } else {
-        this.highlight(undefined, e.target, true);
-      }
+    if (e.target.id.startsWith("bay")) {
+      this.highlight(e.target, undefined, true);
+    } else {
+      this.highlight(undefined, e.target, true);
     }
   }
 
   mouseLeave(e) {
-    if (this.okayValue) {
-      if (e.target.id.startsWith("bay")) {
-        this.highlight(e.target, undefined, false);
-      } else {
-        this.highlight(undefined, e.target, false);
-      }
+    if (e.target.id.startsWith("bay")) {
+      this.highlight(e.target, undefined, false);
+    } else {
+      this.highlight(undefined, e.target, false);
     }
   }
 
