@@ -3,9 +3,6 @@
   inputs = [[:season, t("match.season"), :select, lo, menu: season_menu(@data.season)]]
   my_meta_tags "pages.premier"
 
-- content_for :javascript do
-  = render partial: "pages/premier/tooltips", formats: :js
-
 .row
   %div{class: center(xl: 8, lg: 10)}
     %section
@@ -14,7 +11,7 @@
       .body{"data-turbo" => "true"}
         = render "utils/search/form", index: premier_path, inputs: inputs
         = turbo_frame_tag :results, "data-turbo-action" => "advance" do
-          %table{class: "table table-bordered table-striped table-sm mt-3"}
+          %table{class: "table table-bordered table-striped table-sm mt-3", "data-controller" => "tooltips"}
             %thead
               %tr
                 %th.shrink
