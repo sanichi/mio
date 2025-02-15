@@ -1,10 +1,6 @@
 = render "utils/title", text: t("tutorial.title", number: @tutorial.number)
 
-- comments, boards = @tutorial.split_notes
-
-- unless boards.empty?
-  = content_for :javascript do
-    = render partial: "utils/board/boards", formats: :js, locals: { fens: boards }
+- comments = @tutorial.split_notes
 
 %section
   .header
@@ -25,8 +21,8 @@
       = @tutorial.date.strftime("%Y-%m-%d")
   .body
     - comments.each do |html|
-      - if html.match(/\AFEN__(\d+)\z/)
-        = render "utils/board/board", id: $1
+      - if html.match(/\AFEN__(.*)\z/)
+        = render "board", fen_opt: $1
       - else
         = html
   .footer

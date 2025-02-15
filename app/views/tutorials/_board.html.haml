@@ -1,0 +1,18 @@
+:ruby
+  opts = {}
+  if fen_opt =~ /\A([^|]+)\|(.*)\z/
+    opts[:fen] = $1
+    optx = $2
+    opts[:marks] = $1.split(",") if optx =~ /\bm:(\S+)/
+    opts[:notation]    = true    if optx =~ /\bn:[ty]/
+    opts[:orientation] = "white" if optx =~ /\bo:w/
+    opts[:orientation] = "black" if optx =~ /\bo:b/
+    opts[:scheme]      = $1      if optx =~ /\bs:(\S+)/
+  else
+    opts[:fen] = fen_opt
+  end
+  
+.mt-3
+.div{class: center(xl: 4, lg: 6, md: 8, sm: 10)}
+  = render "utils/board/board", opts
+.mb-3

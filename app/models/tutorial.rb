@@ -28,9 +28,9 @@ class Tutorial < ApplicationRecord
   end
 
   def split_notes
-    html, fens = split(notes)
+    html = split(notes)
     html.unshift "<p>Summary: #{summary}".html_safe
-    [html, fens]
+    html
   end
 
   private

@@ -1,9 +1,36 @@
 = render "utils/title", key: "pages.board"
 
-- content_for :javascript do
-  = render partial: "board", formats: :js
+.row
+  .div{class: center(xl: 4, lg: 6, md: 8, sm: 10)}
 
-- (1..5).each do |id|
-  .row.mb-3
-    .div{class: center(xl: 4, lg: 6, md: 8, sm: 10)}
-      .div{id: "elm-app-#{id}"}
+    = render "utils/board/board", orientation: "black"
+
+    .mt-3
+
+    = render "utils/board/board",
+      fen:         "8/1KP5/8/2p5/1pP5/p7/k7/1R3R2 w - - 0 1",
+      notation:    true,
+      orientation: "white",
+      scheme:      "green"
+
+    .mt-3
+
+    = render "utils/board/board",
+      fen:         "4k3/8/8/4P3/8/8/8/8 w - - 0 1",
+      marks:       ["od3", "oE3", "Of3", "xd2", "xe2", "xf2", "*d6", "*e6", "*f6"],
+      notation:    true,
+      orientation: "white",
+      pointer:     false,
+      scheme:      "blue"
+
+    .mt-3
+
+    = render "utils/board/board",
+      fen: "rnbqkb1r/pp1p1ppp/5n2/2pPp3/2P5/8/PP2PPPP/RNBQKBNR w KQkq e6 0 4",
+      marks: ["xe6"],
+      notation: true,
+      orientation: "black"
+
+    .mt-3
+
+    = render "utils/board/board", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", scheme: "#eaf0ce#bbbe64"

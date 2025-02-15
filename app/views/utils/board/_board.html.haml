@@ -1,3 +1,15 @@
-.row.mt-3.mb-3
-  %div{class: center(lg: 4, md: 6, sm: 8, xs: 10)}
-    %div{id: "board_#{id}"}
+- defined?(fen)         || fen = nil
+- defined?(marks)       || marks = nil
+- defined?(notation)    || notation = nil
+- defined?(orientation) || orientation = nil
+- defined?(pointer)     || pointer = nil
+- defined?(scheme)      || scheme = nil
+
+%div{"data-controller" => "board",
+  "data-board-fen-value"         => fen,
+  "data-board-marks-value"       => marks ? JSON.generate(marks) : nil,
+  "data-board-notation-value"    => notation.nil? ? nil : (notation ? "true" : "false"),
+  "data-board-orientation-value" => orientation,
+  "data-board-pointer-value"     => pointer.nil? ? nil : (pointer ? "true" : "false"),
+  "data-board-scheme-value"      => scheme,
+}
