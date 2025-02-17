@@ -1,13 +1,17 @@
 = render "utils/title", key: "person.family_tree"
 
-- content_for :javascript do
-  = render partial: "tree", formats: :js, locals: { person: @person }
-
 .row.justify-content-center.mt-3.mb-3
   .col-auto
-    = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30
+    = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30,
+      "data-controller" => "autocomplete--tree",
+      "data-autocomplete--tree-source-value" => "/people/match.json?realm=#{@person.realm}",
+      "data-autocomplete--tree-elm--tree-outlet" => "#tree"
 
-#elm
+%div{id: "tree",
+  "data-controller" => "elm--tree",
+  "data-elm--tree-focus-value" => @person.tree_hash(true).to_json,
+}
+  %div{"data-elm--tree-target" => "elm"}
 
 .row.justify-content-center.mt-3
   .col-auto

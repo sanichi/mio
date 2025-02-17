@@ -12,8 +12,10 @@ export default class extends Controller {
     debug: Boolean,
   }
 
+  app = null
+
   connect() {
-    window.weight_app = Elm.Weight.init({
+    this.app = Elm.Weight.init({
       node: this.elmTarget,
       flags: {
         start: this.startValue,
@@ -24,21 +26,22 @@ export default class extends Controller {
       }
     });
 
+    const controller = this;
     document.getElementById("weight").addEventListener("click", (e) => {
       const pt = e.target.createSVGPoint();
       pt.x = e.clientX;
       pt.y = e.clientY;
       const qt = pt.matrixTransform(e.target.getScreenCTM().inverse());
-      weight_app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
+      controller.app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
     });
   }
 
   changeStart(e) {
-    weight_app.ports.changeStart.send(parseInt(e.target.value));
+    this.app.ports.changeStart.send(parseInt(e.target.value));
   }
 
   changeUnits(e) {
-    weight_app.ports.changeUnits.send(e.target.value);
+    this.app.ports.changeUnits.send(e.target.value);
   }
 
   moveCross(e) {
@@ -46,26 +49,22 @@ export default class extends Controller {
     switch (e.keyCode) {
       case 72: // h
       case 37: // left arrow
-        weight_app.ports.updateCross.send([-d,0]);
+        this.app.ports.updateCross.send([-d,0]);
         break;
       case 76: // l
       case 39: // right arrow
-        weight_app.ports.updateCross.send([d,0]);
+        this.app.ports.updateCross.send([d,0]);
         break;
       case 74: // j
       case 40: // down arrow
         e.preventDefault(); // otherwise down arrow may scroll page
-        weight_app.ports.updateCross.send([0,-d]);
+        this.app.ports.updateCross.send([0,-d]);
         break;
       case 75: // k
       case 38: // up arrow
         e.preventDefault(); // otherwise up arrow may scroll page
-        weight_app.ports.updateCross.send([0,d]);
+        this.app.ports.updateCross.send([0,d]);
         break;
     }
-  }
-
-  disconnect() {
-    delete window.weight_app
   }
 }
