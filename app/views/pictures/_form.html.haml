@@ -1,8 +1,3 @@
-
-- number = picture.people.size + 3
-- content_for :javascript do
-  = render partial: "person_completer", formats: :js, locals: { number: number, realm: picture.realm }
-
 :ruby
   inputs = [
     [:image,       t("picture.file"),     :text,   maxlength: Picture::MAX_IMAGE],
@@ -10,7 +5,10 @@
     [:realm,       t("person.realm"),     :select, menu: person_realm_menu(picture.realm)],
     [:description, t("description"),      :area,   rows: 10],
   ]
+  number = picture.people.size + 3
+  source = "/people/match.json?realm=#{picture.realm}"
   (0..number-1).to_a.reverse.each do |i|
-    inputs.insert 1, ["picture[people][]", t("picture.person", number: i + 1), :combo2, menu: picture_person_menu(picture, i), select_id: "picture_people_#{i}", completer_id: "person_id_completer_#{i}"]
+    inputs.insert 1, ["picture[people][]", t("picture.person", number: i + 1), :combo2, menu: picture_person_menu(picture, i), select_id: "picture_people_#{i}", source: source]
   end
+
 = render "utils/crud/form", object: picture, index: pictures_path, inputs: inputs, title: title

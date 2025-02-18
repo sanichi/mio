@@ -4,4 +4,7 @@
 = label_tag select_id, label, class: "form-label"
 .row
   .col-6= select_tag param, menu, id: select_id, class: "form-select"
-  .col-6= text_field_tag term, "", id: completer_id, placeholder: placeholder, class: "form-control"
+  .col-6= text_field_tag term, "", class: "form-control", placeholder: placeholder,
+    "data-controller" => "autocomplete--combo",
+    "data-autocomplete--combo-source-value" => source,
+    "data-autocomplete--combo-target-value" => select_id

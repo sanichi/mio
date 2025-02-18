@@ -1,9 +1,10 @@
-- defined?(term) || term = :term
+- defined?(term)        || term = :term
+- defined?(placeholder) || placeholder = t("search")
 
 = form.label param, label, class: "form-label"
 .row
   .col-6= form.select param, menu, {}, { class: "form-select", size: nil }
-  .col-6= text_field_tag term, "", class: "form-control",
+  .col-6= text_field_tag term, "", class: "form-control", placeholder: placeholder,
     "data-controller" => "autocomplete--combo",
     "data-autocomplete--combo-source-value" => source,
     "data-autocomplete--combo-target-value" => "#{model}_#{param}"
