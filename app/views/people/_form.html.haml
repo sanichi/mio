@@ -1,8 +1,12 @@
-- content_for :javascript do
-  = render partial: "parent_completer", formats: :js, locals: { max_born: person.new_record?? 0 : person.born, realm: person.new_record?? -1 : person.realm }
+:ruby
+  max_born = @person.new_record?? 0 : @person.born
+  realm_param = @person.new_record?? "" : "&realm=#{@person.realm}"
+  father_source = "/people/match.json?gender=male&max_born=#{max_born}#{realm_param}"
+  mother_source = "/people/match.json?gender=female&max_born=#{max_born}#{realm_param}"
 
 :ruby
   inputs = [
+    [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
     [:last_name,    t("person.last_name"),    :text,   maxlength: Person::MAX_FN],
     [:first_names,  t("person.first_names"),  :text,   maxlength: Person::MAX_LN],
     [:known_as,     t("person.known_as"),     :text,   maxlength: Person::MAX_KA],
@@ -12,9 +16,8 @@
     [:died,         t("person.died"),         :text,   maxlength: 4],
     [:died_guess,   t("person.died_guess"),   :check],
     [:male,         t("person.male"),         :check],
-    [:father_id,    t("person.father"),       :combo,  menu: person_father_menu(person)],
-    [:mother_id,    t("person.mother"),       :combo,  menu: person_mother_menu(person)],
-    [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
+    [:father_id,    t("person.father"),       :combo,  menu: person_father_menu(person), model: "person", source: father_source],
+    [:mother_id,    t("person.mother"),       :combo,  menu: person_mother_menu(person), model: "person", source: mother_source],
     [:notes,        t("notes"),               :area,   rows: 10],
     [:sensitive,    t("person.sensitive"),    :area,   rows: 10],
   ]

@@ -3,4 +3,7 @@
 = form.label param, label, class: "form-label"
 .row
   .col-6= form.select param, menu, {}, { class: "form-select", size: nil }
-  .col-6= text_field_tag term, "", id: "#{param}_completer", class: "form-control"
+  .col-6= text_field_tag term, "", class: "form-control",
+    "data-controller" => "autocomplete--combo",
+    "data-autocomplete--combo-source-value" => source,
+    "data-autocomplete--combo-target-value" => "#{model}_#{param}"

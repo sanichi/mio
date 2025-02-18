@@ -1,10 +1,11 @@
-- content_for :javascript do
-  = render partial: "couples_completer", formats: :js, locals: { realm: partnership.realm }
+:ruby
+  husband_source = "/people/match.json?gender=male&realm=#{partnership.realm}"
+  wife_source = "/people/match.json?gender=female&realm=#{partnership.realm}"
 
 :ruby
   inputs = [
-    [:husband_id,    t("partnership.husband"),       :combo,  menu: partnership_husband_menu(partnership)],
-    [:wife_id,       t("partnership.wife"),          :combo,  menu: partnership_wife_menu(partnership)],
+    [:husband_id,    t("partnership.husband"),       :combo,  menu: partnership_husband_menu(partnership), model: "partnership", source: husband_source],
+    [:wife_id,       t("partnership.wife"),          :combo,  menu: partnership_wife_menu(partnership), model: "partnership", source: wife_source],
     [:wedding,       t("partnership.wedding"),       :text,   maxlength: 4],
     [:wedding_guess, t("partnership.wedding_guess"), :check],
     [:divorce,       t("partnership.divorce"),       :text,   maxlength: 4],
