@@ -18,6 +18,7 @@ export default class extends Controller {
         setTimeout(function() {
           controller.element.value = "";
         }, 200);
+        return false;
       }
     });
   }
