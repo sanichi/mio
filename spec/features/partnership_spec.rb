@@ -9,8 +9,10 @@ describe Partnership, js: true do
     login
     visit realm_people_path
     select t("person.realms")[data.realm], from: t("person.realm")
-    click_link t("family")
-    click_link t("partnership.partnerships")
+    unless page.title.include?(t("partnership.partnerships"))
+      click_link t("family")
+      click_link t("partnership.partnerships"), match: :first
+    end
   end
 
   context "create" do

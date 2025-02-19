@@ -13,7 +13,7 @@ describe Person, js: true do
     select t("person.realms")[data.realm], from: t("person.realm")
     unless page.title.include?(t("person.people"))
       click_link t("family")
-      click_link t("person.people")
+      click_link t("person.people"), match: :first
     end
   end
 

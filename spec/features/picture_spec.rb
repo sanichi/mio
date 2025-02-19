@@ -17,11 +17,9 @@ describe Picture, js: true do
     login
     visit realm_people_path
     select t("person.realms")[data.realm], from: t("person.realm")
-    if page.title.include?(t("person.people"))
-      click_link t("picture.pictures") # the button in the footnote since we didn't click Family
-    else
+    unless page.title.include?(t("picture.pictures"))
       click_link t("family")
-      click_link t("picture.pictures") # the nav link
+      click_link t("picture.pictures"), match: :first
     end
     expect(Picture.count).to eq 1
     expect(PersonPicture.count).to eq 2

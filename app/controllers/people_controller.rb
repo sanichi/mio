@@ -76,7 +76,7 @@ class PeopleController < ApplicationController
         session[:current_realm] = realm
       end
     end
-    redirect_to people_path
+    redirect_to tree_people_path
   end
 
   private
