@@ -9,7 +9,6 @@
     [:born,      t("person.born"),      :text,   lo[2], size: 10],
     [:died,      t("person.died"),      :text,   lo[3], size: 10],
     [:notes,     t("person.notes"),     :text,   lo[4], size: 10],
-    [:realm,     t("person.realm"),     :select, lo[5], menu: person_realm_menu(params[:realm])],
     [:order,     t("order"),            :select, lo[6], menu: person_search_order_menu(params[:order])],
     [:sensitive, t("person.sensitive"), :text,   lo[7], size: 10],
   ]
@@ -36,13 +35,13 @@
               = render "utils/pagination_links", pager: @people, columns: 4
       .footer#buttons
         - if can?(:create, Person)
-          = link_to t("person.new"), new_person_path(realm: params[:realm].to_i), class: "blue-btn"
+          = link_to t("person.new"), new_person_path, class: "blue-btn"
         = link_to t("help"), "#", class: "green-btn",
           "data-controller"      => "reveal",
           "data-reveal-id-value" => "help",
           "data-action"          => "reveal#toggle:prevent"
-        = link_to t("picture.pictures"), pictures_path(realm: params[:realm].to_i), class: "green-btn"
-        = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "green-btn"
+        = link_to t("picture.pictures"), pictures_path, class: "green-btn"
+        = link_to t("person.tree"), tree_people_path, class: "green-btn"
       .footer#help
         %h5= t("person.help.search")
         %ul

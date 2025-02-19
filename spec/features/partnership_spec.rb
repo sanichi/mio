@@ -7,7 +7,10 @@ describe Partnership, js: true do
 
   before(:each) do
     login
-    visit partnerships_path(realm: data.realm)
+    visit realm_people_path
+    select t("person.realms")[data.realm], from: t("person.realm")
+    click_link t("family")
+    click_link t("partnership.partnerships")
   end
 
   context "create" do
@@ -20,7 +23,6 @@ describe Partnership, js: true do
       fill_in t("partnership.divorce"), with: data.divorce if data.divorce
       check t("partnership.divorce_guess") if data.divorce_guess
       uncheck t("partnership.marriage") unless data.marriage
-      select t("person.realms")[data.realm], from: t("person.realm")
       click_button t("save")
 
       expect(page).to have_title t("partnership.partnership")
@@ -28,6 +30,7 @@ describe Partnership, js: true do
       expect(Partnership.count).to eq 1
       p = Partnership.last
 
+      expect(p.realm).to be data.realm
       expect(p.husband_id).to eq husband.id
       expect(p.wife.id).to eq wife.id
       expect(p.wedding).to eq data.wedding
@@ -35,7 +38,6 @@ describe Partnership, js: true do
       expect(p.divorce).to be_nil
       expect(p.divorce_guess).to eq data.divorce_guess
       expect(p.marriage).to be data.marriage
-      expect(p.realm).to be data.realm
     end
   end
 
@@ -44,7 +46,6 @@ describe Partnership, js: true do
       click_link t("partnership.new")
       select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
       fill_in t("partnership.wedding"), with: data.wedding
-      select t("person.realms")[data.realm], from: t("person.realm")
       click_button t("save")
 
       expect(page).to have_title t("partnership.new")
@@ -56,7 +57,6 @@ describe Partnership, js: true do
       click_link t("partnership.new")
       select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
       select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
-      select t("person.realms")[data.realm], from: t("person.realm")
       click_button t("save")
 
       expect(page).to have_title t("partnership.new")
@@ -69,7 +69,6 @@ describe Partnership, js: true do
       select husband.name(reversed: true, with_years: true), from: t("partnership.husband")
       select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
       fill_in t("partnership.wedding"), with: [husband.born, wife.born].min - 1
-      select t("person.realms")[data.realm], from: t("person.realm")
       click_button t("save")
 
       expect(page).to have_title t("partnership.new")
@@ -86,7 +85,6 @@ describe Partnership, js: true do
       select wife.name(reversed: true, with_years: true), from: t("partnership.wife")
       fill_in t("partnership.wedding"), with: data.wedding
       uncheck t("partnership.marriage") unless data.marriage
-      select t("person.realms")[data.realm], from: t("person.realm")
       click_button t("save")
 
       expect(page).to have_title t("partnership.new")

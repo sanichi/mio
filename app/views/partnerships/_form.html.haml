@@ -1,6 +1,6 @@
 :ruby
-  husband_source = "/people/match.json?gender=male&realm=#{partnership.realm}"
-  wife_source = "/people/match.json?gender=female&realm=#{partnership.realm}"
+  husband_source = "/people/match.json?gender=male"
+  wife_source = "/people/match.json?gender=female"
 
 :ruby
   inputs = [
@@ -11,6 +11,5 @@
     [:divorce,       t("partnership.divorce"),       :text,   maxlength: 4],
     [:divorce_guess, t("partnership.divorce_guess"), :check],
     [:marriage,      t("partnership.marriage"),      :check],
-    [:realm,         t("person.realm"),              :select, menu: person_realm_menu(partnership.realm)],
   ]
 = render "utils/crud/form", object: partnership, index: partnerships_path, inputs: inputs, title: title

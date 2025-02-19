@@ -1,14 +1,12 @@
 :ruby
   lo = Layout.new(
-    xx: [2,2,1],
-    xl: [3,3,2],
-    md: [4,4,2],
-    xs: [4,4,4],
+    xx: [2,2],
+    lg: [3,3],
+    sm: [4,4],
   ).to_a
   inputs = [
     [:name,        t("name"),        :text,   lo[0], placeholder: t("name")],
     [:description, t("description"), :text,   lo[1], placeholder: t("description")],
-    [:realm,       t("wk.level"),    :select, lo[2], menu: person_realm_menu(params[:realm])],
   ]
 
 = render "utils/title", key: "picture.pictures"
@@ -23,13 +21,13 @@
         = render "results", pictures: @pictures
   .footer
     - if can?(:create, Picture)
-      = link_to t("picture.new"), new_picture_path(realm: params[:realm].to_i), class: "blue-btn"
+      = link_to t("picture.new"), new_picture_path, class: "blue-btn"
     = link_to t("help"), "#", class: "green-btn",
       "data-controller"      => "reveal",
       "data-reveal-id-value" => "help",
       "data-action"          => "reveal#toggle:prevent"
-    = link_to t("person.people"), people_path(realm: params[:realm].to_i), class: "green-btn"
-    = link_to t("person.tree"), tree_people_path(realm: params[:realm].to_i), class: "green-btn"
+    = link_to t("person.people"), people_path, class: "green-btn"
+    = link_to t("person.tree"), tree_people_path, class: "green-btn"
   .footer#help
     %h5= t("person.help.tree")
     %ul

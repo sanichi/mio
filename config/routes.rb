@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     get :match, on: :collection
     get :relative, on: :member
     get :tree, on: :collection
+    get :realm, on: :collection
+    post :set_realm, on: :collection
   end
   resources :pictures
   resources :places do

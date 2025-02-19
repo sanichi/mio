@@ -9,7 +9,6 @@ class PartnershipsController < ApplicationController
 
   def new
     person_id = params[:person_id].to_i
-    realm = params[:realm].to_i
     if person_id > 0 && (person = Person.find_by(id: person_id))
       if person.male
         husband_id = person_id
@@ -17,10 +16,11 @@ class PartnershipsController < ApplicationController
         wife_id = person_id
       end
     end
-    @partnership = Partnership.new(husband_id: husband_id, wife_id: wife_id, realm: realm)
+    @partnership = Partnership.new(husband_id: husband_id, wife_id: wife_id, realm: current_realm)
   end
 
   def create
+    params[:partnership][:realm] = current_realm
     @partnership = Partnership.new(strong_params)
     if @partnership.save
       redirect_to @partnership
@@ -31,6 +31,7 @@ class PartnershipsController < ApplicationController
   end
 
   def update
+    params[:partnership][:realm] = current_realm
     if @partnership.update(strong_params)
       redirect_to @partnership
     else

@@ -9,7 +9,12 @@ describe Person, js: true do
 
   before(:each) do
     @user = login
-    visit people_path(realm: data.realm)
+    visit realm_people_path
+    select t("person.realms")[data.realm], from: t("person.realm")
+    unless page.title.include?(t("person.people"))
+      click_link t("family")
+      click_link t("person.people")
+    end
   end
 
   context "create" do
@@ -23,7 +28,6 @@ describe Person, js: true do
       fill_in t("person.died"), with: data.died
       check t("person.died_guess") if data.died_guess
       select father.name(reversed: true, with_years: true, with_married_name: true), from: t("person.father")
-      select t("person.realms")[data.realm], from: t("person.realm")
       select mother.name(reversed: true, with_years: true, with_married_name: true), from: t("person.mother")
       fill_in t("person.notes"), with: data.notes
       fill_in t("person.sensitive"), with: data.sensitive
@@ -36,6 +40,7 @@ describe Person, js: true do
       expect(Person.count).to eq count + 1
       p = Person.last
 
+      expect(p.realm).to eq data.realm
       expect(p.last_name).to eq data.last_name
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq data.known_as
@@ -43,7 +48,6 @@ describe Person, js: true do
       expect(p.born_guess).to eq data.born_guess
       expect(p.died).to eq data.died
       expect(p.died_guess).to eq data.died_guess
-      expect(p.realm).to eq data.realm
       expect(p.male).to eq data.male
       expect(p.married_name).to eq data.married_name
       expect(p.father_id).to eq father.id
@@ -64,6 +68,7 @@ describe Person, js: true do
       expect(Person.count).to eq count + 1
       p = Person.last
 
+      expect(p.realm).to eq data.realm
       expect(p.last_name).to eq data.last_name
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq p.first_names.split(" ").first
@@ -96,6 +101,7 @@ describe Person, js: true do
       expect(Person.count).to eq count + 1
       p = Person.last
 
+      expect(p.realm).to eq data.realm
       expect(p.last_name).to eq data.last_name
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq p.first_names.split(" ").first

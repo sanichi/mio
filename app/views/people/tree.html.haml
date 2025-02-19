@@ -4,7 +4,7 @@
   .col-auto
     = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 30,
       "data-controller" => "autocomplete--tree",
-      "data-autocomplete--tree-source-value" => "/people/match.json?realm=#{@person.realm}",
+      "data-autocomplete--tree-source-value" => "/people/match.json",
       "data-autocomplete--tree-elm--tree-outlet" => "#tree"
 
 %div{id: "tree",
@@ -19,8 +19,8 @@
       "data-controller"      => "reveal",
       "data-reveal-id-value" => "help",
       "data-action"          => "reveal#toggle:prevent"
-    = link_to t("person.people"), people_path(realm: @person.realm), class: "green-btn"
-    = link_to t("picture.pictures"), pictures_path(realm: @person.realm), class: "green-btn"
+    = link_to t("person.people"), people_path, class: "green-btn"
+    = link_to t("picture.pictures"), pictures_path, class: "green-btn"
 
 #help.row.justify-content-center.mt-3
   .col-auto

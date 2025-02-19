@@ -12,11 +12,11 @@ class PicturesController < ApplicationController
     person_id = params[:person_id].to_i
     person = Person.find_by(id: person_id) if person_id > 0
     people = [person].compact
-    realm = params[:realm].to_i
-    @picture = Picture.new(people: people, realm: realm)
+    @picture = Picture.new(people: people, realm: current_realm)
   end
 
   def create
+    params[:picture][:realm] = current_realm
     @picture = Picture.new(strong_params)
     update_people
     if @picture.save
@@ -28,6 +28,7 @@ class PicturesController < ApplicationController
   end
 
   def update
+    params[:picture][:realm] = current_realm
     update_people
     if @picture.update(strong_params)
       redirect_to @picture

@@ -1,12 +1,11 @@
 :ruby
   lo = Layout.new(
-    xs: [3,3,3,3],
+    xs: [4,4,4],
   ).to_a
   inputs = [
     [:male,    t("person.male"),         :text,   lo[0], size: 12],
     [:female,  t("person.female"),       :text,   lo[1], size: 12],
     [:wedding, t("partnership.wedding"), :text,   lo[2], size: 12],
-    [:realm,   t("person.realm"),        :select, lo[3], menu: person_realm_menu(params[:realm])],
   ]
 
 = render "utils/title", key: "partnership.partnerships"
@@ -30,7 +29,7 @@
               = render "utils/pagination_links", pager: @partnerships, columns: 3
       .footer
         - if can?(:create, Partnership)
-          = link_to t("partnership.new"), new_partnership_path(realm: params[:realm].to_i), class: "blue-btn"
+          = link_to t("partnership.new"), new_partnership_path, class: "blue-btn"
         = link_to t("help"), "#", class: "green-btn",
           "data-controller"      => "reveal",
           "data-reveal-id-value" => "help",

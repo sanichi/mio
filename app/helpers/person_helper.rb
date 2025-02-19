@@ -12,9 +12,9 @@ module PersonHelper
     options_for_select(ords, selected)
   end
 
-  def person_realm_menu(selected)
+  def person_realm_menu
     opts = Person::MIN_REALM.upto(Person::MAX_REALM).map { |d| [ t("person.realms")[d], d.to_s ] }
-    options_for_select(opts, selected)
+    options_for_select(opts, current_realm)
   end
 
   def person_father_menu(person)

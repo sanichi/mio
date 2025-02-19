@@ -1,12 +1,10 @@
 :ruby
   max_born = @person.new_record?? 0 : @person.born
-  realm_param = @person.new_record?? "" : "&realm=#{@person.realm}"
-  father_source = "/people/match.json?gender=male&max_born=#{max_born}#{realm_param}"
-  mother_source = "/people/match.json?gender=female&max_born=#{max_born}#{realm_param}"
+  father_source = "/people/match.json?gender=male&max_born=#{max_born}"
+  mother_source = "/people/match.json?gender=female&max_born=#{max_born}"
 
 :ruby
   inputs = [
-    [:realm,        t("person.realm"),        :select, menu: person_realm_menu(person.realm)],
     [:last_name,    t("person.last_name"),    :text,   maxlength: Person::MAX_FN],
     [:first_names,  t("person.first_names"),  :text,   maxlength: Person::MAX_LN],
     [:known_as,     t("person.known_as"),     :text,   maxlength: Person::MAX_KA],

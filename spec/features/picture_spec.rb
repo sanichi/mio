@@ -15,9 +15,13 @@ describe Picture, js: true do
 
   before(:each) do
     login
-    visit people_path(realm: data.realm)
-    within("#buttons") do
-      click_link t("picture.pictures")
+    visit realm_people_path
+    select t("person.realms")[data.realm], from: t("person.realm")
+    if page.title.include?(t("person.people"))
+      click_link t("picture.pictures") # the button in the footnote since we didn't click Family
+    else
+      click_link t("family")
+      click_link t("picture.pictures") # the nav link
     end
     expect(Picture.count).to eq 1
     expect(PersonPicture.count).to eq 2
@@ -33,7 +37,6 @@ describe Picture, js: true do
         select person1.name(reversed: true, with_years: true), from: t("picture.person", number: 1)
         select person2.name(reversed: true, with_years: true), from: t("picture.person", number: 2)
         select person3.name(reversed: true, with_years: true), from: t("picture.person", number: 3)
-        select t("person.realms")[data.realm], from: t("person.realm")
         click_button t("save")
 
         expect(Picture.count).to eq 2
@@ -43,6 +46,7 @@ describe Picture, js: true do
         title = [person1, person2, person3].sort{ |a, b| a.known_as <=> b.known_as }.map{ |p| p.name(full: false) }.join(", ").truncate(Picture::MAX_TITLE)
         expect(page).to have_title title
 
+        expect(p.realm).to eq data.realm
         expect(p.image).to eq data.image
         expect(p.description).to eq data.description
         expect(p.portrait).to eq data.portrait
@@ -58,7 +62,6 @@ describe Picture, js: true do
         fill_in t("picture.file"), with: data.image
         fill_in t("description"), with: data.description
         check t("picture.portrait") if data.portrait
-        select t("person.realms")[data.realm], from: t("person.realm")
         click_button t("save")
 
         expect(Picture.count).to eq 2

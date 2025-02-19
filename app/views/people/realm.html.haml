@@ -1,0 +1,36 @@
+:ruby
+  lo = Layout.new(lg: [4], sm: [6]).to_a.first
+
+= render "utils/title", key: "person.select_realm"
+
+.row
+  %div{class: center(lg: 10, xl: 8)}
+    %section
+      .header.text-center
+        %h3= t("person.select_realm")
+      .body
+        = form_tag set_realm_people_path, method: :post, class: "row g-3" do
+          %div{class: col(lo)}
+            = label_tag :realm, t("person.realm"), class: "visually-hidden"
+            = select_tag :realm, person_realm_menu, class: "form-select",
+              "data-controller" => "auto-submit",
+              "data-action" => "auto-submit#go"
+      .footer#buttons
+        = link_to t("help"), "#", class: "green-btn",
+          "data-controller"      => "reveal",
+          "data-reveal-id-value" => "help",
+          "data-action"          => "reveal#toggle:prevent"
+      .footer#help
+        %h5= t("person.help.realm")
+        %p There's more than one family tree here.
+        %ul
+          %li
+            %strong= t("person.realms")[0]
+            The real-life family of John Orr and Patricia Algeo (the default).
+          %li
+            %strong= t("person.realms")[1]
+            The fictional family of the character Patrick Melrose from the books of Edward St Aubyn.
+          %li
+            %strong= t("person.realms")[2]
+            A mixture of the real-life family of Elizabeth Jane Howard and characters from her book The Cazalet Chronicles.
+        %p Use the menu above to select the one you want.

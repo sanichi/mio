@@ -24,8 +24,10 @@ en:
     partners: Partners
     people: People
     person: Person
-    realm: Realm
+    realm: Family
     relationship_to: Relationship To
+    select: Select
+    select_realm: Select Family
     sensitive: Sensitive
     siblings: Siblings
     tree: Tree
@@ -46,6 +48,7 @@ en:
     help:
       partnership: How to Search for Partnerships
       picture: How to Search and View Pictures
+      realm: How to Select the Family
       search: How to Search for People
       tree: How to Use the Family Tree
     order:
@@ -54,9 +57,9 @@ en:
       known: by known as
       last: by last name
     realms:
-      - MO
-      - PM
-      - JH
+      - Orr-Algeo
+      - Patrick Melrose
+      - Howard-Cazalet
     symbol:
       male: ♂
       female: ♀
