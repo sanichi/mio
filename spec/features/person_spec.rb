@@ -27,6 +27,7 @@ describe Person, js: true do
       check t("person.born_guess") if data.born_guess
       fill_in t("person.died"), with: data.died
       check t("person.died_guess") if data.died_guess
+      check t("person.default") if data.default
       select father.name(reversed: true, with_years: true, with_married_name: true), from: t("person.father")
       select mother.name(reversed: true, with_years: true, with_married_name: true), from: t("person.mother")
       fill_in t("person.notes"), with: data.notes
@@ -46,6 +47,7 @@ describe Person, js: true do
       expect(p.known_as).to eq data.known_as
       expect(p.born).to eq data.born
       expect(p.born_guess).to eq data.born_guess
+      expect(p.default).to eq data.default
       expect(p.died).to eq data.died
       expect(p.died_guess).to eq data.died_guess
       expect(p.male).to eq data.male
@@ -72,6 +74,7 @@ describe Person, js: true do
       expect(p.last_name).to eq data.last_name
       expect(p.first_names).to eq data.first_names
       expect(p.known_as).to eq p.first_names.split(" ").first
+      expect(p.default).to eq false
       expect(p.born).to eq data.born
       expect(p.born_guess).to eq false
       expect(p.died).to be_nil

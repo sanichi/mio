@@ -17,7 +17,7 @@ class PeopleController < ApplicationController
   end
 
   def tree
-    @person = Person.find_by(id: params[:id]) || Person.where(realm: current_realm).order(updated_at: :desc).first
+    @person = Person.find_by(id: params[:id]) || Person.where(realm: current_realm, default: true).to_a.sample || Person.where(realm: current_realm).order(updated_at: :desc).first
     respond_to do |format|
       format.html
       format.json { render json: @person.tree_hash(true) }
@@ -86,6 +86,6 @@ class PeopleController < ApplicationController
   end
 
   def strong_params
-    params.require(:person).permit(:born, :born_guess, :died, :died_guess, :father_id, :first_names, :known_as, :last_name, :male, :married_name, :mother_id, :notes, :realm, :sensitive)
+    params.require(:person).permit(:born, :born_guess, :default, :died, :died_guess, :father_id, :first_names, :known_as, :last_name, :male, :married_name, :mother_id, :notes, :realm, :sensitive)
   end
 end

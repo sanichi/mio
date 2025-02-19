@@ -14,6 +14,7 @@
     [:died,         t("person.died"),         :text,   maxlength: 4],
     [:died_guess,   t("person.died_guess"),   :check],
     [:male,         t("person.male"),         :check],
+    [:default,      t("person.default"),      :check],
     [:father_id,    t("person.father"),       :combo,  menu: person_father_menu(person), model: "person", source: father_source],
     [:mother_id,    t("person.mother"),       :combo,  menu: person_mother_menu(person), model: "person", source: mother_source],
     [:notes,        t("notes"),               :area,   rows: 10],

@@ -1,16 +1,17 @@
 :ruby
   lo = Layout.new(
-    md: [[4,2,2,2],[3,2,3], [3]],
-    xs: [[3,3,3,3],[3,3,4], [3]],
+    md: [[4,2,2,2],[3,2,3], [3,2,3]],
+    xs: [[3,3,3,3],[3,3,4], [3,3,4]],
   ).to_a
   inputs = [
-    [:name,      t("name"),             :text,   lo[0], size: 14],
-    [:gender,    t("person.gender"),    :select, lo[1], menu: person_gender_search_menu(params[:gender])],
-    [:born,      t("person.born"),      :text,   lo[2], size: 10],
-    [:died,      t("person.died"),      :text,   lo[3], size: 10],
-    [:notes,     t("person.notes"),     :text,   lo[4], size: 10],
-    [:order,     t("order"),            :select, lo[6], menu: person_search_order_menu(params[:order])],
-    [:sensitive, t("person.sensitive"), :text,   lo[7], size: 10],
+    [:name,      t("name"),              :text,   lo[0], size: 14],
+    [:gender,    t("person.gender"),     :select, lo[1], menu: person_gender_search_menu(params[:gender])],
+    [:born,      t("person.born"),       :text,   lo[2], size: 10],
+    [:died,      t("person.died"),       :text,   lo[3], size: 10],
+    [:notes,     t("person.notes"),      :text,   lo[4], size: 10],
+    [:order,     t("order"),             :select, lo[6], menu: person_search_order_menu(params[:order])],
+    [:sensitive, t("person.additional"), :text,   lo[7], size: 10],
+    [:default,   t("person.default"),    :select, lo[9], menu: person_search_default_menu(params[:default])],
   ]
 
 = render "utils/title", key: "person.people"

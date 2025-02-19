@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_08_142332) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_19_154634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -178,6 +178,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_142332) do
     t.boolean "died_guess", default: false
     t.integer "realm", limit: 2, default: 0
     t.text "sensitive"
+    t.boolean "default", default: false
   end
 
   create_table "people_pictures", id: false, force: :cascade do |t|

@@ -34,4 +34,13 @@ module PersonHelper
     people.unshift [t("unknown"), ""]
     options_for_select(people, male ? person.father_id : person.mother_id)
   end
+
+  def person_search_default_menu(selected)
+    opts = [
+      [t("person.default"), ""],
+      [t("symbol.tick"), "y"],
+      [t("symbol.cross"), "n"],
+    ]
+    options_for_select(opts, selected)
+  end
 end

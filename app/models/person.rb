@@ -93,6 +93,8 @@ class Person < ApplicationRecord
     matches = matches.where(sql) if sql = numerical_constraint(params[:died], :died)
     matches = matches.where(male: true) if params[:gender] == "male"
     matches = matches.where(male: false) if params[:gender] == "female"
+    matches = matches.where(default: true) if params[:default] == "y"
+    matches = matches.where(default: false) if params[:default] == "n"
     matches = matches.where(realm: params[:realm].to_i)
     paginate(matches, params, path, opt)
   end
