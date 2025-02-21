@@ -24,11 +24,10 @@ class PeopleController < ApplicationController
     end
   end
 
-  def relative
-    p = Person.find_by(id: params[:id])
-    o = Person.find_by(id: params[:other])
-    relationship = p && o ? p.relationship(o).to_s(caps: true) : I18n.t("error")
-    render plain: relationship
+  def relationship
+    @person = Person.find_by(id: params[:id])
+    @other = Person.find_by(id: params[:other])
+    @relationship = @person.relationship(@other) if @person && @other
   end
 
   def checks

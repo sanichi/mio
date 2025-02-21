@@ -55,6 +55,8 @@ describe Person do
     it "normal, full, with known as, with years" do
       expect(mum.name(reversed: false, full: true, with_known_as: true, with_years: true)).to eq "Ruth Patricia Legard (Pat) Algeo 1927"
       expect(dad.name(reversed: false, full: true, with_known_as: true, with_years: true)).to eq "John Orr 1931-2015"
+      expect(mum.name(reversed: false, full: true, with_known_as: true, with_years: true, brackets: true)).to eq "Ruth Patricia Legard (Pat) Algeo (1927)"
+      expect(dad.name(reversed: false, full: true, with_known_as: true, with_years: true, brackets: true)).to eq "John Orr (1931-2015)"
     end
 
     it "normal, full, with known as, with married name" do
@@ -67,9 +69,9 @@ describe Person do
     let!(:thomas)  { create(:person, born: 1900, male: true, first_names: "Thomas", realm: realm) }
     let!(:mona)    { create(:person, born: 1901, male: false, first_names: "Mona", realm: realm) }
     let!(:pat)     { create(:person, born: 1927, male: false, father: thomas, mother: mona, first_names: "Pat", realm: realm) }
-    let!(:tom)     { create(:person, born: 1935, male: true, father: thomas, mother: mona, first_names: "Tom", realm: realm) }
+    let!(:tom)     { create(:person, born: 1935, male: true, died: 1998, father: thomas, mother: mona, first_names: "Tom", realm: realm) }
     let!(:june)    { create(:person, born: 1937, male: false, father: thomas, mother: mona, first_names: "June", realm: realm) }
-    let!(:doug)    { create(:person, born: 1939, male: true, father: thomas, mother: mona, first_names: "Doug", realm: realm) }
+    let!(:doug)    { create(:person, born: 1939, male: true, died: 2023, father: thomas, mother: mona, first_names: "Doug", realm: realm) }
     let!(:gerry)   { create(:person, born: 1936, male: true, first_names: "Gerry", realm: realm) }
     let!(:william) { create(:person, born: 1885, male: true, first_names: "William", realm: realm) }
     let!(:marlene) { create(:person, born: 1907, male: false, first_names: "Marlene", realm: realm) }
@@ -91,121 +93,113 @@ describe Person do
     let!(:jamie)   { create(:person, born: 1986, male: true, father: kirk, first_names: "Jamie", realm: realm) }
     let!(:ge_ju)   { create(:partnership, wedding: 1960, marriage: true, husband: gerry, wife: june, realm: realm) }
     let!(:jo_li)   { create(:partnership, wedding: 1950, marriage: true, husband: joe, wife: lily, realm: realm) }
-    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat, realm: realm) }
+    let!(:jo_pa)   { create(:partnership, wedding: 1950, marriage: true, husband: john, wife: pat, realm: realm, divorce: 2024) }
     let!(:ma_al)   { create(:partnership, wedding: 1990, marriage: true, husband: malc, wife: al, realm: realm) }
     let!(:ma_sa)   { create(:partnership, wedding: 1994, marriage: true, husband: mark, wife: sandra, realm: realm) }
     let!(:th_mo)   { create(:partnership, wedding: 1925, marriage: true, husband: thomas, wife: mona, realm: realm) }
-    let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: true, husband: william, wife: marlene, realm: realm) }
+    let!(:wm_ma)   { create(:partnership, wedding: 1927, marriage: false, husband: william, wife: marlene, realm: realm) }
 
     it "self" do
-      expect(thomas.relationship(thomas).to_s).to eq "self"
-      expect(june.relationship(june).to_s).to eq "self"
+      expect(thomas.relationship(thomas).to_s).to eq "is the same as"
+      expect(june.relationship(june).to_s).to eq "is the same as"
     end
 
     it "father/son/mother/daughter" do
-      expect(thomas.relationship(tom).to_s).to eq "father"
-      expect(doug.relationship(thomas).to_s).to eq "son"
-      expect(mona.relationship(pat).to_s).to eq "mother"
-      expect(pat.relationship(mona).to_s).to eq "daughter"
+      expect(thomas.relationship(tom).to_s).to eq "is the father of"
+      expect(doug.relationship(thomas).to_s).to eq "was a son of"
+      expect(mona.relationship(pat).to_s).to eq "is the mother of"
+      expect(pat.relationship(mona).to_s).to eq "is a daughter of"
     end
 
     it "brother/sister" do
-      expect(joe.relationship(john).to_s).to eq "brother"
-      expect(john.relationship(joe).to_s).to eq "brother"
-      expect(beth.relationship(jean).to_s).to eq "sister"
-      expect(jean.relationship(beth).to_s).to eq "sister"
-      expect(tom.relationship(pat).to_s).to eq "brother"
-      expect(pat.relationship(tom).to_s).to eq "sister"
+      expect(joe.relationship(john).to_s).to eq "is a brother of"
+      expect(john.relationship(joe).to_s).to eq "is a brother of"
+      expect(beth.relationship(jean).to_s).to eq "is a sister of"
+      expect(jean.relationship(beth).to_s).to eq "is a sister of"
+      expect(tom.relationship(pat).to_s).to eq "was a brother of"
+      expect(pat.relationship(tom).to_s).to eq "is a sister of"
     end
 
     it "grandfather/grandson/grandmother/granddaughter" do
-      expect(thomas.relationship(mark).to_s).to eq "grandfather"
-      expect(kirk.relationship(mona).to_s).to eq "grandson"
-      expect(mona.relationship(kirk).to_s).to eq "grandmother"
-      expect(paula.relationship(mona).to_s).to eq "granddaughter"
-      expect(penny.relationship(thomas).to_s).to eq "great-granddaughter"
-      expect(mona.relationship(jamie).to_s).to eq "great-grandmother"
-      expect(jamie.relationship(mona).to_s).to eq "great-grandson"
-      expect(thomas.relationship(penny).to_s).to eq "great-grandfather"
+      expect(thomas.relationship(mark).to_s).to eq "is a grandfather of"
+      expect(kirk.relationship(mona).to_s).to eq "is a grandson of"
+      expect(mona.relationship(kirk).to_s).to eq "is a grandmother of"
+      expect(paula.relationship(mona).to_s).to eq "is a granddaughter of"
+      expect(penny.relationship(thomas).to_s).to eq "is a great-granddaughter of"
+      expect(mona.relationship(jamie).to_s).to eq "is a great-grandmother of"
+      expect(jamie.relationship(mona).to_s).to eq "is a great-grandson of"
+      expect(thomas.relationship(penny).to_s).to eq "is a great-grandfather of"
     end
 
     it "uncle/aunt/nephew/niece" do
-      expect(tom.relationship(kirk).to_s).to eq "uncle"
-      expect(beth.relationship(malc).to_s).to eq "aunt"
-      expect(malc.relationship(beth).to_s).to eq "nephew"
-      expect(faye.relationship(mark).to_s).to eq "niece"
-      expect(jamie.relationship(doug).to_s).to eq "great-nephew"
-      expect(doug.relationship(jamie).to_s).to eq "great-uncle"
-      expect(penny.relationship(june).to_s).to eq "great-niece"
-      expect(june.relationship(penny).to_s).to eq "great-aunt"
+      expect(tom.relationship(kirk).to_s).to eq "was an uncle of"
+      expect(beth.relationship(malc).to_s).to eq "is an aunt of"
+      expect(malc.relationship(beth).to_s).to eq "is a nephew of"
+      expect(faye.relationship(mark).to_s).to eq "is a niece of"
+      expect(jamie.relationship(doug).to_s).to eq "is a great-nephew of"
+      expect(doug.relationship(jamie).to_s).to eq "was a great-uncle of"
+      expect(penny.relationship(june).to_s).to eq "is a great-niece of"
+      expect(june.relationship(penny).to_s).to eq "is a great-aunt of"
     end
 
     it "cousin" do
-      expect(mark.relationship(kirk).to_s).to eq "1st cousin"
-      expect(kirk.relationship(mark).to_s).to eq "1st cousin"
-      expect(penny.relationship(faye).to_s).to eq "1st cousin"
-      expect(faye.relationship(penny).to_s).to eq "1st cousin"
-      expect(malc.relationship(jamie).to_s).to eq "1st cousin once removed"
-      expect(jamie.relationship(malc).to_s).to eq "1st cousin once removed"
-      expect(penny.relationship(kirk).to_s).to eq "1st cousin once removed"
-      expect(kirk.relationship(penny).to_s).to eq "1st cousin once removed"
-      expect(penny.relationship(jamie).to_s).to eq "2nd cousin"
-      expect(jamie.relationship(penny).to_s).to eq "2nd cousin"
+      expect(mark.relationship(kirk).to_s).to eq "is a 1st cousin of"
+      expect(kirk.relationship(mark).to_s).to eq "is a 1st cousin of"
+      expect(penny.relationship(faye).to_s).to eq "is a 1st cousin of"
+      expect(faye.relationship(penny).to_s).to eq "is a 1st cousin of"
+      expect(malc.relationship(jamie).to_s).to eq "is a 1st cousin once removed of"
+      expect(jamie.relationship(malc).to_s).to eq "is a 1st cousin once removed of"
+      expect(penny.relationship(kirk).to_s).to eq "is a 1st cousin once removed of"
+      expect(kirk.relationship(penny).to_s).to eq "is a 1st cousin once removed of"
+      expect(penny.relationship(jamie).to_s).to eq "is a 2nd cousin of"
+      expect(jamie.relationship(penny).to_s).to eq "is a 2nd cousin of"
     end
 
-    it "husband/wife" do
-      expect(thomas.relationship(mona).to_s).to eq "husband"
-      expect(mona.relationship(thomas).to_s).to eq "wife"
-      expect(mark.relationship(sandra).to_s).to eq "husband"
-      expect(sandra.relationship(mark).to_s).to eq "wife"
+    it "husband/wife/partner" do
+      expect(thomas.relationship(mona).to_s).to eq "is the husband of"
+      expect(mona.relationship(thomas).to_s).to eq "is the wife of"
+      expect(mark.relationship(sandra).to_s).to eq "is the husband of"
+      expect(sandra.relationship(mark).to_s).to eq "is the wife of"
+      expect(pat.relationship(john).to_s).to eq "was the wife of"
+      expect(william.relationship(marlene).to_s).to eq "is the partner of"
     end
 
     it "father/son/mother/daughter by marriage" do
-      expect(john.relationship(sandra).to_s).to eq "father-in-law"
-      expect(marlene.relationship(pat).to_s).to eq "mother-in-law"
-      expect(john.relationship(mona).to_s).to eq "son-in-law"
-      expect(al.relationship(pat).to_s).to eq "daughter-in-law"
+      expect(john.relationship(sandra).to_s).to eq "is a father-in-law of"
+      expect(marlene.relationship(pat).to_s).to eq "is a mother-in-law of"
+      expect(john.relationship(mona).to_s).to eq "is a son-in-law of"
+      expect(al.relationship(pat).to_s).to eq "is a daughter-in-law of"
     end
 
     it "step father/son/mother/daughter" do
-      expect(malc.relationship(ross).to_s).to eq "step-father"
-      expect(ross.relationship(malc).to_s).to eq "step-son"
-      expect(sandra.relationship(penny).to_s).to eq "step-mother"
-      expect(penny.relationship(sandra).to_s).to  eq "step-daughter"
+      expect(malc.relationship(ross).to_s).to eq "is a step-father of"
+      expect(ross.relationship(malc).to_s).to eq "is a step-son of"
+      expect(sandra.relationship(penny).to_s).to eq "is a step-mother of"
+      expect(penny.relationship(sandra).to_s).to  eq "is a step-daughter of"
     end
 
     it "step brother/sister" do
-      expect(ross.relationship(tracey).to_s).to eq "step-brother"
-      expect(faye.relationship(ross).to_s).to eq "step-sister"
+      expect(ross.relationship(tracey).to_s).to eq "is a step-brother of"
+      expect(faye.relationship(ross).to_s).to eq "is a step-sister of"
     end
 
     it "brother/sister by marriage" do
-      expect(malc.relationship(sandra).to_s).to eq "brother-in-law"
-      expect(john.relationship(gerry).to_s).to eq "brother-in-law"
-      expect(pat.relationship(lily).to_s).to eq "sister-in-law"
-      expect(lily.relationship(beth).to_s).to eq "sister-in-law"
+      expect(malc.relationship(sandra).to_s).to eq "is a brother-in-law of"
+      expect(john.relationship(gerry).to_s).to eq "is a brother-in-law of"
+      expect(pat.relationship(lily).to_s).to eq "is a sister-in-law of"
+      expect(lily.relationship(beth).to_s).to eq "is a sister-in-law of"
     end
 
     it "uncle/aunt/nephew/niece by marriage" do
-      expect(gerry.relationship(mark).to_s).to eq "uncle"
-      expect(malc.relationship(gerry).to_s).to eq "nephew"
-      expect(lily.relationship(mark).to_s).to eq "aunt"
-      expect(faye.relationship(sandra).to_s).to eq "niece"
+      expect(gerry.relationship(mark).to_s).to eq "is an uncle of"
+      expect(malc.relationship(gerry).to_s).to eq "is a nephew of"
+      expect(lily.relationship(mark).to_s).to eq "is an aunt of"
+      expect(faye.relationship(sandra).to_s).to eq "is a niece of"
     end
 
     it "no relation" do
-      expect(thomas.relationship(william).to_s).to eq "no relation"
-      expect(mona.relationship(marlene).to_s).to eq "no relation"
-    end
-
-    it "capitalization" do
-      expect(thomas.relationship(thomas).to_s(caps: true)).to eq "self"
-      expect(thomas.relationship(mark).to_s(caps: true)).to eq "Grandfather"
-      expect(mona.relationship(jamie).to_s(caps: true)).to eq "Great-Grandmother"
-      expect(thomas.relationship(william).to_s(caps: true)).to eq "no relation"
-      expect(john.relationship(gerry).to_s(caps: true)).to eq "Brother-in-Law"
-      expect(malc.relationship(ross).to_s(caps: true)).to eq "Step-Father"
-      expect(malc.relationship(jamie).to_s(caps: true)).to eq "1st Cousin once removed"
+      expect(thomas.relationship(william).to_s).to eq "is no relation of"
+      expect(mona.relationship(marlene).to_s).to eq "is no relation of"
     end
   end
 

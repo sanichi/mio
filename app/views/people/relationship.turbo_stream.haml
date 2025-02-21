@@ -1,0 +1,9 @@
+= turbo_stream.after "relationship_row" do
+  %tr
+    %td.note{colspan: 2}
+      - if @relationship
+        = @person.known_as
+        = @relationship
+        = link_to @other.name(with_years: true, with_known_as: false, brackets: true), @other
+      - else
+        = t("error")

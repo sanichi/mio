@@ -1,6 +1,3 @@
-- content_for :javascript do
-  = render partial: "relation_completer", formats: :js, locals: { id: @person.id }
-
 = render "utils/title", text: @person.name(full: false)
 
 .row
@@ -63,13 +60,13 @@
             %tr
               %th= t("person.realm")
               %td= t("person.realms")[@person.realm]
-            %tr
+            %tr{id: "relationship_row"}
               %th= t("person.relationship_to")
-              %td.form-inline
+              %td
                 .input-group.input-group-sm
-                  = text_field_tag :term, "", class: "form-control", placeholder: t("search"), size: 25
-                = "&nbsp;&nbsp;".html_safe
-                %span#relative
+                  = text_field_tag :term, "", class: "form-control", placeholder: t("search"),
+                    "data-controller" => "autocomplete--relationship",
+                    "data-autocomplete--relationship-person-id-value" => @person.id
             - if @person.sensitive.present? && current_user.admin?
               %tr
                 %td.note{colspan: 2}= @person.combined_html

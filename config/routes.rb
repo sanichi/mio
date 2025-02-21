@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   resources :people do
     get :checks, on: :collection
     get :match, on: :collection
-    get :relative, on: :member
+    get :relationship, on: :member
     get :tree, on: :collection
     get :realm, on: :collection
     post :set_realm, on: :collection

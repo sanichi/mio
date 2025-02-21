@@ -36,11 +36,13 @@ class Person < ApplicationRecord
   scope :by_born,       -> { order(:born, :last_name, :first_names) }
   scope :by_known_as,   -> { order(:known_as, :last_name, :born) }
 
-  def name(full: true, reversed: false, with_known_as: true, with_years: false, with_married_name: false)
+  def name(full: true, reversed: false, with_known_as: true, with_years: false, with_married_name: false, brackets: false)
     fn = full ? first_names : known_as
     fn += " (#{known_as})" if full && with_known_as && !first_names.split(" ").include?(known_as)
     ln = last_name + (with_married_name && married_name.present? && married_name != last_name ? " (#{married_name})" : "")
-    years = with_years && born ? (died ? " #{born}-#{died}" : " #{born}") : ""
+    years = with_years && born ? (died ? "#{born}-#{died}" : "#{born}") : ""
+    years = "(#{years})" if years.present? && brackets
+    years = " #{years}" if years.present?
     (reversed ? "#{ln}, #{fn}" : "#{fn} #{ln}") + years
   end
 
@@ -152,7 +154,7 @@ class Person < ApplicationRecord
   def relationship(other)
     return Relation.new(:self) if self == other
     my_ancestor, their_ancestor = best_common_ancestor(other)
-    Relation.infer(my_ancestor, their_ancestor, male)
+    Relation.infer(my_ancestor, their_ancestor, self, other)
   end
 
   def tree_hash(focus=false)
