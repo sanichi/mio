@@ -55,10 +55,11 @@ class Grammar < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def update_level!(delta)
-    if delta == 1 || delta == -1
-      new_level = level + delta
-      update_column(:level, new_level) if LEVELS.include?(new_level)
+  def update_level!
+    if level > LEVELS.first
+      update_column(:level, level - 1)
+    else
+      update_column(:level, LEVELS.last)
     end
   end
 

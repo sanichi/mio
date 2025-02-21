@@ -2,4 +2,4 @@
   %td= grammar.ref
   %td= link_to grammar.title, grammar, "data-turbo" => "false"
   %td.text-center= "#{grammar.examples.size}/#{grammar.last_example_checked}"
-  %td.text-center= render "level", level: grammar.level
+  %td.text-center= render "level", grammar: grammar

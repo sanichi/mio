@@ -1,5 +1,5 @@
 :ruby
-  color = case level
+  color = case grammar.level
     when 1 then "success"
     when 2 then "primary"
     when 3 then "secondary"
@@ -7,4 +7,6 @@
     else        "danger"
   end
 
-%button.btn.btn-sm{class: "btn-#{color}"}= level
+= link_to grammar.level, "/grammars/#{grammar.id}/quick_level_update",
+  id: dom_id(grammar, :quick), class: "btn btn-sm btn-#{color}",
+  data: { turbo: true, turbo_method: :patch, turbo_stream: true }

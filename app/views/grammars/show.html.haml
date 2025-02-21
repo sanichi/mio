@@ -1,8 +1,5 @@
 = render "utils/title", text: @grammar.title
 
-- content_for :javascript do
-  = render partial: "level_update", formats: :js, locals: { id: @grammar.id }
-
 .row
   %div{class: center(lg: 10, xx: 8)}
     %section
@@ -14,7 +11,7 @@
           - if @prev
             = link_to t("symbol.prev"), @prev
           %span#level
-            = render "level", level: @grammar.level
+            = render "level", grammar: @grammar
           - if @next
             = link_to t("symbol.next"), @next
       .body
