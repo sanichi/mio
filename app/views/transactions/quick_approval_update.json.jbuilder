@@ -1,1 +1,0 @@
-json.text t("transaction.symbol.#{@transaction.approved ? 'approved' : 'unapproved'}")

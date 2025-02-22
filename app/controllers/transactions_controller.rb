@@ -23,6 +23,5 @@ class TransactionsController < ApplicationController
 
   def quick_approval_update
     @transaction.toggle_approved
-    render :quick_approval_update, layout: false
   end
 end

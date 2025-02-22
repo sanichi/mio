@@ -1,0 +1,4 @@
+= link_to t("transaction.symbol.#{transaction.approved ? 'approved' : 'unapproved'}"),
+  "/transactions/#{transaction.id}/quick_approval_update",
+  id: dom_id(transaction, :approve), class: "btn btn-sm approval-button",
+  data: { turbo: true, turbo_method: :patch, turbo_stream: true }
