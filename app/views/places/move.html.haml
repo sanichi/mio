@@ -1,27 +1,24 @@
 = render "utils/title", text: @place.jname
 
-- content_for :javascript do
-  = render partial: "move", formats: :js, locals: { place: @place }
-
 .row
   %div{class: center(xx: 4, xl: 5, lg: 6, md: 7, sm: 8, xs: 9)}
     %section
       .header.text-center
         %h3= @place.jname
-      .body
+      .body{"data-controller" => "shift", "data-shift-id-value" => @place.id}
         .row
           %div{class: center(xs: 4)}
-            %select#delta.form-select{name: "direction"}
+            %select.form-select{name: "direction", "data-shift-target" => "delta"}
               - [1, 2, 4, 8, 16].each do |d|
                 %option{value: d}= d
         - if @place.mark_y
           %p.text-center.mt-3
             - %w/e w n s/.each do |d|
-              %button.btn.btn-sm.btn-success.shifter{"data-direction" => d, "data-type" => "mark"}= t("place.directions.#{d}")
+              %button.btn.btn-sm.btn-success{"data-action" => "shift#go", "data-shift-d-param" => d, "data-shift-t-param" => "mark"}= t("place.directions.#{d}")
         - if @place.text_y
-          %p.text-center
+          %p.text-center.mt-3
             - %w/e w n s/.each do |d|
-              %button.btn.btn-sm.btn-dark.shifter{"data-direction" => d, "data-type" => "text"}= t("place.directions.#{d}")
+              %button.btn.btn-sm.btn-dark{"data-action" => "shift#go", "data-shift-d-param" => d, "data-shift-t-param" => "text"}= t("place.directions.#{d}")
       .body.border-top
         %div#map= render "map", vb: @place.vb, elements: @elements
       .footer
