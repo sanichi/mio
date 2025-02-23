@@ -5,8 +5,6 @@ module Wk
     def index
       remember_last_search(wk_radicals_path)
       @radicals = Wk::Radical.search(params, wk_radicals_path, per_page: 15, locale: :jp)
-      shortcut_search(@radicals)
-
     end
 
     def show
