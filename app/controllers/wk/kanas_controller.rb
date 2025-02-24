@@ -6,6 +6,7 @@ module Wk
     def index
       remember_last_search(wk_kanas_path)
       @kanas = Wk::Kana.search(params, wk_kanas_path, per_page: 10, locale: :jp)
+      @shortcut = @kanas.count == 1 && [0,1].include?(params[:page].to_i)
     end
 
     def update

@@ -45,15 +45,6 @@ class ApplicationController < ActionController::Base
     session["last_#{path}_search"] = fullpath
   end
 
-  # Used to use this index controllers like this:
-  #   shortcut_search(@vocabs)
-  # but it didn't work with turbo frames so looking for another solution.
-  def shortcut_search(results)
-    if results.count == 1 && params[:last_search].blank?
-      redirect_to results.matches.first
-    end
-  end
-
   def store_return_page(resource, return_page)
     return_page = nil if return_page.blank?
     session["#{resource}_return_page"] = return_page

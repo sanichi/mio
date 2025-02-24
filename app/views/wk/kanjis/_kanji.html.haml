@@ -1,5 +1,8 @@
+- defined?(shortcut) || shortcut = false
+
 %tr.d-flex
-  %td.col-1.text-center= link_to kanji.character, kanji, "data-turbo" => "false"
+  %td.col-1.text-center= link_to kanji.character, kanji,
+    "data-turbo" => "false", "data-shortcut-target" => shortcut ? "single" : nil
   %td.col-5= kanji.meaning
   %td.col-5= kanji.reading
   %td.col-1.text-center= kanji.level

@@ -6,6 +6,7 @@ module Wk
     def index
       remember_last_search(wk_vocabs_path)
       @vocabs = Wk::Vocab.search(params, wk_vocabs_path, per_page: 15, locale: :jp)
+      @shortcut = @vocabs.count == 1 && [0,1].include?(params[:page].to_i)
     end
 
     def show

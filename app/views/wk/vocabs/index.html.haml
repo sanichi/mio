@@ -19,14 +19,14 @@
 %section
   .header.text-center
     %h3= t("wk.vocab.vocabs")
-  .body{"data-turbo" => "true"}
+  .body{"data-turbo" => "true", "data-controller" => "shortcut"}
     = render "utils/search/form", index: wk_vocabs_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
         %thead
           = render "table_header"
         %tbody
-          = render partial: "vocab", collection: @vocabs.matches
+          = render partial: "vocab", collection: @vocabs.matches, locals: { shortcut: @shortcut }
           = render "utils/pagination_links", pager: @vocabs, columns: 4
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"

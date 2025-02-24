@@ -19,7 +19,7 @@
 %section
   .header.text-center
     %h3= t("wk.kana.kanas")
-  .body{"data-turbo" => "true"}
+  .body{"data-turbo" => "true", "data-controller" => "shortcut"}
     = render "utils/search/form", index: wk_kanas_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
@@ -31,7 +31,7 @@
             %th.col-3= t("wk.vocab.parts")
             %th.col-1.text-center= t("wk.level")
         %tbody
-          = render partial: "kana", collection: @kanas.matches
+          = render partial: "kana", collection: @kanas.matches, locals: { shortcut: @shortcut }
           = render "utils/pagination_links", pager: @kanas, columns: 5
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"

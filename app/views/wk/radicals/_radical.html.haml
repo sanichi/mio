@@ -1,5 +1,8 @@
+- defined?(shortcut) || shortcut = false
+
 %tr.d-flex
-  %td.col-2= link_to radical.name, radical, "data-turbo" => "false"
+  %td.col-2= link_to radical.name, radical,
+    "data-turbo" => "false", "data-shortcut-target" => shortcut ? "single" : nil
   %td.col-1.text-center= radical.character
   %td.col-8= radical.mnemonic.truncate(60)
   %td.col-1.text-center= radical.level

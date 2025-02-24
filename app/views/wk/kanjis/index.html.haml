@@ -17,7 +17,7 @@
 %section
   .header.text-center
     %h3= t("wk.kanji.kanjis")
-  .body{"data-turbo" => "true"}
+  .body{"data-turbo" => "true", "data-controller" => "shortcut"}
     = render "utils/search/form", index: wk_kanjis_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}
@@ -28,7 +28,7 @@
             %th.col-5.text-center= t("wk.reading")
             %th.col-1.text-center= t("wk.level")
         %tbody
-          = render partial: "kanji", collection: @kanjis.matches
+          = render partial: "kanji", collection: @kanjis.matches, locals: { shortcut: @shortcut }
           = render "utils/pagination_links", pager: @kanjis, columns: 4
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
