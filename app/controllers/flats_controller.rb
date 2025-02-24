@@ -17,7 +17,7 @@ class FlatsController < ApplicationController
       redirect_to @flat
     else
       failure @flat
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class FlatsController < ApplicationController
       redirect_to @flat
     else
       failure @flat
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

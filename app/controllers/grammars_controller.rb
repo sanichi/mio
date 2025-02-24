@@ -10,7 +10,7 @@ class GrammarsController < ApplicationController
       redirect_to @grammar
     else
       failure @grammar
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -19,7 +19,7 @@ class GrammarsController < ApplicationController
       redirect_to @grammar
     else
       failure @grammar
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

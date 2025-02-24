@@ -23,7 +23,7 @@ module Wk
         redirect_to redirect_page
       else
         failure @example
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -32,7 +32,7 @@ module Wk
         redirect_to redirect_page
       else
         failure @example
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

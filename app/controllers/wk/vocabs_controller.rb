@@ -20,7 +20,7 @@ module Wk
         redirect_to @vocab
       else
         failure @vocab
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

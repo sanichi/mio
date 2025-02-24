@@ -18,7 +18,7 @@ module Wk
         redirect_to wk_groups_path
       else
         failure @group
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -27,7 +27,7 @@ module Wk
         redirect_to wk_groups_path
       else
         failure @group
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

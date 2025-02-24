@@ -16,7 +16,7 @@ class ConstellationsController < ApplicationController
       redirect_to @constellation
     else
       failure @constellation
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -25,7 +25,7 @@ class ConstellationsController < ApplicationController
       redirect_to @constellation
     else
       failure @constellation
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

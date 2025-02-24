@@ -14,7 +14,7 @@ module Wk
         redirect_to @kana
       else
         failure @kana
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

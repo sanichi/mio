@@ -17,7 +17,7 @@ class FavouritesController < ApplicationController
       redirect_to @favourite
     else
       failure @favourite
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class FavouritesController < ApplicationController
       redirect_to @favourite
     else
       failure @favourite
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

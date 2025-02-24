@@ -16,7 +16,7 @@ class StarsController < ApplicationController
       redirect_to @star
     else
       failure @star
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -25,7 +25,7 @@ class StarsController < ApplicationController
       redirect_to @star
     else
       failure @star
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -17,7 +17,7 @@ class ClassifiersController < ApplicationController
       redirect_to @classifier
     else
       failure @classifier
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class ClassifiersController < ApplicationController
       redirect_to @classifier
     else
       failure @classifier
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

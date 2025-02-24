@@ -49,7 +49,7 @@ class PeopleController < ApplicationController
       redirect_to @person
     else
       failure @person
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -59,7 +59,7 @@ class PeopleController < ApplicationController
       redirect_to @person
     else
       failure @person
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

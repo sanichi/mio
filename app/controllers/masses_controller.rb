@@ -13,10 +13,6 @@ class MassesController < ApplicationController
     end
   end
 
-  # def graph
-    # @mgd = MassGraphData.new(@unit, @start)
-  # end
-
   def new
     @mass = Mass.new
     @mass.date = Mass.any?? Mass.maximum(:date) + 1 : Date.today
@@ -28,7 +24,7 @@ class MassesController < ApplicationController
       redirect_to weight_path
     else
       failure @mass
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -37,7 +33,7 @@ class MassesController < ApplicationController
       redirect_to weight_path
     else
       failure @mass
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
