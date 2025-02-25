@@ -6,6 +6,3 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 Turbo.session.drive = false;
-
-import Rails from "@rails/ujs"
-Rails.start();

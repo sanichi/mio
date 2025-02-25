@@ -14,5 +14,4 @@
         - if can?(:edit, Note)
           = link_to t("edit"), edit_note_path(@note), class: "blue-btn"
         - if can?(:delete, Note)
-          %span{"data-turbo" => "true"}
-            = link_to t("delete"), @note, class: "red-btn", data: { turbo_method: :delete, turbo_confirm: t("sure") }
+          = link_to t("delete"), @note, class: "red-btn", data: { turbo: true, turbo_method: :delete, turbo_confirm: t("sure") }

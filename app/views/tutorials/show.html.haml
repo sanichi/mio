@@ -30,5 +30,4 @@
     - if can?(:edit, Tutorial)
       = link_to t("edit"), edit_tutorial_path(@tutorial), class: "blue-btn"
     - if can?(:delete, Tutorial)
-      %span{"data-turbo" => "true"}
-        = link_to t("delete"), @tutorial, class: "red-btn", data: { turbo_method: :delete, turbo_confirm: t("sure") }
+      = link_to t("delete"), @tutorial, class: "red-btn", data: { turbo: true, turbo_method: :delete, turbo_confirm: t("sure") }

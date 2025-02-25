@@ -8,5 +8,4 @@ Rails.application.config.assets.version = "1.0"
 
 Rails.application.config.assets.precompile += %w( jquery3.min.js jquery-ui/widgets/autocomplete.js )
 Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js )
-Rails.application.config.assets.precompile += %w( @rails--ujs.js )
 Rails.application.config.assets.precompile += %w( aoc board play tree weight ).map{|a| "elm_#{a}.min.js"}
