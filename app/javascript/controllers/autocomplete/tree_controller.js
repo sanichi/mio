@@ -1,4 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
+import "jquery"
+import "autocomplete"
 
 export default class extends Controller {
   static outlets = [ "elm--tree" ]
@@ -16,7 +18,9 @@ export default class extends Controller {
         if (ui.item) {
           controller.elmTreeOutlet.getFocus(ui.item.id);
         }
-        $(this).val("");
+        setTimeout(function() {
+          controller.element.value = "";
+        }, 200);
         return false;
       }
     });

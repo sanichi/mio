@@ -1,4 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
+import "jquery"
+import "autocomplete"
 
 export default class extends Controller {
   static values = {
