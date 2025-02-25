@@ -14,7 +14,7 @@
 %section
   .header.text-center
     %h3= t("picture.pictures")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: pictures_path, inputs: inputs
     .mt-3
       = turbo_frame_tag :results, "data-turbo-action" => "advance" do

@@ -1,4 +1,4 @@
 %tr
-  %td= link_to constellation.name, constellation, "data-turbo" => "false"
+  %td= link_to constellation.name, constellation, "data-turbo-frame" => "_top"
   %td= constellation.iau
-  %td= link_to constellation.stars_count, stars_path(constellation_id: constellation.id), "data-turbo" => "false"
+  %td= link_to constellation.stars_count, stars_path(constellation_id: constellation.id), "data-turbo-frame" => "_top"

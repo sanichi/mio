@@ -1,5 +1,5 @@
 %tr
-  %td= link_to classifier.name, classifier, "data-turbo" => "false"
+  %td= link_to classifier.name, classifier, "data-turbo-frame" => "_top"
   %td= classifier.category.truncate(25)
   %td= classifier.description.truncate(25)
   %td= classifier.max_amount

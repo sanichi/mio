@@ -14,7 +14,7 @@
     %section
       .header.text-center
         %h3= t("login.logins")
-      .body{"data-turbo" => "true"}
+      .body
         = render "utils/search/form", index: logins_path, inputs: inputs
         = turbo_frame_tag :results, "data-turbo-action" => "advance" do
           %table{class: "table table-bordered table-sm mt-3"}

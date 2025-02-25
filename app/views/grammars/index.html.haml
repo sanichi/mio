@@ -15,7 +15,7 @@
 %section
   .header.text-center
     %h3= t("grammar.grammar")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: grammars_path, inputs: inputs
     .row
       %div{class: center(md: 10, lg: 8, xl: 6)}

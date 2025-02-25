@@ -1,5 +1,5 @@
 %tr
-  %td= link_to favourite.name, favourite, "data-turbo" => "false"
+  %td= link_to favourite.name, favourite, "data-turbo-frame" => "_top"
   %td.d-none.d-lg-table-cell= favourite.note.truncate(25)
   %td.text-center= I18n.t("favourite.categories")[favourite.category]
   %td.text-center= favourite.year

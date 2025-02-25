@@ -1,5 +1,5 @@
 %tr
-  %td= link_to star.name, star, "data-turbo" => "false"
+  %td= link_to star.name, star, "data-turbo-frame" => "_top"
   %td.text-center= link_to star_constellation(star), star.constellation
   %td.text-center= star.distance
   %td.text-center= star_decimal(star.magnitude)

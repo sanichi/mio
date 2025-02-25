@@ -3,7 +3,7 @@
 - defined?(reading)  || reading = false
 - defined?(pop)      || pop = false
 
-= link_to_if link, place.jname, place, "data-turbo" => "false"
+= link_to_if link, place.jname, place, "data-turbo-frame" => "_top"
 - if reading
   = surround("(", ")") do
     = place.reading

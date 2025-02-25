@@ -21,7 +21,7 @@
 %section.mt-3
   .header.text-center
     %h3= t("transaction.transactions")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: transactions_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %div

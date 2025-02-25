@@ -2,7 +2,7 @@
 
 .row
   %div{class: center(sm: 10, md: 8, lg: 6)}
-    %section{"data-turbo" => "true"}
+    %section
       = turbo_frame_tag :results, "data-turbo-action" => "advance" do
         .header.text-center
           %h3= t("mass.data")
@@ -24,6 +24,6 @@
               .btn.btn-secondary.btn-sm.mb-1= t("mass.unit.short.#{u}")
             - else
               = link_to t("mass.unit.short.#{u}"), @masses.page_path(unit: u), class: "green-btn", "data-turbo-frame" => "results"
-          = link_to t("graph"), weight_path(unit: @unit.key), class: "blue-btn", "data-turbo" => "false"
+          = link_to t("graph"), weight_path(unit: @unit.key), class: "blue-btn", "data-turbo-frame" => "_top"
           - if can?(:create, Mass)
-            = link_to t("mass.new"), new_mass_path, class: "blue-btn", "data-turbo" => "false"
+            = link_to t("mass.new"), new_mass_path, class: "blue-btn", "data-turbo-frame" => "_top"

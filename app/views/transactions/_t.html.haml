@@ -8,6 +8,6 @@
   %td= t("transaction.accounts.#{t.account}")
   %td.text-center
     - if t.classifier
-      = link_to t("symbol.separator"), t.classifier, style: color, "data-turbo" => "false"
+      = link_to t("symbol.separator"), t.classifier, style: color, "data-turbo-frame" => "_top"
     - else
       = render "approve", transaction: t

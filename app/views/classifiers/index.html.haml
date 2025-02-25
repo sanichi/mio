@@ -13,7 +13,7 @@
 %section.mt-3
   .header.text-center
     %h3= t("classifier.classifiers")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: classifiers_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table.table.table-bordered.table-sm.mt-3

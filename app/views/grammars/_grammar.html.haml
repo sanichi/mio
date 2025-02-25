@@ -1,5 +1,5 @@
 %tr
   %td= grammar.ref
-  %td= link_to grammar.title, grammar, "data-turbo" => "false"
+  %td= link_to grammar.title, grammar, "data-turbo-frame" => "_top"
   %td.text-center= "#{grammar.examples.size}/#{grammar.last_example_checked}"
   %td.text-center= render "level", grammar: grammar

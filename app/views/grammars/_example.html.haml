@@ -3,5 +3,5 @@
 %tr{id: dom_id(example)}
   %td= example.japanese_html
   %td= example.english
-  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), data: { turbo: true, turbo_method: :delete }, class: "yellow-btn"
+  %td.text-center= link_to t("symbol.cross"), remove_example_grammar_path(example_id: example.id), data: { turbo_method: :delete }, class: "yellow-btn"
   %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: grammar ? grammar_path(grammar) : nil), class: "blue-btn"

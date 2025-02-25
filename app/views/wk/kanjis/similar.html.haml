@@ -14,7 +14,7 @@
 %section
   .header.text-center
     %h3= t("wk.kanji.similar.similar")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: similar_wk_kanjis_path, inputs: inputs
     %p.mt-3.text-center#message= @message
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do

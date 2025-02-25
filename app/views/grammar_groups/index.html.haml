@@ -13,7 +13,7 @@
 %section
   .header.text-center
     %h3= t("grammar.group.groups")
-  .body{"data-turbo" => "true"}
+  .body
     = render "utils/search/form", index: grammar_groups_path, inputs: inputs
     .row
       %div{class: center(md: 10, lg: 8, xl: 6)}

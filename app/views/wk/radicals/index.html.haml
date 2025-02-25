@@ -18,7 +18,7 @@
 %section
   .header.text-center
     %h3= t("wk.radical.radicals")
-  .body{"data-turbo" => "true", "data-controller" => "shortcut"}
+  .body{"data-controller" => "shortcut"}
     = render "utils/search/form", index: wk_radicals_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered table-sm mt-3"}

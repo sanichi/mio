@@ -1,4 +1,4 @@
 %tr
-  %td= link_to note.title, note, "data-turbo" => "false"
+  %td= link_to note.title, note, "data-turbo-frame" => "_top"
   %td= note.series_number
   %td.text-center= note.updated_at.strftime("%Y-%m-%d")

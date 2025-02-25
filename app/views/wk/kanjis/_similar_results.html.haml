@@ -1,10 +1,10 @@
 - kanjis.matches.each do |kanji|
   %tr
-    %td.text-center.double-size{rowspan: 2}= link_to kanji.character, kanji, "data-turbo" => "false"
+    %td.text-center.double-size{rowspan: 2}= link_to kanji.character, kanji, "data-turbo-frame" => "_top"
     %td= kanji.meaning
-    %td.double-size{rowspan: 2, "data-turbo" => "false"}
+    %td.double-size{rowspan: 2}
       - kanji.similar_kanjis.each do |k|
-        = link_to k.character, k
+        = link_to k.character, k, "data-turbo-frame" => "_top"
   %tr
     %td= kanji.reading
 = render "utils/pagination_links", pager: kanjis, columns: 3
