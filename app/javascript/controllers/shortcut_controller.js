@@ -4,10 +4,9 @@ export default class extends Controller {
   static targets = [ "single" ]
 
   singleTargetConnected(element) {
-    element.removeAttribute("data-shortcut-target");
     const href = element.href;
     setTimeout(() => {
-      Turbo.visit(href);
+      Turbo.visit(href, { action: "replace" });
     }, 500);
   }
 }
