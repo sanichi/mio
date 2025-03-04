@@ -38,9 +38,10 @@ module Wk
       end
     end
 
-    def japanese_html(bold: nil, target: nil)
+    def japanese_html(bold: nil, target: nil, frame: nil)
       current = current_vocabs
       target = %(target="#{target}") if target
+      frame = %(data-turbo-frame="#{frame}") if frame
       japanese.gsub(PATTERN) do |match|
         display = $1
         characters = $2 || display
@@ -49,7 +50,7 @@ module Wk
         else
           vocab = current[characters]
           if vocab
-            %(<a href="/wk/vocabs/#{characters}" #{target}>#{display}</a>)
+            %(<a href="/wk/vocabs/#{characters}" #{target} #{frame}>#{display}</a>)
           else
             match
           end
@@ -58,7 +59,7 @@ module Wk
         display = $1
         jname = $2 || display
         if place = Place.find_by(jname: jname)
-          %(<a href="/places/#{place.id}" #{target}>#{display}</a>)
+          %(<a href="/places/#{place.id}" #{target} #{frame}>#{display}</a>)
         else
           match
         end
