@@ -14,6 +14,7 @@ module MassHelper
       ["2y", 24],
       ["4y", 48],
       ["6y", 72],
+      ["8y", 96],
       ["All", 0]
     ]
     options_for_select(opts, Mass::DEFAULT_START)
