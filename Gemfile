@@ -40,9 +40,6 @@ end
 # Temporary fix to silence warnings about gem no longer being standard library
 gem "ostruct", "~> 0.6.1"
 
-# Temporary fix because of glibc version on Alma Linux 8
-gem "nokogiri", force_ruby_platform: true
-
 group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
 end

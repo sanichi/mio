@@ -1,2 +1,2 @@
 #!/bin/sh
-sd -d mio -s nhn $1
+sd -d mio -s mor $1
