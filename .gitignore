@@ -20,3 +20,5 @@
 /config/database.yml
 
 elm-stuff/
+
+/spec/examples.txt
