@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_19_154634) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_134939) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -94,6 +94,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_19_154634) do
     t.datetime "updated_at", null: false
     t.string "eregexp", limit: 64
     t.string "ref", limit: 10
+  end
+
+  create_table "ks_boots", force: :cascade do |t|
+    t.string "server", limit: 3
+    t.string "app", limit: 6
+    t.datetime "happened_at"
+    t.index ["happened_at", "server", "app"], name: "index_ks_boots_on_happened_at_and_server_and_app", unique: true
   end
 
   create_table "logins", id: :serial, force: :cascade do |t|
