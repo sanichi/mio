@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_30_102226) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_30_132228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -113,6 +113,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_102226) do
     t.integer "swap_used"
     t.integer "swap_free"
     t.index ["measured_at", "server"], name: "index_ks_mems_on_measured_at_and_server", unique: true
+  end
+
+  create_table "ks_tops", force: :cascade do |t|
+    t.string "server", limit: 3
+    t.datetime "measured_at"
+    t.index ["measured_at", "server"], name: "index_ks_tops_on_measured_at_and_server", unique: true
   end
 
   create_table "logins", id: :serial, force: :cascade do |t|
