@@ -2,6 +2,8 @@ module Ks
   class Top < ActiveRecord::Base
     include Pageable
 
+    has_many :procs, foreign_key: :ks_top_id, dependent: :destroy
+
     validates :server, inclusion: { in: SERVERS }
     validates :measured_at, presence: true, uniqueness: { scope: [:server], message: "the same time with the same server" }
 
