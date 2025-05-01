@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_30_134501) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -101,6 +101,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_134501) do
     t.string "app", limit: 6
     t.datetime "happened_at"
     t.index ["happened_at", "server", "app"], name: "index_ks_boots_on_happened_at_and_server_and_app", unique: true
+  end
+
+  create_table "ks_journals", force: :cascade do |t|
+    t.integer "boot", default: 0
+    t.integer "mem", default: 0
+    t.integer "top", default: 0
+    t.integer "proc", default: 0
+    t.integer "warnings", default: 0
+    t.boolean "okay", default: true
+    t.text "note", default: ""
+    t.datetime "created_at"
+    t.index ["created_at"], name: "index_ks_journals_on_created_at", unique: true
   end
 
   create_table "ks_mems", force: :cascade do |t|
