@@ -10,5 +10,19 @@ module Ks
       matches = all
       paginate(matches, params, path, opt)
     end
+
+    def add_message(msg)
+      self.note += "#{msg}\n"
+    end
+
+    def add_warning(msg)
+      self.warnings += 1
+      self.note += "WARNING: #{msg}\n"
+    end
+
+    def add_error(msg)
+      self.okay = false
+      self.note += "ERROR: #{msg}\n"
+    end
   end
 end
