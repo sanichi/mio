@@ -24,5 +24,9 @@ module Ks
       self.okay = false
       self.note += "ERROR: #{msg}\n"
     end
+
+    def add_neatly(msg, count)
+      add_message("%s%s %s" % [msg, "." * (20 - msg.length), count])
+    end
   end
 end
