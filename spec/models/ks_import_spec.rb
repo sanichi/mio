@@ -5,7 +5,8 @@ DF = "%Y-%m-%d %H:%M:%S"
 describe Ks do
   context "import" do
     it "1" do
-      journal = Ks.import(Rails.root + "spec/files/kanshi/1")
+      Ks.setup_test(1)
+      journal = Ks.import
       expect(Ks::Journal.count).to eq 1
       expect(journal.note).to_not match(/ERROR/)
       expect(journal.note).to_not match(/WARNING/)
@@ -28,6 +29,13 @@ describe Ks do
       expect(Ks::Boot.where.not(app: "reboot").descending.last.happened_at.strftime(DF)).to eq "2025-04-25 14:36:09"
       expect(Ks::Boot.where(app: "mio").count).to eq 2
       expect(Ks::Boot.where(app: "tmp").count).to eq 2
+
+      Ks::SERVERS.each do |server|
+        expect(Ks::BASE + server + "boot.log").to_not be_file
+        expect(Ks::BASE + server + "boot.tmp").to be_file
+        expect(Ks::BASE + server + "app.log").to_not be_file
+        expect(Ks::BASE + server + "app.tmp").to be_file
+      end
     end
   end
 end

@@ -34,6 +34,9 @@ module Ks
           raise "line #{num} (#{line}) of #{path} can't be parsed into a date"
         end
       end
+
+      tmp = dir + "boot.tmp"
+      system("mv #{file} #{tmp}")
     end
 
     def self.import_app(dir, server, journal)
@@ -58,6 +61,9 @@ module Ks
           raise "line #{num} (#{line}) of #{path} can't be parsed into a date"
         end
       end
+
+      tmp = dir + "app.tmp"
+      system("mv #{file} #{tmp}")
     end
   
     def self.search(params, path, opt={})
