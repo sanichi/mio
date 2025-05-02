@@ -7,14 +7,15 @@ describe Ks do
     it "1" do
       Ks.setup_test(1)
       journal = Ks.import
-      puts journal.note
+      #puts journal.note
       expect(Ks::Journal.count).to eq 1
-      expect(journal.okay).to be true
+      expect(journal).to be_okay
       expect(journal.boot).to eq 16
       expect(journal.mem).to eq 0
       expect(journal.top).to eq 0
       expect(journal.proc).to eq 0
       expect(journal.warnings).to eq 0
+      expect(journal.problems).to eq 0
       expect(journal.note).to_not match(/WARNING/)
       expect(journal.note).to_not match(/ERROR/)
       expect(journal.note).to match(/hok\/boot\.log\.+ 1/)
@@ -54,14 +55,15 @@ describe Ks do
     it "2" do
       Ks.setup_test(2)
       journal = Ks.import
-      puts journal.note
+      #puts journal.note
       expect(Ks::Journal.count).to eq 1
-      expect(journal.okay).to be false
+      expect(journal).to_not be_okay
       expect(journal.boot).to eq 11
       expect(journal.mem).to eq 0
       expect(journal.top).to eq 0
       expect(journal.proc).to eq 0
       expect(journal.warnings).to eq 4
+      expect(journal.problems).to eq 3
       expect(journal.note).to match(/WARNING: line 1 of hok\/boot\.log is blank/)
       expect(journal.note).to match(/WARNING: line 2 of hok\/app\.log is blank/)
       expect(journal.note).to match(/WARNING: line 2 \(2025-04-09 13:41:58\) of mor\/boot\.log is a duplicate/)

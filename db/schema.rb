@@ -109,7 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
     t.integer "top", default: 0
     t.integer "proc", default: 0
     t.integer "warnings", default: 0
-    t.boolean "okay", default: true
+    t.integer "problems", default: 0
     t.text "note", default: ""
     t.datetime "created_at"
     t.index ["created_at"], name: "index_ks_journals_on_created_at", unique: true

@@ -3,7 +3,7 @@ module Ks
     include Pageable
     NEAT = 20
 
-    validates :boot, :mem, :top, :proc, :warnings, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
+    validates :boot, :mem, :top, :proc, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
     default_scope { order(created_at: :desc) }
 
@@ -22,12 +22,14 @@ module Ks
     end
 
     def add_error(msg)
-      self.okay = false
+      self.problems += 1
       self.note += "ERROR: #{msg}\n"
     end
 
     def add_neatly(msg, count)
       add_message("%s%s %s" % [msg, "." * (msg.length >= NEAT ? 0 : NEAT - msg.length), count])
     end
+
+    def okay?() = problems == 0
   end
 end
