@@ -1,6 +1,7 @@
 module Ks
   class Journal < ActiveRecord::Base
     include Pageable
+    NEAT = 20
 
     validates :boot, :mem, :top, :proc, :warnings, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
@@ -26,7 +27,7 @@ module Ks
     end
 
     def add_neatly(msg, count)
-      add_message("%s%s %s" % [msg, "." * (20 - msg.length), count])
+      add_message("%s%s %s" % [msg, "." * (msg.length >= NEAT ? 0 : NEAT - msg.length), count])
     end
   end
 end
