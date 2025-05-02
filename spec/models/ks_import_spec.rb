@@ -4,8 +4,8 @@ DF = "%Y-%m-%d %H:%M:%S"
 
 describe Ks do
   context "import" do
-    it "test 1" do
-      journal = Ks.import(Rails.root + "spec/files/kanshi")
+    it "1" do
+      journal = Ks.import(Rails.root + "spec/files/kanshi/1")
       expect(Ks::Journal.count).to eq 1
       expect(journal.note).to_not match(/ERROR/)
       expect(journal.note).to_not match(/WARNING/)
