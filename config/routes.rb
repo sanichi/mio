@@ -9,6 +9,26 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
+  namespace :ks do
+    resources :journals, only: [:index, :show]
+  end
+  namespace :wk do
+    resources :examples, except: [:show]
+    resources :groups, except: [:show]
+    resources :kanas, only: [:edit, :index, :show, :update] do
+      patch :quick_accent_update, on: :member
+    end
+    resources :kanjis, only: [:index, :show] do
+      get :similar, on: :collection
+    end
+    resources :radicals, only: [:index, :show]
+    resources :readings, only: [] do
+      patch :quick_accent_update, on: :member
+    end
+    resources :verb_pairs, only: [:index]
+    resources :vocabs, only: [:edit, :index, :show, :update]
+  end
+
   resources :blogs
   resources :classifiers
   resources :constellations
@@ -52,20 +72,4 @@ Rails.application.routes.draw do
   end
   resources :tutorials
   resources :users
-  namespace :wk do
-    resources :examples, except: [:show]
-    resources :groups, except: [:show]
-    resources :kanas, only: [:edit, :index, :show, :update] do
-      patch :quick_accent_update, on: :member
-    end
-    resources :kanjis, only: [:index, :show] do
-      get :similar, on: :collection
-    end
-    resources :radicals, only: [:index, :show]
-    resources :readings, only: [] do
-      patch :quick_accent_update, on: :member
-    end
-    resources :verb_pairs, only: [:index]
-    resources :vocabs, only: [:edit, :index, :show, :update]
-  end
 end

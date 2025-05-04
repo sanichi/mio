@@ -5,10 +5,19 @@ module Ks
 
     validates :boot, :mem, :top, :proc, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
-    default_scope { order(created_at: :desc) }
-
     def self.search(params, path, opt={})
-      matches = all
+      matches =
+        case params[:order]
+        when "created"
+          order(created_at: :asc)
+        when "warnings"
+          order(warnings: :desc)
+        when "problems"
+          order(problems: :desc)
+        else
+          order(created_at: :desc)
+        end
+      matches.each { |m| logger.info "XXXXXXXXXX #{m.id} #{m.created_at.to_fs(:db)}" }
       paginate(matches, params, path, opt)
     end
 

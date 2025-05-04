@@ -1,0 +1,36 @@
+= render "utils/title", text: t("ks.journal.journal")
+
+.row
+  %div{class: center(md: 10, lg: 8, xl: 6)}
+    %section
+      .header.text-center
+        %h3= t("ks.journal.journal")
+      .body
+        %table{class: "table table-bordered table-sm"}
+          %tbody
+            %tr
+              %th= t("ks.journal.created")
+              %td= @journal.created_at.to_fs(:db)
+            %tr
+              %th= t("ks.journal.boot")
+              %td= @journal.boot
+            %tr
+              %th= t("ks.journal.mem")
+              %td= @journal.mem
+            %tr
+              %th= t("ks.journal.top")
+              %td= @journal.top
+            %tr
+              %th= t("ks.journal.proc")
+              %td= @journal.proc
+            %tr
+              %th= t("ks.journal.warnings")
+              %td= @journal.warnings
+            %tr
+              %th= t("ks.journal.problems")
+              %td= @journal.problems
+            %tr
+              %td{colspan: 2}
+                %pre= @journal.note
+      .footer
+        = link_to t("ks.journal.journals"), ks_journals_path, class: "green-btn"

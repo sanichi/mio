@@ -1,0 +1,24 @@
+en:
+  ks:
+    journal:
+      boot: System Reboots and App Restarts
+      mem: System Memory Stats
+      problems: Problems
+      proc: Individual Processes
+      top: Top Processes
+      warnings: Warnings
+      created: Created
+      journal: Journal
+      journals: Journals
+      order:
+        created: Created ↑
+        default: Default Order
+        warnings: Warnings ↓
+        problems: Problems ↓
+    short:
+      boot: Boot
+      mem: Mem
+      problems: Prob
+      proc: Proc
+      top: Top
+      warnings: Warn
