@@ -7,7 +7,7 @@ describe Ks::Boot do
     it "success" do
       expect(Ks::Boot.count).to eq 1
       expect(Ks::SERVERS).to include(boot.server)
-      expect(Ks::APPS).to include(boot.app)
+      expect(Ks::Boot::APPS).to include(boot.app)
     end
 
     context "failure" do

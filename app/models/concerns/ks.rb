@@ -2,7 +2,6 @@ module Ks
   BASE = Pathname.new("#{ENV['HOME']}/.log/kanshi.d")
   SERVERS = %w/hok mor tsu/
   LOGS = %w/boot app mem top/
-  APPS = %w/api bid chess hou mio reboot rek sj smd sta step tmp wd/
 
   def self.table_name_prefix() = "ks_"
 

@@ -1,20 +1,27 @@
 en:
   ks:
+    kanshi: Kanshi
+    server: Server
+    boot:
+      app: App
+      boots: Reboots and Restarts
+      happened: Happened at
     journal:
-      boot: System Reboots and App Restarts
-      mem: System Memory Stats
-      problems: Problems
-      proc: Individual Processes
-      top: Top Processes
-      warnings: Warnings
-      created: Created
+      created: Created at
       journal: Journal
       journals: Journals
-      order:
-        created: Created ↑
-        default: Default Order
-        warnings: Warnings ↓
-        problems: Problems ↓
+      problems: Problems
+      warnings: Warnings
+    mem:
+      mems: System Memory Stats
+    order:
+      created: Created ↑
+      default: Default Order
+      happened: Happened ↑
+      warnings: Warnings ↓
+      problems: Problems ↓
+    proc:
+      procs: Individual Processes
     short:
       boot: Boot
       mem: Mem
@@ -22,3 +29,8 @@ en:
       proc: Proc
       top: Top
       warnings: Warn
+    top:
+      tops: Top Processes
+jp:
+  ks:
+    kanshi: 監視

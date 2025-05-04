@@ -1,6 +1,8 @@
 module Ks
   class Boot < ActiveRecord::Base
     include Pageable
+
+    APPS = %w/reboot api bid chess hou mio rek sj smd sta step tmp wd/
   
     validates :server, inclusion: { in: SERVERS }
     validates :app, inclusion: { in: APPS }
@@ -62,7 +64,13 @@ module Ks
     end
 
     def self.search(params, path, opt={})
-      matches = params[:order] == "asc" ? ascending : descending
+      matches =
+        case params[:order]
+        when "happened"
+          ascending
+        else
+          descending
+        end
       matches = matches.where(server: params[:server]) if SERVERS.include?(params[:server])
       matches = matches.where(app: params[:app]) if APPS.include?(params[:app])
       paginate(matches, params, path, opt)

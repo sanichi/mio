@@ -1,5 +1,5 @@
 %tr
-  %td.text-center= link_to journal.created_at.to_fs(:db), journal, "data-turbo-frame" => "_top"
+  %td= link_to journal.created_at.to_fs(:db), journal, "data-turbo-frame" => "_top"
   %td.text-center= journal.boot
   %td.text-center= journal.mem
   %td.text-center= journal.top

@@ -21,7 +21,7 @@
           %table{class: "table table-bordered table-sm mt-3"}
             %thead
               %tr
-                %th.text-center= t("ks.journal.created")
+                %th= t("ks.journal.created")
                 %th.text-center= t("ks.short.boot")
                 %th.text-center= t("ks.short.mem")
                 %th.text-center= t("ks.short.top")
@@ -30,9 +30,6 @@
                 %th.text-center= t("ks.short.problems")
             %tbody
               = render partial: "journal", collection: @journals.matches
-              = render "utils/pagination_links", pager: @journals, columns: 4
+              = render "utils/pagination_links", pager: @journals, columns: 7
       .footer
-        -# = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
-        -# = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
-        -# = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
-        -# = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"
+        = link_to t("ks.boot.boots"), ks_boots_path, class: "green-btn"
