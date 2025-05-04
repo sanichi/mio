@@ -18,17 +18,16 @@ describe Ks::Journal do
         j.top += data.top
         j.proc += data.proc
         j.warnings += data.warnings
+        j.problems += data.problems
         j.note += data.note
-        j.okay = data.okay
-        j.save!
         expect{j.save!}.to_not raise_error
         expect(j.boot).to eq data.boot
         expect(j.mem).to eq data.mem
         expect(j.top).to eq data.top
         expect(j.proc).to eq data.proc
         expect(j.warnings).to eq data.warnings
+        expect(j.problems).to eq data.problems
         expect(j.note).to eq data.note
-        expect(j.okay).to be data.okay
         expect(j.created_at).to_not be_blank
       end
     end
@@ -52,6 +51,10 @@ describe Ks::Journal do
 
       it "bad warnings" do
         expect{create(:ks_journal, warnings: -1)}.to raise_error(/Warnings must be greater than or equal to 0/)
+      end
+
+      it "bad problems" do
+        expect{create(:ks_journal, problems: -1)}.to raise_error(/Problems must be greater than or equal to 0/)
       end
     end
   end
