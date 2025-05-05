@@ -78,7 +78,7 @@ describe Ks do
     it "2" do
       Ks.setup_test(2)
       journal = Ks.import
-      puts journal.note
+      # puts journal.note
       expect(Ks::Journal.count).to eq 1
       expect(journal).to_not be_okay
       expect(journal.boots_count).to eq 11

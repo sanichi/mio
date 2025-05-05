@@ -11,14 +11,72 @@ module Ks
       SERVERS.each do |server|
         dir = BASE + server
         raise "directory #{dir} does not exist" unless dir.directory?
-        Ks::Boot.import(dir, server, journal)
-        Ks::Mem.import(dir, server, journal)
+        _import(dir, server, journal, "boot")
+        _import(dir, server, journal, "app")
+        _import(dir, server, journal, "mem")
       end
     rescue => e
       journal.add_error(e.message)
     end
     journal.save!
     journal
+  end
+
+  def self._import(dir, server, journal, name)
+    begin
+      file = dir + "#{name}.log"
+      path = file.to_s.split("/").last(2).join("/")
+      unless file.file?
+        journal.add_neatly(path, "-")
+        return
+      end
+      unless file.size > 0
+        journal.add_neatly(path, "0")
+        return
+      end
+
+      num = 0
+      file.each_line do |line|
+        line.chomp!
+        num += 1
+        if line.blank?
+          journal.add_warning("line #{num} of #{path} is blank")
+          next
+        end
+        begin
+          time = line.to_datetime
+        rescue Date::Error
+          raise "line #{num} (#{line}) of #{path} can't be parsed into a date"
+        end
+        case name
+        when "app", "boot"
+          if name == "boot"
+            app = "reboot"
+          else
+            raise "line #{num} (#{line}) of #{path} has no app" unless line.match(/\s([a-z]{2,6})\z/)
+            app = $1
+          end
+          if Ks::Boot.find_by(happened_at: time, server: server, app: app)
+            journal.add_warning("line #{num} (#{line}) of #{path} is a duplicate") unless app == "reboot"
+            next
+          end
+          journal.boots.create!(happened_at: time, server: server, app: app)
+        when "mem"
+          if Ks::Mem.find_by(measured_at: time, server: server)
+            journal.add_warning("line #{num} (#{line}) of #{path} is a duplicate")
+            next
+          end
+          raise "line #{num} (#{line}) of #{path} has can't be parsed into 6 numbers" unless line.match(/\s(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*\z/)
+          journal.mems.create!(measured_at: time, server: server, total: $1, used: $2, free: $3, avail: $4, swap_used: $5, swap_free: $6)
+        end
+      end
+      journal.add_neatly(path, num)
+
+      tmp = dir + "#{name}.tmp"
+      system("mv #{file} #{tmp}")
+    rescue => e
+      journal.add_error(e.message)
+    end
   end
 
   def self.setup_test(n)
