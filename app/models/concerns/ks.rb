@@ -46,7 +46,7 @@ module Ks
         begin
           time = line.to_datetime
         rescue Date::Error
-          raise "line #{num} (#{line}) of #{path} can't be parsed into a date"
+          raise "line #{num} (#{line}) of #{path} can't be parsed into a datetime"
         end
         case name
         when "app", "boot"
