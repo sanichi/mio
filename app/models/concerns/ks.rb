@@ -12,6 +12,7 @@ module Ks
         dir = BASE + server
         raise "directory #{dir} does not exist" unless dir.directory?
         Ks::Boot.import(dir, server, journal)
+        Ks::Mem.import(dir, server, journal)
       end
     rescue => e
       journal.add_error(e.message)
