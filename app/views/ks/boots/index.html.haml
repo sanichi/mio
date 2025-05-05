@@ -26,8 +26,9 @@
                 %th= t("ks.boot.happened")
                 %th.text-center= t("ks.server")
                 %th.text-center= t("ks.boot.app")
+                %th.text-center= t("ks.short.journal")
             %tbody
               = render partial: "boot", collection: @boots.matches
-              = render "utils/pagination_links", pager: @boots, columns: 3
+              = render "utils/pagination_links", pager: @boots, columns: 4
       .footer
         = link_to t("ks.journal.journals"), ks_journals_path, class: "green-btn"

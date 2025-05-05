@@ -24,6 +24,7 @@ en:
       procs: Individual Processes
     short:
       boot: Boot
+      journal: Jrnl
       mem: Mem
       problems: Prob
       proc: Proc
