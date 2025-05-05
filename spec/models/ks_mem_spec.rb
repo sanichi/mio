@@ -7,6 +7,16 @@ describe Ks::Mem do
     it "success" do
       expect(Ks::Mem.count).to eq 1
       expect(Ks::SERVERS).to include(mem.server)
+
+      expect(Ks::Journal.count).to eq 1
+      expect(mem.journal.class).to eq Ks::Journal
+      expect(mem.journal.mems.size).to eq 1
+      expect(mem.journal.mems_count).to eq 1
+      expect(mem.journal.mems.first.id).to eq mem.id
+
+      mem.journal.destroy!
+      expect(Ks::Journal.count).to eq 0
+      expect(Ks::Mem.count).to eq 0
     end
 
     context "failure" do

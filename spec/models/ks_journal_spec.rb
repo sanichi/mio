@@ -13,18 +13,12 @@ describe Ks::Journal do
 
       it "slow buildup" do
         j = Ks::Journal.new
-        j.boot += data.boot
-        j.mem += data.mem
-        j.top += data.top
-        j.proc += data.proc
+        j.procs_count += data.procs_count
         j.warnings += data.warnings
         j.problems += data.problems
         j.note += data.note
         expect{j.save!}.to_not raise_error
-        expect(j.boot).to eq data.boot
-        expect(j.mem).to eq data.mem
-        expect(j.top).to eq data.top
-        expect(j.proc).to eq data.proc
+        expect(j.procs_count).to eq data.procs_count
         expect(j.warnings).to eq data.warnings
         expect(j.problems).to eq data.problems
         expect(j.note).to eq data.note
@@ -33,20 +27,8 @@ describe Ks::Journal do
     end
 
     context "failure" do
-      it "bad boot" do
-        expect{create(:ks_journal, boot: -1)}.to raise_error(/Boot must be greater than or equal to 0/)
-      end
-
-      it "bad boot" do
-        expect{create(:ks_journal, mem: -1)}.to raise_error(/Mem must be greater than or equal to 0/)
-      end
-
-      it "bad top" do
-        expect{create(:ks_journal, top: -1)}.to raise_error(/Top must be greater than or equal to 0/)
-      end
-
-      it "bad proc" do
-        expect{create(:ks_journal, proc: -1)}.to raise_error(/Proc must be greater than or equal to 0/)
+      it "bad procs_count" do
+        expect{create(:ks_journal, procs_count: -1)}.to raise_error(/Procs count must be greater than or equal to 0/)
       end
 
       it "bad warnings" do

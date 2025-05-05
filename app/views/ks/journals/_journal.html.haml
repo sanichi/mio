@@ -1,8 +1,8 @@
 %tr
   %td= link_to journal.created_at.to_fs(:db), journal, "data-turbo-frame" => "_top"
-  %td.text-center= journal.boot
-  %td.text-center= journal.mem
-  %td.text-center= journal.top
-  %td.text-center= journal.proc
+  %td.text-center= journal.boots_count
+  %td.text-center= journal.mems_count
+  %td.text-center= journal.tops_count
+  %td.text-center= journal.procs_count
   %td.text-center= journal.warnings
   %td.text-center= journal.problems

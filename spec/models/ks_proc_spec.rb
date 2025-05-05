@@ -10,15 +10,19 @@ describe Ks::Proc do
     it "success" do
       expect(Ks::Top.count).to eq 1
       expect(Ks::Proc.count).to eq 4
+
       top = proc1.top
       expect(top).to eq proc2.top
       expect(top).to eq proc3.top
       expect(top).to eq proc4.top
       expect(top.procs.size).to eq 4
+      expect(top.procs_count).to eq 4
       expect(top.procs[0].mem).to be >= top.procs[1].mem
       expect(top.procs[1].mem).to be >= top.procs[2].mem
       expect(top.procs[2].mem).to be >= top.procs[3].mem
-      top.destroy!
+
+      top.journal.destroy!
+      expect(Ks::Journal.count).to eq 0
       expect(Ks::Top.count).to eq 0
       expect(Ks::Proc.count).to eq 0
     end

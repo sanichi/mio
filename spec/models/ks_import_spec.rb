@@ -7,13 +7,13 @@ describe Ks do
     it "1" do
       Ks.setup_test(1)
       journal = Ks.import
-      #puts journal.note
+      # puts journal.note
       expect(Ks::Journal.count).to eq 1
       expect(journal).to be_okay
-      expect(journal.boot).to eq 16
-      expect(journal.mem).to eq 0
-      expect(journal.top).to eq 0
-      expect(journal.proc).to eq 0
+      expect(journal.boots_count).to eq 16
+      expect(journal.mems_count).to eq 0
+      expect(journal.tops_count).to eq 0
+      expect(journal.procs_count).to eq 0
       expect(journal.warnings).to eq 0
       expect(journal.problems).to eq 0
       expect(journal.note).to_not match(/WARNING/)
@@ -55,18 +55,17 @@ describe Ks do
     it "2" do
       Ks.setup_test(2)
       journal = Ks.import
-      #puts journal.note
+      # puts journal.note
       expect(Ks::Journal.count).to eq 1
       expect(journal).to_not be_okay
-      expect(journal.boot).to eq 11
-      expect(journal.mem).to eq 0
-      expect(journal.top).to eq 0
-      expect(journal.proc).to eq 0
-      expect(journal.warnings).to eq 4
+      expect(journal.boots_count).to eq 11
+      expect(journal.mems_count).to eq 0
+      expect(journal.tops_count).to eq 0
+      expect(journal.procs_count).to eq 0
+      expect(journal.warnings).to eq 3
       expect(journal.problems).to eq 3
       expect(journal.note).to match(/WARNING: line 1 of hok\/boot\.log is blank/)
       expect(journal.note).to match(/WARNING: line 2 of hok\/app\.log is blank/)
-      expect(journal.note).to match(/WARNING: line 2 \(2025-04-09 13:41:58\) of mor\/boot\.log is a duplicate/)
       expect(journal.note).to match(/WARNING: line 8 \(2025-04-28 14:31:05 mio\) of mor\/app\.log is a duplicate/)
       expect(journal.note).to match(/ERROR: line 2 \(corrupt\) of hok\/boot\.log can't be parsed into a date/)
       expect(journal.note).to match(/ERROR: line 11 \(corrupt\) of mor\/app\.log can't be parsed into a date/)

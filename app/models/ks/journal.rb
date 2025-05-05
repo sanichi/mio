@@ -1,9 +1,14 @@
 module Ks
   class Journal < ActiveRecord::Base
     include Pageable
+
     NEAT = 20
 
-    validates :boot, :mem, :top, :proc, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
+    has_many :boots, foreign_key: :ks_journal_id, dependent: :destroy
+    has_many :mems, foreign_key: :ks_journal_id, dependent: :destroy
+    has_many :tops, foreign_key: :ks_journal_id, dependent: :destroy
+
+    validates :procs_count, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
     def self.search(params, path, opt={})
       matches =
@@ -17,7 +22,6 @@ module Ks
         else
           order(created_at: :desc)
         end
-      matches.each { |m| logger.info "XXXXXXXXXX #{m.id} #{m.created_at.to_fs(:db)}" }
       paginate(matches, params, path, opt)
     end
 

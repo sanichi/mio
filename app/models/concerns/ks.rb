@@ -6,7 +6,7 @@ module Ks
   def self.table_name_prefix() = "ks_"
 
   def self.import
-    journal = Ks::Journal.new
+    journal = Ks::Journal.create
     begin
       SERVERS.each do |server|
         dir = BASE + server

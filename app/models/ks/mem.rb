@@ -2,6 +2,8 @@ module Ks
   class Mem < ActiveRecord::Base
     include Pageable
 
+    belongs_to :journal, class_name: "Ks::Journal", foreign_key: :ks_journal_id, counter_cache: true
+
     validates :server, inclusion: { in: SERVERS }
     validates :total, :used, numericality: { integer_only: true, greater_than: 0 }
     validates :free, :avail, :swap_used, :swap_free, numericality: { integer_only: true, greater_than_or_equal_to: 0 }

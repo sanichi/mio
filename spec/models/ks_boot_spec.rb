@@ -8,6 +8,16 @@ describe Ks::Boot do
       expect(Ks::Boot.count).to eq 1
       expect(Ks::SERVERS).to include(boot.server)
       expect(Ks::Boot::APPS).to include(boot.app)
+
+      expect(Ks::Journal.count).to eq 1
+      expect(boot.journal.class).to eq Ks::Journal
+      expect(boot.journal.boots.size).to eq 1
+      expect(boot.journal.boots_count).to eq 1
+      expect(boot.journal.boots.first.id).to eq boot.id
+
+      boot.journal.destroy!
+      expect(Ks::Journal.count).to eq 0
+      expect(Ks::Boot.count).to eq 0
     end
 
     context "failure" do

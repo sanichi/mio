@@ -13,16 +13,16 @@
               %td= @journal.created_at.to_fs(:db)
             %tr
               %th= t("ks.boot.boots")
-              %td= @journal.boot
+              %td= @journal.boots_count
             %tr
               %th= t("ks.mem.mems")
-              %td= @journal.mem
+              %td= @journal.mems_count
             %tr
               %th= t("ks.top.tops")
-              %td= @journal.top
+              %td= @journal.tops_count
             %tr
               %th= t("ks.proc.procs")
-              %td= @journal.proc
+              %td= @journal.procs_count
             %tr
               %th= t("ks.journal.warnings")
               %td= @journal.warnings
@@ -31,6 +31,8 @@
               %td= @journal.problems
             %tr
               %td{colspan: 2}
-                %pre= @journal.note
+                %pre
+                  = "XXX #{@journal.note.size}\n\n"
+                  = @journal.note
       .footer
         = link_to t("ks.journal.journals"), ks_journals_path, class: "green-btn"

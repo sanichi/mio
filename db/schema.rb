@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_04_194552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -100,18 +100,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
     t.string "server", limit: 3
     t.string "app", limit: 6
     t.datetime "happened_at"
+    t.bigint "ks_journal_id", null: false
     t.index ["happened_at", "server", "app"], name: "index_ks_boots_on_happened_at_and_server_and_app", unique: true
+    t.index ["ks_journal_id"], name: "index_ks_boots_on_ks_journal_id"
   end
 
   create_table "ks_journals", force: :cascade do |t|
-    t.integer "boot", default: 0
-    t.integer "mem", default: 0
-    t.integer "top", default: 0
-    t.integer "proc", default: 0
     t.integer "warnings", default: 0
     t.integer "problems", default: 0
     t.text "note", default: ""
     t.datetime "created_at"
+    t.integer "boots_count", default: 0, null: false
+    t.integer "mems_count", default: 0, null: false
+    t.integer "tops_count", default: 0, null: false
+    t.integer "procs_count", default: 0, null: false
     t.index ["created_at"], name: "index_ks_journals_on_created_at", unique: true
   end
 
@@ -124,6 +126,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
     t.integer "avail"
     t.integer "swap_used"
     t.integer "swap_free"
+    t.bigint "ks_journal_id", null: false
+    t.index ["ks_journal_id"], name: "index_ks_mems_on_ks_journal_id"
     t.index ["measured_at", "server"], name: "index_ks_mems_on_measured_at_and_server", unique: true
   end
 
@@ -139,6 +143,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_112902) do
   create_table "ks_tops", force: :cascade do |t|
     t.string "server", limit: 3
     t.datetime "measured_at"
+    t.bigint "ks_journal_id", null: false
+    t.integer "procs_count", default: 0, null: false
+    t.index ["ks_journal_id"], name: "index_ks_tops_on_ks_journal_id"
     t.index ["measured_at", "server"], name: "index_ks_tops_on_measured_at_and_server", unique: true
   end
 

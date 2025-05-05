@@ -3,7 +3,7 @@ module Ks
     MAX_COMMAND = 100
     MAX_SHORT = 32
 
-    belongs_to :top, class_name: "Ks::Top", foreign_key: :ks_top_id
+    belongs_to :top, class_name: "Ks::Top", foreign_key: :ks_top_id, counter_cache: true
 
     validates :pid, numericality: { only_integer: true, greater_than: 0 }
     validates :mem, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

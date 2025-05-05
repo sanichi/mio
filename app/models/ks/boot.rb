@@ -3,6 +3,8 @@ module Ks
     include Pageable
 
     APPS = %w/reboot api bid chess hou mio rek sj smd sta step tmp wd/
+
+    belongs_to :journal, class_name: "Ks::Journal", foreign_key: :ks_journal_id, counter_cache: true
   
     validates :server, inclusion: { in: SERVERS }
     validates :app, inclusion: { in: APPS }
@@ -48,11 +50,10 @@ module Ks
             app = $1
           end
           if Ks::Boot.find_by(happened_at: time, server: server, app: app)
-            journal.add_warning("line #{num} (#{line}) of #{path} is a duplicate")
+            journal.add_warning("line #{num} (#{line}) of #{path} is a duplicate") unless app == "reboot"
             next
           end
-          Ks::Boot.create!(happened_at: time, server: server, app: app)
-          journal.boot += 1
+          journal.boots.create!(happened_at: time, server: server, app: app)
         end
         journal.add_neatly(path, num)
 

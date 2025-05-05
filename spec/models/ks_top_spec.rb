@@ -7,6 +7,16 @@ describe Ks::Top do
     it "success" do
       expect(Ks::Top.count).to eq 1
       expect(Ks::SERVERS).to include(top.server)
+
+      expect(Ks::Journal.count).to eq 1
+      expect(top.journal.class).to eq Ks::Journal
+      expect(top.journal.tops.size).to eq 1
+      expect(top.journal.tops_count).to eq 1
+      expect(top.journal.tops.first.id).to eq top.id
+
+      top.journal.destroy!
+      expect(Ks::Journal.count).to eq 0
+      expect(Ks::Top.count).to eq 0
     end
 
     context "failure" do
