@@ -13,11 +13,19 @@ en:
       problems: Problems
       warnings: Warnings
     mem:
+      avail: Avail
+      free: Free
+      measured: Measured at
       mems: System Memory Stats
+      swap_used: Swap Used
+      swap_free: Swap Free
+      total: Total
+      used: Used
     order:
       created: Created ↑
       default: Default Order
       happened: Happened ↑
+      measured: Measured ↑
       warnings: Warnings ↓
       problems: Problems ↓
     proc:
@@ -28,6 +36,8 @@ en:
       mem: Mem
       problems: Prob
       proc: Proc
+      swap_used: SUsed
+      swap_free: SFree
       top: Top
       warnings: Warn
     top:

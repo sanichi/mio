@@ -1,0 +1,10 @@
+%tr
+  %td= mem.measured_at.to_fs(:db)
+  %td.text-center= mem.server
+  %td.text-center= mem.total
+  %td.text-center= mem.used
+  %td.text-center= mem.free
+  %td.text-center= mem.avail
+  %td.text-center= mem.swap_used
+  %td.text-center= mem.swap_free
+  %td.text-center= link_to mem.journal.id, mem.journal, "data-turbo-frame" => "_top"

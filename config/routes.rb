@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   namespace :ks do
     resources :journals, only: [:index, :show]
     resources :boots, only: [:index]
+    resources :mems, only: [:index]
   end
   namespace :wk do
     resources :examples, except: [:show]

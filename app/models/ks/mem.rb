@@ -13,7 +13,13 @@ module Ks
     scope :ascending,  -> { order(measured_at: :asc,  server: :desc) }
 
     def self.search(params, path, opt={})
-      matches = params[:order] == "asc" ? ascending : descending
+      matches =
+        case params[:order]
+        when "measured"
+          ascending
+        else
+          descending
+        end
       matches = matches.where(server: params[:server]) if SERVERS.include?(params[:server])
       paginate(matches, params, path, opt)
     end
