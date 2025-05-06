@@ -15,9 +15,18 @@ module Wk
     validates :english, :japanese, presence: true, length: { maximum: MAX_EXAMPLE }
 
     scope :by_updated_at, -> { order(updated_at: :desc) }
+    scope :by_day,        -> { order(day: :desc) }
 
     def self.search(params, path, opt={})
       matches = by_updated_at
+      if sql = cross_constraint(params[:query], %w{english japanese})
+        matches = matches.where(sql)
+      end
+      paginate(matches, params, path, opt)
+    end
+
+    def self.memorable(params, path, opt={})
+      matches = where.not(day: nil).by_day
       if sql = cross_constraint(params[:query], %w{english japanese})
         matches = matches.where(sql)
       end

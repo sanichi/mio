@@ -2,5 +2,6 @@
   inputs = [
     [:japanese, t("wk.example.japanese"), :text, maxlength: Wk::Example::MAX_EXAMPLE],
     [:english,  t("wk.example.english"),  :text, maxlength: Wk::Example::MAX_EXAMPLE],
+    [:day,      t("wk.example.day"),      :text],
   ]
 = render "utils/crud/form", object: example, cancel: return_page || wk_examples_path, inputs: inputs, title: title

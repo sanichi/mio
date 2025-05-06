@@ -2,10 +2,15 @@ module Wk
   class ExamplesController < ApplicationController
     authorize_resource
     before_action :find_example, only: [:edit, :update, :destroy]
+    before_action :convert_day, only: [:create, :update]
 
     def index
       remember_last_search(wk_examples_path)
-      @examples = Wk::Example.search(params, wk_examples_path, per_page: 15, locale: :jp)
+      @examples = Wk::Example.search(params, wk_examples_path, per_page: 10, locale: :jp)
+    end
+
+    def memorable
+      @examples = Wk::Example.memorable(params, memorable_wk_examples_path, per_page: 10, locale: :jp)
     end
 
     def new
@@ -48,11 +53,25 @@ module Wk
     end
 
     def strong_params
-      params.require(:wk_example).permit(:english, :japanese)
+      params.require(:wk_example).permit(:english, :japanese, :day)
     end
 
     def redirect_page
       retrieve_return_page("examples") || wk_examples_path
+    end
+
+    def convert_day
+      day = params[:wk_example][:day]
+      if day.blank?
+        day = ""
+      else
+        begin
+          day = Date.parse(day).to_fs(:db)
+        rescue Date::Error
+          day = Date.today.to_fs(:db)
+        end
+      end
+      params[:wk_example][:day] = day
     end
   end
 end

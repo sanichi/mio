@@ -12,20 +12,21 @@
           %li.dropdown
             = link_to t("wk.japanese", locale: "jp"), "#", class: "dropdown-toggle", id: "wk_dropdown", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
-              %li= render "wk/vocabs/dropdown_menu"                              if can?(:read, Wk::Vocab)
-              %li= render "wk/kanjis/dropdown_menu"                              if can?(:read, Wk::Kanji)
-              %li= render "wk/radicals/dropdown_menu"                            if can?(:read, Wk::Radical)
-              %li= render "wk/kanas/dropdown_menu"                               if can?(:read, Wk::Kana)
-              %li= render "wk/verb_pairs/dropdown_menu"                          if can?(:read, Wk::VerbPair)
-              %li= link_to t("misa.misas"),               misas_path             if can?(:read, Misa)
-              %li= link_to t("note.notes"),               notes_path             if can?(:read, Note)
-              %li= link_to t("wk.example.examples"),      wk_examples_path       if can?(:read, Wk::Example)
-              %li= link_to t("grammar.grammar"),          grammars_path          if can?(:read, Grammar)
-              %li= link_to t("grammar.group.groups"),     grammar_groups_path    if can?(:read, GrammarGroup)
-              %li= link_to t("wk.group.groups"),          wk_groups_path         if can?(:read, Wk::Group)
-              %li= link_to t("wk.kanji.similar.similar"), similar_wk_kanjis_path if can?(:read, Wk::Kanji)
-              %li= link_to t("place.title"),              places_path            if can?(:read, Place)
-              %li= link_to t("pages.prefectures.title"),  prefectures_path       if can?(:prefectures, :page)
+              %li= render "wk/vocabs/dropdown_menu"                                            if can?(:read, Wk::Vocab)
+              %li= render "wk/kanjis/dropdown_menu"                                            if can?(:read, Wk::Kanji)
+              %li= render "wk/radicals/dropdown_menu"                                          if can?(:read, Wk::Radical)
+              %li= render "wk/kanas/dropdown_menu"                                             if can?(:read, Wk::Kana)
+              %li= render "wk/verb_pairs/dropdown_menu"                                        if can?(:read, Wk::VerbPair)
+              %li= link_to t("misa.misas"),                         misas_path                 if can?(:read, Misa)
+              %li= link_to t("note.notes"),                         notes_path                 if can?(:read, Note)
+              %li= link_to t("wk.example.examples"),                wk_examples_path           if can?(:read, Wk::Example)
+              %li= link_to t("wk.example.memorable", locale: "jp"), memorable_wk_examples_path if can?(:read, Wk::Example)
+              %li= link_to t("grammar.grammar"),                    grammars_path              if can?(:read, Grammar)
+              %li= link_to t("grammar.group.groups"),               grammar_groups_path        if can?(:read, GrammarGroup)
+              %li= link_to t("wk.group.groups"),                    wk_groups_path             if can?(:read, Wk::Group)
+              %li= link_to t("wk.kanji.similar.similar"),           similar_wk_kanjis_path     if can?(:read, Wk::Kanji)
+              %li= link_to t("place.title"),                        places_path                if can?(:read, Place)
+              %li= link_to t("pages.prefectures.title"),            prefectures_path           if can?(:prefectures, :page)
 
         - if [Person, Picture, Partnership].map{|c| can?(:read, c) }.any?
           %li.dropdown

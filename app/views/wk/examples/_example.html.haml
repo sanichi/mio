@@ -1,4 +1,7 @@
+- defined?(return_page) || return_page = nil
+
 %tr
   %td= example.japanese_html(frame: "_top")
   %td= example.english
-  %td.text-center= link_to t("edit"), edit_wk_example_path(example), class: "blue-btn", "data-turbo-frame" => "_top"
+  %td.text-center= example.day&.to_fs(:db)
+  %td.text-center= link_to t("edit"), edit_wk_example_path(example, return_page: return_page), class: "blue-btn", "data-turbo-frame" => "_top"

@@ -15,6 +15,7 @@ describe Wk::Example, js: true do
       click_link t("wk.example.new")
       fill_in t("wk.example.japanese"), with: data.japanese
       fill_in t("wk.example.english"), with: data.english
+      fill_in t("wk.example.day"), with: data.day
       click_button t("save")
 
       expect(page).to have_title t("wk.example.examples")
@@ -24,6 +25,7 @@ describe Wk::Example, js: true do
 
       expect(e.japanese).to eq data.japanese
       expect(e.english).to eq data.english
+      expect(e.day).to eq data.day
     end
 
     it "special" do
@@ -39,6 +41,7 @@ describe Wk::Example, js: true do
 
       expect(e.japanese).to eq data.japanese
       expect(e.english).to eq data.english
+      expect(e.day).to be_nil
     end
 
     it "failure" do

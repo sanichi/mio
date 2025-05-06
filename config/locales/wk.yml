@@ -13,10 +13,12 @@ en:
       text: Daily
       url: '/notes/%{id}'
     example:
+      day: Day
       edit: Edit Example
       english: English
       example: Example
       examples: Examples
+      memorable: Examples of the Day
       new: New Example
       japanese: Japanese
     japandict:
@@ -129,6 +131,8 @@ en:
       last_updated: Last
 jp:
   wk:
+    example:
+      memorable: 日の例
     japanese: 日本語
     verb_pair:
       categories:
