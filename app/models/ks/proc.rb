@@ -39,6 +39,9 @@ module Ks
       sql = cross_constraint(params[:cmd], %w{command short}, table: "ks_procs")
       matches = matches.where(sql) if sql
 
+      sql = numerical_constraint(params[:mem], "ks_procs.mem")
+      matches = matches.where(sql) if sql
+
       paginate(matches, params, path, opt)
     end
 

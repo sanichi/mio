@@ -1,15 +1,16 @@
 :ruby
   lo = Layout.new(
-    lg: [2,2,3,1],
-    md: [3,3,4,2],
-    sm: [[4,4],[5,3]],
-    xs: [[5,5],[6,4]],
+    lg: [2,2,2,1,1],
+    md: [3,3,4,1,1],
+    sm: [[4,4],[4,2,2]],
+    xs: [[5,5],[6,3,3]],
   ).to_a
   inputs = [
     [:order,  t("order"),           :select, lo[0], menu: ks_proc_order_menu(params[:order])],
     [:server, t("ks.server"),       :select, lo[1], menu: ks_server_menu(params[:server])],
     [:cmd,    t("ks.proc.command"), :text,   lo[2], placeholder: t("ks.proc.command")],
     [:pid,    t("ks.proc.pid"),     :text,   lo[3], placeholder: t("ks.proc.pid")],
+    [:mem,    t("ks.proc.mem"),     :text,   lo[4], placeholder: t("ks.proc.mem")],
   ]
 
 = render "utils/title", key: "ks.proc.procs"

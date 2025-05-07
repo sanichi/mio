@@ -232,11 +232,11 @@ class Transaction < ApplicationRecord
       raise "invalid date #{row[0]} on row #{rows}"
     end
     category = case row[1].squish
-    when "Payment"
+    when "Payment", "PAYMENT"
       "PAY"
-    when "Purchase"
+    when "Purchase", "PURCHASE"
       "PUR"
-    when "Fee"
+    when "Fee", "FEE"
       "FEE"
     else
       raise "unrecognised category (#{row[1]}) on row #{rows}"
