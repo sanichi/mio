@@ -12,8 +12,8 @@ describe Ks do
       expect(journal).to be_okay
       expect(journal.boots_count).to eq 16
       expect(journal.mems_count).to eq 180
-      expect(journal.tops_count).to eq 0
-      expect(journal.procs_count).to eq 0
+      expect(journal.tops_count).to eq 186
+      expect(journal.procs_count).to eq 1860
       expect(journal.warnings).to eq 0
       expect(journal.problems).to eq 0
       expect(journal.note).to_not match(/WARNING/)
@@ -21,12 +21,15 @@ describe Ks do
       expect(journal.note).to match(/hok\/app\.log\.+ 1/)
       expect(journal.note).to match(/hok\/boot\.log\.+ 1/)
       expect(journal.note).to match(/hok\/mem\.log\.+ 59/)
+      expect(journal.note).to match(/hok\/top\.log\.+ 60/)
       expect(journal.note).to match(/mor\/app\.log\.+ 11/)
       expect(journal.note).to match(/mor\/boot\.log\.+ 1/)
       expect(journal.note).to match(/mor\/mem\.log\.+ 60/)
+      expect(journal.note).to match(/mor\/top\.log\.+ 62/)
       expect(journal.note).to match(/tsu\/app\.log\.+ 1/)
       expect(journal.note).to match(/tsu\/boot\.log\.+ 1/)
       expect(journal.note).to match(/tsu\/mem\.log\.+ 61/)
+      expect(journal.note).to match(/tsu\/top\.log\.+ 64/)
 
       expect(Ks::Boot.count).to eq 16
       expect(Ks::Boot.where(app: "reboot").count).to eq 3
@@ -63,6 +66,20 @@ describe Ks do
       expect(Ks::Mem.maximum(:swap_free)).to eq 397
       expect(Ks::Mem.minimum(:swap_free)).to eq 165
 
+      expect(Ks::Top.count).to eq 186
+      expect(Ks::Top.where(server: "hok").count).to eq 60
+      expect(Ks::Top.where(server: "mor").count).to eq 62
+      expect(Ks::Top.where(server: "tsu").count).to eq 64
+      expect(Ks::Top.descending.first.measured_at.strftime(DF)).to eq "2025-04-26 15:03:01"
+      expect(Ks::Top.descending.last.measured_at.strftime(DF)).to eq "2025-04-26 14:00:01"
+
+      expect(Ks::Proc.count).to eq 1860
+      expect(Ks::Proc.where(short: nil).count).to be <= 811
+      expect(Ks::Proc.where(short: "httpd").count).to eq 677
+      expect(Ks::Proc.where(short: "me.mio app").count).to eq 62
+      expect(Ks::Proc.where(short: "rek app").count).to eq 60
+      expect(Ks::Proc.where(short: "step app").count).to eq 64
+
       Ks::SERVERS.each do |server|
         expect(Ks::BASE + server + "app.log").to_not be_file
         expect(Ks::BASE + server + "app.tmp").to be_file
@@ -70,6 +87,8 @@ describe Ks do
         expect(Ks::BASE + server + "boot.tmp").to be_file
         expect(Ks::BASE + server + "mem.log").to_not be_file
         expect(Ks::BASE + server + "mem.tmp").to be_file
+        expect(Ks::BASE + server + "top.log").to_not be_file
+        expect(Ks::BASE + server + "top.tmp").to be_file
       end
     end
   end
@@ -83,19 +102,23 @@ describe Ks do
       expect(journal).to_not be_okay
       expect(journal.boots_count).to eq 11
       expect(journal.mems_count).to eq 132
-      expect(journal.tops_count).to eq 0
-      expect(journal.procs_count).to eq 0
-      expect(journal.warnings).to eq 5
-      expect(journal.problems).to eq 4
+      expect(journal.tops_count).to eq 118
+      expect(journal.procs_count).to eq 1180
+      expect(journal.warnings).to eq 7
+      expect(journal.problems).to eq 6
       expect(journal.note).to match(/WARNING: line 2 of hok\/app\.log is blank/)
       expect(journal.note).to match(/WARNING: line 1 of hok\/boot\.log is blank/)
       expect(journal.note).to match(/WARNING: line 5 of hok\/mem\.log is blank/)
+      expect(journal.note).to match(/WARNING: line 31 of hok\/top\.log is blank/)
+      expect(journal.note).to match(/WARNING: line 33 \(2025-04-26 14:30:01 1051592...\) of hok\/top\.log is a duplicate/)
       expect(journal.note).to match(/WARNING: line 8 \(2025-04-28 14:31:05 mio\) of mor\/app\.log is a duplicate/)
       expect(journal.note).to match(/WARNING: line 12 \(2025-04-25 14:35:01 1774 845 557 929 115 396\) of mor\/mem\.log is a duplicate/)
       expect(journal.note).to match(/ERROR: line 2 \(corrupt\) of hok\/boot\.log can't be parsed into a date/)
       expect(journal.note).to match(/ERROR: line 11 \(corrupt\) of mor\/app\.log can't be parsed into a date/)
       expect(journal.note).to match(/ERROR: line 1 \(corrupt\) of tsu\/app\.log can't be parsed into a date/)
       expect(journal.note).to match(/ERROR: line 14 \(2025-04-25 14:38:01 corrupt\) of tsu\/mem.log has can't be parsed into 6 numbers/)
+      expect(journal.note).to match(/ERROR: line 30 \(corrupt\) of mor\/top\.log can't be parsed into a datetime/)
+      expect(journal.note).to match(/ERROR: line 30 \(2025-04-26 14:29:01 926495\|...\) of tsu\/top\.log doesn't appear to have 10 procs/)
 
       expect(Ks::Boot.count).to eq 11
       expect(Ks::Boot.where(app: "reboot").count).to eq 1
@@ -110,14 +133,30 @@ describe Ks do
       expect(Ks::Mem.where(server: "mor").count).to eq 60
       expect(Ks::Mem.where(server: "tsu").count).to eq 13
 
+      expect(Ks::Top.count).to eq 118
+      expect(Ks::Top.where(server: "hok").count).to eq 60
+      expect(Ks::Top.where(server: "mor").count).to eq 29
+      expect(Ks::Top.where(server: "tsu").count).to eq 29
+
+      expect(Ks::Proc.count).to eq 1180
+      expect(Ks::Proc.where(short: nil).count).to be <= 532
+      expect(Ks::Proc.where(short: "httpd").count).to eq 443
+      expect(Ks::Proc.where(short: "me.mio app").count).to eq 29
+      expect(Ks::Proc.where(short: "rek app").count).to eq 60
+      expect(Ks::Proc.where(short: "step app").count).to eq 29
+
       expect(Ks::BASE + "mor" + "app.log").to be_file
       expect(Ks::BASE + "mor" + "app.tmp").to_not be_file
+      expect(Ks::BASE + "mor" + "top.log").to be_file
+      expect(Ks::BASE + "mor" + "top.tmp").to_not be_file
       expect(Ks::BASE + "tsu" + "app.log").to be_file
       expect(Ks::BASE + "tsu" + "app.tmp").to_not be_file
       expect(Ks::BASE + "tsu" + "boot.log").to_not be_file
       expect(Ks::BASE + "tsu" + "boot.tmp").to_not be_file
       expect(Ks::BASE + "tsu" + "mem.log").to be_file
       expect(Ks::BASE + "tsu" + "mem.tmp").to_not be_file
+      expect(Ks::BASE + "tsu" + "top.log").to be_file
+      expect(Ks::BASE + "tsu" + "top.tmp").to_not be_file
     end
   end
 end

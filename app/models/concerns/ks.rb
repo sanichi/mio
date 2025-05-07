@@ -14,6 +14,7 @@ module Ks
         _import(dir, server, journal, "boot")
         _import(dir, server, journal, "app")
         _import(dir, server, journal, "mem")
+        _import(dir, server, journal, "top")
       end
     rescue => e
       journal.add_error(e.message)
@@ -44,9 +45,9 @@ module Ks
           next
         end
         begin
-          time = line.to_datetime
+          time = line[0,19].to_datetime
         rescue Date::Error
-          raise "line #{num} (#{line}) of #{path} can't be parsed into a datetime"
+          raise "line #{num} (#{name == "top" ? line[0,19] : line}) of #{path} can't be parsed into a datetime"
         end
         case name
         when "app", "boot"
@@ -68,6 +69,21 @@ module Ks
           end
           raise "line #{num} (#{line}) of #{path} has can't be parsed into 6 numbers" unless line.match(/\s(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*\z/)
           journal.mems.create!(measured_at: time, server: server, total: $1, used: $2, free: $3, avail: $4, swap_used: $5, swap_free: $6)
+        when "top"
+          sample = line.truncate(30) # for logging, if we need to, otherwise top lines can be very long
+          if Ks::Top.find_by(measured_at: time, server: server)
+            journal.add_warning("line #{num} (#{sample}) of #{path} is a duplicate")
+            next
+          end
+          raise "line #{num} (#{sample}) of #{path} can't be split in parts" unless line.match(/\A[-\d]+\s[:\d]+\s(.+)\z/)
+          procs = $1.split("||")
+          raise "line #{num} (#{sample}) of #{path} doesn't appear to have 10 procs" unless procs.size == 10
+          top = journal.tops.create!(measured_at: time, server: server)
+          procs.each do |proc|
+            raise "line #{num} (#{sample}) of #{path} has an unparsable proc (#{proc[0,20]}...)" unless proc.match(/\A([1-9]\d*)\|(\d+)\|(.+)\z/)
+            top.procs.create!(pid: $1, mem: $2, command: $3)
+          end
+          journal.procs_count += top.procs_count
         end
       end
       journal.add_neatly(path, num)

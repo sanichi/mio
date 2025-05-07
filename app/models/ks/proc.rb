@@ -5,12 +5,26 @@ module Ks
 
     belongs_to :top, class_name: "Ks::Top", foreign_key: :ks_top_id, counter_cache: true
 
+    before_validation :normalize_attributes
+
     validates :pid, numericality: { only_integer: true, greater_than: 0 }
     validates :mem, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :command, presence: true, length: { maximum: MAX_COMMAND }
-    validates :command, length: { maximum: MAX_COMMAND }, allow_nil: true
+    validates :short, length: { maximum: MAX_SHORT }, allow_nil: true
 
-    default_scope { order(mem: :desc) }
+    def short_version
+      case command
+        when nil                                                             then nil
+        when /\APassenger RubyApp: \/var\/www\/(.*)\/current \(production\)/ then "#{$1} app"
+        when /\A\/usr\/sbin\/httpd -DFOREGROUND/                             then "httpd"
+        else nil
+      end
+    end
+
+    def normalize_attributes
+      self.command = command.truncate(MAX_COMMAND) if command.present? && command.length > MAX_COMMAND
+      self.short = short_version if short.blank?
+    end
   end
 end
 
