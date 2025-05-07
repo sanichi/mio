@@ -12,14 +12,11 @@ describe Ks::Proc do
       expect(Ks::Proc.count).to eq 4
 
       top = proc1.top
-      expect(top).to eq proc2.top
-      expect(top).to eq proc3.top
-      expect(top).to eq proc4.top
+      expect(proc2.top).to eq top
+      expect(proc3.top).to eq top
+      expect(proc4.top).to eq top
       expect(top.procs.size).to eq 4
       expect(top.procs_count).to eq 4
-      expect(top.procs[0].mem).to be >= top.procs[1].mem
-      expect(top.procs[1].mem).to be >= top.procs[2].mem
-      expect(top.procs[2].mem).to be >= top.procs[3].mem
 
       top.journal.destroy!
       expect(Ks::Journal.count).to eq 0

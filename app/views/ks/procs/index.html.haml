@@ -1,0 +1,38 @@
+:ruby
+  lo = Layout.new(
+    lg: [2,2,3,1],
+    md: [3,3,4,2],
+    sm: [[4,4],[5,3]],
+    xs: [[5,5],[6,4]],
+  ).to_a
+  inputs = [
+    [:order,  t("order"),           :select, lo[0], menu: ks_proc_order_menu(params[:order])],
+    [:server, t("ks.server"),       :select, lo[1], menu: ks_server_menu(params[:server])],
+    [:cmd,    t("ks.proc.command"), :text,   lo[2], placeholder: t("ks.proc.command")],
+    [:pid,    t("ks.proc.pid"),     :text,   lo[3], placeholder: t("ks.proc.pid")],
+  ]
+
+= render "utils/title", key: "ks.proc.procs"
+
+%section
+  .header.text-center
+    %h3= t("ks.proc.procs")
+  .body
+    = render "utils/search/form", index: ks_procs_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("ks.proc.measured")
+            %th= t("ks.server")
+            %th= t("ks.proc.pid")
+            %th= t("ks.proc.mem")
+            %th= t("ks.proc.command")
+            %th= t("ks.proc.short")
+        %tbody
+          = render partial: "proc", collection: @procs.matches
+          = render "utils/pagination_links", pager: @procs, columns: 6
+  .footer
+    = link_to t("ks.journal.journals"), ks_journals_path, class: "green-btn"
+    = link_to t("ks.boot.boots"), ks_boots_path, class: "green-btn"
+    = link_to t("ks.mem.mems"), ks_mems_path, class: "green-btn"
