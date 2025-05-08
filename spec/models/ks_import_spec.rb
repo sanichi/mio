@@ -81,7 +81,9 @@ describe Ks do
       expect(Ks::Proc.where(short: "step app").count).to eq 64
 
       Ks::SERVERS.each do |server|
-        %w/app boot mem top/.each { |name| expect(Ks::BASE + server + "#{name}.log").to_not be_file }
+        Ks::LOGS.each do |log|
+          expect(Ks::BASE + server + "#{log}.log").to_not be_file
+        end
       end
     end
   end
@@ -90,7 +92,7 @@ describe Ks do
     it "2" do
       Ks.setup_test(2)
       journal = Ks.import
-      puts journal.note
+      # puts journal.note
       expect(Ks::Journal.count).to eq 1
       expect(journal).to_not be_okay
       expect(journal.boots_count).to eq 12
@@ -142,7 +144,9 @@ describe Ks do
       expect(Ks::Proc.where(short: "step app").count).to eq 62
 
       Ks::SERVERS.each do |server|
-        %w/app boot mem top/.each { |name| expect(Ks::BASE + server + "#{name}.log").to_not be_file }
+        Ks::LOGS.each do |log|
+          expect(Ks::BASE + server + "#{log}.log").to_not be_file
+        end
       end
     end
   end
