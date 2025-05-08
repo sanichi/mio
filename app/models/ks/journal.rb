@@ -1,5 +1,6 @@
 module Ks
   class Journal < ActiveRecord::Base
+    include Constrainable
     include Pageable
 
     NEAT = 20
@@ -22,6 +23,13 @@ module Ks
         else
           order(created_at: :desc)
         end
+
+      sql = numerical_constraint(params[:warnings], :warnings)
+      matches = matches.where(sql) if sql
+
+      sql = numerical_constraint(params[:problems], :problems)
+      matches = matches.where(sql) if sql
+
       paginate(matches, params, path, opt)
     end
 

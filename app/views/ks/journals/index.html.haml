@@ -1,11 +1,14 @@
 :ruby
   lo = Layout.new(
-    md: [3],
-    sm: [4],
-    xs: [5],
+    lg: [3,2,2],
+    md: [3,3,3],
+    sm: [4,3,3],
+    xs: [4,4,4],
   ).to_a
   inputs = [
-    [:order, t("order"), :select, lo[0], menu: ks_journal_order_menu(params[:order])],
+    [:order,    t("order"),               :select, lo[0], menu: ks_journal_order_menu(params[:order])],
+    [:warnings, t("ks.journal.warnings"), :text,   lo[1], placeholder: t("ks.journal.warnings")],
+    [:problems, t("ks.journal.problems"), :text,   lo[2], placeholder: t("ks.journal.problems")],
   ]
 
 = render "utils/title", key: "ks.journal.journals"
