@@ -76,7 +76,7 @@ describe Ks do
       expect(Ks::Proc.count).to eq 1860
       expect(Ks::Proc.where(short: nil).count).to be <= 811
       expect(Ks::Proc.where(short: "httpd").count).to eq 677
-      expect(Ks::Proc.where(short: "me.mio app").count).to eq 62
+      expect(Ks::Proc.where(short: "mio app").count).to eq 62
       expect(Ks::Proc.where(short: "rek app").count).to eq 60
       expect(Ks::Proc.where(short: "step app").count).to eq 64
 
@@ -139,7 +139,7 @@ describe Ks do
       expect(Ks::Proc.count).to eq 1840
       expect(Ks::Proc.where(short: nil).count).to be <= 806
       expect(Ks::Proc.where(short: "httpd").count).to eq 669
-      expect(Ks::Proc.where(short: "me.mio app").count).to eq 62
+      expect(Ks::Proc.where(short: "mio app").count).to eq 62
       expect(Ks::Proc.where(short: "rek app").count).to eq 60
       expect(Ks::Proc.where(short: "step app").count).to eq 62
 

@@ -47,9 +47,10 @@ module Ks
 
     def short_version
       case command
-        when nil                                                             then nil
-        when /\APassenger RubyApp: \/var\/www\/(.*)\/current \(production\)/ then "#{$1} app"
-        when /\A\/usr\/sbin\/httpd -DFOREGROUND/                             then "httpd"
+        when nil                                                                            then nil
+        when /\APassenger RubyApp: \/var\/www\/([a-z]+\.)?([a-z]+)\/current \(production\)/ then "#{$2} app"
+        when /\APassenger core/                                                             then "passenger core"
+        when /\A\/usr\/sbin\/httpd -DFOREGROUND/                                            then "httpd"
         else nil
       end
     end
