@@ -55,6 +55,7 @@ module Ks
         when /\Apostgres:(\s\w+){1,2}\z/                                            then command
         when /\Asshd: (\w+\s)?\[(\w+)\]\z/                                          then "sshd: #{$1}#{$2}[#{$3}]"
         when /\A\/usr\/sbin\/httpd -DFOREGROUND\z/                                  then "httpd"
+        when /\A\/usr\/sbin\/NetworkManager --no-daemon/                            then "network manager"
         when /\A\/usr\/lib\/systemd\/systemd --switched-root/                       then "systemd (init)"
         when /\A\/usr\/lib\/systemd\/systemd --user/                                then "systemd (user)"
         else nil
