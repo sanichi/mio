@@ -12,7 +12,7 @@ gem 'redcarpet', '~> 3.5'
 gem 'activerecord-session_store', '~> 2.0'
 gem 'chronic', '~> 0.10'
 gem 'date_validator', '~> 0.9'
-gem 'jquery-ui-rails', '< 8'
+gem 'jquery-ui-rails', '< 9'
 gem 'httparty', '~> 0.22'
 gem 'mojinizer', '~> 0.2'
 gem 'oga', '~> 3.0'
@@ -28,7 +28,7 @@ gem "turbo-rails", "~> 2.0"
 gem "stimulus-rails", "~> 1.3"
 
 group :development, :test do
-  gem 'rspec-rails', '< 8'
+  gem 'rspec-rails', '< 9'
   gem 'capybara', '~> 3.28'
   gem 'byebug', platforms: :mri
   gem 'launchy', '< 4'

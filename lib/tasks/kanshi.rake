@@ -103,4 +103,64 @@ namespace :kanshi do
       puts "%s%s %d" % [key, key.length >= margin ? '' : '.' * (margin - key.length), val]
     end
   end
+
+  ##################################################################################################################
+  # Delete old ks_journals (and everything that belongs to them) so that the data doesn't build up forever.        #
+  #                                                                                                                #
+  # Can be run on the development machine for testing purposes:                                                    #
+  #                                                                                                                #
+  #   ❯ mio                                                                                                        #
+  #   ❯ bin/rails kanshi:prune\[80]      # dry-run, set cut-off in days, lists what it would do                    #
+  #   ❯ bin/rails kanshi:prune\[-100\]   # the real-deal                                                           #
+  #   ❯ bin/rails kanshi:prune\[-5_\]    # use an underscore to confirm a low (< 50) number of days                #
+  #                                                                                                                #
+  # You can run by hans in production, for example:                                                                #
+  #                                                                                                                #
+  #   $ RAILS_ENV=production bin/rails kanshi:prune\[50\]                                                          #
+  #                                                                                                                #
+  # or as a cron job:                                                                                              #
+  #                                                                                                                #
+  #   0 1 2 * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails kanshi:prune[-90] >> log/cron.log 2>&1  #
+  ##################################################################################################################
+  desc "prune old ks_journals"
+  task :prune, [:count] => :environment do |task, args|
+    count = args[:count].to_i
+    min = args[:count].match?(/_\z/) ? 1 : 50
+    if count == 0
+      puts "please specify a cut-off in days (positive for dry-run, negative for actual deletions)"
+    elsif count.abs < min
+      puts "please specify a cut-off of at least #{min} days"
+    else
+      dry_run = count > 0
+      cut_off = Date.today.days_ago(count.abs)
+      if dry_run
+        puts "dry-run (specify negative amount to actually delete)"
+      else
+        puts "starting ks_journals prune at #{Time.now.to_fs(:db)}"
+      end
+      puts "cut-off date: #{cut_off.to_fs(:db)}"
+      journals = Ks::Journal.order(:created_at).where("created_at < ?", cut_off.to_fs(:db)).to_a
+      puts "journals to delete (before protection): #{journals.size}"
+      unprotected = journals.select { |j| !Ks::Journal::PROTECTED.include?(j.created_at.strftime("%Y-%m-%d")) }
+      puts "journals to delete (after protection): #{unprotected.size}"
+      if unprotected.size > 0
+        puts "before:"
+        puts "  journals... #{Ks::Journal.count}"
+        puts "  boots...... #{Ks::Boot.count}"
+        puts "  tops....... #{Ks::Top.count}"
+        puts "  mems....... #{Ks::Mem.count}"
+        puts "  procs...... #{Ks::Proc.count}"
+        if !dry_run
+          unprotected.each { it.destroy! }
+          puts "after:"
+          puts "  journals... #{Ks::Journal.count}"
+          puts "  boots...... #{Ks::Boot.count}"
+          puts "  tops....... #{Ks::Top.count}"
+          puts "  mems....... #{Ks::Mem.count}"
+          puts "  procs...... #{Ks::Proc.count}"
+          puts "finished ks_journals prune at #{Time.now.to_fs(:db)}"
+        end
+      end
+    end
+  end
 end
