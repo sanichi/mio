@@ -1,6 +1,6 @@
 %tr
   %td= mem.measured_at.to_fs(:db)
-  %td.text-center= mem.server
+  %td.text-center= t("ks.servers.#{mem.server}", locale: "jp")
   %td.text-center= mem.total
   %td.text-center= mem.used
   %td.text-center= mem.free

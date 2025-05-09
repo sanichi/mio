@@ -1,6 +1,6 @@
 %tr
   %td= proc.top.measured_at.to_fs(:db)
-  %td= proc.top.server
+  %td.text-center= t("ks.servers.#{proc.top.server}", locale: "jp")
   %td= proc.pid
   %td= proc.mem
   %td= proc.command

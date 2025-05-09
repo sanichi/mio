@@ -36,6 +36,10 @@ en:
       pid: PID
       procs: Top Processes
       short: Short
+    servers:
+      hok: hokkaido
+      mor: morioka
+      tsu: tsukuba
     short:
       boot: Boot
       journal: Jrnl
@@ -51,3 +55,7 @@ en:
 jp:
   ks:
     kanshi: 監視
+    servers:
+      hok: 北海道
+      mor: 盛岡
+      tsu: つくば

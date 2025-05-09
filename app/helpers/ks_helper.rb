@@ -21,7 +21,7 @@ module KsHelper
   end
 
   def ks_server_menu(selected)
-    opts = Ks::SERVERS.map { |s| [s, s] }
+    opts = Ks::SERVERS.map { |s| [t("ks.servers.#{s}", locale: "jp"), s] }
     opts.unshift [t("any"), ""]
     options_for_select(opts, selected)
   end
