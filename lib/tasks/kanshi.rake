@@ -42,9 +42,9 @@ namespace :kanshi do
   # Can be run on the development machine for testing purposes:                                               #
   #                                                                                                           #
   #   ❯ mio                                                                                                   #
-  #   ❯ bin/rails kanshi:shorten         # process only those without a short version already (fastest)       #
-  #   ❯ bin/rails kanshi:shorten\[a\]    # process all but don't update old ones if they've changed           #
-  #   ❯ bin/rails kanshi:shorten\[a,u\]  # process all and update old ones if they've changed                 #
+  #   ❯ bin/rails kanshi:procs          # process only those without a short version already (fastest)        #
+  #   ❯ bin/rails kanshi:procs \[a\]    # process all but don't update old ones if they've changed            #
+  #   ❯ bin/rails kanshi:procs \[a,u\]  # process all and update old ones if they've changed                  #
   #                                                                                                           #
   # You could run this in production, for example:                                                            #
   #                                                                                                           #

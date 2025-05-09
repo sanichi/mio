@@ -46,13 +46,21 @@ module Ks
     end
 
     def short_version
-      case command
-        when nil                                                                            then nil
-        when /\APassenger RubyApp: \/var\/www\/([a-z]+\.)?([a-z]+)\/current \(production\)/ then "#{$2} app"
-        when /\APassenger core/                                                             then "passenger core"
-        when /\A\/usr\/sbin\/httpd -DFOREGROUND/                                            then "httpd"
+      version = case command
+        when nil                                                                    then nil
+        when /\APassenger AppPreloader: \/var\/www\/([a-z]+\.)?([a-z]+)\/current/   then "#{$2} preloader"
+        when /\APassenger RubyApp: \/var\/www\/([a-z]+\.)?([a-z]+)\/current/        then "#{$2} app"
+        when /\APassenger core\z/                                                   then "passenger core"
+        when /\Apostgres: sanichi ([a-z]+)_production/                              then "#{$1} db"
+        when /\Apostgres:(\s\w+){1,2}\z/                                            then command
+        when /\Asshd: (\w+\s)?\[(\w+)\]\z/                                          then "sshd: #{$1}#{$2}[#{$3}]"
+        when /\A\/usr\/sbin\/httpd -DFOREGROUND\z/                                  then "httpd"
+        when /\A\/usr\/lib\/systemd\/systemd --switched-root/                       then "systemd (init)"
+        when /\A\/usr\/lib\/systemd\/systemd --user/                                then "systemd (user)"
         else nil
       end
+      version = version.truncate(MAX_SHORT) if version.present? && version.length > MAX_SHORT
+      version
     end
 
     def normalize_attributes
