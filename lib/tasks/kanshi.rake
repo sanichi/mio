@@ -53,6 +53,11 @@ namespace :kanshi do
   # or as a cron job:                                                                                         #
   #                                                                                                           #
   #   0 1 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails kanshi:procs >> log/cron.log 2>&1  #
+  #                                                                                                           #
+  # Finally, there are also capistrano tasks to update production:                                            #
+  #                                                                                                           #
+  #   ❯ bin/cap production kanshi:procs:create   # equivalent to kanshi:procs with no args                    #
+  #   ❯ bin/cap production kanshi:procs:update   # equivalent to kanshi:procs with [a,u]                      #
   #############################################################################################################
   desc "create short versions of commands"
   task :procs, [:all, :update] => :environment do |task, args|
