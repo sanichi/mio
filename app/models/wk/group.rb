@@ -66,6 +66,7 @@ module Wk
     end
 
     def update_vocabs
+      self.vocabs = [] # including this seems to force reordering if it's the same set of vocabs
       self.vocabs = vocab_list.split(" ").map do |characters|
         Vocab.find_by(characters: characters)
       end.compact
