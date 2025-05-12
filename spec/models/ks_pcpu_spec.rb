@@ -26,7 +26,12 @@ describe Ks::Pcpu do
         expect(Ks::Pcpu.count).to eq 0
       end
 
-      it "corrects high pcpu" do
+      it "accepts a zero pcpu" do
+        pcpu = create(:ks_pcpu, pcpu: "0.0")
+        expect(pcpu.pcpu).to eq 0.0
+      end
+
+      it "corrects a high pcpu" do
         pcpu = create(:ks_pcpu, pcpu: "10000")
         expect(pcpu.pcpu).to eq Ks::Pcpu::MAX_PCPU
       end
@@ -38,7 +43,7 @@ describe Ks::Pcpu do
       end
 
       it "bad pcpu" do
-        expect{create(:ks_pcpu, pcpu: 0.0)}.to raise_error(/Pcpu must be greater than 0/)
+        expect{create(:ks_pcpu, pcpu: -0.1)}.to raise_error(/Pcpu must be greater than or equal to 0/)
       end
 
       it "no cpu" do

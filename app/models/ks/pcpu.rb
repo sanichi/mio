@@ -13,7 +13,7 @@ module Ks
     before_validation :normalize_attributes
 
     validates :pid, numericality: { only_integer: true, greater_than: 0 }
-    validates :pcpu, numericality: { greater_than: 0.0, less_than_or_equal_to: MAX_PCPU }
+    validates :pcpu, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: MAX_PCPU }
     validates :command, presence: true, length: { maximum: MAX_COMMAND }
     validates :short, length: { maximum: MAX_SHORT }, allow_nil: true
 

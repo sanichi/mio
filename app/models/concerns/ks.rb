@@ -1,7 +1,7 @@
 module Ks
   BASE = Pathname.new("#{ENV['HOME']}/.log/kanshi.d")
   SERVERS = %w/hok mor tsu/
-  LOGS = %w/boot app mem top/
+  LOGS = %w/boot app mem top cpu/
 
   class W < StandardError; end
   class E < StandardError; end
@@ -46,7 +46,7 @@ module Ks
           begin
             time = line[0,19].to_datetime
           rescue Date::Error
-            raise E, "line #{num} (#{log == "top" ? line[0,19] : line}) of #{path} can't be parsed into a datetime"
+            raise E, "line #{num} (#{log.match?(/\A(top|cpu)\z/) ? line[0,19] : line}) of #{path} can't be parsed into a datetime"
           end
           case log
           when "app", "boot"
@@ -76,6 +76,18 @@ module Ks
               raise E, "line #{num} (#{sample}) of #{path} has an unparsable proc (#{proc[0,20]}...)" unless proc.match(/\A([1-9]\d*)\|(\d+)\|(.+)\z/)
               top.procs.create!(pid: $1, mem: $2, command: $3)
               journal.procs_count += 1
+            end
+          when "cpu"
+            sample = line.truncate(30) # for logging, if we need to, otherwise cpu lines can be very long
+            raise W, "line #{num} (#{sample}) of #{path} is a duplicate" if Ks::Cpu.find_by(measured_at: time, server: server)
+            raise E, "line #{num} (#{sample}) of #{path} can't be split in parts" unless line.match(/\A[-\d]+\s[:\d]+\s(.+)\z/)
+            pcpus = $1.split("||")
+            raise E, "line #{num} (#{sample}) of #{path} doesn't appear to have any pcpus" unless pcpus.size > 0
+            cpu = journal.cpus.create!(measured_at: time, server: server)
+            pcpus.each do |pcpu|
+              raise E, "line #{num} (#{sample}) of #{path} has an unparsable pcpu (#{pcpu[0,20]}...)" unless pcpu.match(/\A([1-9]\d*)\|(\d+\.\d+)\|(.+)\z/)
+              cpu.pcpus.create!(pid: $1, pcpu: $2, command: $3)
+              journal.pcpus_count += 1
             end
           end
         rescue W => e

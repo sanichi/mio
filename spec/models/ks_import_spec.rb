@@ -14,6 +14,8 @@ describe Ks do
       expect(journal.mems_count).to eq 180
       expect(journal.tops_count).to eq 186
       expect(journal.procs_count).to eq 1860
+      expect(journal.cpus_count).to eq 182
+      expect(journal.pcpus_count).to eq 262
       expect(journal.warnings).to eq 0
       expect(journal.problems).to eq 0
       expect(journal.note).to_not match(/WARNING/)
@@ -22,14 +24,17 @@ describe Ks do
       expect(journal.note).to match(/hok\/boot\.log\.+ 1/)
       expect(journal.note).to match(/hok\/mem\.log\.+ 59/)
       expect(journal.note).to match(/hok\/top\.log\.+ 60/)
+      expect(journal.note).to match(/hok\/cpu\.log\.+ 60/)
       expect(journal.note).to match(/mor\/app\.log\.+ 11/)
       expect(journal.note).to match(/mor\/boot\.log\.+ 1/)
       expect(journal.note).to match(/mor\/mem\.log\.+ 60/)
       expect(journal.note).to match(/mor\/top\.log\.+ 62/)
+      expect(journal.note).to match(/mor\/cpu\.log\.+ 60/)
       expect(journal.note).to match(/tsu\/app\.log\.+ 1/)
       expect(journal.note).to match(/tsu\/boot\.log\.+ 1/)
       expect(journal.note).to match(/tsu\/mem\.log\.+ 61/)
       expect(journal.note).to match(/tsu\/top\.log\.+ 64/)
+      expect(journal.note).to match(/tsu\/cpu\.log\.+ 62/)
 
       expect(Ks::Boot.count).to eq 16
       expect(Ks::Boot.where(app: "reboot").count).to eq 3
@@ -79,6 +84,21 @@ describe Ks do
       expect(Ks::Proc.where(short: "mio app").count).to eq 62
       expect(Ks::Proc.where(short: "rek app").count).to eq 60
       expect(Ks::Proc.where(short: "step app").count).to eq 64
+
+      expect(Ks::Cpu.count).to eq 182
+      expect(Ks::Cpu.where(server: "hok").count).to eq 60
+      expect(Ks::Cpu.where(server: "mor").count).to eq 60
+      expect(Ks::Cpu.where(server: "tsu").count).to eq 62
+      expect(Ks::Cpu.descending.first.measured_at.strftime(DF)).to eq "2025-05-12 01:01:01"
+      expect(Ks::Cpu.descending.last.measured_at.strftime(DF)).to eq "2025-05-11 23:00:01"
+
+      expect(Ks::Pcpu.count).to eq 262
+      expect(Ks::Pcpu.where(short: nil).count).to be <= 21
+      expect(Ks::Pcpu.where(short: "passenger core").count).to eq 182
+      expect(Ks::Pcpu.where(short: "api app").count).to eq 17
+      expect(Ks::Pcpu.where(short: "systemd (user)").count).to eq 16
+      expect(Ks::Pcpu.where(short: "sj app").count).to eq 2
+      expect(Ks::Pcpu.where(pcpu: 0.0).count).to eq 0
 
       Ks::SERVERS.each do |server|
         Ks::LOGS.each do |log|
