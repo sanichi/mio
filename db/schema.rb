@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_06_124447) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_12_125458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -105,6 +105,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_124447) do
     t.index ["ks_journal_id"], name: "index_ks_boots_on_ks_journal_id"
   end
 
+  create_table "ks_cpus", force: :cascade do |t|
+    t.string "server", limit: 3
+    t.datetime "measured_at"
+    t.integer "pcpus_count", default: 0, null: false
+    t.bigint "ks_journal_id", null: false
+    t.index ["ks_journal_id"], name: "index_ks_cpus_on_ks_journal_id"
+    t.index ["measured_at", "server"], name: "index_ks_cpus_on_measured_at_and_server", unique: true
+  end
+
   create_table "ks_journals", force: :cascade do |t|
     t.integer "warnings", default: 0
     t.integer "problems", default: 0
@@ -114,6 +123,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_124447) do
     t.integer "mems_count", default: 0, null: false
     t.integer "tops_count", default: 0, null: false
     t.integer "procs_count", default: 0, null: false
+    t.integer "cpus_count", default: 0, null: false
+    t.integer "pcpus_count", default: 0, null: false
     t.index ["created_at"], name: "index_ks_journals_on_created_at", unique: true
   end
 
@@ -129,6 +140,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_124447) do
     t.bigint "ks_journal_id", null: false
     t.index ["ks_journal_id"], name: "index_ks_mems_on_ks_journal_id"
     t.index ["measured_at", "server"], name: "index_ks_mems_on_measured_at_and_server", unique: true
+  end
+
+  create_table "ks_pcpus", force: :cascade do |t|
+    t.integer "pid"
+    t.decimal "pcpu", precision: 4, scale: 1
+    t.string "command", limit: 100
+    t.string "short", limit: 32
+    t.bigint "ks_cpu_id", null: false
+    t.index ["ks_cpu_id"], name: "index_ks_pcpus_on_ks_cpu_id"
   end
 
   create_table "ks_procs", force: :cascade do |t|

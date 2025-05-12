@@ -7,21 +7,24 @@ describe Ks::Proc do
     let!(:proc3) { create(:ks_proc, top: proc1.top) }
     let!(:proc4) { create(:ks_proc, top: proc1.top) }
 
-    it "success" do
-      expect(Ks::Top.count).to eq 1
-      expect(Ks::Proc.count).to eq 4
+    context "success" do
+      it "creation" do
+        expect(Ks::Top.count).to eq 1
+        expect(Ks::Proc.count).to eq 4
 
-      top = proc1.top
-      expect(proc2.top).to eq top
-      expect(proc3.top).to eq top
-      expect(proc4.top).to eq top
-      expect(top.procs.size).to eq 4
-      expect(top.procs_count).to eq 4
+        top = proc1.top
+        expect(proc2.top).to eq top
+        expect(proc3.top).to eq top
+        expect(proc4.top).to eq top
+        expect(top.procs.size).to eq 4
+        expect(top.procs_count).to eq 4
+        expect(top.journal.procs_count).to eq 0 # not a cache counter, only maintained in Ks.import
 
-      top.journal.destroy!
-      expect(Ks::Journal.count).to eq 0
-      expect(Ks::Top.count).to eq 0
-      expect(Ks::Proc.count).to eq 0
+        top.journal.destroy!
+        expect(Ks::Journal.count).to eq 0
+        expect(Ks::Top.count).to eq 0
+        expect(Ks::Proc.count).to eq 0
+      end
     end
 
     context "failure" do

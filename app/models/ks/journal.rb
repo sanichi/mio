@@ -10,10 +10,11 @@ module Ks
     ]
 
     has_many :boots, foreign_key: :ks_journal_id, dependent: :destroy
-    has_many :mems, foreign_key: :ks_journal_id, dependent: :destroy
-    has_many :tops, foreign_key: :ks_journal_id, dependent: :destroy
+    has_many :mems,  foreign_key: :ks_journal_id, dependent: :destroy
+    has_many :tops,  foreign_key: :ks_journal_id, dependent: :destroy
+    has_many :cpus,  foreign_key: :ks_journal_id, dependent: :destroy
 
-    validates :procs_count, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
+    validates :procs_count, :pcpus_count, :warnings, :problems, numericality: { integer_only: true, greater_than_or_equal_to: 0 }
 
     def self.search(params, path, opt={})
       matches =
