@@ -6,8 +6,6 @@ en:
       app: App
       boots: Reboots and Restarts
       happened: Happened at
-    cpu:
-      cpus: Top Process CPU
     journal:
       created: Created at
       journal: Journal
@@ -37,14 +35,14 @@ en:
       measured: Measured at
       pid: PID
       pcpu: '%CPU'
-      pcpus: Top Process CPU
+      pcpus: Process CPU
       short: Short
     proc:
       command: Command
       measured: Measured at
       mem: Mem
       pid: PID
-      procs: Top Process Memory
+      procs: Process Memory
       short: Short
     servers:
       hok: hokkaido
