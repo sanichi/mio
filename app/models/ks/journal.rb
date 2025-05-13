@@ -7,6 +7,7 @@ module Ks
     PROTECTED = [   # see lib/tasks/kanshi.rake, task kanshi:prune
       "2025-05-05", # severe cpu and memory problems on hokkaido leading to reboot
       "2025-05-07", # high swap on morioka possibly due to packagekit leading to reboot
+      "2025-05-12", # packagekit-like surge, kanshi logging interupted
     ]
 
     has_many :boots, foreign_key: :ks_journal_id, dependent: :destroy
