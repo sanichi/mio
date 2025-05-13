@@ -18,11 +18,11 @@
               %th= t("ks.mem.mems")
               %td= @journal.mems_count
             %tr
-              %th= t("ks.top.tops")
-              %td= @journal.tops_count
-            %tr
               %th= t("ks.proc.procs")
-              %td= @journal.procs_count
+              %td= "#{@journal.procs_count} (#{@journal.tops_count})"
+            %tr
+              %th= t("ks.pcpu.pcpus")
+              %td= "#{@journal.pcpus_count} (#{@journal.cpus_count})"
             %tr
               %th= t("ks.journal.warnings")
               %td= @journal.warnings
