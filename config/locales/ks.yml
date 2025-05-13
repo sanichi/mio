@@ -6,6 +6,8 @@ en:
       app: App
       boots: Reboots and Restarts
       happened: Happened at
+    cpu:
+      cpus: Top Process CPU
     journal:
       created: Created at
       journal: Journal
@@ -16,7 +18,7 @@ en:
       avail: Avail
       free: Free
       measured: Measured at
-      mems: System Memory Stats
+      mems: System Memory
       swap_used: Swap Used
       swap_free: Swap Free
       total: Total
@@ -27,14 +29,22 @@ en:
       happened: Happened ↑
       measured: Measured ↑
       memory: Memory ↓
+      pcpu: '%CPU ↓'
       warnings: Warnings ↓
       problems: Problems ↓
+    pcpu:
+      command: Command
+      measured: Measured at
+      pid: PID
+      pcpu: '%CPU'
+      pcpus: Top Process CPU
+      short: Short
     proc:
       command: Command
       measured: Measured at
       mem: Mem
       pid: PID
-      procs: Top Processes
+      procs: Top Process Memory
       short: Short
     servers:
       hok: hokkaido
@@ -43,15 +53,13 @@ en:
     short:
       boot: Boot
       journal: Jrnl
-      mem: Mem
+      mem: SyMem
+      pcpu: PrCPU
       problems: Prob
-      proc: Proc
+      proc: PrMem
       swap_used: SUsed
       swap_free: SFree
-      top: Top
       warnings: Warn
-    top:
-      tops: Top Processes
 jp:
   ks:
     kanshi: 監視

@@ -1,0 +1,39 @@
+:ruby
+  lo = Layout.new(
+    lg: [2,1,3,1,1],
+    md: [3,2,3,2,2],
+    sm: [[4,4],[4,2,2]],
+    xs: [[5,5],[6,3,3]],
+  ).to_a
+  inputs = [
+    [:order,  t("order"),           :select, lo[0], menu: ks_pcpu_order_menu(params[:order])],
+    [:server, t("ks.server"),       :select, lo[1], menu: ks_server_menu(params[:server])],
+    [:cmd,    t("ks.pcpu.command"), :text,   lo[2], placeholder: t("ks.pcpu.command")],
+    [:pid,    t("ks.pcpu.pid"),     :text,   lo[3], placeholder: t("ks.pcpu.pid")],
+    [:pcpu,   t("ks.pcpu.pcpu"),    :text,   lo[4], placeholder: t("ks.pcpu.pcpu")],
+  ]
+
+= render "utils/title", key: "ks.pcpu.pcpus"
+
+%section
+  .header.text-center
+    %h3= t("ks.pcpu.pcpus")
+  .body
+    = render "utils/search/form", index: ks_pcpus_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("ks.pcpu.measured")
+            %th.text-center= t("ks.server")
+            %th= t("ks.pcpu.pid")
+            %th= t("ks.pcpu.pcpu")
+            %th= t("ks.pcpu.command")
+            %th= t("ks.pcpu.short")
+        %tbody
+          = render partial: "pcpu", collection: @pcpus.matches
+          = render "utils/pagination_links", pager: @pcpus, columns: 6
+  .footer
+    = link_to t("ks.journal.journals"), ks_journals_path, class: "green-btn"
+    = link_to t("ks.boot.boots"), ks_boots_path, class: "green-btn"
+    = link_to t("ks.mem.mems"), ks_mems_path, class: "green-btn"

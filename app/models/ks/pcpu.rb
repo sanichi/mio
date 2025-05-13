@@ -41,7 +41,7 @@ module Ks
       sql = cross_constraint(params[:cmd], %w{command short}, table: "ks_pcpus")
       matches = matches.where(sql) if sql
 
-      sql = numerical_constraint(params[:pcpu], "ks_pcpus.pcpu")
+      sql = numerical_constraint(params[:pcpu], "ks_pcpus.pcpu", digits: 1)
       matches = matches.where(sql) if sql
 
       paginate(matches, params, path, opt)

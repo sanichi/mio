@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :boots, only: [:index]
     resources :mems, only: [:index]
     resources :procs, only: [:index]
+    resources :pcpus, only: [:index]
   end
   namespace :wk do
     resources :examples, except: [:show] do

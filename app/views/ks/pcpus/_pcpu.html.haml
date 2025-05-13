@@ -1,0 +1,7 @@
+%tr
+  %td= pcpu.cpu.measured_at.to_fs(:db)
+  %td.text-center= t("ks.servers.#{pcpu.cpu.server}", locale: "jp")
+  %td= pcpu.pid
+  %td= pcpu.pcpu
+  %td= pcpu.command
+  %td= pcpu.short

@@ -27,8 +27,8 @@
                 %th= t("ks.journal.created")
                 %th.text-center= t("ks.short.boot")
                 %th.text-center= t("ks.short.mem")
-                %th.text-center= t("ks.short.top")
                 %th.text-center= t("ks.short.proc")
+                %th.text-center= t("ks.short.pcpu")
                 %th.text-center= t("ks.short.warnings")
                 %th.text-center= t("ks.short.problems")
             %tbody
@@ -38,3 +38,4 @@
         = link_to t("ks.boot.boots"), ks_boots_path, class: "green-btn"
         = link_to t("ks.mem.mems"), ks_mems_path, class: "green-btn"
         = link_to t("ks.proc.procs"), ks_procs_path, class: "green-btn"
+        = link_to t("ks.pcpu.pcpus"), ks_pcpus_path, class: "green-btn"

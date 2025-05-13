@@ -30,4 +30,9 @@ module KsHelper
     opts = %w/default measured memory/.map { |o| [t("ks.order.#{o}"), o] }
     options_for_select(opts, selected)
   end
+
+  def ks_pcpu_order_menu(selected)
+    opts = %w/default measured pcpu/.map { |o| [t("ks.order.#{o}"), o] }
+    options_for_select(opts, selected)
+  end
 end
