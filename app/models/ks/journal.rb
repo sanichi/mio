@@ -8,6 +8,7 @@ module Ks
       "2025-05-05", # severe cpu and memory problems on hokkaido leading to reboot
       "2025-05-07", # high swap on morioka possibly due to packagekit leading to reboot
       "2025-05-12", # packagekit-like surge, kanshi logging interupted
+      "2025-05-14", # regular bursts of CPU disk every few hours, rebotted at about 8:30 UTC
     ]
 
     has_many :boots, foreign_key: :ks_journal_id, dependent: :destroy
