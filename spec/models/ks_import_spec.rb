@@ -20,21 +20,21 @@ describe Ks do
       expect(journal.problems).to eq 0
       expect(journal.note).to_not match(/WARNING/)
       expect(journal.note).to_not match(/ERROR/)
-      expect(journal.note).to match(/hok\/app\.log\.+ 1/)
-      expect(journal.note).to match(/hok\/boot\.log\.+ 1/)
-      expect(journal.note).to match(/hok\/mem\.log\.+ 59/)
-      expect(journal.note).to match(/hok\/top\.log\.+ 60/)
-      expect(journal.note).to match(/hok\/cpu\.log\.+ 60/)
-      expect(journal.note).to match(/mor\/app\.log\.+ 11/)
-      expect(journal.note).to match(/mor\/boot\.log\.+ 1/)
-      expect(journal.note).to match(/mor\/mem\.log\.+ 60/)
-      expect(journal.note).to match(/mor\/top\.log\.+ 62/)
-      expect(journal.note).to match(/mor\/cpu\.log\.+ 60/)
-      expect(journal.note).to match(/tsu\/app\.log\.+ 1/)
-      expect(journal.note).to match(/tsu\/boot\.log\.+ 1/)
-      expect(journal.note).to match(/tsu\/mem\.log\.+ 61/)
-      expect(journal.note).to match(/tsu\/top\.log\.+ 64/)
-      expect(journal.note).to match(/tsu\/cpu\.log\.+ 62/)
+      expect(journal.note).to match(/hok.app.log\.+ 1/)
+      expect(journal.note).to match(/hok.boot.log\.+ 1/)
+      expect(journal.note).to match(/hok.mem.log\.+ 59/)
+      expect(journal.note).to match(/hok.top.log\.+ 60/)
+      expect(journal.note).to match(/hok.cpu.log\.+ 60/)
+      expect(journal.note).to match(/mor.app.log\.+ 11/)
+      expect(journal.note).to match(/mor.boot.log\.+ 1/)
+      expect(journal.note).to match(/mor.mem.log\.+ 60/)
+      expect(journal.note).to match(/mor.top.log\.+ 62/)
+      expect(journal.note).to match(/mor.cpu.log\.+ 60/)
+      expect(journal.note).to match(/tsu.app.log\.+ 1/)
+      expect(journal.note).to match(/tsu.boot.log\.+ 1/)
+      expect(journal.note).to match(/tsu.mem.log\.+ 61/)
+      expect(journal.note).to match(/tsu.top.log\.+ 64/)
+      expect(journal.note).to match(/tsu.cpu.log\.+ 62/)
 
       expect(Ks::Boot.count).to eq 16
       expect(Ks::Boot.where(app: "reboot").count).to eq 3
@@ -118,30 +118,32 @@ describe Ks do
       expect(journal.boots_count).to eq 12
       expect(journal.mems_count).to eq 179
       expect(journal.tops_count).to eq 184
-      expect(journal.procs_count).to eq 1840
+      expect(journal.procs_count).to eq 1839
       expect(journal.cpus_count).to eq 180
-      expect(journal.pcpus_count).to eq 260
+      expect(journal.pcpus_count).to eq 259
       expect(journal.warnings).to eq 8
-      expect(journal.problems).to eq 11
-      expect(journal.note).to match(/WARNING: line 1 of hok\/boot\.log is blank/)
-      expect(journal.note).to match(/WARNING: line 2 of hok\/app\.log is blank/)
-      expect(journal.note).to match(/WARNING: line 5 of hok\/mem\.log is blank/)
-      expect(journal.note).to match(/WARNING: line 31 of hok\/top\.log is blank/)
-      expect(journal.note).to match(/WARNING: line 33 \(2025-04-26 14:30:01 1051592...\) of hok\/top\.log is a duplicate/)
-      expect(journal.note).to match(/WARNING: line 9 \(2025-04-28 14:31:05 mio\) of mor\/app\.log is a duplicate/)
-      expect(journal.note).to match(/WARNING: line 12 \(2025-04-25 14:35:01 1774 845 557 929 115 396\) of mor\/mem\.log is a duplicate/)
-      expect(journal.note).to match(/WARNING: line 7 of mor\/cpu.log is blank/)
-      expect(journal.note).to match(/ERROR: line 2 \(corrupt\) of hok\/boot\.log can't be parsed into a date/)
-      expect(journal.note).to match(/ERROR: line 3 \(corrupt\) of hok\/boot\.log can't be parsed into a date/)
-      expect(journal.note).to match(/ERROR: line 1 \(corrupt\) of hok\/cpu\.log can't be parsed into a datetime/)
-      expect(journal.note).to match(/ERROR: line 6 \(2025-04-28 14:06:45\) of mor\/app\.log has no app/)
-      expect(journal.note).to match(/ERROR: line 12 \(corrupt\) of mor\/app\.log can't be parsed into a date/)
-      expect(journal.note).to match(/ERROR: line 1 \(corrupt\) of tsu\/app\.log can't be parsed into a date/)
-      expect(journal.note).to match(/ERROR: line 14 \(2025-04-25 14:38:01 corrupt\) of tsu\/mem.log has can't be parsed into 6 numbers/)
-      expect(journal.note).to match(/ERROR: line 30 \(corrupt\) of mor\/top\.log can't be parsed into a datetime/)
-      expect(journal.note).to match(/ERROR: line 30 \(2025-04-26 14:29:01 926495\|...\) of tsu\/top\.log doesn't appear to have 10 procs/)
-      expect(journal.note).to match(/ERROR: line 64 \(2025-04-26 15:03:01 926495\|...\) of tsu\/top\.log doesn't appear to have 10 procs/)
-      expect(journal.note).to match(/ERROR: line 1 \(25-05-12 corrupt\) of tsu\/cpu\.log can't be split in parts/)
+      expect(journal.problems).to eq 13
+      expect(journal.note).to match(/WARNING: line 1 of hok.boot.log is blank/)
+      expect(journal.note).to match(/WARNING: line 2 of hok.app.log is blank/)
+      expect(journal.note).to match(/WARNING: line 5 of hok.mem.log is blank/)
+      expect(journal.note).to match(/WARNING: line 31 of hok.top.log is blank/)
+      expect(journal.note).to match(/WARNING: line 33 .+ of hok.top.log is a duplicate/)
+      expect(journal.note).to match(/WARNING: line 9 .+ of mor.app.log is a duplicate/)
+      expect(journal.note).to match(/WARNING: line 12 .+ of mor.mem.log is a duplicate/)
+      expect(journal.note).to match(/WARNING: line 7 of mor.cpu.log is blank/)
+      expect(journal.note).to match(/ERROR: line 2 .+ of hok.boot.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 3 .+ of hok.boot.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 62 .+ of hok.top.log has an unparsable proc:\ncorrupt/)
+      expect(journal.note).to match(/ERROR: line 1 .+ of hok.cpu.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 6 .+ of mor.app.log has no app/)
+      expect(journal.note).to match(/ERROR: line 12 .+ of mor.app.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 1 .+ of tsu.app.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 14 .+ of tsu.mem.log .+ 6 numbers/)
+      expect(journal.note).to match(/ERROR: line 30 .+ of mor.top.log .+ datetime/)
+      expect(journal.note).to match(/ERROR: line 14 .+ of mor.cpu.log has an unparsable pcpu:\ncorrupt/)
+      expect(journal.note).to match(/ERROR: line 30 .+ of tsu.top.log .+ 10 procs/)
+      expect(journal.note).to match(/ERROR: line 64 .+ of tsu.top.log .+ 10 procs/)
+      expect(journal.note).to match(/ERROR: line 1 .+ of tsu.cpu.log .+ parts/)
 
       expect(Ks::Boot.count).to eq 12
       expect(Ks::Boot.where(app: "reboot").count).to eq 1
@@ -161,7 +163,7 @@ describe Ks do
       expect(Ks::Top.where(server: "mor").count).to eq 62
       expect(Ks::Top.where(server: "tsu").count).to eq 62
 
-      expect(Ks::Proc.count).to eq 1840
+      expect(Ks::Proc.count).to eq 1839
       expect(Ks::Proc.where(short: "httpd").count).to eq 669
       expect(Ks::Proc.where(short: "mio app").count).to eq 62
       expect(Ks::Proc.where(short: "rek app").count).to eq 60
@@ -172,8 +174,8 @@ describe Ks do
       expect(Ks::Cpu.where(server: "mor").count).to eq 60
       expect(Ks::Cpu.where(server: "tsu").count).to eq 61
 
-      expect(Ks::Pcpu.count).to eq 260
-      expect(Ks::Pcpu.where(short: "passenger core").count).to eq 180
+      expect(Ks::Pcpu.count).to eq 259
+      expect(Ks::Pcpu.where(short: "passenger core").count).to eq 179
       expect(Ks::Pcpu.where(short: "api app").count).to eq 17
       expect(Ks::Pcpu.where(short: "systemd (user)").count).to eq 16
       expect(Ks::Pcpu.where(short: "sj app").count).to eq 2
