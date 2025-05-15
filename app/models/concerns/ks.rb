@@ -85,7 +85,7 @@ module Ks
             raise E, "line #{num} (#{sample}) of #{path} doesn't appear to have any pcpus" unless pcpus.size > 0
             cpu = journal.cpus.create!(measured_at: time, server: server)
             pcpus.each do |pcpu|
-              raise E, "line #{num} (#{sample}) of #{path} has an unparsable pcpu:\n#{pcpu}" unless pcpu.match(/\A([1-9]\d*)\|(\d+\.\d+)\|(.+)\z/)
+              raise E, "line #{num} (#{sample}) of #{path} has an unparsable pcpu:\n#{pcpu}" unless pcpu.match(/\A([1-9]\d*)\|(\d+(?:\.\d+)?)\|(.+)\z/)
               cpu.pcpus.create!(pid: $1, pcpu: $2, command: $3)
               journal.pcpus_count += 1
             end
