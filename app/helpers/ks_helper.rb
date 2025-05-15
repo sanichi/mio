@@ -10,6 +10,24 @@ module KsHelper
     options_for_select(opts, selected)
   end
 
+  def ks_journal_date_format(date)
+    today = Date.today
+    case (today - date).to_i
+    when 0
+      "Today"
+    when 1
+      "Yesterday"
+    when 2,3,4,5
+      "%a"
+    else
+      if date.year == today.year
+        "%b %e"
+      else
+        "%Y-%M-%D"
+      end
+    end + " %H:%M"
+  end
+
   def ks_journal_order_menu(selected)
     opts = %w/default created warnings problems/.map { |o| [t("ks.order.#{o}"), o] }
     options_for_select(opts, selected)

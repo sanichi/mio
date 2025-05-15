@@ -32,7 +32,8 @@
                 %th.text-center= t("ks.short.warnings")
                 %th.text-center= t("ks.short.problems")
             %tbody
-              = render partial: "journal", collection: @journals.matches
+              = render partial: "journal", collection: @journals.matches,
+                locals: { date_format: ks_journal_date_format(@journals.matches.first.created_at.to_date) }
               = render "utils/pagination_links", pager: @journals, columns: 7
       .footer
         = link_to t("ks.boot.boots"), ks_boots_path, class: "green-btn"
