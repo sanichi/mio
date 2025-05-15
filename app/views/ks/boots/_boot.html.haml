@@ -1,5 +1,5 @@
 %tr
-  %td= boot.happened_at.to_fs(:db)
+  %td= ks_datetime(boot.happened_at)
   %td.text-center= t("ks.servers.#{boot.server}", locale: "jp")
   %td.text-center= boot.app
   %td.text-center= link_to boot.journal.id, boot.journal, "data-turbo-frame" => "_top"

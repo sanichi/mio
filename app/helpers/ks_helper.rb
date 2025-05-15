@@ -10,22 +10,24 @@ module KsHelper
     options_for_select(opts, selected)
   end
 
-  def ks_journal_date_format(date)
+  def ks_datetime(time)
     today = Date.today
-    case (today - date).to_i
-    when 0
-      "Today"
-    when 1
-      "Yesterday"
-    when 2,3,4,5
-      "%a"
-    else
-      if date.year == today.year
-        "%b %e"
+    fmt =
+      case (today - time.to_date).to_i
+      when 0
+        "Today"
+      when 1
+        "Yesterday"
+      when 2,3,4,5
+        "%a"
       else
-        "%Y-%M-%D"
+        if time.year == today.year
+          "%b %e"
+        else
+          "%Y-%M-%D"
+        end
       end
-    end + " %H:%M"
+    time.strftime("#{fmt} %H:%S")
   end
 
   def ks_journal_order_menu(selected)
