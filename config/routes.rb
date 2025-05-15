@@ -71,7 +71,9 @@ Rails.application.routes.draw do
     patch :quick_level_update, on: :member
   end
   resources :stars
-  resources :teams
+  resources :teams do
+    get :stats, on: :member
+  end
   resources :transactions, only: [:index] do
     post :upload, on: :collection
     patch :quick_approval_update, on: :member

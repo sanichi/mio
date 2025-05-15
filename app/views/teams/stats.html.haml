@@ -1,0 +1,14 @@
+= render "utils/title", text: @stats.name
+
+%section
+  .header.text-center
+    %h3= @stats.name
+    %p.text-center (Under Construction)
+  .body
+    .row.justify-content-center
+      .col-auto
+        %table{class: "table table-bordered table-responsive table-sm"}
+          %tbody
+            %tr
+              - @stats.seasons.each do |season|
+                %td.text-center= full_match_season(season)

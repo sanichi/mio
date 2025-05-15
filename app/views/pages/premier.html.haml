@@ -40,6 +40,7 @@
             %tbody
               - @data.teams.each do |t|
                 %tr
+                  -# %th.shrink= link_to t.short, stats_team_path(t), "data-turbo-frame" => "_top"
                   %th.shrink= t.short
                   %td.text-center= t.played
                   %td.text-center= t.won

@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   authorize_resource
-  before_action :find_team, only: [:show, :edit, :update, :destroy]
+  before_action :find_team, only: [:show, :edit, :update, :destroy, :stats]
 
   def index
     remember_last_search(teams_path)
@@ -33,6 +33,10 @@ class TeamsController < ApplicationController
   def destroy
     @team.destroy
     redirect_to teams_path
+  end
+
+  def stats
+    @stats = TeamStats.new(@team)
   end
 
   private
