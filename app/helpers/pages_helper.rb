@@ -28,6 +28,8 @@ module PagesHelper
     options_for_select(opts, selected)
   end
 
+  Struct.new("Premier", :season, :teams, :dun, :due, :one_sided, :more_dun, :more_due)
+
   def premier_data(candidate_season, dun_due)
     # season
     if Match.seasons.include?(candidate_season.to_i)
@@ -40,7 +42,8 @@ module PagesHelper
     if season == Match.current_season
       teams = Team.where(division: 1).to_a
     else
-      teams = Match.where(season: season).pluck(:home_team_id).uniq.map{ |id| Team.find(id) }.to_a
+      ids = Match.where(season: season).pluck(:home_team_id).uniq
+      teams = Team.where(id: ids).to_a
     end
 
     # work out the requested dun/due
@@ -99,7 +102,6 @@ module PagesHelper
     end
 
     # return the stuff we just calculated
-    Struct.new("Premier", :season, :teams, :dun, :due, :one_sided, :more_dun, :more_due)
     Struct::Premier.new(season, teams, dun, due, one_sided, more_dun, more_due);
   end
 end

@@ -3,12 +3,28 @@
 %section
   .header.text-center
     %h3= @stats.name
-    %p.text-center (Under Construction)
   .body
     .row.justify-content-center
       .col-auto
         %table{class: "table table-bordered table-responsive table-sm"}
           %tbody
             %tr
+              %th
               - @stats.seasons.each do |season|
-                %td.text-center= full_match_season(season)
+                %th.text-center{colspan: 2}= link_to full_match_season(season), premier_path(season: season)
+              %th
+            - @stats.ids.each do |id|
+              %tr
+                %th= link_to @stats.names[id], stats_team_path(id)
+                - @stats.seasons.each do |season|
+                  %td.text-center
+                    - if @stats.home[id][season]
+                      - og, tg, pt = @stats.home[id][season]
+                      - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
+                      %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}"}= "#{og}-#{tg}"
+                  %td.text-center
+                    - if @stats.away[id][season]
+                      - og, tg, pt = @stats.away[id][season]
+                      - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
+                      %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}"}= "#{og}-#{tg}"
+                %th.text-center= @stats.totals[id]
