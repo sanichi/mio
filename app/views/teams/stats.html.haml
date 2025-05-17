@@ -12,7 +12,8 @@
               %th
               - @stats.seasons.each do |season|
                 %th.text-center{colspan: 2}= link_to full_match_season(season), premier_path(season: season)
-              %th
+              %td.text-center= t("pages.premier.points")
+              %td.text-center= t("pages.premier.diff")
             - @stats.ids.each do |id|
               %tr
                 %th= link_to @stats.names[id], stats_team_path(id)
@@ -27,4 +28,5 @@
                       - og, tg, pt = @stats.away[id][season]
                       - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
                       %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}"}= "#{og}-#{tg}"
-                %th.text-center= @stats.totals[id]
+                %th.text-center= @stats.pts[id]
+                %th.text-center= @stats.gds[id]
