@@ -13,7 +13,7 @@
       .header.text-center
         %h3= t("pages.premier.title")
       .body
-        = render "utils/search/form", index: premier2_path, inputs: inputs
+        = render "utils/search/form", index: premier_path, inputs: inputs
         = turbo_frame_tag :results, "data-turbo-action" => "advance" do
           .row.justify-content-center
             .col-auto
