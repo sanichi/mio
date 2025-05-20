@@ -1,5 +1,5 @@
 class PremierStats
-  MATCH_NUMBERS = [1, 7, 12, 18, 23, 29]
+  MATCH_NUMBERS = [1, 6, 11, 16, 21, 26, 29]
   DEDUCTIONS = {
     2023 => {
       "Everton" => 8,
@@ -120,23 +120,20 @@ class PremierStats
     # Do we need to calculate the best match number (first of the 10) to use?
     if @number == 0
       @number =
-        case (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round
-        when (0..6)
-          MATCH_NUMBERS[0] # 1
-        when (7..12)
-          MATCH_NUMBERS[1] # 7
-        when (13..19)
-          MATCH_NUMBERS[2] # 12
-        when (20..25)
-          MATCH_NUMBERS[3] # 18
-        when (26..32)
-          MATCH_NUMBERS[4] # 23
-        else
-          MATCH_NUMBERS[5] # 29
+        case (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round  # average number of games played so far
+          when (0..6)   then  1 #  0-9
+          when (7..11)  then  6 #  5-14
+          when (12..16) then 11 # 10-19
+          when (17..21) then 16 # 15-24
+          when (22..26) then 21 # 20-29
+          when (27..31) then 26 # 25-34
+                        else 29 # 28-37
         end
     end
 
-    # Calculate the 10 match index numbers to use from the match number.
-    @numbers = (@number-1..@number+8).to_a
+    # Calculate the 10 match index numbers (these are for the results or upcoming fixtures that are highlighted).
+    start = @number - 1
+    finish = @number + 8
+    @numbers = (start..finish).to_a
   end
 end
