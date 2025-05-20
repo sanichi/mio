@@ -17,7 +17,7 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @data = helpers.premier_data(params[:season], params[:dun_due])
+    @data = PremierStats.new(params[:season], params[:number])
   end
 
   def risle

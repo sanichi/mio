@@ -28,6 +28,11 @@ module PagesHelper
     options_for_select(opts, selected)
   end
 
+  def match_numbers_menu(selected)
+    opts = PremierStats::MatchNumbers.map { |n| ["#{n}-#{n+9}", n] }
+    options_for_select(opts, selected)
+  end
+
   Struct.new("Premier", :season, :teams, :dun, :due, :one_sided, :more_dun, :more_due)
 
   def premier_data(candidate_season, dun_due)
