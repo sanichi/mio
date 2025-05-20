@@ -1,5 +1,11 @@
 class PremierStats
-  MatchNumbers = [1, 7, 12, 18, 23, 29]
+  MATCH_NUMBERS = [1, 7, 12, 18, 23, 29]
+  DEDUCTIONS = {
+    2023 => {
+      "Everton" => 8,
+      "Forest"  => 4,
+    }
+  }
 
   attr_reader :season,   # first year of season, integer e.g. 2024
               :ids,      # ordered list of team IDs in the premier league in that season
@@ -14,7 +20,7 @@ class PremierStats
               :diff,     # hash from team ID to goal difference
               :labels,   # hash from team ID to array of match labels in date order
               :tooltips, # hash from team ID to array of match tooltips in date order
-              :number,   # one of the numbers in MatchNumbers
+              :number,   # one of the numbers in MATCH_NUMBERS
               :numbers   # array of 10 consecutive match numbers (less 1 so they are indexes into labels and tooltips)
 
   def initialize(season, number)
@@ -26,18 +32,20 @@ class PremierStats
     end
 
     # Match numbers.
-    if MatchNumbers.include?(number.to_i)
+    if MATCH_NUMBERS.include?(number.to_i)
       @number = number.to_i
     else
       @number = 0 # we'll calculate the best one later when we have more info
     end
 
-    # Get array of IDs and hash of names.
+    # Get array of IDs and hashes of ID → name and name → ID
     @ids = []
     @name = {}
+    eman = {}
     Team.pluck(:id, :short).each do |id,short|
       @ids.push id
       @name[id] = short
+      eman[short] = id
     end
 
     # Get all the stats.
@@ -97,6 +105,15 @@ class PremierStats
       end
     end
 
+    # Account for deductions.
+    if DEDUCTIONS.has_key?(@season)
+      DEDUCTIONS[@season].each_pair do |short, amount|
+        if (id = eman[short]) && present[id]
+          @points[id] -= amount
+        end
+      end
+    end
+
     # Prune and sort the IDs.
     @ids.select!{ |id| present[id] }.sort!{ |a,b| [@points[b], @diff[b], @name[a]] <=> [@points[a], @diff[a], @name[b]] }
 
@@ -105,17 +122,17 @@ class PremierStats
       @number =
         case (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round
         when (0..6)
-          MatchNumbers[0] # 1
+          MATCH_NUMBERS[0] # 1
         when (7..12)
-          MatchNumbers[1] # 7
+          MATCH_NUMBERS[1] # 7
         when (13..19)
-          MatchNumbers[2] # 12
+          MATCH_NUMBERS[2] # 12
         when (20..25)
-          MatchNumbers[3] # 18
+          MATCH_NUMBERS[3] # 18
         when (26..32)
-          MatchNumbers[4] # 23
+          MATCH_NUMBERS[4] # 23
         else
-          MatchNumbers[5] # 29
+          MATCH_NUMBERS[5] # 29
         end
     end
 
