@@ -39,22 +39,4 @@ class Team < ApplicationRecord
     name&.squish!
     short&.squish!
   end
-
-  def goals(us, them)
-    self.played += 1
-    self.for += us
-    self.against += them
-    self.diff += us - them
-    if us > them
-      self.won += 1
-      self.points += 3
-    end
-    if us == them
-      self.drawn += 1
-      self.points += 1
-    end
-    if us < them
-      self.lost += 1
-    end
-  end
 end

@@ -1,7 +1,7 @@
 class Match < ApplicationRecord
   include Pageable
 
-  FIRST_SEASON = 2020 # for menu
+  FIRST_SEASON = 2019 # for menu
   MIN_SEASON = 2010   # for validation
 
   belongs_to :home_team, class_name: "Team"
