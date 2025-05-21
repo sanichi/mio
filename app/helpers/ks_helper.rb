@@ -27,7 +27,7 @@ module KsHelper
           "%Y-%M-%D"
         end
       end
-    time.strftime("#{fmt} %H:%S")
+    time.strftime("#{fmt} %H:%M")
   end
 
   def ks_journal_order_menu(selected)
