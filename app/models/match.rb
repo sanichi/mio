@@ -1,7 +1,8 @@
 class Match < ApplicationRecord
   include Pageable
 
-  FIRST_SEASON = 2020
+  FIRST_SEASON = 2020 # for menu
+  MIN_SEASON = 2010   # for validation
 
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
@@ -9,7 +10,7 @@ class Match < ApplicationRecord
   validates :home_team_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: [:season, :away_team_id] }
   validates :away_team_id, numericality: { integer_only: true, greater_than: 0 }, uniqueness: { scope: [:season, :home_team_id] }
   validates :home_score, :away_score, numericality: { integer_only: true, greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :season, numericality: { integer_only: true, greater_than_or_equal_to: FIRST_SEASON }
+  validates :season, numericality: { integer_only: true, greater_than_or_equal_to: MIN_SEASON }
   validates :date, presence: true, uniqueness: { scope: :home_team_id }
   validate :team_cant_play_itself
 
