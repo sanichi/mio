@@ -14,7 +14,6 @@ class Team < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: MAX_NAME }, uniqueness: true
   validates :short, presence: true, length: { maximum: MAX_SHORT }, uniqueness: true
-  validates :slug, presence: true, length: { maximum: MAX_NAME }, uniqueness: true, format: { with: /\A[a-z]+(-[a-z]+)*\z/ }
   validates :division, numericality: { integer_only: true, more_than_or_equal_to: MIN_DIVISION, less_than_or_equal_to: MAX_DIVISION }
 
   scope :by_name,    -> { order(:name) }
@@ -44,7 +43,6 @@ class Team < ApplicationRecord
 
   def normalize_attributes
     name&.squish!
-    slug&.squish!
     short&.squish!
   end
 
