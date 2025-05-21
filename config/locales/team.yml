@@ -1,11 +1,8 @@
 en:
   team:
-    division: Division
     edit: Edit Team
     name: Full Name
     new: New Team
     short: Short Name
     team: Team
     teams: Teams
-    abbrev:
-      division: D

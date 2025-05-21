@@ -1,8 +1,7 @@
 :ruby
-  lo = Layout.new(xs: [4,4], md: [3,3]).to_a
+  lo = Layout.new(xs: [4], md: [3]).to_a
   inputs = [
-    [:q,        t("search"),          :text, lo[0], autofocus: true],
-    [:division, t("team.division"), :select, lo[1], menu: team_division_search_menu, prompt: t("team.division")],
+    [:q, t("search"), :text, lo[0], autofocus: true],
   ]
 
 = render "utils/title", key: "team.teams"
@@ -19,11 +18,10 @@
             %thead
               %tr.d-flex
                 %th.col-7= t("team.name")
-                %th.col-4= t("team.short")
-                %th.col-1.text-center= t("team.abbrev.division")
+                %th.col-5= t("team.short")
             %tbody
               = render partial: "team", collection: @teams.matches
-              = render "utils/pagination_links", pager: @teams, columns: 3
+              = render "utils/pagination_links", pager: @teams, columns: 2
       - if can?(:create, Team)
         .footer
           = link_to t("team.new"), new_team_path, class: "blue-btn"

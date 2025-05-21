@@ -73,7 +73,6 @@ namespace :rapid do
     data = rapid_response(path)
 
     # check and process the structure
-    twenty = []
     begin
       raise "bad response" unless data
       raise "data is not a hash with a 'teams' key" unless data.is_a?(Hash) && data.has_key?("teams")
@@ -98,26 +97,6 @@ namespace :rapid do
           puts "set rapid id for #{name}"
         elsif team.rid != rid
           raise "#{name} already has a rapid id (#{team.rid} <=> #{rid})" unless team
-        end
-
-        # update the division if necessary
-        if team.division != 1
-          team.update_column(:division, 1)
-          puts "promoted #{name} to premier league"
-        end
-
-        # keep a note of the 20 teams that are in the premier league
-        twenty.push(name)
-      end
-
-      # find and update teams that are no longer in the premier league
-      premier = Team.where(division: 1).to_a
-      if premier.size > 20
-        premier.each do |team|
-          unless twenty.include?(team.name)
-            team.update_column(:division, 2)
-            puts "relegated #{team.name} from premier league"
-          end
         end
       end
     rescue => e

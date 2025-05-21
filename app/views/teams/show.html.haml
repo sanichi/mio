@@ -14,10 +14,6 @@
             %tr
               %th= t("team.short")
               %td= @team.short
-            %tr
-              %th= t("team.division")
-              %td= @team.division
-
       .footer
         = link_to t("team.teams"), last_search(teams_path), class: "green-btn"
         - if can?(:edit, Team)
