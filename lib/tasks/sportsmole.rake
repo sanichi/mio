@@ -131,7 +131,7 @@ namespace :mole do
       end
 
       # all seems OK
-      puts "scraped data looks good"
+      puts "sportsmole data looks good"
 
       # perform the action
       case action
