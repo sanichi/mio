@@ -6,31 +6,32 @@
   .body
     .row.justify-content-center
       .col-auto
-        %table{class: "table table-bordered table-responsive table-sm mt-3", "data-controller" => "tooltips"}
-          %tbody
-            %tr
-              %td
-              - @stats.seasons.each do |season|
-                %td.text-center{colspan: 2}= link_to match_season(season), premier_path(season: season)
-              %td.text-center= t("pages.premier.points")
-              %td.text-center= t("pages.premier.diff")
-            - @stats.ids.each do |id|
+        .overflow-auto
+          %table{class: "table table-bordered table-responsive table-sm mt-3", "data-controller" => "tooltips"}
+            %tbody
               %tr
-                %td= link_to @stats.names[id], stats_team_path(id)
+                %td
                 - @stats.seasons.each do |season|
-                  %td.shrink.font-monospace
-                    - if @stats.home[id][season]
-                      - og, tg, pt = @stats.home[id][season]
-                      - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
-                      - ltr = pt == 0 ? "L" : (pt == 1 ? "D" : "W")
-                      %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}", title: "#{og}-#{tg}",
-                        "data-bs-toggle" => "tooltip", "data-placement" => "top"}= ltr
-                  %td.shrink.font-monospace
-                    - if @stats.away[id][season]
-                      - og, tg, pt = @stats.away[id][season]
-                      - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
-                      - ltr = pt == 0 ? "L" : (pt == 1 ? "D" : "W")
-                      %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}", title: "#{og}-#{tg}",
-                        "data-bs-toggle" => "tooltip", "data-placement" => "top"}= ltr
-                %td.text-center= @stats.pts[id]
-                %td.text-center= @stats.gds[id]
+                  %td.text-center{colspan: 2}= link_to match_season(season), premier_path(season: season)
+                %td.text-center= t("pages.premier.points")
+                %td.text-center= t("pages.premier.diff")
+              - @stats.ids.each do |id|
+                %tr
+                  %td= link_to @stats.names[id], stats_team_path(id)
+                  - @stats.seasons.each do |season|
+                    %td.shrink.font-monospace
+                      - if @stats.home[id][season]
+                        - og, tg, pt = @stats.home[id][season]
+                        - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
+                        - ltr = pt == 0 ? "L" : (pt == 1 ? "D" : "W")
+                        %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}", title: "#{og}-#{tg}",
+                          "data-bs-toggle" => "tooltip", "data-placement" => "top"}= ltr
+                    %td.shrink.font-monospace
+                      - if @stats.away[id][season]
+                        - og, tg, pt = @stats.away[id][season]
+                        - btn = pt == 0 ? "danger" : (pt == 1 ? "secondary" : "success")
+                        - ltr = pt == 0 ? "L" : (pt == 1 ? "D" : "W")
+                        %button.btn.btn-sm.btn-tiny{class: "btn-#{btn}", title: "#{og}-#{tg}",
+                          "data-bs-toggle" => "tooltip", "data-placement" => "top"}= ltr
+                  %td.text-center= @stats.pts[id]
+                  %td.text-center= @stats.gds[id]
