@@ -119,6 +119,37 @@ namespace :mole do
         away_matches[away] += 1
       end
 
+      # the 2011 sportsmole data is missing 7 games
+      if season == 2011
+        results.push [Date.new(2011,8,14), n2id["Stoke"], n2id["Chelsea"], 0, 0]
+        home_matches["Stoke"] += 1
+        away_matches["Chelsea"] += 1
+
+        results.push [Date.new(2011,8,14), n2id["Blackburn"], n2id["Wolves"], 1, 2]
+        home_matches["Blackburn"] += 1
+        away_matches["Wolves"] += 1
+
+        results.push [Date.new(2011,8,13), n2id["Wigan"], n2id["Norwich"], 1, 1]
+        home_matches["Wigan"] += 1
+        away_matches["Norwich"] += 1
+
+        results.push [Date.new(2011,8,13), n2id["Fulham"], n2id["Aston Villa"], 0, 0]
+        home_matches["Fulham"] += 1
+        away_matches["Aston Villa"] += 1
+
+        results.push [Date.new(2011,8,13), n2id["QPR"], n2id["Bolton"], 0, 4]
+        home_matches["QPR"] += 1
+        away_matches["Bolton"] += 1
+
+        results.push [Date.new(2011,8,13), n2id["Liverpool"], n2id["Sunderland"], 1, 1]
+        home_matches["Liverpool"] += 1
+        away_matches["Sunderland"] += 1
+
+        results.push [Date.new(2011,8,13), n2id["Newcastle"], n2id["Arsenal"], 0, 0]
+        home_matches["Newcastle"] += 1
+        away_matches["Arsenal"] += 1
+      end
+
       # check stats
       raise "wrong number of results (#{results.size})" unless results.size == 380
       raise "wrong number of home teams (#{home_matches.size})" unless home_matches.size == 20
@@ -129,8 +160,6 @@ namespace :mole do
       away_matches.each_pair do |name, count|
         raise "wrong number of away matches (#{count}) for #{name}" unless count == 19
       end
-
-      # all seems OK
       puts "sportsmole data looks good"
 
       # perform the action
