@@ -1,8 +1,7 @@
 class Match < ApplicationRecord
   include Pageable
 
-  FIRST_SEASON = 2017 # for menu
-  MIN_SEASON = 2010   # for validation
+  MIN_SEASON = 2010
 
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
@@ -48,9 +47,7 @@ class Match < ApplicationRecord
     end
   end
 
-  def self.seasons
-    (Match::FIRST_SEASON..Match.current_season).to_a
-  end
+  def self.seasons() = pluck(:season).uniq.sort
 
   private
 
