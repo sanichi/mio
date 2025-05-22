@@ -17,7 +17,7 @@
                 %td.text-center= t("pages.premier.diff")
               - @stats.ids.each do |id|
                 %tr
-                  %td= link_to @stats.names[id], stats_team_path(id)
+                  %td= link_to nbsp(@stats.names[id]), stats_team_path(id)
                   - @stats.seasons.each do |season|
                     %td.shrink.font-monospace
                       - if @stats.home[id][season]

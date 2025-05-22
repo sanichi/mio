@@ -10,9 +10,8 @@ module ApplicationHelper
     raw "#{pager.min_and_max} #{t('pagination.of', locale: locale)} #{pager.count} #{links.size > 0 ? sep : ''} #{links.join(' ' + sep + ' ')}"
   end
 
-  def nobr(str)
-    str.to_s.gsub(/-/, "&#8209;").html_safe
-  end
+  def nobr(str) = str.to_s.gsub(/-/, "&#8209;").html_safe
+  def nbsp(str) = str.to_s.gsub(/\s/, "\u00a0")
 
   def flash_style(flash_name)
     bootstrap_name =
