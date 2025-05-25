@@ -8,10 +8,11 @@ module Shortenable
       when /\Apostgres: sanichi ([a-z]+)_production/                              then "#{$1} db"
       when /\Apostgres:(\s\w+){1,2}\z/                                            then cmd
       when /\Asshd: (\w+\s)?\[(\w+)\]\z/                                          then "sshd: #{$1}#{$2}[#{$3}]"
-      when /\A\/usr\/sbin\/httpd -DFOREGROUND\z/                                  then "httpd"
-      when /\A\/usr\/sbin\/NetworkManager --no-daemon/                            then "network manager"
+      when /\A\/usr\/bin\/python\d\.\d \/usr\/bin\/dnf makecache/                 then "dnf makecache"
       when /\A\/usr\/lib\/systemd\/systemd --switched-root/                       then "systemd (init)"
       when /\A\/usr\/lib\/systemd\/systemd --user/                                then "systemd (user)"
+      when /\A\/usr\/sbin\/httpd -DFOREGROUND\z/                                  then "httpd"
+      when /\A\/usr\/sbin\/NetworkManager --no-daemon/                            then "network manager"
       else nil
     end
     version = version.truncate(max) if version.present? && version.length > max
