@@ -36,4 +36,31 @@ namespace :kanshi do
       end
     end
   end
+
+  namespace :pcpus do
+
+    # bin/cap production kanshi:pcpus:create
+    desc "Create new shortened pcpu command versions"
+    task :create => 'deploy:set_rails_env' do |task, args|
+      on primary(:app) do
+        within current_path do
+          with :rails_env => fetch(:rails_env) do
+            rake "kanshi:pcpus"
+          end
+        end
+      end
+    end
+
+    # bin/cap production kanshi:pcpus:update
+    desc "Create and update shortened pcpu command versions"
+    task :update => 'deploy:set_rails_env' do |task, args|
+      on primary(:app) do
+        within current_path do
+          with :rails_env => fetch(:rails_env) do
+            rake "kanshi:pcpus[a,u]"
+          end
+        end
+      end
+    end
+  end
 end
