@@ -35,9 +35,9 @@ namespace :kanshi do
   end
 
   #############################################################################################################
-  # Get short versions of ks_procs commands and store in the short column. Print stats about how many were    #
-  # changed, unchanged, unchangable or skipped. Use option to force reconsidering those already with short    #
-  # versions.                                                                                                 #
+  # Get short versions of ks_procs or ks_pcpus commands and store in the short column. Print stats about how  #
+  # many were changed, unchanged, unchangable or skipped. Use option to force reconsidering those already     #
+  # with short versions.                                                                                      #
   #                                                                                                           #
   # Can be run on the development machine for testing purposes:                                               #
   #                                                                                                           #
@@ -46,7 +46,14 @@ namespace :kanshi do
   #   ❯ bin/rails kanshi:procs \[a\]    # process all but don't update old ones if they've changed            #
   #   ❯ bin/rails kanshi:procs \[a,u\]  # process all and update old ones if they've changed                  #
   #                                                                                                           #
-  # You could run this in production, for example:                                                            #
+  # Similarly, there are versions for pcpus:                                                                  #
+  #                                                                                                           #
+  #   ❯ mio                                                                                                   #
+  #   ❯ bin/rails kanshi:pcpus                                                                                #
+  #   ❯ bin/rails kanshi:pcpus \[a\]                                                                          #
+  #   ❯ bin/rails kanshi:pcpus \[a,u\]                                                                        #
+  #                                                                                                           #
+  # You could run these in production, for example:                                                            #
   #                                                                                                           #
   #   $ RAILS_ENV=production bin/rails kanshi:shorten                                                         #
   #                                                                                                           #
@@ -58,41 +65,65 @@ namespace :kanshi do
   #                                                                                                           #
   #   ❯ bin/cap production kanshi:procs:create   # equivalent to kanshi:procs with no args                    #
   #   ❯ bin/cap production kanshi:procs:update   # equivalent to kanshi:procs with [a,u]                      #
+  #   ❯ bin/cap production kanshi:pcpus:create   # equivalent to kanshi:pcpus with no args                    #
+  #   ❯ bin/cap production kanshi:pcpus:update   # equivalent to kanshi:pcpus with [a,u]                      #
   #############################################################################################################
-  desc "create short versions of commands"
+  desc "create short versions of procs commands"
   task :procs, [:all, :update] => :environment do |task, args|
     all = args[:all] == "a"
     update = args[:update] == "u"
+    max = Ks::Proc::MAX_SHORT
     procs = (all ? Ks::Proc.all : Ks::Proc.where(short: nil)).to_a
-    stats = Hash.new(0)
-    stats["total"] = procs.size
 
-    procs.each do |proc|
-      version = proc.short_version
+    stats = shorten(procs, max, update)
+
+    margin = 30
+    stats.each_pair do |key, val|
+      puts "%s%s %d" % [key, key.length >= margin ? '' : '.' * (margin - key.length), val]
+    end
+  end
+
+  desc "create short versions of pcpus commands"
+  task :pcpus, [:all, :update] => :environment do |task, args|
+    all = args[:all] == "a"
+    update = args[:update] == "u"
+    max = Ks::Pcpu::MAX_SHORT
+    pcpus = (all ? Ks::Pcpu.all : Ks::Pcpu.where(short: nil)).to_a
+
+    stats = shorten(pcpus, max, update)
+
+    margin = 30
+    stats.each_pair do |key, val|
+      puts "%s%s %d" % [key, key.length >= margin ? '' : '.' * (margin - key.length), val]
+    end
+  end
+
+  def shorten(objs, max, update)
+    stats = Hash.new(0)
+    stats["total"] = objs.size
+
+    objs.each do |obj|
+      version = obj.short_version(obj.command, max)
       if version.present?
-        if version.length > Ks::Proc::MAX_SHORT
-          stats["bad versions"] += 1
-        else
-          if proc.short.present?
-            if proc.short == version
-              stats["unchanged"] += 1
-            else
-              if update
-                proc.update_column(:short, version)
-                stats["updated"] += 1
-              else
-                stats["could have updated"] += 1
-              end
-            end
+        if obj.short.present?
+          if obj.short == version
+            stats["unchanged"] += 1
           else
-            proc.update_column(:short, version)
-            stats["created"] += 1
+            if update
+              obj.update_column(:short, version)
+              stats["updated"] += 1
+            else
+              stats["could have updated"] += 1
+            end
           end
+        else
+          obj.update_column(:short, version)
+          stats["created"] += 1
         end
       else
-        if proc.short.present?
+        if obj.short.present?
           if update
-            proc.update_column(:short, nil)
+            obj.update_column(:short, nil)
             stats["deleted"] += 1
           else
             stats["could have deleted"] += 1
@@ -103,10 +134,7 @@ namespace :kanshi do
       end
     end
 
-    margin = 30
-    stats.each_pair do |key, val|
-      puts "%s%s %d" % [key, key.length >= margin ? '' : '.' * (margin - key.length), val]
-    end
+    stats
   end
 
   ##################################################################################################################
@@ -155,6 +183,7 @@ namespace :kanshi do
         puts "  tops....... #{Ks::Top.count}"
         puts "  mems....... #{Ks::Mem.count}"
         puts "  procs...... #{Ks::Proc.count}"
+        puts "  pcpus...... #{Ks::Pcpu.count}"
         if !dry_run
           unprotected.each { it.destroy! }
           puts "after:"
@@ -163,6 +192,7 @@ namespace :kanshi do
           puts "  tops....... #{Ks::Top.count}"
           puts "  mems....... #{Ks::Mem.count}"
           puts "  procs...... #{Ks::Proc.count}"
+          puts "  pcpus...... #{Ks::Pcpu.count}"
           puts "finished ks_journals prune at #{Time.now.to_fs(:db)}"
         end
       end
