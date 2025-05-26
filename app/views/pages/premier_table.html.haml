@@ -7,9 +7,9 @@
           - d.dates.each do |date|
             %td.txt-center
               - if date == d.date
-                %b= date.strftime("%a %-0d %b")
+                %b= date.strftime("%a %b %-0d")
               - else
-                = link_to date.strftime("%-0d %b"), premier_table_path(season: d.season, date: date.to_fs(:db))
+                = link_to date.strftime("%b %-0d"), premier_table_path(season: d.season, date: date.to_fs(:db))
   .row.justify-content-center
     .col-auto
       .overflow-auto
