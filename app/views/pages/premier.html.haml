@@ -1,9 +1,7 @@
 :ruby
-  lo = Layout.new(md: [2,2], xs: [4,4]).to_a
-  d = @data
+  lo = Layout.new(md: [2], xs: [4]).to_a
   inputs = [
-    [:season, t("match.season"), :select, lo[0], menu: season_menu(d.season)],
-    [:number, t("match.number"), :select, lo[1], menu: match_numbers_menu(d.number)],
+    [:season, t("match.season"), :select, lo[0], menu: season_menu(@season)],
   ]
   my_meta_tags "pages.premier"
 
@@ -13,44 +11,5 @@
       .header.text-center
         %h3= t("pages.premier.title")
       .body
-        = render "utils/search/form", index: premier_path, inputs: inputs
-        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
-          .row.justify-content-center
-            .col-auto
-              .overflow-auto
-                %table{class: "table table-bordered table-striped table-sm mt-3", "data-controller" => "tooltips"}
-                  %thead
-                    %tr
-                      %th
-                      %th.text-center= t("pages.premier.played")
-                      %th.text-center= t("pages.premier.won")
-                      %th.text-center= t("pages.premier.drawn")
-                      %th.text-center= t("pages.premier.lost")
-                      %th.text-center= t("pages.premier.for")
-                      %th.text-center= t("pages.premier.against")
-                      %th.text-center= t("pages.premier.diff")
-                      %th.text-center= t("pages.premier.points")
-                      - d.numbers.each do |n|
-                        %td.text-center= n + 1
-                  %tbody
-                    - d.ids.each do |id|
-                      %tr
-                        %td= link_to nbsp(d.name[id]), stats_team_path(id), "data-turbo-frame" => "_top"
-                        %td.text-center= d.played[id]
-                        %td.text-center= d.won[id]
-                        %td.text-center= d.drew[id]
-                        %td.text-center= d.lost[id]
-                        %td.text-center= d.for[id]
-                        %td.text-center= d.against[id]
-                        %td.text-center= d.diff[id]
-                        %th.text-center= d.points[id]
-                        - d.numbers.each do |n|
-                          %td.shrink.font-monospace
-                            - style = case d.labels[id][n]
-                              - when "W" then "success"
-                              - when "D" then "secondary"
-                              - when "L" then "danger"
-                              - when "H" then "outline-primary"
-                              - when "A" then "outline-danger"
-                            %button.btn.btn-sm.btn-tiny{class: "btn-#{style}", title: d.tooltips[id][n],
-                              "data-bs-toggle" => "tooltip", "data-placement" => "top"}= d.labels[id][n]
+        = render "utils/search/form", index: premier_path, inputs: inputs, frame: nil
+        = turbo_frame_tag :table, src: premier_table_path(season: @season)

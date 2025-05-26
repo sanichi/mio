@@ -1,5 +1,4 @@
 class PremierStats
-  MATCH_NUMBERS = [1, 6, 11, 16, 21, 26, 29]
   DEDUCTIONS = {
     2023 => {
       "Everton" => 8,
@@ -8,7 +7,9 @@ class PremierStats
   }
 
   attr_reader :season,   # first year of season, integer e.g. 2024
-              :ids,      # ordered list of team IDs in the premier league in that season
+              :date,     # the focus date used to calculate the table
+              :dates,    # ordered list of key dates relative to the focus
+              :ids,      # ordered list of team IDs
               :name,     # hash from team ID to short name
               :played,   # hash from team ID to number of games played
               :won,      # hash from team ID to number of wins
@@ -20,25 +21,20 @@ class PremierStats
               :diff,     # hash from team ID to goal difference
               :labels,   # hash from team ID to array of match labels in date order
               :tooltips, # hash from team ID to array of match tooltips in date order
-              :number,   # one of the numbers in MATCH_NUMBERS
-              :numbers   # array of 10 consecutive match numbers (less 1 so they are indexes into labels and tooltips)
+              :indicies  # array of 10 indicies into labels and tooltips
 
-  def initialize(season, number)
-    # Season.
+  def initialize(season, date)
+    # season
     if Match.seasons.include?(season.to_i)
       @season = season.to_i
     else
       @season = Match.current_season
     end
 
-    # Match numbers.
-    if MATCH_NUMBERS.include?(number.to_i)
-      @number = number.to_i
-    else
-      @number = 0 # we'll calculate the best one later when we have more info
-    end
+    # get focus date and key dates aound it
+    get_dates(@season, date)
 
-    # Get array of IDs and hashes of ID → name and name → ID
+    # get array of IDs and hashes of ID → name and name → ID
     @ids = []
     @name = {}
     eman = {}
@@ -48,7 +44,7 @@ class PremierStats
       eman[short] = id
     end
 
-    # Get all the stats.
+    # get all the stats
     present = {}
     @played = Hash.new(0)
     @won = Hash.new(0)
@@ -65,7 +61,7 @@ class PremierStats
       aid = m.away_team_id
       present[hid] = true
       present[aid] = true
-      if m.home_score.present? && m.away_score.present?
+      if m.date <= @date && m.home_score.present? && m.away_score.present?
         @played[hid] += 1
         @played[aid] += 1
         @for[hid] += m.home_score
@@ -105,7 +101,7 @@ class PremierStats
       end
     end
 
-    # Account for deductions.
+    # account for deductions
     if DEDUCTIONS.has_key?(@season)
       DEDUCTIONS[@season].each_pair do |short, amount|
         if (id = eman[short]) && present[id]
@@ -114,26 +110,86 @@ class PremierStats
       end
     end
 
-    # Prune and sort the IDs.
+    # prune and sort the IDs
     @ids.select!{ |id| present[id] }.sort!{ |a,b| [@points[b], @diff[b], @name[a]] <=> [@points[a], @diff[a], @name[b]] }
 
-    # Do we need to calculate the best match number (first of the 10) to use?
-    if @number == 0
-      @number =
-        case (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round  # average number of games played so far
-          when (0..6)   then  1 #  0-9
-          when (7..11)  then  6 #  5-14
-          when (12..16) then 11 # 10-19
-          when (17..21) then 16 # 15-24
-          when (22..26) then 21 # 20-29
-          when (27..31) then 26 # 25-34
-                        else 29 # 28-37
-        end
+    # average number of games played to @date (inclusive)
+    average = (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round
+
+    # start and finish indicies of highlighted games 10 games
+    start = average - 5
+    finish = start + 9
+    if start < 0
+      finish -= start
+      start = 0
+    end
+    if finish > 37
+      start += 37 - finish
+      finish = 37
     end
 
-    # Calculate the 10 match index numbers (these are for the results or upcoming fixtures that are highlighted).
-    start = @number - 1
-    finish = @number + 8
-    @numbers = (start..finish).to_a
+    # calculate the indicies
+    @indicies = (start..finish).to_a
+  end
+
+  private
+
+  def get_dates(season, date)
+    # we need some kind of date to work with
+    begin
+      @date = Date.parse(date.to_s)
+    rescue Date::Error
+      @date = Date.today
+    end
+
+    # key dates in relation to the focus date
+    @dates = []
+
+    # what are all the match dates in the season
+    dates = Match.where(season: @season).order(:date).pluck(:date).uniq
+
+    # this shouldn't happen but just in case
+    if dates.size <= 1
+      @date = dates.pop unless dates.empty?
+      @dates.push @date
+      return
+    end
+
+    # check our focus date makes sense in context
+    @date = dates.last if @date > dates.last
+    @date = dates.first if @date < dates.first
+
+    # prepare to work out nearby dates
+    before = dates.select { |d| d <= @date }
+    after = dates.select { |d| d > @date }
+
+    # we want the focus date to be an actual match date and not in before (or after)
+    if before.size > 0 && @date == before.last
+      before.pop
+    else
+      if before.size >= after.size
+        @date = before.pop
+      else
+        @date = after.shift
+      end
+    end
+
+    # the focus date itself
+    @dates.push @date
+
+    # first and last
+    @dates.push before.first unless before.empty?
+    @dates.push after.last unless after.empty?
+
+    # next and previous
+    @dates.push after.first if after.size > 1
+    @dates.push before.last if before.size > 1
+
+    # intermediate between first & previous and next & last
+    @dates.push after[after.size/2] if after.size > 2
+    @dates.push before[before.size/2] if before.size > 2
+
+    # date order
+    @dates.sort!
   end
 end

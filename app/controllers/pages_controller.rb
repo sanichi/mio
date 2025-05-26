@@ -17,7 +17,13 @@ class PagesController < ApplicationController
   end
 
   def premier
-    @data = PremierStats.new(params[:season], params[:number])
+    @season = params[:season].to_i
+    @season = Match.current_season unless Match.seasons.include?(@season)
+  end
+
+  def premier_table
+    @data = PremierStats.new(params[:season], params[:date])
+    render :premier_table, layout: false
   end
 
   def risle
