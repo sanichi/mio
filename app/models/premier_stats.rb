@@ -28,7 +28,7 @@ class PremierStats
     if Match.seasons.include?(season.to_i)
       @season = season.to_i
     else
-      @season = Match.current_season
+      @season = Match.latest_season
     end
 
     # get focus date and key dates aound it

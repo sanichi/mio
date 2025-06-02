@@ -18,7 +18,7 @@ class PagesController < ApplicationController
 
   def premier
     @season = params[:season].to_i
-    @season = Match.current_season unless Match.seasons.include?(@season)
+    @season = Match.latest_season unless Match.seasons.include?(@season)
   end
 
   def premier_table

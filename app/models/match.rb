@@ -48,6 +48,7 @@ class Match < ApplicationRecord
   end
 
   def self.seasons() = pluck(:season).uniq.sort
+  def self.latest_season() = maximum(:season)
 
   private
 
