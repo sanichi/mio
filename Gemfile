@@ -37,9 +37,6 @@ group :development, :test do
   gem 'selenium-webdriver', '~> 4.0'
 end
 
-# Temporary fix to silence warnings about gem no longer being standard library
-gem "ostruct", "~> 0.6.1"
-
 group :test do
   gem 'database_cleaner-active_record', '~> 2.0'
 end
