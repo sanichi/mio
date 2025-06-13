@@ -6,9 +6,17 @@ en:
     data: Measurements
     date: Date
     keywords: weight, daily, graph, mark, orr
-    new: New
+    new: New Measurement
     start: Morning
     title: Weight
+    event:
+      edit: Edit Event
+      events: Events
+      finish: Finish
+      name: Name
+      new: New Event
+      start: Start
+      title: Mass Events
     options:
       all: All
       month: 1m

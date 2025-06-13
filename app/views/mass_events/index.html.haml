@@ -1,0 +1,23 @@
+= render "utils/title", key: "mass.event.title"
+
+.row
+  %div{class: center(sm: 10, md: 8, lg: 6)}
+    %section
+      = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+        .header.text-center
+          %h3= t("mass.event.title")
+        .body
+          %table{class: "table table-bordered table-sm"}
+            %thead
+              %tr
+                %th= t("mass.event.name")
+                %th.text-center= t("mass.event.start")
+                %th.text-center= t("mass.event.finish")
+                %th
+            %tbody
+              = render partial: "event", collection: @events.matches
+              = render "utils/pagination_links", pager: @events, columns: 4
+        .footer
+          = link_to t("graph"), weight_path, class: "green-btn", "data-turbo-frame" => "_top"
+          = link_to t("list"), masses_path, class: "green-btn", "data-turbo-frame" => "_top"
+          = link_to t("mass.event.new"), new_mass_event_path, class: "blue-btn", "data-turbo-frame" => "_top"

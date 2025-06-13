@@ -1,0 +1,7 @@
+:ruby
+  inputs = [
+    [:name,   t("mass.event.name"),   :text],
+    [:start,  t("mass.event.start"),  :text],
+    [:finish, t("mass.event.finish"), :text],
+  ]
+= render "utils/crud/form", object: event, cancel: mass_events_path, inputs: inputs, title: title

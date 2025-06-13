@@ -22,6 +22,8 @@
         = select_tag :units, mass_unit_menu, class: "form-select", "data-action" => "elm--weight#changeUnits"
     %div{"data-elm--weight-target" => "elm"}
   .footer
-    = link_to t("list"), masses_path, class: "blue-btn"
+    = link_to t("list"), masses_path, class: "green-btn"
+    - if can?(:view, MassEvent)
+      = link_to t("mass.event.events"), mass_events_path, class: "green-btn"
     - if can?(:create, Mass)
       = link_to t("mass.new"), new_mass_path, class: "blue-btn"

@@ -1,0 +1,5 @@
+%tr
+  %td= event.name
+  %td.text-center= event.start.to_fs(:db)
+  %td.text-center= event.finish.to_fs(:db)
+  %td.text-center= link_to t("edit"), edit_mass_event_path(event), class: "blue-btn", "data-turbo-frame" => "_top"

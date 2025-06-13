@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   resources :grammar_groups
   resources :logins, only: [:index]
   resources :masses, except: [:show]
+  resources :mass_events, except: [:show]
   resources :matches, only: [:index]
   resources :misas
   resources :notes
