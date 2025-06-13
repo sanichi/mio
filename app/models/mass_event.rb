@@ -21,8 +21,14 @@ class MassEvent < ApplicationRecord
   end
 
   def date_constraints
-    if start.present? && finish.present? && finish < start
-      errors.add(:finish, "must be on or after Start")
+    if start.present? && finish.present?
+      if finish < start
+        errors.add(:finish, "must be on or after Start")
+      else
+        today = Date.today
+        errors.add(:start, "must not be in the future #{start.to_fs(:db)}") if start > today
+        errors.add(:finish, "must not be in the future #{finish.to_fs(:db)}") if finish > today
+      end
     end
   end
 end

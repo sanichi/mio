@@ -69,12 +69,26 @@ describe MassEvent, js: true do
         click_link t("mass.event.new")
 
         fill_in t("mass.event.name"), with: data.name
-        fill_in t("mass.event.start"), with: data.finish
-        fill_in t("mass.event.finish"), with: data.start
+        fill_in t("mass.event.start"), with: data.finish + 1
+        fill_in t("mass.event.finish"), with: data.start - 1
         click_button t("save")
 
         expect(page).to have_title t("mass.event.new")
         expect_error(page, "Finish must be on or after Start")
+        expect(MassEvent.count).to eq 1
+      end
+
+      it "future dates" do
+        click_link t("mass.event.new")
+
+        fill_in t("mass.event.name"), with: data.name
+        fill_in t("mass.event.start"), with: data.start + 400
+        fill_in t("mass.event.finish"), with: data.finish + 400
+        click_button t("save")
+
+        expect(page).to have_title t("mass.event.new")
+        expect_error(page, "Start must not be in the future")
+        expect_error(page, "Finish must not be in the future")
         expect(MassEvent.count).to eq 1
       end
 
