@@ -25,6 +25,7 @@
             - else
               = link_to t("mass.unit.short.#{u}"), @masses.page_path(unit: u), class: "green-btn", "data-turbo-frame" => "results"
           = link_to t("graph"), weight_path(unit: @unit.key), class: "green-btn", "data-turbo-frame" => "_top"
-          = link_to t("mass.event.events"), mass_events_path, class: "green-btn", "data-turbo-frame" => "_top"
+          - if can?(:view, MassEvent)
+            = link_to t("mass.event.events"), mass_events_path, class: "green-btn", "data-turbo-frame" => "_top"
           - if can?(:create, Mass)
             = link_to t("mass.new"), new_mass_path, class: "blue-btn", "data-turbo-frame" => "_top"
