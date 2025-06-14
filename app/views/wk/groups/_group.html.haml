@@ -4,4 +4,4 @@
     - group.vocabs.each_with_index do |vocab, i|
       = succeed(i + 1 == group.vocabs.count ? "" : ",") do
         = link_to vocab.characters, vocab, "data-turbo-frame" => "_top"
-  %td.text-center= link_to t("edit"), edit_wk_group_path(group), class: "blue-btn", "data-turbo-frame" => "_top"
+  %td.text-center= link_to t("symbol.edit"), edit_wk_group_path(group), "data-turbo-frame" => "_top"

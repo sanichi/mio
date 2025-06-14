@@ -57,7 +57,7 @@ describe Wk::Example, js: true do
 
   context "edit" do
     it "success" do
-      click_link t("edit")
+      click_link t("symbol.edit")
 
       expect(page).to have_title t("wk.example.edit")
       fill_in t("wk.example.english"), with: data.english
@@ -76,7 +76,7 @@ describe Wk::Example, js: true do
     it "success" do
       expect(Wk::Example.count).to eq 1
 
-      click_link t("edit")
+      click_link t("symbol.edit")
       accept_confirm do
         click_link t("delete")
       end

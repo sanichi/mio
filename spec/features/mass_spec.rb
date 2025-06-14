@@ -90,7 +90,7 @@ describe Mass, js: true do
 
     it "success" do
       visit masses_path
-      click_link t("edit")
+      click_link t("symbol.edit")
 
       expect(page).to have_title t("mass.edit")
       fill_in t("mass.start"), with: data.start + 10
@@ -113,7 +113,7 @@ describe Mass, js: true do
 
     it "success" do
       visit masses_path
-      click_link t("edit")
+      click_link t("symbol.edit")
       accept_confirm do
         click_link t("delete")
       end
