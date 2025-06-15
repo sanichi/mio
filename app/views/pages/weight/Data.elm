@@ -8,7 +8,7 @@ module Data exposing
     , kiloMinMax
     )
 
-import Date exposing (Unit(..))
+import Date
 import Start exposing (Start)
 import Time exposing (Month(..))
 

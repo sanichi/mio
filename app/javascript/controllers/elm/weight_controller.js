@@ -10,6 +10,9 @@ export default class extends Controller {
     kilos: Array,
     dates: Array,
     debug: Boolean,
+    eventNames: Array,
+    eventDates: Array,
+    eventSpans: Array,
   }
 
   app = null
@@ -23,6 +26,9 @@ export default class extends Controller {
         kilos: this.kilosValue,
         dates: this.datesValue,
         debug: this.debugValue,
+        eventNames: this.eventNamesValue,
+        eventDates: this.eventDatesValue,
+        eventSpans: this.eventSpansValue,
       }
     });
 

@@ -14,10 +14,13 @@ class MassEvent < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
+  def self.events() = order(:start).to_a.map{|e| [e.name, e.start.to_fs(:db), (e.finish - e.start).to_i + 1]}
+
   private
 
   def normalize_attributes
     name&.squish!
+    name&.gsub!(/['"]/, "")
   end
 
   def date_constraints

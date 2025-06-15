@@ -1,6 +1,7 @@
 module Model exposing (Model, changeCross, changeStart, changeUnits, debugMsg, init, updateCross)
 
 import Data exposing (Data, Datum)
+import Event exposing (Events, Event)
 import Preferences exposing (Preferences)
 import Start exposing (Start)
 import Transform exposing (Transform)
@@ -13,6 +14,7 @@ type alias Model =
     , units : Unit
     , transform : Transform
     , cross : Datum
+    , events : Events
     , debug : Bool
     }
 
@@ -37,8 +39,11 @@ init preferences =
 
         debug =
             preferences.debug
+
+        events =
+            Event.combine preferences.eventNames preferences.eventDates preferences.eventSpans
     in
-    Model data start units transform cross debug
+    Model data start units transform cross events debug
 
 
 debugMsg : Model -> String
@@ -47,6 +52,7 @@ debugMsg model =
         [ String.fromInt <| List.length model.data
         , Units.toString model.units
         , String.fromInt model.start
+        , String.fromInt <| List.length model.events
         ]
 
 
