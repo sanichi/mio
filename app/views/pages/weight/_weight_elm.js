@@ -6943,7 +6943,7 @@ var $author$project$Model$debugMsg = function (model) {
 			]));
 };
 var $author$project$View$debugTextX = ($author$project$View$width / 2) | 0;
-var $author$project$View$debugTextY = 20;
+var $author$project$View$debugTextY = 60;
 var $elm$svg$Svg$text_ = $elm$svg$Svg$trustedNode('text');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
@@ -6961,7 +6961,7 @@ var $author$project$View$yy = function (y) {
 		$elm$core$String$fromInt(y));
 };
 var $author$project$View$debug = function (m) {
-	return A2(
+	return m.ak ? A2(
 		$elm$svg$Svg$text_,
 		_List_fromArray(
 			[
@@ -6973,7 +6973,74 @@ var $author$project$View$debug = function (m) {
 			[
 				$author$project$View$tt(
 				$author$project$Model$debugMsg(m))
-			]));
+			])) : A2($elm$svg$Svg$g, _List_Nil, _List_Nil);
+};
+var $author$project$View$eventLineY = 30;
+var $author$project$View$eventTextY = 20;
+var $elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _v0 = f(mx);
+		if (!_v0.$) {
+			var x = _v0.a;
+			return A2($elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var $elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			$elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var $elm$core$Basics$ge = _Utils_ge;
+var $author$project$Transform$transformRata = F2(
+	function (t, rata) {
+		return A2($author$project$Transform$d2i, t, rata);
+	});
+var $author$project$View$events = function (m) {
+	var eventToSvg = function (e) {
+		var textWidthEstimate = $elm$core$String$length(e.bj) * 7;
+		var eventStartX = A2($author$project$Transform$transformRata, m.L, e.Q);
+		var eventFinishX = A2($author$project$Transform$transformRata, m.L, e.Q + e.bp);
+		var eventTextX = ((eventStartX + eventFinishX) / 2) | 0;
+		var text = A2(
+			$elm$svg$Svg$text_,
+			_List_fromArray(
+				[
+					$author$project$View$xx(eventTextX),
+					$author$project$View$yy($author$project$View$eventTextY),
+					$author$project$View$cc('info')
+				]),
+			_List_fromArray(
+				[
+					$author$project$View$tt(e.bj)
+				]));
+		var textFinishEstimate = eventTextX + ((textWidthEstimate / 2) | 0);
+		var textStartEstimate = eventTextX - ((textWidthEstimate / 2) | 0);
+		var line = A2(
+			$elm$svg$Svg$line,
+			_List_fromArray(
+				[
+					$author$project$View$x1(eventStartX),
+					$author$project$View$y1($author$project$View$eventLineY),
+					$author$project$View$x2(eventFinishX),
+					$author$project$View$y2($author$project$View$eventLineY)
+				]),
+			_List_Nil);
+		return ((textStartEstimate >= 0) && (_Utils_cmp(textFinishEstimate, $author$project$Transform$width) < 1)) ? $elm$core$Maybe$Just(
+			A2(
+				$elm$svg$Svg$g,
+				_List_Nil,
+				_List_fromArray(
+					[text, line]))) : (((eventStartX >= 0) && (_Utils_cmp(eventFinishX, $author$project$Transform$width) < 1)) ? $elm$core$Maybe$Just(line) : $elm$core$Maybe$Nothing);
+	};
+	return A2(
+		$elm$svg$Svg$g,
+		_List_Nil,
+		A2($elm$core$List$filterMap, eventToSvg, m.an));
 };
 var $author$project$View$frame = A2(
 	$elm$svg$Svg$g,
@@ -8070,7 +8137,6 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
-var $elm$core$Basics$ge = _Utils_ge;
 var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $author$project$View$cx = function (x) {
@@ -8153,11 +8219,11 @@ var $author$project$View$fromModel = function (m) {
 	var kl = $author$project$View$levelsk(m);
 	var i = $author$project$View$info(m);
 	var f = $author$project$View$frame;
+	var e = $author$project$View$events(m);
 	var dl = $author$project$View$levelsd(m);
 	var d = $author$project$View$debug(m);
-	var c = _List_fromArray(
-		[f, dl, kl, p, i, x]);
-	return m.ak ? A2($elm$core$List$cons, d, c) : c;
+	return _List_fromArray(
+		[f, dl, kl, p, i, x, e, d]);
 };
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');

@@ -1,4 +1,4 @@
-module Transform exposing (Transform, fromData, height, levelsd, levelsk, restrict, reverse, transform, width)
+module Transform exposing (Transform, fromData, height, levelsd, levelsk, restrict, reverse, transform, transformRata, width)
 
 import Data exposing (Data, Datum)
 import Date exposing (Date, Unit(..))
@@ -51,6 +51,11 @@ fromData data start =
 transform : Transform -> Datum -> ( Int, Int )
 transform t d =
     ( d2i t d.rata, k2j t d.kilo )
+
+
+transformRata : Transform -> Int -> Int
+transformRata t rata =
+    d2i t rata
 
 
 reverse : Transform -> ( Int, Int ) -> Datum

@@ -33,19 +33,20 @@ fromModel m =
         p =
             points m
 
-        c =
-            [ f, dl, kl, p, i, x ]
-    in
-    if m.debug then
-        d :: c
+        e =
+            events m
 
-    else
-        c
+    in
+    [ f, dl, kl, p, i, x, e, d ]
 
 
 debug : Model -> Svg Msg
 debug m =
-    S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
+    if m.debug then
+        S.text_ [ xx debugTextX, yy debugTextY, cc "debug" ] [ tt <| Model.debugMsg m ]
+
+    else
+        S.g [] []
 
 
 info : Model -> Svg Msg
@@ -148,6 +149,49 @@ points m =
         , S.g [ cc "evening" ] evening
         ]
 
+events : Model -> Svg Msg
+events m =
+    let
+        eventToSvg =
+            \e ->
+                let
+                    eventStartX =
+                        Transform.transformRata m.transform e.rata
+
+                    eventFinishX =
+                        Transform.transformRata m.transform (e.rata + e.span)
+
+                    eventTextX =
+                        (eventStartX + eventFinishX) // 2
+
+                    textWidthEstimate =
+                        (String.length e.name) * 7
+
+                    textStartEstimate =
+                        eventTextX - (textWidthEstimate // 2)
+
+                    textFinishEstimate =
+                        eventTextX + (textWidthEstimate // 2)
+
+                    text =
+                        S.text_ [ xx eventTextX, yy eventTextY, cc "info" ] [ tt e.name ]
+
+                    line =
+                        S.line [ x1 eventStartX, y1 eventLineY, x2 eventFinishX, y2 eventLineY ] []
+                in
+                if textStartEstimate >= 0 && textFinishEstimate <= Transform.width then
+                    Just <| S.g [] [ text, line ]
+
+                else
+                    if eventStartX >= 0 && eventFinishX <= Transform.width then
+                        Just line
+
+                    else
+                        Nothing
+    in
+    m.events
+        |> List.filterMap eventToSvg
+        |> S.g [ ]
 
 box : String
 box =
@@ -226,7 +270,7 @@ debugTextX =
 
 debugTextY : Int
 debugTextY =
-    20
+    60
 
 
 infoTextX : Int
@@ -237,6 +281,16 @@ infoTextX =
 infoTextY : Int
 infoTextY =
     -10
+
+
+eventTextY : Int
+eventTextY =
+    20
+
+
+eventLineY : Int
+eventLineY =
+    30
 
 
 height : Int
