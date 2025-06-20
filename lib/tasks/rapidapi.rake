@@ -61,7 +61,7 @@ end
 
 namespace :rapid do
   # Meant to be run by hand at the beginning of the season.
-  # It will make sure the right teams are in the premier league.
+  # It will make sure the all teams have a rapid id.
   # No output means everything is already OK.
   # Example: $ RAILS_ENV=production bin/rails rapid:teams
   desc "check premier league teams"
@@ -108,7 +108,7 @@ namespace :rapid do
   # Meant to normally be run from cron on a regular (e.g. every night) basis.
   # Creates or updates db matches from api data.
   # Example: 0 22 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails rapid:fixtures >> log/cron.log 2>&1
-  # Example: $ RAILS_ENV=production bin/rails rapid:teams\[p\]
+  # Example: $ RAILS_ENV=production bin/rails rapid:fixtures\[p\]
   desc "review and update all fixtures and results"
   task :fixtures, [:print] => :environment do |task, args|
     @print = args[:print] == "p"
