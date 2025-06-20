@@ -32,7 +32,7 @@ class PremierStats
     end
 
     # get focus date and key dates aound it
-    get_dates(@season, date)
+    get_dates(@season, date) # sets @date and @dates
 
     # get array of IDs and hashes of ID → name and name → ID
     @ids = []
@@ -46,7 +46,8 @@ class PremierStats
 
     # get all the stats
     present = {}
-    @played = Hash.new(0)
+    played = Hash.new(0) # actually played or will have played by @date
+    @played = Hash.new(0) # actually played by @date
     @won = Hash.new(0)
     @drew = Hash.new(0)
     @lost = Hash.new(0)
@@ -94,6 +95,10 @@ class PremierStats
           @labels[aid].push("D")
         end
       else
+        if m.date <= @date
+          played[hid] += 1
+          played[aid] += 1
+        end
         @labels[hid].push("H")
         @labels[aid].push("A")
         @tooltips[hid].push("#{@name[aid]} #{m.date.strftime('%-d %b')}")
@@ -113,8 +118,8 @@ class PremierStats
     # prune and sort the IDs
     @ids.select!{ |id| present[id] }.sort!{ |a,b| [@points[b], @diff[b], @name[a]] <=> [@points[a], @diff[a], @name[b]] }
 
-    # average number of games played to @date (inclusive)
-    average = (@ids.map{|id| @played[id]}.sum.to_f / @ids.size).round
+    # average number of games actually played or will have been played upto @date (inclusive)
+    average = (@ids.map{|id| played[id]}.sum.to_f / @ids.size).round
 
     # start and finish indicies of highlighted games 10 games
     start = average - 5
