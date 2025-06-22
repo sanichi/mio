@@ -179,7 +179,7 @@ events m =
                     line =
                         S.line [ x1 eventStartX, y1 eventLineY, x2 eventFinishX, y2 eventLineY ] []
                 in
-                if textStartEstimate >= 0 && textFinishEstimate <= Transform.width then
+                if m.start <= 6 && textStartEstimate >= 0 && textFinishEstimate <= Transform.width then
                     Just <| S.g [] [ text, line ]
 
                 else
