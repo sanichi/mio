@@ -63,6 +63,8 @@ class PremierStats
       present[hid] = true
       present[aid] = true
       if m.date <= @date && m.home_score.present? && m.away_score.present?
+        played[hid] += 1
+        played[aid] += 1
         @played[hid] += 1
         @played[aid] += 1
         @for[hid] += m.home_score
