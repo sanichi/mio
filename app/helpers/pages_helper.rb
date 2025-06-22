@@ -20,16 +20,4 @@ module PagesHelper
       flats.push [rite[i], rx, ry] if rite[i]
     end
   end
-
-  def season_menu(selected)
-    opts = Match.seasons.reverse.map do |y|
-      [y.to_s + "/" + (y+1).to_s[-2,2], y]
-    end
-    options_for_select(opts, selected)
-  end
-
-  def match_numbers_menu(selected)
-    opts = PremierStats::MATCH_NUMBERS.map { |n| ["#{n}-#{n+9}", n] }
-    options_for_select(opts, selected)
-  end
 end

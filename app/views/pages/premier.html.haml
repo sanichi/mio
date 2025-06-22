@@ -1,7 +1,7 @@
 :ruby
-  lo = Layout.new(md: [2], xs: [4]).to_a
+  lo = Layout.new(md: [4], xs: [6]).to_a
   inputs = [
-    [:season, t("match.season"), :select, lo[0], menu: season_menu(@season)],
+    [:season, t("match.season"), :select, lo[0], menu: premier_season_menu(@season)],
   ]
   my_meta_tags "pages.premier"
 
