@@ -57,8 +57,30 @@ info m =
 
         weight =
             Units.format2 m.units m.cross.kilo
+
+        text =
+            let
+                ( _, y ) =
+                    Transform.transform m.transform m.cross
+            in
+            if y > eventLineY + 20 || y < eventLineY - 20 then -- the cross is not vertically close to where events are shown
+                weight
+
+            else
+                let
+                    names =
+                        m.events
+                            |> List.filter (\e -> e.rata <= m.cross.rata && e.rata + e.span >= m.cross.rata)
+                            |> List.map .name
+                in
+                if List.length names /= 1 then -- there is no single event near the date of the current cross
+                    weight
+                else
+                    names
+                        |> List.head
+                        |> Maybe.withDefault "Error"
     in
-    S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ weight ]
+    S.text_ [ xx infoTextX, yy infoTextY, cc "info" ] [ tt <| date ++ " " ++ text ]
 
 
 cross : Model -> Svg Msg

@@ -7817,6 +7817,17 @@ var $author$project$Data$dateFormat = function (rata) {
 		'y-MM-dd',
 		$justinmimbs$date$Date$fromRataDie(rata));
 };
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
 var $author$project$Units$decimal = F2(
 	function (w, d) {
 		if (d === 1) {
@@ -7858,6 +7869,29 @@ var $author$project$View$infoTextX = ($author$project$View$width / 2) | 0;
 var $author$project$View$infoTextY = -10;
 var $author$project$View$info = function (m) {
 	var weight = A2($author$project$Units$format2, m.S, m.w.p);
+	var text = function () {
+		var _v0 = A2($author$project$Transform$transform, m.L, m.w);
+		var y = _v0.b;
+		if ((_Utils_cmp(y, $author$project$View$eventLineY + 20) > 0) || (_Utils_cmp(y, $author$project$View$eventLineY - 20) < 0)) {
+			return weight;
+		} else {
+			var names = A2(
+				$elm$core$List$map,
+				function ($) {
+					return $.bj;
+				},
+				A2(
+					$elm$core$List$filter,
+					function (e) {
+						return (_Utils_cmp(e.Q, m.w.Q) < 1) && (_Utils_cmp(e.Q + e.bp, m.w.Q) > -1);
+					},
+					m.an));
+			return ($elm$core$List$length(names) !== 1) ? weight : A2(
+				$elm$core$Maybe$withDefault,
+				'Error',
+				$elm$core$List$head(names));
+		}
+	}();
 	var date = $author$project$Data$dateFormat(m.w.Q);
 	return A2(
 		$elm$svg$Svg$text_,
@@ -7869,7 +7903,7 @@ var $author$project$View$info = function (m) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$tt(date + (' ' + weight))
+				$author$project$View$tt(date + (' ' + text))
 			]));
 };
 var $justinmimbs$date$Date$Months = 1;
@@ -8126,17 +8160,6 @@ var $author$project$View$levelsk = function (m) {
 			]),
 		_Utils_ap(lines, labels));
 };
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
 var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $author$project$View$cx = function (x) {
