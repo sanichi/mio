@@ -42,8 +42,6 @@
           %td
             - %w/kanshudo jisho japandict/.each do |x|
               = link_to t("wk.#{x}.text"), t("wk.#{x}.url.vocab", vocab: @vocab.characters), target: "external"
-            - if @vocab.level <= Wk::Kanji::OBS_LEVEL
-              = link_to t("wk.obsidian"), @vocab.obs_url
         %tr
           %td= t("wk.level")
           %td= @vocab.level

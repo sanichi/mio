@@ -1,7 +1,6 @@
 module Wk
   class Kanji < ActiveRecord::Base
     include Constrainable
-    include Obsidian
     include Pageable
     include Wanikani
 
@@ -157,10 +156,7 @@ module Wk
       "[#{display || character}](/wk/kanjis/#{id})"
     end
 
-    def obs_name(url: false)
-      nam = character + " " + meaning
-      url ? "Kanji/" + CGI.escape(nam) : nam
-    end
+    def obs_name() = character + " " + meaning
 
     def image_path
       %w/jpg gif/.each do |type|

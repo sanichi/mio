@@ -44,8 +44,6 @@
           %td.col-9
             - %w/kanshudo jisho japandict/.each do |x|
               = link_to t("wk.#{x}.text"), t("wk.#{x}.url.kanji", kanji: @kanji.character), target: "external"
-            - if @kanji.level <= Wk::Kanji::OBS_LEVEL
-              = link_to t("wk.obsidian"), @kanji.obs_url
             - if @daily
               = link_to t("wk.daily.text"), t("wk.daily.url", id: @daily.id)
         %tr.d-flex

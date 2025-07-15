@@ -2,7 +2,6 @@ module Wk
   class Vocab < ActiveRecord::Base
     include Constrainable
     include Linkable
-    include Obsidian
     include Pageable
     include Remarkable
     include Vocabable
@@ -148,7 +147,7 @@ module Wk
       end
     end
 
-    def obs_name(url: false) = url ? "Vocabulary/" + CGI.escape(characters) : characters
+    def obs_name() = characters
 
     def self.update(days=nil)
       count = Hash.new(0)
