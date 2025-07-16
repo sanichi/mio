@@ -7082,7 +7082,7 @@ var $author$project$View$events = function (m) {
 					$author$project$View$y2($author$project$View$eventLineY)
 				]),
 			_List_Nil);
-		return ((m.R <= 6) && ((textStartEstimate >= 0) && (_Utils_cmp(textFinishEstimate, $author$project$Transform$width) < 1))) ? $elm$core$Maybe$Just(
+		return ((m.R <= 12) && ((!(!m.R)) && ((textStartEstimate >= 0) && (_Utils_cmp(textFinishEstimate, $author$project$Transform$width) < 1)))) ? $elm$core$Maybe$Just(
 			A2(
 				$elm$svg$Svg$g,
 				_List_Nil,
