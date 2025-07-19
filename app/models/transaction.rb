@@ -239,7 +239,7 @@ class Transaction < ApplicationRecord
     when "Fee", "FEE", "FEES"
       "FEE"
     when "CASH"
-      "CSH"
+      "C/L"
     else
       raise "unrecognised category (#{row[1]}) on row #{rows}"
     end
