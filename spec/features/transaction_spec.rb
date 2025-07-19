@@ -126,6 +126,21 @@ describe Transaction, js: true do
     end
   end
 
+  it "upload more RBS credit card data" do
+    load_data page, <<~EOF
+
+    Date, Type, Description, Value, Balance, Account Name, Account Number
+
+    10 Jul 2025,FEES,CASH FEE,0.30,,Marks credit,543484******5254
+    10 Jul 2025,CASH,ULSTER BANK NORTH,10.00,,Marks credit,543484******5254
+    10 Jul 2025,PURCHASE,APPLE.COM/BILL,2.99,,Marks credit,543484******5254
+    11 Jul 2025,CASH,INTEREST - SEE SUMMARY,0.01,,Marks credit,543484******5254
+
+    EOF
+
+    expect_notice(page, "rows: 8, created: 4, duplicates: 0, upload: 1")
+  end
+
   context "failure" do
     it "wrong file type" do
       load_file page, "malcolm.png"

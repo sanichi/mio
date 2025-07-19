@@ -236,8 +236,10 @@ class Transaction < ApplicationRecord
       "PAY"
     when "Purchase", "PURCHASE"
       "PUR"
-    when "Fee", "FEE"
+    when "Fee", "FEE", "FEES"
       "FEE"
+    when "CASH"
+      "CSH"
     else
       raise "unrecognised category (#{row[1]}) on row #{rows}"
     end
