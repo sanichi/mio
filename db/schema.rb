@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_13_150129) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_20_182251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -94,79 +94,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_150129) do
     t.datetime "updated_at", null: false
     t.string "eregexp", limit: 64
     t.string "ref", limit: 10
-  end
-
-  create_table "ks_boots", force: :cascade do |t|
-    t.string "server", limit: 3
-    t.string "app", limit: 6
-    t.datetime "happened_at"
-    t.bigint "ks_journal_id", null: false
-    t.index ["happened_at", "server", "app"], name: "index_ks_boots_on_happened_at_and_server_and_app", unique: true
-    t.index ["ks_journal_id"], name: "index_ks_boots_on_ks_journal_id"
-  end
-
-  create_table "ks_cpus", force: :cascade do |t|
-    t.string "server", limit: 3
-    t.datetime "measured_at"
-    t.integer "pcpus_count", default: 0, null: false
-    t.bigint "ks_journal_id", null: false
-    t.index ["ks_journal_id"], name: "index_ks_cpus_on_ks_journal_id"
-    t.index ["measured_at", "server"], name: "index_ks_cpus_on_measured_at_and_server", unique: true
-  end
-
-  create_table "ks_journals", force: :cascade do |t|
-    t.integer "warnings", default: 0
-    t.integer "problems", default: 0
-    t.text "note", default: ""
-    t.datetime "created_at"
-    t.integer "boots_count", default: 0, null: false
-    t.integer "mems_count", default: 0, null: false
-    t.integer "tops_count", default: 0, null: false
-    t.integer "procs_count", default: 0, null: false
-    t.integer "cpus_count", default: 0, null: false
-    t.integer "pcpus_count", default: 0, null: false
-    t.index ["created_at"], name: "index_ks_journals_on_created_at", unique: true
-  end
-
-  create_table "ks_mems", force: :cascade do |t|
-    t.string "server", limit: 3
-    t.datetime "measured_at"
-    t.integer "total"
-    t.integer "used"
-    t.integer "free"
-    t.integer "avail"
-    t.integer "swap_used"
-    t.integer "swap_free"
-    t.bigint "ks_journal_id", null: false
-    t.index ["ks_journal_id"], name: "index_ks_mems_on_ks_journal_id"
-    t.index ["measured_at", "server"], name: "index_ks_mems_on_measured_at_and_server", unique: true
-  end
-
-  create_table "ks_pcpus", force: :cascade do |t|
-    t.integer "pid"
-    t.decimal "pcpu", precision: 4, scale: 1
-    t.string "command", limit: 100
-    t.string "short", limit: 32
-    t.bigint "ks_cpu_id", null: false
-    t.index ["ks_cpu_id"], name: "index_ks_pcpus_on_ks_cpu_id"
-  end
-
-  create_table "ks_procs", force: :cascade do |t|
-    t.integer "pid"
-    t.integer "mem"
-    t.string "command", limit: 100
-    t.string "short", limit: 32
-    t.bigint "ks_top_id", null: false
-    t.index ["ks_top_id"], name: "index_ks_procs_on_ks_top_id"
-  end
-
-  create_table "ks_tops", force: :cascade do |t|
-    t.string "server", limit: 3
-    t.datetime "measured_at"
-    t.bigint "ks_journal_id", null: false
-    t.integer "procs_count", default: 0, null: false
-    t.index ["ks_journal_id"], name: "index_ks_tops_on_ks_journal_id"
-    t.index ["measured_at", "server"], name: "index_ks_tops_on_measured_at_and_server", unique: true
   end
 
   create_table "logins", id: :serial, force: :cascade do |t|

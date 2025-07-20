@@ -9,13 +9,6 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
-  namespace :ks do
-    resources :journals, only: [:index, :show]
-    resources :boots, only: [:index]
-    resources :mems, only: [:index]
-    resources :procs, only: [:index]
-    resources :pcpus, only: [:index]
-  end
   namespace :wk do
     resources :examples, except: [:show] do
       get :memorable, on: :collection

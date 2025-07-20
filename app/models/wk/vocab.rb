@@ -147,8 +147,6 @@ module Wk
       end
     end
 
-    def obs_name() = characters
-
     def self.update(days=nil)
       count = Hash.new(0)
       old_wk_ids = Vocab.pluck(:wk_id)

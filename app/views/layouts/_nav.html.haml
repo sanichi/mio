@@ -56,7 +56,6 @@
               %li= link_to t("transaction.transactions"),     transactions_path   if can?(:read, Transaction)
               %li= link_to t("classifier.classifiers"),       classifiers_path    if can?(:read, Classifier)
               %li= link_to t("pages.premier.short"),          premier_path        if can?(:premier, :page)
-              %li= link_to t("ks.kanshi", locale: "jp"),      ks_journals_path    if can?(:read, Ks::Journal)
               %li= link_to t("constellation.constellations"), constellations_path if can?(:read, Constellation)
               %li= link_to t("star.stars"),                   stars_path          if can?(:read, Star)
               %li= link_to t("team.teams"),                   teams_path          if can?(:read, Team)

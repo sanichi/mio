@@ -156,8 +156,6 @@ module Wk
       "[#{display || character}](/wk/kanjis/#{id})"
     end
 
-    def obs_name() = character + " " + meaning
-
     def image_path
       %w/jpg gif/.each do |type|
         file = "#{character}.#{type}"
