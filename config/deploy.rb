@@ -1,7 +1,7 @@
 set :application, "mio"
 set :repo_url, "git@github.com:sanichi/mio.git"
 append :linked_files, "config/database.yml", "config/master.key"
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "public/images"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "public/images", "public/people"
 set :log_level, :info
 set :branch, "main"
 

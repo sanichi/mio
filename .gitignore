@@ -15,6 +15,7 @@
 
 /public/assets
 /public/images
+/public/people
 .byebug_history
 
 /config/master.key
