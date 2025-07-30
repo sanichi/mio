@@ -8,7 +8,8 @@ class Mass < ApplicationRecord
     st: MassUnit.new(:st, 0.1575, 2,  1),
   }
   DEFAULT_UNIT = UNITS[:kg]
-  DEFAULT_START = 2 # months ago
+  DEFAULT_BEGIN = 2 # months ago
+  DEFAULT_END = 0 # now
 
   validates :start, :finish, numericality: { greater_than_or_equal_to: MIN_KG, less_than_or_equal_to: MAX_KG }, allow_nil: true
   validates :date, presence:true, uniqueness: true

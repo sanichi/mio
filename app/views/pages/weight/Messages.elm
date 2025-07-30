@@ -3,6 +3,7 @@ module Messages exposing (..)
 
 type Msg
     = ChangeUnits String
-    | ChangeStart Int
+    | ChangeBegin Int
+    | ChangeEnd Int
     | ChangeCross ( Int, Int )
     | UpdateCross ( Int, Int )

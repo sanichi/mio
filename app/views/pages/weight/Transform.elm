@@ -2,7 +2,6 @@ module Transform exposing (Transform, fromData, height, levelsd, levelsk, restri
 
 import Data exposing (Data, Datum)
 import Date exposing (Date, Unit(..))
-import Start exposing (Start)
 import Time exposing (Month(..))
 import Units exposing (Unit(..))
 
@@ -27,20 +26,20 @@ type alias Levels =
     List Level
 
 
-fromData : Data -> Start -> Transform
-fromData data start =
+fromData : Data -> Int -> Int -> Transform
+fromData data begin end =
     let
         dLow =
-            Data.dateMin data start
+            Data.dateMin data begin end
 
         dHgh =
-            Data.dateMax data
+            Data.dateMax data end
 
         dFac =
             toFloat width / toFloat (dHgh - dLow)
 
         ( kLow, kHgh ) =
-            Data.kiloMinMax data start
+            Data.kiloMinMax data begin end
 
         kFac =
             toFloat height / (kHgh - kLow)

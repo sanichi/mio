@@ -1,12 +1,13 @@
 :ruby
-  lo = Layout.new(xs: [3,3], md: [2,2], xl: [1,1]).to_a
+  lo = Layout.new(xs: [3,3,3], md: [2,2,2], xl: [1,1,1]).to_a
   my_meta_tags "mass"
 
 %section
   .header.text-center
     %h3= t("mass.title")
   .body{"data-controller" => "elm--weight",
-    "data-elm--weight-start-value" => Mass::DEFAULT_START,
+    "data-elm--weight-begin-value" => Mass::DEFAULT_BEGIN,
+    "data-elm--weight-end-value" => Mass::DEFAULT_END,
     "data-elm--weight-units-value" => @unit.key.to_s,
     "data-elm--weight-kilos-value" => "[#{@kilos.map(&:to_s).join(',')}]",
     "data-elm--weight-dates-value" => "[\"#{@dates.map(&:to_s).join('","')}\"]",
@@ -18,9 +19,12 @@
   }
     .row
       %div{class: col(lo[0])}
-        = label_tag :start, t("mass.start"), class: "visually-hidden"
-        = select_tag :start, mass_months_menu, class: "form-select", "data-action" => "elm--weight#changeStart"
+        = label_tag :start, t("mass.begin"), class: "visually-hidden"
+        = select_tag :start, mass_begin_menu, class: "form-select", "data-action" => "elm--weight#changeBegin"
       %div{class: col(lo[1])}
+        = label_tag :finish, t("mass.end"), class: "visually-hidden"
+        = select_tag :finish, mass_end_menu, class: "form-select", "data-action" => "elm--weight#changeEnd"
+      %div{class: col(lo[2])}
         = label_tag :units, t("mass.unit.unit"), class: "visually-hidden"
         = select_tag :units, mass_unit_menu, class: "form-select", "data-action" => "elm--weight#changeUnits"
     %div{"data-elm--weight-target" => "elm"}

@@ -5,7 +5,8 @@ export default class extends Controller {
   static targets = [ "elm" ]
 
   static values = {
-    start: Number,
+    begin: Number,
+    end: Number,
     units: String,
     kilos: Array,
     dates: Array,
@@ -21,7 +22,7 @@ export default class extends Controller {
     this.app = Elm.Weight.init({
       node: this.elmTarget,
       flags: {
-        start: this.startValue,
+        beginEnd: [this.beginValue, this.endValue],
         units: this.unitsValue,
         kilos: this.kilosValue,
         dates: this.datesValue,
@@ -42,8 +43,12 @@ export default class extends Controller {
     });
   }
 
-  changeStart(e) {
-    this.app.ports.changeStart.send(parseInt(e.target.value));
+  changeBegin(e) {
+    this.app.ports.changeBegin.send(parseInt(e.target.value));
+  }
+
+  changeEnd(e) {
+    this.app.ports.changeEnd.send(parseInt(e.target.value));
   }
 
   changeUnits(e) {

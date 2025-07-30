@@ -59,8 +59,11 @@ update msg model =
         ChangeUnits units ->
             ( Model.changeUnits units model, Cmd.none )
 
-        ChangeStart start ->
-            ( Model.changeStart start model, Cmd.none )
+        ChangeBegin start ->
+            ( Model.changeBegin start model, Cmd.none )
+
+        ChangeEnd end ->
+            ( Model.changeEnd end model, Cmd.none )
 
         UpdateCross delta ->
             ( Model.updateCross delta model, Cmd.none )
@@ -77,7 +80,8 @@ subscriptions : Sub Msg
 subscriptions =
     Platform.Sub.batch
         [ Ports.changeUnits ChangeUnits
-        , Ports.changeStart ChangeStart
+        , Ports.changeBegin ChangeBegin
+        , Ports.changeEnd ChangeEnd
         , Ports.updateCross UpdateCross
         , Ports.changeCross ChangeCross
         ]

@@ -1,7 +1,9 @@
 en:
   mass:
+    begin: Begin
     description: My daily weight as measured sporadically over the years. I‘m trying to keep around 80kg, though 85kg is probably more realistic.
     edit: Edit Measurement
+    end: End
     finish: Night
     data: Measurements
     date: Date

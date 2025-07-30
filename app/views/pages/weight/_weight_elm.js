@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.R.I === region.al.I)
+	if (region.ae.J === region.R.J)
 	{
-		return 'on line ' + region.R.I;
+		return 'on line ' + region.ae.J;
 	}
-	return 'on lines ' + region.R.I + ' through ' + region.al.I;
+	return 'on lines ' + region.ae.J + ' through ' + region.R.J;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bd,
+		impl.bf,
+		impl.bv,
 		impl.bt,
-		impl.br,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		t: func(record.t),
-		ad: record.ad,
-		ab: record.ab
+		u: func(record.u),
+		af: record.af,
+		ac: record.ac
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.t;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ad;
+		var message = !tag ? value : tag < 3 ? value.a : value.u;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.af;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.ab) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ac) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bd,
+		impl.bf,
+		impl.bv,
 		impl.bt,
-		impl.br,
 		function(sendToApp, initialModel) {
-			var view = impl.bv;
+			var view = impl.bx;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bd,
+		impl.bf,
+		impl.bv,
 		impl.bt,
-		impl.br,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.ac && impl.ac(sendToApp)
-			var view = impl.bv;
+			var divertHrefToApp = impl.ad && impl.ad(sendToApp)
+			var view = impl.bx;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a_);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a0);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bs) && (_VirtualDom_doc.title = title = doc.bs);
+				(title !== doc.bu) && (_VirtualDom_doc.title = title = doc.bu);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bl;
-	var onUrlRequest = impl.bm;
+	var onUrlChange = impl.bn;
+	var onUrlRequest = impl.bo;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		ac: function(sendToApp)
+		ad: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aG === next.aG
-							&& curr.at === next.at
-							&& curr.aC.a === next.aC.a
+							&& curr.aI === next.aI
+							&& curr.av === next.av
+							&& curr.aE.a === next.aE.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bd: function(flags)
+		bf: function(flags)
 		{
-			return A3(impl.bd, flags, _Browser_getUrl(), key);
+			return A3(impl.bf, flags, _Browser_getUrl(), key);
 		},
+		bx: impl.bx,
 		bv: impl.bv,
-		bt: impl.bt,
-		br: impl.br
+		bt: impl.bt
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ba: 'hidden', a0: 'visibilitychange' }
+		? { bc: 'hidden', a2: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ba: 'mozHidden', a0: 'mozvisibilitychange' }
+		? { bc: 'mozHidden', a2: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ba: 'msHidden', a0: 'msvisibilitychange' }
+		? { bc: 'msHidden', a2: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ba: 'webkitHidden', a0: 'webkitvisibilitychange' }
-		: { ba: 'hidden', a0: 'visibilitychange' };
+		? { bc: 'webkitHidden', a2: 'webkitvisibilitychange' }
+		: { bc: 'hidden', a2: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aM: _Browser_getScene(),
-		aS: {
-			aW: _Browser_window.pageXOffset,
-			aX: _Browser_window.pageYOffset,
-			aV: _Browser_doc.documentElement.clientWidth,
-			ar: _Browser_doc.documentElement.clientHeight
+		aO: _Browser_getScene(),
+		aU: {
+			aY: _Browser_window.pageXOffset,
+			aZ: _Browser_window.pageYOffset,
+			aX: _Browser_doc.documentElement.clientWidth,
+			at: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aV: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ar: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aX: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		at: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aM: {
-				aV: node.scrollWidth,
-				ar: node.scrollHeight
+			aO: {
+				aX: node.scrollWidth,
+				at: node.scrollHeight
 			},
-			aS: {
-				aW: node.scrollLeft,
-				aX: node.scrollTop,
-				aV: node.clientWidth,
-				ar: node.clientHeight
+			aU: {
+				aY: node.scrollLeft,
+				aZ: node.scrollTop,
+				aX: node.clientWidth,
+				at: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aM: _Browser_getScene(),
-			aS: {
-				aW: x,
-				aX: y,
-				aV: _Browser_doc.documentElement.clientWidth,
-				ar: _Browser_doc.documentElement.clientHeight
+			aO: _Browser_getScene(),
+			aU: {
+				aY: x,
+				aZ: y,
+				aX: _Browser_doc.documentElement.clientWidth,
+				at: _Browser_doc.documentElement.clientHeight
 			},
-			a4: {
-				aW: x + rect.left,
-				aX: y + rect.top,
-				aV: rect.width,
-				ar: rect.height
+			a6: {
+				aY: x + rect.left,
+				aZ: y + rect.top,
+				aX: rect.width,
+				at: rect.height
 			}
 		};
 	});
@@ -4509,8 +4509,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.bi) { flags += 'm'; }
-	if (options.a$) { flags += 'i'; }
+	if (options.bk) { flags += 'm'; }
+	if (options.a1) { flags += 'i'; }
 
 	try
 	{
@@ -5142,7 +5142,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aq: fragment, at: host, aA: path, aC: port_, aG: protocol, aH: query};
+		return {as: fragment, av: host, aC: path, aE: port_, aI: protocol, aJ: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5423,10 +5423,22 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Preferences$Preferences = F8(
-	function (debug, dates, kilos, start, units, eventNames, eventDates, eventSpans) {
-		return {a2: dates, ak: debug, a6: eventDates, a7: eventNames, a8: eventSpans, bf: kilos, R: start, S: units};
+	function (debug, dates, kilos, beginEnd, units, eventNames, eventDates, eventSpans) {
+		return {ai: beginEnd, a4: dates, an: debug, a8: eventDates, a9: eventNames, ba: eventSpans, bh: kilos, T: units};
 	});
-var $author$project$Preferences$default = A8($author$project$Preferences$Preferences, false, _List_Nil, _List_Nil, 3, 'kg', _List_Nil, _List_Nil, _List_Nil);
+var $author$project$BeginEnd$beginDefault = 2;
+var $author$project$BeginEnd$endDefault = 0;
+var $author$project$Preferences$default = A8(
+	$author$project$Preferences$Preferences,
+	false,
+	_List_Nil,
+	_List_Nil,
+	_List_fromArray(
+		[$author$project$BeginEnd$beginDefault, $author$project$BeginEnd$endDefault]),
+	'kg',
+	_List_Nil,
+	_List_Nil,
+	_List_Nil);
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -5464,47 +5476,50 @@ var $author$project$Preferences$flagsDecoder = A9(
 	$author$project$Preferences$Preferences,
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.ak,
+		$author$project$Preferences$default.an,
 		A2($elm$json$Json$Decode$field, 'debug', $elm$json$Json$Decode$bool)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.a2,
+		$author$project$Preferences$default.a4,
 		A2(
 			$elm$json$Json$Decode$field,
 			'dates',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.bf,
+		$author$project$Preferences$default.bh,
 		A2(
 			$elm$json$Json$Decode$field,
 			'kilos',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$float))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.R,
-		A2($elm$json$Json$Decode$field, 'start', $elm$json$Json$Decode$int)),
+		$author$project$Preferences$default.ai,
+		A2(
+			$elm$json$Json$Decode$field,
+			'beginEnd',
+			$elm$json$Json$Decode$list($elm$json$Json$Decode$int))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.S,
+		$author$project$Preferences$default.T,
 		A2($elm$json$Json$Decode$field, 'units', $elm$json$Json$Decode$string)),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.a7,
+		$author$project$Preferences$default.a9,
 		A2(
 			$elm$json$Json$Decode$field,
 			'eventNames',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.a6,
+		$author$project$Preferences$default.a8,
 		A2(
 			$elm$json$Json$Decode$field,
 			'eventDates',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string))),
 	A2(
 		$author$project$Preferences$withDefault,
-		$author$project$Preferences$default.a8,
+		$author$project$Preferences$default.ba,
 		A2(
 			$elm$json$Json$Decode$field,
 			'eventSpans',
@@ -5524,13 +5539,32 @@ var $author$project$Preferences$decode = function (value) {
 		$author$project$Preferences$default,
 		A2($elm$json$Json$Decode$decodeValue, $author$project$Preferences$flagsDecoder, value));
 };
-var $author$project$Model$Model = F7(
-	function (data, start, units, transform, cross, events, debug) {
-		return {w: cross, O: data, ak: debug, an: events, R: start, L: transform, S: units};
+var $author$project$Model$Model = F8(
+	function (data, begin, end, units, transform, cross, events, debug) {
+		return {P: begin, t: cross, Q: data, an: debug, R: end, ap: events, G: transform, T: units};
 	});
+var $author$project$BeginEnd$begin = function (months) {
+	return (months < 0) ? $author$project$BeginEnd$beginDefault : months;
+};
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$BeginEnd$beginPref = function (beginEnd) {
+	var months = A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$BeginEnd$beginDefault,
+		$elm$core$List$head(beginEnd));
+	return $author$project$BeginEnd$begin(months);
+};
 var $author$project$Data$Datum = F3(
 	function (kilo, rata, even) {
-		return {a5: even, p: kilo, Q: rata};
+		return {a7: even, p: kilo, K: rata};
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -5588,7 +5622,7 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {ai: col, a1: contextStack, aD: problem, aL: row};
+		return {al: col, a3: contextStack, aF: problem, aN: row};
 	});
 var $elm$parser$Parser$Advanced$Empty = {$: 0};
 var $elm$parser$Parser$Advanced$fromState = F2(
@@ -5596,7 +5630,7 @@ var $elm$parser$Parser$Advanced$fromState = F2(
 		return A2(
 			$elm$parser$Parser$Advanced$AddRight,
 			$elm$parser$Parser$Advanced$Empty,
-			A4($elm$parser$Parser$Advanced$DeadEnd, s.aL, s.ai, x, s.c));
+			A4($elm$parser$Parser$Advanced$DeadEnd, s.aN, s.al, x, s.c));
 	});
 var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
 var $elm$parser$Parser$Advanced$chompIf = F2(
@@ -5610,11 +5644,11 @@ var $elm$parser$Parser$Advanced$chompIf = F2(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{ai: 1, c: s.c, d: s.d, b: s.b + 1, aL: s.aL + 1, a: s.a}) : A3(
+				{al: 1, c: s.c, d: s.d, b: s.b + 1, aN: s.aN + 1, a: s.a}) : A3(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{ai: s.ai + 1, c: s.c, d: s.d, b: newOffset, aL: s.aL, a: s.a}));
+				{al: s.al + 1, c: s.c, d: s.d, b: newOffset, aN: s.aN, a: s.a}));
 		};
 	});
 var $elm$parser$Parser$chompIf = function (isGood) {
@@ -5626,7 +5660,7 @@ var $elm$core$Basics$composeR = F3(
 			f(x));
 	});
 var $justinmimbs$date$Date$deadEndToString = function (_v0) {
-	var problem = _v0.aD;
+	var problem = _v0.aF;
 	if (problem.$ === 12) {
 		var message = problem.a;
 		return message;
@@ -5646,15 +5680,6 @@ var $elm$parser$Parser$Advanced$end = function (x) {
 	};
 };
 var $elm$parser$Parser$end = $elm$parser$Parser$Advanced$end($elm$parser$Parser$ExpectingEnd);
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $elm$parser$Parser$Advanced$map2 = F3(
 	function (func, _v0, _v1) {
 		var parseA = _v0;
@@ -5910,7 +5935,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(str);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.aL, s.ai, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.aN, s.al, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -5921,7 +5946,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{ai: newCol, c: s.c, d: s.d, b: newOffset, aL: newRow, a: s.a});
+			{al: newCol, c: s.c, d: s.d, b: newOffset, aN: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$token = function (str) {
@@ -6316,10 +6341,10 @@ var $justinmimbs$date$Date$parser = A2(
 		$justinmimbs$date$Date$dayOfYear));
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
-		return {ai: col, aD: problem, aL: row};
+		return {al: col, aF: problem, aN: row};
 	});
 var $elm$parser$Parser$problemToDeadEnd = function (p) {
-	return A3($elm$parser$Parser$DeadEnd, p.aL, p.ai, p.aD);
+	return A3($elm$parser$Parser$DeadEnd, p.aN, p.al, p.aF);
 };
 var $elm$parser$Parser$Advanced$bagToList = F2(
 	function (bag, list) {
@@ -6351,7 +6376,7 @@ var $elm$parser$Parser$Advanced$run = F2(
 	function (_v0, src) {
 		var parse = _v0;
 		var _v1 = parse(
-			{ai: 1, c: _List_Nil, d: 1, b: 0, aL: 1, a: src});
+			{al: 1, c: _List_Nil, d: 1, b: 0, aN: 1, a: src});
 		if (!_v1.$) {
 			var value = _v1.b;
 			return $elm$core$Result$Ok(value);
@@ -6458,7 +6483,7 @@ var $author$project$Data$combine = F2(
 	});
 var $author$project$Event$Event = F3(
 	function (name, rata, span) {
-		return {bj: name, Q: rata, bp: span};
+		return {bl: name, K: rata, br: span};
 	});
 var $author$project$Event$combine_ = F4(
 	function (events, names, dates, spans) {
@@ -6509,9 +6534,17 @@ var $author$project$Event$combine = F3(
 	function (names, dates, spans) {
 		return A4($author$project$Event$combine_, _List_Nil, names, dates, spans);
 	});
+var $author$project$BeginEnd$endPref = function (beginEnd) {
+	var year = A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$BeginEnd$endDefault,
+		$elm$core$List$head(
+			$elm$core$List$reverse(beginEnd)));
+	return $author$project$BeginEnd$begin(year);
+};
 var $author$project$Transform$Transform = F6(
 	function (dLow, dHgh, dFac, kLow, kHgh, kFac) {
-		return {T: dFac, U: dHgh, C: dLow, W: kFac, X: kHgh, E: kLow};
+		return {U: dFac, V: dHgh, C: dLow, X: kFac, Y: kHgh, E: kLow};
 	});
 var $elm$core$Basics$clamp = F3(
 	function (low, high, number) {
@@ -6530,38 +6563,48 @@ var $author$project$Data$defaultMax = function () {
 		A3($justinmimbs$date$Date$fromCalendarDate, 2055, 10, 9));
 	return A3($author$project$Data$Datum, 100.0, rata, true);
 }();
-var $author$project$Data$dateMax = function (data) {
-	return 1 + A2(
-		$elm$core$Maybe$withDefault,
-		$author$project$Data$defaultMax,
-		$elm$core$List$head(data)).Q;
-};
+var $author$project$Data$dateMax = F2(
+	function (data, year) {
+		return (!year) ? (1 + A2(
+			$elm$core$Maybe$withDefault,
+			$author$project$Data$defaultMax,
+			$elm$core$List$head(data)).K) : $justinmimbs$date$Date$toRataDie(
+			A3($justinmimbs$date$Date$fromCalendarDate, year, 11, 31));
+	});
 var $author$project$Data$defaultMin = function () {
 	var rata = $justinmimbs$date$Date$toRataDie(
 		A3($justinmimbs$date$Date$fromCalendarDate, 2014, 11, 1));
 	return A3($author$project$Data$Datum, 70.0, rata, true);
 }();
-var $author$project$Data$dateMin = F2(
-	function (data, start) {
-		return (!start) ? $author$project$Data$defaultMin.Q : function (x) {
-			return x - (30 * start);
+var $author$project$Data$dateMin = F3(
+	function (data, months, year) {
+		return (!months) ? $author$project$Data$defaultMin.K : function (x) {
+			return x - (30 * months);
 		}(
-			$author$project$Data$dateMax(data));
+			A2($author$project$Data$dateMax, data, year));
 	});
 var $author$project$Transform$height = 440;
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;
 	return y;
 };
-var $author$project$Data$limits = F3(
-	function (data, cutoff, sofar) {
+var $author$project$Data$limits = F4(
+	function (data, lower, upper, sofar) {
 		limits:
 		while (true) {
 			if (data.b) {
 				var d = data.a;
 				var rest = data.b;
-				if (_Utils_cmp(d.Q, cutoff) < 0) {
-					return sofar;
+				if ((_Utils_cmp(d.K, lower) < 0) || (_Utils_cmp(d.K, upper) > 0)) {
+					var $temp$data = rest,
+						$temp$lower = lower,
+						$temp$upper = upper,
+						$temp$sofar = sofar;
+					data = $temp$data;
+					lower = $temp$lower;
+					upper = $temp$upper;
+					sofar = $temp$sofar;
+					continue limits;
 				} else {
 					var minKilo = function () {
 						var _v2 = sofar.a;
@@ -6582,10 +6625,12 @@ var $author$project$Data$limits = F3(
 						}
 					}();
 					var $temp$data = rest,
-						$temp$cutoff = cutoff,
+						$temp$lower = lower,
+						$temp$upper = upper,
 						$temp$sofar = _Utils_Tuple2(minKilo, maxKilo);
 					data = $temp$data;
-					cutoff = $temp$cutoff;
+					lower = $temp$lower;
+					upper = $temp$upper;
 					sofar = $temp$sofar;
 					continue limits;
 				}
@@ -6594,13 +6639,15 @@ var $author$project$Data$limits = F3(
 			}
 		}
 	});
-var $author$project$Data$kiloMinMax = F2(
-	function (data, start) {
-		var cutoff = A2($author$project$Data$dateMin, data, start);
-		var _v0 = A3(
+var $author$project$Data$kiloMinMax = F3(
+	function (data, months, year) {
+		var upper = A2($author$project$Data$dateMax, data, year);
+		var lower = A3($author$project$Data$dateMin, data, months, year);
+		var _v0 = A4(
 			$author$project$Data$limits,
 			data,
-			cutoff,
+			lower,
+			upper,
 			_Utils_Tuple2($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing));
 		var min = _v0.a;
 		var max = _v0.b;
@@ -6619,33 +6666,30 @@ var $author$project$Data$kiloMinMax = F2(
 		return _Utils_Tuple2(low, hgh);
 	});
 var $author$project$Transform$width = 1000;
-var $author$project$Transform$fromData = F2(
-	function (data, start) {
-		var dLow = A2($author$project$Data$dateMin, data, start);
-		var dHgh = $author$project$Data$dateMax(data);
+var $author$project$Transform$fromData = F3(
+	function (data, begin, end) {
+		var dLow = A3($author$project$Data$dateMin, data, begin, end);
+		var dHgh = A2($author$project$Data$dateMax, data, end);
 		var dFac = $author$project$Transform$width / (dHgh - dLow);
-		var _v0 = A2($author$project$Data$kiloMinMax, data, start);
+		var _v0 = A3($author$project$Data$kiloMinMax, data, begin, end);
 		var kLow = _v0.a;
 		var kHgh = _v0.b;
 		var kFac = $author$project$Transform$height / (kHgh - kLow);
 		return A6($author$project$Transform$Transform, dLow, dHgh, dFac, kLow, kHgh, kFac);
 	});
-var $author$project$Start$fromInt = function (months) {
-	return (months < 0) ? 0 : months;
-};
 var $author$project$Units$Bm = 3;
 var $author$project$Units$Kg = 0;
 var $author$project$Units$Lb = 1;
 var $author$project$Units$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {bc: index, bh: match, bk: number, bq: submatches};
+		return {be: index, bj: match, bm: number, bs: submatches};
 	});
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{a$: false, bi: false},
+		{a1: false, bk: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -6670,13 +6714,13 @@ var $author$project$Transform$i2d = F2(
 	function (t, x) {
 		return t.C + $elm$core$Basics$round(
 			function (z) {
-				return z / t.T;
+				return z / t.U;
 			}(x));
 	});
 var $author$project$Transform$j2k = F2(
 	function (t, y) {
 		return t.E + function (z) {
-			return z / t.W;
+			return z / t.X;
 		}($author$project$Transform$height - y);
 	});
 var $author$project$Transform$reverse = F2(
@@ -6702,17 +6746,18 @@ var $author$project$Model$startCross = F2(
 		}
 	});
 var $author$project$Model$init = function (preferences) {
-	var units = $author$project$Units$fromString(preferences.S);
-	var start = $author$project$Start$fromInt(preferences.R);
-	var events = A3($author$project$Event$combine, preferences.a7, preferences.a6, preferences.a8);
-	var debug = preferences.ak;
-	var data = A2($author$project$Data$combine, preferences.bf, preferences.a2);
-	var transform = A2($author$project$Transform$fromData, data, start);
+	var units = $author$project$Units$fromString(preferences.T);
+	var events = A3($author$project$Event$combine, preferences.a9, preferences.a8, preferences.ba);
+	var end = $author$project$BeginEnd$endPref(preferences.ai);
+	var debug = preferences.an;
+	var data = A2($author$project$Data$combine, preferences.bh, preferences.a4);
+	var begin = $author$project$BeginEnd$beginPref(preferences.ai);
+	var transform = A3($author$project$Transform$fromData, data, begin, end);
 	var cross = A2(
 		$author$project$Model$startCross,
 		$elm$core$List$head(data),
 		transform);
-	return A7($author$project$Model$Model, data, start, units, transform, cross, events, debug);
+	return A8($author$project$Model$Model, data, begin, end, units, transform, cross, events, debug);
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -6721,19 +6766,23 @@ var $author$project$Weight$init = function (flags) {
 		$author$project$Preferences$decode(flags));
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
-var $author$project$Messages$ChangeCross = function (a) {
-	return {$: 2, a: a};
-};
-var $author$project$Messages$ChangeStart = function (a) {
+var $author$project$Messages$ChangeBegin = function (a) {
 	return {$: 1, a: a};
+};
+var $author$project$Messages$ChangeCross = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Messages$ChangeEnd = function (a) {
+	return {$: 2, a: a};
 };
 var $author$project$Messages$ChangeUnits = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Messages$UpdateCross = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $author$project$Ports$changeBegin = _Platform_incomingPort('changeBegin', $elm$json$Json$Decode$int);
 var $elm$json$Json$Decode$andThen = _Json_andThen;
 var $elm$json$Json$Decode$index = _Json_decodeIndex;
 var $author$project$Ports$changeCross = _Platform_incomingPort(
@@ -6750,7 +6799,7 @@ var $author$project$Ports$changeCross = _Platform_incomingPort(
 				A2($elm$json$Json$Decode$index, 1, $elm$json$Json$Decode$int));
 		},
 		A2($elm$json$Json$Decode$index, 0, $elm$json$Json$Decode$int)));
-var $author$project$Ports$changeStart = _Platform_incomingPort('changeStart', $elm$json$Json$Decode$int);
+var $author$project$Ports$changeEnd = _Platform_incomingPort('changeEnd', $elm$json$Json$Decode$int);
 var $author$project$Ports$changeUnits = _Platform_incomingPort('changeUnits', $elm$json$Json$Decode$string);
 var $author$project$Ports$updateCross = _Platform_incomingPort(
 	'updateCross',
@@ -6770,28 +6819,29 @@ var $author$project$Weight$subscriptions = $elm$core$Platform$Sub$batch(
 	_List_fromArray(
 		[
 			$author$project$Ports$changeUnits($author$project$Messages$ChangeUnits),
-			$author$project$Ports$changeStart($author$project$Messages$ChangeStart),
+			$author$project$Ports$changeBegin($author$project$Messages$ChangeBegin),
+			$author$project$Ports$changeEnd($author$project$Messages$ChangeEnd),
 			$author$project$Ports$updateCross($author$project$Messages$UpdateCross),
 			$author$project$Ports$changeCross($author$project$Messages$ChangeCross)
 		]));
 var $author$project$Transform$d2i = F2(
 	function (t, d) {
 		return $elm$core$Basics$round(
-			t.T * function (x) {
+			t.U * function (x) {
 				return x - t.C;
 			}(d));
 	});
 var $author$project$Transform$k2j = F2(
 	function (t, k) {
 		return $author$project$Transform$height - $elm$core$Basics$round(
-			t.W * function (y) {
+			t.X * function (y) {
 				return y - t.E;
 			}(k));
 	});
 var $author$project$Transform$transform = F2(
 	function (t, d) {
 		return _Utils_Tuple2(
-			A2($author$project$Transform$d2i, t, d.Q),
+			A2($author$project$Transform$d2i, t, d.K),
 			A2($author$project$Transform$k2j, t, d.p));
 	});
 var $author$project$Transform$restrict = F2(
@@ -6806,41 +6856,41 @@ var $author$project$Transform$restrict = F2(
 			t,
 			_Utils_Tuple2(x, y));
 	});
+var $author$project$Model$changeBegin = F2(
+	function (begin, model) {
+		var transform = A3($author$project$Transform$fromData, model.Q, begin, model.R);
+		var cross = A2($author$project$Transform$restrict, transform, model.t);
+		return _Utils_update(
+			model,
+			{
+				P: $author$project$BeginEnd$begin(begin),
+				t: cross,
+				G: transform
+			});
+	});
 var $author$project$Model$changeCross = F2(
 	function (point, model) {
 		var cross = A2(
 			$author$project$Transform$restrict,
-			model.L,
-			A2($author$project$Transform$reverse, model.L, point));
+			model.G,
+			A2($author$project$Transform$reverse, model.G, point));
 		return _Utils_update(
 			model,
-			{w: cross});
+			{t: cross});
 	});
-var $author$project$Model$changeStart = F2(
-	function (start, model) {
-		var lastCross = model.w;
-		var dummyCross = function () {
-			var _v0 = $elm$core$List$head(model.O);
-			if (!_v0.$) {
-				var datum = _v0.a;
-				return _Utils_update(
-					lastCross,
-					{Q: datum.Q});
-			} else {
-				return lastCross;
-			}
-		}();
-		var transform = A2(
-			$author$project$Transform$fromData,
-			A2($elm$core$List$cons, dummyCross, model.O),
-			start);
-		var cross = A2($author$project$Transform$restrict, transform, model.w);
+var $author$project$BeginEnd$end = function (year) {
+	return (year < 0) ? $author$project$BeginEnd$endDefault : year;
+};
+var $author$project$Model$changeEnd = F2(
+	function (end, model) {
+		var transform = A3($author$project$Transform$fromData, model.Q, model.P, end);
+		var cross = A2($author$project$Transform$restrict, transform, model.t);
 		return _Utils_update(
 			model,
 			{
-				w: cross,
-				R: $author$project$Start$fromInt(start),
-				L: transform
+				t: cross,
+				R: $author$project$BeginEnd$end(end),
+				G: transform
 			});
 	});
 var $author$project$Model$changeUnits = F2(
@@ -6848,7 +6898,7 @@ var $author$project$Model$changeUnits = F2(
 		return _Utils_update(
 			model,
 			{
-				S: $author$project$Units$fromString(units)
+				T: $author$project$Units$fromString(units)
 			});
 	});
 var $author$project$Model$updateCross = F2(
@@ -6859,15 +6909,15 @@ var $author$project$Model$updateCross = F2(
 		var dd = 1 * dx;
 		var cross = A2(
 			$author$project$Transform$restrict,
-			model.L,
+			model.G,
 			function (c) {
 				return _Utils_update(
 					c,
-					{p: c.p + dk, Q: c.Q + dd});
-			}(model.w));
+					{p: c.p + dk, K: c.K + dd});
+			}(model.t));
 		return _Utils_update(
 			model,
-			{w: cross});
+			{t: cross});
 	});
 var $author$project$Weight$update = F2(
 	function (msg, model) {
@@ -6880,9 +6930,14 @@ var $author$project$Weight$update = F2(
 			case 1:
 				var start = msg.a;
 				return _Utils_Tuple2(
-					A2($author$project$Model$changeStart, start, model),
+					A2($author$project$Model$changeBegin, start, model),
 					$elm$core$Platform$Cmd$none);
-			case 3:
+			case 2:
+				var end = msg.a;
+				return _Utils_Tuple2(
+					A2($author$project$Model$changeEnd, end, model),
+					$elm$core$Platform$Cmd$none);
+			case 4:
 				var delta = msg.a;
 				return _Utils_Tuple2(
 					A2($author$project$Model$updateCross, delta, model),
@@ -6935,7 +6990,7 @@ var $author$project$View$y2 = function (i) {
 		$elm$core$String$fromInt(i));
 };
 var $author$project$View$cross = function (m) {
-	var _v0 = A2($author$project$Transform$transform, m.L, m.w);
+	var _v0 = A2($author$project$Transform$transform, m.G, m.t);
 	var x = _v0.a;
 	var y = _v0.b;
 	return A2(
@@ -6987,11 +7042,12 @@ var $author$project$Model$debugMsg = function (model) {
 		_List_fromArray(
 			[
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.O)),
-				$author$project$Units$toString(model.S),
+				$elm$core$List$length(model.Q)),
+				$author$project$Units$toString(model.T),
+				$elm$core$String$fromInt(model.P),
 				$elm$core$String$fromInt(model.R),
 				$elm$core$String$fromInt(
-				$elm$core$List$length(model.an))
+				$elm$core$List$length(model.ap))
 			]));
 };
 var $author$project$View$debugTextX = ($author$project$View$width / 2) | 0;
@@ -7013,7 +7069,7 @@ var $author$project$View$yy = function (y) {
 		$elm$core$String$fromInt(y));
 };
 var $author$project$View$debug = function (m) {
-	return m.ak ? A2(
+	return m.an ? A2(
 		$elm$svg$Svg$text_,
 		_List_fromArray(
 			[
@@ -7054,9 +7110,9 @@ var $author$project$Transform$transformRata = F2(
 	});
 var $author$project$View$events = function (m) {
 	var eventToSvg = function (e) {
-		var textWidthEstimate = $elm$core$String$length(e.bj) * 7;
-		var eventStartX = A2($author$project$Transform$transformRata, m.L, e.Q);
-		var eventFinishX = A2($author$project$Transform$transformRata, m.L, e.Q + e.bp);
+		var textWidthEstimate = $elm$core$String$length(e.bl) * 7;
+		var eventStartX = A2($author$project$Transform$transformRata, m.G, e.K);
+		var eventFinishX = A2($author$project$Transform$transformRata, m.G, e.K + e.br);
 		var eventTextX = ((eventStartX + eventFinishX) / 2) | 0;
 		var text = A2(
 			$elm$svg$Svg$text_,
@@ -7068,7 +7124,7 @@ var $author$project$View$events = function (m) {
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$tt(e.bj)
+					$author$project$View$tt(e.bl)
 				]));
 		var textFinishEstimate = eventTextX + ((textWidthEstimate / 2) | 0);
 		var textStartEstimate = eventTextX - ((textWidthEstimate / 2) | 0);
@@ -7082,7 +7138,7 @@ var $author$project$View$events = function (m) {
 					$author$project$View$y2($author$project$View$eventLineY)
 				]),
 			_List_Nil);
-		return ((m.R <= 12) && ((!(!m.R)) && ((textStartEstimate >= 0) && (_Utils_cmp(textFinishEstimate, $author$project$Transform$width) < 1)))) ? $elm$core$Maybe$Just(
+		return ((m.P <= 12) && ((!(!m.P)) && ((textStartEstimate >= 0) && (_Utils_cmp(textFinishEstimate, $author$project$Transform$width) < 1)))) ? $elm$core$Maybe$Just(
 			A2(
 				$elm$svg$Svg$g,
 				_List_Nil,
@@ -7092,7 +7148,7 @@ var $author$project$View$events = function (m) {
 	return A2(
 		$elm$svg$Svg$g,
 		_List_Nil,
-		A2($elm$core$List$filterMap, eventToSvg, m.an));
+		A2($elm$core$List$filterMap, eventToSvg, m.ap));
 };
 var $author$project$View$frame = A2(
 	$elm$svg$Svg$g,
@@ -7186,7 +7242,7 @@ var $justinmimbs$date$Date$toCalendarDateHelp = F3(
 				d = $temp$d;
 				continue toCalendarDateHelp;
 			} else {
-				return {aj: d, ay: m, aY: y};
+				return {am: d, aA: m, a_: y};
 			}
 		}
 	});
@@ -7217,33 +7273,33 @@ var $justinmimbs$date$Date$toOrdinalDate = function (_v0) {
 	var rd = _v0;
 	var y = $justinmimbs$date$Date$year(rd);
 	return {
-		aa: rd - $justinmimbs$date$Date$daysBeforeYear(y),
-		aY: y
+		ab: rd - $justinmimbs$date$Date$daysBeforeYear(y),
+		a_: y
 	};
 };
 var $justinmimbs$date$Date$toCalendarDate = function (_v0) {
 	var rd = _v0;
 	var date = $justinmimbs$date$Date$toOrdinalDate(rd);
-	return A3($justinmimbs$date$Date$toCalendarDateHelp, date.aY, 0, date.aa);
+	return A3($justinmimbs$date$Date$toCalendarDateHelp, date.a_, 0, date.ab);
 };
 var $justinmimbs$date$Date$day = A2(
 	$elm$core$Basics$composeR,
 	$justinmimbs$date$Date$toCalendarDate,
 	function ($) {
-		return $.aj;
+		return $.am;
 	});
 var $justinmimbs$date$Date$month = A2(
 	$elm$core$Basics$composeR,
 	$justinmimbs$date$Date$toCalendarDate,
 	function ($) {
-		return $.ay;
+		return $.aA;
 	});
 var $justinmimbs$date$Date$monthNumber = A2($elm$core$Basics$composeR, $justinmimbs$date$Date$month, $justinmimbs$date$Date$monthToNumber);
 var $justinmimbs$date$Date$ordinalDay = A2(
 	$elm$core$Basics$composeR,
 	$justinmimbs$date$Date$toOrdinalDate,
 	function ($) {
-		return $.aa;
+		return $.ab;
 	});
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
@@ -7327,22 +7383,22 @@ var $justinmimbs$date$Date$toWeekDate = function (_v0) {
 	var wy = $justinmimbs$date$Date$year(rd + (4 - wdn));
 	var week1Day1 = $justinmimbs$date$Date$daysBeforeWeekYear(wy) + 1;
 	return {
-		aT: 1 + (((rd - week1Day1) / 7) | 0),
-		aU: wy,
-		bw: $justinmimbs$date$Date$numberToWeekday(wdn)
+		aV: 1 + (((rd - week1Day1) / 7) | 0),
+		aW: wy,
+		by: $justinmimbs$date$Date$numberToWeekday(wdn)
 	};
 };
 var $justinmimbs$date$Date$weekNumber = A2(
 	$elm$core$Basics$composeR,
 	$justinmimbs$date$Date$toWeekDate,
 	function ($) {
-		return $.aT;
+		return $.aV;
 	});
 var $justinmimbs$date$Date$weekYear = A2(
 	$elm$core$Basics$composeR,
 	$justinmimbs$date$Date$toWeekDate,
 	function ($) {
-		return $.aU;
+		return $.aW;
 	});
 var $justinmimbs$date$Date$weekday = A2($elm$core$Basics$composeR, $justinmimbs$date$Date$weekdayNumber, $justinmimbs$date$Date$numberToWeekday);
 var $elm$core$Basics$min = F2(
@@ -7441,16 +7497,16 @@ var $justinmimbs$date$Date$formatField = F4(
 							$elm$core$String$fromInt(
 								$justinmimbs$date$Date$monthNumber(date)));
 					case 3:
-						return language.P(
+						return language.S(
 							$justinmimbs$date$Date$month(date));
 					case 4:
-						return language.Z(
+						return language._(
 							$justinmimbs$date$Date$month(date));
 					case 5:
 						return A2(
 							$elm$core$String$left,
 							1,
-							language.P(
+							language.S(
 								$justinmimbs$date$Date$month(date)));
 					default:
 						return '';
@@ -7483,7 +7539,7 @@ var $justinmimbs$date$Date$formatField = F4(
 							$elm$core$String$fromInt(
 								$justinmimbs$date$Date$day(date)));
 					case 3:
-						return language.V(
+						return language.W(
 							$justinmimbs$date$Date$day(date));
 					default:
 						return '';
@@ -7522,7 +7578,7 @@ var $justinmimbs$date$Date$formatField = F4(
 						return language.B(
 							$justinmimbs$date$Date$weekday(date));
 					case 4:
-						return language.ae(
+						return language.ag(
 							$justinmimbs$date$Date$weekday(date));
 					case 5:
 						return A2(
@@ -7596,7 +7652,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 					$elm$parser$Parser$Advanced$Good,
 					_Utils_cmp(s0.b, offset) < 0,
 					0,
-					{ai: col, c: s0.c, d: s0.d, b: offset, aL: row, a: s0.a});
+					{al: col, c: s0.c, d: s0.d, b: offset, aN: row, a: s0.a});
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7628,7 +7684,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 	});
 var $elm$parser$Parser$Advanced$chompWhile = function (isGood) {
 	return function (s) {
-		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.aL, s.ai, s);
+		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.aN, s.al, s);
 	};
 };
 var $elm$parser$Parser$chompWhile = $elm$parser$Parser$Advanced$chompWhile;
@@ -7817,13 +7873,13 @@ var $justinmimbs$date$Date$weekdayToName = function (wd) {
 	}
 };
 var $justinmimbs$date$Date$language_en = {
-	V: $justinmimbs$date$Date$withOrdinalSuffix,
-	Z: $justinmimbs$date$Date$monthToName,
-	P: A2(
+	W: $justinmimbs$date$Date$withOrdinalSuffix,
+	_: $justinmimbs$date$Date$monthToName,
+	S: A2(
 		$elm$core$Basics$composeR,
 		$justinmimbs$date$Date$monthToName,
 		$elm$core$String$left(3)),
-	ae: $justinmimbs$date$Date$weekdayToName,
+	ag: $justinmimbs$date$Date$weekdayToName,
 	B: A2(
 		$elm$core$Basics$composeR,
 		$justinmimbs$date$Date$weekdayToName,
@@ -7892,9 +7948,9 @@ var $author$project$Units$format2 = F2(
 var $author$project$View$infoTextX = ($author$project$View$width / 2) | 0;
 var $author$project$View$infoTextY = -10;
 var $author$project$View$info = function (m) {
-	var weight = A2($author$project$Units$format2, m.S, m.w.p);
+	var weight = A2($author$project$Units$format2, m.T, m.t.p);
 	var text = function () {
-		var _v0 = A2($author$project$Transform$transform, m.L, m.w);
+		var _v0 = A2($author$project$Transform$transform, m.G, m.t);
 		var y = _v0.b;
 		if ((_Utils_cmp(y, $author$project$View$eventLineY + 20) > 0) || (_Utils_cmp(y, $author$project$View$eventLineY - 20) < 0)) {
 			return weight;
@@ -7902,21 +7958,21 @@ var $author$project$View$info = function (m) {
 			var names = A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bj;
+					return $.bl;
 				},
 				A2(
 					$elm$core$List$filter,
 					function (e) {
-						return (_Utils_cmp(e.Q, m.w.Q) < 1) && (_Utils_cmp(e.Q + e.bp, m.w.Q) > -1);
+						return (_Utils_cmp(e.K, m.t.K) < 1) && (_Utils_cmp(e.K + e.br, m.t.K) > -1);
 					},
-					m.an));
+					m.ap));
 			return ($elm$core$List$length(names) !== 1) ? weight : A2(
 				$elm$core$Maybe$withDefault,
 				'Error',
 				$elm$core$List$head(names));
 		}
 	}();
-	var date = $author$project$Data$dateFormat(m.w.Q);
+	var date = $author$project$Data$dateFormat(m.t.K);
 	return A2(
 		$elm$svg$Svg$text_,
 		_List_fromArray(
@@ -7940,7 +7996,7 @@ var $author$project$Transform$dateFromRataDie = F2(
 	});
 var $author$project$Transform$Level = F2(
 	function (val, label) {
-		return {bg: label, bu: val};
+		return {bi: label, bw: val};
 	});
 var $justinmimbs$date$Date$add = F3(
 	function (unit, n, _v0) {
@@ -7950,13 +8006,13 @@ var $justinmimbs$date$Date$add = F3(
 				return A3($justinmimbs$date$Date$add, 1, 12 * n, rd);
 			case 1:
 				var date = $justinmimbs$date$Date$toCalendarDate(rd);
-				var wholeMonths = ((12 * (date.aY - 1)) + ($justinmimbs$date$Date$monthToNumber(date.ay) - 1)) + n;
+				var wholeMonths = ((12 * (date.a_ - 1)) + ($justinmimbs$date$Date$monthToNumber(date.aA) - 1)) + n;
 				var m = $justinmimbs$date$Date$numberToMonth(
 					A2($elm$core$Basics$modBy, 12, wholeMonths) + 1);
 				var y = A2($justinmimbs$date$Date$floorDiv, wholeMonths, 12) + 1;
 				return ($justinmimbs$date$Date$daysBeforeYear(y) + A2($justinmimbs$date$Date$daysBeforeMonth, y, m)) + A2(
 					$elm$core$Basics$min,
-					date.aj,
+					date.am,
 					A2($justinmimbs$date$Date$daysInMonth, y, m));
 			case 2:
 				return rd + (7 * n);
@@ -7968,7 +8024,7 @@ var $author$project$Transform$dlevels = F5(
 	function (t, du, dn, l, ls) {
 		dlevels:
 		while (true) {
-			if (_Utils_cmp(l, t.U) > 0) {
+			if (_Utils_cmp(l, t.V) > 0) {
 				return ls;
 			} else {
 				var nl = $justinmimbs$date$Date$toRataDie(
@@ -8021,7 +8077,7 @@ var $author$project$Transform$dlevels = F5(
 		}
 	});
 var $author$project$Transform$levelsd = function (t) {
-	var days = t.U - t.C;
+	var days = t.V - t.C;
 	var _v0 = (days <= 31) ? _Utils_Tuple2(1, 2) : ((days <= 62) ? _Utils_Tuple2(2, 2) : ((days <= 125) ? _Utils_Tuple2(1, 1) : ((days <= 250) ? _Utils_Tuple2(2, 1) : ((days <= 400) ? _Utils_Tuple2(4, 1) : ((days <= 800) ? _Utils_Tuple2(8, 1) : _Utils_Tuple2(1, 0))))));
 	var dn = _v0.a;
 	var du = _v0.b;
@@ -8035,15 +8091,15 @@ var $author$project$Transform$levelsd = function (t) {
 };
 var $elm$svg$Svg$Attributes$textAnchor = _VirtualDom_attribute('text-anchor');
 var $author$project$View$levelsd = function (m) {
-	var levels = $author$project$Transform$levelsd(m.L);
+	var levels = $author$project$Transform$levelsd(m.G);
 	var level2line = function (l) {
 		return A2(
 			$elm$svg$Svg$line,
 			_List_fromArray(
 				[
-					$author$project$View$x1(l.bu),
+					$author$project$View$x1(l.bw),
 					$author$project$View$y1(0),
-					$author$project$View$x2(l.bu),
+					$author$project$View$x2(l.bw),
 					$author$project$View$y2($author$project$View$height)
 				]),
 			_List_Nil);
@@ -8054,13 +8110,13 @@ var $author$project$View$levelsd = function (m) {
 			$elm$svg$Svg$text_,
 			_List_fromArray(
 				[
-					$author$project$View$xx(l.bu),
+					$author$project$View$xx(l.bw),
 					$author$project$View$yy($author$project$View$height + 17),
 					$elm$svg$Svg$Attributes$textAnchor('mid')
 				]),
 			_List_fromArray(
 				[
-					$elm$svg$Svg$text(l.bg)
+					$elm$svg$Svg$text(l.bi)
 				]));
 	};
 	var labels = A2($elm$core$List$map, level2label, levels);
@@ -8103,7 +8159,7 @@ var $author$project$Transform$jlevels = F5(
 	function (t, u, d, l, ls) {
 		jlevels:
 		while (true) {
-			if (_Utils_cmp(l, t.X) > 0) {
+			if (_Utils_cmp(l, t.Y) > 0) {
 				return ls;
 			} else {
 				var nl = l + d;
@@ -8142,21 +8198,21 @@ var $author$project$Transform$jlevels = F5(
 	});
 var $author$project$Transform$levelsk = F2(
 	function (t, u) {
-		var d = A2($author$project$Units$delta, u, t.X - t.E);
+		var d = A2($author$project$Units$delta, u, t.Y - t.E);
 		var l = d * $elm$core$Basics$floor(t.E / d);
 		return A5($author$project$Transform$jlevels, t, u, d, l, _List_Nil);
 	});
 var $author$project$View$levelsk = function (m) {
-	var levels = A2($author$project$Transform$levelsk, m.L, m.S);
+	var levels = A2($author$project$Transform$levelsk, m.G, m.T);
 	var level2line = function (l) {
 		return A2(
 			$elm$svg$Svg$line,
 			_List_fromArray(
 				[
 					$author$project$View$x1(-3),
-					$author$project$View$y1(l.bu),
+					$author$project$View$y1(l.bw),
 					$author$project$View$x2($author$project$View$width),
-					$author$project$View$y2(l.bu)
+					$author$project$View$y2(l.bw)
 				]),
 			_List_Nil);
 	};
@@ -8167,12 +8223,12 @@ var $author$project$View$levelsk = function (m) {
 			_List_fromArray(
 				[
 					$author$project$View$xx(-7),
-					$author$project$View$yy(l.bu + 5),
+					$author$project$View$yy(l.bw + 5),
 					$author$project$View$cc('ylabel')
 				]),
 			_List_fromArray(
 				[
-					$elm$svg$Svg$text(l.bg)
+					$elm$svg$Svg$text(l.bi)
 				]));
 	};
 	var labels = A2($elm$core$List$map, level2label, levels);
@@ -8216,7 +8272,7 @@ var $author$project$View$transform = F2(
 			_List_Nil);
 	});
 var $author$project$View$points = function (m) {
-	var t = m.L;
+	var t = m.G;
 	var d2p = $author$project$View$transform(t);
 	var evening = A2(
 		$elm$core$List$map,
@@ -8224,18 +8280,18 @@ var $author$project$View$points = function (m) {
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return d.a5 && (_Utils_cmp(d.Q, t.C) > -1);
+				return d.a7 && ((_Utils_cmp(d.K, t.C) > -1) && (_Utils_cmp(d.K, t.V) < 1));
 			},
-			m.O));
+			m.Q));
 	var morning = A2(
 		$elm$core$List$map,
 		d2p,
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return (!d.a5) && (_Utils_cmp(d.Q, t.C) > -1);
+				return (!d.a7) && ((_Utils_cmp(d.K, t.C) > -1) && (_Utils_cmp(d.K, t.V) < 1));
 			},
-			m.O));
+			m.Q));
 	return A2(
 		$elm$svg$Svg$g,
 		_List_fromArray(
@@ -8289,11 +8345,11 @@ var $author$project$Weight$view = function (model) {
 };
 var $author$project$Weight$main = $elm$browser$Browser$element(
 	{
-		bd: $author$project$Weight$init,
-		br: function (_v0) {
+		bf: $author$project$Weight$init,
+		bt: function (_v0) {
 			return $author$project$Weight$subscriptions;
 		},
-		bt: $author$project$Weight$update,
-		bv: $author$project$Weight$view
+		bv: $author$project$Weight$update,
+		bx: $author$project$Weight$view
 	});
 _Platform_export({'Weight':{'init':$author$project$Weight$main($elm$json$Json$Decode$value)(0)}});}(this));

@@ -9,7 +9,6 @@ module Data exposing
     )
 
 import Date
-import Start exposing (Start)
 import Time exposing (Month(..))
 
 
@@ -36,34 +35,38 @@ dateFormat rata =
         |> Date.format "y-MM-dd"
 
 
-dateMin : Data -> Start -> Int
-dateMin data start =
-    if start == 0 then
+dateMin : Data -> Int -> Int -> Int
+dateMin data months year =
+    if months == 0 then
         defaultMin.rata
 
     else
+        dateMax data year |> (\x -> x - 30 * months)
+
+
+dateMax : Data -> Int -> Int
+dateMax data year =
+    if year == 0 then
         data
-            |> dateMax
-            |> (\x -> x - 30 * start)
+            |> List.head
+            |> Maybe.withDefault defaultMax
+            |> .rata
+            |> (+) 1
+    else
+        Date.fromCalendarDate year Dec 31 |> Date.toRataDie
 
 
-dateMax : Data -> Int
-dateMax data =
-    data
-        |> List.head
-        |> Maybe.withDefault defaultMax
-        |> .rata
-        |> (+) 1
-
-
-kiloMinMax : Data -> Start -> ( Float, Float )
-kiloMinMax data start =
+kiloMinMax : Data -> Int -> Int -> ( Float, Float )
+kiloMinMax data months year =
     let
-        cutoff =
-            dateMin data start
+        lower =
+            dateMin data months year
+
+        upper =
+            dateMax data year
 
         ( min, max ) =
-            limits data cutoff ( Nothing, Nothing )
+            limits data lower upper ( Nothing, Nothing )
     in
     let
         rnd =
@@ -135,12 +138,12 @@ combine_ data kilos dates =
             List.reverse data
 
 
-limits : Data -> Int -> ( Maybe Float, Maybe Float ) -> ( Maybe Float, Maybe Float )
-limits data cutoff sofar =
+limits : Data -> Int -> Int -> ( Maybe Float, Maybe Float ) -> ( Maybe Float, Maybe Float )
+limits data lower upper sofar =
     case data of
         d :: rest ->
-            if d.rata < cutoff then
-                sofar
+            if d.rata < lower || d.rata > upper then
+                limits rest lower upper sofar
 
             else
                 let
@@ -168,7 +171,7 @@ limits data cutoff sofar =
                                 else
                                     Just k
                 in
-                limits rest cutoff ( minKilo, maxKilo )
+                limits rest lower upper ( minKilo, maxKilo )
 
         [] ->
             sofar

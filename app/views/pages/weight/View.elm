@@ -158,12 +158,12 @@ points m =
 
         morning =
             m.data
-                |> List.filter (\d -> not d.even && d.rata >= t.dLow)
+                |> List.filter (\d -> not d.even && d.rata >= t.dLow && d.rata <= t.dHgh)
                 |> List.map d2p
 
         evening =
             m.data
-                |> List.filter (\d -> d.even && d.rata >= t.dLow)
+                |> List.filter (\d -> d.even && d.rata >= t.dLow && d.rata <= t.dHgh)
                 |> List.map d2p
     in
     S.g [ cc "points" ]
@@ -201,7 +201,7 @@ events m =
                     line =
                         S.line [ x1 eventStartX, y1 eventLineY, x2 eventFinishX, y2 eventLineY ] []
                 in
-                if m.start <= 12 && m.start /= 0 && textStartEstimate >= 0 && textFinishEstimate <= Transform.width then
+                if m.begin <= 12 && m.begin /= 0 && textStartEstimate >= 0 && textFinishEstimate <= Transform.width then
                     Just <| S.g [] [ text, line ]
 
                 else

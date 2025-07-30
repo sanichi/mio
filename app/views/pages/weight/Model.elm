@@ -1,16 +1,17 @@
-module Model exposing (Model, changeCross, changeStart, changeUnits, debugMsg, init, updateCross)
+module Model exposing (Model, changeCross, changeBegin, changeEnd, changeUnits, debugMsg, init, updateCross)
 
 import Data exposing (Data, Datum)
 import Event exposing (Events, Event)
 import Preferences exposing (Preferences)
-import Start exposing (Start)
+import BeginEnd
 import Transform exposing (Transform)
 import Units exposing (Unit)
 
 
 type alias Model =
     { data : Data
-    , start : Start
+    , begin : Int
+    , end : Int
     , units : Unit
     , transform : Transform
     , cross : Datum
@@ -25,14 +26,17 @@ init preferences =
         data =
             Data.combine preferences.kilos preferences.dates
 
-        start =
-            Start.fromInt preferences.start
+        begin =
+            BeginEnd.beginPref preferences.beginEnd
+
+        end =
+            BeginEnd.endPref preferences.beginEnd
 
         units =
             Units.fromString preferences.units
 
         transform =
-            Transform.fromData data start
+            Transform.fromData data begin end
 
         cross =
             startCross (List.head data) transform
@@ -43,7 +47,7 @@ init preferences =
         events =
             Event.combine preferences.eventNames preferences.eventDates preferences.eventSpans
     in
-    Model data start units transform cross events debug
+    Model data begin end units transform cross events debug
 
 
 debugMsg : Model -> String
@@ -51,7 +55,8 @@ debugMsg model =
     String.join " | "
         [ String.fromInt <| List.length model.data
         , Units.toString model.units
-        , String.fromInt model.start
+        , String.fromInt model.begin
+        , String.fromInt model.end
         , String.fromInt <| List.length model.events
         ]
 
@@ -61,27 +66,28 @@ changeUnits units model =
     { model | units = Units.fromString units }
 
 
-changeStart : Int -> Model -> Model
-changeStart start model =
+changeBegin : Int -> Model -> Model
+changeBegin begin model =
     let
-        lastCross =
-            model.cross
-
-        dummyCross =
-            case List.head model.data of
-                Just datum ->
-                    { lastCross | rata = datum.rata }
-
-                Nothing ->
-                    lastCross
-
         transform =
-            Transform.fromData (dummyCross :: model.data) start
+            Transform.fromData model.data begin model.end
 
         cross =
             Transform.restrict transform model.cross
     in
-    { model | start = Start.fromInt start, transform = transform, cross = cross }
+    { model | begin = BeginEnd.begin begin, transform = transform, cross = cross }
+
+
+changeEnd : Int -> Model -> Model
+changeEnd end model =
+    let
+        transform =
+            Transform.fromData model.data model.begin end
+
+        cross =
+            Transform.restrict transform model.cross
+    in
+    { model | end = BeginEnd.end end , transform = transform, cross = cross }
 
 
 startCross : Maybe Datum -> Transform -> Datum
