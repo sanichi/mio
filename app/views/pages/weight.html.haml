@@ -19,11 +19,11 @@
   }
     .row
       %div{class: col(lo[0])}
-        = label_tag :start, t("mass.begin"), class: "visually-hidden"
-        = select_tag :start, mass_begin_menu, class: "form-select", "data-action" => "elm--weight#changeBegin"
+        = label_tag :begin, t("mass.begin"), class: "visually-hidden"
+        = select_tag :begin, mass_begin_menu, class: "form-select", "data-action" => "elm--weight#changeBegin"
       %div{class: col(lo[1])}
-        = label_tag :finish, t("mass.end"), class: "visually-hidden"
-        = select_tag :finish, mass_end_menu, class: "form-select", "data-action" => "elm--weight#changeEnd"
+        = label_tag :end, t("mass.end"), class: "visually-hidden"
+        = select_tag :end, mass_end_menu, class: "form-select", "data-action" => "elm--weight#changeEnd"
       %div{class: col(lo[2])}
         = label_tag :units, t("mass.unit.unit"), class: "visually-hidden"
         = select_tag :units, mass_unit_menu, class: "form-select", "data-action" => "elm--weight#changeUnits"

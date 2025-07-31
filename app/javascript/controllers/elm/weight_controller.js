@@ -48,7 +48,16 @@ export default class extends Controller {
   }
 
   changeEnd(e) {
-    this.app.ports.changeEnd.send(parseInt(e.target.value));
+    const end_year = parseInt(e.target.value);
+    this.app.ports.changeEnd.send(end_year);
+
+    // Don't let the graph show less than 12 months if the end is a particular year rather than 0 (meaning now).
+    var begin_months = parseInt(document.getElementById("begin").value);
+    if (end_year > 0 && begin_months != 0 && begin_months < 12) {
+      begin_months = 12;
+      document.getElementById("begin").value = begin_months;
+      this.app.ports.changeBegin.send(begin_months);
+    }
   }
 
   changeUnits(e) {
