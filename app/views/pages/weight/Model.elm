@@ -81,13 +81,21 @@ changeBegin begin model =
 changeEnd : Int -> Model -> Model
 changeEnd end model =
     let
+        -- If the new-end year is a particular year rather than 0 (now) then increase
+        -- the begin-months to 12 unless they are already 12 or more or zero (all).
+        begin =
+            if model.begin == 0 || model.begin >= 12 then
+                model.begin
+            else
+                12
+
         transform =
-            Transform.fromData model.data model.begin end
+            Transform.fromData model.data begin end
 
         cross =
             Transform.restrict transform model.cross
     in
-    { model | end = BeginEnd.end end , transform = transform, cross = cross }
+    { model | end = BeginEnd.end end , transform = transform, cross = cross, begin = begin }
 
 
 startCross : Maybe Datum -> Transform -> Datum

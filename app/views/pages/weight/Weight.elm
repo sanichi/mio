@@ -63,7 +63,11 @@ update msg model =
             ( Model.changeBegin start model, Cmd.none )
 
         ChangeEnd end ->
-            ( Model.changeEnd end model, Cmd.none )
+            let
+                newModel =
+                    Model.changeEnd end model
+            in
+            ( newModel, Ports.adjustBegin newModel.begin )
 
         UpdateCross delta ->
             ( Model.updateCross delta model, Cmd.none )
