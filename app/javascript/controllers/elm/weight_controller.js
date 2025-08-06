@@ -34,7 +34,6 @@ export default class extends Controller {
     });
 
     this.app.ports.adjustBegin.subscribe((months) => {
-      //controller.beginValue = begin; // TODO: why doesn't this work
       document.getElementById("begin").value = months;
     });
 
