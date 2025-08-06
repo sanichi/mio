@@ -6,9 +6,6 @@
   .header.text-center
     %h3= t("mass.title")
   .body{"data-controller" => "elm--weight",
-    "data-elm--weight-begin-value" => Mass::DEFAULT_BEGIN,
-    "data-elm--weight-end-value" => Mass::DEFAULT_END,
-    "data-elm--weight-units-value" => @unit.key.to_s,
     "data-elm--weight-kilos-value" => "[#{@kilos.map(&:to_s).join(',')}]",
     "data-elm--weight-dates-value" => "[\"#{@dates.map(&:to_s).join('","')}\"]",
     "data-elm--weight-event-names-value" => "[\"#{@events.map{|e| e[0]}.join('","')}\"]",
@@ -20,13 +17,13 @@
     .row
       %div{class: col(lo[0])}
         = label_tag :begin, t("mass.begin"), class: "visually-hidden"
-        = select_tag :begin, mass_begin_menu, class: "form-select", "data-action" => "elm--weight#changeBegin"
+        = select_tag :begin, mass_begin_menu, class: "form-select", "data-action" => "elm--weight#changeBegin", "data-elm--weight-target" => "beginMenu"
       %div{class: col(lo[1])}
         = label_tag :end, t("mass.end"), class: "visually-hidden"
-        = select_tag :end, mass_end_menu, class: "form-select", "data-action" => "elm--weight#changeEnd"
+        = select_tag :end, mass_end_menu, class: "form-select", "data-action" => "elm--weight#changeEnd", "data-elm--weight-target" => "endMenu"
       %div{class: col(lo[2])}
         = label_tag :units, t("mass.unit.unit"), class: "visually-hidden"
-        = select_tag :units, mass_unit_menu, class: "form-select", "data-action" => "elm--weight#changeUnits"
+        = select_tag :units, mass_units_menu, class: "form-select", "data-action" => "elm--weight#changeUnits", "data-elm--weight-target" => "unitsMenu"
     %div{"data-elm--weight-target" => "elm"}
   .footer
     = link_to t("list"), masses_path, class: "green-btn"

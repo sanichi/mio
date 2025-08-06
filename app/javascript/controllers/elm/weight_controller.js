@@ -2,12 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 import { Elm } from "elm_weight"
 
 export default class extends Controller {
-  static targets = [ "elm" ]
+  static targets = [ "elm", "beginMenu", "endMenu", "unitsMenu" ]
 
   static values = {
-    begin: Number,
-    end: Number,
-    units: String,
     kilos: Array,
     dates: Array,
     debug: Boolean,
@@ -22,8 +19,8 @@ export default class extends Controller {
     this.app = Elm.Weight.init({
       node: this.elmTarget,
       flags: {
-        beginEnd: [this.beginValue, this.endValue],
-        units: this.unitsValue,
+        beginEnd: [parseInt(this.beginMenuTarget.value), parseInt(this.endMenuTarget.value)],
+        units: this.unitsMenuTarget.value,
         kilos: this.kilosValue,
         dates: this.datesValue,
         debug: this.debugValue,
@@ -33,17 +30,16 @@ export default class extends Controller {
       }
     });
 
-    this.app.ports.adjustBegin.subscribe((months) => {
-      document.getElementById("begin").value = months;
+    this.app.ports.adjustBegin.subscribe(months => {
+      this.beginMenuTarget.value = months;
     });
 
-    const controller = this;
-    document.getElementById("weight").addEventListener("click", (e) => {
+    document.getElementById("weight-graph").addEventListener("click", e => {
       const pt = e.target.createSVGPoint();
       pt.x = e.clientX;
       pt.y = e.clientY;
       const qt = pt.matrixTransform(e.target.getScreenCTM().inverse());
-      controller.app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
+      this.app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
     });
   }
 

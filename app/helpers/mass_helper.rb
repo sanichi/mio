@@ -1,5 +1,5 @@
 module MassHelper
-  def mass_unit_menu
+  def mass_units_menu
     opts = %w/kg st lb bm/.map { |u| [t("mass.unit.short.#{u}"), u] }
     options_for_select(opts, Mass::DEFAULT_UNIT.key.to_s)
   end

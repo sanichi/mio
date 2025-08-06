@@ -46,7 +46,7 @@ init flags =
 
 view : Model -> Html Msg
 view model =
-    svg [ id "weight", version "1.1", viewBox View.box ] <| View.fromModel model
+    svg [ id "weight-graph", version "1.1", viewBox View.box ] <| View.fromModel model
 
 
 

@@ -80,10 +80,10 @@ changeBegin begin model =
 changeEnd : Int -> Model -> Model
 changeEnd end model =
     let
-        -- If the new-end year is a particular year rather than 0 (now) then increase
+        -- If the new end-year is a particular year rather than 0 (now) then increase
         -- the begin-months to 12 unless they are already 12 or more or zero (all).
         begin =
-            if model.begin == 0 || model.begin >= 12 then
+            if end == 0 || model.begin == 0 || model.begin >= 12 then
                 model.begin
             else
                 12

@@ -6872,7 +6872,7 @@ var $author$project$Model$changeCross = F2(
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Model$changeEnd = F2(
 	function (end, model) {
-		var begin = ((!model.x) || (model.x >= 12)) ? model.x : 12;
+		var begin = ((!end) || ((!model.x) || (model.x >= 12))) ? model.x : 12;
 		var transform = A3($author$project$Transform$fromData, model.R, begin, end);
 		var cross = A2($author$project$Transform$restrict, transform, model.t);
 		return _Utils_update(
@@ -8323,7 +8323,7 @@ var $author$project$Weight$view = function (model) {
 		$elm$svg$Svg$svg,
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$id('weight'),
+				$elm$svg$Svg$Attributes$id('weight-graph'),
 				$elm$svg$Svg$Attributes$version('1.1'),
 				$elm$svg$Svg$Attributes$viewBox($author$project$View$box)
 			]),

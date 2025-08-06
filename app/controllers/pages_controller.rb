@@ -58,7 +58,6 @@ class PagesController < ApplicationController
   def weight
     @kilos = Mass.kilos
     @dates = Mass.dates
-    @unit = Mass::UNITS[params[:unit].try(:to_sym)] || Mass::DEFAULT_UNIT
     @events = MassEvent.events
   end
 end
