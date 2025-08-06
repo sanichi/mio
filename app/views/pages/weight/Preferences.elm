@@ -1,7 +1,6 @@
-module Preferences exposing (Preferences, decode)
+module Preferences exposing (Preferences, decode, begin, end)
 
 import Json.Decode as D exposing (Decoder, Value)
-import BeginEnd exposing (beginDefault, endDefault)
 
 
 type alias Preferences =
@@ -35,8 +34,24 @@ flagsDecoder =
 
 default : Preferences
 default =
-    Preferences False [] [] [beginDefault, endDefault] "kg" [] [] []
+    Preferences False [] [] [2, 0] "kg" [] [] []
 
+
+begin : Preferences -> Int
+begin preferences =
+    preferences
+        |> .beginEnd
+        |> List.head
+        |> Maybe.withDefault 2
+
+
+end : Preferences -> Int
+end preferences =
+    preferences
+        |> .beginEnd
+        |> List.reverse
+        |> List.head
+        |> Maybe.withDefault 0
 
 
 -- from elm-community/json-extra

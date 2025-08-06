@@ -3,7 +3,6 @@ module Model exposing (Model, changeCross, changeBegin, changeEnd, changeUnits, 
 import Data exposing (Data, Datum)
 import Event exposing (Events, Event)
 import Preferences exposing (Preferences)
-import BeginEnd
 import Transform exposing (Transform)
 import Units exposing (Unit)
 
@@ -27,10 +26,10 @@ init preferences =
             Data.combine preferences.kilos preferences.dates
 
         begin =
-            BeginEnd.beginPref preferences.beginEnd
+            Preferences.begin preferences
 
         end =
-            BeginEnd.endPref preferences.beginEnd
+            Preferences.end preferences
 
         units =
             Units.fromString preferences.units
@@ -75,7 +74,7 @@ changeBegin begin model =
         cross =
             Transform.restrict transform model.cross
     in
-    { model | begin = BeginEnd.begin begin, transform = transform, cross = cross }
+    { model | begin = begin, transform = transform, cross = cross }
 
 
 changeEnd : Int -> Model -> Model
@@ -95,7 +94,7 @@ changeEnd end model =
         cross =
             Transform.restrict transform model.cross
     in
-    { model | end = BeginEnd.end end , transform = transform, cross = cross, begin = begin }
+    { model | end = end , transform = transform, cross = cross, begin = begin }
 
 
 startCross : Maybe Datum -> Transform -> Datum
