@@ -19,7 +19,8 @@ export default class extends Controller {
     this.app = Elm.Weight.init({
       node: this.elmTarget,
       flags: {
-        beginEnd: [parseInt(this.beginMenuTarget.value), parseInt(this.endMenuTarget.value)],
+        begin: parseInt(this.beginMenuTarget.value),
+        end: parseInt(this.endMenuTarget.value),
         units: this.unitsMenuTarget.value,
         kilos: this.kilosValue,
         dates: this.datesValue,

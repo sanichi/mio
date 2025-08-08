@@ -22,29 +22,29 @@ type alias Model =
 init : Preferences -> Model
 init preferences =
     let
-        data =
-            Data.combine preferences.kilos preferences.dates
+        debug =
+            preferences.debug
 
         begin =
-            Preferences.begin preferences
+            preferences.begin
 
         end =
-            Preferences.end preferences
+            preferences.end
 
         units =
             Units.fromString preferences.units
+
+        data =
+            Data.combine preferences.kilos preferences.dates
+
+        events =
+            Event.combine preferences.eventNames preferences.eventDates preferences.eventSpans
 
         transform =
             Transform.fromData data begin end
 
         cross =
             startCross (List.head data) transform
-
-        debug =
-            preferences.debug
-
-        events =
-            Event.combine preferences.eventNames preferences.eventDates preferences.eventSpans
     in
     Model data begin end units transform cross events debug
 
