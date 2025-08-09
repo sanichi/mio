@@ -9,8 +9,9 @@
     "data-elm--weight-kilos-value" => "[#{@kilos.map(&:to_s).join(',')}]",
     "data-elm--weight-dates-value" => "[\"#{@dates.map(&:to_s).join('","')}\"]",
     "data-elm--weight-event-names-value" => "[\"#{@events.map{|e| e[0]}.join('","')}\"]",
-    "data-elm--weight-event-dates-value" => "[\"#{@events.map{|e| e[1]}.join('","')}\"]",
-    "data-elm--weight-event-spans-value" => "[#{@events.map{|e| e[2]}.join(',')}]",
+    "data-elm--weight-event-codes-value" => "[\"#{@events.map{|e| e[1]}.join('","')}\"]",
+    "data-elm--weight-event-dates-value" => "[\"#{@events.map{|e| e[2]}.join('","')}\"]",
+    "data-elm--weight-event-spans-value" => "[#{@events.map{|e| e[3]}.join(',')}]",
     "data-elm--weight-debug-value" => "false",
     "data-action" => "keydown@window->elm--weight#moveCross",
   }

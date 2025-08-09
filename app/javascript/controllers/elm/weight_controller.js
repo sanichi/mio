@@ -9,6 +9,7 @@ export default class extends Controller {
     dates: Array,
     debug: Boolean,
     eventNames: Array,
+    eventCodes: Array,
     eventDates: Array,
     eventSpans: Array,
   }
@@ -26,6 +27,7 @@ export default class extends Controller {
         dates: this.datesValue,
         debug: this.debugValue,
         eventNames: this.eventNamesValue,
+        eventCodes: this.eventCodesValue,
         eventDates: this.eventDatesValue,
         eventSpans: this.eventSpansValue,
       }

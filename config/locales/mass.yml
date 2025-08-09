@@ -12,6 +12,7 @@ en:
     start: Morning
     title: Weight
     event:
+      code: Code
       edit: Edit Event
       events: Events
       finish: Finish

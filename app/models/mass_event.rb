@@ -1,10 +1,12 @@
 class MassEvent < ApplicationRecord
   include Pageable
 
-  MAX_NAME = 24
+  MAX_CODE = 16
+  MAX_NAME = 32
 
   before_validation :normalize_attributes
 
+  validates :code, presence: true, length: { maximum: MAX_CODE }
   validates :name, presence: true, length: { maximum: MAX_NAME }
   validates :start, :finish, presence:true, uniqueness: true
   validate :date_constraints
@@ -14,11 +16,13 @@ class MassEvent < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def self.events() = order(:start).to_a.map{|e| [e.name, e.start.to_fs(:db), (e.finish - e.start).to_i + 1]}
+  def self.events() = order(:start).to_a.map{|e| [e.name, e.code, e.start.to_fs(:db), (e.finish - e.start).to_i + 1]}
 
   private
 
   def normalize_attributes
+    code&.squish!
+    code&.gsub!(/['"]/, "")
     name&.squish!
     name&.gsub!(/['"]/, "")
   end

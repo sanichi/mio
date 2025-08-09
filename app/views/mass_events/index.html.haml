@@ -11,12 +11,13 @@
             %thead
               %tr
                 %th= t("mass.event.name")
+                %th= t("mass.event.code")
                 %th.text-center= t("mass.event.start")
                 %th.text-center= t("mass.event.finish")
                 %th
             %tbody
               = render partial: "event", collection: @events.matches
-              = render "utils/pagination_links", pager: @events, columns: 4
+              = render "utils/pagination_links", pager: @events, columns: 5
         .footer
           = link_to t("graph"), weight_path, class: "green-btn", "data-turbo-frame" => "_top"
           = link_to t("list"), masses_path, class: "green-btn", "data-turbo-frame" => "_top"

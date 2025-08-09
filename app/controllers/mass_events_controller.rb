@@ -41,6 +41,6 @@ class MassEventsController < ApplicationController
   end
 
   def strong_params
-    params.require(:mass_event).permit(:name, :start, :finish)
+    params.require(:mass_event).permit(:name, :code, :start, :finish)
   end
 end

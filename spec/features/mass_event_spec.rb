@@ -13,6 +13,7 @@ describe MassEvent, js: true do
     it "success" do
       click_link t("mass.event.new")
 
+      fill_in t("mass.event.code"), with: data.code
       fill_in t("mass.event.name"), with: data.name
       fill_in t("mass.event.start"), with: data.start
       fill_in t("mass.event.finish"), with: data.finish
@@ -23,6 +24,7 @@ describe MassEvent, js: true do
       expect(MassEvent.count).to eq 2
       me = MassEvent.order(:id).last
 
+      expect(me.code).to eq data.code
       expect(me.name).to eq data.name
       expect(me.start).to eq data.start
       expect(me.finish).to eq data.finish
@@ -32,6 +34,7 @@ describe MassEvent, js: true do
       it "missing name" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.start"), with: data.start
         fill_in t("mass.event.finish"), with: data.finish
         click_button t("save")
@@ -44,6 +47,7 @@ describe MassEvent, js: true do
       it "missing start" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.name"), with: data.name
         fill_in t("mass.event.finish"), with: data.finish
         click_button t("save")
@@ -56,6 +60,7 @@ describe MassEvent, js: true do
       it "missing finish" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.name"), with: data.name
         fill_in t("mass.event.start"), with: data.start
         click_button t("save")
@@ -68,6 +73,7 @@ describe MassEvent, js: true do
       it "reversed dates" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.name"), with: data.name
         fill_in t("mass.event.start"), with: data.finish + 1
         fill_in t("mass.event.finish"), with: data.start - 1
@@ -81,6 +87,7 @@ describe MassEvent, js: true do
       it "future dates" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.name"), with: data.name
         fill_in t("mass.event.start"), with: data.start + 400
         fill_in t("mass.event.finish"), with: data.finish + 400
@@ -95,6 +102,7 @@ describe MassEvent, js: true do
       it "non-unique dates" do
         click_link t("mass.event.new")
 
+        fill_in t("mass.event.code"), with: data.code
         fill_in t("mass.event.name"), with: data.name
         fill_in t("mass.event.start"), with: event.start
         fill_in t("mass.event.finish"), with: event.finish
