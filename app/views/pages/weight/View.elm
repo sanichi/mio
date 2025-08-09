@@ -187,7 +187,7 @@ events m =
                         (eventStartX + eventFinishX) // 2
 
                     textWidthEstimate =
-                        (String.length e.name) * 7
+                        (String.length e.code) * 7
 
                     textStartEstimate =
                         eventTextX - (textWidthEstimate // 2)
@@ -196,7 +196,7 @@ events m =
                         eventTextX + (textWidthEstimate // 2)
 
                     text =
-                        S.text_ [ xx eventTextX, yy eventTextY, cc "info" ] [ tt e.name ]
+                        S.text_ [ xx eventTextX, yy eventTextY, cc "info" ] [ tt e.code ]
 
                     line =
                         S.line [ x1 eventStartX, y1 eventLineY, x2 eventFinishX, y2 eventLineY ] []
@@ -220,7 +220,6 @@ box =
     [ -margin, -margin, width + 2 * margin, height + 2 * margin ]
         |> List.map String.fromInt
         |> String.join " "
-
 
 
 -- Helpers
@@ -279,7 +278,6 @@ y2 i =
 tt : String -> Svg Msg
 tt t =
     S.text t
-
 
 
 -- Dimensions

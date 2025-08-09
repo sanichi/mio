@@ -38,7 +38,7 @@ init preferences =
             Data.combine preferences.kilos preferences.dates
 
         events =
-            Event.combine preferences.eventNames preferences.eventDates preferences.eventSpans
+            Event.combine preferences.eventNames preferences.eventCodes preferences.eventDates preferences.eventSpans
 
         transform =
             Transform.fromData data begin end

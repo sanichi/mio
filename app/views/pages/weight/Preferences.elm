@@ -12,6 +12,7 @@ type alias Preferences =
     , end : Int
     , units : String
     , eventNames : List String
+    , eventCodes : List String
     , eventDates : List String
     , eventSpans : List Int
     }
@@ -32,13 +33,14 @@ flagsDecoder =
         |> required "end" int
         |> required "units" string
         |> required "eventNames" (list string)
+        |> required "eventCodes" (list string)
         |> required "eventDates" (list string)
         |> required "eventSpans" (list int)
 
 
 default : Preferences
 default =
-    Preferences False [] [] 2 0 "kg" [] [] []
+    Preferences False [] [] 2 0 "kg" [] [] [] []
 
 
 -- from elm-community/json-extra

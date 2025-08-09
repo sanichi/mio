@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
+		impl.bg,
+		impl.bw,
 		impl.bu,
-		impl.bs,
 		function() { return function() {} }
 	);
 });
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
+		impl.bg,
+		impl.bw,
 		impl.bu,
-		impl.bs,
 		function(sendToApp, initialModel) {
-			var view = impl.bw;
+			var view = impl.by;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
+		impl.bg,
+		impl.bw,
 		impl.bu,
-		impl.bs,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.ad && impl.ad(sendToApp)
-			var view = impl.bw;
+			var view = impl.by;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3997,7 +3997,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bt) && (_VirtualDom_doc.title = title = doc.bt);
+				(title !== doc.bv) && (_VirtualDom_doc.title = title = doc.bv);
 			});
 		}
 	);
@@ -4053,8 +4053,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bm;
-	var onUrlRequest = impl.bn;
+	var onUrlChange = impl.bo;
+	var onUrlRequest = impl.bp;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		be: function(flags)
+		bg: function(flags)
 		{
-			return A3(impl.be, flags, _Browser_getUrl(), key);
+			return A3(impl.bg, flags, _Browser_getUrl(), key);
 		},
+		by: impl.by,
 		bw: impl.bw,
-		bu: impl.bu,
-		bs: impl.bs
+		bu: impl.bu
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bb: 'hidden', a1: 'visibilitychange' }
+		? { bd: 'hidden', a1: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bb: 'mozHidden', a1: 'mozvisibilitychange' }
+		? { bd: 'mozHidden', a1: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bb: 'msHidden', a1: 'msvisibilitychange' }
+		? { bd: 'msHidden', a1: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bb: 'webkitHidden', a1: 'webkitvisibilitychange' }
-		: { bb: 'hidden', a1: 'visibilitychange' };
+		? { bd: 'webkitHidden', a1: 'webkitvisibilitychange' }
+		: { bd: 'hidden', a1: 'visibilitychange' };
 }
 
 
@@ -4331,7 +4331,7 @@ function _Browser_getElement(id)
 				aW: _Browser_doc.documentElement.clientWidth,
 				as: _Browser_doc.documentElement.clientHeight
 			},
-			a5: {
+			a6: {
 				aX: x + rect.left,
 				aY: y + rect.top,
 				aW: rect.width,
@@ -4509,7 +4509,7 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.bj) { flags += 'm'; }
+	if (options.bl) { flags += 'm'; }
 	if (options.a0) { flags += 'i'; }
 
 	try
@@ -5422,11 +5422,28 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $author$project$Preferences$Preferences = F9(
-	function (debug, dates, kilos, begin, end, units, eventNames, eventDates, eventSpans) {
-		return {t: begin, a3: dates, am: debug, K: end, a7: eventDates, a8: eventNames, a9: eventSpans, bg: kilos, T: units};
-	});
-var $author$project$Preferences$default = A9($author$project$Preferences$Preferences, false, _List_Nil, _List_Nil, 2, 0, 'kg', _List_Nil, _List_Nil, _List_Nil);
+var $author$project$Preferences$Preferences = function (debug) {
+	return function (dates) {
+		return function (kilos) {
+			return function (begin) {
+				return function (end) {
+					return function (units) {
+						return function (eventNames) {
+							return function (eventCodes) {
+								return function (eventDates) {
+									return function (eventSpans) {
+										return {t: begin, a4: dates, am: debug, K: end, a8: eventCodes, a9: eventDates, ba: eventNames, bb: eventSpans, bi: kilos, T: units};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var $author$project$Preferences$default = $author$project$Preferences$Preferences(false)(_List_Nil)(_List_Nil)(2)(0)('kg')(_List_Nil)(_List_Nil)(_List_Nil)(_List_Nil);
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
@@ -5451,33 +5468,37 @@ var $author$project$Preferences$flagsDecoder = A3(
 		$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
 		A3(
 			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-			'eventNames',
+			'eventCodes',
 			$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
 			A3(
 				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-				'units',
-				$elm$json$Json$Decode$string,
+				'eventNames',
+				$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
 				A3(
 					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-					'end',
-					$elm$json$Json$Decode$int,
+					'units',
+					$elm$json$Json$Decode$string,
 					A3(
 						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-						'begin',
+						'end',
 						$elm$json$Json$Decode$int,
 						A3(
 							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-							'kilos',
-							$elm$json$Json$Decode$list($elm$json$Json$Decode$float),
+							'begin',
+							$elm$json$Json$Decode$int,
 							A3(
 								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-								'dates',
-								$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
+								'kilos',
+								$elm$json$Json$Decode$list($elm$json$Json$Decode$float),
 								A3(
 									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-									'debug',
-									$elm$json$Json$Decode$bool,
-									$elm$json$Json$Decode$succeed($author$project$Preferences$Preferences))))))))));
+									'dates',
+									$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
+									A3(
+										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+										'debug',
+										$elm$json$Json$Decode$bool,
+										$elm$json$Json$Decode$succeed($author$project$Preferences$Preferences)))))))))));
 var $elm$core$Result$withDefault = F2(
 	function (def, result) {
 		if (!result.$) {
@@ -5499,7 +5520,7 @@ var $author$project$Model$Model = F8(
 	});
 var $author$project$Data$Datum = F3(
 	function (kilo, rata, even) {
-		return {a6: even, p: kilo, M: rata};
+		return {a7: even, p: kilo, M: rata};
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -5557,7 +5578,7 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {ak: col, a2: contextStack, aE: problem, aM: row};
+		return {ak: col, a3: contextStack, aE: problem, aM: row};
 	});
 var $elm$parser$Parser$Advanced$Empty = {$: 0};
 var $elm$parser$Parser$Advanced$fromState = F2(
@@ -6434,58 +6455,68 @@ var $author$project$Data$combine = F2(
 	function (kilos, dates) {
 		return A3($author$project$Data$combine_, _List_Nil, kilos, dates);
 	});
-var $author$project$Event$Event = F3(
-	function (name, rata, span) {
-		return {bk: name, M: rata, bq: span};
+var $author$project$Event$Event = F4(
+	function (name, code, rata, span) {
+		return {a2: code, bm: name, M: rata, bs: span};
 	});
-var $author$project$Event$combine_ = F4(
-	function (events, names, dates, spans) {
+var $author$project$Event$combine_ = F5(
+	function (events, names, codes, dates, spans) {
 		combine_:
 		while (true) {
-			var _v0 = _Utils_Tuple3(names, dates, spans);
+			var _v0 = _Utils_Tuple3(names, codes, spans);
 			if ((_v0.a.b && _v0.b.b) && _v0.c.b) {
 				var _v1 = _v0.a;
 				var name = _v1.a;
 				var ns = _v1.b;
 				var _v2 = _v0.b;
-				var dstr = _v2.a;
-				var ds = _v2.b;
+				var code = _v2.a;
+				var cs = _v2.b;
 				var _v3 = _v0.c;
 				var span = _v3.a;
 				var ss = _v3.b;
-				var _v4 = $justinmimbs$date$Date$fromIsoString(dstr);
-				if (!_v4.$) {
-					var date = _v4.a;
-					var rata = $justinmimbs$date$Date$toRataDie(date);
-					var event = A3($author$project$Event$Event, name, rata, span);
-					var $temp$events = A2($elm$core$List$cons, event, events),
-						$temp$names = ns,
-						$temp$dates = ds,
-						$temp$spans = ss;
-					events = $temp$events;
-					names = $temp$names;
-					dates = $temp$dates;
-					spans = $temp$spans;
-					continue combine_;
+				if (dates.b) {
+					var dstr = dates.a;
+					var ds = dates.b;
+					var _v5 = $justinmimbs$date$Date$fromIsoString(dstr);
+					if (!_v5.$) {
+						var date = _v5.a;
+						var rata = $justinmimbs$date$Date$toRataDie(date);
+						var event = A4($author$project$Event$Event, name, code, rata, span);
+						var $temp$events = A2($elm$core$List$cons, event, events),
+							$temp$names = ns,
+							$temp$codes = cs,
+							$temp$dates = ds,
+							$temp$spans = ss;
+						events = $temp$events;
+						names = $temp$names;
+						codes = $temp$codes;
+						dates = $temp$dates;
+						spans = $temp$spans;
+						continue combine_;
+					} else {
+						var $temp$events = events,
+							$temp$names = ns,
+							$temp$codes = cs,
+							$temp$dates = ds,
+							$temp$spans = ss;
+						events = $temp$events;
+						names = $temp$names;
+						codes = $temp$codes;
+						dates = $temp$dates;
+						spans = $temp$spans;
+						continue combine_;
+					}
 				} else {
-					var $temp$events = events,
-						$temp$names = ns,
-						$temp$dates = ds,
-						$temp$spans = ss;
-					events = $temp$events;
-					names = $temp$names;
-					dates = $temp$dates;
-					spans = $temp$spans;
-					continue combine_;
+					return $elm$core$List$reverse(events);
 				}
 			} else {
 				return $elm$core$List$reverse(events);
 			}
 		}
 	});
-var $author$project$Event$combine = F3(
-	function (names, dates, spans) {
-		return A4($author$project$Event$combine_, _List_Nil, names, dates, spans);
+var $author$project$Event$combine = F4(
+	function (names, codes, dates, spans) {
+		return A5($author$project$Event$combine_, _List_Nil, names, codes, dates, spans);
 	});
 var $author$project$Transform$Transform = F6(
 	function (dLow, dHgh, dFac, kLow, kHgh, kFac) {
@@ -6628,13 +6659,13 @@ var $author$project$Units$Lb = 1;
 var $author$project$Units$St = 2;
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {bd: index, bi: match, bl: number, br: submatches};
+		return {bf: index, bk: match, bn: number, bt: submatches};
 	});
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{a0: false, bj: false},
+		{a0: false, bl: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -6692,10 +6723,10 @@ var $author$project$Model$startCross = F2(
 	});
 var $author$project$Model$init = function (preferences) {
 	var units = $author$project$Units$fromString(preferences.T);
-	var events = A3($author$project$Event$combine, preferences.a8, preferences.a7, preferences.a9);
+	var events = A4($author$project$Event$combine, preferences.ba, preferences.a8, preferences.a9, preferences.bb);
 	var end = preferences.K;
 	var debug = preferences.am;
-	var data = A2($author$project$Data$combine, preferences.bg, preferences.a3);
+	var data = A2($author$project$Data$combine, preferences.bi, preferences.a4);
 	var begin = preferences.t;
 	var transform = A3($author$project$Transform$fromData, data, begin, end);
 	var cross = A2(
@@ -7048,9 +7079,9 @@ var $author$project$Transform$transformRata = F2(
 	});
 var $author$project$View$events = function (m) {
 	var eventToSvg = function (e) {
-		var textWidthEstimate = $elm$core$String$length(e.bk) * 7;
+		var textWidthEstimate = $elm$core$String$length(e.a2) * 7;
 		var eventStartX = A2($author$project$Transform$transformRata, m.H, e.M);
-		var eventFinishX = A2($author$project$Transform$transformRata, m.H, e.M + e.bq);
+		var eventFinishX = A2($author$project$Transform$transformRata, m.H, e.M + e.bs);
 		var eventTextX = ((eventStartX + eventFinishX) / 2) | 0;
 		var text = A2(
 			$elm$svg$Svg$text_,
@@ -7062,7 +7093,7 @@ var $author$project$View$events = function (m) {
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$tt(e.bk)
+					$author$project$View$tt(e.a2)
 				]));
 		var textFinishEstimate = eventTextX + ((textWidthEstimate / 2) | 0);
 		var textStartEstimate = eventTextX - ((textWidthEstimate / 2) | 0);
@@ -7323,7 +7354,7 @@ var $justinmimbs$date$Date$toWeekDate = function (_v0) {
 	return {
 		aU: 1 + (((rd - week1Day1) / 7) | 0),
 		aV: wy,
-		bx: $justinmimbs$date$Date$numberToWeekday(wdn)
+		bz: $justinmimbs$date$Date$numberToWeekday(wdn)
 	};
 };
 var $justinmimbs$date$Date$weekNumber = A2(
@@ -7896,12 +7927,12 @@ var $author$project$View$info = function (m) {
 			var names = A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.bk;
+					return $.bm;
 				},
 				A2(
 					$elm$core$List$filter,
 					function (e) {
-						return (_Utils_cmp(e.M, m.u.M) < 1) && (_Utils_cmp(e.M + e.bq, m.u.M) > -1);
+						return (_Utils_cmp(e.M, m.u.M) < 1) && (_Utils_cmp(e.M + e.bs, m.u.M) > -1);
 					},
 					m.ao));
 			return ($elm$core$List$length(names) !== 1) ? weight : A2(
@@ -7934,7 +7965,7 @@ var $author$project$Transform$dateFromRataDie = F2(
 	});
 var $author$project$Transform$Level = F2(
 	function (val, label) {
-		return {bh: label, bv: val};
+		return {bj: label, bx: val};
 	});
 var $justinmimbs$date$Date$add = F3(
 	function (unit, n, _v0) {
@@ -8035,9 +8066,9 @@ var $author$project$View$levelsd = function (m) {
 			$elm$svg$Svg$line,
 			_List_fromArray(
 				[
-					$author$project$View$x1(l.bv),
+					$author$project$View$x1(l.bx),
 					$author$project$View$y1(0),
-					$author$project$View$x2(l.bv),
+					$author$project$View$x2(l.bx),
 					$author$project$View$y2($author$project$View$height)
 				]),
 			_List_Nil);
@@ -8048,13 +8079,13 @@ var $author$project$View$levelsd = function (m) {
 			$elm$svg$Svg$text_,
 			_List_fromArray(
 				[
-					$author$project$View$xx(l.bv),
+					$author$project$View$xx(l.bx),
 					$author$project$View$yy($author$project$View$height + 17),
 					$elm$svg$Svg$Attributes$textAnchor('mid')
 				]),
 			_List_fromArray(
 				[
-					$elm$svg$Svg$text(l.bh)
+					$elm$svg$Svg$text(l.bj)
 				]));
 	};
 	var labels = A2($elm$core$List$map, level2label, levels);
@@ -8148,9 +8179,9 @@ var $author$project$View$levelsk = function (m) {
 			_List_fromArray(
 				[
 					$author$project$View$x1(-3),
-					$author$project$View$y1(l.bv),
+					$author$project$View$y1(l.bx),
 					$author$project$View$x2($author$project$View$width),
-					$author$project$View$y2(l.bv)
+					$author$project$View$y2(l.bx)
 				]),
 			_List_Nil);
 	};
@@ -8161,12 +8192,12 @@ var $author$project$View$levelsk = function (m) {
 			_List_fromArray(
 				[
 					$author$project$View$xx(-7),
-					$author$project$View$yy(l.bv + 5),
+					$author$project$View$yy(l.bx + 5),
 					$author$project$View$cc('ylabel')
 				]),
 			_List_fromArray(
 				[
-					$elm$svg$Svg$text(l.bh)
+					$elm$svg$Svg$text(l.bj)
 				]));
 	};
 	var labels = A2($elm$core$List$map, level2label, levels);
@@ -8218,7 +8249,7 @@ var $author$project$View$points = function (m) {
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return d.a6 && ((_Utils_cmp(d.M, t.D) > -1) && (_Utils_cmp(d.M, t.V) < 1));
+				return d.a7 && ((_Utils_cmp(d.M, t.D) > -1) && (_Utils_cmp(d.M, t.V) < 1));
 			},
 			m.R));
 	var morning = A2(
@@ -8227,7 +8258,7 @@ var $author$project$View$points = function (m) {
 		A2(
 			$elm$core$List$filter,
 			function (d) {
-				return (!d.a6) && ((_Utils_cmp(d.M, t.D) > -1) && (_Utils_cmp(d.M, t.V) < 1));
+				return (!d.a7) && ((_Utils_cmp(d.M, t.D) > -1) && (_Utils_cmp(d.M, t.V) < 1));
 			},
 			m.R));
 	return A2(
@@ -8283,11 +8314,11 @@ var $author$project$Weight$view = function (model) {
 };
 var $author$project$Weight$main = $elm$browser$Browser$element(
 	{
-		be: $author$project$Weight$init,
-		bs: function (_v0) {
+		bg: $author$project$Weight$init,
+		bu: function (_v0) {
 			return $author$project$Weight$subscriptions;
 		},
-		bu: $author$project$Weight$update,
-		bw: $author$project$Weight$view
+		bw: $author$project$Weight$update,
+		by: $author$project$Weight$view
 	});
 _Platform_export({'Weight':{'init':$author$project$Weight$main($elm$json$Json$Decode$value)(0)}});}(this));
