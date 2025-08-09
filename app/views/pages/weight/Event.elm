@@ -29,10 +29,10 @@ combine names codes dates spans =
 
 combine_ : Events -> List String -> List String -> List String -> List Int -> Events
 combine_ events names codes dates spans =
-    case ( names, codes, spans ) of
+    case ( names, codes, spans ) of -- maximum of 3 in a tuple so we have to split 1 of the 4 off
         ( name :: ns, code :: cs, span :: ss ) ->
             case dates of
-                dstr :: ds ->
+                dstr :: ds -> -- since dates need special handling anyway, this is the one we choose to split off
                     case Date.fromIsoString dstr of
                         Ok date ->
                             let
