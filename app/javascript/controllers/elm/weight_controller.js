@@ -38,11 +38,13 @@ export default class extends Controller {
     });
 
     document.getElementById("weight-graph").addEventListener("click", e => {
-      const pt = e.target.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
-      const qt = pt.matrixTransform(e.target.getScreenCTM().inverse());
-      this.app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
+      if (e.target instanceof SVGSVGElement) {
+        const pt = e.target.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const qt = pt.matrixTransform(e.target.getScreenCTM().inverse());
+        this.app.ports.changeCross.send([Math.round(qt.x), Math.round(qt.y)]);
+      }
     });
   }
 
