@@ -16,6 +16,7 @@ en:
     accounts:
       jrbs: Joint RBS
       mcc: Mark‘s CC
+      mcc2: Mark‘s CC 2
       mrbs: Mark‘s RBS
     orders:
       date_desc: Date ↑

@@ -14,6 +14,7 @@ class Transaction < ApplicationRecord
     "831909-234510"    => "mrbs",
     "831909-00234510"  => "mrbs",
     "543484******5254" => "mcc",
+    "552085******6631" => "mcc2",
   }
 
   after_save :classify
@@ -167,7 +168,7 @@ class Transaction < ApplicationRecord
           case account
           when "mrbs", "jrbs"
             date, category, description, amount, balance, skip = rbs_ac(row, rows)
-          when "mcc"
+          when "mcc", "mcc2"
             date, category, description, amount, balance, skip = rbs_cc(row, rows)
           end
 
