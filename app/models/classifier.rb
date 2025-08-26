@@ -27,12 +27,12 @@ class Classifier < ApplicationRecord
     color.scan(/../).map{|h| h.to_i(16)}.keep_if{|d| d < 128}.size > 1
   end
 
-  def self.search(params, path, opt={})
+  def self.search(params)
     matches = all
     if sql = cross_constraint(params[:query], %w{name description category})
       matches = matches.where(sql)
     end
-    paginate(matches, params, path, opt)
+    matches
   end
 
   private

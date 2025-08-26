@@ -21,13 +21,11 @@
           %tr
             %th= t("classifier.name")
             %th= t("classifier.category")
-            %th= t("classifier.description")
             %th= t("classifier.max_amount")
             %th= t("classifier.min_amount")
             %th= t("classifier.color")
         %tbody
-          = render partial: "classifier", collection: @classifiers.matches
-          = render "utils/pagination_links", pager: @classifiers, columns: 6
+          = render partial: "classifier", collection: @classifiers
   .footer
     = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
     - if can?(:create, Classifier)
