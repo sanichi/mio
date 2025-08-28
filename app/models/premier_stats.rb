@@ -123,7 +123,7 @@ class PremierStats
     # average number of games actually played or will have been played upto @date (inclusive)
     average = (@ids.map{|id| played[id]}.sum.to_f / @ids.size).round
 
-    # start and finish indicies of highlighted games 10 games
+    # start and finish indicies of highlighted 10 games
     start = average - 5
     finish = start + 9
     if start < 0
