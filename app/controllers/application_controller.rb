@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include SessionHelper
 
   helper_method :authenticated?
-  before_action :remember_last_non_autenticated_path
+  before_action :remember_last_non_authenticated_path
 
   rescue_from CanCan::AccessDenied do |exception|
     logger.warn "Access denied for #{exception.action} #{exception.subject} from #{request.ip}"
@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def remember_last_non_autenticated_path
+  def remember_last_non_authenticated_path
     return if request.method != "GET" || request.format != "text/html" || request.xhr?
     return if !current_user.guest? || controller_name == "sessions" || controller_name == "otp_secrets"
     session[:last_path] = request.path
