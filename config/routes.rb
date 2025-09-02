@@ -65,6 +65,7 @@ Rails.application.routes.draw do
     patch :quick_level_update, on: :member
   end
   resources :stars
+  resources :subscriptions
   resources :teams do
     get :stats, on: :member
   end

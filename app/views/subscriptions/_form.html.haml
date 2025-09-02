@@ -1,0 +1,8 @@
+:ruby
+  inputs = [
+    [:payee,     t("subscription.payee"),     :text,   maxlength: Subscription::MAX_PAYEE],
+    [:amount,    t("subscription.amount"),    :text,   value: sub_format_amount(@subscription.amount)],
+    [:frequency, t("subscription.frequency"), :select, menu: sub_frequency_menu(subscription)],
+    [:source,    t("subscription.source"),    :list,   data: sub_source_list],
+  ]
+= render "utils/crud/form", object: subscription, index: subscriptions_path, inputs: inputs, title: title

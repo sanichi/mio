@@ -1,0 +1,31 @@
+:ruby
+  lo = Layout.new(lg: [3,3], md: [4,4], xs: [5,5]).to_a
+  inputs = [
+    [:payee,  t("subscription.payee"),  :text,   lo[0], placeholder: t("subscription.payee")],
+    [:source, t("subscription.source"), :select, lo[1], menu: sub_source_search_menu(params[:source])],
+  ]
+
+= render "utils/title", key: "subscription.subscriptions"
+
+.row
+  %div{class: center(lg: 8, md: 10, sm: 12)}
+    %section.mt-3
+      .header.text-center
+        %h3= t("subscription.subscriptions")
+      .body
+        = render "utils/search/form", index: subscriptions_path, inputs: inputs
+        = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+          %table.table.table-bordered.table-sm.mt-3
+            %thead
+              %tr
+                %th= t("subscription.payee")
+                %th= t("subscription.source")
+                %th= t("subscription.cost")
+            %tbody
+              = render partial: "subscription", collection: @subscriptions
+              %tr
+                %th.text-center{colspan: 2}
+                %th= sub_format_amount(@subscriptions.map(&:annual_cost).sum)
+      - if can?(:create, Subscription)
+        .footer
+          = link_to t("subscription.new"), new_subscription_path, class: "blue-btn"

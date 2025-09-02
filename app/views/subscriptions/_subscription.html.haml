@@ -1,0 +1,4 @@
+%tr
+  %td= link_to subscription.payee, subscription, "data-turbo-frame" => "_top"
+  %td= subscription.source
+  %td= sub_format_amount(subscription.annual_cost)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_09_063225) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_31_175937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -265,6 +265,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_063225) do
     t.string "spectrum", limit: 16
     t.integer "rank", limit: 2
     t.index ["constellation_id"], name: "index_stars_on_constellation_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "payee"
+    t.integer "amount"
+    t.integer "frequency", limit: 2, default: 12
+    t.string "source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "teams", force: :cascade do |t|

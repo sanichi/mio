@@ -1,0 +1,29 @@
+= render "utils/title", text: @subscription.payee
+
+.row
+  %div{class: center(lg: 8, md: 10, sm: 12)}
+    %section
+      .header.text-center
+        %h3= @subscription.payee
+      .body
+        %table{class: "table table-bordered"}
+          %tbody
+            %tr
+              %th= t("subscription.payee")
+              %td= @subscription.payee
+            %tr
+              %th= t("subscription.source")
+              %td= @subscription.source
+            %tr
+              %th= t("subscription.frequency")
+              %td= @subscription.human_frequency
+            %tr
+              %th= t("subscription.amount")
+              %td= sub_format_amount(@subscription.amount)
+            %tr
+              %th= t("subscription.cost")
+              %td= sub_format_amount(@subscription.annual_cost)
+      .footer
+        = link_to t("subscription.subscriptions"), subscriptions_path, class: "green-btn"
+        - if can?(:manage, Subscription)
+          = link_to t("edit"), edit_subscription_path(@subscription), class: "blue-btn"

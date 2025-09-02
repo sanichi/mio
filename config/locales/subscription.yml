@@ -1,0 +1,18 @@
+en:
+  activerecord:
+    attributes:
+      subscription:
+        frequency:
+          annually: "Annually"
+          daily: "Daily"
+          monthly: "Monthly"
+          weekly: "Weekly"
+  subscription:
+    amount: Amount
+    cost: Annual Cost
+    edit: Edit Subscription
+    frequency: Frequency
+    new: New Subscription
+    payee: Payee
+    source: Source
+    subscriptions: Subscriptions
