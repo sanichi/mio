@@ -19,7 +19,7 @@ class Subscription < ApplicationRecord
       matches = matches.where(sql)
     end
     matches = matches.where(source: params[:source]) if params[:source].present?
-    matches
+    matches.to_a.sort_by(&:annual_cost).reverse
   end
   
   def amount=(value)
