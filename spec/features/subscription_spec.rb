@@ -58,6 +58,7 @@ describe Subscription, js: true do
       s = Subscription.last
 
       expect(s.payee).to eq data.payee
+      expect(s.frequency).to eq subscription.frequency # there used to be a here
     end
   end
 
