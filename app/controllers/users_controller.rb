@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       failure @user
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       failure @user
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

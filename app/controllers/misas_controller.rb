@@ -17,7 +17,7 @@ class MisasController < ApplicationController
       redirect_to @misa
     else
       failure @misa
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class MisasController < ApplicationController
       redirect_to @misa
     else
       failure @misa
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

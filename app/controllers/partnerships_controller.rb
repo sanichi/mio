@@ -26,7 +26,7 @@ class PartnershipsController < ApplicationController
       redirect_to @partnership
     else
       failure @partnership
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -36,7 +36,7 @@ class PartnershipsController < ApplicationController
       redirect_to @partnership
     else
       failure @partnership
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

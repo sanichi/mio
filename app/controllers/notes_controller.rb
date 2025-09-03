@@ -17,7 +17,7 @@ class NotesController < ApplicationController
       redirect_to @note
     else
       failure @note
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class NotesController < ApplicationController
       redirect_to @note
     else
       failure @note
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

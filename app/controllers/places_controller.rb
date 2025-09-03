@@ -26,7 +26,7 @@ class PlacesController < ApplicationController
       redirect_to @place
     else
       failure @place
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -35,7 +35,7 @@ class PlacesController < ApplicationController
       redirect_to @place
     else
       failure @place
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

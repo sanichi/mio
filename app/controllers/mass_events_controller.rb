@@ -16,7 +16,7 @@ class MassEventsController < ApplicationController
       redirect_to mass_events_path
     else
       failure @event
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class MassEventsController < ApplicationController
       redirect_to mass_events_path
     else
       failure @event
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

@@ -23,7 +23,7 @@ class PicturesController < ApplicationController
       redirect_to @picture
     else
       failure @picture
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -34,7 +34,7 @@ class PicturesController < ApplicationController
       redirect_to @picture
     else
       failure @picture
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

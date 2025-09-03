@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       end
     else
       flash.now[:alert] = I18n.t("login.invalid").sample
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
       success = false
     end
     Login.create(email: params[:email], success: success, ip: request.remote_ip)

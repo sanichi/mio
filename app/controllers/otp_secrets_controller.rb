@@ -27,7 +27,7 @@ class OtpSecretsController < ApplicationController
       else
         flash.now[:alert] = t("otp.invalid")
         @qr_code = qr_code(totp, user.email) if user.otp_secret.nil?
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
         success = false
       end
       Login.create(email: user.email, success: success, ip: request.remote_ip)

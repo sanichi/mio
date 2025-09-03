@@ -24,7 +24,7 @@ class MassesController < ApplicationController
       redirect_to weight_path
     else
       failure @mass
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -33,7 +33,7 @@ class MassesController < ApplicationController
       redirect_to weight_path
     else
       failure @mass
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

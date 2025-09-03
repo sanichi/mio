@@ -23,7 +23,7 @@ class TutorialsController < ApplicationController
       redirect_to @tutorial
     else
       failure @tutorial
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -32,7 +32,7 @@ class TutorialsController < ApplicationController
       redirect_to @tutorial
     else
       failure @tutorial
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

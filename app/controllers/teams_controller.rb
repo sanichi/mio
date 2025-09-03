@@ -17,7 +17,7 @@ class TeamsController < ApplicationController
       redirect_to @team
     else
       failure @team
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class TeamsController < ApplicationController
       redirect_to @team
     else
       failure @team
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
