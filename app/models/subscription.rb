@@ -19,6 +19,12 @@ class Subscription < ApplicationRecord
       matches = matches.where(sql)
     end
     matches = matches.where(source: params[:source]) if params[:source].present?
+    case params[:liable]
+    when "joint"
+      matches = matches.where("LOWER(source) LIKE ?", "%joint%")
+    when "personal"
+      matches = matches.where("LOWER(source) NOT LIKE ?", "%joint%")
+    end
     matches.to_a.sort_by(&:annual_cost).reverse
   end
   

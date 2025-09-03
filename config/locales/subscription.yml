@@ -12,7 +12,12 @@ en:
     cost: Annual Cost
     edit: Edit Subscription
     frequency: Frequency
+    liable: Liable
     new: New Subscription
     payee: Payee
     source: Source
     subscriptions: Subscriptions
+    liability:
+      both: Both
+      personal: Personal
+      joint: Joint

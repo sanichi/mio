@@ -1,8 +1,9 @@
 :ruby
-  lo = Layout.new(lg: [3,3], md: [4,4], xs: [5,5]).to_a
+  lo = Layout.new(lg: [3,3,2], md: [3,4,3], xs: [4,4,4]).to_a
   inputs = [
     [:payee,  t("subscription.payee"),  :text,   lo[0], placeholder: t("subscription.payee")],
     [:source, t("subscription.source"), :select, lo[1], menu: sub_source_search_menu(params[:source])],
+    [:liable, t("subscription.liable"), :select, lo[2], menu: sub_liable_search_menu(params[:liable])],
   ]
 
 = render "utils/title", key: "subscription.subscriptions"

@@ -15,6 +15,11 @@ module SubscriptionHelper
     options_for_select(opts, selected)
   end
 
+  def sub_liable_search_menu(selected)
+    opts = I18n.t("subscription.liability").map{|k,v| [v, k]}
+    options_for_select(opts, selected)
+  end
+
   def sub_source_list
     Subscription.pluck(:source).uniq.compact.sort
   end
