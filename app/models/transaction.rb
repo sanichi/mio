@@ -15,6 +15,7 @@ class Transaction < ApplicationRecord
     "831909-00234510"  => "mrbs",
     "543484******5254" => "mcc",
     "552085******6631" => "mcc2",
+    "STARLING"         => "ms",
   }
 
   after_save :classify
@@ -170,6 +171,8 @@ class Transaction < ApplicationRecord
             date, category, description, amount, balance, skip = rbs_ac(row, rows)
           when "mcc", "mcc2"
             date, category, description, amount, balance, skip = rbs_cc(row, rows)
+          when "ms"
+            date, category, description, amount, balance, skip = starling(row, rows)
           end
 
           next if skip
@@ -198,6 +201,7 @@ class Transaction < ApplicationRecord
   def self.check_account(text, rows)
     text.squish!.sub!(/\A\s*'/, "")
     account = ACCOUNTS[text]
+    account = ACCOUNTS["STARLING"] if !account && text.match?(/\A[A-Z]+(_[A-Z]+)*\z/)
     raise "invalid account (#{text}) on row #{rows}" unless account
     account
   end
@@ -253,6 +257,31 @@ class Transaction < ApplicationRecord
     amount *= -1
     raise "unexpected balance (#{row[4]}) on row #{rows}" if row[4].present?
     [date, category, description, amount, 0.0, false]
+  end
+
+  def self.starling(row, rows)
+    date = begin
+      Date.parse(row[0])
+    rescue
+      raise "invalid date #{row[0]} on row #{rows}"
+    end
+    category = case row[6]
+      when "INCOME" then "PAY"
+      when "SAVING" then "DPC"
+      else "PUR"
+    end
+    description = row[1].squish
+    amount = begin
+      row[4].to_f
+    rescue
+      raise "invalid amount (#{row[3]}) on row #{rows}"
+    end
+    balance = begin
+      row[5].to_f
+    rescue
+      raise "invalid balance (#{row[4]}) on row #{rows}"
+    end
+    [date, category, description, amount, balance, false]
   end
 
   private

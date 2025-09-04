@@ -81,4 +81,42 @@ describe Transaction do
       expect(Transaction.where(classifier: nil).count).to eq 0
     end
   end
+
+  context "parse transaction data" do
+    context "RBS debit" do
+      it "success" do
+        date, category, description, amount, balance, skip = Transaction.rbs_ac(["09/06/2023","POS","5259 08JUN23 CD , FOUNTAIN CAFE , EDINBURGH GB",-10.1,"1609.25","Mark's current","831909-234510"], 1)
+        expect(date.to_s).to eq "2023-06-09"
+        expect(category).to eq "POS"
+        expect(description).to eq "5259 08JUN23 CD , FOUNTAIN CAFE , EDINBURGH GB"
+        expect(amount).to eq -10.1
+        expect(balance).to eq 1609.25
+        expect(skip).to be false
+      end
+    end
+
+    context "RBS credit" do
+      it "success" do
+        date, category, description, amount, balance, skip = Transaction.rbs_cc(["20 Mar 2023","Purchase","'APPLE.COM/BILL APPLE.COM/BILIRL",10.99,'',"'M ORR","'543484******5254"],1)
+        expect(date.to_s).to eq "2023-03-20"
+        expect(category).to eq "PUR"
+        expect(description).to eq "APPLE.COM/BILL APPLE.COM/BILIRL"
+        expect(amount).to eq -10.99
+        expect(balance).to eq 0.0
+        expect(skip).to be false
+      end
+    end
+
+    context "Starling debit" do
+      it "success" do
+        date, category, description, amount, balance, skip = Transaction.starling(["31/08/2025","Pret A Manger","PRET A MANGER","APPLE PAY",-2.27,285.24,"EATING_OUT"], 1)
+        expect(date.to_s).to eq "2025-08-31"
+        expect(category).to eq "PUR"
+        expect(description).to eq "Pret A Manger"
+        expect(amount).to eq -2.27
+        expect(balance).to eq 285.24
+        expect(skip).to be false
+      end
+    end
+  end
 end

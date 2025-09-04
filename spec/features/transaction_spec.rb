@@ -62,6 +62,19 @@ describe Transaction, js: true do
       expect(Transaction.where(account: "jrbs").count).to eq 72
       expect(Transaction.where(account: "mrbs").count).to eq 45
       expect(Transaction.count).to eq 187
+
+      load_file page, "starling.csv"
+
+      expect_notice(page, "rows: 41, created: 40, duplicates: 0, upload: 4")
+      expect(Transaction.where(upload_id: 1).count).to eq 45
+      expect(Transaction.where(upload_id: 2).count).to eq 72
+      expect(Transaction.where(upload_id: 3).count).to eq 70
+      expect(Transaction.where(upload_id: 4).count).to eq 40
+      expect(Transaction.where(account: "mcc").count).to eq 70
+      expect(Transaction.where(account: "jrbs").count).to eq 72
+      expect(Transaction.where(account: "mrbs").count).to eq 45
+      expect(Transaction.where(account: "ms").count).to eq 40
+      expect(Transaction.count).to eq 227
     end
 
     it "upload RBS account data" do
@@ -124,21 +137,67 @@ describe Transaction, js: true do
       expect(t.account).to eq "mcc"
       expect(t.upload_id).to eq 1
     end
-  end
 
-  it "upload more RBS credit card data" do
-    load_data page, <<~EOF
+    it "upload more RBS credit card data" do
+      load_data page, <<~EOF
 
-    Date, Type, Description, Value, Balance, Account Name, Account Number
+      Date, Type, Description, Value, Balance, Account Name, Account Number
 
-    10 Jul 2025,FEES,CASH FEE,0.30,,Marks credit,543484******5254
-    10 Jul 2025,CASH,ULSTER BANK NORTH,10.00,,Marks credit,543484******5254
-    10 Jul 2025,PURCHASE,APPLE.COM/BILL,2.99,,Marks credit,543484******5254
-    11 Jul 2025,CASH,INTEREST - SEE SUMMARY,0.01,,Marks credit,543484******5254
+      10 Jul 2025,FEES,CASH FEE,0.30,,Marks credit,543484******5254
+      10 Jul 2025,CASH,ULSTER BANK NORTH,10.00,,Marks credit,543484******5254
+      10 Jul 2025,PURCHASE,APPLE.COM/BILL,2.99,,Marks credit,543484******5254
+      11 Jul 2025,CASH,INTEREST - SEE SUMMARY,0.01,,Marks credit,543484******5254
 
-    EOF
+      EOF
 
-    expect_notice(page, "rows: 8, created: 4, duplicates: 0, upload: 1")
+      expect_notice(page, "rows: 8, created: 4, duplicates: 0, upload: 1")
+    end
+
+    it "upload Starling data" do
+      load_data page, <<~EOF
+      Date,Counter Party,Reference,Type,Amount (GBP),Balance (GBP),Spending Category,Notes
+      16/08/2025,ORR M J L,Watashi,FASTER PAYMENT,500.00,500.00,INCOME,
+      17/08/2025,Mark Orr,Transfer into Easy Saver,TRANSFER,-500.00,500.00,SAVING,
+      18/08/2025,Waterstones,WATERSTONES EFL969,APPLE PAY,-9.99,481.86,SHOPPING,
+      19/08/2025,Costa Coffee,COSTA COFFEE 43010636,APPLE PAY,-7.15,434.06,EATING_OUT,
+      EOF
+
+      expect_notice(page, "rows: 5, created: 4, duplicates: 0, upload: 1")
+      expect(Transaction.where(upload_id: 1).count).to eq 4
+      expect(Transaction.count).to eq 4
+
+      t = Transaction.find_by(date: "2025-08-16")
+      expect(t.category).to eq "PAY"
+      expect(t.description).to eq "ORR M J L"
+      expect(t.amount).to eq 500.0
+      expect(t.balance).to eq 500.0
+      expect(t.account).to eq "ms"
+      expect(t.upload_id).to eq 1
+
+      t = Transaction.find_by(date: "2025-08-17")
+      expect(t.category).to eq "DPC"
+      expect(t.description).to eq "Mark Orr"
+      expect(t.amount).to eq -500.00
+      expect(t.balance).to eq 500.0
+      expect(t.account).to eq "ms"
+      expect(t.upload_id).to eq 1
+
+      t = Transaction.find_by(date: "2025-08-18")
+      expect(t.category).to eq "PUR"
+      expect(t.description).to eq "Waterstones"
+      expect(t.amount).to eq -9.99
+      expect(t.balance).to eq 481.86
+      expect(t.account).to eq "ms"
+      expect(t.upload_id).to eq 1
+
+      t = Transaction.find_by(date: "2025-08-19")
+      expect(t.category).to eq "PUR"
+      expect(t.description).to eq "Costa Coffee"
+      expect(t.amount).to eq -7.15
+      expect(t.balance).to eq 434.06
+      expect(t.account).to eq "ms"
+      expect(t.upload_id).to eq 1
+    end
   end
 
   context "failure" do
