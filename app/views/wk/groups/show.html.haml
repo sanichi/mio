@@ -2,7 +2,7 @@
 
 %section
   .header.text-center
-    %h1= @group.vocab_list
+    %h1= @group.vocab_list.gsub(" ", "•")
   .body
     %table{class: "table table-bordered"}
       %tbody
@@ -17,7 +17,7 @@
               = " "
         - if @group.notes.present?
           %tr
-            %td.col-12{colspan: 2}= @group.notes_html
+            %td{colspan: 2}= @group.notes_html
   .footer
     - if can?(:manage, Wk::Group)
       = link_to t("edit"), edit_wk_group_path(@group), class: "blue-btn"
