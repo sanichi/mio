@@ -1,7 +1,7 @@
 module Wk
   class GroupsController < ApplicationController
     authorize_resource
-    before_action :find_group, only: [:edit, :update, :destroy]
+    before_action :find_group, only: [:show, :edit, :update, :destroy]
 
     def index
       remember_last_search(wk_groups_path)
@@ -31,6 +31,9 @@ module Wk
       end
     end
 
+    def show
+    end
+
     def destroy
       @group.destroy
       redirect_to wk_groups_path
@@ -43,7 +46,7 @@ module Wk
     end
 
     def strong_params
-      params.require(:wk_group).permit(:category, :vocab_list)
+      params.require(:wk_group).permit(:category, :vocab_list, :notes)
     end
   end
 end

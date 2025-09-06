@@ -1,7 +1,9 @@
 module Wk
   class Group < ApplicationRecord
     include Constrainable
+    include Linkable
     include Pageable
+    include Remarkable
 
     CATEGORIES = %w/synonyms antonyms sounds_like related_to/
     MAX_CATEGORY = 20
@@ -30,7 +32,15 @@ module Wk
     end
 
     def to_markdown(bold: nil)
-      "%s: %s.\n\n" % [I18n.t("wk.group.categories.#{category}"), vocabs.map{ |v| v.to_markdown(bold: bold) }.join(", ")]
+      parts = []
+      parts.push I18n.t("wk.group.categories.#{category}")
+      parts.push vocabs.map{ |v| v.to_markdown(bold: bold) }.join(", ")
+      parts.push notes.present? ? " ([notes](/wk/groups/#{id}))" : ""
+      "%s: %s%s.\n\n" % parts
+    end
+
+    def notes_html
+      to_html(link_vocabs(notes))
     end
 
     private

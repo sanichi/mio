@@ -2,5 +2,6 @@
   inputs = [
     [:category,   t("wk.group.category"),   :select, menu: wk_group_category_menu(group.category, new_record: group.new_record?)],
     [:vocab_list, t("wk.group.vocab_list"), :text, value: params[:vocab_list]],
+    [:notes,      t("notes"),               :area, rows: 30],
   ]
 = render "utils/crud/form", object: group, cancel: wk_groups_path, inputs: inputs, title: title

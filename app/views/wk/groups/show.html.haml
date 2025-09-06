@@ -1,0 +1,24 @@
+= render "utils/title", text: @group.vocab_list
+
+%section
+  .header.text-center
+    %h1= @group.vocab_list
+  .body
+    %table{class: "table table-bordered"}
+      %tbody
+        %tr
+          %td= t("wk.group.category")
+          %td= t("wk.group.categories.#{@group.category}")
+        %tr
+          %td= t("wk.vocab.vocabs")
+          %td
+            - @group.vocabs.each do |vocab|
+              = link_to vocab.characters, vocab
+              = " "
+        - if @group.notes.present?
+          %tr
+            %td.col-12{colspan: 2}= @group.notes_html
+  .footer
+    - if can?(:manage, Wk::Group)
+      = link_to t("edit"), edit_wk_group_path(@group), class: "blue-btn"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"
