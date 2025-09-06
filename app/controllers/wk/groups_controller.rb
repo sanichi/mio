@@ -15,7 +15,7 @@ module Wk
     def create
       @group = Group.new(strong_params)
       if @group.save
-        redirect_to wk_groups_path
+        redirect_to @group
       else
         failure @group
         render :new, status: :unprocessable_entity
@@ -24,7 +24,7 @@ module Wk
 
     def update
       if @group.update(strong_params)
-        redirect_to wk_groups_path
+        redirect_to @group
       else
         failure @group
         render :edit, status: :unprocessable_entity

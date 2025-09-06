@@ -22,7 +22,7 @@ describe Wk::Group, js: true do
       fill_in t("wk.group.vocab_list"), with: data.vocab_list
       click_button t("save")
 
-      expect(page).to have_title t("wk.group.group")
+      expect(page).to have_title data.vocab_list
 
       expect(Wk::Group.count).to eq 2
       g = Wk::Group.last
@@ -61,7 +61,7 @@ describe Wk::Group, js: true do
       fill_in t("wk.group.vocab_list"), with: "仮定 想定"
       click_button t("save")
 
-      expect(page).to have_title t("wk.group.group")
+      expect(page).to have_title "仮定 想定"
 
       expect(Wk::Group.count).to eq 1
       g = Wk::Group.last
