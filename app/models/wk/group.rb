@@ -35,8 +35,8 @@ module Wk
       parts = []
       parts.push I18n.t("wk.group.categories.#{category}")
       parts.push vocabs.map{ |v| v.to_markdown(bold: bold) }.join(", ")
-      parts.push notes.present? ? " ([notes](/wk/groups/#{id}))" : ""
-      "%s: %s%s.\n\n" % parts
+      parts.push "[#{notes.present? ? 'notes' : 'view'}](/wk/groups/#{id})"
+      "%s: %s (%s).\n\n" % parts
     end
 
     def notes_html
