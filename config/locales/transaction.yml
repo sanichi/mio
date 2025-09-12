@@ -9,6 +9,7 @@ en:
     date: Date
     days: Days
     description: Description
+    last_upload: Last Upload
     transactions: Transactions
     unapproved: Unpproved
     unclassified: Unclassified
