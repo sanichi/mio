@@ -14,11 +14,7 @@
   .header
     .d-flex.justify-content-between.align-items-center
       %h3.mb-0= t("classifier.classifiers")
-      %div
-        = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
-        = link_to t("transaction.last_upload"), transactions_path(upload_id: 0), class: "green-btn"
-        - if can?(:create, Classifier)
-          = link_to t("classifier.new"), new_classifier_path, class: "blue-btn"
+      = link_to t("transaction.last_upload"), transactions_path(upload_id: 0), class: "green-btn"
   .body
     = render "utils/search/form", index: classifiers_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
@@ -32,3 +28,7 @@
             %th= t("classifier.color")
         %tbody
           = render partial: "classifier", collection: @classifiers
+  .footer
+    = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
+    - if can?(:create, Classifier)
+      = link_to t("classifier.new"), new_classifier_path, class: "blue-btn"
