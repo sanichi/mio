@@ -25,7 +25,7 @@ module Wk
       if CATEGORIES.include?(params[:category])
         matches = matches.where(category: params[:category])
       end
-      if sql = cross_constraint(params[:query], %w{vocab_list})
+      if sql = cross_constraint(params[:query], %w{vocab_list notes})
         matches = matches.where(sql)
       end
       paginate(matches, params, path, opt)

@@ -6,7 +6,7 @@
     lg: [2,2],
   ).to_a
   inputs = [
-    [:query,    t("wk.group.group"),    :text,   lo[0]],
+    [:query,    t("query"),             :text,   lo[0]],
     [:category, t("wk.group.category"), :select, lo[1], menu: wk_group_category_menu(params[:category], search: true)],
   ]
 
