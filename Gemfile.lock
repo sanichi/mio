@@ -138,7 +138,7 @@ GEM
     execjs (2.10.0)
     factory_bot (6.5.5)
       activesupport (>= 6.1.0)
-    factory_bot_rails (6.5.0)
+    factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
     faker (3.5.2)
@@ -196,7 +196,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.4)
+    marcel (1.1.0)
     matrix (0.4.3)
     meta-tags (2.22.1)
       actionpack (>= 6.0.0, < 8.1)
@@ -222,9 +222,9 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
-    nokogiri (1.18.9-arm64-darwin)
+    nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-linux-gnu)
+    nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
     oga (3.4)
       ast
@@ -240,7 +240,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (6.6.1)
+    puma (7.0.3)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.1)
@@ -288,10 +288,10 @@ GEM
       erb
       psych (>= 4.0.0)
     redcarpet (3.6.1)
-    regexp_parser (2.11.2)
+    regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
-    rexml (3.4.2)
+    rexml (3.4.4)
     rotp (6.3.0)
     rqrcode (3.1.0)
       chunky_png (~> 1.0)
@@ -313,12 +313,12 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.5)
-    ruby-ll (2.1.3)
+    rspec-support (3.13.6)
+    ruby-ll (2.1.4)
       ansi
       ast
     ruby-progressbar (1.13.0)
-    rubyzip (3.0.2)
+    rubyzip (3.1.0)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -405,7 +405,7 @@ DEPENDENCIES
   mojinizer (~> 0.2)
   oga (~> 3.0)
   pg (>= 0.18, < 2.0)
-  puma (< 7)
+  puma (< 8)
   rails (= 8.0.2.1)
   redcarpet (~> 3.5)
   rotp (~> 6.2)
