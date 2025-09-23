@@ -17,6 +17,7 @@ describe Subscription, js: true do
       fill_in t("subscription.amount"), with: "£#{sprintf('%.2f', data.amount / 100.0)}"
       select data.human_frequency, from: t("subscription.frequency")
       fill_in t("subscription.source"), with: data.source
+      data.active ? check(t("subscription.active")) : uncheck(t("subscription.active"))
       click_button t("save")
 
       expect(page).to have_title data.payee
@@ -28,13 +29,16 @@ describe Subscription, js: true do
       expect(s.amount).to eq data.amount
       expect(s.frequency).to eq data.frequency
       expect(s.source).to eq data.source
+      expect(s.active).to eq data.active
     end
 
-    it "failure" do
+    it "failure (no amount)" do
       click_link t("subscription.new")
       fill_in t("subscription.payee"), with: data.payee
+      # fill_in t("subscription.amount"), with: "£#{sprintf('%.2f', data.amount / 100.0)}"
       select data.human_frequency, from: t("subscription.frequency")
       fill_in t("subscription.source"), with: data.source
+      data.active ? check(t("subscription.active")) : uncheck(t("subscription.active"))
       click_button t("save")
 
       expect(page).to have_title t("subscription.new")
@@ -44,7 +48,7 @@ describe Subscription, js: true do
   end
 
   context "edit" do
-    it "success" do
+    it "change payee" do
       click_link subscription.payee
       click_link t("edit")
 
@@ -59,6 +63,26 @@ describe Subscription, js: true do
 
       expect(s.payee).to eq data.payee
       expect(s.frequency).to eq subscription.frequency # there used to be a here
+    end
+
+    it "change active state" do
+      subscription.update!(active: true)
+      click_link subscription.payee
+      
+      # Find the cost row and check the span doesn't have strikethrough class
+      cost_row = page.find('tr', text: t("subscription.cost"))
+      cost_span = cost_row.find('span')
+      expect(cost_span[:class]).not_to include('text-decoration-line-through')
+      
+      # Make it inactive
+      click_link t("edit")
+      uncheck t("subscription.active")
+      click_button t("save")
+      
+      # Check the span now has strikethrough class
+      cost_row = page.find('tr', text: t("subscription.cost"))
+      cost_span = cost_row.find('span')
+      expect(cost_span[:class]).to include('text-decoration-line-through')
     end
   end
 

@@ -22,7 +22,8 @@
               %td= sub_format_amount(@subscription.amount)
             %tr
               %th= t("subscription.cost")
-              %td= sub_format_amount(@subscription.annual_cost)
+              %td
+                %span{class: ("text-decoration-line-through" unless @subscription.active?)}= sub_format_amount(@subscription.nominal_annual_cost)
       .footer
         = link_to t("subscription.subscriptions"), subscriptions_path, class: "green-btn"
         - if can?(:manage, Subscription)

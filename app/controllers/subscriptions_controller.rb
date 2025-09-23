@@ -41,6 +41,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def strong_params
-    params.require(:subscription).permit(:amount, :frequency, :payee, :source)
+    params.require(:subscription).permit(:active, :amount, :frequency, :payee, :source)
   end
 end

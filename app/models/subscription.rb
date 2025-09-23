@@ -25,7 +25,7 @@ class Subscription < ApplicationRecord
     when "personal"
       matches = matches.where("LOWER(source) NOT LIKE ?", "%joint%")
     end
-    matches.to_a.sort_by(&:annual_cost).reverse
+    matches.to_a.sort_by { |s| [-s.nominal_annual_cost, s.payee] }
   end
   
   def amount=(value)
@@ -42,8 +42,12 @@ class Subscription < ApplicationRecord
     end
   end
 
-  def annual_cost
-    @annual_cost ||= self.class.frequencies[frequency] * amount
+  def nominal_annual_cost
+    @nominal_annual_cost ||= self.class.frequencies[frequency] * amount
+  end
+
+  def actual_annual_cost
+    @actual_annual_cost ||= active? ? nominal_annual_cost : 0
   end
 
   def human_frequency

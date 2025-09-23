@@ -8,6 +8,7 @@ en:
           monthly: "Monthly"
           weekly: "Weekly"
   subscription:
+    active: Active
     amount: Amount
     cost: Annual Cost
     edit: Edit Subscription

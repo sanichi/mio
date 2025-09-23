@@ -4,5 +4,6 @@ FactoryBot.define do
     amount    { 1 + rand(10000) }
     frequency { Subscription.frequencies.keys.sample }
     source    { Faker::Lorem.words(number: rand(3) + 1).join(" ").truncate(Subscription::MAX_SOURCE) }
+    active    { [true, false].sample }
   end
 end

@@ -1,4 +1,5 @@
 %tr
   %td= link_to subscription.payee, subscription, "data-turbo-frame" => "_top"
   %td= subscription.source
-  %td= sub_format_amount(subscription.annual_cost)
+  %td
+    %span{class: ("text-decoration-line-through" unless subscription.active?)}= sub_format_amount(subscription.nominal_annual_cost)

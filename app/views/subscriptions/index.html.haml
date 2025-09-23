@@ -26,7 +26,7 @@
               = render partial: "subscription", collection: @subscriptions
               %tr
                 %th.text-center{colspan: 2}
-                %th= sub_format_amount(@subscriptions.map(&:annual_cost).sum)
+                %th= sub_format_amount(@subscriptions.map(&:actual_annual_cost).sum)
       - if can?(:create, Subscription)
         .footer
           = link_to t("subscription.new"), new_subscription_path, class: "blue-btn"
