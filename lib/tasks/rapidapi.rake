@@ -1,6 +1,8 @@
 # Refs:
 #   https://www.footballwebpages.co.uk/api
 #   https://rapidapi.com/football-web-pages1-football-web-pages-default/api/football-web-pages1
+#
+# No longer in use.
 
 # competition id for the premier league
 RAPID_COMP = 1

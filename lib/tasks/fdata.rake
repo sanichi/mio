@@ -85,7 +85,7 @@ namespace :fdata do
         # update the fdata id of the team if necessary
         # it's called rid (rapid-id) after the first API used
         if team.rid != rid
-          puts "set fdata id for #{name} (#{team.rid} <=> #{rid})"
+          puts "set fdata id for #{name} (#{team.rid} => #{rid})"
           team.update_column(:rid, rid)
         end
       end
