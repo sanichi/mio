@@ -3,6 +3,37 @@
 # main API URL for the premier league
 FDATA_URL = "https://api.football-data.org/v4/competitions/PL/"
 
+class TeamData
+  def initialize(team_hash, i)
+    @data = team_hash
+    @i = i
+    validate!
+  end
+
+  def id = @id || @data["id"]
+  def name = @name || normalize_name
+
+  private
+
+  def short_name = @short_name || @data["shortName"]
+
+  def normalize_name
+    case short_name
+    when "Tottenham" then "Spurs"
+    when "Wolverhampton" then "Wolves"
+    when "Nottingham" then "Forest"
+    when "Brighton Hove" then "Brighton"
+    else short_name
+    end
+  end
+
+  def validate!
+    raise "invalid team data (#{@i})" unless @data.is_a?(Hash)
+    raise "missing team id (#{@i})" unless id.is_a?(Integer) && id >= 0
+    raise "invalid team short name (#{@i})" unless short_name.is_a?(String) && short_name.length > 0
+  end
+end
+
 # print feedback to the console or in the logs
 def fdata_report(str, error=false)
   str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
@@ -53,44 +84,34 @@ namespace :fdata do
     @print = true
 
     # get the data
-    path = "teams"
-    data = fdata_response(path)
+    data = fdata_response("teams")
 
     # check and process the structure
     begin
-      raise "bad response, no data" unless data
-      raise "data is not a hash with a 'teams' key" unless data.is_a?(Hash) && data.has_key?("teams")
-      teams = data["teams"]
-      raise "data is not an array with 20 items" unless teams.is_a?(Array) && teams.size == 20
+      raise "bad data (#{data.class})" unless data.is_a?(Hash)
+      teams = data.dig("teams")
+      raise "bad teams (#{teams.class})" unless teams.is_a?(Array)
+      raise "bad number of teams (#{teams&.size})" unless teams.size == 20
 
-      # make sure each of these 20 teams is in the premier league
-      teams.each_with_index do |t, i|
-        # get the team data
-        rid = t["id"];
-        raise "team #{i} has invalid id" unless rid.is_a?(Integer) && rid >= 0
-        name = t["shortName"];
-        raise "team #{i} has invalid name" unless name && name.is_a?(String) && name.length > 5
+      # make sure each of these 20 teams is in the database with the correct API ID
+      teams.each_with_index do |team_data, i|
+        # extract and validate the data for this team
+        fd_team = TeamData.new(team_data, i)
 
-        # adjust some of the fdata names
-        name = "Spurs" if name == "Tottenham"
-        name = "Wolves" if name == "Wolverhampton"
-        name = "Forest" if name == "Nottingham"
-        name = "Brighton" if name == "Brighton Hove"
+        # match to a team in our database
+        db_team = Team.find_by(name: fd_team.name)
+        db_team = Team.find_by(short: fd_team.name) unless db_team
+        raise "no such team as #{fd_name.name} (#{i})" unless db_team
 
-        # match this to our database
-        team = Team.find_by(name: name)
-        team = Team.find_by(short: name) unless team
-        raise "no such team as #{name}" unless team
-
-        # update the fdata id of the team if necessary
-        # it's called rid (rapid-id) after the first API used
-        if team.rid != rid
-          puts "set fdata id for #{name} (#{team.rid} => #{rid})"
-          team.update_column(:rid, rid)
+        # update the API id of the db_team if necessary
+        # it's called rid (short for rapid id) after a previous API name
+        if db_team.rid != fd_team.id
+          puts "setting API id for #{db_team.name} (#{db_team.rid} => #{fd_team.id})"
+          db_team.update_column(:rid, fd_team.id)
         end
       end
     rescue => e
-      fdata_report("#{path}: #{e.message}", true)
+      fdata_report(e.message, true)
     end
   end
 
