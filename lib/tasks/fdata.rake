@@ -74,7 +74,7 @@ class FdMatch
 end
 
 # print feedback to the console or in the logs
-def report(str, error=false)
+def fd_report(str, error=false)
   str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
   msg = "%s%s%s" % [@print ? "" : "FDATA ", error ? "ERROR " : "", str]
   if @print
@@ -85,7 +85,7 @@ def report(str, error=false)
 end
 
 # get a DB team using an API id
-def retrieve_team(rid, cache, i)
+def fd_retrieve_team(rid, cache, i)
   return cache[rid] if cache[rid]
   team = Team.find_by(rid: rid)
   raise "team id #{rid} has no match in DB (##{i})" unless team
@@ -94,10 +94,10 @@ def retrieve_team(rid, cache, i)
 end
 
 # get the match score from both a DB Match and a FdMatch
-def match_score(match) = "#{match.home_score || '?'}-#{match.away_score || '?'}"
+def fd_match_score(match) = "#{match.home_score || '?'}-#{match.away_score || '?'}"
 
 # request API data
-def api_data(path)
+def fd_api_data(path)
   # setup the request and execute it
   url = FD_URL + path
   uri = URI(url)
@@ -107,7 +107,7 @@ def api_data(path)
   request["X-AUTH-TOKEN"] = Rails.application.credentials.fdataapi[:key]
   r = http.request(request)
   if r.code != "200" || r.content_type != "application/json"
-    report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
+    fd_report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
     return nil
   end
 
@@ -117,8 +117,8 @@ def api_data(path)
   begin
     data = JSON.parse(r.read_body)
   rescue => p
-    report("path: #{path}, parse error: #{p.message}, JSON...", true)
-    report(json)
+    fd_report("path: #{path}, parse error: #{p.message}, JSON...", true)
+    fd_report(json)
   end
 
   # return whatever we got (might be nil if problem)
@@ -135,7 +135,7 @@ namespace :fdata do
     @print = true
 
     # get the data
-    data = api_data("teams")
+    data = fd_api_data("teams")
 
     # check and process the structure
     begin
@@ -162,7 +162,7 @@ namespace :fdata do
         end
       end
     rescue => e
-      report(e.message, true)
+      fd_report(e.message, true)
     end
   end
 
@@ -178,7 +178,7 @@ namespace :fdata do
     season = Match.current_season
 
     # get the data
-    data = api_data("matches")
+    data = fd_api_data("matches")
 
     # check and process the structure
     begin
@@ -196,20 +196,20 @@ namespace :fdata do
         fd_match = FdMatch.new(match_data, i)
 
         # get the home and away DB teams
-        home_team = retrieve_team(fd_match.home_team_id, cache, i)
-        away_team = retrieve_team(fd_match.away_team_id, cache, i)
+        home_team = fd_retrieve_team(fd_match.home_team_id, cache, i)
+        away_team = fd_retrieve_team(fd_match.away_team_id, cache, i)
 
         # create or update the DB match object
         db_match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)
         if db_match
           updates = 0
           if db_match.date != fd_match.date
-            report("updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{fd_match.date.to_s})")
+            fd_report("updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{fd_match.date.to_s})")
             db_match.update_column(:date, fd_match.date)
             updates += 1
           end
-          if match_score(db_match) != match_score(fd_match)
-            report("updated #{home_team.short} - #{away_team.short} score (#{match_score(db_match)} => #{match_score(fd_match)})")
+          if fd_match_score(db_match) != fd_match_score(fd_match)
+            fd_report("updated #{home_team.short} - #{away_team.short} score (#{fd_match_score(db_match)} => #{fd_match_score(fd_match)})")
             db_match.update_column(:home_score, fd_match.home_score) if db_match.home_score != fd_match.home_score
             db_match.update_column(:away_score, fd_match.away_score) if db_match.away_score != fd_match.away_score
             updates += 1
@@ -225,7 +225,7 @@ namespace :fdata do
         end
       end
     rescue => e
-      report(e.message, true)
+      fd_report(e.message, true)
     end
   end
 end
