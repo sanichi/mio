@@ -73,58 +73,59 @@ class FdMatch
   end
 end
 
+# print feedback to the console or in the logs
+def report(str, error=false)
+  str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
+  msg = "%s%s%s" % [@print ? "" : "FDATA ", error ? "ERROR " : "", str]
+  if @print
+    puts msg
+  else
+    Rails.logger.info msg
+  end
+end
+
+# get a DB team using an API id
+def retrieve_team(rid, cache, i)
+  return cache[rid] if cache[rid]
+  team = Team.find_by(rid: rid)
+  raise "team id #{rid} has no match in DB (##{i})" unless team
+  cache[rid] = team 
+  team
+end
+
+# get the match score from both a DB Match and a FdMatch
+def match_score(match) = "#{match.home_score || '?'}-#{match.away_score || '?'}"
+
+# request API data
+def api_data(path)
+  # setup the request and execute it
+  url = FD_URL + path
+  uri = URI(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  request = Net::HTTP::Get.new(uri)
+  request["X-AUTH-TOKEN"] = Rails.application.credentials.fdataapi[:key]
+  r = http.request(request)
+  if r.code != "200" || r.content_type != "application/json"
+    report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
+    return nil
+  end
+
+  # parse the response JSON
+  json = r.read_body
+  data = nil
+  begin
+    data = JSON.parse(r.read_body)
+  rescue => p
+    report("path: #{path}, parse error: #{p.message}, JSON...", true)
+    report(json)
+  end
+
+  # return whatever we got (might be nil if problem)
+  data
+end
+
 namespace :fdata do
-
-  # print feedback to the console or in the logs
-  def report(str, error=false)
-    str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
-    msg = "%s%s%s" % [@print ? "" : "FDATA ", error ? "ERROR " : "", str]
-    if @print
-      puts msg
-    else
-      Rails.logger.info msg
-    end
-  end
-  
-  def retrieve_team(rid, cache, i)
-    return cache[rid] if cache[rid]
-    team = Team.find_by(rid: rid)
-    raise "team id #{rid} has no match in DB (##{i})" unless team
-    cache[rid] = team 
-    team
-  end
-  
-  def match_score(match) = "#{match.home_score || '?'}-#{match.away_score || '?'}"
-  
-  # request api data
-  def api_data(path)
-    # setup the request and execute it
-    url = FD_URL + path
-    uri = URI(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Get.new(uri)
-    request["X-AUTH-TOKEN"] = Rails.application.credentials.fdataapi[:key]
-    r = http.request(request)
-    if r.code != "200" || r.content_type != "application/json"
-      report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
-      return nil
-    end
-  
-    # parse the response JSON
-    json = r.read_body
-    data = nil
-    begin
-      data = JSON.parse(r.read_body)
-    rescue => p
-      report("path: #{path}, parse error: #{p.message}, JSON...", true)
-      report(json)
-    end
-  
-    # return whatever we got (might be nil if problem)
-    data
-  end
-
   # Meant to be run by hand at the beginning of the season.
   # It will make sure the all teams have a football-data id.
   # No output means everything is already OK.
