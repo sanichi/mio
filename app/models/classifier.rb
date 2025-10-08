@@ -20,8 +20,8 @@ class Classifier < ApplicationRecord
 
   default_scope { order(name: :asc) }
 
-  def cre() = @cre ||= Regexp.new(category.to_s)
-  def dre() = @dre ||= Regexp.new(description.to_s.split("\n").join("|"), "i")
+  def cre = @cre ||= Regexp.new(category.to_s)
+  def dre = @dre ||= Regexp.new(description.to_s.split("\n").join("|"), "i")
 
   def dark?
     color.scan(/../).map{|h| h.to_i(16)}.keep_if{|d| d < 128}.size > 1

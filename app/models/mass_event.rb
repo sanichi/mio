@@ -16,7 +16,7 @@ class MassEvent < ApplicationRecord
     paginate(matches, params, path, opt)
   end
 
-  def self.events() = order(:start).to_a.map{|e| [e.name, e.code, e.start.to_fs(:db), (e.finish - e.start).to_i + 1]}
+  def self.events = order(:start).to_a.map{|e| [e.name, e.code, e.start.to_fs(:db), (e.finish - e.start).to_i + 1]}
 
   private
 

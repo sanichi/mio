@@ -38,7 +38,7 @@ class Transaction < ApplicationRecord
     return true
   end
 
-  def toggle_approved() = update_column(:approved, !approved)
+  def toggle_approved = update_column(:approved, !approved)
 
   def self.search(params, path, opt={})
     corrections = {}
@@ -148,7 +148,7 @@ class Transaction < ApplicationRecord
     }
   end
 
-  def self.last_upload_id() = maximum(:upload_id).to_i
+  def self.last_upload_id = maximum(:upload_id).to_i
 
   def self.upload(path, upload_id)
     rows = 0

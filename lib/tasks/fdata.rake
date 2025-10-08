@@ -46,6 +46,7 @@ class FdMatch
   def away_team_id = @away_team_id ||= @data.dig("awayTeam", "id")
   def home_score = @home_score ||= extract_score("home")
   def away_score = @away_score ||= extract_score("away")
+  def score = "#{home_score || '?'}-#{away_score || '?'}"
 
   private
 
@@ -85,16 +86,13 @@ def fd_report(str, error=false)
 end
 
 # get a DB team using an API id
-def fd_retrieve_team(rid, cache, i)
-  return cache[rid] if cache[rid]
-  team = Team.find_by(rid: rid)
-  raise "team id #{rid} has no match in DB (##{i})" unless team
-  cache[rid] = team 
+def fd_retrieve_team(id, cache, i)
+  return cache[id] if cache[id]
+  team = Team.find_by(fd_id: id)
+  raise "team id #{id} has no match in DB (##{i})" unless team
+  cache[id] = team
   team
 end
-
-# get the match score from both a DB Match and a FdMatch
-def fd_match_score(match) = "#{match.home_score || '?'}-#{match.away_score || '?'}"
 
 # request API data
 def fd_api_data(path)
@@ -155,10 +153,9 @@ namespace :fdata do
         raise "no such team as #{fd_team.name} (#{i})" unless db_team
 
         # update the API id of the db_team if necessary
-        # it's called rid (short for rapid id) after a previous API name
-        if db_team.rid != fd_team.id
-          puts "setting API id for #{db_team.name} (#{db_team.rid} => #{fd_team.id})"
-          db_team.update_column(:rid, fd_team.id)
+        if db_team.fd_id != fd_team.id
+          puts "setting API id for #{db_team.name} (#{db_team.fd_id} => #{fd_team.id})"
+          db_team.update_column(:fd_id, fd_team.id)
         end
       end
     rescue => e
@@ -208,8 +205,8 @@ namespace :fdata do
             db_match.update_column(:date, fd_match.date)
             updates += 1
           end
-          if fd_match_score(db_match) != fd_match_score(fd_match)
-            fd_report("updated #{home_team.short} - #{away_team.short} score (#{fd_match_score(db_match)} => #{fd_match_score(fd_match)})")
+          if db_match.score != fd_match.score
+            fd_report("updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{fd_match.score})")
             db_match.update_column(:home_score, fd_match.home_score) if db_match.home_score != fd_match.home_score
             db_match.update_column(:away_score, fd_match.away_score) if db_match.away_score != fd_match.away_score
             updates += 1

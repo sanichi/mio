@@ -12,8 +12,8 @@ class Aoc::Y2021d17 < Aoc
       raise "invalid input" unless x1 && x1 < x2 && y1 < y2
     end
 
-    def best() = reduce(0){|sofar, max| max.nil? || sofar >= max ? sofar : max}
-    def hits() = reduce(0){|count, max| max.nil? ? count : count + 1}
+    def best = reduce(0){|sofar, max| max.nil? || sofar >= max ? sofar : max}
+    def hits = reduce(0){|count, max| max.nil? ? count : count + 1}
 
     private
 

@@ -14,7 +14,7 @@
 - **Naming**: Use snake_case for methods/variables, PascalCase for classes
 - **Constants**: Define at class level using ALL_CAPS (e.g., `MAX_NAME = 30`)
 - **Validations**: Group related validations, use descriptive error messages
-- **Methods**: Use single-line method definitions with `def method() = expression` for simple getters
+- **Methods**: Use single-line method definitions with `def method = expression` for simple getters
 - **String manipulation**: Use safe navigation (`&.`) and built-in methods like `squish!`
 - **Error handling**: Use rescue in validation methods, add descriptive error messages
 - **Tests**: Use RSpec with describe/context/it blocks, FactoryBot for test data

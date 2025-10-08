@@ -20,7 +20,7 @@ class Aoc::Y2021d6 < Aoc
       self
     end
 
-    def count() = fish.values.sum
+    def count = fish.values.sum
   end
 
   EXAMPLE = "3,4,3,1,2"

@@ -15,13 +15,8 @@ class Match < ApplicationRecord
 
   scope :by_date, -> { order(date: :desc) }
 
-  def score
-    "#{home_score || '?'}-#{away_score || '?'}"
-  end
-
-  def summary
-    "#{home_team.short} - #{away_team.short} #{score} #{date}"
-  end
+  def score = "#{home_score || '?'}-#{away_score || '?'}"
+  def summary = "#{home_team.short} - #{away_team.short} #{score} #{date}"
 
   def self.search(params, path, opt={})
     matches = by_date
@@ -47,8 +42,8 @@ class Match < ApplicationRecord
     end
   end
 
-  def self.seasons() = pluck(:season).uniq.sort
-  def self.latest_season() = maximum(:season)
+  def self.seasons = pluck(:season).uniq.sort
+  def self.latest_season = maximum(:season)
 
   private
 
