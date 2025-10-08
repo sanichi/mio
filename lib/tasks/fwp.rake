@@ -1,9 +1,9 @@
-# Ref: https://docs.football-data.org/general/v4/index.html
+# Ref: https://www.footballwebpages.co.uk/api
 
 # main API URL for the premier league
-FD_URL = "https://api.football-data.org/v4/competitions/PL/"
+FWP_URL = "https://api.footballwebpages.co.uk/v2/"
 
-class FdTeam
+class FwdTeam
   def initialize(team_hash, i)
     @data = team_hash
     @i = i
@@ -11,46 +11,33 @@ class FdTeam
   end
 
   def id = @id || @data["id"]
-  def name = @name || normalize_name
+  def name = @name || @data["full-name"]
 
   private
-
-  def short_name = @short_name || @data["shortName"]
-
-  def normalize_name
-    case short_name
-    when "Tottenham" then "Spurs"
-    when "Wolverhampton" then "Wolves"
-    when "Nottingham" then "Forest"
-    when "Brighton Hove" then "Brighton"
-    else short_name
-    end
-  end
 
   def validate!
     raise "invalid team data (##{@i})" unless @data.is_a?(Hash)
     raise "invalid team id (##{@i})" unless id.is_a?(Integer) && id >= 0
-    raise "invalid team short name (##{@i})" unless short_name.is_a?(String) && short_name.length > 0
+    raise "invalid team name (##{@i})" unless name.is_a?(String) && name.length > 0
   end
 end
 
-class FdMatch
+class FwdMatch
   def initialize(match_hash, i)
     @data = match_hash
     @i = i
     validate!
   end
 
-  def date = @date ||= Date.parse(@data["utcDate"].to_s)
-  def home_team_id = @home_team_id ||= @data.dig("homeTeam", "id")
-  def away_team_id = @away_team_id ||= @data.dig("awayTeam", "id")
-  def home_score = @home_score ||= extract_score("home")
-  def away_score = @away_score ||= extract_score("away")
+  def date = @date ||= Date.parse(@data["date"].to_s)
+  def status = @status ||= @data.dig("status", "short")
+  def home_team_id = @home_team_id ||= @data.dig("home-team", "id")
+  def away_team_id = @away_team_id ||= @data.dig("away-team", "id")
+  def home_score = @home_score ||= status == "FT" ? @data.dig("home-team", "score") : nil
+  def away_score = @away_score ||= status == "FT" ? @data.dig("away-team", "score") : nil
   def score = "#{home_score || '?'}-#{away_score || '?'}"
 
   private
-
-  def extract_score(side) = @data.dig("score", "fullTime", side) || @data.dig("score", "halfTime", side)
 
   def validate!
     raise "invalid match data (##{@i})" unless @data.is_a?(Hash)
@@ -75,7 +62,7 @@ class FdMatch
 end
 
 # print feedback to the console or in the logs
-def fd_report(str, error=false)
+def fwp_report(str, error=false)
   str = JSON.generate(str, { array_nl: "\n", object_nl: "\n", indent: '  ', space_before: ' ', space: ' '}) unless str.is_a?(String)
   msg = "%s%s%s" % [@print ? "" : "FDATA ", error ? "ERROR " : "", str]
   if @print
@@ -86,26 +73,26 @@ def fd_report(str, error=false)
 end
 
 # get a DB team using an API id
-def fd_retrieve_team(id, cache, i)
+def fwp_retrieve_team(id, cache, i)
   return cache[id] if cache[id]
-  team = Team.find_by(fd_id: id)
+  team = Team.find_by(fwp_id: id)
   raise "team id #{id} has no match in DB (##{i})" unless team
   cache[id] = team
   team
 end
 
 # request API data
-def fd_api_data(path)
+def fwp_api_data(path)
   # setup the request and execute it
-  url = FD_URL + path
+  url = FWP_URL + path
   uri = URI(url)
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
   request = Net::HTTP::Get.new(uri)
-  request["X-AUTH-TOKEN"] = Rails.application.credentials.fdata[:api]
+  request["FWP-API-Key"] = Rails.application.credentials.fwp[:api]
   r = http.request(request)
   if r.code != "200" || r.content_type != "application/json"
-    fd_report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
+    fwp_report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
     return nil
   end
 
@@ -115,15 +102,15 @@ def fd_api_data(path)
   begin
     data = JSON.parse(r.read_body)
   rescue => p
-    fd_report("path: #{path}, parse error: #{p.message}, JSON...", true)
-    fd_report(json)
+    fwp_report("path: #{path}, parse error: #{p.message}, JSON...", true)
+    fwp_report(json)
   end
 
   # return whatever we got (might be nil if problem)
   data
 end
 
-namespace :fdata do
+namespace :fwp do
   # Meant to be run by hand at the beginning of the season.
   # It will make sure the all teams have a football-data id.
   # No output means everything is already OK.
@@ -133,7 +120,7 @@ namespace :fdata do
     @print = true
 
     # get the data
-    data = fd_api_data("teams")
+    data = fwp_api_data("teams.json?comp=1")
 
     # check and process the structure
     begin
@@ -145,21 +132,21 @@ namespace :fdata do
       # make sure each of these 20 teams is in the database with the correct API ID
       teams.each_with_index do |team_data, i|
         # extract and validate the data for this team
-        fd_team = FdTeam.new(team_data, i)
+        fwp_team = FwdTeam.new(team_data, i)
 
         # match to a team in our database
-        db_team = Team.find_by(name: fd_team.name)
-        db_team = Team.find_by(short: fd_team.name) unless db_team
-        raise "no such team as #{fd_team.name} (#{i})" unless db_team
+        db_team = Team.find_by(name: fwp_team.name)
+        db_team = Team.find_by(short: fwp_team.name) unless db_team
+        raise "no such team as #{fwp_team.name} (#{i})" unless db_team
 
         # update the API id of the db_team if necessary
-        if db_team.fd_id != fd_team.id
-          puts "setting API id for #{db_team.name} (#{db_team.fd_id} => #{fd_team.id})"
-          db_team.update_column(:fd_id, fd_team.id)
+        if db_team.fwp_id != fwp_team.id
+          puts "setting API id for #{db_team.name} (#{db_team.fwp_id} => #{fwp_team.id})"
+          db_team.update_column(:fwp_id, fwp_team.id)
         end
       end
     rescue => e
-      fd_report(e.message, true)
+      fwp_report(e.message, true)
     end
   end
 
@@ -175,12 +162,12 @@ namespace :fdata do
     season = Match.current_season
 
     # get the data
-    data = fd_api_data("matches")
+    data = fwp_api_data("fixtures-results.json?comp=1")
 
     # check and process the structure
     begin
       raise "bad data (#{data.class})" unless data.is_a?(Hash)
-      matches = data.dig("matches")
+      matches = data.dig("fixtures-results", "matches")
       raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
       raise "bad number of matches (#{matches.size})" unless matches.size == 380
 
@@ -190,31 +177,31 @@ namespace :fdata do
       # sync the matches with the database
       matches.each_with_index do |match_data, i|
         # extract and validate the data for this match
-        fd_match = FdMatch.new(match_data, i)
+        fwp_match = FwdMatch.new(match_data, i)
 
         # get the home and away DB teams
-        home_team = fd_retrieve_team(fd_match.home_team_id, cache, i)
-        away_team = fd_retrieve_team(fd_match.away_team_id, cache, i)
+        home_team = fwp_retrieve_team(fwp_match.home_team_id, cache, i)
+        away_team = fwp_retrieve_team(fwp_match.away_team_id, cache, i)
 
         # create or update the DB match object
         db_match = Match.find_by(home_team_id: home_team.id, away_team_id: away_team.id, season: season)
         if db_match
           updates = 0
-          if db_match.date != fd_match.date
-            fd_report("updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{fd_match.date.to_s})")
-            db_match.update_column(:date, fd_match.date)
+          if db_match.date != fwp_match.date
+            fwp_report("updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{fwp_match.date.to_s})")
+            db_match.update_column(:date, fwp_match.date)
             updates += 1
           end
-          if db_match.score != fd_match.score
-            fd_report("updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{fd_match.score})")
-            db_match.update_column(:home_score, fd_match.home_score) if db_match.home_score != fd_match.home_score
-            db_match.update_column(:away_score, fd_match.away_score) if db_match.away_score != fd_match.away_score
+          if db_match.score != fwp_match.score
+            fwp_report("updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{fwp_match.score})")
+            db_match.update_column(:home_score, fwp_match.home_score) if db_match.home_score != fwp_match.home_score
+            db_match.update_column(:away_score, fwp_match.away_score) if db_match.away_score != fwp_match.away_score
             updates += 1
           end
           db_match.touch if updates > 0
         else
           begin
-            db_match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: season, date: fd_match.date, home_score: fd_match.home_score, away_score: fd_match.away_score)
+            db_match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: season, date: fwp_match.date, home_score: fwp_match.home_score, away_score: fwp_match.away_score)
             report "created #{db_match.summary}"
           rescue => e
             raise "couldn't create match (##{i}): #{e.message}"
@@ -222,7 +209,7 @@ namespace :fdata do
         end
       end
     rescue => e
-      fd_report(e.message, true)
+      fwp_report(e.message, true)
     end
   end
 end
