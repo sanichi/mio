@@ -89,7 +89,7 @@ def fwp_api_data(path)
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
   request = Net::HTTP::Get.new(uri)
-  request["FWP-API-Key"] = Rails.application.credentials.fwp[:api]
+  request["FWP-API-Key"] = Rails.application.credentials.football_web_pages[:key]
   r = http.request(request)
   if r.code != "200" || r.content_type != "application/json"
     fwp_report("path: #{path}, code: #{r.code}, content type: #{r.content_type}, message: #{r.message}", true)
