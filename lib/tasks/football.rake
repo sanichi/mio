@@ -41,8 +41,8 @@ class FdFootballApi < FootballApi
   def base_url = "https://api.football-data.org/v4/competitions/"
   def teams_path = "PL/teams"
   def matches_path = "PL/matches"
-  def get_teams(data) = data.dig("teams")
-  def get_matches(data) = data.dig("matches")
+  def get_teams(data) = data["teams"]
+  def get_matches(data) = data["matches"]
 
   def add_headers(request)
     request["X-AUTH-TOKEN"] = Rails.application.credentials.football_data[:token]
@@ -53,7 +53,7 @@ class FwpFootballApi < FootballApi
   def base_url = "https://api.footballwebpages.co.uk/v2/"
   def teams_path = "teams.json?comp=1"
   def matches_path = "fixtures-results.json?comp=1"
-  def get_teams(data) = data.dig("teams")
+  def get_teams(data) = data["teams"]
   def get_matches(data) = data.dig("fixtures-results", "matches")
 
   def add_headers(request)
