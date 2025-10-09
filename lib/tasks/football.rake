@@ -221,7 +221,7 @@ namespace :football do
         db_team = Team.find_by(short: api_team.name) unless db_team
         raise "no such team as #{api_team.name} (##{i})" unless db_team
 
-        # make sure the database has the correct API
+        # make sure the database has the correct API ID
         if db_team.send(id_attr) != api_team.id
           puts "setting API ID for #{db_team.name} (#{db_team.send(id_attr)} => #{api_team.id})"
           db_team.update_column(id_attr, api_team.id)
