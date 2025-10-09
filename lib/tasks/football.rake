@@ -72,7 +72,7 @@ class FootballTeam # abstract
 
   def validate!
     raise "invalid team data (##{@i})" unless @data.is_a?(Hash)
-    raise "invalid team id (##{@i})" unless id.is_a?(Integer) && id >= 0
+    raise "invalid team ID (##{@i})" unless id.is_a?(Integer) && id >= 0
     raise "invalid team name (##{@i})" unless name.is_a?(String) && name.length > 0
   end
 end
@@ -119,8 +119,8 @@ class FootballMatch # abstract
     rescue Date::Error
       raise "invalid match date (##{@i})"
     end
-    raise "invalid home team id (##{@i})" unless home_team_id.is_a?(Integer) && home_team_id >= 0
-    raise "invalid away team id (##{@i})" unless away_team_id.is_a?(Integer) && away_team_id >= 0
+    raise "invalid home team ID (##{@i})" unless home_team_id.is_a?(Integer) && home_team_id >= 0
+    raise "invalid away team ID (##{@i})" unless away_team_id.is_a?(Integer) && away_team_id >= 0
     raise "home and away teams are identical (##{@i})" if home_team_id == away_team_id
     unless home_score.nil? || (home_score.is_a?(Integer) && home_score >= 0)
       raise "invalid home score (##{@i})"
@@ -183,7 +183,7 @@ end
 def fb_db_team(id, id_attr, cache, i)
   return cache[id] if cache[id]
   team = Team.find_by(id_attr => id)
-  raise "team id #{id} has no match with #{id_attr} in DB (##{i})" unless team
+  raise "team ID #{id} has no match with #{id_attr} in DB (##{i})" unless team
   cache[id] = team
   team
 end
@@ -220,8 +220,8 @@ namespace :football do
         raise "no such team as #{api_team.name} (##{i})" unless db_team
 
         # make sure the database has the correct API
-        if db_team.send(id) != api_team.id
-          puts "setting API id for #{db_team.name} (#{db_team.send(id)} => #{api_team.id})"
+        if db_team.send(id_attr) != api_team.id
+          puts "setting API ID for #{db_team.name} (#{db_team.send(id_attr)} => #{api_team.id})"
           db_team.update_column(id_attr, api_team.id)
         end
       end
