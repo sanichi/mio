@@ -1,4 +1,22 @@
 class FootballApi # abstract
+  def teams
+    data = get_data(base_url + teams_path)
+    teams = get_teams(data)
+    raise "bad teams (#{teams.class})" unless teams.is_a?(Array)
+    raise "bad number of teams (#{teams.size})" unless teams.size == 20
+    teams
+  end
+
+  def matches
+    data = get_data(base_url + matches_path)
+    matches = get_matches(data)
+    raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
+    raise "bad number of matches (#{matches.size})" unless matches.size == 380
+    matches
+  end
+
+  private
+
   def get_data(url)
     uri = URI(url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -18,22 +36,6 @@ class FootballApi # abstract
     end
     raise "bad data (#{data.class})" unless data.is_a?(Hash)
     data
-  end
-
-  def teams
-    data = get_data(base_url + teams_path)
-    teams = get_teams(data)
-    raise "bad teams (#{teams.class})" unless teams.is_a?(Array)
-    raise "bad number of teams (#{teams.size})" unless teams.size == 20
-    teams
-  end
-
-  def matches
-    data = get_data(base_url + matches_path)
-    matches = get_matches(data)
-    raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
-    raise "bad number of matches (#{matches.size})" unless matches.size == 380
-    matches
   end
 end
 
