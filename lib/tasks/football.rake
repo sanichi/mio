@@ -40,24 +40,26 @@ class FootballApi # abstract
 end
 
 class FdFootballApi < FootballApi
+  private
+
   def base_url = "https://api.football-data.org/v4/competitions/"
   def teams_path = "PL/teams"
   def matches_path = "PL/matches"
   def get_teams(data) = data["teams"]
   def get_matches(data) = data["matches"]
-
   def add_headers(request)
     request["X-AUTH-TOKEN"] = Rails.application.credentials.football_data[:token]
   end
 end
 
 class FwpFootballApi < FootballApi
+  private
+
   def base_url = "https://api.footballwebpages.co.uk/v2/"
   def teams_path = "teams.json?comp=1"
   def matches_path = "fixtures-results.json?comp=1"
   def get_teams(data) = data["teams"]
   def get_matches(data) = data.dig("fixtures-results", "matches")
-
   def add_headers(request)
     request["FWP-API-Key"] = Rails.application.credentials.football_web_pages[:key]
   end
@@ -149,12 +151,24 @@ class FwpFootballMatch < FootballMatch
   def date = @date ||= Date.parse(@data["date"].to_s)
   def home_team_id = @home_team_id ||= @data.dig("home-team", "id")
   def away_team_id = @away_team_id ||= @data.dig("away-team", "id")
-  def home_score = @home_score ||= started? ? @data.dig("home-team", "score") : nil
-  def away_score = @away_score ||= started? ? @data.dig("away-team", "score") : nil
+  def home_score = @home_score ||= started? ? home_goals : nil
+  def away_score = @away_score ||= started? ? away_goals : nil
 
   private
 
-  def started? = @started ||= %w/FT HT/.include?(@data.dig("status", "short"))
+  # for this API the scores seem never to be nil (before the match starts they are zero)
+  # the code below assumes they are never nil and the addition of "|| 0" makes this certain
+  def home_goals = @home_goals ||= @data.dig("home-team", "score") || 0
+  def away_goals = @away_goals ||= @data.dig("away-team", "score") || 0
+
+  def started?
+    return @started if defined?(@started)
+    pattern = /\A(FT|HT)\z/ # not entirely sure what other status values are allowed
+    started = @data.dig("status", "short")&.match?(pattern)
+    started = home_goals > 0 unless started # but if a goal has been scored
+    started = away_goals > 0 unless started # then the game must have started
+    @started = started
+  end
 end
 
 def fb_report(str, error=false)
