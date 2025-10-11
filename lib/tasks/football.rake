@@ -254,6 +254,7 @@ namespace :football do
   desc "review and update all matches"
   task :matches, [:api, :log] => :environment do |task, args|
     @log = args[:log].is_a?(String) && args[:log].match?(/\Al(og)?\z/i)
+    fb_report("started football:matches at #{Time.now}") if @log
     @api = fb_set_api(args[:api])
 
     # get stuff we'll need below
@@ -298,5 +299,7 @@ namespace :football do
     rescue => e
       fb_report(e.message, true)
     end
+
+    fb_report("finished football:matches at #{Time.now}") if @log
   end
 end
