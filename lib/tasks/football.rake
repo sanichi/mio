@@ -29,7 +29,7 @@ class FootballApi # abstract
     end
     json = r.read_body || "empty body"
     begin
-      data = JSON.parse(r.read_body)
+      data = JSON.parse(json)
     rescue => e
       fb_report json, true
       raise "parse error: #{e.message}"
@@ -164,7 +164,7 @@ class FwpFootballMatch < FootballMatch
   def started?
     return @started if defined?(@started)
     pattern = /\A(FT|HT)\z/ # not entirely sure what other status values are allowed
-    started = @data.dig("status", "short")&.match?(pattern)
+    started = !!@data.dig("status", "short")&.match?(pattern)
     started = home_goals > 0 unless started # but if a goal has been scored
     started = away_goals > 0 unless started # then the game must have started
     @started = started
@@ -252,7 +252,7 @@ namespace :football do
   # Creates or updates db matches from API data.
   # Examples:
   #   0 22 * * * cd /var/www/me.mio/current; RAILS_ENV=production bin/rails football:matches[fd,log] >> log/cron.log 2>&1
-  #   $ RAILS_ENV=production bin/rails football:matches\[fwd\] # output to terminal
+  #   $ RAILS_ENV=production bin/rails football:matches\[fwp\] # output to terminal
   desc "review and update all matches"
   task :matches, [:api, :log] => :environment do |task, args|
     @log = args[:log].is_a?(String) && args[:log].match?(/\Al(og)?\z/i)
