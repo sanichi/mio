@@ -1,6 +1,6 @@
 # bin/cap production football:matches
-# bin/cap production football:matches[fd]
-# bin/cap production football:matches[fwp]
+# bin/cap production football:matches\[fd\]
+# bin/cap production football:matches\[fwp\]
 namespace :football do
   desc "Update the latest premier league matches"
   task :matches, [:api] => 'deploy:set_rails_env' do |task, args|
