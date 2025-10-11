@@ -82,12 +82,12 @@ class FootballTeam # abstract
 end
 
 class FdFootballTeam < FootballTeam
-  def id = @id || @data["id"]
-  def name = @name || normalize_name
+  def id = @id ||= @data["id"]
+  def name = @name ||= normalize_name
 
   private
 
-  def short_name = @short_name || @data["shortName"]
+  def short_name = @short_name ||= @data["shortName"]
 
   def normalize_name
     case short_name
@@ -101,8 +101,8 @@ class FdFootballTeam < FootballTeam
 end
 
 class FwpFootballTeam < FootballTeam
-  def id = @id || @data["id"]
-  def name = @name || @data["full-name"]
+  def id = @id ||= @data["id"]
+  def name = @name ||= @data["full-name"]
 end
 
 class FootballMatch # abstract
