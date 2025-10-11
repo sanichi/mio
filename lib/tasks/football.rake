@@ -31,7 +31,7 @@ class FootballApi # abstract
     begin
       data = JSON.parse(r.read_body)
     rescue => e
-      fb_report(json, true)
+      fb_report json, true
       raise "parse error: #{e.message}"
     end
     raise "bad data (#{data.class})" unless data.is_a?(Hash)
@@ -183,9 +183,11 @@ end
 
 def fb_set_api(str)
   case str
-  when "fd", "football-data"
+  when "fd"
+    fb_report "using football-data"
     :fd
-  when "fwp", "football-web-pages"
+  when "fwp"
+    fb_report "using football-web-pages"
     :fwp
   when nil
     fb_report "defaulting to football-web-pages"
@@ -242,7 +244,7 @@ namespace :football do
         end
       end
     rescue => e
-      fb_report(e.message, true)
+      fb_report e.message, true
     end
   end
 
@@ -254,7 +256,7 @@ namespace :football do
   desc "review and update all matches"
   task :matches, [:api, :log] => :environment do |task, args|
     @log = args[:log].is_a?(String) && args[:log].match?(/\Al(og)?\z/i)
-    fb_report("started football:matches at #{Time.now}") if @log
+    fb_report "started football:matches at #{Time.now}" if @log
     @api = fb_set_api(args[:api])
 
     # get stuff we'll need below
@@ -276,12 +278,12 @@ namespace :football do
         if db_match
           updates = 0
           if db_match.date != api_match.date
-            fb_report("updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{api_match.date.to_s})")
+            fb_report "updated #{home_team.short} - #{away_team.short} date (#{db_match.date.to_s} => #{api_match.date.to_s})"
             db_match.update_column(:date, api_match.date)
             updates += 1
           end
           if db_match.score != api_match.score
-            fb_report("updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{api_match.score})")
+            fb_report "updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{api_match.score})"
             db_match.update_column(:home_score, api_match.home_score) if db_match.home_score != api_match.home_score
             db_match.update_column(:away_score, api_match.away_score) if db_match.away_score != api_match.away_score
             updates += 1
@@ -290,16 +292,16 @@ namespace :football do
         else
           begin
             db_match = Match.create!(home_team_id: home_team.id, away_team_id: away_team.id, season: season, date: api_match.date, home_score: api_match.home_score, away_score: api_match.away_score)
-            fb_report("created #{db_match.summary}")
+            fb_report "created #{db_match.summary}"
           rescue => e
             raise "couldn't create match (##{i}): #{e.message}"
           end
         end
       end
     rescue => e
-      fb_report(e.message, true)
+      fb_report e.message, true
     end
 
-    fb_report("finished football:matches at #{Time.now}") if @log
+    fb_report "finished football:matches at #{Time.now}" if @log
   end
 end
