@@ -90,7 +90,6 @@ class FdFootballTeam < FootballTeam
   private
 
   def short_name = @short_name ||= @data["shortName"]
-
   def normalize_name
     case short_name
     when "Tottenham" then "Spurs"
@@ -155,27 +154,26 @@ class FwpFootballMatch < FootballMatch
   def away_team_id = @away_team_id ||= @data.dig("away-team", "id")
   def home_score = @home_score ||= started? ? home_goals : nil
   def away_score = @away_score ||= started? ? away_goals : nil
-  def status = @status ||= @data.dig("status", "short")
 
   private
 
   def validate!
     super
     raise "invalid status (##{@i})" unless status.is_a?(String)
+    raise "invalid home team score (##{@i})" unless home_goals.is_a?(Integer) && home_goals >= 0
+    raise "invalid away team score (##{@i})" unless away_goals.is_a?(Integer) && away_goals >= 0
   end
 
-  # for this API the scores seem never to be nil (before the match starts they are zero)
-  # the code below assumes they are never nil and the addition of "|| 0" makes this certain
-  def home_goals = @home_goals ||= @data.dig("home-team", "score") || 0
-  def away_goals = @away_goals ||= @data.dig("away-team", "score") || 0
-
+  def status = @status ||= @data.dig("status", "short")
+  def home_goals = @home_goals ||= @data.dig("home-team", "score")
+  def away_goals = @away_goals ||= @data.dig("away-team", "score")
   def started?
     return @started if defined?(@started)
+    # if status is FT then game is finished and therefore started
+    # however not yet sure what status values indicate game is in
+    # progress so use heuristic: if goal scored then game started
     started = status.match? /\A(FT|HT)\z/
-    # not entirely sure what status values are allowed so we use a heuristic
-    # if a goal has been scored then the game must have started
-    started = home_goals > 0 unless started
-    started = away_goals > 0 unless started
+    started = home_goals > 0 || away_goals > 0 unless started
     @started = started
   end
 end
