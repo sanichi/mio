@@ -153,8 +153,14 @@ class FwpFootballMatch < FootballMatch
   def away_team_id = @away_team_id ||= @data.dig("away-team", "id")
   def home_score = @home_score ||= started? ? home_goals : nil
   def away_score = @away_score ||= started? ? away_goals : nil
+  def status = @status ||= @data.dig("status", "short")
 
   private
+
+  def validate!
+    super
+    raise "invalid status (##{@i})" unless status.is_a?(String)
+  end
 
   # for this API the scores seem never to be nil (before the match starts they are zero)
   # the code below assumes they are never nil and the addition of "|| 0" makes this certain
@@ -163,10 +169,11 @@ class FwpFootballMatch < FootballMatch
 
   def started?
     return @started if defined?(@started)
-    pattern = /\A(FT|HT)\z/ # not entirely sure what other status values are allowed
-    started = !!@data.dig("status", "short")&.match?(pattern)
-    started = home_goals > 0 unless started # but if a goal has been scored
-    started = away_goals > 0 unless started # then the game must have started
+    started = status.match? /\A(FT|HT)\z/
+    # not entirely sure what status values are allowed so we use a heuristic
+    # if a goal has been scored then the game must have started
+    started = home_goals > 0 unless started
+    started = away_goals > 0 unless started
     @started = started
   end
 end
