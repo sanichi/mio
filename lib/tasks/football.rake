@@ -1,9 +1,11 @@
+FOOTBALL_TEAMS = 20
+
 class FootballApi # abstract
   def teams
     data = get_data(base_url + teams_path)
     teams = get_teams(data)
     raise "bad teams (#{teams.class})" unless teams.is_a?(Array)
-    raise "bad number of teams (#{teams.size})" unless teams.size == 20
+    raise "bad number of teams (#{teams.size})" unless teams.size == FOOTBALL_TEAMS
     teams
   end
 
@@ -11,7 +13,7 @@ class FootballApi # abstract
     data = get_data(base_url + matches_path)
     matches = get_matches(data)
     raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
-    raise "bad number of matches (#{matches.size})" unless matches.size == 380
+    raise "bad number of matches (#{matches.size})" unless matches.size == FOOTBALL_TEAMS * (FOOTBALL_TEAMS - 1)
     matches
   end
 
