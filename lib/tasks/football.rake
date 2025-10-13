@@ -1,4 +1,5 @@
 FOOTBALL_TEAMS = 20
+FOOTBALL_MATCHES = FOOTBALL_TEAMS * (FOOTBALL_TEAMS - 1)
 
 class FootballApi # abstract
   def teams
@@ -13,7 +14,7 @@ class FootballApi # abstract
     data = get_data(base_url + matches_path)
     matches = get_matches(data)
     raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
-    raise "bad number of matches (#{matches.size})" unless matches.size == FOOTBALL_TEAMS * (FOOTBALL_TEAMS - 1)
+    raise "bad number of matches (#{matches.size})" unless matches.size == FOOTBALL_MATCHES
     matches
   end
 
@@ -246,7 +247,7 @@ namespace :football do
 
         # make sure the database has the correct API ID
         if db_team.send(id_attr) != api_team.id
-          puts "setting API ID for #{db_team.name} (#{db_team.send(id_attr)} => #{api_team.id})"
+          fb_report "setting API ID for #{db_team.name} (#{db_team.send(id_attr)} => #{api_team.id})"
           db_team.update_column(id_attr, api_team.id)
         end
       end
