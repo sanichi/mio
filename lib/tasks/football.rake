@@ -192,15 +192,16 @@ end
 def fb_set_api(str)
   case str
   when "fd"
+    @api = :fd
     fb_report "using football-data"
-    :fd
   when "fwp"
+    @api = :fwp
     fb_report "using football-web-pages"
-    :fwp
   when nil
+    @api = :fwp
     fb_report "defaulting to football-web-pages"
-    :fwp
   else
+    @api = :bad
     fb_report "invalid API (#{str})", true
     exit
   end
@@ -230,7 +231,7 @@ namespace :football do
   desc "get API team IDs and check against our DB"
   task :teams, [:api] => :environment do |task, args|
     @log = false
-    @api = fb_set_api(args[:api])
+    fb_set_api(args[:api]) # sets @api
 
     # get stuff we'll need below
     id_attr = fb_id_attr # the name of the DB team attribute holding the API ID
@@ -264,8 +265,8 @@ namespace :football do
   desc "review and update all matches"
   task :matches, [:api, :log] => :environment do |task, args|
     @log = args[:log].is_a?(String) && args[:log].match?(/\Al(og)?\z/i)
+    fb_set_api(args[:api]) # sets @api
     fb_report "started football:matches at #{Time.now}" if @log
-    @api = fb_set_api(args[:api])
 
     # get stuff we'll need below
     cache = {} # so do we don't have to keep looking up teams by their API ID
