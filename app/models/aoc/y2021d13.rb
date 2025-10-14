@@ -36,9 +36,9 @@ class Aoc::Y2021d13 < Aoc
 
     def fold_all
       instructions.each{|i| fold(i)}
-      (0..height-1).each do |y|
-        Rails.logger.info (0..width-1).map{|x| dots[[x,y]] ? "#" : '.'}.join
-      end
+      # (0..height-1).each do |y|
+      #   Rails.logger.info (0..width-1).map{|x| dots[[x,y]] ? "#" : '.'}.join
+      # end
       "EPZGKCHU" # from visual inspection of log output
     end
 

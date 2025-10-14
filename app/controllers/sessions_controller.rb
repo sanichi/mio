@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
   def create
     user = authenticate_user(params[:email], params[:password])
-    logger.info "XXX authentication #{user ? 'passed' : 'failed'} for #{params[:email]}"
     if user
       if user.otp_required?
         session[:otp_user_id] = user.id
@@ -9,6 +8,7 @@ class SessionsController < ApplicationController
         success = nil
       else
         session[:user_id] = user.id
+        logger.info "ZZZ redirecting to #{last_path} for #{params[:email]}"
         redirect_to last_path
         success = true
       end
@@ -33,7 +33,6 @@ class SessionsController < ApplicationController
 
   def authenticate_user(email, password)
     user = User.find_by(email: email)
-    logger.info "XXX user #{user ? 'not found' : 'exists'} for #{email}"
     return user if current_user.admin? # admin can impersonate any user
     user&.authenticate(password)
   end

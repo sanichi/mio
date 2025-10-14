@@ -16,7 +16,7 @@ class Aoc::Y2021d23 < Aoc
       string, estimate, cost = q.shift
       count += 1
     end
-    Rails.logger.info "QQQ #{count} #{q.size} #{string} #{estimate} #{cost}"
+    # Rails.logger.info "QQQ #{count} #{q.size} #{string} #{estimate} #{cost}"
     q.size
   end
 
