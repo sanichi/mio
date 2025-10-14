@@ -8,7 +8,7 @@ class OtpSecretsController < ApplicationController
         @su_code = session[:otp_secret]
       end
     else
-      redirect_to new_session
+      redirect_to new_session_path
     end
   end
 
