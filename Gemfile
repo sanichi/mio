@@ -22,6 +22,7 @@ gem 'rqrcode', '~> 3.1'
 gem 'jbuilder', '~> 2.7'
 gem 'meta-tags', '~> 2.12'
 gem 'csv', '< 4'
+gem 'bcrypt', '< 4'
 gem 'sprockets-rails', '~> 3.4'
 gem "importmap-rails", "~> 2.1"
 gem "turbo-rails", "~> 2.0"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_150413) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_140438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -312,7 +312,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_150413) do
 
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", limit: 75
-    t.string "encrypted_password", limit: 32
     t.string "role", limit: 20
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -321,6 +320,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_150413) do
     t.boolean "otp_required", default: false
     t.string "otp_secret", limit: 32
     t.integer "last_otp_at"
+    t.string "password_digest"
   end
 
   create_table "wk_audios", force: :cascade do |t|

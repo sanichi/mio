@@ -32,7 +32,6 @@ describe User, js: true do
         u = User.last
 
         expect(u.email).to eq data.email
-        expect(u.encrypted_password).to eq Digest::MD5.hexdigest(data.password)
         expect(u.first_name).to eq data.first_name
         expect(u.last_name).to eq data.last_name
         expect(u.role).to eq data.role
@@ -67,7 +66,6 @@ describe User, js: true do
         u = User.last
 
         expect(u.email).to eq data.email
-        expect(u.encrypted_password).to eq Digest::MD5.hexdigest(data.password)
         expect(u.first_name).to eq data.first_name
         expect(u.last_name).to eq data.last_name
         expect(u.role).to eq data.role
@@ -140,8 +138,6 @@ describe User, js: true do
 
         expect(User.count).to eq 2
         u = User.last
-
-        expect(u.encrypted_password).to eq Digest::MD5.hexdigest(new_password)
       end
 
       it "role" do
@@ -158,7 +154,6 @@ describe User, js: true do
         expect(User.count).to eq 2
         u = User.last
 
-        expect(u.encrypted_password).to eq Digest::MD5.hexdigest(user.password)
         expect(u.role).to eq new_role
       end
     end
