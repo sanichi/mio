@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "sign_in"  => "sessions#new"
   get "sign_out" => "sessions#destroy"
   resource :otp_secret, only: [:new, :create]
+  resource :session, only: [:create, :new, :destroy]
 
   %w[aoc board env deeds magic pam play prefectures premier premier_table risle ruby weight].each do |page|
     get page => "pages##{page}"
@@ -60,7 +61,6 @@ Rails.application.routes.draw do
     get :move, on: :member
     patch :shift, on: :member
   end
-  resources :sessions, only: [:create]
   resources :sounds, only: [:index, :show, :edit, :update] do
     patch :quick_level_update, on: :member
   end
