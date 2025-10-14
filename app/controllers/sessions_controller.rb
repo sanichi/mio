@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
         success = nil
       else
         session[:user_id] = user.id
-        logger.info "ZZZ redirecting to #{last_path} for #{params[:email]}"
         redirect_to last_path
         success = true
       end
