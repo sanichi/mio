@@ -98,11 +98,45 @@ class UserPathStat < SessionStat
   end
 end
 
+class CreatedAtStat < SessionStat
+  def initialize
+    @days_ago_counts = Hash.new(0)
+  end
+
+  def add(created_at, id)
+    if created_at.nil? || !created_at.respond_to?(:to_date)
+      days_ago = -id
+    else
+      days_ago = (Date.current - created_at.to_date).to_i
+      days_ago = -id if days_ago < 0
+      @days_ago_counts[days_ago] += 1
+      if days_ago >= 0
+        update_max(days_ago.to_s.length)
+      else
+        update_max(session_id_error(days_ago))
+      end
+      days_ago
+    end
+  end
+
+  def list
+    puts "created_at days ago (#{@days_ago_counts.size})"
+    @days_ago_counts.sort_by{|days_ago, count| -days_ago}.each do |days_ago, count|
+      days_ago = session_id_error(days_ago) if days_ago < 0
+      puts "#{indent}#{days_ago} #{'.' * (max - days_ago.to_s.length + indent.length)} #{count}"
+    end
+    puts
+  end
+end
+
 SESSION_STAT_TYPES = {
   ses: "session count",
   lps: "last_path counts",
   ups: "user counts and user's last_path counts",
+  cre: "created_at day counts",
 }.with_indifferent_access
+
+def session_id_error(id) = "ID #{id.abs} ERROR"
 
 namespace :session do
   desc "print stats about session stores"
@@ -118,12 +152,14 @@ namespace :session do
     ses = SesCountStat.new
     lps = LastPathStat.new
     ups = UserPathStat.new
+    cre = CreatedAtStat.new
 
     ActiveRecord::SessionStore::Session.find_each do |session|
       ses.add
       data = session.data
       path = lps.add(data["last_path"])
-      name = ups.add(data["user_id"], path)
+      ups.add(data["user_id"], path)
+      cre.add(session.created_at, session.id)
     rescue => e
       puts e.message
     end
@@ -133,6 +169,7 @@ namespace :session do
       when :ses then ses.list
       when :lps then lps.list
       when :ups then ups.list
+      when :cre then cre.list
       end
     end
   end
