@@ -104,7 +104,7 @@ class CreatedAtStat < SessionStat
   end
 
   def add(created_at, id)
-    if created_at.nil? || !created_at.respond_to?(:to_date)
+    if !created_at.respond_to?(:to_date)
       days_ago = -id
     else
       days_ago = (Date.current - created_at.to_date).to_i
@@ -113,7 +113,7 @@ class CreatedAtStat < SessionStat
       if days_ago >= 0
         update_max(days_ago.to_s.length)
       else
-        update_max(session_id_error(days_ago))
+        update_max(session_stat_id_error(days_ago))
       end
       days_ago
     end
@@ -122,7 +122,7 @@ class CreatedAtStat < SessionStat
   def list
     puts "created_at days ago (#{@days_ago_counts.size})"
     @days_ago_counts.sort_by{|days_ago, count| -days_ago}.each do |days_ago, count|
-      days_ago = session_id_error(days_ago) if days_ago < 0
+      days_ago = session_stat_id_error(days_ago) if days_ago < 0
       puts "#{indent}#{days_ago} #{'.' * (max - days_ago.to_s.length + indent.length)} #{count}"
     end
     puts
@@ -135,7 +135,7 @@ class UpdatedAtStat < SessionStat
   end
 
   def add(updated_at, id)
-    if updated_at.nil? || !updated_at.respond_to?(:to_date)
+    if !updated_at.respond_to?(:to_date)
       days_ago = -id
     else
       days_ago = (Date.current - updated_at.to_date).to_i
@@ -144,7 +144,7 @@ class UpdatedAtStat < SessionStat
       if days_ago >= 0
         update_max(days_ago.to_s.length)
       else
-        update_max(session_id_error(days_ago))
+        update_max(session_stat_id_error(days_ago))
       end
       days_ago
     end
@@ -153,8 +153,39 @@ class UpdatedAtStat < SessionStat
   def list
     puts "updated_at days ago (#{@days_ago_counts.size})"
     @days_ago_counts.sort_by{|days_ago, count| -days_ago}.each do |days_ago, count|
-      days_ago = session_id_error(days_ago) if days_ago < 0
+      days_ago = session_stat_id_error(days_ago) if days_ago < 0
       puts "#{indent}#{days_ago} #{'.' * (max - days_ago.to_s.length + indent.length)} #{count}"
+    end
+    puts
+  end
+end
+
+class AgeStat < SessionStat
+  def initialize
+    @age_counts = Hash.new(0)
+  end
+
+  def add(created_at, updated_at, id)
+    if !created_at.respond_to?(:to_date) || !updated_at.respond_to?(:to_date)
+      age = -id
+    else
+      age = (updated_at.to_date - created_at.to_date).to_i
+      age = -id if age < 0
+    end
+    @age_counts[age] += 1
+    if age >= 0
+      update_max(age.to_s.length)
+    else
+      update_max(session_stat_id_error(age).length)
+    end
+    age
+  end
+
+  def list
+    puts "session age counts (#{@age_counts.size})"
+    @age_counts.sort_by{|age, count| -age}.each do |age, count|
+      age = session_stat_id_error(age) if age < 0
+      puts "#{indent}#{age} #{'.' * (max - age.to_s.length + indent.length)} #{count}"
     end
     puts
   end
@@ -164,11 +195,12 @@ SESSION_STAT_TYPES = {
   ses: "session count",
   lps: "last_path counts",
   ups: "user counts and user's last_path counts",
-  cre: "created_at day counts",
-  upd: "updated_at day counts",
+  cre: "created_at days ago counts",
+  upd: "updated_at days ago counts",
+  age: "session age in days",
 }.with_indifferent_access
 
-def session_id_error(id) = "ID #{id.abs} ERROR"
+def session_stat_id_error(id) = "ID #{id.abs} ERROR"
 
 namespace :session do
   desc "print stats about session stores"
@@ -186,6 +218,7 @@ namespace :session do
     ups = UserPathStat.new
     cre = CreatedAtStat.new
     upd = UpdatedAtStat.new
+    age = AgeStat.new
 
     ActiveRecord::SessionStore::Session.find_each do |session|
       ses.add
@@ -194,6 +227,7 @@ namespace :session do
       ups.add(data["user_id"], path)
       cre.add(session.created_at, session.id)
       upd.add(session.updated_at, session.id)
+      age.add(session.created_at, session.updated_at, session.id)
     rescue => e
       puts e.message
     end
@@ -205,6 +239,7 @@ namespace :session do
       when :ups then ups.list
       when :cre then cre.list
       when :upd then upd.list
+      when :age then age.list
       end
     end
   end
