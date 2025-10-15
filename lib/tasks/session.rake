@@ -1,70 +1,152 @@
+class SessionStat # abstract
+  @@max = 0
+  @@user = Hash.new
+
+  def max = @@max
+  def update_max(length)
+    @@max = length if length > @@max
+  end
+  def indent = "  "
+
+  def user(id)
+    return "NIL" if id.nil?
+    return "INVALID (#{id.class})" unless id.is_a?(Integer)
+    return "ZERO" if id == 0
+    return "NEGATIVE (#{id})" if id < 0
+    return @@user[id] if @@user[id]
+    user = User.find_by(id: id)
+    if user
+      user = "#{user.email}"
+    else
+      user = "UNKNOWN[#{id}]"
+    end
+    @@user[id] = user
+  end
+end
+
+class SesCountStat < SessionStat
+  def initialize
+    @count = 0
+  end
+
+  def add
+    @count += 1
+  end
+
+  def list
+    puts "sessions (#{@count})"
+    puts
+  end
+end
+
+class LastPathStat < SessionStat
+  def initialize
+    @path_counts = Hash.new(0)
+  end
+
+  def add(path)
+    return if path.nil?
+    path = "INVALID (#{path.class})" unless path.is_a?(String)
+    path = "EMPTY" unless path.present?
+    path.sub!(/\/(%[A-F0-9][A-F0-9])+\z/, "/nnn")
+    path.sub!(/\/(\d)+\z/, "/nnn")
+    path.gsub!(/\/(\d)+\//, "/nnn/")
+    @path_counts[path] += 1
+    update_max(path.length)
+    path
+  end
+
+  def list
+    puts "last_path (#{@path_counts.size})"
+    @path_counts.sort_by{|path, count| -count}.each do |path, count|
+      puts "#{indent}#{path} #{'.' * (max - path.length + indent.length)} #{count}"
+    end
+    puts
+  end
+end
+
+class UserPathStat < SessionStat
+  def initialize
+    @user_path_counts = Hash.new { |h, k| h[k] = Hash.new(0) }
+    @user_counts = Hash.new(0)
+  end
+
+  def add(id, last_path)
+    return if id.nil?
+    name = user(id)
+    @user_counts[name] += 1
+    @user_path_counts[name][last_path] += 1 if last_path
+    update_max(name.length)
+    name
+  end
+
+  def list
+    puts "user_id (#{@user_counts.size})"
+    @user_counts.sort_by{|user, count| -count}.each do |user, count|
+      puts "#{indent}#{user} #{'.' * (max - user.length + indent.length)} #{count}"
+    end
+    puts
+
+    puts "user last_paths (#{@user_path_counts.size})"
+    @user_path_counts.each do |user, path_counts|
+      puts "  #{user} #{path_counts.size}"
+      path_counts.each do |path, count|
+        puts "#{indent}#{indent}#{path} #{'.' * (max - path.length)} #{count}"
+      end
+    end
+    puts
+  end
+end
+
+SESSION_STAT_TYPES = {
+  ses: "session count",
+  lps: "last_path counts",
+  ups: "user counts and user's last_path counts",
+}.with_indifferent_access
+
 namespace :session do
   desc "print stats about session stores"
-  task :stats => :environment do |task|
-    last_paths = Hash.new(0)
-    user_ids = Hash.new(0)
-    user_last_paths = Hash.new { |h, k| h[k] = Hash.new(0) }
-    users = Hash.new
-    max = 0
+  task :stats, [:stat] => :environment do |task, args|
+    stat = args[:stat].present? ? args[:stat].gsub(/\s+/,"").downcase : "all"
+    stat = SESSION_STAT_TYPES.keys.join(":") if stat == "all"
+    list = stat.split(":").filter{ |s| SESSION_STAT_TYPES.has_key?(s) }.map(&:to_sym)
+    if list.empty?
+      puts "invalid stat code(s): #{args[:stat]}"
+      exit
+    end
+
+    ses = SesCountStat.new
+    lps = LastPathStat.new
+    ups = UserPathStat.new
 
     ActiveRecord::SessionStore::Session.find_each do |session|
+      ses.add
       data = session.data
-
-      last_path = data["last_path"]
-      if last_path
-        last_path = "INVALID" unless last_path.is_a?(String)
-        last_path = "EMPTY" unless last_path.present?
-        last_path.sub!(/\/(%[A-F0-9][A-F0-9])+\z/, "/nnn")
-        last_path.sub!(/\/(\d)+\z/, "/nnn")
-        last_paths[last_path] += 1
-        max = last_path.length if last_path.length > max
-      end
-
-      user_id = data["user_id"]
-      if user_id
-        if users[user_id]
-          user = users[user_id]
-        else
-          if !user_id.is_a?(Integer)
-            user = user_id.class.to_s
-          elsif user_id < 0
-            user = "NEGATIVE"
-          elsif user_id == 0
-            user = "ZERO"
-          else
-            u = User.find_by(id: user_id)
-            if u
-              user = "#{u.email}"
-            else
-              user = "UNKNOWN[#{user_id}]"
-            end
-          end
-          users[user_id] = user
-        end
-        user_ids[user] += 1
-        max = user.length if user.length > max
-        user_last_paths[user][last_path] += 1 if last_path
-      end
+      path = lps.add(data["last_path"])
+      name = ups.add(data["user_id"], path)
     rescue => e
       puts e.message
     end
 
-    puts "last_path (#{last_paths.size})"
-    last_paths.sort_by{|path, count| -count}.each do |path, count|
-      puts "  #{path} #{'.' * (max - path.length + 2)} #{count}"
-    end
-
-    puts "user_id (#{user_ids.size})"
-    user_ids.sort_by{|user, count| -count}.each do |user, count|
-      puts "  #{user} #{'.' * (max - user.length + 2)} #{count}"
-    end
-
-    puts "user last_paths (#{user_last_paths.size})"
-    user_last_paths.each do |user, path_counts|
-      puts "  #{user} #{path_counts.size}"
-      path_counts.each do |path, count|
-        puts "    #{path} #{'.' * (max - path.length)} #{count}"
+    list.each do |stat|
+      case stat
+      when :ses then ses.list
+      when :lps then lps.list
+      when :ups then ups.list
       end
+    end
+  end
+
+  desc "print the available stat codes"
+  task :codes do |task|
+    puts "use one or more (colon separated) of the 3-letter codes below as an optional parameter to session:stats, e.g."
+    puts
+    puts "  $ bin/rake sesson:stats # defaults to all"
+    puts "  $ bin/rake sesson:stats\\[ups\\]"
+    puts "  $ bin/rake sesson:stats\\[ses:ups\\]"
+    puts
+    SESSION_STAT_TYPES.each do |code, stat|
+      puts "#{code}: #{stat}"
     end
   end
 end
