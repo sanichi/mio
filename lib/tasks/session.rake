@@ -1,26 +1,34 @@
+require 'amazing_print'
+
+module PrivateUserCache
+  @@users = Hash.new
+
+  def user(id)
+    return nil unless id.is_a?(Integer) && id > 0
+    return @@users[id] if @@users.has_key?(id)
+    @@users[id] = User.find_by(id: id)
+  end
+end
+
 class SessionStat # abstract
+  include PrivateUserCache
+
   @@max = 0
-  @@user = Hash.new
 
   def max = @@max
   def update_max(length)
     @@max = length if length > @@max
   end
   def indent = "  "
+  def id_error(id) = "ID #{id.abs} ERROR"
 
-  def user(id)
+  def name(id)
     return "NIL" if id.nil?
     return "INVALID (#{id.class})" unless id.is_a?(Integer)
     return "ZERO" if id == 0
     return "NEGATIVE (#{id})" if id < 0
-    return @@user[id] if @@user[id]
-    user = User.find_by(id: id)
-    if user
-      user = "#{user.email}"
-    else
-      user = "UNKNOWN[#{id}]"
-    end
-    @@user[id] = user
+    user = user(id)
+    user ? user.email : "UNKNOWN[#{id}]"
   end
 end
 
@@ -73,7 +81,7 @@ class UserPathStat < SessionStat
 
   def add(id, last_path)
     return if id.nil?
-    name = user(id)
+    name = name(id)
     @user_counts[name] += 1
     @user_path_counts[name][last_path] += 1 if last_path
     update_max(name.length)
@@ -113,7 +121,7 @@ class CreatedAtStat < SessionStat
       if days_ago >= 0
         update_max(days_ago.to_s.length)
       else
-        update_max(session_stat_id_error(days_ago))
+        update_max(id_error(days_ago))
       end
       days_ago
     end
@@ -122,7 +130,7 @@ class CreatedAtStat < SessionStat
   def list
     puts "created_at days ago (#{@days_ago_counts.size})"
     @days_ago_counts.sort_by{|days_ago, count| -days_ago}.each do |days_ago, count|
-      days_ago = session_stat_id_error(days_ago) if days_ago < 0
+      days_ago = id_error(days_ago) if days_ago < 0
       puts "#{indent}#{days_ago} #{'.' * (max - days_ago.to_s.length + indent.length)} #{count}"
     end
     puts
@@ -144,7 +152,7 @@ class UpdatedAtStat < SessionStat
       if days_ago >= 0
         update_max(days_ago.to_s.length)
       else
-        update_max(session_stat_id_error(days_ago))
+        update_max(id_error(days_ago))
       end
       days_ago
     end
@@ -153,7 +161,7 @@ class UpdatedAtStat < SessionStat
   def list
     puts "updated_at days ago (#{@days_ago_counts.size})"
     @days_ago_counts.sort_by{|days_ago, count| -days_ago}.each do |days_ago, count|
-      days_ago = session_stat_id_error(days_ago) if days_ago < 0
+      days_ago = id_error(days_ago) if days_ago < 0
       puts "#{indent}#{days_ago} #{'.' * (max - days_ago.to_s.length + indent.length)} #{count}"
     end
     puts
@@ -176,7 +184,7 @@ class AgeStat < SessionStat
     if age >= 0
       update_max(age.to_s.length)
     else
-      update_max(session_stat_id_error(age).length)
+      update_max(id_error(age).length)
     end
     age
   end
@@ -184,10 +192,58 @@ class AgeStat < SessionStat
   def list
     puts "session age counts (#{@age_counts.size})"
     @age_counts.sort_by{|age, count| -age}.each do |age, count|
-      age = session_stat_id_error(age) if age < 0
+      age = id_error(age) if age < 0
       puts "#{indent}#{age} #{'.' * (max - age.to_s.length + indent.length)} #{count}"
     end
     puts
+  end
+end
+
+class SessionLister # abstract
+  include PrivateUserCache
+
+  def initialize(max)
+    @max = max
+    @sessions = []
+  end
+
+  def add(session)
+    if interesting?(session)
+      @sessions << session
+    end
+  end
+
+  def list
+    order
+    @sessions.first(@max).each_with_index do |s, i|
+      before(s,i)
+      ap s
+      after(s,i)
+    end
+  end
+
+  # print something before the session, may be overridden
+  def before(s,i)
+    puts "================================== session #{i+1} =================================="
+  end
+
+  # print something after the session, may be overridden
+  def after(s,i)
+  end
+end
+
+class UserSessionLister < SessionLister
+  def order = @sessions.sort_by! { |s| -s.updated_at.to_i }
+  def interesting?(s) = s.data["user_id"].is_a?(Integer)
+
+  def before(s,i)
+    super
+    user = user(s.data["user_id"])
+    if user
+      puts "#{user.email} (#{user.id})"
+    else
+      puts "user (#{s.data["user_id"]}) UNKNOWN"
+    end
   end
 end
 
@@ -200,11 +256,16 @@ SESSION_STAT_TYPES = {
   age: "session age in days",
 }.with_indifferent_access
 
-def session_stat_id_error(id) = "ID #{id.abs} ERROR"
+SESSION_LIST_TYPES = {
+  usr: "logged in sessions sorted by descending updated time",
+}.with_indifferent_access
+
+SESSION_LIST_NUM_DEFAULT = 5
+SESSION_LIST_TYPE_DEFAULT = "usr"
 
 namespace :session do
   desc "print stats about session stores"
-  task :stats, [:stat] => :environment do |task, args|
+  task :stat, [:stat] => :environment do |task, args|
     stat = args[:stat].present? ? args[:stat].gsub(/\s+/,"").downcase : "all"
     stat = SESSION_STAT_TYPES.keys.join(":") if stat == "all"
     list = stat.split(":").filter{ |s| SESSION_STAT_TYPES.has_key?(s) }.map(&:to_sym)
@@ -245,15 +306,58 @@ namespace :session do
   end
 
   desc "print the available stat codes"
-  task :codes do |task|
-    puts "use one or more (colon separated) of the 3-letter codes below as an optional parameter to session:stats, e.g."
+  task :stat_codes do |task|
+    puts "use one or more (colon separated) of the 3-letter codes below as an optional parameter to session:stat"
     puts
-    puts "  $ bin/rake sesson:stats # defaults to all"
-    puts "  $ bin/rake sesson:stats\\[ups\\]"
-    puts "  $ bin/rake sesson:stats\\[ses:ups\\]"
+    puts "  $ bin/rake sesson:stat # defaults to all"
+    puts "  $ bin/rake sesson:stat\\[ups\\]"
+    puts "  $ bin/rake sesson:stat\\[ses:ups\\]"
     puts
     SESSION_STAT_TYPES.each do |code, stat|
       puts "#{code}: #{stat}"
+    end
+  end
+
+  desc "list a number of session stores that match various criteria"
+  task :list, [:code,:num] => :environment do |task, args|
+    code = args[:code].present? ? args[:code].gsub(/\s+/,"").downcase : SESSION_LIST_TYPE_DEFAULT
+    unless SESSION_LIST_TYPES.has_key?(code)
+      puts "invalid list code: (#{args[:code]})"
+      exit
+    end
+    num = args[:num].present? ? args[:num].to_i : SESSION_LIST_NUM_DEFAULT
+    unless num > 0
+      puts "invalid number of sessions to list: (#{args[:num]})"
+      exit
+    end
+
+    lister =
+      case code
+      when "usr"
+        UserSessionLister.new(num)
+      end
+
+    ActiveRecord::SessionStore::Session.find_each { |session| lister.add(session) }
+
+    AmazingPrint.defaults = {
+      indent: -2,
+      sort_keys: true,
+    }
+
+    lister.list
+  end
+
+  desc "print the available top codes"
+  task :list_codes do |task|
+    puts "use one of the 3-letter codes below as a parameter to session:top"
+    puts "provide the number of sessions to list or leave as default"
+    puts
+    puts "  $ bin/rake sesson:list             # code defaults to '#{SESSION_LIST_TYPE_DEFAULT}'"
+    puts "  $ bin/rake sesson:list\\[usr\\]      # number defaults to #{SESSION_LIST_NUM_DEFAULT}"
+    puts "  $ bin/rake sesson:list\\[usr,10\\]   # specify code and number"
+    puts
+    SESSION_LIST_TYPES.each do |code, top|
+      puts "#{code}: #{top}"
     end
   end
 end
