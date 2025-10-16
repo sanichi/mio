@@ -27,6 +27,7 @@ gem 'sprockets-rails', '~> 3.4'
 gem "importmap-rails", "~> 2.1"
 gem "turbo-rails", "~> 2.0"
 gem "stimulus-rails", "~> 1.3"
+gem 'amazing_print', '< 3', require: false
 
 group :development, :test do
   gem 'rspec-rails', '< 9'
@@ -47,5 +48,4 @@ group :development do
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen', '~> 3.2'
-  gem 'amazing_print', '< 3', require: false
 end
