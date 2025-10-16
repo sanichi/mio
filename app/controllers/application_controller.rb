@@ -33,6 +33,8 @@ class ApplicationController < ActionController::Base
     return if request.method != "GET" || request.format != "text/html" || request.xhr?
     return if !current_user.guest? || controller_name == "sessions" || controller_name == "otp_secrets"
     return if request.headers["Turbo-Frame"].present?
+    return if request.headers["Purpose"] == "prefetch"
+    return if request.accept&.include?("turbo-stream")
     session[:last_path] = request.path
   end
 
