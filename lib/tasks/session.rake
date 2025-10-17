@@ -66,7 +66,7 @@ class LastPathStat < SessionStat
 
   def list
     puts "last_path (#{@path_counts.size})"
-    @path_counts.sort_by{|path, count| -count}.each do |path, count|
+    @path_counts.sort_by{|_, count| -count}.each do |path, count|
       puts "#{indent}#{path} #{'.' * (max - path.length + indent.length)} #{count}"
     end
     puts
@@ -247,6 +247,19 @@ class UserSessionLister < SessionLister
   end
 end
 
+class AgeSessionLister < SessionLister
+  def order = @sessions.sort_by! { |s| -(s.updated_at.to_date - s.created_at.to_date).to_i }
+  def interesting?(s) = s.created_at.respond_to?(:to_date) && s.updated_at.respond_to?(:to_date)
+
+  def before(s,i)
+    super
+    user = user(s.data["user_id"])
+    age = (s.updated_at.to_date - s.created_at.to_date).to_i
+    puts "age: #{age} days"
+    puts "user: #{user.email}" if user
+  end
+end
+
 SESSION_STAT_TYPES = {
   ses: "session count",
   lps: "last_path counts",
@@ -257,7 +270,8 @@ SESSION_STAT_TYPES = {
 }.with_indifferent_access
 
 SESSION_LIST_TYPES = {
-  usr: "logged in sessions sorted by descending updated time",
+  usr: "sessions with users sorted by descending updated time",
+  age: "sessions sorted by descending age",
 }.with_indifferent_access
 
 SESSION_LIST_NUM_DEFAULT = 5
@@ -335,6 +349,8 @@ namespace :session do
       case code
       when "usr"
         UserSessionLister.new(num)
+      when "age"
+        AgeSessionLister.new(num)
       end
 
     ActiveRecord::SessionStore::Session.find_each { |session| lister.add(session) }
