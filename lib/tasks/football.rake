@@ -170,7 +170,7 @@ class FwpFootballMatch < FootballMatch
   def away_goals = @away_goals ||= @data.dig("away-team", "score")
   def started?
     return @started if defined?(@started)
-    # during match, status is minutes played, e.g. 05', 15', 45+6', 59', 90+11') or HT; after, it's FT
+    # during match, status is minutes played (e.g. 05', 15', 45+6', 59', 90+11') or HT; after, it's FT
     started = status.match? /\A(FT|HT|\d\d?(\+\d\d?)?')\z/
     # if a goal has been scored then the game must have started
     started = home_goals > 0 || away_goals > 0 unless started
