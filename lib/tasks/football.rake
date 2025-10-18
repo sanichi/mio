@@ -290,7 +290,7 @@ namespace :football do
             db_match.update_column(:date, api_match.date)
             updates += 1
           end
-          if db_match.score != api_match.score
+          if !api_match.home_score.nil? && !api_match.away_score.nil? && db_match.score != api_match.score
             fb_report "updated #{home_team.short} - #{away_team.short} score (#{db_match.score} => #{api_match.score})"
             db_match.update_column(:home_score, api_match.home_score) if db_match.home_score != api_match.home_score
             db_match.update_column(:away_score, api_match.away_score) if db_match.away_score != api_match.away_score
