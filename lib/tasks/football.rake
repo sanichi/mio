@@ -173,7 +173,7 @@ class FwpFootballMatch < FootballMatch
     # if status is FT then game is finished and therefore started
     # however not yet sure what status values indicate game is in
     # progress so use heuristic: if goal scored then game started
-    started = status.match? /\A(FT|HT)\z/
+    started = status.match? /\A(FT|\d\d')\z/
     started = home_goals > 0 || away_goals > 0 unless started
     @started = started
   end
