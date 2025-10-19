@@ -312,4 +312,28 @@ namespace :football do
 
     fb_report "finished football:matches at #{Time.now}" if @log
   end
+
+  # Meant to be run by hand anytime to check on the seemingly undocumented FWP status field.
+  # Example:
+  #   $ RAILS_ENV=production bin/rails football:fwp_status
+  desc "List the current status values returned from the FWP API"
+  task :fwp_status do |task|
+    @log = false
+    @api = :fwp
+    stats = Hash.new(0)
+
+    begin
+      fb_api.matches.each do |data|
+        stats[data.dig("status", "short") || "NULL"] += 1
+      end
+    rescue => e
+      fb_report e.message, true
+    end
+
+    stats.sort_by { |_, value| -value }.each do |status, count|
+      len = status.length
+      dots = "." * (20 - len)
+      fb_report "#{status} #{dots} #{count}"
+    end
+  end
 end
