@@ -314,8 +314,9 @@ namespace :football do
   end
 
   # Meant to be run by hand anytime to check on the seemingly undocumented FWP status field.
+  # Since it doesn't try to load the environment, you can call it the same way in dev or prod.
   # Example:
-  #   $ RAILS_ENV=production bin/rails football:fwp_status
+  #   $ bin/rails football:fwp_status
   desc "List the current status values returned from the FWP API"
   task :fwp_status do |task|
     @log = false
