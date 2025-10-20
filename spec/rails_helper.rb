@@ -85,7 +85,7 @@ def logout(user)
 end
 
 def otp_attempt
-  ROTP::TOTP.new(User::OTP_TEST_SECRET, issuer: User::OTP_ISSUER).now
+  ROTP::TOTP.new(Rails.application.credentials.test.otp[:secret], issuer: User::OTP_ISSUER).now
 end
 
 def t(key, **opts)

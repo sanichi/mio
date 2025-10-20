@@ -25,7 +25,7 @@ Based on my analysis of your Rails project, here are my observations and feedbac
 ## **Areas for improvement:**
 
 ### **Security Concerns:**
-1. **Hardcoded OTP secret** in production code (`user.rb:11`) - Move to credentials or environment variables
+1. N/A anymore (M.O.)
 
 ### **Code Quality:**
 2. **Complex routes file**: 77 lines with mixed concerns - consider extracting namespaced routes into separate files

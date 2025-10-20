@@ -80,7 +80,7 @@ describe User, js: true do
         click_button t("session.sign_in")
 
         expect(page).to have_title t("otp.new")
-        expect(page).to have_css "p#su_code", text: User::OTP_TEST_SECRET
+        expect(page).to have_css "p#su_code", text: Rails.application.credentials.test.otp[:secret]
 
         fill_in t("otp.otp"), with: otp_attempt
         click_button t("otp.submit")

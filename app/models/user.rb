@@ -5,7 +5,6 @@ class User < ApplicationRecord
   MAX_ROLE = 20
   MAX_LN = 25
   OTP_ISSUER = "mio.sanichi.me"
-  OTP_TEST_SECRET = "YAJY2UMNXQE4JFTWH4AFZGBE7YOQX3XY"
 
   has_secure_password
 

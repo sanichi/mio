@@ -2,7 +2,7 @@ class OtpSecretsController < ApplicationController
   def new
     if user = get_user
       if user.otp_secret.nil?
-        session[:otp_secret] = Rails.env.test? ? User::OTP_TEST_SECRET : ROTP::Base32.random
+        session[:otp_secret] = Rails.env.test? ? Rails.application.credentials.test.otp[:secret] : ROTP::Base32.random
         totp = ROTP::TOTP.new(session[:otp_secret], issuer: User::OTP_ISSUER)
         @qr_code = qr_code(totp, user.email)
         @su_code = session[:otp_secret]
