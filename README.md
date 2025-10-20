@@ -1,6 +1,6 @@
 # README
 
-This rails app is Mark Orr‘s personal [website](https://sandradickie.co.uk/).
+This rails app is Mark Orr‘s personal [website](https://mio.sanichi.me/).
 
 To run/test locally:
 
