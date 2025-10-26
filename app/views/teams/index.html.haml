@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(xs: [4], md: [3]).to_a
+  lo = Sni::Layout.call(xs: [4], md: [3])
   inputs = [
     [:q, t("search"), :text, lo[0], autofocus: true],
   ]

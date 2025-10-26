@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(xs: [3,3,3,3]).to_a
+  lo = Sni::Layout.call(xs: [3,3,3,3])
   inputs = [
     [:date,    t("date"),     :text,   lo[0]],
     [:email,   t("email"),    :text,   lo[1]],

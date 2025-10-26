@@ -1,11 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xx: [1,1,1,1],
-    xl: [2,1,1,2],
-    lg: [2,2,2,2],
-    sm: [[3,3],[3,3]],
-    xs: [[4,4],[4,4]],
-  ).to_a
+  lo = Sni::Layout.call(xx: [1,1,1,1], xl: [2,1,1,2], lg: [2,2,2,2], sm: [[3,3],[3,3]], xs: [[4,4],[4,4]])
   inputs = [
     [:rquery, t("wk.radical.radical"), :text,   lo[0], placeholder: t("wk.radical.radical")],
     [:level,  t("wk.level"),           :select, lo[1], menu: wk_level_menu(params[:level])],

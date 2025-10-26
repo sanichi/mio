@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xl: [2,2,2],
-    md: [3,3,3],
-    xs: [4,4,4],
-  ).to_a
+  lo = Sni::Layout.call(xl: [2,2,2], md: [3,3,3], xs: [4,4,4])
   inputs = [
     [:pquery,   t("wk.verb_pair.verb_pair"), :text,   lo[0], placeholder: t("wk.verb_pair.verb_pair")],
     [:category, t("wk.verb_pair.category"),  :select, lo[1], menu: wk_verb_pair_category_menu(params[:category])],

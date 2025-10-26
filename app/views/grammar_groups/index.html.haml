@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xl: [2],
-    md: [3],
-    xs: [4],
-  ).to_a
+  lo = Sni::Layout.call(xl: [2], md: [3], xs: [4])
   inputs = [
     [:title, t("grammar.title"), :text, lo[0], placeholder: t("search"), autofocus: true],
   ]

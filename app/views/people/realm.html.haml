@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(lg: [4], sm: [6]).to_a.first
+  lo = Sni::Layout.call(lg: [4], sm: [6]).first
 
 = render "utils/title", key: "person.select_realm"
 

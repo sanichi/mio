@@ -35,7 +35,7 @@
           = link_to t("edit"), edit_grammar_path(@grammar), class: "blue-btn"
         - if can?(:delete, @grammar)
           = link_to t("delete"), @grammar, class: "red-btn", data: { turbo_method: :delete, turbo_confirm: t("sure") }
-      - lo = Layout.new(xl: [10,2], md: [9,3], sm: [8,4], xs: [7,5]).to_a
+      - lo = Sni::Layout.call(xl: [10,2], md: [9,3], sm: [8,4], xs: [7,5])
       - unless @others.empty?
         .footer
           = form_tag add_group_grammar_path(@grammar), method: :patch, class: "row g-3" do

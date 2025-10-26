@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xl: [2,2],
-    md: [3,3],
-    xs: [4,4],
-  ).to_a
+  lo = Sni::Layout.call(xl: [2,2], md: [3,3], xs: [4,4])
   inputs = [
     [:q,     t("query"), :text,   lo[0], placeholder: t("search"), autofocus: true],
     [:order, t("order"), :select, lo[1], menu: constellation_search_order_menu(params[:order])],

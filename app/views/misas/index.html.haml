@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xl: [2,2,2],
-    md: [3,3,3],
-    xs: [4,4,4],
-  ).to_a
+  lo = Sni::Layout.call(xl: [2,2,2], md: [3,3,3], xs: [4,4,4])
   inputs = [
     [:q,      t("query"),       :text,   lo[0], size: 16, placeholder: t("search"), autofocus: true],
     [:series, t("misa.series"), :select, lo[1], menu: misa_series_menu(params[:series])],

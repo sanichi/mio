@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new( xl: [2], md: [3], xs: [4]).to_a
+  lo = Sni::Layout.call(xl: [2], md: [3], xs: [4])
   inputs = [[:q, t("search"), :text, lo[0], autofocus: true]]
 
 = render "utils/title", key: "tutorial.tutorials"

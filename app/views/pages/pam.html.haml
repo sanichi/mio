@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(xl: [2], md: [4], xs: [6]).to_a
+  lo = Sni::Layout.call(xl: [2], md: [4], xs: [6])
   inputs = [[:q, t("search"), :text, lo[0], placeholder: nil]]
 
 = render "utils/title", key: "pages.risle.pam"

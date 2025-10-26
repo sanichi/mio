@@ -1,8 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xs: [3,3,3,3],
-    md: [2,2,2,2],
-  ).to_a
+  lo = Sni::Layout.call(xs: [3,3,3,3], md: [2,2,2,2])
   inputs = [
     [:q,     t("search"),         :text,   lo[0], size: 16, autofocus: true],
     [:cat,   t("place.category"), :select, lo[1], menu: place_category_search_menu(params[:cat])],

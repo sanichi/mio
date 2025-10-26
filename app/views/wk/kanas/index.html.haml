@@ -1,9 +1,9 @@
 :ruby
-  lo = Layout.new(
+  lo = Sni::Layout.call(
     lg: [2,2,1,2,1,2,2],
     md: [[3,3,2],[3,1,2,2]],
     xs: [[4,3,3],[4,3,3,2]],
-  ).to_a
+  )
   inputs = [
     [:hkquery, t("wk.kana.kana"),   :text,   lo[0], placeholder: t("wk.kana.kana")],
     [:notes,   t("wk.vocab.notes"), :text,   lo[1], placeholder: t("wk.vocab.notes")],

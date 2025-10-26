@@ -1,8 +1,5 @@
 :ruby
-  lo = Layout.new(
-    sm: [3,3,3],
-    xs: [4,4,4],
-  ).to_a
+  lo = Sni::Layout.call(sm: [3,3,3], xs: [4,4,4])
   inputs = [
     [:q,      t("query"),       :text,   lo[0], size: 16, placeholder: t("search"), autofocus: true],
     [:series, t("note.series"), :select, lo[1], menu: note_series_menu(params[:series])],

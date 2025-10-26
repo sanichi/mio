@@ -1,10 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xs: [5,5],
-    sm: [4,4],
-    md: [3,3],
-    lg: [2,2],
-  ).to_a
+  lo = Sni::Layout.call(xs: [5,5], sm: [4,4], md: [3,3], lg: [2,2])
   inputs = [
     [:query,    t("query"),             :text,   lo[0]],
     [:category, t("wk.group.category"), :select, lo[1], menu: wk_group_category_menu(params[:category], search: true)],

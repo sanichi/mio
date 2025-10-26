@@ -1,7 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xs: [4,4,4],
-  ).to_a
+  lo = Sni::Layout.call(xs: [4,4,4])
   inputs = [
     [:male,    t("person.male"),         :text,   lo[0], size: 12],
     [:female,  t("person.female"),       :text,   lo[1], size: 12],

@@ -1,5 +1,5 @@
 :ruby
-  lo = Layout.new(md: [4], xs: [6]).to_a
+  lo = Sni::Layout.call(md: [4], xs: [6])
   inputs = [
     [:season, t("match.season"), :select, lo[0], menu: premier_season_menu(@season)],
   ]

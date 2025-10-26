@@ -1,9 +1,9 @@
 :ruby
-  lo = Layout.new(
+  lo = Sni::Layout.call(
     xl: [[3,3,3],[3,3,3],[3]],
     md: [[4,4,4],[4,4,4],[4]],
     xs: [[6,6],[6,6],[6,6],[6]],
-  ).to_a
+  )
   inputs = [
     [:building, t("flat.building"), :text,   lo[0]],
     [:number,   t("flat.number"),   :text,   lo[1]],

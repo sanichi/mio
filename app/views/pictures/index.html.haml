@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xx: [2,2],
-    lg: [3,3],
-    sm: [4,4],
-  ).to_a
+  lo = Sni::Layout.call(xx: [2,2], lg: [3,3], sm: [4,4])
   inputs = [
     [:name,        t("name"),        :text,   lo[0], placeholder: t("name")],
     [:description, t("description"), :text,   lo[1], placeholder: t("description")],

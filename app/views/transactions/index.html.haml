@@ -1,9 +1,9 @@
 :ruby
-  lo = Layout.new(
+  lo = Sni::Layout.call(
     lg: [[2,2,2],[2,2,2], [2,2,2]],
     md: [[3,3,3],[3,3,3], [3,3,3]],
     xs: [[4,4,4],[4,4,4], [4,4,4]],
-  ).to_a
+  )
   inputs = [
     [:description,   t("transaction.description"), :text,   lo[0], size: 20, placeholder: t("transaction.description")],
     [:amount,        t("transaction.amount"),      :text,   lo[1], size: 20, placeholder: t("transaction.amount")],

@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    lg: [3],
-    md: [4],
-    xs: [6]
-  ).to_a
+  lo = Sni::Layout.call(lg: [3], md: [4], xs: [6])
   inputs = [
     [:query, t("query"), :text, lo[0], size: 20, placeholder: t("query")],
   ]

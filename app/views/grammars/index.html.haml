@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    xl: [2,2,2],
-    md: [3,2,3],
-    xs: [4,2,4],
-  ).to_a
+  lo = Sni::Layout.call(xl: [2,2,2], md: [3,2,3], xs: [4,2,4])
   inputs = [
     [:query, t("query"),         :text,   lo[0], placeholder: t("search"), autofocus: true],
     [:level, t("grammar.level"), :select, lo[1], menu: grammar_level_menu(params[:level])],

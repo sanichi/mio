@@ -1,9 +1,5 @@
 :ruby
-  lo = Layout.new(
-    md: [2,2,2,2,2],
-    sm: [[3,3,3],[3,3]],
-    xs: [[4,4,4],[4,4]],
-  ).to_a
+  lo = Sni::Layout.call(md: [2,2,2,2,2], sm: [[3,3,3],[3,3]], xs: [[4,4,4],[4,4]])
   inputs = [
     [:kquery, t("wk.kanji.kanji"), :text,   lo[0], placeholder: t("wk.kanji.kanji")],
     [:level,  t("wk.level"),       :select, lo[1], menu: wk_level_menu(params[:level])],
