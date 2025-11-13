@@ -1,7 +1,7 @@
 = render "utils/title", key: "mass.event.title"
 
 .row
-  %div{class: center(sm: 10, md: 8, lg: 6)}
+  %div{class: Sni::Center.call(sm: 10, md: 8, lg: 6)}
     %section
       = turbo_frame_tag :results, "data-turbo-action" => "advance" do
         .header.text-center

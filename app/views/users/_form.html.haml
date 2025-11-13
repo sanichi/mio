@@ -7,4 +7,4 @@
     [:last_name,    t("person.last_name"),  :text, maxlength: User::MAX_LN],
     [:otp_required, t("otp.required"),      :check],
   ]
-= render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, centered: center(xl: 6, lg: 8, md: 10)
+= render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, centered: Sni::Center.call(xl: 6, lg: 8, md: 10)

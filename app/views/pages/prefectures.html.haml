@@ -1,5 +1,5 @@
 - my_meta_tags "pages.prefectures"
 
 .row.mt-3
-  %div{class: center(xl: 6, lg: 8, md: 10)}
+  %div{class: Sni::Center.call(xl: 6, lg: 8, md: 10)}
     = render "places/map", vb: Place::DEF_VBOX, elements: @elements

@@ -1,7 +1,7 @@
 = render "utils/title", text: @subscription.payee
 
 .row
-  %div{class: center(lg: 8, md: 10, sm: 12)}
+  %div{class: Sni::Center.call(lg: 8, md: 10, sm: 12)}
     %section
       .header.text-center
         %h3= @subscription.payee

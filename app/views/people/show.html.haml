@@ -1,7 +1,7 @@
 = render "utils/title", text: @person.name(full: false)
 
 .row
-  %div{class: center(sm: 10, md: 8)}
+  %div{class: Sni::Center.call(sm: 10, md: 8)}
     %section
       .header.text-center
         %h3= @person.name(full: false)

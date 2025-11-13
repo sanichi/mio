@@ -1,6 +1,6 @@
 - defined?(index)    || index = nil
 - defined?(cancel)   || cancel = nil
-- defined?(centered) || centered = center(xl: 8, lg: 10)
+- defined?(centered) || centered = Sni::Center.call(xl: 8, lg: 10)
 
 .row
   %div{class: centered}
