@@ -3,5 +3,5 @@
 %tr
   %td= example.japanese_html(frame: "_top")
   %td= example.english
-  %td.text-center= example.day&.strftime("%a %-d %b %Y")
+  %td.shrink= example.day&.strftime("%a %-d %b %Y")
   %td.text-center= link_to t("symbol.edit"), edit_wk_example_path(example, return_page: return_page), "data-turbo-frame" => "_top"
