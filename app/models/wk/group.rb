@@ -5,7 +5,7 @@ module Wk
     include Pageable
     include Remarkable
 
-    CATEGORIES = %w/synonyms antonyms sounds_like related_to youtube/
+    CATEGORIES = %w/synonyms antonyms sounds_like related_to differences youtube/
     MAX_CATEGORY = 20
     MAX_VOCAB_LIST = 200
 
