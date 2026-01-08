@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
+  get "trmnl/beans", to: "trmnl#beans"
+
   namespace :wk do
     resources :examples, except: [:show] do
       get :memorable, on: :collection
