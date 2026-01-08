@@ -8,11 +8,7 @@ class TrmnlController < ApplicationController
   private
 
   def authenticate_token
-    auth_header = request.headers["Authorization"]
-    token = auth_header&.sub(/^Bearer /, "")
-
-    unless token == Rails.application.credentials.trmnl[:token]
-      render json: { error: "Unauthorized" }, status: :unauthorized
-    end
+    return if request.headers["Authorization"] == Rails.application.credentials.trmnl[:token]
+    render json: { error: "Unauthorized" }, status: :unauthorized
   end
 end
