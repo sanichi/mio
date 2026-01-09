@@ -2,7 +2,7 @@ class TrmnlController < ApplicationController
   before_action :authenticate_token
 
   def starling
-    render json: { current: Starling.current, savings: Starling.savings }
+    render json: { starling: { current: Starling.current, savings: Starling.savings } }
   end
 
   private
