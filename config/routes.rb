@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
-  get "trmnl/beans", to: "trmnl#beans"
+  get "trmnl/starling", to: "trmnl#starling"
 
   namespace :wk do
     resources :examples, except: [:show] do

@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# Manual test script for trmnl/starling endpoint.
+# Run this whenever you want to verify the endpoint is working.
+# But remember to start the development server first.
+
+require_relative "../config/environment"
+
+token = Rails.application.credentials.trmnl[:token]
+url = "http://localhost:3000/trmnl/starling"
+
+puts "Testing #{url}..."
+response = HTTParty.get(url, headers: { "Authorization" => token })
+puts "Status: #{response.code}"
+puts "Response: #{response.body}"

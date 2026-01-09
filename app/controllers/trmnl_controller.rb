@@ -1,8 +1,8 @@
 class TrmnlController < ApplicationController
   before_action :authenticate_token
 
-  def beans
-    render json: { starling: Bean.starling }
+  def starling
+    render json: { current: Starling.current, savings: Starling.savings }
   end
 
   private
