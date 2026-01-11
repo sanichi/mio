@@ -31,9 +31,6 @@
               - d.indicies.each do |i|
                 %td.shrink.font-monospace
                   - style = case d.labels[id][i]
-                    - when "W" then "success"
-                    - when "D" then "secondary"
-                    - when "L" then "danger"
-                    - when "H" then "outline-primary"
-                    - when "A" then "outline-danger"
+                    - when "W", "D", "L" then "dark"
+                    - else "light"
                   %button.btn.btn-sm.btn-tiny{class: "btn-#{style}"}= d.labels[id][i]
