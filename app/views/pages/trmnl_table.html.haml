@@ -29,8 +29,4 @@
               %td.text-center= d.diff[id]
               %th.text-center= d.points[id]
               - d.indicies.each do |i|
-                %td.shrink.font-monospace
-                  - style = case d.labels[id][i]
-                    - when "W", "D", "L" then "dark"
-                    - else "light"
-                  %button.btn.btn-sm.btn-tiny{class: "btn-#{style}"}= d.labels[id][i]
+                %td.text-center.font-monospace= d.labels[id][i]
