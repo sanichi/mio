@@ -1,32 +1,29 @@
 - d = @data
-.row.justify-content-center
-  .col-auto
-    .overflow-auto
-      %table{class: "table table-bordered table-striped table-sm mt-3"}
-        %thead
-          %tr
-            %th
-            %th.text-center= t("pages.premier.played")
-            %th.text-center= t("pages.premier.won")
-            %th.text-center= t("pages.premier.drawn")
-            %th.text-center= t("pages.premier.lost")
-            %th.text-center= t("pages.premier.for")
-            %th.text-center= t("pages.premier.against")
-            %th.text-center= t("pages.premier.diff")
-            %th.text-center= t("pages.premier.points")
-            - d.indicies.each do |i|
-              %td.text-center= i + 1
-        %tbody
-          - d.ids.each do |id|
-            %tr
-              %td= d.name[id]
-              %td.text-center= d.played[id]
-              %td.text-center= d.won[id]
-              %td.text-center= d.drew[id]
-              %td.text-center= d.lost[id]
-              %td.text-center= d.for[id]
-              %td.text-center= d.against[id]
-              %td.text-center= d.diff[id]
-              %th.text-center= d.points[id]
-              - d.indicies.each do |i|
-                %td.text-center.font-monospace= d.labels[id][i]
+%table{class: "table table-bordered table-striped table-sm mt-3", style: "margin: 0 auto;"}
+  %thead
+    %tr
+      %th
+      %th.text-center= t("pages.premier.played")
+      %th.text-center= t("pages.premier.won")
+      %th.text-center= t("pages.premier.drawn")
+      %th.text-center= t("pages.premier.lost")
+      %th.text-center= t("pages.premier.for")
+      %th.text-center= t("pages.premier.against")
+      %th.text-center= t("pages.premier.diff")
+      %th.text-center= t("pages.premier.points")
+      - d.indicies.each do |i|
+        %td.text-center= i + 1
+  %tbody
+    - d.ids.each do |id|
+      %tr
+        %td= d.name[id]
+        %td.text-center= d.played[id]
+        %td.text-center= d.won[id]
+        %td.text-center= d.drew[id]
+        %td.text-center= d.lost[id]
+        %td.text-center= d.for[id]
+        %td.text-center= d.against[id]
+        %td.text-center= d.diff[id]
+        %th.text-center= d.points[id]
+        - d.indicies.each do |i|
+          %td.text-center.font-monospace= d.labels[id][i]
