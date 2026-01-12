@@ -12,11 +12,14 @@
       %th.text-center= t("pages.premier.diff")
       %th.text-center= t("pages.premier.points")
       - d.indicies.each do |i|
-        %td.text-center= i + 1
+        %th.text-center= i + 1
   %tbody
     - d.ids.each do |id|
       %tr
-        %td= d.name[id]
+        - if d.name[id] == "Man City"
+          %th= d.name[id]
+        - else
+          %td= d.name[id]
         %td.text-center= d.played[id]
         %td.text-center= d.won[id]
         %td.text-center= d.drew[id]
