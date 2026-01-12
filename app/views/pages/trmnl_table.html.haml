@@ -16,10 +16,7 @@
   %tbody
     - d.ids.each do |id|
       %tr
-        - if d.name[id] == "Man City"
-          %th= d.name[id]
-        - else
-          %td= d.name[id]
+        %td{class: d.name[id] == "Man City" ? "fw-bold" : nil}= d.name[id]
         %td.text-center= d.played[id]
         %td.text-center= d.won[id]
         %td.text-center= d.drew[id]
