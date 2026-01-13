@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resource :otp_secret, only: [:new, :create]
   resource :session, only: [:create, :new, :destroy]
 
-  %w[aoc board env deeds magic pam play prefectures premier premier_table risle ruby trmnl_table weight].each do |page|
+  %w[aoc board env deeds magic pam play prefectures premier premier_table risle ruby weight].each do |page|
     get page => "pages##{page}"
   end
 

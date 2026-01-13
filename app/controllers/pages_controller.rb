@@ -24,11 +24,6 @@ class PagesController < ApplicationController
     render :premier_table, layout: false
   end
 
-  def trmnl_table
-    @data = PremierStats.new(Match.latest_season, Date.today)
-    render layout: "blank"
-  end
-
   def risle
     @flats = Flat.where.not(bay: nil).order(:bay).all
   end
