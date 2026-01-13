@@ -5,6 +5,10 @@ class TrmnlController < ApplicationController
     render json: { starling: { current: Starling.current, savings: Starling.savings } }
   end
 
+  def premier
+    # Rendered by app/views/trmnl/premier.json.jbuilder
+  end
+
   private
 
   def authenticate_token

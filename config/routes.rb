@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
-  get "trmnl/starling", to: "trmnl#starling"
+  %w[premier starling].each do |action|
+    get "trmnl/#{action}", to: "trmnl##{action}"
+  end
 
   namespace :wk do
     resources :examples, except: [:show] do
