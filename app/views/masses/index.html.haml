@@ -13,11 +13,13 @@
                 %th.text-center= t("mass.date")
                 %th.text-center= t("mass.start")
                 %th.text-center= t("mass.finish")
+                %th.text-center= t("mass.start_2")
+                %th.text-center= t("mass.finish_2")
                 - if can?(:create, Mass)
                   %th
             %tbody
               = render partial: "mass", collection: @masses.matches, locals: { unit: @unit }
-              = render "utils/pagination_links", pager: @masses, columns: 3 + (can?(:create, Mass) ? 1 : 0)
+              = render "utils/pagination_links", pager: @masses, columns: 5 + (can?(:create, Mass) ? 1 : 0)
         .footer
           - Mass::UNITS.keys.each do |u|
             - if u == @unit.key

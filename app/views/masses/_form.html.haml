@@ -1,7 +1,9 @@
 :ruby
   inputs = [
-    [:date,   t("mass.date"),   :text],
-    [:start,  t("mass.start"),  :text],
-    [:finish, t("mass.finish"), :text],
+    [:date,     t("mass.date"),     :text],
+    [:start,    t("mass.start"),    :text],
+    [:finish,   t("mass.finish"),   :text],
+    [:start_2,  t("mass.start_2"),  :text],
+    [:finish_2, t("mass.finish_2"), :text],
   ]
 = render "utils/crud/form", object: mass, cancel: masses_path, inputs: inputs, title: title

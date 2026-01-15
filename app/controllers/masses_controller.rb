@@ -53,6 +53,6 @@ class MassesController < ApplicationController
   end
 
   def strong_params
-    params.require(:mass).permit(:date, :start, :finish)
+    params.require(:mass).permit(:date, :start, :finish, :start_2, :finish_2)
   end
 end

@@ -11,7 +11,7 @@ class Mass < ApplicationRecord
   DEFAULT_BEGIN = 2 # months ago
   DEFAULT_END = 0 # now
 
-  validates :start, :finish, numericality: { greater_than_or_equal_to: MIN_KG, less_than_or_equal_to: MAX_KG }, allow_nil: true
+  validates :start, :finish, :start_2, :finish_2, numericality: { greater_than_or_equal_to: MIN_KG, less_than_or_equal_to: MAX_KG }, allow_nil: true
   validates :date, presence:true, uniqueness: true
 
   validate :data_constraints

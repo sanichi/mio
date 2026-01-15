@@ -2,6 +2,8 @@
   %td.text-center= mass.date
   %td.text-center= unit.to_s(mass.start)
   %td.text-center= unit.to_s(mass.finish)
+  %td.text-center= unit.to_s(mass.start_2)
+  %td.text-center= unit.to_s(mass.finish_2)
   - if can?(:create, Mass)
     %td.text-center
       = link_to t("symbol.edit"), edit_mass_path(mass), "data-turbo-frame" => "_top"

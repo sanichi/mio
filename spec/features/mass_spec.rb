@@ -14,6 +14,8 @@ describe Mass, js: true do
       fill_in t("mass.date"), with: data.date
       fill_in t("mass.start"), with: data.start
       fill_in t("mass.finish"), with: data.finish
+      fill_in t("mass.start_2"), with: data.start_2
+      fill_in t("mass.finish_2"), with: data.finish_2
       click_button t("save")
 
       expect(page).to have_title t("mass.title")
@@ -24,6 +26,8 @@ describe Mass, js: true do
       expect(m.date).to eq data.date
       expect(m.start).to eq data.start
       expect(m.finish).to eq data.finish
+      expect(m.start_2).to eq data.start_2
+      expect(m.finish_2).to eq data.finish_2
     end
 
     context "failure" do
@@ -95,6 +99,7 @@ describe Mass, js: true do
       expect(page).to have_title t("mass.edit")
       fill_in t("mass.start"), with: data.start + 10
       fill_in t("mass.finish"), with: ""
+      fill_in t("mass.start_2"), with: data.start_2 + 5
       click_button t("save")
 
       expect(page).to have_title t("mass.title")
@@ -105,6 +110,7 @@ describe Mass, js: true do
       expect(m.date).to eq data.date
       expect(m.start).to eq data.start + 10
       expect(m.finish).to be_nil
+      expect(m.start_2).to eq data.start_2 + 5
     end
   end
 
