@@ -23,6 +23,8 @@
 
 elm-stuff/
 
+Gemfile.bak
+
 /.claude
 
 /spec/examples.txt
