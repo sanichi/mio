@@ -35,6 +35,11 @@ en:
       url:
         kanji: 'https://www.kanshudo.com/search?q=%{kanji}'
         vocab: 'https://www.kanshudo.com/searchw?q=%{vocab}'
+    wiktionary:
+      text: Wiktionary
+      url:
+        kanji: 'https://en.wiktionary.org/wiki/%{kanji}'
+        vocab: 'https://en.wiktionary.org/wiki/%{vocab}'
     group:
       category: Category
       edit: Edit Group
