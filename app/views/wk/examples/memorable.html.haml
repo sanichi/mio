@@ -23,4 +23,8 @@
           = render partial: "example", collection: @examples.matches, locals: { return_page: memorable_wk_examples_path }
           = render "utils/pagination_links", pager: @examples, columns: 4
   .footer
+    = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
+    = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"
     = link_to t("wk.example.examples"), wk_examples_path, class: "green-btn"
+    - if can?(:create, Wk::Example)
+      = link_to t("wk.example.new"), new_wk_example_path, class: "blue-btn"
