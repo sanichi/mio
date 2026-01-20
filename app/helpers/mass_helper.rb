@@ -1,4 +1,13 @@
 module MassHelper
+  def mass_difference(primary, secondary, unit)
+    return nil if secondary.blank?
+    return unit.to_s(secondary) if primary.blank?
+
+    diff = secondary - primary
+    sign = diff >= 0 ? "+" : "-"
+    "#{sign}#{unit.to_s(diff.abs)}"
+  end
+
   def mass_units_menu
     opts = %w/kg st lb bm/.map { |u| [t("mass.unit.short.#{u}"), u] }
     options_for_select(opts, Mass::DEFAULT_UNIT.key.to_s)
