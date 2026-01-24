@@ -18,15 +18,11 @@ module Wk
     scope :by_day,        -> { order(day: :desc) }
 
     def self.search(params, path, opt={})
-      matches = by_updated_at
-      if sql = cross_constraint(params[:query], %w{english japanese})
-        matches = matches.where(sql)
+      if params[:memorable].present?
+        matches = where.not(day: nil).by_day
+      else
+        matches = by_updated_at
       end
-      paginate(matches, params, path, opt)
-    end
-
-    def self.memorable(params, path, opt={})
-      matches = where.not(day: nil).by_day
       if sql = cross_constraint(params[:query], %w{english japanese})
         matches = matches.where(sql)
       end

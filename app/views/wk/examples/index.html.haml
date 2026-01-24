@@ -1,7 +1,8 @@
 :ruby
-  lo = Sni::Layout.call(xs: [6], md: [4], xl: [2])
+  lo = Sni::Layout.call(xs: [6, 4], sm: [5, 3], md: [4, 3], lg: [4, 2], xl: [3, 2])
   inputs = [
-    [:query, t("wk.example.example"), :text, lo[0], autofocus: true, placeholder: t("search")],
+    [:query,     t("wk.example.example"),   :text,   lo[0], autofocus: true, placeholder: t("search")],
+    [:memorable, t("wk.example.memorable"), :select, lo[1], menu: wk_memorable_menu(params[:memorable])],
   ]
 
 = render "utils/title", key: "wk.example.examples"
@@ -25,6 +26,5 @@
   .footer
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.group.groups"), last_search(wk_groups_path), class: "green-btn"
-    = link_to t("wk.example.memorable", locale: "jp"), memorable_wk_examples_path, class: "green-btn"
     - if can?(:create, Wk::Example)
       = link_to t("wk.example.new"), new_wk_example_path, class: "blue-btn"

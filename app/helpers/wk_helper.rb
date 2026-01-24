@@ -74,4 +74,9 @@ module WkHelper
     opts = %w/all hidden visible/.map { |o| [t(o), o] }
     options_for_select(opts, selected)
   end
+
+  def wk_memorable_menu(selected)
+    opts = [[t("all"), ""], [t("wk.example.memorable", locale: "jp"), "memorable"]]
+    options_for_select(opts, selected)
+  end
 end

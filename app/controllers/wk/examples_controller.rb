@@ -9,10 +9,6 @@ module Wk
       @examples = Wk::Example.search(params, wk_examples_path, per_page: 10, locale: :jp)
     end
 
-    def memorable
-      @examples = Wk::Example.memorable(params, memorable_wk_examples_path, per_page: 10, locale: :jp)
-    end
-
     def new
       @example = Wk::Example.new
       @return_page = store_return_page("examples", params[:return_page])

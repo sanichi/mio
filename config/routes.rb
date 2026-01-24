@@ -15,9 +15,7 @@ Rails.application.routes.draw do
   end
 
   namespace :wk do
-    resources :examples, except: [:show] do
-      get :memorable, on: :collection
-    end
+    resources :examples, except: [:show]
     resources :groups
     resources :kanas, only: [:edit, :index, :show, :update] do
       patch :quick_accent_update, on: :member
