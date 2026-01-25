@@ -24,6 +24,14 @@ en:
       title: Map
     premier:
       against: A
+      buttons2:
+        first: ⏮
+        back5: ⏪
+        back1: ◀
+        today: ●
+        forward1: ▶
+        forward5: ⏩
+        last: ⏭
       drawn: D
       for: F
       diff: Δ
@@ -35,6 +43,7 @@ en:
       points: P
       right: →
       short: Premier
+      short2: Premier v2
       title: Premier League
       won: W
     risle:

@@ -1,0 +1,15 @@
+:ruby
+  lo = Sni::Layout.call(md: [4], xs: [6])
+  inputs = [
+    [:season, t("match.season"), :select, lo[0], menu: premier_season_menu(@season)],
+  ]
+  my_meta_tags "pages.premier"
+
+.row
+  %div{class: Sni::Center.call(xl: 8, lg: 10)}
+    %section
+      .header.text-center
+        %h3= t("pages.premier.title")
+      .body
+        = render "utils/search/form", index: premier2_path, inputs: inputs, frame: nil
+        = turbo_frame_tag :table, src: premier2_table_path(season: @season)
