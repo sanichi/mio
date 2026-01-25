@@ -1,8 +1,8 @@
 %tr
   %td.text-center= mass.date
   %td.text-center= unit.to_s(mass.start)
-  %td.text-center= unit.to_s(mass.finish)
   %td.text-center= mass_difference(mass.start, mass.start_2, unit)
+  %td.text-center= unit.to_s(mass.finish)
   %td.text-center= mass_difference(mass.finish, mass.finish_2, unit)
   - if can?(:create, Mass)
     %td.text-center
