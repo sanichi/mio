@@ -34,6 +34,12 @@ class PagesController < ApplicationController
     render :premier2_table, layout: false
   end
 
+  def premier3
+    season = params[:season].to_i
+    season = Match.latest_season unless Match.seasons.include?(season)
+    @data = PremierStats3.new(season)
+  end
+
   def risle
     @flats = Flat.where.not(bay: nil).order(:bay).all
   end

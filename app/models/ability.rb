@@ -17,7 +17,7 @@ class Ability
 
     can :read, [Favourite, Place]
     can [:read, :graph], Mass
-    can [:aoc, :play, :premier2, :premier2_table, :prefectures, :risle, :ruby, :weight], :page
+    can [:aoc, :play, :premier3, :prefectures, :risle, :ruby, :weight], :page
     can [:read, :checks, :match, :realm, :relative, :set_realm, :tree], Person
     can :read, [Picture, Partnership]
   end
