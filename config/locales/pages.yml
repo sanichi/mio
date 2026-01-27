@@ -26,11 +26,11 @@ en:
       against: A
       buttons2:
         first: ⏮
-        back5: ⏪
+        back5: ◀◀
         back1: ◀
         today: ●
         forward1: ▶
-        forward5: ⏩
+        forward5: ▶▶
         last: ⏭
       drawn: D
       for: F
