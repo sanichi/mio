@@ -25,13 +25,13 @@ en:
     premier:
       against: A
       buttons2:
-        first: |◀
+        first: "|◀"
         back5: ◀◀
         back1: ◀
         today: ●
         forward1: ▶
         forward5: ▶▶
-        last: ▶|
+        last: "▶|"
       drawn: D
       for: F
       diff: Δ
