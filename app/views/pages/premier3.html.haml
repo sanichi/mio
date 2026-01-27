@@ -16,33 +16,28 @@
 
         .row.justify-content-center{"data-controller" => "premier3", "data-premier3-home-value" => d.home_start, "data-premier3-start-value" => d.home_start, "data-premier3-complete-value" => d.season_complete}
           .col-auto
-            .d-flex.align-items-center.gap-2.mt-3
-              -# Button 1: First
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#first", "data-premier3-target" => "firstBtn"}= t("pages.premier.buttons2.first")
-
-              -# Button 2: Back 5
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#back5", "data-premier3-target" => "back5Btn"}= t("pages.premier.buttons2.back5")
-
-              -# Button 3: Back 1
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#back1", "data-premier3-target" => "back1Btn"}= t("pages.premier.buttons2.back1")
-
-              -# Button 4: Home (only if season not complete)
-              - unless d.season_complete
-                %button.btn.btn-outline-primary.btn-sm{"data-action" => "premier3#home", "data-premier3-target" => "homeBtn"}= t("pages.premier.buttons2.today")
-
-              -# Button 5: Forward 1
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#forward1", "data-premier3-target" => "forward1Btn"}= t("pages.premier.buttons2.forward1")
-
-              -# Button 6: Forward 5
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#forward5", "data-premier3-target" => "forward5Btn"}= t("pages.premier.buttons2.forward5")
-
-              -# Button 7: Last
-              %button.btn.btn-outline-secondary.btn-sm{"data-action" => "premier3#last", "data-premier3-target" => "lastBtn"}= t("pages.premier.buttons2.last")
-
-          .col-auto
             .overflow-auto
               %table{class: "table table-bordered table-striped table-sm mt-3", "data-controller" => "tooltips", "data-premier3-target" => "table"}
                 %thead
+                  %tr
+                    %td{colspan: 9}
+                    %td{colspan: 38}
+                      .d-flex.align-items-center.gap-2.justify-content-center
+                        -# Button 1: First
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#first", "data-premier3-target" => "firstBtn"}= t("pages.premier.buttons2.first")
+                        -# Button 2: Back 5
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#back5", "data-premier3-target" => "back5Btn"}= t("pages.premier.buttons2.back5")
+                        -# Button 3: Back 1
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#back1", "data-premier3-target" => "back1Btn"}= t("pages.premier.buttons2.back1")
+                        -# Button 4: Home (only if season not complete)
+                        - unless d.season_complete
+                          %button.btn.btn-outline-primary.btn-sm.btn-tiny{"data-action" => "premier3#home", "data-premier3-target" => "homeBtn"}= t("pages.premier.buttons2.today")
+                        -# Button 5: Forward 1
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#forward1", "data-premier3-target" => "forward1Btn"}= t("pages.premier.buttons2.forward1")
+                        -# Button 6: Forward 5
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#forward5", "data-premier3-target" => "forward5Btn"}= t("pages.premier.buttons2.forward5")
+                        -# Button 7: Last
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier3#last", "data-premier3-target" => "lastBtn"}= t("pages.premier.buttons2.last")
                   %tr
                     %th
                     %th.text-center= t("pages.premier.played")
