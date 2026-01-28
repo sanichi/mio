@@ -1,7 +1,8 @@
 :ruby
+  d = @data
   lo = Sni::Layout.call(md: [4], xs: [6])
   inputs = [
-    [:season, t("match.season"), :select, lo[0], menu: premier_season_menu(@season)],
+    [:season, t("match.season"), :select, lo[0], menu: premier_season_menu(d.season)],
   ]
   my_meta_tags "pages.premier"
 
@@ -12,4 +13,62 @@
         %h3= t("pages.premier.title")
       .body
         = render "utils/search/form", index: premier_path, inputs: inputs, frame: nil
-        = turbo_frame_tag :table, src: premier_table_path(season: @season)
+
+        .row.justify-content-center{"data-controller" => "premier", "data-premier-home-value" => d.home_start, "data-premier-start-value" => d.home_start, "data-premier-complete-value" => d.season_complete}
+          .col-auto
+            .overflow-auto
+              %table{class: "table table-bordered table-striped table-sm mt-3", "data-controller" => "tooltips", "data-premier-target" => "table"}
+                %thead
+                  %tr
+                    %td{colspan: 9}
+                    %td{colspan: 38}
+                      .d-flex.align-items-center.gap-2.justify-content-center
+                        -# Button 1: First
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#first", "data-premier-target" => "firstBtn"}= t("pages.premier.buttons.first")
+                        -# Button 2: Back 5
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#back5", "data-premier-target" => "back5Btn"}= t("pages.premier.buttons.back5")
+                        -# Button 3: Back 1
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#back1", "data-premier-target" => "back1Btn"}= t("pages.premier.buttons.back1")
+                        -# Button 4: Home (only if season not complete)
+                        - unless d.season_complete
+                          %button.btn.btn-outline-primary.btn-sm.btn-tiny{"data-action" => "premier#home", "data-premier-target" => "homeBtn"}= t("pages.premier.buttons.today")
+                        -# Button 5: Forward 1
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#forward1", "data-premier-target" => "forward1Btn"}= t("pages.premier.buttons.forward1")
+                        -# Button 6: Forward 5
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#forward5", "data-premier-target" => "forward5Btn"}= t("pages.premier.buttons.forward5")
+                        -# Button 7: Last
+                        %button.btn.btn-outline-secondary.btn-sm.btn-tiny{"data-action" => "premier#last", "data-premier-target" => "lastBtn"}= t("pages.premier.buttons.last")
+                  %tr
+                    %th
+                    %th.text-center= t("pages.premier.played")
+                    %th.text-center= t("pages.premier.won")
+                    %th.text-center= t("pages.premier.drawn")
+                    %th.text-center= t("pages.premier.lost")
+                    %th.text-center= t("pages.premier.for")
+                    %th.text-center= t("pages.premier.against")
+                    %th.text-center= t("pages.premier.diff")
+                    %th.text-center= t("pages.premier.points")
+                    - (0..37).each do |i|
+                      %td.text-center{"data-col" => i, class: (i < d.home_start || i > d.home_start + 9) ? "d-none" : nil}= i + 1
+                %tbody
+                  - d.ids.each do |id|
+                    %tr
+                      %td= link_to nbsp(d.name[id]), stats_team_path(id)
+                      %td.text-center= d.played[id]
+                      %td.text-center= d.won[id]
+                      %td.text-center= d.drew[id]
+                      %td.text-center= d.lost[id]
+                      %td.text-center= d.for[id]
+                      %td.text-center= d.against[id]
+                      %td.text-center= d.diff[id]
+                      %th.text-center= d.points[id]
+                      - (0..37).each do |i|
+                        %td.shrink.font-monospace{"data-col" => i, class: (i < d.home_start || i > d.home_start + 9) ? "d-none" : nil}
+                          - style = case d.labels[id][i]
+                            - when "W" then "success"
+                            - when "D" then "secondary"
+                            - when "L" then "danger"
+                            - when "H" then "outline-primary"
+                            - when "A" then "outline-danger"
+                          %button.btn.btn-sm.btn-tiny{class: "btn-#{style}", title: d.tooltips[id][i],
+                            "data-bs-toggle" => "tooltip", "data-placement" => "top"}= d.labels[id][i]

@@ -47,7 +47,7 @@
               %li= link_to t("flat.flats"),    flats_path if can?(:read, Flat)
               %li= link_to t("flat.deeds"),    deeds_path if can?(:deeds, :page)
 
-        -  if [:aoc, :board, :env, :play, :premier, :premier2, :premier3, :weight].map{ |p| can?(p, :page) }.any? || [Constellation, Login, Match, Star, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
+        -  if [:aoc, :board, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Constellation, Login, Match, Star, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
           %li.dropdown
             = link_to t("other"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
@@ -55,7 +55,7 @@
               %li= link_to t("transaction.transactions"),     transactions_path   if can?(:read, Transaction)
               %li= link_to t("classifier.classifiers"),       classifiers_path    if can?(:read, Classifier)
               %li= link_to t("subscription.subscriptions"),   subscriptions_path  if can?(:read, Subscription)
-              %li= link_to t("pages.premier.short3"),         premier3_path       if can?(:premier3, :page)
+              %li= link_to t("pages.premier.short"),          premier_path        if can?(:premier, :page)
               %li= link_to t("constellation.constellations"), constellations_path if can?(:read, Constellation)
               %li= link_to t("star.stars"),                   stars_path          if can?(:read, Star)
               %li= link_to t("team.teams"),                   teams_path          if can?(:read, Team)
@@ -64,8 +64,6 @@
               %li= link_to t("pages.aoc.short"),              aoc_path            if can?(:aoc, :page)
               %li= link_to t("pages.play.title"),             play_path           if can?(:play, :page)
               %li= link_to t("tutorial.tutorials"),           tutorials_path      if can?(:read, Tutorial)
-              %li= link_to t("pages.premier.short"),          premier_path        if can?(:premier, :page)
-              %li= link_to t("pages.premier.short2"),         premier2_path       if can?(:premier2, :page)
               %li= link_to t("user.users"),                   users_path          if can?(:read, User)
               %li= link_to t("login.logins"),                 logins_path         if can?(:read, Login)
               %li= link_to t("pages.env"),                    env_path            if can?(:env, :page)

@@ -24,14 +24,6 @@ en:
       title: Map
     premier:
       against: A
-      buttons2:
-        first: "|◀"
-        back5: ◀◀
-        back1: ◀
-        today: ●
-        forward1: ▶
-        forward5: ▶▶
-        last: "▶|"
       drawn: D
       for: F
       diff: Δ
@@ -42,11 +34,17 @@ en:
       played: P
       points: P
       right: →
-      short: Premier v1
-      short2: Premier v2
-      short3: Premier
+      short: Premier
       title: Premier League
       won: W
+      buttons:
+        first: "|◀"
+        back5: ◀◀
+        back1: ◀
+        today: ●
+        forward1: ▶
+        forward5: ▶▶
+        last: "▶|"
     risle:
       group: Rennie's Isle
       pam: Pam
