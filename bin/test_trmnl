@@ -11,7 +11,7 @@ require_relative "../config/environment"
 endpoint = ARGV[0]
 valid_endpoints = %w[starling premier]
 
-if endpoint && !valid_endpoints.include?(endpoint)
+if endpoint && !endpoint.in?(valid_endpoints)
   puts "Error: Invalid endpoint '#{endpoint}'"
   puts "Usage: bin/test_trmnl [starling|premier]"
   exit 1

@@ -1,7 +1,7 @@
 # Convert PremierStats data for today into a JSON table (array of arrays).
 # First row is the header, followed by 20 more rows (one per team).
 
-data = PremierStats.new(Match.latest_season, Date.today)
+data = PremierTrmnlStats.new(Match.latest_season)
 
 # Build header row
 header = ["Team", "P", "W", "D", "L", "F", "A", "Δ", "Pts"]
