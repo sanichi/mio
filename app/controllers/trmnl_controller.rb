@@ -33,7 +33,9 @@ class TrmnlController < ApplicationController
 
   def authenticate_token
     return unless Rails.env.production?
-    return if request.headers["Authorization"] == Rails.application.credentials.trmnl[:token]
+    token = request.headers["Authorization"] || params[:token]
+    return if token == Rails.application.credentials.trmnl[:token]
+    # return if request.headers["Authorization"] == Rails.application.credentials.trmnl[:token]
     render json: { error: "Unauthorized" }, status: :unauthorized
   end
 end
