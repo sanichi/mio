@@ -1,0 +1,5 @@
+%tr
+  %td= link_to station.display_name, station, "data-turbo-frame" => "_top"
+  %td= station.postcode
+  %td= station.address
+  %td= station.latest_price&.price_display

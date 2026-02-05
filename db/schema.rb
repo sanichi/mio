@@ -228,6 +228,42 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_094244) do
     t.index ["parent_id"], name: "index_places_on_parent_id"
   end
 
+  create_table "pp_prices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "price_last_updated", null: false
+    t.decimal "price_pence", precision: 5, scale: 1, null: false
+    t.bigint "station_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["station_id", "price_last_updated"], name: "index_pp_prices_on_station_id_and_price_last_updated"
+    t.index ["station_id"], name: "index_pp_prices_on_station_id"
+  end
+
+  create_table "pp_stations", force: :cascade do |t|
+    t.string "address", limit: 50
+    t.string "brand", limit: 30
+    t.datetime "created_at", null: false
+    t.decimal "latitude", precision: 10, scale: 7, null: false
+    t.decimal "longitude", precision: 10, scale: 7, null: false
+    t.string "name", limit: 75, null: false
+    t.string "node_id", limit: 64, null: false
+    t.string "postcode", limit: 10
+    t.string "preferred_name", limit: 75
+    t.datetime "updated_at", null: false
+    t.index ["node_id"], name: "index_pp_stations_on_node_id", unique: true
+  end
+
+  create_table "pp_sync_logs", force: :cascade do |t|
+    t.decimal "duration_seconds", precision: 8, scale: 2
+    t.text "error_message"
+    t.string "query_type", limit: 25, null: false
+    t.integer "records_created", default: 0, null: false
+    t.integer "records_scanned", default: 0, null: false
+    t.integer "records_unchanged", default: 0, null: false
+    t.integer "records_updated", default: 0, null: false
+    t.datetime "started_at", null: false
+    t.index ["query_type", "started_at"], name: "index_pp_sync_logs_on_query_type_and_started_at"
+  end
+
   create_table "returns", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.decimal "percent", precision: 4, scale: 1
@@ -479,5 +515,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_094244) do
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
   add_foreign_key "places", "places", column: "parent_id"
+  add_foreign_key "pp_prices", "pp_stations", column: "station_id"
   add_foreign_key "stars", "constellations"
 end

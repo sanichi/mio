@@ -47,7 +47,7 @@
               %li= link_to t("flat.flats"),    flats_path if can?(:read, Flat)
               %li= link_to t("flat.deeds"),    deeds_path if can?(:deeds, :page)
 
-        -  if [:aoc, :board, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Constellation, Login, Match, Star, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
+        -  if [:aoc, :board, :env, :play, :premier, :weight].map{ |p| can?(p, :page) }.any? || [Constellation, Login, Match, Pp::Price, Star, Team, Tutorial, User].map{ |c| can?(:read, c) }.any?
           %li.dropdown
             = link_to t("other"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown"
             %ul.dropdown-menu
@@ -56,6 +56,7 @@
               %li= link_to t("classifier.classifiers"),       classifiers_path    if can?(:read, Classifier)
               %li= link_to t("subscription.subscriptions"),   subscriptions_path  if can?(:read, Subscription)
               %li= link_to t("pages.premier.short"),          premier_path        if can?(:premier, :page)
+              %li= link_to t("pp.petrol_prices"),             pp_prices_path      if can?(:read, Pp::Price)
               %li= link_to t("constellation.constellations"), constellations_path if can?(:read, Constellation)
               %li= link_to t("star.stars"),                   stars_path          if can?(:read, Star)
               %li= link_to t("team.teams"),                   teams_path          if can?(:read, Team)

@@ -1,0 +1,35 @@
+en:
+  pp:
+    petrol_prices: Petrol Prices
+    station:
+      station: Station
+      stations: Stations
+      address: Address
+      brand: Brand
+      latitude: Lat
+      longitude: Long
+      name: Name
+      node_id: Node ID
+      postcode: Postcode
+      preferred_name: Display Name
+    price:
+      price: Price
+      prices: Prices
+      price_pence: Pence
+      price_last_updated: Updated
+    sync_log:
+      sync_log: Sync Log
+      sync_logs: Sync Logs
+      query_type: Type
+      records_scanned: Scanned
+      records_created: Created
+      records_updated: Updated
+      records_unchanged: Unchanged
+      error_message: Error
+      started_at: Started
+      duration_seconds: Secs
+      query_types:
+        stations_full: Stations (Full)
+        stations_incremental: Stations (Incr)
+        prices_full: Prices (Full)
+        prices_incremental: Prices (Incr)

@@ -1,0 +1,35 @@
+= render "utils/title", text: @station.display_name
+
+%section
+  .header.text-center
+    %h3= @station.display_name
+  .body
+    %table{class: "table table-bordered"}
+      %tbody
+        %tr
+          %td= t("pp.station.name")
+          %td= @station.name
+        - if @station.preferred_name.present?
+          %tr
+            %td= t("pp.station.preferred_name")
+            %td= @station.preferred_name
+        %tr
+          %td= t("pp.station.brand")
+          %td= @station.brand
+        %tr
+          %td= t("pp.station.address")
+          %td= @station.address
+        %tr
+          %td= t("pp.station.postcode")
+          %td= @station.postcode
+        %tr
+          %td= t("pp.station.latitude")
+          %td= @station.latitude
+        %tr
+          %td= t("pp.station.longitude")
+          %td= @station.longitude
+  .footer
+    = link_to t("edit"), edit_pp_station_path(@station), class: "blue-btn"
+    = link_to t("pp.station.stations"), pp_stations_path, class: "green-btn"
+    = link_to t("pp.price.prices"), pp_prices_path, class: "green-btn"
+    = link_to t("pp.sync_log.sync_logs"), pp_sync_logs_path, class: "green-btn"

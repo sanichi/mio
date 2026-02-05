@@ -1,0 +1,13 @@
+.row
+  %div{class: Sni::Center.call(xl: 8)}
+    = form_for station, html: { class: "crud" } do |form|
+      %section
+        .header.text-center
+          %h3= station.name
+        .body
+          = form.label :preferred_name, t("pp.station.preferred_name"), class: "form-label"
+          = form.text_field :preferred_name, class: "form-control", placeholder: station.name
+          %small.text-muted= t("pp.station.name") + ": " + station.name
+        .footer
+          = form.submit t("save"), class: "blue-btn"
+          = link_to t("cancel"), station, class: "gray-btn"

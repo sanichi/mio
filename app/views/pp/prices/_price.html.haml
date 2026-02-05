@@ -1,0 +1,4 @@
+%tr
+  %td= link_to price.station.display_name, price.station, "data-turbo-frame" => "_top"
+  %td.text-center= price.price_display
+  %td.text-center.font-monospace.small= price.price_last_updated.strftime("%H:%M %a %b %d")

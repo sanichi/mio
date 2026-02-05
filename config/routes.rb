@@ -14,6 +14,12 @@ Rails.application.routes.draw do
     get "trmnl/#{action}", to: "trmnl##{action}"
   end
 
+  namespace :pp do
+    resources :prices, only: [:index]
+    resources :stations, only: [:edit, :index, :show, :update]
+    resources :sync_logs, only: [:index]
+  end
+
   namespace :wk do
     resources :examples, except: [:show]
     resources :groups

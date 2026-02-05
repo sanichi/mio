@@ -1,0 +1,9 @@
+%tr{class: sync_log.failed? ? "table-danger" : nil}
+  %td= t("pp.sync_log.query_types.#{sync_log.query_type}")
+  %td= number_with_delimiter(sync_log.records_scanned)
+  %td= number_with_delimiter(sync_log.records_created)
+  %td= number_with_delimiter(sync_log.records_updated)
+  %td= number_with_delimiter(sync_log.records_unchanged)
+  %td= sync_log.started_at.strftime("%Y-%m-%d %H:%M")
+  %td= sync_log.duration_seconds&.round(1)
+  %td= sync_log.error_message&.truncate(20)

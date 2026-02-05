@@ -1,0 +1,31 @@
+:ruby
+  lo = Sni::Layout.call(lg: [2], md: [4], xs: [6])
+  inputs = [
+    [:query_type, t("pp.sync_log.query_type"), :select, lo[0], menu: pp_query_type_menu(params[:query_type])],
+  ]
+
+= render "utils/title", key: "pp.sync_log.sync_logs"
+
+%section
+  .header.text-center
+    %h3= t("pp.sync_log.sync_logs")
+  .body
+    = render "utils/search/form", index: pp_sync_logs_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("pp.sync_log.query_type")
+            %th= t("pp.sync_log.records_scanned")
+            %th= t("pp.sync_log.records_created")
+            %th= t("pp.sync_log.records_updated")
+            %th= t("pp.sync_log.records_unchanged")
+            %th= t("pp.sync_log.started_at")
+            %th= t("pp.sync_log.duration_seconds")
+            %th= t("pp.sync_log.error_message")
+        %tbody
+          = render partial: "sync_log", collection: @sync_logs.matches
+          = render "utils/pagination_links", pager: @sync_logs, columns: 8
+  .footer
+    = link_to t("pp.station.stations"), pp_stations_path, class: "green-btn"
+    = link_to t("pp.price.prices"), pp_prices_path, class: "green-btn"

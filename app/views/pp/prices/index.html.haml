@@ -1,0 +1,26 @@
+:ruby
+  lo = Sni::Layout.call(lg: [2], md: [4], xs: [6])
+  inputs = [
+    [:station_id, t("pp.station.station"), :select, lo[0], menu: pp_station_filter_menu(params[:station_id])],
+  ]
+
+= render "utils/title", key: "pp.price.prices"
+
+%section
+  .header.text-center
+    %h3= t("pp.price.prices")
+  .body
+    = render "utils/search/form", index: pp_prices_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered table-sm mt-3"}
+        %thead
+          %tr
+            %th= t("pp.station.station")
+            %th.text-center= t("pp.price.price")
+            %th.text-center= t("pp.price.price_last_updated")
+        %tbody
+          = render partial: "price", collection: @prices.matches
+          = render "utils/pagination_links", pager: @prices, columns: 3
+  .footer
+    = link_to t("pp.station.stations"), pp_stations_path, class: "green-btn"
+    = link_to t("pp.sync_log.sync_logs"), pp_sync_logs_path, class: "green-btn"
