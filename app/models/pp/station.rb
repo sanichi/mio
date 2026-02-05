@@ -37,7 +37,7 @@ module Pp
     def self.search(params, path, opt = {})
       matches = case params[:order]
       when "name"
-        by_name
+        by_display_name
       else
         by_price
       end
