@@ -5,6 +5,7 @@
 #   bin/rake pp:stations_incremental # Fetch stations changed since last sync
 #   bin/rake pp:prices_full          # Fetch all prices for known stations
 #   bin/rake pp:prices_incremental   # Fetch prices changed since last sync
+#   bin/rake pp:prune_stations       # Delete stations outside the bounding box
 
 require 'net/http'
 require 'json'
@@ -32,6 +33,38 @@ namespace :pp do
   desc "Fetch prices changed since last sync"
   task prices_incremental: :environment do
     PetrolPricesFetcher.new.fetch_prices(incremental: true)
+  end
+
+  desc "Delete stations outside the bounding box"
+  task prune_stations: :environment do
+    outside = Pp::Station.all.reject do |s|
+      Pp::Station.in_bounds?(s.latitude, s.longitude)
+    end
+
+    if outside.empty?
+      puts "No stations outside the bounding box."
+      next
+    end
+
+    puts "Stations outside bounding box:"
+    puts "-" * 70
+    outside.each do |s|
+      puts "#{s.display_name} (ID: #{s.id}, lat: #{s.latitude}, long: #{s.longitude})"
+    end
+    puts "-" * 70
+    puts "Total: #{outside.size} station(s)"
+    puts
+
+    print "Delete all #{outside.size} station(s) and their prices? (yes/no): "
+    response = $stdin.gets.chomp.downcase
+
+    if response == 'yes'
+      count = outside.size
+      outside.each(&:destroy)
+      puts "Deleted #{count} station(s) and their associated prices."
+    else
+      puts "Cancelled."
+    end
   end
 
   class PetrolPricesFetcher

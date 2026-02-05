@@ -6,9 +6,9 @@ module Pp
     self.table_name = 'pp_stations'
 
     # Bounding box for Leith area (Crewe Toll to Musselburgh)
-    LATITUDE_MIN  = 55.92   # Southern boundary
+    LATITUDE_MIN  = 55.94   # Southern boundary (just below Portobello)
     LATITUDE_MAX  = 55.99   # Northern boundary (just offshore)
-    LONGITUDE_MIN = -3.26   # Western boundary (past Crewe Toll)
+    LONGITUDE_MIN = -3.25   # Western boundary (past Crewe Toll)
     LONGITUDE_MAX = -3.02   # Eastern boundary (past Musselburgh)
 
     FUEL_TYPE = "E10"
