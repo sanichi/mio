@@ -28,7 +28,6 @@ module Pp
               numericality: { greater_than_or_equal_to: LONGITUDE_MIN, less_than_or_equal_to: LONGITUDE_MAX }
     validates :preferred_name, length: { maximum: 75 }, allow_nil: true
 
-    scope :by_name, -> { order(:name) }
     scope :by_display_name, -> { order(Arel.sql('COALESCE(preferred_name, name)')) }
     scope :by_price, -> {
       order(Arel.sql('(SELECT price_pence FROM pp_prices WHERE pp_prices.station_id = pp_stations.id ORDER BY price_last_updated DESC LIMIT 1) ASC NULLS LAST'))
