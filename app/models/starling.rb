@@ -4,6 +4,8 @@ class Starling
 
   private
 
+  # To get account IDs: curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://api.starlingbank.com/api/v2/accounts
+
   def self.fetch_balance(account_type)
     account_id = Rails.application.credentials.starling[account_type]
     api_token = Rails.application.credentials.starling[:token]
@@ -13,7 +15,7 @@ class Starling
     raise "empty response" if response.body.blank?
 
     parsed = JSON.parse(response.body)
-    pennies = parsed.dig("effectiveBalance", "minorUnits")
+    pennies = parsed.dig("totalClearedBalance", "minorUnits")
     raise "invalid balance: #{pennies.inspect}" unless pennies.is_a?(Integer)
 
     pennies.to_f / 100
