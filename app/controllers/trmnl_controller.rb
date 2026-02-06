@@ -6,7 +6,7 @@ class TrmnlController < ApplicationController
   end
 
   def petrol
-    stations = Pp::Station.by_price.limit(3).select { |s| s.latest_price.present? }
+    stations = Pp::Station.by_price.limit(4).select { |s| s.latest_price.present? }
     if stations.empty?
       render json: { error: "No stations with prices" }
     else
