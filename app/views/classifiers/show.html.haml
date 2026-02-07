@@ -35,5 +35,7 @@
               %td{colspan: 2}
                 %pre= @classifier.description
       .footer
+        - if can?(:manage, Classifier)
+          = link_to t("edit"), edit_classifier_path(@classifier), class: "blue-btn"
         = link_to t("classifier.classifiers"), classifiers_path, class: "green-btn"
         = link_to t("transaction.transactions"), transactions_path, class: "green-btn"
