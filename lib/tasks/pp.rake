@@ -76,20 +76,26 @@ namespace :pp do
 
     def fetch_stations(incremental:)
       query_type = incremental ? 'stations_incremental' : 'stations_full'
+
+      # For incremental, find the last successful sync timestamp BEFORE creating the new sync log,
+      # otherwise the new (not-yet-failed) record will be returned as the "last successful" sync.
+      since_timestamp = nil
+      if incremental
+        last_sync = Pp::SyncLog.last_successful_stations_sync
+        if last_sync
+          since_timestamp = last_sync.started_at
+        else
+          query_type = 'stations_full'
+        end
+      end
+
       sync_log = start_sync(query_type)
 
       begin
-        # For incremental, find the last successful sync timestamp
-        since_timestamp = nil
-        if incremental
-          last_sync = Pp::SyncLog.last_successful_stations_sync
-          if last_sync
-            since_timestamp = last_sync.started_at
-            puts "Incremental sync since: #{since_timestamp}"
-          else
-            puts "No previous successful sync found, falling back to full sync"
-            sync_log.update!(query_type: 'stations_full')
-          end
+        if incremental && since_timestamp
+          puts "Incremental sync since: #{since_timestamp}"
+        elsif incremental
+          puts "No previous successful sync found, falling back to full sync"
         end
 
         obtain_access_token
@@ -112,6 +118,19 @@ namespace :pp do
 
     def fetch_prices(incremental:)
       query_type = incremental ? 'prices_incremental' : 'prices_full'
+
+      # For incremental, find the last successful sync timestamp BEFORE creating the new sync log,
+      # otherwise the new (not-yet-failed) record will be returned as the "last successful" sync.
+      since_timestamp = nil
+      if incremental
+        last_sync = Pp::SyncLog.last_successful_prices_sync
+        if last_sync
+          since_timestamp = last_sync.started_at
+        else
+          query_type = 'prices_full'
+        end
+      end
+
       sync_log = start_sync(query_type)
 
       begin
@@ -124,17 +143,10 @@ namespace :pp do
         end
         puts "Looking for prices for #{station_node_ids.size} stations"
 
-        # For incremental, find the last successful sync timestamp
-        since_timestamp = nil
-        if incremental
-          last_sync = Pp::SyncLog.last_successful_prices_sync
-          if last_sync
-            since_timestamp = last_sync.started_at
-            puts "Incremental sync since: #{since_timestamp}"
-          else
-            puts "No previous successful sync found, falling back to full sync"
-            sync_log.update!(query_type: 'prices_full')
-          end
+        if incremental && since_timestamp
+          puts "Incremental sync since: #{since_timestamp}"
+        elsif incremental
+          puts "No previous successful sync found, falling back to full sync"
         end
 
         obtain_access_token
