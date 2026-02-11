@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_15_094244) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_11_144512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -257,6 +257,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_094244) do
     t.text "error_message"
     t.string "query_type", limit: 25, null: false
     t.integer "records_created", default: 0, null: false
+    t.integer "records_matched", default: 0, null: false
     t.integer "records_scanned", default: 0, null: false
     t.integer "records_unchanged", default: 0, null: false
     t.integer "records_updated", default: 0, null: false

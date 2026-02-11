@@ -92,6 +92,8 @@ namespace :pp do
       sync_log = start_sync(query_type)
 
       begin
+        initial_station_count = Pp::Station.count
+
         if incremental && since_timestamp
           puts "Incremental sync since: #{since_timestamp}"
         elsif incremental
@@ -108,6 +110,9 @@ namespace :pp do
         all_stations.each do |station_data|
           process_station(station_data, sync_log)
         end
+
+        # Calculate unchanged: stations that existed before and weren't updated or created
+        sync_log.records_unchanged = initial_station_count - sync_log.records_updated
 
         complete_sync(sync_log)
       rescue => e
@@ -143,6 +148,8 @@ namespace :pp do
         end
         puts "Looking for prices for #{station_node_ids.size} stations"
 
+        initial_price_count = Pp::Price.count
+
         if incremental && since_timestamp
           puts "Incremental sync since: #{since_timestamp}"
         elsif incremental
@@ -160,6 +167,10 @@ namespace :pp do
           process_price(price_data, station_node_ids, sync_log)
         end
 
+        # Calculate unchanged: prices that existed before and weren't created
+        # (prices are never updated, only created, so unchanged = initial - 0)
+        sync_log.records_unchanged = initial_price_count
+
         complete_sync(sync_log)
       rescue => e
         fail_sync(sync_log, e)
@@ -174,6 +185,7 @@ namespace :pp do
         query_type: query_type,
         started_at: Time.current,
         records_scanned: 0,
+        records_matched: 0,
         records_created: 0,
         records_updated: 0,
         records_unchanged: 0
@@ -192,6 +204,7 @@ namespace :pp do
       puts "-" * 60
       puts "Completed successfully"
       puts "Records scanned: #{sync_log.records_scanned}"
+      puts "Records matched: #{sync_log.records_matched}"
       puts "Records created: #{sync_log.records_created}"
       puts "Records updated: #{sync_log.records_updated}"
       puts "Records unchanged: #{sync_log.records_unchanged}"
@@ -298,6 +311,9 @@ namespace :pp do
       is_new = station.nil?
       station ||= Pp::Station.new(node_id: node_id)
 
+      # Track matched records (existing stations in API response)
+      sync_log.records_matched += 1 unless is_new
+
       # Update attributes
       station.name = station_data['trading_name'].to_s[0, 75]
       station.brand = station_data['brand_name'].to_s[0, 30].presence
@@ -315,8 +331,6 @@ namespace :pp do
           sync_log.records_updated += 1
           puts "  Updated: #{station.name} (#{station.postcode})"
         end
-      else
-        sync_log.records_unchanged += 1
       end
     end
 
@@ -348,7 +362,7 @@ namespace :pp do
       # Check if we already have this exact price point
       existing = station.prices.find_by(price_last_updated: price_last_updated)
       if existing
-        sync_log.records_unchanged += 1
+        sync_log.records_matched += 1
         return
       end
 
