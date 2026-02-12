@@ -148,8 +148,6 @@ namespace :pp do
         end
         puts "Looking for prices for #{station_node_ids.size} stations"
 
-        initial_price_count = Pp::Price.count
-
         if incremental && since_timestamp
           puts "Incremental sync since: #{since_timestamp}"
         elsif incremental
@@ -166,10 +164,6 @@ namespace :pp do
         all_prices.each do |price_data|
           process_price(price_data, station_node_ids, sync_log)
         end
-
-        # Calculate unchanged: prices that existed before and weren't created
-        # (prices are never updated, only created, so unchanged = initial - 0)
-        sync_log.records_unchanged = initial_price_count
 
         complete_sync(sync_log)
       rescue => e
@@ -278,7 +272,19 @@ namespace :pp do
           raise "API error on batch #{batch}: #{response.code} - #{response.body}"
         end
 
-        data = JSON.parse(response.body)
+        parsed = JSON.parse(response.body)
+
+        # API response format varies by endpoint:
+        # - Prices endpoint: {success: bool, data: array, message: string}
+        # - Stations endpoint: direct array
+        if parsed.is_a?(Array)
+          data = parsed
+        elsif parsed.is_a?(Hash) && parsed['data'].is_a?(Array)
+          data = parsed['data']
+        else
+          raise "Unexpected API response format on batch #{batch}: #{parsed.class} - #{parsed.inspect[0, 200]}"
+        end
+
         all_records.concat(data)
         puts "Batch #{batch}: #{data.length} records (#{all_records.length} total)"
 
@@ -359,20 +365,32 @@ namespace :pp do
       station = Pp::Station.find_by(node_id: node_id)
       return unless station
 
-      # Check if we already have this exact price point
-      existing = station.prices.find_by(price_last_updated: price_last_updated)
-      if existing
-        sync_log.records_matched += 1
-        return
-      end
+      # Track that this station from the API matched a DB station
+      sync_log.records_matched += 1
 
-      # Create new price record
-      station.prices.create!(
-        price_pence: price_value,
-        price_last_updated: price_last_updated
-      )
-      sync_log.records_created += 1
-      puts "  Price: #{station.name} - #{price_value}p at #{price_last_updated}"
+      # Get the station's most recent price
+      last_price = station.prices.order(price_last_updated: :desc).first
+
+      if last_price.nil?
+        # First price for this station - this is a creation
+        station.prices.create!(
+          price_pence: price_value,
+          price_last_updated: price_last_updated
+        )
+        sync_log.records_created += 1
+        puts "  Price created: #{station.name} - #{price_value}p at #{price_last_updated}"
+      elsif last_price.price_pence != price_value
+        # Price has changed - this is an update (new price point)
+        station.prices.create!(
+          price_pence: price_value,
+          price_last_updated: price_last_updated
+        )
+        sync_log.records_updated += 1
+        puts "  Price updated: #{station.name} - #{last_price.price_pence}p → #{price_value}p at #{price_last_updated}"
+      else
+        # Price is the same - unchanged
+        sync_log.records_unchanged += 1
+      end
     end
   end
 end
