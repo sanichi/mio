@@ -14,6 +14,7 @@ require 'uri'
 namespace :pp do
   API_BASE_URL = 'https://www.fuel-finder.service.gov.uk/api/v1'
   BATCH_SIZE = 500
+  HEADER_LENGTH = 60
 
   desc "Fetch all stations from API"
   task stations_full: :environment do
@@ -114,10 +115,13 @@ namespace :pp do
         # Calculate unchanged: stations that existed before and weren't updated or created
         sync_log.records_unchanged = initial_station_count - sync_log.records_updated
 
-        complete_sync(sync_log)
+        complete_sync(sync_log, true)
       rescue => e
         fail_sync(sync_log, e)
         raise
+      ensure
+        # Ensure sync_log is saved even if we exit unexpectedly
+        sync_log.save! if sync_log.changed?
       end
     end
 
@@ -165,10 +169,16 @@ namespace :pp do
           process_price(price_data, station_node_ids, sync_log)
         end
 
-        complete_sync(sync_log)
+        # Calculate unchanged: stations that didn't get price updates or creations
+        sync_log.records_unchanged = station_node_ids.size - sync_log.records_created - sync_log.records_updated
+
+        complete_sync(sync_log, false)
       rescue => e
         fail_sync(sync_log, e)
         raise
+      ensure
+        # Ensure sync_log is saved even if we exit unexpectedly
+        sync_log.save! if sync_log.changed?
       end
     end
 
@@ -185,39 +195,39 @@ namespace :pp do
         records_unchanged: 0
       )
       puts
-      puts "=" * 60
+      puts "=" * HEADER_LENGTH
       puts "Starting #{query_type} at #{sync_log.started_at}"
-      puts "=" * 60
+      puts "=" * HEADER_LENGTH
       sync_log
     end
 
-    def complete_sync(sync_log)
+    def complete_sync(sync_log, stations)
       duration = Time.current - sync_log.started_at
-      sync_log.update!(duration_seconds: duration)
+      sync_log.duration_seconds = duration
+      sync_log.save!
       puts
-      puts "-" * 60
+      puts "-" * HEADER_LENGTH
       puts "Completed successfully"
-      puts "Records scanned: #{sync_log.records_scanned}"
-      puts "Records matched: #{sync_log.records_matched}"
-      puts "Records created: #{sync_log.records_created}"
-      puts "Records updated: #{sync_log.records_updated}"
-      puts "Records unchanged: #{sync_log.records_unchanged}"
+      puts "API stations scanned: #{sync_log.records_scanned}"
+      puts "API-DB stations matched: #{sync_log.records_matched}"
+      puts "#{stations ? 'New DB stations created' : 'First DB prices created'}: #{sync_log.records_created}"
+      puts "Existing DB #{stations ? 'stations' : 'prices'} updated: #{sync_log.records_updated}"
+      puts "Existing stations unchanged: #{sync_log.records_unchanged}"
       puts "Duration: #{duration.round(2)}s"
-      puts "-" * 60
+      puts "-" * HEADER_LENGTH
     end
 
     def fail_sync(sync_log, error)
       duration = Time.current - sync_log.started_at
       error_message = "#{error.class}: #{error.message}"[0, 500]
-      sync_log.update!(
-        duration_seconds: duration,
-        error_message: error_message
-      )
+      sync_log.duration_seconds = duration
+      sync_log.error_message = error_message
+      sync_log.save!
       puts
-      puts "!" * 60
+      puts "!" * HEADER_LENGTH
       puts "FAILED: #{error_message}"
       puts "Duration: #{duration.round(2)}s"
-      puts "!" * 60
+      puts "!" * HEADER_LENGTH
     end
 
     def obtain_access_token
@@ -387,9 +397,6 @@ namespace :pp do
         )
         sync_log.records_updated += 1
         puts "  Price updated: #{station.name} - #{last_price.price_pence}p → #{price_value}p at #{price_last_updated}"
-      else
-        # Price is the same - unchanged
-        sync_log.records_unchanged += 1
       end
     end
   end
