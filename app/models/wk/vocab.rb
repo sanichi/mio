@@ -389,9 +389,9 @@ module Wk
       wk_url = "https://www.wanikani.com/vocabulary"
       delta = 0.25
       count = Hash.new(0)
+      baddies = []
       error = nil
-      vocabs = Vocab.where("wk_id > #{start}").order(:wk_id).all.to_a
-      puts "#{vocabs.class} #{vocabs.length}"
+      vocabs = Vocab.where("wk_id > #{start}").where(hidden: false).order(:wk_id).all.to_a
 
       puts
       puts "vocabs combinations"
@@ -404,8 +404,8 @@ module Wk
       vocabs.each do |vocab|
         response = HTTParty.get("#{wk_url}/#{CGI.escape(vocab.characters)}", hp_opt)
         unless response.code == 200
-          error = "responce code #{response.code} for #{vocab.characters}"
-          break
+          baddies.push "#{response.code}/#{vocab.wk_id}/#{vocab.characters}"
+          next
         end
 
         document = Nokogiri::HTML(response.body)
@@ -440,14 +440,15 @@ module Wk
       end
 
       puts
-      puts "some combos... #{count[:some]}"
-      puts "no combos..... #{count[:none]}"
-      puts "max ja........ #{count[:max_ja]}"
-      puts "max en........ #{count[:max_en]}"
-      puts "additions..... #{count[:additions]}"
-      puts "deletions..... #{count[:deletions]}"
-      puts "unchanged..... #{count[:unchanged]}"
-      puts "error......... #{error}" if error
+      puts "some combos..... #{count[:some]}"
+      puts "no combos....... #{count[:none]}"
+      puts "max ja.......... #{count[:max_ja]}"
+      puts "max en.......... #{count[:max_en]}"
+      puts "additions....... #{count[:additions]}"
+      puts "deletions....... #{count[:deletions]}"
+      puts "unchanged....... #{count[:unchanged]}"
+      puts "bad responses... #{baddies.size} #{baddies.join('|')}"
+      puts "error........... #{error}" if error
     end
 
     def merge(data, count)

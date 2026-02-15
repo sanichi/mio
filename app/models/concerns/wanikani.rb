@@ -17,7 +17,7 @@ module Wanikani
       req["Wanikani-Revision"] = "20170710"
       req["Authorization"] = "Bearer #{Rails.application.credentials.wani_kani[:api2]}"
       res = http.request(req)
-      raise "response content has wrong type (#{res.content_type})" unless res.content_type == "application/json"
+      raise "response content has wrong type (#{res.content_type})" unless res.content_type == "application/manifest+json"
       hash = ActiveSupport::JSON.decode(res.body)
       raise "response is not a hash #{hash.class}" unless hash&.is_a?(Hash)
       error = hash["error"]

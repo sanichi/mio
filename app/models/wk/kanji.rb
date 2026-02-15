@@ -277,6 +277,7 @@ module Wk
           new_similar_ids = [] unless new_similar_ids.is_a?(Array) && new_similar_ids.all? { |id| id.is_a?(Integer) && id > 0 }
           new_similar_ids.uniq! # sadly, WK data is not always unique
           new_similar_ids.reject! { |id| id == wk_id } # don't allow self-similarity just in case
+          new_similar_ids.reject! { |id| id == 9397 } # TODO: temporary while 9397 isn't published or API bug not fixed
           same_similar_kanjis = new_similar_ids.size == old_similar_ids.size && new_similar_ids.to_set == old_similar_ids.to_set
 
           if kanji.new_record?
