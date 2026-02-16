@@ -170,7 +170,7 @@ namespace :pp do
         end
 
         # Calculate unchanged: stations that didn't get price updates or creations
-        sync_log.records_unchanged = station_node_ids.size - sync_log.records_created - sync_log.records_updated
+        sync_log.records_unchanged = sync_log.records_matched - sync_log.records_created - sync_log.records_updated
 
         complete_sync(sync_log, false)
       rescue => e
