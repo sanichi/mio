@@ -22,11 +22,11 @@ module Pp
     validates :brand, length: { maximum: 30 }, allow_nil: true
     validates :address, length: { maximum: 50 }, allow_nil: true
     validates :postcode, length: { maximum: 10 }, allow_nil: true
+    validates :preferred_name, length: { maximum: 75 }, uniqueness: true, allow_nil: true
     validates :latitude, presence: true,
               numericality: { greater_than_or_equal_to: LATITUDE_MIN, less_than_or_equal_to: LATITUDE_MAX }
     validates :longitude, presence: true,
               numericality: { greater_than_or_equal_to: LONGITUDE_MIN, less_than_or_equal_to: LONGITUDE_MAX }
-    validates :preferred_name, length: { maximum: 75 }, allow_nil: true
 
     scope :by_display_name, -> { order(Arel.sql('COALESCE(preferred_name, name)')) }
     scope :by_price, -> {
