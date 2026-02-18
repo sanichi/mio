@@ -53,7 +53,7 @@ describe Classifier, js: true do
   context "edit" do
     it "success" do
       click_link classifier.name
-      click_link t("edit")
+      first(:link, t("edit")).click
 
       expect(page).to have_title t("classifier.edit")
       fill_in t("classifier.name"), with: data.name
@@ -73,7 +73,7 @@ describe Classifier, js: true do
       expect(Classifier.count).to eq 1
 
       click_link classifier.name
-      click_link t("edit")
+      first(:link, t("edit")).click
       accept_confirm do
         click_link t("delete")
       end
