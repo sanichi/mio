@@ -1,12 +1,5 @@
-.row
-  %div{class: Sni::Center.call(xl: 8)}
-    = form_for station, html: { class: "crud" } do |form|
-      %section
-        .header.text-center
-          %h3= station.name
-        .body
-          = form.label :preferred_name, t("pp.station.preferred_name"), class: "form-label"
-          = form.text_field :preferred_name, class: "form-control", placeholder: station.display_name
-        .footer
-          = form.submit t("save"), class: "blue-btn"
-          = link_to t("cancel"), station, class: "gray-btn"
+:ruby
+  inputs = [
+    [:preferred_name, t("pp.station.preferred_name"), :text, maxlength: 75, placeholder: station.display_name],
+  ]
+= render "utils/crud/form", object: station, index: pp_stations_path, inputs: inputs, title: title, cancel: station

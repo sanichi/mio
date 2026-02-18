@@ -12,6 +12,7 @@ en:
       node_id: Node ID
       postcode: Postcode
       preferred_name: Display Name
+      edit: Edit Display Name
     price:
       price: Price
       prices: Prices

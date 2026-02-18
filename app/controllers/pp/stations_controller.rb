@@ -16,6 +16,7 @@ module Pp
       if @station.update(strong_params)
         redirect_to @station
       else
+        failure @station
         render :edit, status: :unprocessable_entity
       end
     end
