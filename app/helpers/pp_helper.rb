@@ -18,4 +18,14 @@ module PpHelper
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
+
+  def pp_price_order_menu(selected)
+    opts = []
+    opts.push ["#{t('pp.price.price_last_updated')} #{t('symbol.down')}", "update_down"]
+    opts.push ["#{t('pp.price.price_last_updated')} #{t('symbol.up')}", "update_up"]
+    opts.push ["#{t('pp.price.price')} #{t('symbol.down')}", "price_down"]
+    opts.push ["#{t('pp.price.price')} #{t('symbol.up')}", "price_up"]
+    opts.push [t("pp.station.station"), "station"]
+    options_for_select(opts, selected)
+  end
 end

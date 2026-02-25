@@ -1,7 +1,8 @@
 :ruby
-  lo = Sni::Layout.call(lg: [2], md: [4], xs: [6])
+  lo = Sni::Layout.call(lg: [4,4], md: [5,5], xs: [6,6])
   inputs = [
     [:station_id, t("pp.station.station"), :select, lo[0], menu: pp_station_filter_menu(params[:station_id])],
+    [:order,      t("order"),              :select, lo[1], menu: pp_price_order_menu(params[:order])],
   ]
 
 = render "utils/title", key: "pp.price.prices"
