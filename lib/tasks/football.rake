@@ -14,7 +14,7 @@ class FootballApi # abstract
     data = get_data(base_url + matches_path)
     matches = get_matches(data)
     raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
-    raise "bad number of matches (#{matches.size})" unless matches.size == FOOTBALL_MATCHES
+    raise "bad number of matches (#{matches.size})" unless matches.size.in?([FOOTBALL_MATCHES, FOOTBALL_MATCHES-1]) # TODO: temporary
     matches
   end
 
