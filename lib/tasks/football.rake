@@ -15,6 +15,7 @@ class FootballApi # abstract
     matches = get_matches(data)
     raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
     raise "bad number of matches (#{matches.size})" unless matches.size.in?([FOOTBALL_MATCHES, FOOTBALL_MATCHES-1]) # TODO: temporary
+    fb_report("#{matches.size} matches");
     matches
   end
 
