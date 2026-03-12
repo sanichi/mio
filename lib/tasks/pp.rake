@@ -13,7 +13,6 @@ require 'uri'
 
 namespace :pp do
   API_BASE_URL = 'https://www.fuel-finder.service.gov.uk/api/v1'
-  BATCH_SIZE = 500
   HEADER_LENGTH = 60
 
   desc "Fetch all stations from API"
@@ -275,7 +274,8 @@ namespace :pp do
 
         if response.code != '200'
           # Handle "no data available" as empty result, not error
-          if response.code == '400' && response.body.include?('No more data available')
+          if (response.code == '400' && response.body.include?('No more data available')) ||
+             (response.code == '404' && response.body.include?('not available'))
             puts "Batch #{batch}: no data available"
             break
           end
@@ -298,8 +298,8 @@ namespace :pp do
         all_records.concat(data)
         puts "Batch #{batch}: #{data.length} records (#{all_records.length} total)"
 
-        # Stop if we got fewer records than the batch size
-        break if data.length < BATCH_SIZE
+        # Stop if we got an empty batch
+        break if data.empty?
         batch += 1
       end
 
