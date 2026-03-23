@@ -13,13 +13,13 @@ module Pp
       matches = includes(:station)
       case params[:order]
       when "price_down"
-        matches = matches.order(price_pence: :desc)
-      when "price_up"
         matches = matches.order(price_pence: :asc)
+      when "price_up"
+        matches = matches.order(price_pence: :desc)
       when "update_down"
-        matches = matches.order(price_last_updated: :desc)
-      when "update_up"
         matches = matches.order(price_last_updated: :asc)
+      when "update_up"
+        matches = matches.order(price_last_updated: :desc)
       when "station"
         matches = matches.order(station: {preferred_name: :asc}, price_last_updated: :desc)
       else
