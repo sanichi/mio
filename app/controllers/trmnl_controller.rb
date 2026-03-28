@@ -16,6 +16,7 @@ class TrmnlController < ApplicationController
           {
             name: s.display_name,
             price: price.price_display,
+            last_updated: price.last_updated_text,
             postcode: s.postcode,
             latitude: s.latitude,
             longitude: s.longitude

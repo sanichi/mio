@@ -38,5 +38,14 @@ module Pp
     def price_display
       format("%.1fp", price_pence)
     end
+
+    def last_updated_text
+      days = (Date.current - price_last_updated.to_date).to_i
+      case days
+      when 0 then "today"
+      when 1 then "yesterday"
+      else "#{days} days ago"
+      end
+    end
   end
 end
