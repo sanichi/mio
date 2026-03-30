@@ -1,4 +1,4 @@
-module Pp
+module PP
   class Station < ApplicationRecord
     include Constrainable
     include Pageable

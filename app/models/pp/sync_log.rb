@@ -1,4 +1,4 @@
-module Pp
+module PP
   class SyncLog < ApplicationRecord
     include Pageable
 

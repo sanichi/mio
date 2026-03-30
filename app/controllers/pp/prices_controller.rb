@@ -1,7 +1,7 @@
-module Pp
+module PP
   class PricesController < ApplicationController
     def index
-      @prices = Pp::Price.search(params, pp_prices_path, per_page: 15)
+      @prices = PP::Price.search(params, pp_prices_path, per_page: 15)
     end
   end
 end

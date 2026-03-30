@@ -1,9 +1,9 @@
-module Pp
+module PP
   class StationsController < ApplicationController
     before_action :find_station, only: [:edit, :show, :update]
 
     def index
-      @stations = Pp::Station.search(params, pp_stations_path, per_page: 15)
+      @stations = PP::Station.search(params, pp_stations_path, per_page: 15)
     end
 
     def show
@@ -24,7 +24,7 @@ module Pp
     private
 
     def find_station
-      @station = Pp::Station.find(params[:id])
+      @station = PP::Station.find(params[:id])
     end
 
     def strong_params

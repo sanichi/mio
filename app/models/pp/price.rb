@@ -1,4 +1,4 @@
-module Pp
+module PP
   class Price < ApplicationRecord
     include Pageable
 

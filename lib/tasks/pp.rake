@@ -37,8 +37,8 @@ namespace :pp do
 
   desc "Delete stations outside the bounding box"
   task prune_stations: :environment do
-    outside = Pp::Station.all.reject do |s|
-      Pp::Station.in_bounds?(s.latitude, s.longitude)
+    outside = PP::Station.all.reject do |s|
+      PP::Station.in_bounds?(s.latitude, s.longitude)
     end
 
     if outside.empty?
@@ -81,7 +81,7 @@ namespace :pp do
       # otherwise the new (not-yet-failed) record will be returned as the "last successful" sync.
       since_timestamp = nil
       if incremental
-        last_sync = Pp::SyncLog.last_successful_stations_sync
+        last_sync = PP::SyncLog.last_successful_stations_sync
         if last_sync
           since_timestamp = last_sync.started_at
         else
@@ -92,7 +92,7 @@ namespace :pp do
       sync_log = start_sync(query_type)
 
       begin
-        initial_station_count = Pp::Station.count
+        initial_station_count = PP::Station.count
 
         if incremental && since_timestamp
           puts "Incremental sync since: #{since_timestamp}"
@@ -131,7 +131,7 @@ namespace :pp do
       # otherwise the new (not-yet-failed) record will be returned as the "last successful" sync.
       since_timestamp = nil
       if incremental
-        last_sync = Pp::SyncLog.last_successful_prices_sync
+        last_sync = PP::SyncLog.last_successful_prices_sync
         if last_sync
           since_timestamp = last_sync.started_at
         else
@@ -143,7 +143,7 @@ namespace :pp do
 
       begin
         # Check we have stations to fetch prices for
-        station_node_ids = Pp::Station.pluck(:node_id).to_set
+        station_node_ids = PP::Station.pluck(:node_id).to_set
         if station_node_ids.empty?
           puts "No stations in database. Run pp:stations_full first."
           fail_sync(sync_log, StandardError.new("No stations in database"))
@@ -184,7 +184,7 @@ namespace :pp do
     private
 
     def start_sync(query_type)
-      sync_log = Pp::SyncLog.create!(
+      sync_log = PP::SyncLog.create!(
         query_type: query_type,
         started_at: Time.current,
         records_scanned: 0,
@@ -312,7 +312,7 @@ namespace :pp do
 
       # Check if station sells E10
       fuel_types = station_data['fuel_types']
-      return unless fuel_types.is_a?(Array) && fuel_types.include?(Pp::Station::FUEL_TYPE)
+      return unless fuel_types.is_a?(Array) && fuel_types.include?(PP::Station::FUEL_TYPE)
 
       # Check if station is in our bounding box
       location = station_data['location']
@@ -320,12 +320,12 @@ namespace :pp do
 
       latitude = location['latitude'].to_f
       longitude = location['longitude'].to_f
-      return unless Pp::Station.in_bounds?(latitude, longitude)
+      return unless PP::Station.in_bounds?(latitude, longitude)
 
       # Find or create the station
-      station = Pp::Station.find_by(node_id: node_id)
+      station = PP::Station.find_by(node_id: node_id)
       is_new = station.nil?
-      station ||= Pp::Station.new(node_id: node_id)
+      station ||= PP::Station.new(node_id: node_id)
 
       # Track matched records (existing stations in API response)
       sync_log.records_matched += 1 unless is_new
@@ -358,7 +358,7 @@ namespace :pp do
       fuel_prices = price_data['fuel_prices']
       return unless fuel_prices.is_a?(Array)
 
-      e10_price = fuel_prices.find { |fp| fp['fuel_type'] == Pp::Station::FUEL_TYPE }
+      e10_price = fuel_prices.find { |fp| fp['fuel_type'] == PP::Station::FUEL_TYPE }
       return unless e10_price
 
       price_value = e10_price['price'].to_s.to_f
@@ -372,7 +372,7 @@ namespace :pp do
       return unless price_last_updated
 
       # Find the station
-      station = Pp::Station.find_by(node_id: node_id)
+      station = PP::Station.find_by(node_id: node_id)
       return unless station
 
       # Track that this station from the API matched a DB station
