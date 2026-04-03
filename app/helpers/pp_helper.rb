@@ -1,6 +1,6 @@
-module PPHelper
+module PpHelper
   def pp_query_type_menu(selected)
-    opts = PP::SyncLog::QUERY_TYPES.map { |qt| [t("pp.sync_log.query_types.#{qt}"), qt] }
+    opts = Pp::SyncLog::QUERY_TYPES.map { |qt| [t("pp.sync_log.query_types.#{qt}"), qt] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
@@ -14,7 +14,7 @@ module PPHelper
   end
 
   def pp_station_filter_menu(selected)
-    opts = PP::Station.where(id: PP::Price.select(:station_id)).by_display_name.map { |s| [s.display_name, s.id] }
+    opts = Pp::Station.where(id: Pp::Price.select(:station_id)).by_display_name.map { |s| [s.display_name, s.id] }
     opts.unshift [t("all"), ""]
     options_for_select(opts, selected)
   end
