@@ -53,7 +53,8 @@
           %td= @vocab.last_updated
         - if @vocab.any_notes?
           %tr
-            %td.col-12{colspan: 2}= @vocab.notes_html
+            %td.col-12{colspan: 2}
+              %article= @vocab.notes_html
         - unless @examples.empty?
           %tr
             %td.col-12{colspan: 2}
