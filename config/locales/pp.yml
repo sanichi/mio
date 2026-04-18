@@ -21,6 +21,7 @@ en:
     sync_log:
       sync_log: Sync Log
       sync_logs: Sync Logs
+      query_result: Result
       query_type: Type
       records_scanned: Scanned
       records_created: Created
@@ -29,6 +30,9 @@ en:
       error_message: Error
       started_at: Started
       duration_seconds: Secs
+      query_results:
+        changes: Changes
+        errors: Errors
       query_types:
         stations_full: Stations (Full)
         stations_incremental: Stations (Incr)

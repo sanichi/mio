@@ -21,6 +21,12 @@ module Pp
       if params[:query_type].present? && QUERY_TYPES.include?(params[:query_type])
         matches = matches.where(query_type: params[:query_type])
       end
+      case params[:query_result]
+      when "changes"
+        matches = matches.where('records_created > 0 OR records_updated > 0')
+      when "errors"
+        matches = matches.failed
+      end
       paginate(matches, params, path, opt)
     end
 

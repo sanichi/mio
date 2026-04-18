@@ -5,6 +5,12 @@ module PpHelper
     options_for_select(opts, selected)
   end
 
+  def pp_query_result_menu(selected)
+    opts = t("pp.sync_log.query_results").map { |k,v| [v, k] }
+    opts.unshift [t("all"), ""]
+    options_for_select(opts, selected)
+  end
+
   def pp_station_order_menu(selected)
     opts = [
       [t("pp.price.price"), "price"],

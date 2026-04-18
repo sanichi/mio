@@ -1,7 +1,8 @@
 :ruby
-  lo = Sni::Layout.call(lg: [2], md: [4], xs: [6])
+  lo = Sni::Layout.call(lg: [2,2], md: [3,3], xs: [4,4])
   inputs = [
-    [:query_type, t("pp.sync_log.query_type"), :select, lo[0], menu: pp_query_type_menu(params[:query_type])],
+    [:query_type,   t("pp.sync_log.query_type"),   :select, lo[0], menu: pp_query_type_menu(params[:query_type])],
+    [:query_result, t("pp.sync_log.query_result"), :select, lo[1], menu: pp_query_result_menu(params[:query_result])],
   ]
 
 = render "utils/title", key: "pp.sync_log.sync_logs"
