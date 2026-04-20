@@ -18,7 +18,7 @@
           %tr
             %th= t("pp.station.station")
             %th.text-center= t("pp.price.price")
-            %th.text-center= t("pp.price.price_last_updated")
+            %th.text-center= t("pp.price.last_updated")
         %tbody
           = render partial: "price", collection: @prices.matches
           = render "utils/pagination_links", pager: @prices, columns: 3

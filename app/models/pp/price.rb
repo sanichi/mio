@@ -39,6 +39,14 @@ module Pp
       format("%.1fp", price_pence)
     end
 
+    def price_delta_display
+      prev = station.prices.where('price_last_updated < ?', price_last_updated).order(price_last_updated: :desc).first
+      return nil unless prev
+      diff = price_pence - prev.price_pence
+      sign = diff > 0 ? "+" : ""
+      diff % 1 == 0 ? format("%s%d", sign, diff) : format("%s%.1f", sign, diff)
+    end
+
     def last_updated_text
       days = (Date.current - price_last_updated.to_date).to_i
       case days

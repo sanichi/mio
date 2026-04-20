@@ -6,30 +6,30 @@ en:
       stations: Stations
       address: Address
       brand: Brand
+      edit: Edit Display Name
       latitude: Lat
       longitude: Long
       name: Name
       node_id: Node ID
       postcode: Postcode
       preferred_name: Display Name
-      edit: Edit Display Name
     price:
       price: Price
       prices: Prices
-      price_pence: Pence
-      price_last_updated: Updated
+      delta: ∆
+      last_updated: Updated
     sync_log:
       sync_log: Sync Log
       sync_logs: Sync Logs
+      duration_seconds: Secs
+      error_message: Error
       query_result: Result
       query_type: Type
       records_scanned: Scanned
       records_created: Created
       records_updated: Updated
       records_unchanged: Unchanged
-      error_message: Error
       started_at: Started
-      duration_seconds: Secs
       query_results:
         changes: Changes
         errors: Errors
