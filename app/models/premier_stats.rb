@@ -109,7 +109,7 @@ class PremierStats
     end
 
     # prune and sort the IDs
-    @ids.select! { |id| present[id] }.sort! { |a, b| [@points[b], @diff[b], @name[a]] <=> [@points[a], @diff[a], @name[b]] }
+    @ids.select! { |id| present[id] }.sort! { |a, b| [@points[b], @diff[b], @for[b], @name[a]] <=> [@points[a], @diff[a], @for[a], @name[b]] }
 
     # calculate average games played and home start position
     calculate_home_start
