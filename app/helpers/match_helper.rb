@@ -5,6 +5,7 @@ module MatchHelper
   [2019,2024].each { |s| WINNER[s] = "Liverpool" }
   [2014,2016].each { |s| WINNER[s] = "Chelsea" }
   WINNER[2015] = "Leicester"
+  WINNER[2025] = "Arsenal"
 
   def match_season(season) = "%d/%d" % [season % 100, season % 100 + 1]
   def full_match_season(season) = "%d/%d" % [season, season % 100 + 1]
