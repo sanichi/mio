@@ -15,7 +15,7 @@ class Starling
     raise "empty response" if response.body.blank?
 
     parsed = JSON.parse(response.body)
-    pennies = parsed.dig("totalClearedBalance", "minorUnits")
+    pennies = parsed.dig("effectiveBalance", "minorUnits")
     raise "invalid balance: #{pennies.inspect}" unless pennies.is_a?(Integer)
 
     pennies.to_f / 100
