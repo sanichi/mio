@@ -42,9 +42,9 @@ module Wk
       if (level = params[:level].to_i) > 0
         matches = matches.where(level: level)
       end
-      if params[:image] == "kayo"
+      if params[:special] == "image"
         matches = matches.where(character: images)
-      elsif params[:image] == "favourite"
+      elsif params[:special] == "favourite"
         matches = matches.where(favourite: true)
       end
       matches =
