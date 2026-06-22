@@ -18,6 +18,7 @@
           %td.col-3= t("wk.meaning")
           %td.col-9
             = @kanji.meaning
+            = render partial: "favourite", locals: { kanji: @kanji }
             - if path = @kanji.pdf_path
               = link_to "PDF", path
         %tr.d-flex

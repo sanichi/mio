@@ -1,6 +1,11 @@
 class TrmnlController < ApplicationController
   before_action :authenticate_token
 
+  def kanji
+    kanjis = Wk::Kanji.where(favourite: true).pluck(:character).shuffle
+    render json: { kanjis: kanjis }
+  end
+
   def starling
     render json: { starling: { current: Starling.current, savings: Starling.savings } }
   end

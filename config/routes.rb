@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
-  %w[petrol premier starling].each do |action|
+  %w[kanji petrol premier starling].each do |action|
     get "trmnl/#{action}", to: "trmnl##{action}"
   end
 
@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     end
     resources :kanjis, only: [:index, :show] do
       get :similar, on: :collection
+      patch :toggle_favourite, on: :member
     end
     resources :radicals, only: [:index, :show]
     resources :readings, only: [] do

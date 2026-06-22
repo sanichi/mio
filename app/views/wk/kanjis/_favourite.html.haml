@@ -1,0 +1,4 @@
+= link_to t("wk.kanji.#{kanji.favourite? ? 'favourite_on' : 'favourite_off'}"),
+  toggle_favourite_wk_kanji_path(kanji),
+  id: dom_id(kanji, :favourite),
+  data: { turbo_method: :patch, turbo_stream: true }

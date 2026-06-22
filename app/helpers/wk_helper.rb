@@ -17,7 +17,7 @@ module WkHelper
   end
 
   def wk_kanji_image_menu(selected)
-    opts = [[t("all"), ""], [t("wk.kanji.image"), "kayo"]]
+    opts = [[t("all"), ""], [t("wk.kanji.image"), "kayo"], [t("wk.kanji.favourite"), "favourite"]]
     options_for_select(opts, selected)
   end
 

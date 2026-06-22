@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_11_144512) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_22_085744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -425,6 +425,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_144512) do
 
   create_table "wk_kanjis", force: :cascade do |t|
     t.string "character", limit: 1
+    t.boolean "favourite", default: false, null: false
     t.boolean "hidden", default: false
     t.text "kvg_frames"
     t.string "kvg_id"

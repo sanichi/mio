@@ -44,6 +44,8 @@ module Wk
       end
       if params[:image] == "kayo"
         matches = matches.where(character: images)
+      elsif params[:image] == "favourite"
+        matches = matches.where(favourite: true)
       end
       matches =
         case params[:order]
