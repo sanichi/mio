@@ -18,7 +18,7 @@ module Wk
       @kanjis, @message = Wk::Kanji.similar(params, similar_wk_kanjis_path, per_page: 8)
     end
 
-    def toggle_favourite
+    def quick_favourite_toggle
       @kanji = Wk::Kanji.find(params[:id])
       @kanji.update_column(:favourite, !@kanji.favourite)
     end

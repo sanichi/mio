@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     end
     resources :kanjis, only: [:index, :show] do
       get :similar, on: :collection
-      patch :toggle_favourite, on: :member
+      patch :quick_favourite_toggle, on: :member
     end
     resources :radicals, only: [:index, :show]
     resources :readings, only: [] do
