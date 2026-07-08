@@ -65,6 +65,10 @@ en:
       kanas: Kanas
       pronunciation: Pronunciation
     kanji:
+      candidates:
+        candidates: Favourite Candidates
+        count: Count
+        favourites: Favourites
       favourite: Favourite
       favourite_on: "❤️"
       favourite_off: "🤍"

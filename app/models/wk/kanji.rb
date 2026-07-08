@@ -6,6 +6,7 @@ module Wk
 
     MAX_MEANING = 128
     MAX_READING = 128
+    MIN_CANDIDATE_VOCABS = 2
     IMAGES = Rails.root + "public" + "images"
     PDFS = Rails.root + "public" + "pdf"
 
@@ -56,6 +57,22 @@ module Wk
         else                     matches.by_level
         end
       paginate(matches, params, path, opt)
+    end
+
+    # Kanjis that are not yet favourites but occur in vocabs alongside favourites,
+    # paired with those vocabs and ordered by how well connected they are.
+    def self.candidates
+      favourites = where(favourite: true).pluck(:character)
+      return [] if favourites.empty?
+      candidates = where(favourite: false).index_by(&:character)
+      vocabs_by_kanji = Hash.new { |h, k| h[k] = [] }
+      Vocab.by_reading.where("characters ~ ?", "[#{favourites.join}]").each do |vocab|
+        vocab.characters.chars.uniq.each do |character|
+          kanji = candidates[character]
+          vocabs_by_kanji[kanji].push(vocab) if kanji
+        end
+      end
+      vocabs_by_kanji.select { |kanji, vocabs| vocabs.size >= MIN_CANDIDATE_VOCABS }.sort_by { |kanji, vocabs| [-vocabs.size, kanji.level, kanji.character] }
     end
 
     def self.similar(params, path, opt={})
