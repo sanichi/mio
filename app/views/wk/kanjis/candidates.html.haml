@@ -1,14 +1,14 @@
-= render "utils/title", key: "wk.kanji.candidates.candidates"
+= render "utils/title", key: "wk.kanji.candidates"
 
 %section
   .header.text-center
-    %h3= t("wk.kanji.candidates.candidates")
+    %h3= t("wk.kanji.candidates")
   .body
     %table{class: "table table-bordered table-sm mt-3"}
       %thead
         %tr.d-flex
           %th.col-1.text-center= t("wk.kanji.kanji")
-          %th.col-1.text-center= t("wk.kanji.candidates.count")
+          %th.col-1.text-center= t("count")
           %th.col-10.text-center= t("wk.vocab.vocabs")
       %tbody
         - @candidates.each do |kanji, vocabs|
@@ -19,6 +19,6 @@
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
-    = link_to t("wk.kanji.candidates.favourites"), wk_kanjis_path(special: "favourite"), class: "green-btn"
+    = link_to t("wk.kanji.favourites"), wk_kanjis_path(special: "favourite"), class: "green-btn"
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"
