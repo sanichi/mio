@@ -19,6 +19,6 @@
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
-    = link_to t("wk.kanji.favourites"), wk_kanjis_path(special: "favourite"), class: "green-btn"
+    = link_to t("wk.kanji.favourites"), favourites_wk_kanjis_path, class: "green-btn"
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"

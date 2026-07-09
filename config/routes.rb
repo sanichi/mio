@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       patch :quick_accent_update, on: :member
     end
     resources :kanjis, only: [:index, :show] do
+      get :favourites, on: :collection
       get :candidates, on: :collection
       get :similar, on: :collection
       patch :quick_favourite_toggle, on: :member

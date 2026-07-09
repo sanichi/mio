@@ -14,6 +14,10 @@ module Wk
       @daily = Note.find_by(title: @kanji.character, series: t("wk.daily.text"))
     end
 
+    def favourites
+      @favourites = Wk::Kanji.where(favourite: true).shuffle
+    end
+
     def candidates
       @candidates = Wk::Kanji.candidates
     end
