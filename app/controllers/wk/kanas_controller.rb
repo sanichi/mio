@@ -9,6 +9,10 @@ module Wk
       @shortcut = @kanas.count == 1 && [0,1].include?(params[:page].to_i)
     end
 
+    def favourites
+      @favourites = Wk::Kana::FAVOURITES.shuffle
+    end
+
     def update
       if @kana.update(strong_params)
         redirect_to @kana

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :examples, except: [:show]
     resources :groups
     resources :kanas, only: [:edit, :index, :show, :update] do
+      get :favourites, on: :collection
       patch :quick_accent_update, on: :member
     end
     resources :kanjis, only: [:index, :show] do

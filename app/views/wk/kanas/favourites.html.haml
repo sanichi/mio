@@ -1,27 +1,20 @@
-= render "utils/title", key: "wk.kanji.favourites"
+= render "utils/title", key: "wk.kana.favourites"
 
 %section
   .header.text-center
-    %h3= t("wk.kanji.favourites")
+    %h3= t("wk.kana.favourites")
   .body
     %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid"}
       %tbody
-        - i = 0
+        - i = -1
         - 1.upto(8) do |row|
           %tr
             - 1.upto(12) do |col|
-              %td.text-center.p-0
-                - kanji = @favourites[i]
-                - if kanji
-                  = link_to kanji.character, kanji
-                - else
-                  = "\u3000"
-                - i += 1
+              %td.text-center.p-0= @favourites[i+=1] || "\u3000"
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
-    = link_to t("wk.kanji.favourites"), wk_kanjis_path(special: "favourite"), class: "green-btn"
+    = link_to t("wk.kanji.favourites"), favourites_wk_kanjis_path, class: "green-btn"
     = link_to t("wk.kanji.candidates"), candidates_wk_kanjis_path, class: "green-btn"
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"
-    = link_to t("wk.kana.favourites"), favourites_wk_kanas_path, class: "green-btn"

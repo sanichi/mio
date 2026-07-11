@@ -26,6 +26,7 @@
               %li= link_to t("wk.kanji.similar.similar"), similar_wk_kanjis_path    if can?(:read, Wk::Kanji)
               %li= link_to t("wk.kanji.favourites"),      favourites_wk_kanjis_path if can?(:read, Wk::Kanji)
               %li= link_to t("wk.kanji.candidates"),      candidates_wk_kanjis_path if can?(:read, Wk::Kanji)
+              %li= link_to t("wk.kana.favourites"),       favourites_wk_kanas_path  if can?(:read, Wk::Kana)
               %li= link_to t("place.title"),              places_path               if can?(:read, Place)
               %li= link_to t("pages.prefectures.title"),  prefectures_path          if can?(:prefectures, :page)
 

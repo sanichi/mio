@@ -8,6 +8,31 @@ module Wk
     include Vocabable
     include Wanikani
 
+    FAVOURITES = %w/
+      あ い う え お
+      か き く け こ
+      さ し す せ そ
+      た ち つ て と
+      な に ぬ ね の
+      は ひ ふ へ ほ
+      ま み む め も
+      や    ゆ    よ
+      ら り る れ ろ
+      わ          を
+      ん
+      ア イ ウ エ オ
+      カ キ ク ケ コ
+      サ シ ス セ ソ
+      タ チ ツ テ ト
+      ナ ニ ヌ ネ ノ
+      ハ ヒ フ ヘ ホ
+      マ ミ ム メ モ
+      ヤ    ユ    ヨ
+      ラ リ ル レ ロ
+      ワ          ヲ
+      ン
+    /
+
     before_validation :clean_up, :set_accent_pattern
 
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
