@@ -6,7 +6,7 @@ class TrmnlController < ApplicationController
   end
 
   def kana
-    render json: { kanas: Wk::Kana::FAVOURITE.shuffle }
+    render json: { kanas: Wk::Kana::FAVOURITES.shuffle }
   end
 
   def starling
