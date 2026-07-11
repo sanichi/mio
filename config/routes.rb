@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     get page => "pages##{page}"
   end
 
-  %w[kanji petrol premier starling].each do |action|
+  %w[kana kanji petrol premier starling].each do |action|
     get "trmnl/#{action}", to: "trmnl##{action}"
   end
 

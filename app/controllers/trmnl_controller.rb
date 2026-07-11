@@ -5,6 +5,10 @@ class TrmnlController < ApplicationController
     render json: { kanjis: Wk::Kanji.where(favourite: true).pluck(:character).shuffle }
   end
 
+  def kana
+    render json: { kanas: Wk::Kana::FAVOURITE.shuffle }
+  end
+
   def starling
     render json: { starling: { current: Starling.current, savings: Starling.savings } }
   end
