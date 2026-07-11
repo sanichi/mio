@@ -10,7 +10,7 @@ module Wk
     end
 
     def favourites
-      @favourites = Wk::Kana::FAVOURITES.shuffle
+      @favourites = Wk::Kana::FAVOURITES.to_a.shuffle
     end
 
     def update
