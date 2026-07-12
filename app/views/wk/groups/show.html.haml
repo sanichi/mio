@@ -2,7 +2,7 @@
 
 %section
   .header.text-center
-    %h1= @group.vocab_list.gsub(" ", "•")
+    %h1= safe_join(@group.vocabs.map { |vocab| link_to(vocab.characters, vocab) }, " • ")
   .body
     %table{class: "table table-bordered"}
       %tbody
@@ -10,15 +10,12 @@
           %td= t("wk.group.category")
           %td= t("wk.group.categories.#{@group.category}")
         %tr
-          %td= t("wk.vocab.vocabs")
-          %td
-            - @group.vocabs.each do |vocab|
-              = link_to vocab.characters, vocab
-              = " "
-        - if @group.notes.present?
-          %tr
+          - if @group.notes.present?
             %td{colspan: 2}
               %article= @group.notes_html
+          - else
+            %td= t("wk.vocab.vocabs")
+            %td= safe_join(@group.vocabs.map { |vocab| vocab.characters }, ", ")
   .footer
     - if can?(:manage, Wk::Group)
       = link_to t("edit"), edit_wk_group_path(@group), class: "blue-btn"

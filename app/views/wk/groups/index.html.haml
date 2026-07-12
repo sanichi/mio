@@ -18,7 +18,7 @@
           %tr
             %th= t("wk.group.category")
             %th= t("wk.vocab.vocabs")
-            %th= t("notes")
+            %th.text-center= t("notes")
             %th
         %tbody
           = render partial: "group", collection: @groups.matches
