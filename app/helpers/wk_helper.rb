@@ -21,6 +21,11 @@ module WkHelper
     options_for_select(opts, selected)
   end
 
+  def wk_kanji_favourite_order_menu(selected)
+    opts = %w/random newest oldest/.map { |o| [t("wk.kanji.order.#{o}"), o] }
+    options_for_select(opts, selected)
+  end
+
   def wk_similar_owner_menu(selected)
     opts = %w/me wk either/.map { |o| [t("wk.kanji.similar.#{o}"), o]}
     options_for_select(opts, selected)

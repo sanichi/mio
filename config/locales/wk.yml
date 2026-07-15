@@ -75,6 +75,10 @@ en:
       kanjis: Kanjis
       kvg: KanjiVG
       image: Image
+      order:
+        newest: Newest first
+        oldest: Oldest first
+        random: Random
       special: Special
       similar:
         details: Details

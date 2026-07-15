@@ -15,7 +15,13 @@ module Wk
     end
 
     def favourites
-      @favourites = Wk::Kanji.where(favourite: true).shuffle
+      favourites = Wk::Kanji.where.not(favourite: nil)
+      @favourites =
+        case params[:order]
+        when "newest" then favourites.order(favourite: :desc).to_a
+        when "oldest" then favourites.order(favourite: :asc).to_a
+        else               favourites.shuffle
+        end
     end
 
     def candidates
@@ -28,7 +34,7 @@ module Wk
 
     def quick_favourite_toggle
       @kanji = Wk::Kanji.find(params[:id])
-      @kanji.update_column(:favourite, !@kanji.favourite)
+      @kanji.update_column(:favourite, @kanji.favourite ? nil : Time.current)
     end
   end
 end

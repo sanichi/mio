@@ -1,22 +1,30 @@
+:ruby
+  lo = Sni::Layout.call(md: [2], sm: [4], xs: [6])
+  inputs = [
+    [:order, t("order"), :select, lo[0], menu: wk_kanji_favourite_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "wk.kanji.favourites"
 
 %section
   .header.text-center
     %h3= t("wk.kanji.favourites")
   .body
-    %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid"}
-      %tbody
-        - i = 0
-        - 1.upto(8) do |row|
-          %tr
-            - 1.upto(12) do |col|
-              %td.text-center.p-0
-                - kanji = @favourites[i]
-                - if kanji
-                  = link_to kanji.character, kanji
-                - else
-                  = "\u3000"
-                - i += 1
+    = render "utils/search/form", index: favourites_wk_kanjis_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid"}
+        %tbody
+          - i = 0
+          - 1.upto(8) do |row|
+            %tr
+              - 1.upto(12) do |col|
+                %td.text-center.p-0
+                  - kanji = @favourites[i]
+                  - if kanji
+                    = link_to kanji.character, kanji, "data-turbo-frame" => "_top"
+                  - else
+                    = "　"
+                  - i += 1
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"

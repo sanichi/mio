@@ -46,7 +46,7 @@ module Wk
       if params[:special] == "image"
         matches = matches.where(character: images)
       elsif params[:special] == "favourite"
-        matches = matches.where(favourite: true)
+        matches = matches.where.not(favourite: nil)
       end
       matches =
         case params[:order]
@@ -62,9 +62,9 @@ module Wk
     # Kanjis that are not yet favourites but occur in vocabs alongside favourites,
     # paired with those vocabs and ordered by how well connected they are.
     def self.candidates
-      favourites = where(favourite: true).pluck(:character)
+      favourites = where.not(favourite: nil).pluck(:character)
       return [] if favourites.empty?
-      candidates = where(favourite: false).index_by(&:character)
+      candidates = where(favourite: nil).index_by(&:character)
       vocabs_by_kanji = Hash.new { |h, k| h[k] = [] }
       Vocab.by_reading.where("characters ~ ?", "[#{favourites.join}]").each do |vocab|
         vocab.characters.chars.uniq.each do |character|
