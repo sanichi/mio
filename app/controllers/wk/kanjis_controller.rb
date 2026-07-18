@@ -34,7 +34,11 @@ module Wk
 
     def quick_favourite_toggle
       @kanji = Wk::Kanji.find(params[:id])
-      @kanji.update_column(:favourite, @kanji.favourite ? nil : Time.current)
+      if @kanji.favourite
+        @kanji.update_columns(favourite: nil, former_favourite: @kanji.former_favourite || @kanji.favourite)
+      else
+        @kanji.update_column(:favourite, Time.current)
+      end
     end
   end
 end

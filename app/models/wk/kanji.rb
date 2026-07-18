@@ -47,6 +47,8 @@ module Wk
         matches = matches.where(character: images)
       elsif params[:special] == "favourite"
         matches = matches.where.not(favourite: nil)
+      elsif params[:special] == "former_favourite"
+        matches = matches.where(favourite: nil).where.not(former_favourite: nil)
       end
       matches =
         case params[:order]
