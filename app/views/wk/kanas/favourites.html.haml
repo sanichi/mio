@@ -12,7 +12,8 @@
             - 1.upto(12) do |col|
               - character, romanji = @favourites[i+=1]
               - if character
-                %td.text-center.p-0{title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"}= character
+                %td.text-center.p-0
+                  = link_to character, Wk::Kana.stroke_order_url(romanji), target: "_blank", rel: "noopener", title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
               - else
                 %td.text-center.p-0= "\u3000"
   .footer

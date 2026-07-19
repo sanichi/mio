@@ -57,6 +57,17 @@ module Wk
       'ん' => 'n',   'ン' => 'N',
     }
 
+    STROKE_ORDER_BASE = "https://hiragana.strokeorder.app".freeze
+
+    # External stroke-order diagram for a FAVOURITES romanji. Katakana entries
+    # are upper case, hiragana entries lower case, e.g.
+    #   'na'  => https://hiragana.strokeorder.app/na-hiragana-stroke-order.html
+    #   'NA'  => https://hiragana.strokeorder.app/na-katakana-stroke-order.html
+    def self.stroke_order_url(romanji)
+      script = romanji.match?(/[[:upper:]]/) ? "katakana" : "hiragana"
+      "#{STROKE_ORDER_BASE}/#{romanji.downcase}-#{script}-stroke-order.html"
+    end
+
     before_validation :clean_up, :set_accent_pattern
 
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }, uniqueness: true
