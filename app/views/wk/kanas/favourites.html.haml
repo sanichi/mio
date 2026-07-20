@@ -1,21 +1,29 @@
+:ruby
+  lo = Sni::Layout.call(md: [2], sm: [4], xs: [6])
+  inputs = [
+    [:order, t("order"), :select, lo[0], menu: wk_kana_favourite_order_menu(params[:order])],
+  ]
+
 = render "utils/title", key: "wk.kana.favourites"
 
 %section
   .header.text-center
     %h3= t("wk.kana.favourites")
   .body
-    %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid", "data-controller" => "tooltips"}
-      %tbody
-        - i = -1
-        - 1.upto(8) do |row|
-          %tr
-            - 1.upto(12) do |col|
-              - character, romanji = @favourites[i+=1]
-              - if character
-                %td.text-center.p-0
-                  = link_to character, Wk::Kana.stroke_order_url(romanji), target: "_blank", rel: "noopener", title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
-              - else
-                %td.text-center.p-0= "\u3000"
+    = render "utils/search/form", index: favourites_wk_kanas_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid", "data-controller" => "tooltips"}
+        %tbody
+          - i = -1
+          - 1.upto(8) do |row|
+            %tr
+              - 1.upto(12) do |col|
+                - character, romanji = @favourites[i+=1]
+                - if character
+                  %td.text-center.p-0
+                    = link_to character, Wk::Kana.stroke_order_url(romanji), target: "_blank", rel: "noopener", title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
+                - else
+                  %td.text-center.p-0= "\u3000"
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"

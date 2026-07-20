@@ -64,6 +64,9 @@ en:
       favourites: Favourite Kana
       kana: Kana
       kanas: Kanas
+      order:
+        ordered: Ordered
+        random: Random
       pronunciation: Pronunciation
     kanji:
       candidates: Favourite Candidates

@@ -57,6 +57,13 @@ module Wk
       'ん' => 'n',   'ン' => 'N',
     }
 
+    # FAVOURITES interleaves hiragana and katakana so that the constant reads
+    # nicely in the source, but the natural order puts all the hiragana first
+    # and all the katakana last.
+    def self.ordered_favourites
+      FAVOURITES.to_a.partition { |_character, romanji| !romanji.match?(/[[:upper:]]/) }.flatten(1)
+    end
+
     STROKE_ORDER_BASE = "https://hiragana.strokeorder.app".freeze
 
     # External stroke-order diagram for a FAVOURITES romanji. Katakana entries
