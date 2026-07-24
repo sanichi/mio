@@ -19,6 +19,9 @@ module Wk
   #   RAILS_ENV=production bin/rails r Wk.update
   #   RAILS_ENV=production bin/rails r Wk::VerbPair.update
   #   RAILS_ENV=production bin/rails r Wk::Vocab.combinations # takes a long time
+  # from time-to-time update the KVG data (see lib/tasks/kvg.rake)
+  #   bin/rake kvg:update                      # after extracting latest KVG data to /tmp (development)
+  #   RAILS_ENV=production bin/rake kvg:update # after extracting latest KVG data to /tmp (production)
   def self.update(days=nil)
     Wk::Radical.update(days)
     Wk::Kanji.update(days)
