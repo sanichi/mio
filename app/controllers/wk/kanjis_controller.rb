@@ -18,9 +18,9 @@ module Wk
       favourites = Wk::Kanji.where.not(favourite: nil)
       @favourites =
         case params[:order]
-        when "newest" then favourites.order(favourite: :desc).to_a
+        when "random" then favourites.shuffle
         when "oldest" then favourites.order(favourite: :asc).to_a
-        else               favourites.shuffle
+        else               favourites.order(favourite: :desc).to_a
         end
     end
 
