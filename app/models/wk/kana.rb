@@ -56,12 +56,24 @@ module Wk
       'を' => 'wo',  'ヲ' => 'WO',
       'ん' => 'n',   'ン' => 'N',
     }
+    FAV_ORDER = [
+      'あ', 'い', 'う', 'え', 'お', 'ア', 'イ', 'ウ', 'エ', 'オ',
+      'か', 'き', 'く', 'け', 'こ', 'カ', 'キ', 'ク', 'ケ', 'コ',
+      'さ', 'し', 'す', 'せ', 'そ', 'サ', 'シ', 'ス', 'セ', 'ソ',
+      'た', 'ち', 'つ', 'て', 'と', 'タ', 'チ', 'ツ', 'テ', 'ト',
+      'な', 'に', 'ぬ', 'ね', 'の', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
+      'は', 'ひ', 'ふ', 'へ', 'ほ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
+      'ま', 'み', 'む', 'め', 'も', 'マ', 'ミ', 'ム', 'メ', 'モ',
+      'や', nil,  'ゆ', nil,  'よ', 'ヤ', nil,  'ユ', nil,  'ヨ',
+      'ら', 'り', 'る', 'れ', 'ろ', 'ラ', 'リ', 'ル', 'レ', 'ロ',
+      'わ', nil,  'ん', nil,  'を', 'ワ', nil,  'ン', nil,  'ヲ',
+    ]
 
     # FAVOURITES interleaves hiragana and katakana so that the constant reads
     # nicely in the source, but the natural order puts all the hiragana first
     # and all the katakana last.
     def self.ordered_favourites
-      FAVOURITES.to_a.partition { |_character, romanji| !romanji.match?(/[[:upper:]]/) }.flatten(1)
+      FAV_ORDER.map { |k| k.nil? ? [nil, nil] : [k, FAVOURITES[k]] }
     end
 
     STROKE_ORDER_BASE = "https://hiragana.strokeorder.app".freeze

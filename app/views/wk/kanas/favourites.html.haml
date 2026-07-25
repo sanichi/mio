@@ -15,9 +15,9 @@
       %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid", "data-controller" => "tooltips"}
         %tbody
           - i = -1
-          - 1.upto(8) do |row|
+          - 1.upto(10) do |row|
             %tr
-              - 1.upto(12) do |col|
+              - 1.upto(10) do |col|
                 - character, romanji = @favourites[i+=1]
                 - if character
                   %td.text-center.p-0

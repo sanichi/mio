@@ -12,8 +12,8 @@ module Wk
     def favourites
       @favourites =
         case params[:order]
-        when "ordered" then Wk::Kana.ordered_favourites
-        else                Wk::Kana::FAVOURITES.to_a.shuffle
+        when "random" then Wk::Kana::FAVOURITES.to_a.shuffle
+        else               Wk::Kana.ordered_favourites
         end
     end
 

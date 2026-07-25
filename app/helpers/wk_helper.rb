@@ -27,7 +27,7 @@ module WkHelper
   end
 
   def wk_kana_favourite_order_menu(selected)
-    opts = %w/random ordered/.map { |o| [t("wk.kana.order.#{o}"), o] }
+    opts = %w/ordered random/.map { |o| [t("wk.kana.order.#{o}"), o] }
     options_for_select(opts, selected)
   end
 
