@@ -5,6 +5,10 @@ class TrmnlController < ApplicationController
     render json: { kanjis: Wk::Kanji.where.not(favourite: nil).pluck(:character).shuffle }
   end
 
+  def old_kanji
+    render json: { kanjis: Wk::Kanji.where.not(former_favourite: nil).pluck(:character).shuffle }
+  end
+
   def kana
     render json: { kanas: Wk::Kana::FAVOURITES.keys.shuffle }
   end
