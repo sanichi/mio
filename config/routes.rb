@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     end
     resources :kanjis, only: [:index, :show] do
       get :favourites, on: :collection
+      get :former_favourites, on: :collection
       get :candidates, on: :collection
       get :similar, on: :collection
       patch :quick_favourite_toggle, on: :member

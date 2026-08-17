@@ -4,13 +4,13 @@
     [:order, t("order"), :select, lo[0], menu: wk_kanji_favourite_order_menu(params[:order])],
   ]
 
-= render "utils/title", key: "wk.kanji.favourites"
+= render "utils/title", key: "wk.kanji.former_favourites"
 
 %section
   .header.text-center
-    %h3= t("wk.kanji.favourites")
+    %h3= t("wk.kanji.former_favourites")
   .body
-    = render "utils/search/form", index: favourites_wk_kanjis_path, inputs: inputs
+    = render "utils/search/form", index: former_favourites_wk_kanjis_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
       %table{class: "table table-bordered mt-3 w-auto mx-auto kanji-grid"}
         %tbody
@@ -29,7 +29,7 @@
   .footer
     = link_to t("wk.radical.radicals"), last_search(wk_radicals_path), class: "green-btn"
     = link_to t("wk.kanji.kanjis"), wk_kanjis_path, class: "green-btn"
-    = link_to t("wk.kanji.former_favourites"), former_favourites_wk_kanjis_path, class: "green-btn"
+    = link_to t("wk.kanji.favourites"), favourites_wk_kanjis_path, class: "green-btn"
     = link_to t("wk.kanji.candidates"), candidates_wk_kanjis_path, class: "green-btn"
     = link_to t("wk.vocab.vocabs"), last_search(wk_vocabs_path), class: "green-btn"
     = link_to t("wk.kana.kanas"), last_search(wk_kanas_path), class: "green-btn"

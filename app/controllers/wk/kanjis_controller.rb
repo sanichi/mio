@@ -24,6 +24,16 @@ module Wk
         end
     end
 
+    def former_favourites
+      favourites = Wk::Kanji.where.not(former_favourite: nil)
+      @favourites =
+        case params[:order]
+        when "random" then favourites.shuffle
+        when "oldest" then favourites.order(former_favourite: :asc).to_a
+        else               favourites.order(former_favourite: :desc).to_a
+        end
+    end
+
     def candidates
       @candidates = Wk::Kanji.candidates
     end
