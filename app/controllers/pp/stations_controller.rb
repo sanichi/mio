@@ -1,5 +1,6 @@
 module Pp
   class StationsController < ApplicationController
+    authorize_resource
     before_action :find_station, only: [:edit, :show, :update]
 
     def index
