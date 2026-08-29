@@ -1,0 +1,25 @@
+:ruby
+  lo = Sni::Layout.call(xs: [6], md: [4], xl: [2])
+  my_meta_tags "pp.graph"
+
+%section
+  .header.text-center
+    %h3= t("pp.graph.title")
+  .body{"data-controller" => "elm--petrol",
+    "data-elm--petrol-station-names-value" => @stations.map(&:display_name).to_json,
+    "data-elm--petrol-station-colours-value" => @stations.map(&:colour).to_json,
+    "data-elm--petrol-stations-value" => @points.map { |p| p[0] }.to_json,
+    "data-elm--petrol-dates-value" => @points.map { |p| p[1].to_s }.to_json,
+    "data-elm--petrol-prices-value" => @points.map { |p| p[2] }.to_json,
+    "data-elm--petrol-debug-value" => "false",
+    "data-action" => "keydown@window->elm--petrol#moveCross",
+  }
+    .row
+      %div{class: col(lo[0])}
+        = label_tag :begin, t("pp.graph.begin"), class: "visually-hidden"
+        = select_tag :begin, pp_begin_menu, class: "form-select", "data-action" => "elm--petrol#changeBegin", "data-elm--petrol-target" => "beginMenu"
+    %div{"data-elm--petrol-target" => "elm"}
+  .footer
+    = link_to t("pp.price.prices"), pp_prices_path, class: "green-btn"
+    = link_to t("pp.station.stations"), pp_stations_path, class: "green-btn"
+    = link_to t("pp.sync_log.sync_logs"), pp_sync_logs_path, class: "green-btn"

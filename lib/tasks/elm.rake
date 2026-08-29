@@ -81,6 +81,13 @@ namespace :elm do
     end
   end
 
+  desc "make and minify the Elm JS file for Petrol"
+  task :petrol, [:debug] do |task, args|
+    Dir.chdir("app/views/pages/petrol") do
+      compile_and_minify "petrol", args, "Petrol"
+    end
+  end
+
   desc "make and minify the Elm JS file for Weight"
   task :weight, [:debug] do |task, args|
     Dir.chdir("app/views/pages/weight") do

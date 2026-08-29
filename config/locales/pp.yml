@@ -1,12 +1,18 @@
 en:
   pp:
     petrol_prices: Petrol Prices
+    graph:
+      title: Petrol Price Graph
+      begin: From
+      description: Unleaded petrol prices over time at the filling stations around Leith and north Edinburgh.
+      keywords: petrol, price, unleaded, graph, edinburgh, leith
     station:
       station: Station
       stations: Stations
       address: Address
       brand: Brand
-      edit: Edit Display Name
+      colour: Colour
+      edit: Edit Station
       latitude: Lat
       longitude: Long
       name: Name

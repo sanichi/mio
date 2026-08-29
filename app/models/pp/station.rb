@@ -13,6 +13,9 @@ module Pp
 
     FUEL_TYPE = "E10"
 
+    # Fallback for stations created from the API before a colour is chosen by hand.
+    DEFAULT_COLOUR = "888888"
+
     has_many :prices, dependent: :destroy
 
     before_validation :canonicalize
@@ -23,6 +26,7 @@ module Pp
     validates :address, length: { maximum: 50 }, allow_nil: true
     validates :postcode, length: { maximum: 10 }, allow_nil: true
     validates :preferred_name, length: { maximum: 75 }, uniqueness: true, allow_nil: true
+    validates :colour, presence: true, format: { with: /\A[0-9a-f]{6}\z/ }
     validates :latitude, presence: true,
               numericality: { greater_than_or_equal_to: LATITUDE_MIN, less_than_or_equal_to: LATITUDE_MAX }
     validates :longitude, presence: true,
@@ -63,6 +67,7 @@ module Pp
 
     def canonicalize
       self.preferred_name = nil if preferred_name.blank?
+      self.colour = colour.to_s.strip.delete_prefix("#").downcase.presence || DEFAULT_COLOUR
     end
   end
 end

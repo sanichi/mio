@@ -4,6 +4,9 @@ module Pp
 
     self.table_name = 'pp_prices'
 
+    DEFAULT_BEGIN = 2 # months ago
+    BEGIN_MONTHS = [1, 2, 4, 8]
+
     belongs_to :station
 
     validates :price_pence, presence: true, numericality: { greater_than: 0, less_than: 10000 }
@@ -29,6 +32,23 @@ module Pp
         matches = matches.where(station_id: params[:station_id])
       end
       paginate(matches, params, path, opt)
+    end
+
+    # The stations the graph draws a line for, in legend order.
+    def self.graph_stations
+      Pp::Station.where(id: select(:station_id)).by_display_name
+    end
+
+    # One point per station per day, as [station index, date, pence]. Where a
+    # station has several prices on one day the last of them wins.
+    def self.graph_points(stations)
+      indexes = stations.each_with_index.to_h { |station, i| [station.id, i] }
+      latest = {}
+      order(:price_last_updated).pluck(:station_id, :price_last_updated, :price_pence).each do |station_id, at, pence|
+        index = indexes[station_id]
+        latest[[index, at.to_date]] = pence.to_f if index
+      end
+      latest.map { |(index, date), pence| [index, date, pence] }
     end
 
     def price_pounds

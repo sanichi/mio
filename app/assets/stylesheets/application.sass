@@ -181,6 +181,83 @@ svg#weight-graph
   text.ylabel
     text-anchor: end
 
+// Elm petrol price display (pages/petrol).
+svg#petrol-graph
+
+  // Border.
+  g.frame
+    line
+      stroke: #bbb
+      stroke-width: 1
+
+  // Axes.
+  g.axes
+    line
+      stroke: #bbb
+      stroke-width: 1
+      stroke-dasharray: 5
+    text
+      font-size: 14px
+      opacity: 0.5
+
+  // One line and set of points per station, coloured from the database.
+  g.series
+    polyline
+      fill: none
+      stroke-linejoin: round
+    circle
+      stroke: none
+
+  // Cross marking the selected price, stroked in that station's colour.
+  g.cross
+    line, circle
+      stroke-width: 1.5
+
+  // Default text.
+  text
+    font-family: $font-family-sans-serif
+    font-weight: normal
+    text-anchor: middle
+    fill: black
+
+  // Info text
+  text.info
+    font-size: 15px
+
+  // Debug text
+  text.debug
+    font-size: 20px
+    opacity: 0.5
+
+  // Y-axis label text
+  text.ylabel
+    text-anchor: end
+
+// Tick boxes naming each station in its own colour (pages/petrol).
+.petrol-legend
+  display: flex
+  flex-wrap: wrap
+  gap: 0.25rem 1.25rem
+  justify-content: center
+  margin-top: 0.75rem
+
+  .petrol-legend-item
+    align-items: center
+    cursor: pointer
+    display: flex
+    font-size: 0.875rem
+    gap: 0.35rem
+    margin-bottom: 0
+
+// Colour swatch on a station's page (pp/stations).
+.station-swatch
+  border: 1px solid #bbb
+  display: inline-block
+  height: 1em
+  margin-right: 0.4em
+  vertical-align: -0.15em
+  width: 1.6em
+
 // Elm play (D'ni)
 svg#dni
 

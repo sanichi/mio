@@ -28,7 +28,7 @@ module Pp
     end
 
     def strong_params
-      params.require(:pp_station).permit(:preferred_name)
+      params.require(:pp_station).permit(:preferred_name, :colour)
     end
   end
 end

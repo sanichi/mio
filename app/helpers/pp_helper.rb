@@ -25,6 +25,11 @@ module PpHelper
     options_for_select(opts, selected)
   end
 
+  def pp_begin_menu
+    opts = Pp::Price::BEGIN_MONTHS.map { |m| ["#{m}m", m] }
+    options_for_select(opts, Pp::Price::DEFAULT_BEGIN)
+  end
+
   def pp_price_order_menu(selected)
     opts = []
     opts.push ["#{t('pp.price.last_updated')} #{t('symbol.up')}", "update_up"]

@@ -49,6 +49,11 @@ class PagesController < ApplicationController
     render plain: answer
   end
 
+  def petrol
+    @stations = Pp::Price.graph_stations
+    @points = Pp::Price.graph_points(@stations)
+  end
+
   def weight
     @kilos = Mass.kilos
     @dates = Mass.dates

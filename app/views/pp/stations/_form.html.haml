@@ -1,5 +1,6 @@
 :ruby
   inputs = [
     [:preferred_name, t("pp.station.preferred_name"), :text, maxlength: 75, placeholder: station.display_name],
+    [:colour,         t("pp.station.colour"),         :text, maxlength: 6, placeholder: Pp::Station::DEFAULT_COLOUR],
   ]
 = render "utils/crud/form", object: station, index: pp_stations_path, inputs: inputs, title: title, cancel: station
