@@ -4,8 +4,8 @@ module Pp
 
     self.table_name = 'pp_prices'
 
-    DEFAULT_BEGIN = 2 # months ago
-    BEGIN_MONTHS = [1, 2, 4, 8]
+    DEFAULT_BEGIN = 12 # months ago
+    BEGIN_MONTHS = [1, 2, 4, 6, 12]
 
     belongs_to :station
 
