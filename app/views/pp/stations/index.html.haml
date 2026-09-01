@@ -26,4 +26,5 @@
           = render "utils/pagination_links", pager: @stations, columns: 5
   .footer
     = link_to t("pp.price.prices"), pp_prices_path, class: "green-btn"
+    = link_to t("pp.graph.graph"), petrol_path, class: "green-btn"
     = link_to t("pp.sync_log.sync_logs"), pp_sync_logs_path, class: "green-btn"
