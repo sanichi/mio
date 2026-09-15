@@ -21,8 +21,8 @@ target="/var/www/me.mio/shared/public"   # remote directory
 itarget="$target/images"                 # remote images directory
 ptarget="$target/people"                 # remote people directory
 
-# Other stuff.
-awkp='{ if (NF == 9) printf "%-30s %s\n", $9, $5 }' # awk program to filter ls output
+# awk program to filter ls output (mode trimmed of @/+ suffix)
+awkp='{ if (NF == 9) printf "%-30s %s %s\n", $9, $5, substr($1, 1, 10) }'
 
 # Prepare for options and arguments.                                                      #
 isync=false
@@ -73,14 +73,23 @@ if ! [[ -d $psource ]]; then
   exit 1;
 fi
 
+# Fix any local files whose permissions aren't 644, as rsync would copy the
+# bad mode to the server and the web server would then be unable to read them.
+for dir in "$isource" "$psource"; do
+  find "$dir" -type f ! -perm 644 -print0 | while IFS= read -r -d '' file; do
+    echo "fixing permissions of ${file#$source/} ($(stat -f %Lp "$file") -> 644)"
+    chmod 644 "$file"
+  done
+done
+
 # Optionally sync images.
 if [[ $isync = true ]]; then
-  rsync -rt "$isource"/ "$server:$itarget"
+  rsync -rtp "$isource"/ "$server:$itarget"
 fi
 
 # Optionally sync people.
 if [[ $psync = true ]]; then
-  rsync -rt "$psource"/ "$server:$ptarget"
+  rsync -rtp "$psource"/ "$server:$ptarget"
 fi
 
 # Compare listings of local and remote images directory.
