@@ -28,7 +28,7 @@ gem "importmap-rails", "~> 2.1"
 gem "turbo-rails", "~> 2.0"
 gem "stimulus-rails", "~> 1.3"
 gem 'sni', git: 'https://github.com/sanichi/sni'
-gem 'amazing_print', '< 3', require: false
+gem 'amazing_print', '< 4', require: false
 
 group :development, :test do
   gem 'rspec-rails', '< 9'
