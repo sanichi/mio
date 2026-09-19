@@ -1,7 +1,7 @@
 :ruby
   lo = Sni::Layout.call(xl: [2,2,2], md: [3,3,3], xs: [4,4,4])
   inputs = [
-    [:pquery,   t("wk.verb_pair.verb_pair"), :text,   lo[0], placeholder: t("wk.verb_pair.verb_pair")],
+    [:pquery,   t("wk.verb_pair.verb_pair"), :text,   lo[0], placeholder: t("wk.verb_pair.verb_pair"), autofocus: true],
     [:category, t("wk.verb_pair.category"),  :select, lo[1], menu: wk_verb_pair_category_menu(params[:category])],
     [:order,    t("order"),                  :select, lo[2], menu: wk_verb_pair_order_menu(params[:order])],
   ]

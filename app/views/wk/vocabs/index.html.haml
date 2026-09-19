@@ -5,7 +5,7 @@
     xs: [[4,3,3],[4,3,3,2]],
   )
   inputs = [
-    [:vquery, t("wk.vocab.vocab"), :text,   lo[0], placeholder: t("wk.vocab.vocab")],
+    [:vquery, t("wk.vocab.vocab"), :text,   lo[0], placeholder: t("wk.vocab.vocab"), autofocus: true],
     [:notes,  t("wk.vocab.notes"), :text,   lo[1], placeholder: t("wk.vocab.notes")],
     [:level,  t("wk.level"),       :select, lo[2], menu: wk_level_menu(params[:level])],
     [:parts,  t("wk.vocab.parts"), :select, lo[3], menu: wk_vocab_parts_menu(params[:parts]), multiple: true, size: 4],
