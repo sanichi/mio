@@ -1,5 +1,3 @@
-require 'amazing_print'
-
 module PrivateUserCache
   @@users = Hash.new
 
@@ -355,6 +353,7 @@ namespace :session do
 
     ActiveRecord::SessionStore::Session.find_each { |session| lister.add(session) }
 
+    require 'amazing_print' # development-only gem, so load it here rather than at file load
     AmazingPrint.defaults = {
       indent: -2,
       sort_keys: true,
