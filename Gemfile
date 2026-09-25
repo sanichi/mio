@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '8.1.3.1'
+gem 'rails', '8.1.4'
 gem 'haml-rails', '< 4.0'
 gem 'jquery-rails', '~> 4.3'
 gem 'sassc-rails', '~> 2.1'
@@ -28,7 +28,6 @@ gem "importmap-rails", "~> 2.1"
 gem "turbo-rails", "~> 2.0"
 gem "stimulus-rails", "~> 1.3"
 gem 'sni', git: 'https://github.com/sanichi/sni'
-gem 'json', '< 3' # json 3.x breaks ActiveSupport::JSON.decode in Rails 8.1.3
 
 group :development, :test do
   gem 'rspec-rails', '< 9'
