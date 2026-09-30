@@ -16,6 +16,10 @@ describe Wk::Kana, js: true do
         expect(img.evaluate_script("this.complete && this.naturalWidth > 0")).to be true
       end
 
+      click_link "イ"
+
+      expect(page).to have_title "イ"
+
       click_link t("wk.kana.favourites")
 
       expect(page).to have_title t("wk.kana.favourites")

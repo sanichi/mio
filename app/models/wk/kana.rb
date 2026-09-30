@@ -53,8 +53,8 @@ module Wk
       'れ' => 're',  'レ' => 'RE',
       'ろ' => 'ro',  'ロ' => 'RO',
       'わ' => 'wa',  'ワ' => 'WA',
-      'を' => 'wo',  'ヲ' => 'WO',
       'ん' => 'n',   'ン' => 'N',
+      'を' => 'wo',  'ヲ' => 'WO',
     }
     FAV_ORDER = [
       'あ', 'い', 'う', 'え', 'お', 'ア', 'イ', 'ウ', 'エ', 'オ',
@@ -79,6 +79,36 @@ module Wk
     # Stroke-order diagram for a FAVOURITES kana (ext is "png" or "gif"). The
     # images are not in git but are synced to the server by bin/sync_pic.
     def self.stroke_order_image(kana, ext) = "/images/stroke_order/#{kana}.#{ext}"
+
+    # Related FAVOURITES kana for a stroke-order page, in display order: the
+    # same sound in the other script, the kana below and above in the
+    # FAV_ORDER table, and the next and previous kana in the same script
+    # (wrapping round). Relies on
+    # FAVOURITES interleaving hiragana (even indices) and katakana (odd
+    # indices) in matching pairs.
+    def self.stroke_order_links(kana)
+      keys = FAVOURITES.keys
+      i = keys.index(kana)
+      same = keys.select.with_index { |_, j| j.even? == i.even? }
+      k = same.index(kana)
+      {
+        other: keys[i ^ 1],
+        next_row: fav_order_neighbour(kana, 10),
+        prev_row: fav_order_neighbour(kana, -10),
+        next: same[(k + 1) % same.size],
+        prev: same[k - 1],
+      }
+    end
+
+    # Step through FAV_ORDER from kana (wrapping round), skipping the gaps in
+    # the y and w rows. A step of ±10 stays in the same column of the table.
+    def self.fav_order_neighbour(kana, step)
+      i = FAV_ORDER.index(kana)
+      loop do
+        i = (i + step) % FAV_ORDER.size
+        return FAV_ORDER[i] if FAV_ORDER[i]
+      end
+    end
 
     before_validation :clean_up, :set_accent_pattern
 

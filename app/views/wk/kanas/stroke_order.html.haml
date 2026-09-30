@@ -1,8 +1,11 @@
 = render "utils/title", text: @kana
 
 %section
-  .header.text-center
-    %h1= @kana
+  .header
+    %h1.d-inline= @kana
+    .float-end.fs-3.mt-1{"data-controller" => "tooltips"}
+      - @links.each_value do |kana|
+        = link_to kana, stroke_order_wk_kanas_path(kana: kana), class: "ms-3", title: Wk::Kana::FAVOURITES[kana], "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
   .body
     = image_tag Wk::Kana.stroke_order_image(@kana, "png"), alt: @romanji, class: "stroke-order"
     = image_tag Wk::Kana.stroke_order_image(@kana, "gif"), alt: @romanji, class: "stroke-order"

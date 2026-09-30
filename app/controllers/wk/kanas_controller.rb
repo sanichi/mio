@@ -20,6 +20,7 @@ module Wk
     def stroke_order
       @kana = params[:kana]
       @romanji = Wk::Kana::FAVOURITES[@kana] or raise ActiveRecord::RecordNotFound
+      @links = Wk::Kana.stroke_order_links(@kana)
     end
 
     def update
