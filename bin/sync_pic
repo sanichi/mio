@@ -21,8 +21,11 @@ target="/var/www/me.mio/shared/public"   # remote directory
 itarget="$target/images"                 # remote images directory
 ptarget="$target/people"                 # remote people directory
 
-# awk program to filter ls output (mode trimmed of @/+ suffix)
-awkp='{ if (NF == 9) printf "%-30s %s %s\n", $9, $5, substr($1, 1, 10) }'
+# Command to recursively list files (excluding dot files like .DS_Store) with paths relative to the current directory.
+lscmd="find . -type f ! -name '.*' -exec ls -l {} +"
+
+# awk program to filter ls output (path trimmed of ./ prefix, mode trimmed of @/+ suffix)
+awkp='{ if (NF == 9) { sub(/^\.\//, "", $9); printf "%-30s %s %s\n", $9, $5, substr($1, 1, 10) } }'
 
 # Prepare for options and arguments.                                                      #
 isync=false
@@ -93,13 +96,13 @@ if [[ $psync = true ]]; then
 fi
 
 # Compare listings of local and remote images directory.
-ls -l $isource | gawk "$awkp" | sort > $tmp1
-ssh $server "ls -l $itarget" | gawk "$awkp" | sort > $tmp2
+(cd $isource && eval "$lscmd") | gawk "$awkp" | sort > $tmp1
+ssh $server "cd $itarget && $lscmd" | gawk "$awkp" | sort > $tmp2
 echo "checking images ..."
 diff $tmp1 $tmp2 || true # don't let our use of "set -e" exit here
 
 # Compare listings of local and remote people directory.
-ls -l $psource | gawk "$awkp" | sort > $tmp1
-ssh $server "ls -l $ptarget" | gawk "$awkp" | sort > $tmp2
+(cd $psource && eval "$lscmd") | gawk "$awkp" | sort > $tmp1
+ssh $server "cd $ptarget && $lscmd" | gawk "$awkp" | sort > $tmp2
 echo "checking people ..."
 diff $tmp1 $tmp2 || true

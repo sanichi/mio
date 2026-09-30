@@ -17,6 +17,11 @@ module Wk
         end
     end
 
+    def stroke_order
+      @kana = params[:kana]
+      @romanji = Wk::Kana::FAVOURITES[@kana] or raise ActiveRecord::RecordNotFound
+    end
+
     def update
       if @kana.update(strong_params)
         redirect_to @kana

@@ -1,0 +1,10 @@
+= render "utils/title", text: @kana
+
+%section
+  .header.text-center
+    %h1= @kana
+  .body
+    = image_tag Wk::Kana.stroke_order_image(@kana, "png"), alt: @romanji, class: "stroke-order"
+    = image_tag Wk::Kana.stroke_order_image(@kana, "gif"), alt: @romanji, class: "stroke-order"
+  .footer
+    = link_to t("wk.kana.favourites"), favourites_wk_kanas_path, class: "green-btn"

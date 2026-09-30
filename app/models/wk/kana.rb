@@ -76,16 +76,9 @@ module Wk
       FAV_ORDER.map { |k| k.nil? ? [nil, nil] : [k, FAVOURITES[k]] }
     end
 
-    STROKE_ORDER_BASE = "https://hiragana.strokeorder.app".freeze
-
-    # External stroke-order diagram for a FAVOURITES romanji. Katakana entries
-    # are upper case, hiragana entries lower case, e.g.
-    #   'na'  => https://hiragana.strokeorder.app/na-hiragana-stroke-order.html
-    #   'NA'  => https://hiragana.strokeorder.app/na-katakana-stroke-order.html
-    def self.stroke_order_url(romanji)
-      script = romanji.match?(/[[:upper:]]/) ? "katakana" : "hiragana"
-      "#{STROKE_ORDER_BASE}/#{romanji.downcase}-#{script}-stroke-order.html"
-    end
+    # Stroke-order diagram for a FAVOURITES kana (ext is "png" or "gif"). The
+    # images are not in git but are synced to the server by bin/sync_pic.
+    def self.stroke_order_image(kana, ext) = "/images/stroke_order/#{kana}.#{ext}"
 
     before_validation :clean_up, :set_accent_pattern
 

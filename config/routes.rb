@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :groups
     resources :kanas, only: [:edit, :index, :show, :update] do
       get :favourites, on: :collection
+      get :stroke_order, on: :collection
       patch :quick_accent_update, on: :member
     end
     resources :kanjis, only: [:index, :show] do

@@ -21,7 +21,7 @@
                 - character, romanji = @favourites[i+=1]
                 - if character
                   %td.text-center.p-0
-                    = link_to character, Wk::Kana.stroke_order_url(romanji), target: "_blank", rel: "noopener", title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
+                    = link_to character, stroke_order_wk_kanas_path(kana: character), "data-turbo-frame" => "_top", title: romanji, "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
                 - else
                   %td.text-center.p-0= "\u3000"
   .footer
