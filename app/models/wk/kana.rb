@@ -72,12 +72,13 @@ module Wk
     # Look-alikes (within and across scripts) that are worth comparing when
     # learning to write kana.
     SIMILAR_PAIRS = [
-      %w[あ お], %w[あ ぬ], %w[ぬ め], %w[ぬ ね], %w[ね れ], %w[れ わ], %w[ね わ],
+      %w[あ お], %w[あ ぬ], %w[ぬ め], %w[ね れ], %w[れ わ], %w[ね わ],
       %w[い り], %w[こ に], %w[け は], %w[は ほ], %w[ま ほ], %w[ま も],
       %w[さ き], %w[る ろ], %w[ち ら], %w[す む], %w[た な], %w[か カ], %w[も モ],
       %w[ソ ン], %w[シ ツ], %w[ン ツ], %w[ク ケ], %w[ク タ], %w[コ ユ],
       %w[ス ヌ], %w[ス ヲ], %w[マ ム], %w[ウ ワ], %w[チ テ], %w[テ ラ], %w[ナ メ],
-      %w[ヌ フ], %w[し シ], %w[つ ツ], %w[へ ヘ], %w[り リ], %w[う つ], %w[の め],
+      %w[ヌ フ], %w[し シ], %w[つ ツ], %w[へ ヘ], %w[り リ], %w[う つ],
+      %w[チ ナ], %w[フ ヲ],
     ].freeze
 
     # FAVOURITES interleaves hiragana and katakana so that the constant reads
