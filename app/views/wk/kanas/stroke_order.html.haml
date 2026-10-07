@@ -1,13 +1,13 @@
 = render "utils/title", text: @kana
 
 %section
-  .header
+  .header.text-center
     %h1.d-inline= @kana
-    .float-end.fs-3.mt-1{"data-controller" => "tooltips"}
-      - @links.each_value do |kana|
-        = link_to kana, stroke_order_wk_kanas_path(kana: kana), class: "ms-3", title: Wk::Kana::FAVOURITES[kana], "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
+  .header.text-center.fs-3{"data-controller" => "tooltips"}
+    - @links.each_value do |kana|
+      = link_to kana, stroke_order_wk_kanas_path(kana: kana), class: "mx-3", title: Wk::Kana::FAVOURITES[kana], "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
   - if @similar.any?
-    .header.text-center.fs-3{"data-controller" => "tooltips"}
+    .header.text-center.fs-3
       - @similar.each do |kana|
         = link_to kana, compare_wk_kanas_path(left: @kana, right: kana), class: "mx-3", title: Wk::Kana::FAVOURITES[kana], "data-bs-toggle" => "tooltip", "data-placement" => "top", "data-bs-custom-class" => "kana-tooltip"
   .body
