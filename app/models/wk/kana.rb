@@ -69,11 +69,32 @@ module Wk
       'わ', nil,  'ん', nil,  'を', 'ワ', nil,  'ン', nil,  'ヲ',
     ]
 
+    # Look-alikes (within and across scripts) that are worth comparing when
+    # learning to write kana.
+    SIMILAR_PAIRS = [
+      %w[あ お], %w[あ ぬ], %w[ぬ め], %w[ぬ ね], %w[ね れ], %w[れ わ], %w[ね わ],
+      %w[い り], %w[こ に], %w[け は], %w[は ほ], %w[ま ほ], %w[ま も], %w[も せ],
+      %w[さ き], %w[き ま], %w[る ろ], %w[ろ ら], %w[ち ら], %w[す む], %w[た な],
+      %w[や か], %w[う ゆ], %w[う つ], %w[つ し], %w[て ね], %w[の め],
+      %w[ソ ン], %w[シ ツ], %w[ン ツ], %w[ク ケ], %w[ク タ], %w[コ ユ],
+      %w[ス ヌ], %w[ス ヲ], %w[ア マ], %w[マ ム], %w[ウ フ], %w[ウ ワ], %w[フ ワ],
+      %w[チ テ], %w[テ ラ], %w[ナ メ], %w[ヌ ネ], %w[ミ シ], %w[ハ ヘ],
+      %w[し シ], %w[つ ツ], %w[そ ソ], %w[ん ン], %w[へ ヘ], %w[り リ], %w[く ク],
+      %w[か カ], %w[も モ], %w[ろ ロ], %w[ニ に], %w[ト と], %w[ラ ら], %w[ヨ よ],
+    ].freeze
+
     # FAVOURITES interleaves hiragana and katakana so that the constant reads
     # nicely in the source, but the natural order puts all the hiragana first
     # and all the katakana last.
     def self.ordered_favourites
       FAV_ORDER.map { |k| k.nil? ? [nil, nil] : [k, FAVOURITES[k]] }
+    end
+
+    # Menu choices for the compare page: [["ka – か", "か"], ...] in two
+    # groups, hiragana first and then katakana.
+    def self.compare_choices
+      ordered_favourites.reject { |k, _| k.nil? }.partition { |k, _| k.match?(/\p{Hiragana}/) }
+        .map { |group| group.map { |k, r| ["#{r.downcase} – #{k}", k] } }
     end
 
     # Stroke-order diagram for a FAVOURITES kana (ext is "png" or "gif"). The

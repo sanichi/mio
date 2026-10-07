@@ -36,5 +36,14 @@ ja
     width: 48%
   @media (min-width: 1400px)
     width: 40%
+.compare-image
+  display: block
+  width: 100%
+  max-width: 24rem
+  margin: 1rem auto
+  // stacked on small screens: size by height so both images fit without scrolling
+  @media (max-width: 767.98px)
+    width: 28svh
+    margin: 0.5rem auto
 .tooltip.kana-tooltip
   --bs-tooltip-bg: red

@@ -60,9 +60,12 @@ en:
       mnemonic: Mnemonic
       reading: Reading Mnemonic
     kana:
+      compare_kana: Compare Kana
       edit: Edit Notes
       favourites: Favourite Kana
+      hiragana: Hiragana
       kana: Kana
+      katakana: Katakana
       kanas: Kanas
       order:
         ordered: Ordered

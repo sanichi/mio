@@ -17,6 +17,11 @@ module Wk
         end
     end
 
+    def compare
+      @left, @right = compare_pair
+      cookies.permanent[:kana_compare] = @left + @right if params[:left] || params[:right]
+    end
+
     def stroke_order
       @kana = params[:kana]
       @romanji = Wk::Kana::FAVOURITES[@kana] or raise ActiveRecord::RecordNotFound
@@ -38,6 +43,16 @@ module Wk
     end
 
     private
+
+    # Kana to compare: those in the params, else those last chosen (cookie),
+    # else a random similar pair, in random order.
+    def compare_pair
+      saved = cookies[:kana_compare].to_s.chars
+      random = Wk::Kana::SIMILAR_PAIRS.sample.shuffle
+      [params[:left], params[:right]].zip(saved, random).map do |chosen, kept, other|
+        [chosen, kept, other].find { |k| Wk::Kana::FAVOURITES.key?(k) }
+      end
+    end
 
     def find_vocab
       if params[:id].to_i > 0

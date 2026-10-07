@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :examples, except: [:show]
     resources :groups
     resources :kanas, only: [:edit, :index, :show, :update] do
+      get :compare, on: :collection
       get :favourites, on: :collection
       get :stroke_order, on: :collection
       patch :quick_accent_update, on: :member

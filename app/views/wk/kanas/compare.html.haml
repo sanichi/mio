@@ -1,0 +1,16 @@
+= render "utils/title", key: "wk.kana.compare_kana"
+
+%section
+  .header.text-center
+    %h3= t("wk.kana.compare_kana")
+  .body
+    = turbo_frame_tag :results, "data-turbo-action" => "replace" do
+      = form_tag compare_wk_kanas_path, method: :get, class: "row g-3" do
+        - { left: @left, right: @right }.each do |param, kana|
+          .col-12.col-md-6
+            = label_tag param, t("wk.kana.kana"), class: "visually-hidden"
+            = select_tag param, grouped_options_for_select({ t("wk.kana.hiragana") => Wk::Kana.compare_choices[0], t("wk.kana.katakana") => Wk::Kana.compare_choices[1] }, kana), class: "form-select w-auto mx-auto", "data-controller" => "auto-submit", "data-action" => "auto-submit#go"
+            = image_tag Wk::Kana.stroke_order_image(kana, "png"), alt: Wk::Kana::FAVOURITES[kana], class: "compare-image"
+        = button_tag "x", type: "submit", class: "visually-hidden btn-sm"
+  .footer
+    = link_to t("wk.kana.favourites"), favourites_wk_kanas_path, class: "green-btn"

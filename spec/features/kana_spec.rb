@@ -25,4 +25,37 @@ describe Wk::Kana, js: true do
       expect(page).to have_title t("wk.kana.favourites")
     end
   end
+
+  context "compare" do
+    def shown = all("img.compare-image").map { |i| CGI.unescape(File.basename(i[:src], ".png")) }
+
+    it "shows the kana in the params and changes one without reloading" do
+      visit compare_wk_kanas_path(left: "し", right: "ツ")
+
+      expect(page).to have_title t("wk.kana.compare_kana")
+      expect(shown).to eq %w[し ツ]
+
+      select "tsu – つ", from: "right"
+
+      expect(page).to have_css "img[src$='つ.png']"
+      expect(shown).to eq %w[し つ]
+      expect(current_url).to include "left=%E3%81%97&right=%E3%81%A4"
+    end
+
+    it "remembers the last choice and otherwise picks a similar pair" do
+      visit compare_wk_kanas_path
+      expect(Wk::Kana::SIMILAR_PAIRS.map(&:sort)).to include shown.sort
+
+      visit compare_wk_kanas_path(left: "ソ", right: "ン")
+      visit compare_wk_kanas_path
+
+      expect(shown).to eq %w[ソ ン]
+    end
+
+    it "is linked from the favourites page" do
+      click_link t("wk.kana.compare_kana")
+
+      expect(page).to have_title t("wk.kana.compare_kana")
+    end
+  end
 end
