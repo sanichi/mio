@@ -96,13 +96,13 @@ if [[ $psync = true ]]; then
 fi
 
 # Compare listings of local and remote images directory.
-(cd $isource && eval "$lscmd") | gawk "$awkp" | sort > $tmp1
-ssh $server "cd $itarget && $lscmd" | gawk "$awkp" | sort > $tmp2
+(cd $isource && eval "$lscmd") | gawk "$awkp" | LC_ALL=C sort > $tmp1
+ssh $server "cd $itarget && $lscmd" | gawk "$awkp" | LC_ALL=C sort > $tmp2
 echo "checking images ..."
 diff $tmp1 $tmp2 || true # don't let our use of "set -e" exit here
 
 # Compare listings of local and remote people directory.
-(cd $psource && eval "$lscmd") | gawk "$awkp" | sort > $tmp1
-ssh $server "cd $ptarget && $lscmd" | gawk "$awkp" | sort > $tmp2
+(cd $psource && eval "$lscmd") | gawk "$awkp" | LC_ALL=C sort > $tmp1
+ssh $server "cd $ptarget && $lscmd" | gawk "$awkp" | LC_ALL=C sort > $tmp2
 echo "checking people ..."
 diff $tmp1 $tmp2 || true
