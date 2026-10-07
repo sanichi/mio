@@ -78,7 +78,7 @@ module Wk
       %w[ソ ン], %w[シ ツ], %w[ン ツ], %w[ク ケ], %w[ク タ], %w[コ ユ],
       %w[ス ヌ], %w[ス ヲ], %w[マ ム], %w[ウ ワ], %w[チ テ], %w[テ ラ], %w[ナ メ],
       %w[ヌ フ], %w[し シ], %w[つ ツ], %w[へ ヘ], %w[り リ], %w[う つ],
-      %w[チ ナ], %w[フ ヲ],
+      %w[チ ナ], %w[フ ヲ], %w[サ セ], %w[セ せ], %w[せ サ],
     ].freeze
 
     # FAVOURITES interleaves hiragana and katakana so that the constant reads
