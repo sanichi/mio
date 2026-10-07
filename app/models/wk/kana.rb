@@ -121,6 +121,11 @@ module Wk
       }
     end
 
+    # Kana listed as similar to the given one in SIMILAR_PAIRS (either way round).
+    def self.similar_to(kana)
+      SIMILAR_PAIRS.filter_map { |a, b| a == kana ? b : (b == kana ? a : nil) }
+    end
+
     # Step through FAV_ORDER from kana (wrapping round), skipping the gaps in
     # the y and w rows. A step of ±10 stays in the same column of the table.
     def self.fav_order_neighbour(kana, step)

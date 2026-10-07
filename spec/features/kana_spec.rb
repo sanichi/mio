@@ -24,6 +24,23 @@ describe Wk::Kana, js: true do
 
       expect(page).to have_title t("wk.kana.favourites")
     end
+
+    it "links to comparisons with similar kana" do
+      click_link "ね"
+
+      expect(page).to have_link count: 4, href: /compare/
+      click_link "ぬ", href: /compare/
+
+      expect(page).to have_title t("wk.kana.compare_kana")
+      expect(all("img.compare-image").map { |i| CGI.unescape(File.basename(i[:src], ".png")) }).to eq %w[ね ぬ]
+    end
+
+    it "has no similar kana links when there are none" do
+      click_link "ひ"
+
+      expect(page).to have_title "ひ"
+      expect(page).to have_no_link href: /compare/
+    end
   end
 
   context "compare" do
@@ -50,6 +67,15 @@ describe Wk::Kana, js: true do
       visit compare_wk_kanas_path
 
       expect(shown).to eq %w[ソ ン]
+    end
+
+    it "links each image to its stroke order page" do
+      visit compare_wk_kanas_path(left: "し", right: "ツ")
+
+      find("a[href='#{stroke_order_wk_kanas_path(kana: 'ツ')}']").click
+
+      expect(page).to have_title "ツ"
+      expect(page).to have_current_path stroke_order_wk_kanas_path(kana: "ツ")
     end
 
     it "is linked from the favourites page" do

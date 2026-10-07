@@ -26,6 +26,7 @@ module Wk
       @kana = params[:kana]
       @romanji = Wk::Kana::FAVOURITES[@kana] or raise ActiveRecord::RecordNotFound
       @links = Wk::Kana.stroke_order_links(@kana)
+      @similar = Wk::Kana.similar_to(@kana)
     end
 
     def update
