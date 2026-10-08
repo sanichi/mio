@@ -37,6 +37,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.0'
   gem 'faker', '< 4'
   gem 'selenium-webdriver', '~> 4.0'
+  gem 'active_record_doctor'
 end
 
 group :test do

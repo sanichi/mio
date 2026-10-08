@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_29_103000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -505,15 +505,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_103000) do
     t.text "reading_mnemonic"
     t.integer "wk_id"
     t.index ["wk_id"], name: "index_wk_vocabs_on_wk_id", unique: true
-  end
-
-  create_table "yomis", force: :cascade do |t|
-    t.boolean "important", default: true
-    t.bigint "kanji_id"
-    t.boolean "on", default: true
-    t.bigint "reading_id"
-    t.index ["kanji_id"], name: "index_yomis_on_kanji_id"
-    t.index ["reading_id"], name: "index_yomis_on_reading_id"
   end
 
   add_foreign_key "matches", "teams", column: "away_team_id"
