@@ -22,7 +22,7 @@ module WkHelper
   end
 
   def wk_kanji_favourite_order_menu(selected)
-    opts = %w/newest oldest random/.map { |o| [t("wk.kanji.order.#{o}"), o] }
+    opts = %w/oldest newest random/.map { |o| [t("wk.kanji.order.#{o}"), o] }
     options_for_select(opts, selected)
   end
 

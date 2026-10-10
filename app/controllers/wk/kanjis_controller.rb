@@ -19,8 +19,8 @@ module Wk
       @favourites =
         case params[:order]
         when "random" then favourites.shuffle
-        when "oldest" then favourites.order(favourite: :asc).to_a
-        else               favourites.order(favourite: :desc).to_a
+        when "newest" then favourites.order(favourite: :desc).to_a
+        else               favourites.order(favourite: :asc).to_a
         end
     end
 
