@@ -11,7 +11,7 @@ module Wk
     validates :characters, presence: true, length: { maximum: MAX_CHARACTERS }
 
     belongs_to :vocab
-    has_many :audios, as: :audible, dependent: :destroy
+    has_many :audios, as: :audible, dependent: :delete_all
 
     default_scope { order(primary: :desc) }
 

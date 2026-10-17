@@ -3,7 +3,7 @@ class Login < ApplicationRecord
 
   MAX_IP = 39
 
-  before_update :truncate_params
+  before_save :truncate_params
 
   def self.search(params, path, opt={})
     matches = Login.order(created_at: :desc)

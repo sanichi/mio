@@ -8,9 +8,8 @@ module Pp
 
     validates :query_type, presence: true, inclusion: { in: QUERY_TYPES }
     validates :started_at, presence: true
-    validates :records_scanned, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :records_created, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :records_updated, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+    validates :records_scanned, :records_created, :records_updated, :records_unchanged, :records_matched,
+              presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
     scope :successful, -> { where(error_message: nil) }
     scope :failed, -> { where.not(error_message: nil) }

@@ -77,6 +77,7 @@ def login(role="admin")
   fill_in t("email"), with: user.email
   fill_in t("session.password"), with: user.password
   click_button t("session.sign_in")
+  expect(page).to have_link t("session.sign_out", user: user.initials) # wait for the redirect to finish
   user
 end
 

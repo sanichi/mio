@@ -19,7 +19,7 @@ class Misa < ApplicationRecord
   validates :url, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true
   validates :alt, format: { with: /\Ahttps?:\/\/.+/ }, length: { maximum: MAX_URL }, uniqueness: true, allow_nil: true
   validates :published, date: { before_or_equal: Proc.new { Date.today } }
-  validates :title, presence: true, length: { maximum: MAX_TITLE }, uniqueness: true
+  validates :title, presence: true, length: { maximum: MAX_TITLE }
   validates :number, numericality: { integer_only: true, greater_than: 0, less_than_or_equal_to: MAX_NUMBER }, uniqueness: { scope: :series }, allow_nil: true
   validates :series, presence: true, length: { maximum: MAX_SERIES }, allow_nil: true
 

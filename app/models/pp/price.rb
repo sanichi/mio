@@ -7,7 +7,7 @@ module Pp
     DEFAULT_BEGIN = 12 # months ago
     BEGIN_MONTHS = [1, 2, 4, 6, 12]
 
-    belongs_to :station
+    belongs_to :station, optional: false
 
     validates :price_pence, presence: true, numericality: { greater_than: 0, less_than: 10000 }
     validates :price_last_updated, presence: true

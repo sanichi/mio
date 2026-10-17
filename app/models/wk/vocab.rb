@@ -11,7 +11,7 @@ module Wk
     MAX_READING = 48
 
     has_many :readings, dependent: :destroy
-    has_many :combos, dependent: :destroy
+    has_many :combos, dependent: :delete_all
     has_and_belongs_to_many :examples
     has_and_belongs_to_many :groups
 

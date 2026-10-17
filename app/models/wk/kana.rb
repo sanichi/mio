@@ -147,7 +147,7 @@ module Wk
     scope :by_level,        -> { order(:level, Arel.sql('characters COLLATE "C"')) }
     scope :by_last_updated, -> { order(last_updated: :desc, level: :asc) }
 
-    has_many :audios, as: :audible, dependent: :destroy
+    has_many :audios, as: :audible, dependent: :delete_all
 
     def self.search(params, path, opt={})
       matches =

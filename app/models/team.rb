@@ -5,8 +5,8 @@ class Team < ApplicationRecord
   MAX_NAME = 30
   MAX_SHORT = 15
 
-  has_many :home_matches, class_name: "Match", dependent: :destroy, foreign_key: "home_team_id"
-  has_many :away_matches, class_name: "Match", dependent: :destroy, foreign_key: "away_team_id"
+  has_many :home_matches, class_name: "Match", dependent: :delete_all, foreign_key: "home_team_id"
+  has_many :away_matches, class_name: "Match", dependent: :delete_all, foreign_key: "away_team_id"
 
   before_validation :normalize_attributes
 

@@ -16,7 +16,7 @@ module Pp
     # Fallback for stations created from the API before a colour is chosen by hand.
     DEFAULT_COLOUR = "888888"
 
-    has_many :prices, dependent: :destroy
+    has_many :prices, dependent: :delete_all
 
     before_validation :canonicalize
 
