@@ -8,7 +8,7 @@ set -euo pipefail
 #
 
 # Local stuff.
-home="/Users/mjo/Projects/app/mio"       # local project
+home="$HOME/Projects/app/mio"            # local project
 source="$home/public"                    # local directory
 isource="$source/images"                 # local images directory
 psource="$source/people"                 # local people directory
@@ -78,9 +78,10 @@ fi
 
 # Fix any local files whose permissions aren't 644, as rsync would copy the
 # bad mode to the server and the web server would then be unable to read them.
+# The two stat versions are to enable it on both dresden (MacOS) and toyama (Linux).
 for dir in "$isource" "$psource"; do
   find "$dir" -type f ! -perm 644 -print0 | while IFS= read -r -d '' file; do
-    echo "fixing permissions of ${file#$source/} ($(stat -f %Lp "$file") -> 644)"
+    echo "fixing permissions of ${file#$source/} ($(stat -c %a "$file" 2>/dev/null || stat -f %Lp "$file") -> 644)"
     chmod 644 "$file"
   done
 done
