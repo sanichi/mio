@@ -14,12 +14,19 @@ class FootballApi # abstract
     data = get_data(base_url + matches_path)
     matches = get_matches(data)
     raise "bad matches (#{matches.class})" unless matches.is_a?(Array)
-    raise "bad number of matches (#{matches.size})" unless matches.size.in?([FOOTBALL_MATCHES, FOOTBALL_MATCHES-1]) # TODO: temporary
+    matches = dedupe(matches)
+    raise "bad number of matches (#{matches.size})" unless matches.size == FOOTBALL_MATCHES
     fb_report("#{matches.size} matches");
     matches
   end
 
   private
+
+  # When a fixture is rescheduled the API can list it twice (the original entry and a new one).
+  # Keep only the entry with the highest ID for each home/away pairing.
+  def dedupe(matches)
+    matches.group_by { |m| match_teams(m) }.values.map { |group| group.max_by { |m| match_id(m).to_i } }
+  end
 
   def get_data(url)
     uri = URI(url)
@@ -51,6 +58,8 @@ class FdFootballApi < FootballApi
   def matches_path = "PL/matches"
   def get_teams(data) = data["teams"]
   def get_matches(data) = data["matches"]
+  def match_teams(m) = [m.dig("homeTeam", "id"), m.dig("awayTeam", "id")]
+  def match_id(m) = m["id"]
   def add_headers(request)
     request["X-AUTH-TOKEN"] = Rails.application.credentials.football_data[:token]
   end
@@ -64,6 +73,8 @@ class FwpFootballApi < FootballApi
   def matches_path = "fixtures-results.json?comp=1"
   def get_teams(data) = data["teams"]
   def get_matches(data) = data.dig("fixtures-results", "matches")
+  def match_teams(m) = [m.dig("home-team", "id"), m.dig("away-team", "id")]
+  def match_id(m) = m["id"]
   def add_headers(request)
     request["FWP-API-Key"] = Rails.application.credentials.football_web_pages[:key]
   end
