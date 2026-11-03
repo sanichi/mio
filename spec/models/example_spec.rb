@@ -90,4 +90,32 @@ describe Wk::Example do
       expect(example.japanese_markdown(bold: "家")).to eq "{僕}は**うち**に[帰る](/wk/vocabs/帰る)"
     end
   end
+
+  context "splitting combined input" do
+    def split(text)
+      e = build(:wk_example, japanese: text, english: nil)
+      e.valid?
+      [e.japanese, e.english]
+    end
+
+    it "splits plain ASCII English" do
+      expect(split("僕は家に帰る。 I went home.")).to eq ["僕は家に帰る。", "I went home."]
+    end
+
+    it "keeps a straight apostrophe in the English" do
+      expect(split("もう食べた。 I've eaten.")).to eq ["もう食べた。", "I've eaten."]
+    end
+
+    it "keeps a curly apostrophe in the English" do
+      expect(split("もう食べた。 I\u2019ve eaten.")).to eq ["もう食べた。", "I\u2019ve eaten."]
+    end
+
+    it "keeps curly quotes and dashes in the English" do
+      expect(split("もう食べた。 \u201cI\u2019ve\u201d \u2014 eaten.")).to eq ["もう食べた。", "\u201cI\u2019ve\u201d \u2014 eaten."]
+    end
+
+    it "keeps a closing brace with the Japanese" do
+      expect(split("{僕}は{うち|家}に{帰る} I went home.")).to eq ["{僕}は{うち|家}に{帰る}", "I went home."]
+    end
+  end
 end

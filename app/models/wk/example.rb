@@ -6,6 +6,8 @@ module Wk
     MAX_EXAMPLE = 200
     PATTERN = /\{([^}|]+)(?:\|([^}|]+))?\}/
     PPATTERN = /「([^」|]+)(?:\|([^」|]+))?」/
+    JAPANESE_END = /[\p{Han}\p{Hiragana}\p{Katakana}ー。、！？」』）}]/
+    COMBINED = /\A\s*(.*#{JAPANESE_END})\s*(\S.*)\z/m
 
     has_and_belongs_to_many :vocabs
 
@@ -78,7 +80,7 @@ module Wk
     private
 
     def clean_up
-      if english.blank? && japanese&.match(/\A\s*([\p{Any}]+[^\p{ASCII}])\s*([\p{ASCII}]+)\z/)
+      if english.blank? && japanese&.match(COMBINED)
         self.japanese = $1
         self.english = $2
       end
