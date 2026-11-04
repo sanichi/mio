@@ -114,6 +114,12 @@ describe Wk::Example do
       expect(split("もう食べた。 \u201cI\u2019ve\u201d \u2014 eaten.")).to eq ["もう食べた。", "\u201cI\u2019ve\u201d \u2014 eaten."]
     end
 
+    it "does not split pure Japanese" do
+      ["彼は現在の仕事が気に入っているようだ。", "{車}が{故障}したんだ。", "{運}が{悪かった|悪い}ね。"].each do |text|
+        expect(split(text)).to eq [text, nil]
+      end
+    end
+
     it "keeps a closing brace with the Japanese" do
       expect(split("{僕}は{うち|家}に{帰る} I went home.")).to eq ["{僕}は{うち|家}に{帰る}", "I went home."]
     end

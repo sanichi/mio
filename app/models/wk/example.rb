@@ -7,7 +7,8 @@ module Wk
     PATTERN = /\{([^}|]+)(?:\|([^}|]+))?\}/
     PPATTERN = /「([^」|]+)(?:\|([^」|]+))?」/
     JAPANESE_END = /[\p{Han}\p{Hiragana}\p{Katakana}ー。、！？」』）}]/
-    COMBINED = /\A\s*(.*#{JAPANESE_END})\s*(\S.*)\z/m
+    JAPANESE_START = /[\p{Han}\p{Hiragana}\p{Katakana}ー。、！？「『（({|]/
+    COMBINED = /\A\s*(.*#{JAPANESE_END})\s*((?!#{JAPANESE_END}|#{JAPANESE_START})\S.*)\z/m
 
     has_and_belongs_to_many :vocabs
 
