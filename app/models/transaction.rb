@@ -161,7 +161,7 @@ class Transaction < ApplicationRecord
         CSV.foreach(path) do |row|
           rows += 1
           next if row.empty?
-          raise "wrong number of columns (#{row.size}) on row #{rows}" if row.size < 7 || row.size > 8
+          raise "wrong number of columns (#{row.size}) on row #{rows}" if row.size < 7 || row.size > 9
           next if row[0].squish == "Date"
 
           account = check_account(row[6], rows)
