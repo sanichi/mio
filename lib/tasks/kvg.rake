@@ -14,12 +14,12 @@
 class KvgZu
   WIDTH = 109
   HEIGHT = 109
-  SVG_HEAD = "<svg width=\"_WIDTH_px\" height=\"#{HEIGHT}px\" viewBox=\"0 0 _WIDTH_ #{HEIGHT}\" xmlns=\"http://www.w3.org/2000/svg\" version\"1.1\">"
+  SVG_HEAD = "<svg width=\"_WIDTH_px\" height=\"#{HEIGHT}px\" viewBox=\"0 0 _WIDTH_ #{HEIGHT}\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
   PATH_STYLE = 'fill:none;stroke:black;stroke-width:3'
   GRAY_STYLE = 'fill:none;stroke:#999;stroke-width:3'
   LINE_STYLE = 'stroke:#ddd;stroke-width:2'
   DASH_STYLE = 'stroke:#ddd;stroke-width:2;stroke-dasharray:3 3'
-  SPOT_STYLE = 'stroke-width:0;fill:#FF2A00;opacity:0.7;r:5'
+  SPOT_STYLE = 'stroke-width:0;fill:#FF2A00;opacity:0.7'
   COORD_RE = %r{(?ix:\d+ (?:\.\d+)?)}
 
   def initialize(xml, id, type = :numbers)
@@ -82,7 +82,7 @@ class KvgZu
       current.each_with_index do |path, i|
         svg << "<path d=\"#{path}\" style=\"#{current.length == i + 1 ? PATH_STYLE : GRAY_STYLE}\" />"
       end
-      svg << '<circle cx="%s" cy="%s" style="%s"/>' % [md[1], md[2], SPOT_STYLE] if md
+      svg << '<circle cx="%s" cy="%s" r="5" style="%s"/>' % [md[1], md[2], SPOT_STYLE] if md
       svg << "</g>"
     end
 
