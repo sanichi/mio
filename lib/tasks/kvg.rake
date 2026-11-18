@@ -124,7 +124,7 @@ namespace :kvg do
         xml.sub!(/<!--.*-->/m, "")
         xml.sub!(/\s*<!DOCTYPE.*\]>/m, "")
         xml.sub!(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/, 'version="1.1"')
-        xml.sub!(/<svg/, '<svg xmlns:kvg="https://kanjivg.tagaini.net/"')
+        xml.sub!(/<svg/, '<svg xmlns:kvg="https://kanjivg.tagaini.net/"') unless xml.match?(/<svg[^>]*xmlns:kvg=/)
         xml.gsub!(/\t/, "  ")
 
         zu = KvgZu.new(xml, id)
